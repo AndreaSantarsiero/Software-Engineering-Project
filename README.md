@@ -1,71 +1,71 @@
-# Galaxy Trucker - Progetto di Ingegneria del Software
+# Galaxy Trucker - Software Engineering Project  
 
-Galaxy Trucker è un gioco da tavolo in cui i giocatori assumono il ruolo di camionisti spaziali che costruiscono e pilotano astronavi attraverso il pericoloso spazio intergalattico. Il gioco si sviluppa in diverse fasi: costruzione della nave, volo attraverso lo spazio e gestione delle sfide incontrate lungo il percorso.
+Galaxy Trucker is a board game where players take on the role of space truckers who build and pilot spaceships through dangerous intergalactic space. The game unfolds in several phases: ship construction, spaceflight, and managing challenges encountered along the way.  
 
----
+---  
 
-## Componenti del Gioco
-- **Plance Nave**: Ogni giocatore possiede una plancia su cui costruire la propria astronave.
-- **Plancia di Volo**: Indica la rotta che i giocatori percorreranno nello spazio.
-- **Tessere Componente**: Parti di astronave come cabine, motori, cannoni, scudi, batterie e stive.
-- **Carte Avventura**: Eventi e pericoli che i giocatori affronteranno durante il volo.
-- **Segnalini**: Astronauti, alieni, batterie, merci e crediti cosmici.
-- **Dadi**: Utilizzati per determinare l'esito di eventi e attacchi.
+## Game Components  
+- **Ship Boards**: Each player has a board on which they build their spaceship.  
+- **Flight Board**: Indicates the route players will travel through space.  
+- **Component Tiles**: Spaceship parts such as cabins, engines, cannons, shields, batteries, and cargo holds.  
+- **Adventure Cards**: Events and dangers that players will face during the flight.  
+- **Tokens**: Astronauts, aliens, batteries, goods, and cosmic credits.  
+- **Dice**: Used to determine the outcome of events and attacks.  
 
----
+---  
 
-## Regole del Gioco
+## Game Rules  
 
-### 1. Fase di Costruzione
-I giocatori assemblano simultaneamente la loro nave scegliendo tessere componente da un mucchio comune. Le tessere devono essere collegate correttamente con i connettori giusti e rispettare le regole di posizionamento:
-- **Motori**: Devono essere posizionati sul retro e avere spazio libero dietro di loro.
-- **Cannoni**: Devono essere rivolti all'esterno e non avere ostacoli di fronte.
-- **Batterie**: Necessarie per attivare cannoni doppi e motori doppi.
-- **Scudi**: Proteggono dai danni provenienti da specifiche direzioni.
-- **Stive**: Contengono merci raccolte durante il volo.
+### 1. Construction Phase  
+Players simultaneously assemble their ships by choosing component tiles from a common pile. The tiles must be correctly connected using the right connectors and must follow placement rules:  
+- **Engines**: Must be placed at the back and have free space behind them.  
+- **Cannons**: Must face outward and have no obstacles in front of them.  
+- **Batteries**: Required to activate double cannons and double engines.  
+- **Shields**: Protect against damage coming from specific directions.  
+- **Cargo Holds**: Store goods collected during the flight.  
 
-I giocatori terminano la costruzione piazzando il loro segnalino di partenza sulla plancia di volo.
+Players finish construction by placing their starting marker on the flight board.  
 
----
+---  
 
-### 2. Fase di Volo
-Durante il volo, il leader (giocatore in testa) pesca e risolve le carte avventura una alla volta. Possibili eventi includono:
-- **Pianeti**: I giocatori possono atterrare per raccogliere merci, perdendo però giorni di volo.
-- **Navi Abbandonate**: Offrono crediti cosmici in cambio di membri dell'equipaggio.
-- **Stazioni Spaziali**: Consentono di raccogliere merci con un equipaggio sufficiente.
-- **Contrabbandieri, Pirati e Schiavisti**: Possono attaccare i giocatori, rubare merci o infliggere danni.
-- **Meteoriti**: Piccoli meteoriti possono essere respinti dagli scudi, mentre quelli grandi devono essere distrutti dai cannoni.
-- **Zona di Guerra**: Penalizza i giocatori con meno equipaggio, potenza motrice o potenza di fuoco.
+### 2. Flight Phase  
+During the flight, the leader (the player in the lead) draws and resolves adventure cards one by one. Possible events include:  
+- **Planets**: Players can land to collect goods, but lose travel days.  
+- **Abandoned Ships**: Offer cosmic credits in exchange for crew members.  
+- **Space Stations**: Allow players to collect goods if they have enough crew.  
+- **Smugglers, Pirates, and Slavers**: May attack players, steal goods, or inflict damage.  
+- **Meteors**: Small meteors can be deflected by shields, while large ones must be destroyed by cannons.  
+- **War Zone**: Penalizes players with less crew, engine power, or firepower.  
 
-Le navi possono subire danni, perdere componenti e diventare inutilizzabili se troppo danneggiate.
+Ships can take damage, lose components, and become unusable if too damaged.  
 
----
+---  
 
-### 3. Fine del Viaggio
-Dopo aver risolto tutte le carte avventura, si assegnano i crediti cosmici in base a:
-1. **Ordine di arrivo**
-2. **Nave più bella** (meno connettori esposti)
-3. **Valore delle merci trasportate**
-4. **Penalità per componenti persi**
+### 3. End of the Journey  
+After resolving all adventure cards, cosmic credits are awarded based on:  
+1. **Order of arrival**  
+2. **Most beautiful ship** (fewest exposed connectors)  
+3. **Value of transported goods**  
+4. **Penalties for lost components**  
 
-Il giocatore con più crediti cosmici vince la partita!
+The player with the most cosmic credits wins the game!  
 
----
+---  
 
-## Modalità Avanzata
-Giocatori esperti possono affrontare voli di livello superiore, con navi più grandi e pericoli più intensi. Sono disponibili:
-- **Indicazioni di Rotta**: Permettono di pianificare meglio la costruzione della nave.
-- **Moduli di Supporto Vitale**: Consentono di trasportare alieni, che danno bonus alla potenza motrice o di fuoco.
-- **Nemici Avanzati**: Pirati e Schiavisti offrono sfide più impegnative.
-- **Eventi Speciali**: Come epidemie e sabotaggi che possono compromettere il viaggio.
+## Advanced Mode  
+Experienced players can take on higher-level flights with larger ships and more intense dangers. Available features include:  
+- **Route Indications**: Allow better planning of ship construction.  
+- **Life Support Modules**: Enable carrying aliens, who provide bonuses to engine power or firepower.  
+- **Advanced Enemies**: Pirates and Slavers present greater challenges.  
+- **Special Events**: Such as epidemics and sabotage that can compromise the journey.  
 
----
+---  
 
-## Licenza  
-Questo progetto è distribuito sotto **GPL-3.0 License**.  
+## License  
+This project is distributed under the **GPL-3.0 License**.  
 
-## **Autori:** 
-- [Andrea Santarsiero](https://github.com/AndreaSantarsiero)
-- [Luca Sartori](https://github.com/Luca-Sartori)
-- [Andrea Pianini](https://github.com/AndreaPianini)
+## **Authors:**  
+- [Andrea Santarsiero](https://github.com/AndreaSantarsiero)  
+- [Luca Sartori](https://github.com/Luca-Sartori)  
+- [Andrea Pianini](https://github.com/AndreaPianini)  
 - [Lorenzo Stani](https://github.com/lorenzostani)  
