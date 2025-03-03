@@ -1,4 +1,23 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 public class Slavers extends AdventureCard {
+
+    private int lostDays;
+    private int firePower;
+    private int membersKilled;
+    private int coins;
+
+
+    public int getLostDays() {
+        return lostDays;
+    }
+    public int getFirePower() {
+        return firePower;
+    }
+    public int getMembersKilled() {
+        return membersKilled;
+    }
+    public int getCoins() {
+        return coins;
+    }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-public class AdventureCard {
+public abstract class AdventureCard {
 
     public enum Type {
         TRIAL, LEVEL1, LEVEL2;

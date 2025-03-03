@@ -6,10 +6,10 @@ public class Engine extends ShipCard {
         SINGLE, DOUBLE;
     }
 
-    private Cannon.Type type;
+    private Type type;
 
 
-    public Cannon.Type getType() {
+    public Type getType() {
         return type;
     }
 }

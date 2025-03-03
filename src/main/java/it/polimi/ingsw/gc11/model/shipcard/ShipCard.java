@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
-public class ShipCard {
+public abstract class ShipCard {
 
     public enum Connector {
         NONE, SINGLE, DOUBLE, UNIVERSAL;
