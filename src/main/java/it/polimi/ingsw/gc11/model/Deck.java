@@ -1,5 +1,11 @@
 package it.polimi.ingsw.gc11.model;
 
-public class Deck {
+import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
+public class Deck {
+    private AdventureCard[] cards;
+
+    public void shuffle() {}
+
+    public void getTopCard() {}
 }
