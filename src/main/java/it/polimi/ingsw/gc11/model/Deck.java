@@ -2,10 +2,12 @@ package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
-public class Deck {
-    private AdventureCard[] cards;
+import java.util.Stack;
 
+public class Deck {
+    private Stack<AdventureCard> cardsDeck;
     public void shuffle() {}
 
-    public void getTopCard() {}
+    public AdventureCard getTopCard() {
+        return cardsDeck.pop();   }
 }
