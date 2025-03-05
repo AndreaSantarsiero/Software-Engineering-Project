@@ -11,8 +11,11 @@ public class FlightBoard {
 
     public FlightBoard(Type type) {
         this.type = type;
-        if (type == Type.TRIAL) {
-            length = ;
+        if (type.equals(Type.TRIAL)) {
+            length = 18;
+        }
+        else if (type.equals(Type.LEVEL2)) {
+            length = 24;
         }
     }
     public Type getType() {
