@@ -6,26 +6,29 @@ public class Player {
     private int position;
     private Boolean abort;
 
+    public Player(String username) {
+        this.username = username;
+        coins = 0;
+        position = 0;
+        abort = false;
+    }
 
     public String getUsername() {
         return username;
     }
-    public void setUsername(String username) {
-        this.username = username;
-    }
     public int getCoins() {
         return coins;
     }
-    public void addCoins(int coins) {
+    public void addCoins(int amount) {
         this.coins += coins;
     }
-    public void removeCoins(int coins) {
+    public void removeCoins(int amount) {
         this.coins -= coins;
     }
     public int getPosition() {
         return position;
     }
-    public void setPosition(int position) {
-        this.position = position;
+    public void setPosition(int delta) {
+        this.position += delta;
     }
 }
