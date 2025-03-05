@@ -9,7 +9,12 @@ public class FlightBoard {
     private Type type;
     private int length;
 
-
+    public FlightBoard(Type type) {
+        this.type = type;
+        if (type == Type.TRIAL) {
+            length = ;
+        }
+    }
     public Type getType() {
         return type;
     }
