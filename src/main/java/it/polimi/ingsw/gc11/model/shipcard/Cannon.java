@@ -9,6 +9,12 @@ public class Cannon extends ShipCard {
     private Type type;
 
 
+    public Cannon(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
+        super(topConnector, rightConnector, bottomConnector, leftConnector);
+        this.type = type;
+    }
+
+
     public Type getType() {
         return type;
     }

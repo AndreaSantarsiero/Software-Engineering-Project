@@ -15,9 +15,49 @@ public abstract class ShipCard {
     private Connector leftConnector;
     private Orientation orientation;
 
-    private int coordX;
-    private int coordY;
     private Boolean covered;
-    private Boolean reserved;
     private Boolean scrap;
+
+
+    public ShipCard(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
+        this.topConnector = topConnector;
+        this.rightConnector = rightConnector;
+        this.bottomConnector = bottomConnector;
+        this.leftConnector = leftConnector;
+        this.orientation = Orientation.DEG_0;
+        this.covered = true;
+        this.scrap = false;
+    }
+
+
+    public Connector getTopConnector() {
+        return topConnector;
+    }
+    public Connector getRightConnector() {
+        return rightConnector;
+    }
+    public Connector getBottomConnector() {
+        return bottomConnector;
+    }
+    public Connector getLeftConnector() {
+        return leftConnector;
+    }
+    public Orientation getOrientation() {
+        return orientation;
+    }
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+    public Boolean isCovered() {
+        return covered;
+    }
+    public void setCovered(Boolean covered) {
+        this.covered = covered;
+    }
+    public Boolean isScrap() {
+        return scrap;
+    }
+    public void setScrap(Boolean scrap) {
+        this.scrap = scrap;
+    }
 }
