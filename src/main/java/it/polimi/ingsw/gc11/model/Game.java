@@ -13,7 +13,13 @@ public class Game {
         this.id = id;
         this.players = players;
         this.flightBoard = new FlightBoard(flightType);
-        this.decks = new Deck[3];
+        //Trial Flight has only 1 deck
+        //Level 2 Flight has 4 deck
+        if (flightType.equals(FlightBoard.Type.TRIAL))
+            decks = new Deck[1];
+        else if (flightType.equals(FlightBoard.Type.LEVEL2)) {
+            decks = new Deck[4];
+        }
     }
 
     public String getId() {
