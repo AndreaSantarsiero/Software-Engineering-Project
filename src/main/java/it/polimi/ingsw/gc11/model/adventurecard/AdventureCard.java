@@ -9,10 +9,19 @@ public abstract class AdventureCard {
     private Type type;
     private Boolean used;
 
+    public AdventureCard(Type type) {
+        this.type = type;
+        this.used = false;
+    }
+
+    public void useCard(){
+        this.used = true;
+    }
 
     public Type getType(){
         return type;
     }
+
     public Boolean isUsed(){
         return used;
     }

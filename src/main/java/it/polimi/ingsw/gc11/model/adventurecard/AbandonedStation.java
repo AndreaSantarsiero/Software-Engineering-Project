@@ -1,10 +1,39 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.Material;
+
+import java.util.Vector;
+
 public class AbandonedStation extends AdventureCard {
 
     private int lostDays;
     private int membersRequired;
+    private boolean resoled;
+    private Vector<Material> materials;
 
+    public AbandonedStation(int lostDays, int membersRequired, Vector<Material> materials) {
+        super(Type.TRIAL);
+
+        if (lostDays < 0) {
+            throw new IllegalArgumentException("negative lost days.");
+        }
+        if (membersRequired < 0) {
+            throw new IllegalArgumentException("negative members required.");
+        }
+
+        this.lostDays = lostDays;
+        this.membersRequired = membersRequired;
+        this.materials = materials;
+        this.resoled = false;
+    }
+
+    public Vector<Material> getMaterials() {
+        if(this.resoled){
+            throw new IllegalStateException("Already resoled.");
+        }
+        this.resoled = true;
+        return this.materials;
+    }
 
     public int getLostDays() {
         return lostDays;
