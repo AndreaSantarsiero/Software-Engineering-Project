@@ -1,43 +1,77 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
+
+/**
+ * Represents a Battery, a specialized type of ShipCard
+ * A Battery has a specific type (DOUBLE or TRIPLE), which determines the number of available batteries
+ */
 public class Battery extends ShipCard {
 
-    public enum Type{
+    /**
+     * Defines the possible types of Batteries
+     */
+    public enum Type {
         DOUBLE, TRIPLE;
     }
 
-    private Type type;
+
+    private final Type type;
     private int availableBatteries;
 
 
+    /**
+     * Constructs a Battery with specified connectors and type
+     * The number of available batteries is determined by the type
+     *
+     * @param topConnector The connector on the top side
+     * @param rightConnector The connector on the right side
+     * @param bottomConnector The connector on the bottom side
+     * @param leftConnector The connector on the left side
+     * @param type The type of the Battery (DOUBLE or TRIPLE)
+     * @throws IllegalArgumentException if the provided type is not recognized
+     */
     public Battery(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
         super(topConnector, rightConnector, bottomConnector, leftConnector);
         this.type = type;
         if (type == Type.DOUBLE) {
             availableBatteries = 2;
-        }
-        else if (type == Type.TRIPLE) {
+        } else if (type == Type.TRIPLE) {
             availableBatteries = 3;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Battery type not recognized");
         }
     }
 
 
+
+    /**
+     * @return The type of the Battery (DOUBLE or TRIPLE)
+     */
     public Type getType() {
         return type;
     }
+
+    /**
+     * @return The number of available batteries
+     */
     public int getAvailableBatteries() {
         return availableBatteries;
     }
+
+    /**
+     * Reduces the number of available batteries when they are used
+     *
+     * @param numBatteries The number of batteries to use.
+     * @throws IllegalArgumentException if the number of batteries is negative or exceeds available batteries
+     */
     public void useBatteries(int numBatteries) {
-        if (numBatteries < 0){
+        if (numBatteries < 0) {
             throw new IllegalArgumentException("Battery number cannot be negative");
         }
-        if (numBatteries > availableBatteries){
+        if (numBatteries > availableBatteries) {
             throw new IllegalArgumentException("Battery number cannot be greater than available batteries");
         }
         availableBatteries -= numBatteries;
     }
 }
+
