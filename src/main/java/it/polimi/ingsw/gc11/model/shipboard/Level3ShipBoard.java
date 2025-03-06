@@ -1,18 +1,39 @@
 package it.polimi.ingsw.gc11.model.shipboard;
 
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
+/**
+ * Represents a level 3 shipboard, extending the general ShipBoard class
+ * This class defines the board's dimensions and provides a method to validate coordinates
+ */
 public class Level3ShipBoard extends ShipBoard {
 
+    /**
+     * Maximum X coordinate of the shipboard
+     */
     private final int X_MAX = 9;
+
+    /**
+     * Maximum Y coordinate of the shipboard
+     */
     private final int Y_MAX = 6;
 
 
+    /**
+     * Constructs a Level1ShipBoard with predefined dimensions (9x6)
+     */
     public Level3ShipBoard() {
         super(9, 6);
     }
 
 
+    /**
+     * Validates whether the given coordinates are within the allowed area of the shipboard
+     *
+     * @param x The X coordinate to validate
+     * @param y The Y coordinate to validate
+     * @return true if the coordinates are valid, false otherwise
+     * @throws IllegalArgumentException if the coordinates are outside the board's bounds
+     */
     public Boolean validateCoordinates(int x, int y){
         x -= 3;
         y -= 4;

@@ -35,4 +35,20 @@ public class Material {
     public Type getType() {
         return type;
     }
+
+
+    /**
+     * Gets the value of this material
+     *
+     * @return The value of the material
+     */
+    public int getValue() {
+        return switch (type) {
+            case BLUE -> 1;
+            case GREEN -> 2;
+            case YELLOW -> 3;
+            case RED -> 4;
+            default -> throw new IllegalArgumentException("Unknown material type: " + type);
+        };
+    }
 }

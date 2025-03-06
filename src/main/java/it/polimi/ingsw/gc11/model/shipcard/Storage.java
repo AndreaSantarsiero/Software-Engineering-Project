@@ -147,17 +147,35 @@ public class Storage extends ShipCard {
         int materialsValue = 0;
 
         for (Material material : materials) {
-            if (material.getType() == Material.Type.RED) {
-                materialsValue += 4;
-            } else if (material.getType() == Material.Type.YELLOW) {
-                materialsValue += 3;
-            } else if (material.getType() == Material.Type.GREEN) {
-                materialsValue += 2;
-            } else if (material.getType() == Material.Type.BLUE) {
-                materialsValue += 1;
-            }
+            materialsValue += material.getValue();
         }
 
         return materialsValue;
+    }
+
+
+    public Material getMostValuedMaterial() {
+        for (Material material : materials) {
+            if (material.getType() == Material.Type.RED) {
+                return material;
+            }
+        }
+        for (Material material : materials) {
+            if (material.getType() == Material.Type.YELLOW) {
+                return material;
+            }
+        }
+        for (Material material : materials) {
+            if (material.getType() == Material.Type.GREEN) {
+                return material;
+            }
+        }
+        for (Material material : materials) {
+            if (material.getType() == Material.Type.BLUE) {
+                return material;
+            }
+        }
+
+        throw new IllegalArgumentException("Storage empty, no material found");
     }
 }
