@@ -1,15 +1,34 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
+
+/**
+ * Represents an AlienUnit, a special type of ShipCard
+ * An AlienUnit can be either BROWN or PURPLE and has a presence state that determines if the alien is present
+ */
 public class AlienUnit extends ShipCard {
 
-    public enum Type{
+    /**
+     * Defines the possible types of Alien Units
+     */
+    public enum Type {
         BROWN, PURPLE;
     }
 
-    private Type type;
+
+    private final Type type;
     private Boolean presence;
 
 
+    /**
+     * Constructs an AlienUnit with specified connectors and type
+     * Initially, the presence of the alien is set to false
+     *
+     * @param topConnector The connector on the top side
+     * @param rightConnector The connector on the right side
+     * @param bottomConnector The connector on the bottom side
+     * @param leftConnector The connector on the left side
+     * @param type The type of the Alien Unit (BROWN or PURPLE)
+     */
     public AlienUnit(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
         super(topConnector, rightConnector, bottomConnector, leftConnector);
         this.type = type;
@@ -17,15 +36,35 @@ public class AlienUnit extends ShipCard {
     }
 
 
+    /**
+     * @return The type of the Alien Unit (BROWN or PURPLE)
+     */
     public Type getType() {
         return type;
     }
-    public Boolean isPresent(){
+
+    /**
+     * Finalize the connection of the alien unit to a housing unit, setting the presence of the alien to true
+     */
+    public void connectUnit() {
+        this.presence = true;
+    }
+
+    /**
+     * @return True if the alien is present, false otherwise
+     */
+    public Boolean isPresent() {
         return presence;
     }
-    public void killAlien(){
+
+    /**
+     * Kills the alien, setting its presence to false
+     *
+     * @throws IllegalStateException if the alien is already dead
+     */
+    public void killAlien() {
         if (!presence) {
-            throw new AlienAlreadyKilledException("Alien already killed");
+            throw new IllegalStateException("Alien already killed");
         }
         this.presence = false;
     }
