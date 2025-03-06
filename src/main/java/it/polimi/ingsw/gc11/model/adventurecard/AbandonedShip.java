@@ -6,6 +6,10 @@ public class AbandonedShip extends AdventureCard {
     private int lostMembers;
     private int coins;
 
+    public AbandonedShip() {
+        super(Type.TRIAL);
+    }
+
 
     public int getLostDays() {
         return lostDays;
