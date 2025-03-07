@@ -11,12 +11,17 @@ public class Deck {
     private Vector<AdventureCard> usedCards;
 
     public Deck() {
-        cards = new Vector<>();
-        usedCards = new Vector<>();
+        this.cards = new Vector<>();
+        this.usedCards = new Vector<>();
+    }
+
+    public Deck(Vector<AdventureCard> cards) {
+        this.cards = cards;
+        this.usedCards = new Vector<>();
     }
 
     public void addCard(AdventureCard card) {
-        cards.add(card);
+        this.cards.add(card);
     }
 
     public void shuffle() {
@@ -25,11 +30,11 @@ public class Deck {
 
     public AdventureCard getTopCard() {
         if (cards.isEmpty()) {
-            throw new NoSuchElementException("Empty deck");
+            throw new IllegalStateException("no cards available.");
         }
         AdventureCard drawed = cards.removeFirst();
         drawed.useCard();
-        usedCards.add(drawed);
+        this.usedCards.add(drawed);
         return drawed;
 
     }
