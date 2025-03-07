@@ -141,13 +141,17 @@ public abstract class ShipBoard {
     }
 
     /**
-     * Moves a reserved ship card onto the ship board
+     * Moves a reserved ship card onto the ship board at the specified coordinates
+     * This method ensures that the ship card is valid, has been previously reserved, and is placed within the ship's valid bounds before adding it to the board
      *
-     * @param shipCard The reserved ship card to be used
+     * @param shipCard The reserved ship card to be placed on the board
+     * @param x The x-coordinate where the ship card should be placed
+     * @param y The y-coordinate where the ship card should be placed
      * @throws IllegalArgumentException if the ship card is null
-     * @throws IllegalStateException if the ship card was not reserved
+     * @throws IllegalStateException if the ship card was not reserved or the reservation list is empty
+     * @throws IllegalArgumentException if the coordinates are out of bounds
      */
-    public void useReservedShipCard(ShipCard shipCard) {
+    public void useReservedShipCard(ShipCard shipCard, int x, int y) {
         if (shipCard == null) {
             throw new IllegalArgumentException("Ship card is null");
         }
@@ -155,8 +159,9 @@ public abstract class ShipBoard {
             throw new IllegalStateException("Ship card not previously reserved");
         }
         if (reservedComponents.contains(shipCard)) {
+            checkCoordinates(x, y);
             reservedComponents.remove(shipCard);
-            components.add(shipCard);
+            components[y][x] = shipCard;
         }
         else {
             throw new IllegalStateException("Ship card not previously reserved");
