@@ -16,6 +16,7 @@ public abstract class ShipCard {
 
     /**
      * Defines the possible orientations for a ShipCard
+     * Rotations are in a clockwise direction
      */
     public enum Orientation {
         DEG_0, DEG_90, DEG_180, DEG_270;
@@ -28,6 +29,7 @@ public abstract class ShipCard {
     private final Connector leftConnector;
     private Orientation orientation;
     private Boolean covered;
+    private Boolean badWelded;
     private Boolean scrap;
 
 
@@ -35,10 +37,10 @@ public abstract class ShipCard {
      * Constructs a ShipCard with specified connectors on each side
      * The default orientation is 0 degrees, it is initially covered and not scrapped
      *
-     * @param topConnector The connector on the top side
-     * @param rightConnector The connector on the right side
+     * @param topConnector    The connector on the top side
+     * @param rightConnector  The connector on the right side
      * @param bottomConnector The connector on the bottom side
-     * @param leftConnector The connector on the left side
+     * @param leftConnector   The connector on the left side
      */
     public ShipCard(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
         this.topConnector = topConnector;
@@ -47,38 +49,68 @@ public abstract class ShipCard {
         this.leftConnector = leftConnector;
         this.orientation = Orientation.DEG_0;
         this.covered = true;
+        this.badWelded = false;
         this.scrap = false;
     }
 
 
 
     /**
-     * @return The connector on the top side of the ShipCard
+     * Retrieves the connector on the top side, adjusted according to the current orientation
+     *
+     * @return The connector currently positioned at the top of the ShipCard
      */
     public Connector getTopConnector() {
-        return topConnector;
+        return switch (orientation) {
+            case DEG_90 -> leftConnector;
+            case DEG_180 -> bottomConnector;
+            case DEG_270 -> rightConnector;
+            default -> topConnector;
+        };
     }
 
     /**
-     * @return The connector on the right side of the ShipCard
+     * Retrieves the connector on the right side, adjusted according to the current orientation
+     *
+     * @return The connector currently positioned at the right of the ShipCard
      */
     public Connector getRightConnector() {
-        return rightConnector;
+        return switch (orientation) {
+            case DEG_90 -> topConnector;
+            case DEG_180 -> leftConnector;
+            case DEG_270 -> bottomConnector;
+            default -> rightConnector;
+        };
     }
 
     /**
-     * @return The connector on the bottom side of the ShipCard
+     * Retrieves the connector on the bottom side, adjusted according to the current orientation
+     *
+     * @return The connector currently positioned at the bottom of the ShipCard
      */
     public Connector getBottomConnector() {
-        return bottomConnector;
+        return switch (orientation) {
+            case DEG_90 -> rightConnector;
+            case DEG_180 -> topConnector;
+            case DEG_270 -> leftConnector;
+            default -> bottomConnector;
+        };
     }
 
     /**
-     * @return The connector on the left side of the ShipCard
+     * Retrieves the connector on the left side, adjusted according to the current orientation
+     *
+     * @return The connector currently positioned at the left of the ShipCard
      */
     public Connector getLeftConnector() {
-        return leftConnector;
+        return switch (orientation) {
+            case DEG_90 -> bottomConnector;
+            case DEG_180 -> rightConnector;
+            case DEG_270 -> topConnector;
+            default -> leftConnector;
+        };
     }
+
 
     /**
      * @return The current orientation of the ShipCard
@@ -96,6 +128,7 @@ public abstract class ShipCard {
         this.orientation = orientation;
     }
 
+
     /**
      * @return True if the ShipCard is covered, false otherwise
      */
@@ -111,6 +144,24 @@ public abstract class ShipCard {
     public void setCovered(Boolean covered) {
         this.covered = covered;
     }
+
+
+    /**
+     * @return True if the ShipCard has a bad weld, false otherwise
+     */
+    public Boolean isBadWelded() {
+        return badWelded;
+    }
+
+    /**
+     * Sets whether the ShipCard has a bad weld
+     *
+     * @param badWelded True to mark the ShipCard as badly welded, false otherwise
+     */
+    public void setBadWelded(Boolean badWelded) {
+        this.badWelded = badWelded;
+    }
+
 
     /**
      * @return True if the ShipCard is scrapped, false otherwise
@@ -128,4 +179,3 @@ public abstract class ShipCard {
         this.scrap = scrap;
     }
 }
-
