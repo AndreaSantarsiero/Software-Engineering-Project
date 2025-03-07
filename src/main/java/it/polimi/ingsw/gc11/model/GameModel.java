@@ -1,15 +1,12 @@
 package it.polimi.ingsw.gc11.model;
 
-public class Game {
+public class GameModel {
     private String id;
     private Player[] players;
     private FlightBoard flightBoard;
     private Deck[] decks;
 
-    public void start() {}
-    public void end() {}
-
-    public Game(String id, Player[] players, FlightBoard.Type flightType) {
+    public GameModel(String id, Player[] players, FlightBoard.Type flightType) {
         this.id = id;
         this.players = players;
         this.flightBoard = new FlightBoard(flightType);
@@ -29,4 +26,7 @@ public class Game {
     public int getNumPlayers() {
         return players.length;
     }
+
+    public void start() {}
+    public void end() {}
 }
