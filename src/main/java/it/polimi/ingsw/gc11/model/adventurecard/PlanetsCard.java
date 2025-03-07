@@ -9,7 +9,7 @@ import java.util.Vector;
 public class PlanetsCard extends AdventureCard {
 
     private Map<Planet, Boolean> planets;
-    private int lostDays;
+    private final int lostDays;
 
     public PlanetsCard(int lostDays, Vector<Planet> planets){
         super(Type.TRIAL);
@@ -22,14 +22,29 @@ public class PlanetsCard extends AdventureCard {
         }
 
         this.lostDays = lostDays;
-        for(Planet planet:planets) this.planets.put(planet, true);
+        for(Planet planet:planets) {
+            if (this.planets == null) {
+                throw new NullPointerException("planets is null.");
+            }
+            this.planets.put(planet, true);
+        }
     }
 
     public void land(Planet planet){
-        if(planets.get(planet) == true){
-            throw new NotAvaiablePlanetException("planet already occupied");
+        if(planets.get(planet)){
+            throw new IllegalStateException("planet already occupied");
         }
         planets.replace(planet, false);
+    }
+
+    public Vector<Planet> getFreePlanets(){
+        Vector<Planet> freePlanets = new Vector<>();
+        for(Planet planet:planets.keySet()){
+            if(planets.get(planet)){
+                freePlanets.add(planet);
+            }
+        }
+        return freePlanets;
     }
 
     public Vector<Material> getMaterials(Planet planet){
