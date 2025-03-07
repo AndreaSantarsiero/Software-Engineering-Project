@@ -31,6 +31,9 @@ public class PlanetsCard extends AdventureCard {
     }
 
     public void land(Planet planet){
+        if(planet == null) {
+            throw new IllegalArgumentException("planet is null.");
+        }
         if(planets.get(planet)){
             throw new IllegalStateException("planet already occupied");
         }
@@ -48,6 +51,12 @@ public class PlanetsCard extends AdventureCard {
     }
 
     public Vector<Material> getMaterials(Planet planet){
+        if(planet == null){
+            throw new IllegalArgumentException("planet is null.");
+        }
+        if(!planets.containsKey(planet)){
+            throw new IllegalArgumentException("planet does not exist.");
+        }
         return planet.getMaterials();
     }
     public int getLostDays() {
