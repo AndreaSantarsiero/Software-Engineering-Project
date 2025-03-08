@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+import it.polimi.ingsw.gc11.model.Hit;
+
 /**
  * Represents a Shield, a defensive component of a ShipCard
  * This module does not have additional attributes or behaviors beyond those inherited from ShipCard
@@ -17,5 +19,56 @@ public class Shield extends ShipCard {
      */
     public Shield(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
         super(topConnector, rightConnector, bottomConnector, leftConnector);
+    }
+
+
+
+    /**
+     * Determines whether this shield provides protection from the given direction
+     * Protection is determined based on the component's orientation:
+     * - Protects from the RIGHT if oriented at 0° or 90°
+     * - Protects from the BOTTOM if oriented at 90° or 180°
+     * - Protects from the LEFT if oriented at 180° or 270°
+     * - Protects from the TOP if oriented at 270° or 0°
+     *
+     * @param direction The direction from which an attack is coming
+     * @return {@code true} if this component protects from an attack in the given direction, {@code false} otherwise
+     * @throws IllegalArgumentException if the direction is invalid
+     */
+    public Boolean isProtecting(Hit.Direction direction) {
+        if (direction == Hit.Direction.RIGHT) {
+            if (this.getOrientation() == Orientation.DEG_0 || this.getOrientation() == Orientation.DEG_90) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else if (direction == Hit.Direction.BOTTOM) {
+            if (this.getOrientation() == Orientation.DEG_90 || this.getOrientation() == Orientation.DEG_180) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else if (direction == Hit.Direction.LEFT) {
+            if (this.getOrientation() == Orientation.DEG_180 || this.getOrientation() == Orientation.DEG_270) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else if (direction == Hit.Direction.TOP) {
+            if (this.getOrientation() == Orientation.DEG_270 || this.getOrientation() == Orientation.DEG_0) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid direction: " + direction);
     }
 }

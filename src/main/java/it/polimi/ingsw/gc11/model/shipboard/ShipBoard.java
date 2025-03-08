@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.model.shipboard;
 
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.ArrayList;
@@ -200,6 +201,57 @@ public abstract class ShipBoard {
      */
     public int getExposedConnectors(){
         int exposedConnectors = 0;
+
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                if (components[i][j] != null) {
+                    if (components[i][j].getRightConnector() != ShipCard.Connector.NONE) {
+                        try {
+                            checkCoordinates(j+1, i);
+                            if (components[i][j+1] == null) {
+                                exposedConnectors++;
+                            }
+                        }
+                        catch (Exception e) {
+                            exposedConnectors++;
+                        }
+                    }
+                    if (components[i][j].getLeftConnector() != ShipCard.Connector.NONE) {
+                        try {
+                            checkCoordinates(j-1, i);
+                            if (components[i][j-1] == null) {
+                                exposedConnectors++;
+                            }
+                        }
+                        catch (Exception e) {
+                            exposedConnectors++;
+                        }
+                    }
+                    if (components[i][j].getTopConnector() != ShipCard.Connector.NONE) {
+                        try {
+                            checkCoordinates(j, i-1);
+                            if (components[i-1][j] == null) {
+                                exposedConnectors++;
+                            }
+                        }
+                        catch (Exception e) {
+                            exposedConnectors++;
+                        }
+                    }
+                    if (components[i][j].getBottomConnector() != ShipCard.Connector.NONE) {
+                        try {
+                            checkCoordinates(j, i+1);
+                            if (components[i+1][j] == null) {
+                                exposedConnectors++;
+                            }
+                        }
+                        catch (Exception e) {
+                            exposedConnectors++;
+                        }
+                    }
+                }
+            }
+        }
 
         return exposedConnectors;
     }
@@ -716,5 +768,27 @@ public abstract class ShipBoard {
         cannonPower += 2*numBatteries;
         cannonPower += getPurpleAliens();
         return cannonPower;
+    }
+
+
+
+    /**
+     * Determines whether this ship is being protected from the given direction by any functional shield
+     *
+     * @param direction The direction from which an attack is coming
+     * @return {@code true} if there is at least one active shield protecting from the given direction, {@code false} otherwise
+     */
+    public Boolean isBeingProtected(Hit.Direction direction) {
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                if(components[i][j] instanceof Shield shield && !components[i][j].isScrap()){
+                    if(shield.isProtecting(direction)){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
