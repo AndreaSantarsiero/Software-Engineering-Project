@@ -39,7 +39,7 @@ public class GameModel {
             throw new IllegalArgumentException("Invalid flight type");
 
         //set appropriate shipboard to all the players
-        for (int i = 0; 0 <= i && i < players.length; i++) {
+        for (int i = 0; i < players.length; i++) {
             players[i].setShipBoard(flightType);
         }
     }
