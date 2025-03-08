@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.*;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -17,22 +16,31 @@ public class GameModel {
         this.players = null;
         this.flightBoard = null;
         this.decks = null;
-
     }
 
     public String getID() {
         return id;
     }
 
-    public void setLevel(FlightBoard.Type flightType) throws NullPointerException {
+    public void setLevel(FlightBoard.Type flightType) throws NullPointerException, IllegalArgumentException {
         if (flightType == null)
             throw new NullPointerException();
         //Trial Flight has only 1 deck
-        //Level 2 Flight has 4 deck
-        if (flightType.equals(FlightBoard.Type.TRIAL))
+        if (flightType.equals(FlightBoard.Type.TRIAL)) {
             this.decks = new Deck[1];
+            this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
+        }
+        //Level 2 Flight has 4 deck
         else if (flightType.equals(FlightBoard.Type.LEVEL2)) {
             this.decks = new Deck[4];
+            this.flightBoard = new FlightBoard(FlightBoard.Type.LEVEL2);
+        }
+        else
+            throw new IllegalArgumentException("Invalid flight type");
+
+        //set appropriate shipboard to all the players
+        for (int i = 0; 0 <= i && i < players.length; i++) {
+            players[i].setShipBoard(flightType);
         }
     }
 
@@ -56,8 +64,5 @@ public class GameModel {
     public int getNumPlayers() {
         return players.length;
     }
-
-
-
 
 }
