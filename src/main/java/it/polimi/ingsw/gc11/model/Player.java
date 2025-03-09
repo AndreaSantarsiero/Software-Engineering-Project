@@ -36,7 +36,7 @@ public class Player {
     public int getPosition() {
         return position;
     }
-    public void setPosition(int delta, GameModel gameModel, FlightBoard flightBoard) {
+    public void setPosition(int delta, GameModel gameModel) {
         Player[] players = gameModel.getPlayers();
         int posizioneTarget = this.position + delta;
 
@@ -51,7 +51,7 @@ public class Player {
             }
         }
 
-        this.position = posizioneTarget % flightBoard.getLength();
+        this.position = posizioneTarget % gameModel.getFlightBoard().getLength();
     }
 
     public void setAbort() { this.abort = true; }

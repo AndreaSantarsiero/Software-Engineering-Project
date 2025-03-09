@@ -69,4 +69,7 @@ public class GameModel {
         return players.clone(); //Restituisce copia così non si rompe l'array originale
     }
 
+    public FlightBoard getFlightBoard() {
+        return flightBoard;
+    }
 }
