@@ -32,6 +32,7 @@ public class Sabotage extends AdventureCard {
         }
 
         //Seleziono le coordinate dove distruggere ed elimina la carta
+        //Le coordinate sono selezionate lanciando due dadi per individuare la colonna e due per la riga
         //In caso di coordinate non valide i dadi vengono rilanciati per un massimo di 3 volte
         int x = 0;
         int y = 0;
@@ -41,8 +42,8 @@ public class Sabotage extends AdventureCard {
 
         for (int i = 0; i < 3 && flag == 0; i++) {
             try{
-                x = dice1.roll();
-                y = dice2.roll();
+                x = dice1.roll() + dice2.roll();
+                y = dice1.roll() + dice2.roll();
                 if(ResultShipboard.getShipCard(x, y) != null){
                     flag = 1;
                     ResultShipboard.removeShipCard(x, y);
