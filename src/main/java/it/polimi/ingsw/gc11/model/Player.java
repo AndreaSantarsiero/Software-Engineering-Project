@@ -42,7 +42,12 @@ public class Player {
 
         for(int i = 0; i < players.length; i++){
             if(!players[i].username.equals(this.username) && players[i].position < posizioneTarget){
-                posizioneTarget += 1;
+                if(delta > 0){
+                    posizioneTarget += 1;
+                }
+                else{
+                    posizioneTarget -= 1;
+                }
             }
         }
 
