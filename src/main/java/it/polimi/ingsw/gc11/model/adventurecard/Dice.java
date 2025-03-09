@@ -3,16 +3,26 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 import java.util.Random;
 
 public class Dice {
-    private int FirstDice;
-    private int SecondDice;
+    private int firstDice;
+    private int secondDice;
+    private Random random;
 
-    public void getFirstRandomNum() {
-        Random r = new Random();
-        FirstDice = r.nextInt(6) + 1;
+    // Metodo per tirare entrambi i dadi
+    public void roll() {
+        random = new Random();
+        firstDice = random.nextInt(6) + 1;
+        secondDice = random.nextInt(6) + 1;
     }
 
-    public void getSecondRandomNum() {
-        Random r = new Random();
-        SecondDice = r.nextInt(6) + 1;
+    // Restituisce il valore del primo dado,
+    // Prima di chiamare questo metodo va per forza chiamato Roll
+    public int getFirstDice() {
+        return firstDice;
+    }
+
+    // Restituisce il valore del secondo dado
+    // Prima di chiamare questo metodo va per forza chiamato Roll
+    public int getSecondDice() {
+        return secondDice;
     }
 }
