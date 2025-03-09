@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model;
 import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 
 public class Player {
     private String username;
@@ -35,9 +36,19 @@ public class Player {
     public int getPosition() {
         return position;
     }
-    public void setPosition(int delta) {
-        this.position += delta;
+    public void setPosition(int delta, GameModel gameModel, FlightBoard flightBoard) {
+        Player[] players = gameModel.getPlayers();
+        int posizioneTarget = this.position + delta;
+
+        for(int i = 0; i < players.length; i++){
+            if(!players[i].username.equals(this.username) && players[i].position < posizioneTarget){
+                posizioneTarget += 1;
+            }
+        }
+
+        this.position = posizioneTarget % flightBoard.getLength();
     }
+
     public void setAbort() { this.abort = true; }
 
     public void setShipBoard(FlightBoard.Type flightType) throws NullPointerException, IllegalArgumentException {
