@@ -65,4 +65,8 @@ public class GameModel {
         return players.length;
     }
 
+    public Player[] getPlayers() {
+        return players.clone(); //Restituisce copia così non si rompe l'array originale
+    }
+
 }
