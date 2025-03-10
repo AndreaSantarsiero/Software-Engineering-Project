@@ -89,7 +89,8 @@ public abstract class ShipBoard {
 
     /**
      * Removes a ship card from the specified position on the board
-     *
+     * Va controllato anche se altre parti della nave rimango scollegate e quindi devono
+     * essere distrutte
      * @param x The x-coordinate of the card to be removed
      * @param y The y-coordinate of the card to be removed
      * @throws IllegalArgumentException if the card is already null or welded
