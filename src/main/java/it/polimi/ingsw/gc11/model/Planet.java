@@ -1,10 +1,9 @@
 package it.polimi.ingsw.gc11.model;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class Planet {
-    private Boolean visited;
+    private boolean visited;
     private Vector<Material> materials;
 
     public Planet(int numBlue, int numGreen, int numYellow, int numRed) {
@@ -21,7 +20,7 @@ public class Planet {
             materials.add(new Material(Material.Type.RED));
     }
 
-    public Boolean isVisited() {
+    public boolean isVisited() {
         return visited;
     }
     public void setVisited() { this.visited = true; }

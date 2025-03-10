@@ -7,7 +7,7 @@ public abstract class AdventureCard {
     }
 
     private Type type;
-    private Boolean used;
+    private boolean used;
 
     public AdventureCard(Type type) {
         this.type = type;
@@ -22,7 +22,7 @@ public abstract class AdventureCard {
         return type;
     }
 
-    public Boolean isUsed(){
+    public boolean isUsed(){
         return used;
     }
 }

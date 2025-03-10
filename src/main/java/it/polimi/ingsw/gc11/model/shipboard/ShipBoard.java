@@ -70,6 +70,7 @@ public abstract class ShipBoard {
 
     /**
      * Adds a ship card to the specified position on the board
+     * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The ship card to be added
      * @param x        The x-coordinate where the card is placed
@@ -89,8 +90,8 @@ public abstract class ShipBoard {
 
     /**
      * Removes a ship card from the specified position on the board
-     * Va controllato anche se altre parti della nave rimango scollegate e quindi devono
-     * essere distrutte
+     * This method is intended to be used only during the initial construction of the ship
+     *
      * @param x The x-coordinate of the card to be removed
      * @param y The y-coordinate of the card to be removed
      * @throws IllegalArgumentException if the card is already null or welded
@@ -125,6 +126,7 @@ public abstract class ShipBoard {
 
     /**
      * Reserves a ship card for later use
+     * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The ship card to be reserved
      * @throws IllegalArgumentException if the ship card is null
@@ -145,6 +147,7 @@ public abstract class ShipBoard {
     /**
      * Moves a reserved ship card onto the ship board at the specified coordinates
      * This method ensures that the ship card is valid, has been previously reserved, and is placed within the ship's valid bounds before adding it to the board
+     * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The reserved ship card to be placed on the board
      * @param x The x-coordinate where the ship card should be placed
@@ -350,7 +353,9 @@ public abstract class ShipBoard {
 
 
     /**
-     * Ensures additional ship restrictions are met
+     * Ensures additional ship restrictions are met:
+     * - all engines must point at the back and have a free space behind them
+     * - all cannons must have only free spaces in front of them
      *
      * @throws IllegalStateException if a restriction is violated
      */
@@ -363,7 +368,7 @@ public abstract class ShipBoard {
                 if (components[i][j] != null) {
                     if (components[i][j] instanceof Engine engine) {
                         if (engine.getOrientation() != ShipCard.Orientation.DEG_0){
-                            throw new IllegalStateException("Engine must point to the bottom");
+                            throw new IllegalStateException("Engine must point to the back");
                         }
                         try {
                             checkCoordinates(j, i+1);
@@ -374,7 +379,7 @@ public abstract class ShipBoard {
 
                         }
                         if (!status) {
-                            throw new IllegalStateException("Cannot place a ship card ");
+                            throw new IllegalStateException("Cannot place a ship card behind an engine");
                         }
                     }
 
