@@ -16,7 +16,7 @@ public class AlienUnit extends ShipCard {
 
 
     private final Type type;
-    private Boolean presence;
+    private boolean presence;
 
 
     /**
@@ -53,7 +53,7 @@ public class AlienUnit extends ShipCard {
     /**
      * @return True if the alien is present, false otherwise
      */
-    public Boolean isPresent() {
+    public boolean isPresent() {
         return presence;
     }
 

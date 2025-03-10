@@ -3,13 +3,13 @@ package it.polimi.ingsw.gc11.model.shipcard;
 
 /**
  * Represents a HousingUnit, a special type of ShipCard
- * A HousingUnit can hold humans and is considered the center of the ship if it's marked as central
+ * A HousingUnit can hold members and is considered the center of the ship if it's marked as central
  * A central housing unit cannot have an alien unit connected to it
  */
 public class HousingUnit extends ShipCard {
 
-    private int numHumans;
-    private final Boolean central;
+    private int numMembers;
+    private final boolean central;
     private AlienUnit alienUnit;
 
 
@@ -22,43 +22,43 @@ public class HousingUnit extends ShipCard {
      * @param leftConnector The connector on the left side
      * @param central        Indicates whether this housing unit is central
      */
-    public HousingUnit(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Boolean central) {
+    public HousingUnit(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, boolean central) {
         super(topConnector, rightConnector, bottomConnector, leftConnector);
         this.central = central;
-        this.numHumans = 2;
+        this.numMembers = 2;
         this.alienUnit = null;
     }
 
 
 
     /**
-     * Returns the number of humans currently in this housing unit
+     * Returns the number of members currently in this housing unit
      *
-     * @return The number of humans in this housing unit
+     * @return The number of members in this housing unit
      */
-    public int getNumHumans() {
-        return numHumans;
+    public int getNumMembers() {
+        return numMembers;
     }
 
 
     /**
-     * Kills a specified number of humans in the housing unit, or a connected alien if there is one
+     * Kills a specified number of members in the housing unit, or a connected alien if there is one
      *
-     * @param humansKilled The number of humans to kill
-     * @throws IllegalArgumentException If the number of humans killed is negative or greater than the number of humans in the unit
+     * @param membersKilled The number of members to kill
+     * @throws IllegalArgumentException If the number of members killed is negative or greater than the number of members in the unit
      * @throws IllegalStateException If an alien unit is connected and requires action
      */
-    public void killHumans(int humansKilled) {
-        if (humansKilled < 0) {
-            throw new IllegalArgumentException("Humans killed cannot be negative");
+    public void killMembers(int membersKilled) {
+        if (membersKilled < 0) {
+            throw new IllegalArgumentException("Members killed cannot be negative");
         }
-        if (humansKilled > numHumans) {
-            throw new IllegalArgumentException("Humans killed cannot be greater than numHumans");
+        if (membersKilled > numMembers) {
+            throw new IllegalArgumentException("Members killed cannot be greater than numMembers");
         }
         if (alienUnit != null) {
             alienUnit.killAlien();
         }
-        this.numHumans -= humansKilled;
+        this.numMembers -= membersKilled;
     }
 
 
@@ -67,7 +67,7 @@ public class HousingUnit extends ShipCard {
      *
      * @return True if the housing unit is central, false otherwise
      */
-    public Boolean isCentral() {
+    public boolean isCentral() {
         return central;
     }
 
@@ -105,7 +105,7 @@ public class HousingUnit extends ShipCard {
             throw new IllegalStateException("Cannot connect alien unit to central housing unit");
         }
 
-        this.numHumans = 1;
+        this.numMembers = 1;
         this.alienUnit = alienUnit;
         alienUnit.connectUnit();
     }

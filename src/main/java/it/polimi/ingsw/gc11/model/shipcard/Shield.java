@@ -35,7 +35,7 @@ public class Shield extends ShipCard {
      * @return {@code true} if this component protects from an attack in the given direction, {@code false} otherwise
      * @throws IllegalArgumentException if the direction is invalid
      */
-    public Boolean isProtecting(Hit.Direction direction) {
+    public boolean isProtecting(Hit.Direction direction) {
         if (direction == Hit.Direction.RIGHT) {
             if (this.getOrientation() == Orientation.DEG_0 || this.getOrientation() == Orientation.DEG_90) {
                 return true;

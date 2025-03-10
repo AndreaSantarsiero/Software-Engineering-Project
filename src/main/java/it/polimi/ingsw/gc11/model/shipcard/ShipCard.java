@@ -28,9 +28,9 @@ public abstract class ShipCard {
     private final Connector bottomConnector;
     private final Connector leftConnector;
     private Orientation orientation;
-    private Boolean covered;
-    private Boolean badWelded;
-    private Boolean scrap;
+    private boolean covered;
+    private boolean badWelded;
+    private boolean scrap;
 
 
     /**
@@ -132,24 +132,22 @@ public abstract class ShipCard {
     /**
      * @return True if the ShipCard is covered, false otherwise
      */
-    public Boolean isCovered() {
+    public boolean isCovered() {
         return covered;
     }
 
     /**
-     * Sets whether the ShipCard is covered
-     *
-     * @param covered True to mark the ShipCard as covered, false otherwise
+     * Sets ShipCard's covered attribute to true
      */
-    public void setCovered(Boolean covered) {
-        this.covered = covered;
+    public void discover() {
+        this.covered = true;
     }
 
 
     /**
      * @return True if the ShipCard has a bad weld, false otherwise
      */
-    public Boolean isBadWelded() {
+    public boolean isBadWelded() {
         return badWelded;
     }
 
@@ -158,7 +156,7 @@ public abstract class ShipCard {
      *
      * @param badWelded True to mark the ShipCard as badly welded, false otherwise
      */
-    public void setBadWelded(Boolean badWelded) {
+    public void setBadWelded(boolean badWelded) {
         this.badWelded = badWelded;
     }
 
@@ -166,16 +164,14 @@ public abstract class ShipCard {
     /**
      * @return True if the ShipCard is scrapped, false otherwise
      */
-    public Boolean isScrap() {
+    public boolean isScrap() {
         return scrap;
     }
 
     /**
-     * Sets whether the ShipCard is scrapped
-     *
-     * @param scrap True to mark the ShipCard as scrapped, false otherwise
+     * Sets ShipCard's scrap attribute to true
      */
-    public void setScrap(Boolean scrap) {
-        this.scrap = scrap;
+    public void destroy() {
+        this.scrap = true;
     }
 }

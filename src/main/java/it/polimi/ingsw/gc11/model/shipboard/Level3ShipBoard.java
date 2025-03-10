@@ -8,17 +8,6 @@ package it.polimi.ingsw.gc11.model.shipboard;
 public class Level3ShipBoard extends ShipBoard {
 
     /**
-     * Maximum X coordinate of the shipboard
-     */
-    private final int X_MAX = 9;
-
-    /**
-     * Maximum Y coordinate of the shipboard
-     */
-    private final int Y_MAX = 6;
-
-
-    /**
      * Constructs a Level1ShipBoard with predefined dimensions (9x6)
      */
     public Level3ShipBoard() {
@@ -34,11 +23,11 @@ public class Level3ShipBoard extends ShipBoard {
      * @return true if the coordinates are valid, false otherwise
      * @throws IllegalArgumentException if the coordinates are outside the board's bounds
      */
-    public Boolean validateCoordinates(int x, int y){
+    public boolean validateCoordinates(int x, int y){
         x -= 3;
         y -= 4;
 
-        if (x < 0 || y < 0 || x >= X_MAX || y >= Y_MAX) {
+        if (x < 0 || y < 0 || x >= 9 || y >= 6) {
             throw new IllegalArgumentException("Coordinates out of the board");
         }
 

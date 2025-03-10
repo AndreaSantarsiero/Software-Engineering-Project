@@ -43,7 +43,7 @@ public abstract class ShipBoard {
      * @return True if the coordinates are valid, false otherwise
      * @throws IllegalStateException If the ShipBoard type is unknown or if the coordinates are out of the board's bounds
      */
-    private Boolean booleanCheckCoordinates(int x, int y) {
+    private boolean booleanCheckCoordinates(int x, int y) {
         return switch (this) {
             case Level1ShipBoard level1ShipBoard -> level1ShipBoard.validateCoordinates(x, y);
             case Level2ShipBoard level2ShipBoard -> level2ShipBoard.validateCoordinates(x, y);
@@ -179,7 +179,7 @@ public abstract class ShipBoard {
      * @param connector2 The second connector to be checked
      * @return True if the connectors can be connected, false otherwise
      */
-    public Boolean checkConnection(ShipCard.Connector connector1, ShipCard.Connector connector2) {
+    private boolean checkConnection(ShipCard.Connector connector1, ShipCard.Connector connector2) {
         if (connector1 == connector2) {
             return true;
         }
@@ -261,7 +261,7 @@ public abstract class ShipBoard {
      *
      * @throws IllegalArgumentException if any component is out of bounds
      */
-    public void checkShipBounds(){
+    private void checkShipBounds(){
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if(components[i][j] != null){
@@ -278,8 +278,8 @@ public abstract class ShipBoard {
      *
      * @return True if all connections are valid, false otherwise
      */
-    public Boolean checkShipConnections() {
-        Boolean status = true;
+    private boolean checkShipConnections() {
+        boolean status = true;
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
@@ -332,8 +332,8 @@ public abstract class ShipBoard {
      *
      * @return True if the ship structure is valid, false otherwise
      */
-    Boolean checkShipIntegrity(){
-        Boolean status = true;
+    public boolean checkShipIntegrity(){
+        boolean status = true;
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
@@ -514,7 +514,7 @@ public abstract class ShipBoard {
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if(components[i][j] instanceof HousingUnit housingUnit && !components[i][j].isScrap()) {
-                    members += housingUnit.getNumHumans();
+                    members += housingUnit.getNumMembers();
                 }
             }
         }
@@ -542,7 +542,7 @@ public abstract class ShipBoard {
                 throw new IllegalArgumentException("Scraps cannot be used anymore");
             }
             int numMembers = killedMembers.get(i);
-            housingUnit.killHumans(numMembers);
+            housingUnit.killMembers(numMembers);
         }
     }
 
@@ -684,7 +684,7 @@ public abstract class ShipBoard {
      * @return The calculated engine power
      * @throws IllegalArgumentException if numBatteries is negative or exceeds available limits
      */
-    public int getEnginePower (int numBatteries) {
+    public int getEnginesPower (int numBatteries) {
         if (numBatteries < 0) {
             throw new IllegalArgumentException("numBatteries can't be negative");
         }
@@ -742,7 +742,7 @@ public abstract class ShipBoard {
      * @return The calculated cannon power
      * @throws IllegalArgumentException if numBatteries is negative or exceeds available limits
      */
-    public int getCannonPower (int numBatteries) {
+    public int getCannonsPower (int numBatteries) {
         if (numBatteries < 0) {
             throw new IllegalArgumentException("numBatteries can't be negative");
         }
@@ -778,7 +778,7 @@ public abstract class ShipBoard {
      * @param direction The direction from which an attack is coming
      * @return {@code true} if there is at least one active shield protecting from the given direction, {@code false} otherwise
      */
-    public Boolean isBeingProtected(Hit.Direction direction) {
+    public boolean isBeingProtected(Hit.Direction direction) {
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if(components[i][j] instanceof Shield shield && !components[i][j].isScrap()){
