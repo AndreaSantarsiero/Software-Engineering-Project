@@ -8,7 +8,7 @@ import java.util.Vector;
 
 public class PlanetsCard extends AdventureCard {
 
-    private Map<Planet, boolean> planets;
+    private Map<Planet, Boolean> planets;
     private final int lostDays;
 
     public PlanetsCard(int lostDays, Vector<Planet> planets){
