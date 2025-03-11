@@ -5,7 +5,7 @@ public class AbandonedShip extends AdventureCard {
     private int lostDays;
     private int lostMembers;
     private int coins;
-    private boolean resoled;
+    private boolean resolved;
 
     public AbandonedShip(int lostDays, int lostMembers, int coins) {
         super(Type.TRIAL);

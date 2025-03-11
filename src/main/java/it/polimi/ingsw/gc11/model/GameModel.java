@@ -74,55 +74,98 @@ public class GameModel {
         //Da implementare
     }
     public void setReservedShipCard(ShipCard shipCard){}
+
     public void setOrientation(ShipCard shipCard, ShipCard.Orientation orientation){}
+
     public void setScrap(ShipCard shipCard){}
+
     public void connectToShipBoard(Player player, ShipCard shipCard){}
+
     public void getAdventureCard(){}
-    public Player[] getPlayers() {
-        return players.clone(); //Restituisce copia così non si rompe l'array originale
-    }
+
     public FlightBoard getFlightBoard() {
         return flightBoard;
     }
+
     public void shuffleDeck(){
         decks[0].shuffle();
     }
+
     public int getValDice1(){
         int result = dices[0].roll();
         return result;
     }
+
     public int getValDice2(){
         int result = dices[1].roll();
         return result;
     }
 
-    public void addCoins(int amount, Player player){
-        if(amount >= 0){
-            player.setCoins(amount);
+    public void addCoins(int amount, String username){
+        if (username == null){
+            throw new NullPointerException("Username is null");
         }
-        else{
+        if(amount < 0) {
             throw new IllegalArgumentException("Invalid negative amount of coins");
         }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                players[i].addCoins(amount);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public void removeCoins(int amount, Player player){
-        if(amount <= 0){
-            player.setCoins(amount);
+    public void removeCoins(int amount, String username){
+        if (username == null){
+            throw new NullPointerException("Username is null");
         }
-        else{
+        if(amount > 0) {
             throw new IllegalArgumentException("Invalid positive amount of coins");
         }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                players[i].addCoins(amount);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public int getPlayerPosition(Player player){
-        return player.getPosition();
+    public int getPlayerPosition(String username){
+        if (username == null){
+            throw new NullPointerException("Username is null");
+        }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                return players[i].getPosition();
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public void modifyPlayerPosition(Player player, int delta){
-        //Da fare
+    public void modifyPlayerPosition(String username, int delta){
+        if (username == null){
+            throw new NullPointerException("Username is null");
+        }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                //da fare
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public ShipBoard getPlayerShipBoard(Player player) {
-        return player.getShipBoard();
+    public ShipBoard getPlayerShipBoard(String username) {
+        if (username == null){
+            throw new NullPointerException("Username is null");
+        }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                return players[i].getShipBoard().clone();
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
     }
 }

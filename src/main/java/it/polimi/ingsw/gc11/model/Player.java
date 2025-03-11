@@ -29,7 +29,7 @@ public class Player {
     public int getCoins() {
         return coins;
     }
-    public void setCoins(int delta) {
+    public void addCoins(int delta) {
         this.coins += delta;
     }
     public int getPosition() {
