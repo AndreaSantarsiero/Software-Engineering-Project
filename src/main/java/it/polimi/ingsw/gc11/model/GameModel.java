@@ -4,13 +4,15 @@ import it.polimi.ingsw.gc11.exceptions.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class GameModel {
     private final String id;
     private Player[] players;
     private FlightBoard flightBoard;
-    private Deck[] decks;
+    private Deck[] AdventureCardsDecks;
+    private ArrayList<ShipCard> shipCardsDeck;
     private Dice[] dices;
 
 
