@@ -1,11 +1,13 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.*;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+
 import java.io.IOException;
 import java.util.UUID;
 
 public class GameModel {
-    private String id;
+    private final String id;
     private Player[] players;
     private FlightBoard flightBoard;
     private Deck[] decks;
@@ -65,11 +67,20 @@ public class GameModel {
         return players.length;
     }
 
+    //Display (x,y) shipcard in the matrix of shipcards down on the table
+    public ShipCard getShipCard(int x, int y){}
+    public void setReservedShipCard(ShipCard shipCard){}
+    public void setOrientation(ShipCard shipCard, ShipCard.Orientation orientation){}
+    public void setScrap(ShipCard shipCard){}
+    public void connectToShipBoard(Player player, ShipCard shipCard){}
+    public void getAdventureCard(){}
     public Player[] getPlayers() {
         return players.clone(); //Restituisce copia così non si rompe l'array originale
     }
-
     public FlightBoard getFlightBoard() {
         return flightBoard;
+    }
+    public void shuffleDeck(){
+        decks[0].shuffle();
     }
 }

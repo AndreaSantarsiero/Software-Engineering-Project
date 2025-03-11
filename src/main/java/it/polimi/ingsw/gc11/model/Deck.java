@@ -2,22 +2,23 @@ package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 import java.util.Vector;
 
 public class Deck {
-    private Vector<AdventureCard> cards;
-    private Vector<AdventureCard> usedCards;
+    private ArrayList<AdventureCard> cards;
+    private ArrayList<AdventureCard> usedCards;
 
     public Deck() {
-        this.cards = new Vector<>();
-        this.usedCards = new Vector<>();
+        this.cards = new ArrayList<>();
+        this.usedCards = new ArrayList<>();
     }
 
-    public Deck(Vector<AdventureCard> cards) {
+    public Deck(ArrayList<AdventureCard> cards) {
         this.cards = cards;
-        this.usedCards = new Vector<>();
+        this.usedCards = new ArrayList<>();
     }
 
     public void addCard(AdventureCard card) {
