@@ -37,6 +37,11 @@ class ShipCardTest {
     }
 
     @Test
+    void testAllNoneConnectorsFailure() {
+        assertThrows(IllegalArgumentException.class, () -> new TestShipCard(Connector.NONE, Connector.NONE, Connector.NONE, Connector.NONE), "Expected IllegalArgumentException when all connectors are NONE, but no exception was thrown");
+    }
+
+    @Test
     void testConnectorsAtDifferentOrientations() {
         assertEquals(Connector.SINGLE, shipCard.getTopConnector(), "0-degree top connector is incorrect");
         assertEquals(Connector.DOUBLE, shipCard.getRightConnector(), "0-degree right connector is incorrect");

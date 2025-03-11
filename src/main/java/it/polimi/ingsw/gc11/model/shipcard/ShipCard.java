@@ -43,6 +43,9 @@ public abstract class ShipCard {
      * @param leftConnector   The connector on the left side
      */
     public ShipCard(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
+        if (topConnector == Connector.NONE && rightConnector == Connector.NONE && bottomConnector == Connector.NONE && leftConnector == Connector.NONE) {
+            throw new IllegalArgumentException("Cannot create a ShipCard with only NONE connectors");
+        }
         this.topConnector = topConnector;
         this.rightConnector = rightConnector;
         this.bottomConnector = bottomConnector;
