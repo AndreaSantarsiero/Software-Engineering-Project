@@ -464,12 +464,11 @@ public abstract class ShipBoard {
     /**
      * Ensures additional ship restrictions are met:
      * - all engines must point at the back and have a free space behind them
-     * - all cannons must have only free spaces in front of them
+     * - all cannons must have a free space in front of the direction aimed
      *
-     * @throws IllegalStateException if a restriction is violated
+     * @return false if a restriction is violated, true otherwise
      */
-    private void checkOtherRestrictions(){
-        int k = 1;
+    private boolean checkOtherRestrictions(){
         boolean status = true;
 
         for (int i = 0; i < components.length; i++) {
@@ -478,6 +477,7 @@ public abstract class ShipBoard {
                     if (components[i][j] instanceof Engine engine) {
                         if (engine.getOrientation() != ShipCard.Orientation.DEG_0){
                             engine.setIllegal(true);
+                            status = false;
                         }
                         try {
                             checkCoordinates(j, i+1);
@@ -488,9 +488,6 @@ public abstract class ShipBoard {
                             }
                         } catch (Exception _) {
 
-                        }
-                        if (!status) {
-                            throw new IllegalStateException("Cannot place a ship card behind an engine");
                         }
                     }
 
@@ -543,14 +540,12 @@ public abstract class ShipBoard {
 
                             }
                         }
-
-                        if (!status) {
-                            throw new IllegalStateException("Cannot place a ship card in front of a cannon");
-                        }
                     }
                 }
             }
         }
+
+        return status;
     }
 
 
@@ -558,17 +553,12 @@ public abstract class ShipBoard {
     /**
      * Performs a full validation of the ship, checking bounds, connections, integrity, and specific component placement rules
      *
-     * @throws IllegalArgumentException if the ship fails any validation check
+     * @return false if the ship fails any validation check, true otherwise
      */
-    public void checkShip() {
+    public boolean checkShip() {
         checkShipInitialization();
-        if(!checkShipConnections()){
-            throw new IllegalArgumentException("Illegal ship connections detected");
-        }
-        if(!checkShipIntegrity()){
-            throw new IllegalArgumentException("Illegal ship integrity detected");
-        }
-        checkOtherRestrictions();
+
+        return checkShipConnections() && checkShipIntegrity() && checkOtherRestrictions();
     }
 
 
