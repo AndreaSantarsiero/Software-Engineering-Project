@@ -4,18 +4,30 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
-import java.util.Vector;
 
-public class Deck {
+public abstract class Deck {
     private ArrayList<AdventureCard> cards;
+    private boolean observable;
 
-    public Deck() {
+    public Deck(boolean observable) {
         this.cards = new ArrayList<>();
+        this.observable = observable;
     }
 
-    public Deck(ArrayList<AdventureCard> cards) {
+    public Deck(ArrayList<AdventureCard> cards,  boolean observable) {
         this.cards = cards;
+        this.observable = observable;
+    }
+
+    public boolean isObservable() {return observable;}
+
+    public ArrayList<AdventureCard> observe() throws IllegalStateException {
+        if (observable) {
+            return cards;
+        }
+        else{
+            throw new IllegalStateException("Deck isn't observable");
+        }
     }
 
     public void addCard(AdventureCard card) {

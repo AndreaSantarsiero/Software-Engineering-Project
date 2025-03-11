@@ -71,7 +71,7 @@ public class GameModel {
 
     //Display (x,y) shipcard in the matrix of shipcards down on the table
     public ShipCard getShipCard(int x, int y){
-        //Da implementare
+        return null; //Da implementare
     }
     public void setReservedShipCard(ShipCard shipCard){}
     public void setOrientation(ShipCard shipCard, ShipCard.Orientation orientation){}
