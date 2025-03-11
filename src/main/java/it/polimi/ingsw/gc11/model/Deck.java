@@ -9,16 +9,13 @@ import java.util.Vector;
 
 public class Deck {
     private ArrayList<AdventureCard> cards;
-    private ArrayList<AdventureCard> usedCards;
 
     public Deck() {
         this.cards = new ArrayList<>();
-        this.usedCards = new ArrayList<>();
     }
 
     public Deck(ArrayList<AdventureCard> cards) {
         this.cards = cards;
-        this.usedCards = new ArrayList<>();
     }
 
     public void addCard(AdventureCard card) {
@@ -35,8 +32,6 @@ public class Deck {
         }
         AdventureCard drawed = cards.removeFirst();
         drawed.useCard();
-        this.usedCards.add(drawed);
         return drawed;
-
     }
 }
