@@ -32,7 +32,8 @@ class ShipCardTest {
     void testInitialValues() {
         assertEquals(ShipCard.Orientation.DEG_0, shipCard.getOrientation(), "Initial orientation should be DEG_0");
         assertTrue(shipCard.isCovered(), "The ship should initially be covered");
-        assertFalse(shipCard.isBadWelded(), "The ship should not initially be badly welded");
+        assertFalse(shipCard.isIllegal(), "The ship should not initially be illegal");
+        assertFalse(shipCard.isVisited(), "The ship should not initially be visited");
         assertFalse(shipCard.isScrap(), "The ship should not initially be scrap");
     }
 
@@ -80,12 +81,21 @@ class ShipCardTest {
     }
 
     @Test
-    void testSetBadWelded() {
-        shipCard.setBadWelded(true);
-        assertTrue(shipCard.isBadWelded(), "The ship should be marked as badly welded");
+    void testSetIllegal() {
+        shipCard.setIllegal(true);
+        assertTrue(shipCard.isIllegal(), "The ship should be marked as illegal");
 
-        shipCard.setBadWelded(false);
-        assertFalse(shipCard.isBadWelded(), "The ship should no longer be marked as badly welded");
+        shipCard.setIllegal(false);
+        assertFalse(shipCard.isIllegal(), "The ship should no longer be marked as illegal");
+    }
+
+    @Test
+    void testSetVisited() {
+        shipCard.setVisited(true);
+        assertTrue(shipCard.isVisited(), "The ship should be marked as visited");
+
+        shipCard.setVisited(false);
+        assertFalse(shipCard.isVisited(), "The ship should no longer be marked as visited");
     }
 
     @Test
