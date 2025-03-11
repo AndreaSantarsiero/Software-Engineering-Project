@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.model.adventurecard;
+package it.polimi.ingsw.gc11.model;
 
 import java.util.Random;
 

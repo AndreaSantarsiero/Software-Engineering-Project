@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc11.model;
 import it.polimi.ingsw.gc11.exceptions.*;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
-import java.io.IOException;
 import java.util.UUID;
 
 public class GameModel {
@@ -11,6 +10,7 @@ public class GameModel {
     private Player[] players;
     private FlightBoard flightBoard;
     private Deck[] decks;
+    private Dice[] dices;
 
 
     public GameModel() {
@@ -18,6 +18,7 @@ public class GameModel {
         this.players = null;
         this.flightBoard = null;
         this.decks = null;
+        this.dices = new Dice[2];
     }
 
     public String getID() {
@@ -82,5 +83,13 @@ public class GameModel {
     }
     public void shuffleDeck(){
         decks[0].shuffle();
+    }
+    public int getValDice1(){
+        int result = dices[0].roll();
+        return result;
+    }
+    public int getValDice2(){
+        int result = dices[1].roll();
+        return result;
     }
 }

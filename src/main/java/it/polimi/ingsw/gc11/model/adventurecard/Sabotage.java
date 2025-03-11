@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.Dice;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
