@@ -5,6 +5,8 @@ import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 
+import java.io.Serializable;
+
 public class Player {
     private String username;
     private int coins;
@@ -27,31 +29,14 @@ public class Player {
     public int getCoins() {
         return coins;
     }
-    public void addCoins(int amount) {
-        this.coins += coins;
-    }
-    public void removeCoins(int amount) {
-        this.coins -= coins;
+    public void setCoins(int delta) {
+        this.coins += delta;
     }
     public int getPosition() {
         return position;
     }
-    public void setPosition(int delta, GameModel gameModel) {
-        Player[] players = gameModel.getPlayers();
-        int posizioneTarget = this.position + delta;
-
-        for(int i = 0; i < players.length; i++){
-            if(!players[i].username.equals(this.username) && players[i].position < posizioneTarget){
-                if(delta > 0){
-                    posizioneTarget += 1;
-                }
-                else{
-                    posizioneTarget -= 1;
-                }
-            }
-        }
-
-        this.position = posizioneTarget % gameModel.getFlightBoard().getLength();
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public void setAbort() { this.abort = true; }
@@ -66,5 +51,12 @@ public class Player {
         else
             throw new IllegalArgumentException();
     }
-    public ShipBoard getShipBoard() {return shipBoard;}
+    public ShipBoard getShipBoard() {
+        if(shipBoard instanceof Level1ShipBoard){
+            Level1ShipBoard shipBoard1 = (Level1ShipBoard) shipBoard.clone();
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
+    }
 }

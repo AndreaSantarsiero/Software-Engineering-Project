@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.*;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
 import java.util.UUID;
@@ -69,7 +70,9 @@ public class GameModel {
     }
 
     //Display (x,y) shipcard in the matrix of shipcards down on the table
-    public ShipCard getShipCard(int x, int y){}
+    public ShipCard getShipCard(int x, int y){
+        //Da implementare
+    }
     public void setReservedShipCard(ShipCard shipCard){}
     public void setOrientation(ShipCard shipCard, ShipCard.Orientation orientation){}
     public void setScrap(ShipCard shipCard){}
@@ -91,5 +94,35 @@ public class GameModel {
     public int getValDice2(){
         int result = dices[1].roll();
         return result;
+    }
+
+    public void addCoins(int amount, Player player){
+        if(amount >= 0){
+            player.setCoins(amount);
+        }
+        else{
+            throw new IllegalArgumentException("Invalid negative amount of coins");
+        }
+    }
+
+    public void removeCoins(int amount, Player player){
+        if(amount <= 0){
+            player.setCoins(amount);
+        }
+        else{
+            throw new IllegalArgumentException("Invalid positive amount of coins");
+        }
+    }
+
+    public int getPlayerPosition(Player player){
+        return player.getPosition();
+    }
+
+    public void modifyPlayerPosition(Player player, int delta){
+        //Da fare
+    }
+
+    public ShipBoard getPlayerShipBoard(Player player) {
+        return player.getShipBoard();
     }
 }
