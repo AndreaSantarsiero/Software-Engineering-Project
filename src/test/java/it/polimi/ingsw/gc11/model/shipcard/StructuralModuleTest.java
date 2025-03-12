@@ -26,7 +26,8 @@ class StructuralModuleTest {
     @Test
     void testDefaultState() {
         assertTrue(structuralModule.isCovered(), "StructuralModule should be covered by default");
-        assertFalse(structuralModule.isBadWelded(), "StructuralModule should not be badly welded by default");
+        assertFalse(structuralModule.isIllegal(), "StructuralModule should not be illegal by default");
+        assertFalse(structuralModule.isVisited(), "StructuralModule should not be visited by default");
         assertFalse(structuralModule.isScrap(), "StructuralModule should not be scrapped by default");
     }
 
@@ -37,9 +38,15 @@ class StructuralModuleTest {
     }
 
     @Test
-    void testBadWelded() {
-        structuralModule.setBadWelded(true);
-        assertTrue(structuralModule.isBadWelded(), "StructuralModule should be marked as badly welded");
+    void testIllegal() {
+        structuralModule.setIllegal(true);
+        assertTrue(structuralModule.isIllegal(), "StructuralModule should be marked as illegal");
+    }
+
+    @Test
+    void testVisited() {
+        structuralModule.setVisited(true);
+        assertTrue(structuralModule.isVisited(), "StructuralModule should be marked as visited");
     }
 
     @Test

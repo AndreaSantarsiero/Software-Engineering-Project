@@ -176,6 +176,33 @@ public abstract class ShipBoard {
 
 
     /**
+     * Counts the total number of ShipCards used to build the ship
+     *
+     * @return The total number of ShipCards used to build the ship
+     */
+    private int getShipCardsNumber(){
+        int numComponents = 0;
+
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                try {
+                    checkCoordinates(j, i);
+                    if (components[i][j] != null) {
+                        numComponents++;
+                    }
+                }
+                catch (Exception _) {
+
+                }
+            }
+        }
+
+        return numComponents;
+    }
+
+
+
+    /**
      * Checks if two connectors can be connected based on their type
      * Two connectors are compatible if they are identical or if one of them is UNIVERSAL and the other is not NONE
      *
@@ -199,7 +226,7 @@ public abstract class ShipBoard {
     }
 
     /**
-     * Counts the number of exposed connectors of the ship
+     * Counts the number of exposed connectors of the ship (assuming that the ship doesn't have any illegal connection)
      *
      * @return The number of exposed connectors
      */
@@ -260,16 +287,20 @@ public abstract class ShipBoard {
         return exposedConnectors;
     }
 
+
+
     /**
-     * Ensures all ship components are within valid bounds
+     * Ensures every ship component is within valid bounds and reset its illegal and visited status to false
      *
-     * @throws IllegalArgumentException if any component is out of bounds
+     * @throws IllegalArgumentException if any component is out of ship's bounds
      */
-    private void checkShipBounds(){
+    private void checkShipInitialization(){
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if(components[i][j] != null){
                     checkCoordinates(j, i);
+                    components[i][j].setIllegal(false);
+                    components[i][j].setVisited(false);
                 }
             }
         }
@@ -290,29 +321,29 @@ public abstract class ShipBoard {
                 if (components[i][j] != null) {
                     if(components[i][j-1] != null) {
                         if(!checkConnection(components[i][j].getLeftConnector(), components[i][j-1].getRightConnector())){
-                            components[i][j].setBadWelded(true);
-                            components[i][j-1].setBadWelded(true);
+                            components[i][j].setIllegal(true);
+                            components[i][j-1].setIllegal(true);
                             status = false;
                         }
                     }
                     if(components[i][j+1] != null) {
                         if(!checkConnection(components[i][j].getRightConnector(), components[i][j+1].getLeftConnector())){
-                            components[i][j].setBadWelded(true);
-                            components[i][j+1].setBadWelded(true);
+                            components[i][j].setIllegal(true);
+                            components[i][j+1].setIllegal(true);
                             status = false;
                         }
                     }
                     if(components[i][j-1] != null) {
                         if(!checkConnection(components[i][j].getBottomConnector(), components[i-1][j].getTopConnector())){
-                            components[i][j].setBadWelded(true);
-                            components[i-1][j].setBadWelded(true);
+                            components[i][j].setIllegal(true);
+                            components[i-1][j].setIllegal(true);
                             status = false;
                         }
                     }
                     if(components[i][j-1] != null) {
                         if(!checkConnection(components[i][j].getTopConnector(), components[i][j-1].getBottomConnector())){
-                            components[i][j].setBadWelded(true);
-                            components[i+1][j].setBadWelded(true);
+                            components[i][j].setIllegal(true);
+                            components[i+1][j].setIllegal(true);
                             status = false;
                         }
                     }
@@ -332,17 +363,184 @@ public abstract class ShipBoard {
 
 
     /**
-     * Checks the structural integrity of the ship
+     * Checks if the ship is structurally valid (all components are connected together)
      *
-     * @return True if the ship structure is valid, false otherwise
+     * @return True if the entire ship is connected, false otherwise
+     * @throws IllegalStateException if the ship has no components
      */
     public boolean checkShipIntegrity(){
+        int connectedComponents = 0;
+
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                if (components[i][j] != null) {
+                    connectedComponents = integrityVerifier(j, i);
+                    if (connectedComponents == this.getShipCardsNumber()) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        throw new IllegalStateException("Ship does not contain any component");
+    }
+
+
+
+    /**
+     * Recursively verifies the ship's connectivity
+     *
+     * @param x The x-coordinate of the current card
+     * @param y The y-coordinate of the current card
+     * @return The total number of connected cards, including itself
+     */
+    private int integrityVerifier(int x, int y){
+        ShipCard shipCard = this.getShipCard(x, y);
+        shipCard.setVisited(true);
+        boolean finalComponent = true;
+        int connectedComponents = 1;
+
+        if (shipCard.getTopConnector() != ShipCard.Connector.NONE) {
+            try {
+                checkCoordinates(x, y-1);
+                if (components[x][y-1] != null && !components[x][y-1].isVisited()) {
+                    finalComponent = false;
+                    connectedComponents += integrityVerifier(x, y-1);   /* inductive step */
+                }
+            }
+            catch (Exception _) {
+
+            }
+        }
+        if (shipCard.getRightConnector() != ShipCard.Connector.NONE) {
+            try {
+                checkCoordinates(x+1, y);
+                if (components[x+1][y] != null && !components[x+1][y].isVisited()) {
+                    finalComponent = false;
+                    connectedComponents += integrityVerifier(x+1, y);   /* inductive step */
+                }
+            }
+            catch (Exception _) {
+
+            }
+        }
+        if (shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
+            try {
+                checkCoordinates(x, y+1);
+                if (components[x][y+1] != null && !components[x][y+1].isVisited()) {
+                    finalComponent = false;
+                    connectedComponents += integrityVerifier(x, y+1);   /* inductive step */
+                }
+            }
+            catch (Exception _) {
+
+            }
+        }
+        if (shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
+            try {
+                checkCoordinates(x-1, y);
+                if (components[x-1][y] != null && !components[x-1][y].isVisited()) {
+                    finalComponent = false;
+                    connectedComponents += integrityVerifier(x-1, y);   /* inductive step */
+                }
+            }
+            catch (Exception _) {
+
+            }
+        }
+
+        if (finalComponent) {
+            return 1;   /* base case */
+        }
+
+        return connectedComponents;
+    }
+
+
+
+    /**
+     * Ensures additional ship restrictions are met:
+     * - all engines must point at the back and have a free space behind them
+     * - all cannons must have a free space in front of the direction aimed
+     *
+     * @return false if a restriction is violated, true otherwise
+     */
+    private boolean checkOtherRestrictions(){
         boolean status = true;
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if (components[i][j] != null) {
+                    if (components[i][j] instanceof Engine engine) {
+                        if (engine.getOrientation() != ShipCard.Orientation.DEG_0){
+                            engine.setIllegal(true);
+                            status = false;
+                        }
+                        try {
+                            checkCoordinates(j, i+1);
+                            if (components[i+1][j] != null) {
+                                engine.setIllegal(true);
+                                components[i+1][j].setIllegal(true);
+                                status = false;
+                            }
+                        } catch (Exception _) {
 
+                        }
+                    }
+
+                    if (components[i][j] instanceof Cannon cannon) {
+                        if (cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
+                            try {
+                                checkCoordinates(j, i-1);
+                                if (components[i-1][j] != null) {
+                                    cannon.setIllegal(true);
+                                    components[i-1][j].setIllegal(true);
+                                    status = false;
+                                }
+                            } catch (Exception _) {
+
+                            }
+                        }
+                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_90) {
+                            try {
+                                checkCoordinates(j+1, i);
+                                if (components[i][j+1] != null) {
+                                    cannon.setIllegal(true);
+                                    components[i][j+1].setIllegal(true);
+                                    status = false;
+                                }
+                            } catch (Exception _) {
+
+                            }
+                        }
+                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_180) {
+                            try {
+                                checkCoordinates(j, i+1);
+                                if (components[i+1][j] != null) {
+                                    cannon.setIllegal(true);
+                                    components[i+1][j].setIllegal(true);
+                                    status = false;
+                                }
+                            } catch (Exception _) {
+
+                            }
+                        }
+                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_270) {
+                            try {
+                                checkCoordinates(j-1, i);
+                                if (components[i][j-1] != null) {
+                                    cannon.setIllegal(true);
+                                    components[i][j-1].setIllegal(true);
+                                    status = false;
+                                }
+                            } catch (Exception _) {
+
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -353,116 +551,14 @@ public abstract class ShipBoard {
 
 
     /**
-     * Ensures additional ship restrictions are met:
-     * - all engines must point at the back and have a free space behind them
-     * - all cannons must have only free spaces in front of them
-     *
-     * @throws IllegalStateException if a restriction is violated
-     */
-    private void checkOtherRestrictions(){
-        int k = 1;
-        boolean status = true;
-
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] != null) {
-                    if (components[i][j] instanceof Engine engine) {
-                        if (engine.getOrientation() != ShipCard.Orientation.DEG_0){
-                            throw new IllegalStateException("Engine must point to the back");
-                        }
-                        try {
-                            checkCoordinates(j, i+1);
-                            if (components[i+1][j] != null) {
-                                status = false;
-                            }
-                        } catch (Exception _) {
-
-                        }
-                        if (!status) {
-                            throw new IllegalStateException("Cannot place a ship card behind an engine");
-                        }
-                    }
-
-                    if (components[i][j] instanceof Cannon cannon) {
-                        k = 1;
-                        if (cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
-                            while(i >= k){
-                                try {
-                                    checkCoordinates(j, i-k);
-                                    if (components[i-k][j] != null) {
-                                        status = false;
-                                    }
-                                } catch (Exception _) {
-
-                                }
-                                k++;
-                            }
-                        }
-                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_90) {
-                            while(i >= k){
-                                try {
-                                    checkCoordinates(j+k, i);
-                                    if (components[i][j+k] != null) {
-                                        status = false;
-                                    }
-                                } catch (Exception _) {
-
-                                }
-                                k++;
-                            }
-                        }
-                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_180) {
-                            while(i >= k){
-                                try {
-                                    checkCoordinates(j, i+k);
-                                    if (components[i+k][j] != null) {
-                                        status = false;
-                                    }
-                                } catch (Exception _) {
-
-                                }
-                                k++;
-                            }
-                        }
-                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_270) {
-                            while(i >= k){
-                                try {
-                                    checkCoordinates(j-k, i);
-                                    if (components[i][j-k] != null) {
-                                        status = false;
-                                    }
-                                } catch (Exception _) {
-
-                                }
-                                k++;
-                            }
-                        }
-
-                        if (!status) {
-                            throw new IllegalStateException("Cannot place a ship card in front of a cannon");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-
-    /**
      * Performs a full validation of the ship, checking bounds, connections, integrity, and specific component placement rules
      *
-     * @throws IllegalArgumentException if the ship fails any validation check
+     * @return false if the ship fails any validation check, true otherwise
      */
-    public void checkShip() {
-        checkShipBounds();
-        if(!checkShipConnections()){
-            throw new IllegalArgumentException("Illegal ship connections detected");
-        }
-        if(!checkShipIntegrity()){
-            throw new IllegalArgumentException("Illegal ship integrity detected");
-        }
-        checkOtherRestrictions();
+    public boolean checkShip() {
+        checkShipInitialization();
+
+        return checkShipConnections() && checkShipIntegrity() && checkOtherRestrictions();
     }
 
 

@@ -29,8 +29,9 @@ public abstract class ShipCard {
     private final Connector leftConnector;
     private Orientation orientation;
     private boolean covered;
-    private boolean badWelded;
+    private boolean illegal;
     private boolean scrap;
+    private boolean visited;
 
 
     /**
@@ -43,14 +44,18 @@ public abstract class ShipCard {
      * @param leftConnector   The connector on the left side
      */
     public ShipCard(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
+        if (topConnector == Connector.NONE && rightConnector == Connector.NONE && bottomConnector == Connector.NONE && leftConnector == Connector.NONE) {
+            throw new IllegalArgumentException("Cannot create a ShipCard with only NONE connectors");
+        }
         this.topConnector = topConnector;
         this.rightConnector = rightConnector;
         this.bottomConnector = bottomConnector;
         this.leftConnector = leftConnector;
         this.orientation = Orientation.DEG_0;
         this.covered = true;
-        this.badWelded = false;
+        this.illegal = false;
         this.scrap = false;
+        this.visited = false;
     }
 
 
@@ -145,19 +150,36 @@ public abstract class ShipCard {
 
 
     /**
-     * @return True if the ShipCard has a bad weld, false otherwise
+     * @return True if the ShipCard is breaking some rules (with its position, connections, orientation ecc...), false otherwise
      */
-    public boolean isBadWelded() {
-        return badWelded;
+    public boolean isIllegal() {
+        return illegal;
     }
 
     /**
-     * Sets whether the ShipCard has a bad weld
+     * Sets whether the ShipCard is breaking some rules (with its position, connections, orientation ecc...)
      *
-     * @param badWelded True to mark the ShipCard as badly welded, false otherwise
+     * @param illegal True to mark the ShipCard as illegal, false otherwise
      */
-    public void setBadWelded(boolean badWelded) {
-        this.badWelded = badWelded;
+    public void setIllegal(boolean illegal) {
+        this.illegal = illegal;
+    }
+
+
+    /**
+     * @return True if the ShipCard was already visited by the recursive algorithm that verifies ship's integrity, false otherwise
+     */
+    public boolean isVisited() {
+        return visited;
+    }
+
+    /**
+     * Sets whether the ShipCard is visited by the recursive algorithm that verifies ship's integrity
+     *
+     * @param visited True to mark the ShipCard as visited, false otherwise
+     */
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
 

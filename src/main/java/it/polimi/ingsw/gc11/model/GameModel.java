@@ -4,13 +4,15 @@ import it.polimi.ingsw.gc11.exceptions.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class GameModel {
     private final String id;
     private Player[] players;
     private FlightBoard flightBoard;
-    private Deck[] decks;
+    private Deck[] AdventureCardsDecks;
+    private ArrayList<ShipCard> shipCardsDeck;
     private Dice[] dices;
 
 
@@ -71,7 +73,7 @@ public class GameModel {
 
     //Display (x,y) shipcard in the matrix of shipcards down on the table
     public ShipCard getShipCard(int x, int y){
-        //Da implementare
+        return null; //Da implementare
     }
     public void setReservedShipCard(ShipCard shipCard){}
 
