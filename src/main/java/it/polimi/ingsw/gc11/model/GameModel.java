@@ -20,7 +20,7 @@ public class GameModel {
         this.id = UUID.randomUUID().toString(); //unique id generation
         this.players = null;
         this.flightBoard = null;
-        this.decks = null;
+        this.AdventureCardsDecks = null;
         this.dices = new Dice[2];
     }
 
@@ -33,12 +33,12 @@ public class GameModel {
             throw new NullPointerException();
         //Trial Flight has only 1 deck
         if (flightType.equals(FlightBoard.Type.TRIAL)) {
-            this.decks = new Deck[1];
+            this.AdventureCardsDecks = new Deck[1];
             this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
         }
         //Level 2 Flight has 4 deck
         else if (flightType.equals(FlightBoard.Type.LEVEL2)) {
-            this.decks = new Deck[4];
+            this.AdventureCardsDecks = new Deck[4];
             this.flightBoard = new FlightBoard(FlightBoard.Type.LEVEL2);
         }
         else
@@ -91,7 +91,7 @@ public class GameModel {
     }
 
     public void shuffleDeck(){
-        decks[0].shuffle();
+        AdventureCardsDecks[0].shuffle();
     }
 
     public int getValDice1(){
@@ -166,7 +166,7 @@ public class GameModel {
         }
         for (int i = 0; i < players.length; i++) {
             if (players[i].getUsername().equals(username)) {
-                return players[i].getShipBoard().clone();
+                return players[i].getShipBoard();
             }
         }
         throw new IllegalArgumentException("Player " + username + " not found");

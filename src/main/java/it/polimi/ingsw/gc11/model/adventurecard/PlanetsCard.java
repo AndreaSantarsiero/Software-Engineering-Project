@@ -2,17 +2,19 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
-
 import java.util.Map;
 import java.util.Vector;
+
+
 
 public class PlanetsCard extends AdventureCard {
 
     private Map<Planet, Boolean> planets;
     private final int lostDays;
 
-    public PlanetsCard(int lostDays, Vector<Planet> planets){
-        super(Type.TRIAL);
+
+    public PlanetsCard(AdventureCard.Type type, int lostDays, Vector<Planet> planets){
+        super(type);
 
         if (lostDays < 0) {
             throw new IllegalArgumentException("negative lost days.");
@@ -29,6 +31,7 @@ public class PlanetsCard extends AdventureCard {
             this.planets.put(planet, true);
         }
     }
+
 
     public void land(Planet planet){
         if(planet == null) {

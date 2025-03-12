@@ -4,8 +4,9 @@ import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-
 import java.io.Serializable;
+
+
 
 public class Player {
     private String username;
@@ -15,6 +16,7 @@ public class Player {
     private ShipBoard shipBoard;
     //It will contain client's socket
 
+
     public Player(String username) {
         this.username = username;
         coins = 0;
@@ -22,6 +24,7 @@ public class Player {
         abort = false;
         shipBoard = null;
     }
+
 
     public String getUsername() {
         return username;
@@ -53,10 +56,11 @@ public class Player {
     }
     public ShipBoard getShipBoard() {
         if(shipBoard instanceof Level1ShipBoard){
-            Level1ShipBoard shipBoard1 = (Level1ShipBoard) shipBoard.clone();
+            Level1ShipBoard shipBoard1 = (Level1ShipBoard) shipBoard;
+            return shipBoard1;  //aggiunta per far compilare
         }
-        else{
-            throw new IllegalArgumentException();
-        }
+
+
+        throw new IllegalArgumentException();
     }
 }

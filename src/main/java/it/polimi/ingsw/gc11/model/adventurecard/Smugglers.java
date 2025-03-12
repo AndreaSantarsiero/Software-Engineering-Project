@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.Material;
-
 import java.util.Vector;
+
+
 
 public class Smugglers extends AdventureCard {
 
@@ -12,8 +13,9 @@ public class Smugglers extends AdventureCard {
     private Vector<Material> rewards;
     private boolean defeated;
 
-    public Smugglers(int lostDays, int firePower, int lostMaterials,  Vector<Material> rewards) {
-        super(Type.TRIAL);
+
+    public Smugglers(AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  Vector<Material> rewards) {
+        super(type);
 
         if(lostDays < 0 || firePower < 0 || lostMaterials < 0) {
             throw new IllegalArgumentException("lostDays or firePower or lostMaterials cannot be negative");

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+
+
 public class AbandonedShip extends AdventureCard {
 
     private int lostDays;
@@ -7,8 +9,9 @@ public class AbandonedShip extends AdventureCard {
     private int coins;
     private boolean resolved;
 
-    public AbandonedShip(int lostDays, int lostMembers, int coins) {
-        super(Type.TRIAL);
+
+    public AbandonedShip(AdventureCard.Type type, int lostDays, int lostMembers, int coins) {
+        super(type);
 
         if(lostDays < 0 || lostMembers < 0 || coins < 0) {
             throw new IllegalArgumentException("lostDays or lostMembers or coins is null.");
@@ -17,15 +20,16 @@ public class AbandonedShip extends AdventureCard {
         this.lostDays = lostDays;
         this.lostMembers = lostMembers;
         this.coins = coins;
-        this.resoled = false;
+        this.resolved = false;
 
     }
 
+
     public void repairShip(){
-        if(this.resoled){
+        if(this.resolved){
             throw new IllegalStateException("ship already repaired.");
         }
-        this.resoled = true;
+        this.resolved = true;
     }
 
     public int getLostDays() {
