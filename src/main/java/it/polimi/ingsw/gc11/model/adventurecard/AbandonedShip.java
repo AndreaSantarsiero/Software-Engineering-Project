@@ -1,14 +1,11 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-
-
 public class AbandonedShip extends AdventureCard {
 
     private int lostDays;
     private int lostMembers;
     private int coins;
     private boolean resolved;
-
 
     public AbandonedShip(AdventureCard.Type type, int lostDays, int lostMembers, int coins) {
         super(type);
@@ -24,21 +21,8 @@ public class AbandonedShip extends AdventureCard {
 
     }
 
-
-    public void repairShip(){
-        if(this.resolved){
-            throw new IllegalStateException("ship already repaired.");
-        }
-        this.resolved = true;
+    public void handler(){
+        //To implement
     }
 
-    public int getLostDays() {
-        return lostDays;
-    }
-    public int getLostMembers() {
-        return lostMembers;
-    }
-    public int getCoins() {
-        return coins;
-    }
 }

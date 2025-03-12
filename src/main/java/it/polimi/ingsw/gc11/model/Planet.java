@@ -1,16 +1,16 @@
 package it.polimi.ingsw.gc11.model;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 
 public class Planet {
     private boolean visited;
-    private Vector<Material> materials;
+    private ArrayList<Material> materials;
 
 
     public Planet(int numBlue, int numGreen, int numYellow, int numRed) {
-        materials = new Vector<>();
+        materials = new ArrayList<>();
         visited = false;
         //add materials
         for (int i = 0; i < numBlue; i++)
@@ -27,10 +27,11 @@ public class Planet {
     public boolean isVisited() {
         return visited;
     }
+
     public void setVisited() { this.visited = true; }
 
-    public Vector<Material> getMaterials() {
-        Vector<Material> materialsCopy = new Vector<>(materials);
+    public ArrayList<Material> getMaterials() {
+        ArrayList<Material> materialsCopy = new ArrayList<>(materials);
         return materialsCopy;
     }
 }
