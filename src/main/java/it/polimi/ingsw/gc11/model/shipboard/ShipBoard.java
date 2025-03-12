@@ -17,6 +17,8 @@ public abstract class ShipBoard {
     private final List<ShipCard> reservedComponents;
     private int lastModifiedX;
     private int lastModifiedY;
+    private AlienUnit brownActiveUnit;
+    private AlienUnit purpleActiveUnit;
 
 
     /**
@@ -30,6 +32,8 @@ public abstract class ShipBoard {
         reservedComponents = new ArrayList<ShipCard>();
         lastModifiedX = -1;
         lastModifiedY = -1;
+        brownActiveUnit = null;
+        purpleActiveUnit = null;
     }
 
 
@@ -563,25 +567,72 @@ public abstract class ShipBoard {
 
 
 
+    public void connectAlienUnit(int alienX, int alienY, int housingX, int housingY) {
+        checkCoordinates(alienX, alienY);
+        checkCoordinates(housingX, housingY);
+        ShipCard shipCard1 = this.getShipCard(alienX, alienY);
+        ShipCard shipCard2 = this.getShipCard(housingX, housingY);
+
+        if (!(shipCard1 instanceof AlienUnit alienUnit)){
+            throw new IllegalArgumentException("AlienUnit coordinates do not point to an AlienUnit");
+        }
+        if (!(shipCard2 instanceof HousingUnit housingUnit)){
+            throw new IllegalArgumentException("HousingUnit coordinates do not point to a HousingUnit");
+        }
+        if(alienUnit.getType() == AlienUnit.Type.BROWN && brownActiveUnit != null) {
+            throw new IllegalArgumentException("This ship has already activate a brown AlienUnit");
+        }
+        if(alienUnit.getType() == AlienUnit.Type.PURPLE && purpleActiveUnit != null) {
+            throw new IllegalArgumentException("This ship has already activate a purple AlienUnit");
+        }
+        if(housingUnit.isCentral()){
+            throw new IllegalArgumentException("Cannot connect an AlienUnit to a central HousingUnit");
+        }
+
+        if(alienX == housingX && alienY == housingY-1 && alienUnit.getTopConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getTopConnector(), housingUnit.getBottomConnector())){
+            housingUnit.setAlienUnit(alienUnit);
+        }
+        else if(alienX == housingX+1 && alienY == housingY && alienUnit.getRightConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getRightConnector(), housingUnit.getLeftConnector())){
+            housingUnit.setAlienUnit(alienUnit);
+        }
+        else if(alienX == housingX && alienY == housingY+1 && alienUnit.getBottomConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getBottomConnector(), housingUnit.getTopConnector())){
+            housingUnit.setAlienUnit(alienUnit);
+        }
+        else if(alienX == housingX-1 && alienY == housingY && alienUnit.getLeftConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getLeftConnector(), housingUnit.getRightConnector())) {
+            housingUnit.setAlienUnit(alienUnit);
+        }
+        else{
+            throw new IllegalArgumentException("AlienUnit and CentralUnit are not directly connected");
+        }
+
+        if(alienUnit.getType() == AlienUnit.Type.BROWN){
+            brownActiveUnit = alienUnit;
+        }
+        else{
+            purpleActiveUnit = alienUnit;
+        }
+    }
+
+
+
     /**
      * Counts the number of brown aliens present in the ship
      *
      * @return The number of brown aliens
      */
     public int getBrownAliens() {
-        int brownAliens = 0;
-
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if(components[i][j] instanceof AlienUnit alienUnit && !components[i][j].isScrap()) {
-                    if(alienUnit.getType() == AlienUnit.Type.BROWN){
-                        brownAliens++;
-                    }
-                }
-            }
+        if(brownActiveUnit == null){
+            return 0;
         }
-
-        return brownAliens;
+        if (brownActiveUnit.getType() == AlienUnit.Type.PURPLE) {
+            throw new IllegalStateException("Purple AlienUnit are not supposed to be pointed by this variable");
+        }
+        if (brownActiveUnit.isPresent()) {
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
 
     /**
@@ -590,19 +641,18 @@ public abstract class ShipBoard {
      * @return The number of purple aliens
      */
     public int getPurpleAliens() {
-        int purpleAliens = 0;
-
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if(components[i][j] instanceof AlienUnit alienUnit && !components[i][j].isScrap()) {
-                    if(alienUnit.getType() == AlienUnit.Type.PURPLE){
-                        purpleAliens++;
-                    }
-                }
-            }
+        if(purpleActiveUnit == null){
+            return 0;
         }
-
-        return purpleAliens;
+        if (purpleActiveUnit.getType() == AlienUnit.Type.BROWN) {
+            throw new IllegalStateException("Brown AlienUnit are not supposed to be pointed by this variable");
+        }
+        if (purpleActiveUnit.isPresent()) {
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
 
     /**
