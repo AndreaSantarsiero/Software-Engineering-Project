@@ -5,16 +5,16 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public abstract class Deck {
+public abstract class AdventureDeck {
     private ArrayList<AdventureCard> cards;
     private boolean observable;
 
-    public Deck(boolean observable) {
+    public AdventureDeck(boolean observable) {
         this.cards = new ArrayList<>();
         this.observable = observable;
     }
 
-    public Deck(ArrayList<AdventureCard> cards,  boolean observable) {
+    public AdventureDeck(ArrayList<AdventureCard> cards, boolean observable) {
         this.cards = cards;
         this.observable = observable;
     }
