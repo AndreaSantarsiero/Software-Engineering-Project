@@ -2,9 +2,12 @@ package it.polimi.ingsw.gc11.model;
 
 import java.util.ArrayList;
 
+
+
 public class Planet {
     private boolean visited;
     private ArrayList<Material> materials;
+
 
     public Planet(int numBlue, int numGreen, int numYellow, int numRed) {
         materials = new ArrayList<>();
@@ -19,6 +22,7 @@ public class Planet {
         for (int i = 0; i < numRed; i++)
             materials.add(new Material(Material.Type.RED));
     }
+
 
     public boolean isVisited() {
         return visited;

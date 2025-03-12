@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 import it.polimi.ingsw.gc11.model.Material;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,6 +35,7 @@ public class Storage extends ShipCard {
     public Storage(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
         super(topConnector, rightConnector, bottomConnector, leftConnector);
         this.type = type;
+        this.materials = new ArrayList<Material>();
     }
 
 

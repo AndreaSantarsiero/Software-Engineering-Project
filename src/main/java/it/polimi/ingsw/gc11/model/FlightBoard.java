@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
+
+
 public class FlightBoard {
 
     public enum Type {
@@ -8,6 +10,7 @@ public class FlightBoard {
 
     private Type type;
     private int length;
+
 
     public FlightBoard(Type type) {
         this.type = type;
@@ -18,6 +21,8 @@ public class FlightBoard {
             length = 24;
         }
     }
+
+
     public Type getType() {
         return type;
     }

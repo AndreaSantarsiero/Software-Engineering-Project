@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+
+
 public class CombatZone extends AdventureCard {
 
     private int lostDays;
@@ -7,6 +9,16 @@ public class CombatZone extends AdventureCard {
     private int enginePower;
     private int membersKilled;
     private int firePower;
+
+
+    public CombatZone(AdventureCard.Type type, int lostDays, int membersRequired, int enginePower, int membersKilled, int firePower) {
+        super(type);
+        this.lostDays = lostDays;
+        this.membersRequired = membersRequired;
+        this.enginePower = enginePower;
+        this.membersKilled = membersKilled;
+        this.firePower = firePower;
+    }
 
 
     public int getLostDays() {
