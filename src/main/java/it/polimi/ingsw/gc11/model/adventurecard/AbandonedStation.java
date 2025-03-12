@@ -1,18 +1,17 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.Material;
-
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class AbandonedStation extends AdventureCard {
 
     private int lostDays;
     private int membersRequired;
-    private boolean resoled;
-    private Vector<Material> materials;
+    private ArrayList<Material> materials;
+    private boolean resolved;
 
-    public AbandonedStation(int lostDays, int membersRequired, Vector<Material> materials) {
-        super(Type.TRIAL);
+    public AbandonedStation(AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed) {
+        super(type);
 
         if (lostDays < 0) {
             throw new IllegalArgumentException("negative lost days.");
@@ -23,22 +22,20 @@ public class AbandonedStation extends AdventureCard {
 
         this.lostDays = lostDays;
         this.membersRequired = membersRequired;
-        this.materials = materials;
-        this.resoled = false;
+        this.materials = new ArrayList<>();
+        //add materials
+        for (int i = 0; i < numBlue; i++)
+            materials.add(new Material(Material.Type.BLUE));
+        for (int i = 0; i < numGreen; i++)
+            materials.add(new Material(Material.Type.GREEN));
+        for (int i = 0; i < numYellow; i++)
+            materials.add(new Material(Material.Type.YELLOW));
+        for (int i = 0; i < numRed; i++)
+            materials.add(new Material(Material.Type.RED));
+        this.resolved = false;
     }
 
-    public Vector<Material> getMaterials() {
-        if(this.resoled){
-            throw new IllegalStateException("Already resoled.");
-        }
-        this.resoled = true;
-        return this.materials;
-    }
-
-    public int getLostDays() {
-        return lostDays;
-    }
-    public int getMembersRequired() {
-        return membersRequired;
+    public void handler(){
+        //to implement
     }
 }

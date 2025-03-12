@@ -14,6 +14,8 @@ public abstract class AdventureCard {
         this.used = false;
     }
 
+    public abstract void handler();
+
     public void useCard(){
         this.used = true;
     }
