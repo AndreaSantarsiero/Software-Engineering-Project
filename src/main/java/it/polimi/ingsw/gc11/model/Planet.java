@@ -2,8 +2,6 @@ package it.polimi.ingsw.gc11.model;
 
 import java.util.ArrayList;
 
-
-
 public class Planet {
     private boolean visited;
     private ArrayList<Material> materials;

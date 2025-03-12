@@ -3,7 +3,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 public abstract class AdventureCard {
 
     public enum Type {
-        TRIAL, LEVEL1, LEVEL2, LEVEL3;
+        LEVEL1, LEVEL2;
     }
 
     private Type type;

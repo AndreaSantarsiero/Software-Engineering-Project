@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.*;
+import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
@@ -12,7 +13,9 @@ public class GameModel {
     private Player[] players;
     private FlightBoard flightBoard;
     private AdventureDeck[] AdventureCardsDecks;
-    private ArrayList<ShipCard> shipCardsDeck;
+    private ArrayList<ShipCard> shipCardsALL;
+    private ArrayList<AdventureCard> adventureCardsLevel1;
+    private ArrayList<AdventureCard> adventureCardsLevel2;
     private Dice[] dices;
 
 
@@ -21,7 +24,7 @@ public class GameModel {
         this.players = null;
         this.flightBoard = null;
         this.AdventureCardsDecks = null;
-        this.shipCardsDeck = null;
+        this.shipCardsALL = null;
         this.dices = new Dice[2];
     }
 
@@ -36,13 +39,11 @@ public class GameModel {
         if (flightType.equals(FlightBoard.Type.TRIAL)) {
             this.AdventureCardsDecks = new AdventureDeck[1];
             this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
-            this.shipCardsDeck = new ArrayList();
         }
         //Level 2 Flight has 4 deck
         else if (flightType.equals(FlightBoard.Type.LEVEL2)) {
             this.AdventureCardsDecks = new AdventureDeck[4];
             this.flightBoard = new FlightBoard(FlightBoard.Type.LEVEL2);
-            this.shipCardsDeck = new ArrayList();
         }
         else
             throw new IllegalArgumentException("Invalid flight type");

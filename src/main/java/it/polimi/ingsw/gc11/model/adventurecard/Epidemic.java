@@ -6,7 +6,6 @@ public class Epidemic extends AdventureCard {
         super(Type.LEVEL2);
     }
 
-
     public void handler() {
         //to implement
     }
