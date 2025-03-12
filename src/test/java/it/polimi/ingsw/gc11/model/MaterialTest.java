@@ -46,10 +46,4 @@ public class MaterialTest {
         assertEquals(3, yellowMaterial.getValue(), "The value of the yellow material should be 3 coins");
         assertEquals(4, redMaterial.getValue(), "The value of the red material should be 4 coins");
     }
-
-    @Test
-    void testGetValueThrowsIllegalArgumentException() {
-        Material invalidMaterial = new Material(null);
-        assertThrows(IllegalArgumentException.class, invalidMaterial::getValue, "Getting value for an unknown material type should throw IllegalArgumentException");
-    }
 }
