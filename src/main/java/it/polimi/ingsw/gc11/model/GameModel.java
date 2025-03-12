@@ -11,7 +11,7 @@ public class GameModel {
     private final String id;
     private Player[] players;
     private FlightBoard flightBoard;
-    private Deck[] AdventureCardsDecks;
+    private AdventureDeck[] AdventureCardsDecks;
     private ArrayList<ShipCard> shipCardsDeck;
     private Dice[] dices;
 
@@ -21,6 +21,7 @@ public class GameModel {
         this.players = null;
         this.flightBoard = null;
         this.AdventureCardsDecks = null;
+        this.shipCardsDeck = null;
         this.dices = new Dice[2];
     }
 
@@ -33,13 +34,15 @@ public class GameModel {
             throw new NullPointerException();
         //Trial Flight has only 1 deck
         if (flightType.equals(FlightBoard.Type.TRIAL)) {
-            this.AdventureCardsDecks = new Deck[1];
+            this.AdventureCardsDecks = new AdventureDeck[1];
             this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
+            this.shipCardsDeck = new ArrayList();
         }
         //Level 2 Flight has 4 deck
         else if (flightType.equals(FlightBoard.Type.LEVEL2)) {
-            this.AdventureCardsDecks = new Deck[4];
+            this.AdventureCardsDecks = new AdventureDeck[4];
             this.flightBoard = new FlightBoard(FlightBoard.Type.LEVEL2);
+            this.shipCardsDeck = new ArrayList();
         }
         else
             throw new IllegalArgumentException("Invalid flight type");
@@ -95,13 +98,11 @@ public class GameModel {
     }
 
     public int getValDice1(){
-        int result = dices[0].roll();
-        return result;
+        return dices[0].roll();
     }
 
     public int getValDice2(){
-        int result = dices[1].roll();
-        return result;
+        return dices[1].roll();
     }
 
     public void addCoins(int amount, String username){
