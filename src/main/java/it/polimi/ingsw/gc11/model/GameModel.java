@@ -12,10 +12,11 @@ public class GameModel {
     private final String id;
     private Player[] players;
     private FlightBoard flightBoard;
-    private AdventureDeck[] AdventureCardsDecks;
+    private AdventureDeck[] adventureCardsDecks;
     private ArrayList<ShipCard> shipCardsALL;
-    private ArrayList<AdventureCard> adventureCardsLevel1;
-    private ArrayList<AdventureCard> adventureCardsLevel2;
+    private ArrayList<AdventureCard> adventureCardsTrial; //8 cards
+    private ArrayList<AdventureCard> adventureCardsLevel1; //12 cards
+    private ArrayList<AdventureCard> adventureCardsLevel2; //20 cards
     private Dice[] dices;
 
 
@@ -23,10 +24,34 @@ public class GameModel {
         this.id = UUID.randomUUID().toString(); //unique id generation
         this.players = null;
         this.flightBoard = null;
-        this.AdventureCardsDecks = null;
-        this.shipCardsALL = null;
+        this.adventureCardsDecks = null;
+        this.shipCardsALL = allShipCardsInit();
+        this.adventureCardsTrial = adventureCardsTrialInit();
+        this.adventureCardsLevel1 = adventureCardsLevel1Init();
+        this.adventureCardsLevel2 = adventureCardsLevel2Init();
         this.dices = new Dice[2];
     }
+
+    private ArrayList<ShipCard> allShipCardsInit() {
+        //to implement
+        return null;
+    }
+
+    private ArrayList<AdventureCard> adventureCardsTrialInit() {
+        //to implement
+        return null;
+    }
+
+    private ArrayList<AdventureCard> adventureCardsLevel1Init() {
+        //to implement
+        return null;
+    }
+
+    private ArrayList<AdventureCard> adventureCardsLevel2Init() {
+        //to implement
+        return null;
+    }
+
 
     public String getID() {
         return id;
@@ -35,20 +60,36 @@ public class GameModel {
     public void setLevel(FlightBoard.Type flightType) throws NullPointerException, IllegalArgumentException {
         if (flightType == null)
             throw new NullPointerException();
-        //Trial Flight has only 1 deck
+
+        //Trial Flight has only 1 deck which contains all the trial adventure cards
         if (flightType.equals(FlightBoard.Type.TRIAL)) {
-            this.AdventureCardsDecks = new AdventureDeck[1];
             this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
+            this.adventureCardsDecks = new AdventureDeck[1];
+            this.adventureCardsDecks[0] = new AdventureDeck(true);
+            for (int i = 0; i < this.adventureCardsTrial.size(); i++) {
+                this.adventureCardsDecks[0].addCard(adventureCardsTrial.get(i));
+            }
         }
-        //Level 2 Flight has 4 deck
+
+        //Level 2 Flight has 4 deck, anyone of them has inside: 2 level2 card, 1 level1 card
+        //Last deck (position 3) is not observable
         else if (flightType.equals(FlightBoard.Type.LEVEL2)) {
-            this.AdventureCardsDecks = new AdventureDeck[4];
             this.flightBoard = new FlightBoard(FlightBoard.Type.LEVEL2);
+            this.adventureCardsDecks = new AdventureDeck[4];
+            this.adventureCardsDecks[0] = new AdventureDeck(true);
+            this.adventureCardsDecks[1] = new AdventureDeck(true);
+            this.adventureCardsDecks[2] = new AdventureDeck(true);
+            this.adventureCardsDecks[3] = new AdventureDeck(false);
+            for (int i = 0; i < this.adventureCardsDecks.length; i++) {
+                this.adventureCardsDecks[i].addCard(adventureCardsLevel2.get((int )(Math.random() * (20+1))));
+                this.adventureCardsDecks[i].addCard(adventureCardsLevel2.get((int )(Math.random() * (20+1))));
+                this.adventureCardsDecks[i].addCard(adventureCardsLevel1.get((int )(Math.random() * (12+1))));
+            }
         }
         else
             throw new IllegalArgumentException("Invalid flight type");
 
-        //set appropriate shipboard to all the players
+        //Set appropriate shipboard to all the players
         for (int i = 0; i < players.length; i++) {
             players[i].setShipBoard(flightType);
         }
@@ -95,7 +136,7 @@ public class GameModel {
     }
 
     public void shuffleDeck(){
-        AdventureCardsDecks[0].shuffle();
+        adventureCardsDecks[0].shuffle();
     }
 
     public int getValDice1(){
