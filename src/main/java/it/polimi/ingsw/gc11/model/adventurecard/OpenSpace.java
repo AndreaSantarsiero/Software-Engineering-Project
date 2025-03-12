@@ -10,6 +10,11 @@ public class OpenSpace extends AdventureCard {
         super(type);
     }
 
+    @Override
+    public void handler() {
+        //to implement
+    }
+
     /*
     In turn, each player declares their engine strength, beginning with the leader, and continuing in the order
     You must decide whether to spend battery
