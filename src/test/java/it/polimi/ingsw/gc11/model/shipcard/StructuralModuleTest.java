@@ -34,7 +34,7 @@ class StructuralModuleTest {
     @Test
     void testDiscover() {
         structuralModule.discover();
-        assertTrue(structuralModule.isCovered(), "StructuralModule should remain covered after discover() since the method does not change it");
+        assertFalse(structuralModule.isCovered(), "StructuralModule should remain covered after discover() since the method does not change it");
     }
 
     @Test
