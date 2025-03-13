@@ -57,10 +57,9 @@ public class Player {
     public ShipBoard getShipBoard() {
         if(shipBoard instanceof Level1ShipBoard){
             Level1ShipBoard shipBoard1 = (Level1ShipBoard) shipBoard;
-            return shipBoard1;  //aggiunta per far compilare
         }
-
-
-        throw new IllegalArgumentException();
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 }

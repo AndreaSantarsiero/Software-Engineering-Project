@@ -16,8 +16,8 @@ public class Pirates extends AdventureCard {
         this.coins = coins;
     }
 
-//    @Override
-//    public void handler() {
-//        //to implement
-//    }
+    @Override
+    public void handler() {
+        //to implement
+    }
 }

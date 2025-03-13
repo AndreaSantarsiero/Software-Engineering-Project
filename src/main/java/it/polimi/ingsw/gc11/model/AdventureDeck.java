@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
