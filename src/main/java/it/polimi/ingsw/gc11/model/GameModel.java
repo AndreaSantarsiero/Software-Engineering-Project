@@ -13,6 +13,7 @@ public class GameModel {
     private Player[] players;
     private FlightBoard flightBoard;
     private AdventureDeck[] adventureCardsDecks;
+    private AdventureDeck definitiveDeck;
     private ArrayList<ShipCard> shipCardsALL;
     private ArrayList<AdventureCard> adventureCardsTrial; //8 cards
     private ArrayList<AdventureCard> adventureCardsLevel1; //12 cards
@@ -25,6 +26,7 @@ public class GameModel {
         this.players = null;
         this.flightBoard = null;
         this.adventureCardsDecks = null;
+        this.definitiveDeck = null;
         this.shipCardsALL = allShipCardsInit();
         this.adventureCardsTrial = adventureCardsTrialInit();
         this.adventureCardsLevel1 = adventureCardsLevel1Init();
@@ -116,10 +118,26 @@ public class GameModel {
         return players.length;
     }
 
-    //Display (x,y) shipcard in the matrix of shipcards down on the table
-    public ShipCard getShipCard(int x, int y){
-        return null; //Da implementare
+    //Display x shipcard in the arraylist of all shipcards down on the table
+    public ShipCard getShipCard(int pos){
+        return this.shipCardsALL.get(pos);
     }
+
+    public ArrayList<AdventureCard> observeMiniDeck(int numDeck){
+        return this.adventureCardsDecks[numDeck].getCards();
+    }
+
+    public void createDefinitiveDeck(){
+        this.definitiveDeck = new AdventureDeck(false);
+        for (int i = 0; i < this.adventureCardsDecks.length; i++) {
+            for (int j = 0; j < adventureCardsDecks[i].getSize(); j++) {
+                this.definitiveDeck.addCard(adventureCardsDecks[i].getTopCard());
+            }
+        }
+        this.definitiveDeck.shuffle();
+    }
+
+    public AdventureCard getTopAdventureCard(){ return this.definitiveDeck.getTopCard();}
 
     public void setReservedShipCard(ShipCard shipCard){}
 
@@ -129,14 +147,8 @@ public class GameModel {
 
     public void connectToShipBoard(Player player, ShipCard shipCard){}
 
-    public void getAdventureCard(){}
-
     public FlightBoard getFlightBoard() {
         return flightBoard;
-    }
-
-    public void shuffleDeck(){
-        adventureCardsDecks[0].shuffle();
     }
 
     public int getValDice1(){

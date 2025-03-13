@@ -32,6 +32,9 @@ public class AdventureDeck {
         Collections.shuffle(cards);
     }
 
+    //Used to show mini-deck in Ship building phase
+    public ArrayList<AdventureCard> getCards() { return cards;}
+
     public AdventureCard getTopCard() {
         if (cards.isEmpty()) {
             throw new IllegalStateException("no cards available.");
@@ -39,5 +42,9 @@ public class AdventureDeck {
         AdventureCard drawed = cards.removeFirst();
         drawed.useCard();
         return drawed;
+    }
+
+    public int getSize(){
+        return cards.size();
     }
 }
