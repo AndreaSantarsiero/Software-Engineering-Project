@@ -15,7 +15,7 @@ public class Storage extends ShipCard {
      * Defines the possible types of storage
      */
     public enum Type {
-        DOUBLEBLUE, TRIPLEBLUE, SINGLERED, DOUBLERED;
+        DOUBLE_BLUE, TRIPLE_BLUE, SINGLE_RED, DOUBLE_RED;
     }
 
 
@@ -62,17 +62,17 @@ public class Storage extends ShipCard {
         if (newMaterial == null) {
             throw new IllegalArgumentException("Material is null");
         }
-        if (type.equals(Type.SINGLERED) && !materials.isEmpty()) {
+        if (type.equals(Type.SINGLE_RED) && !materials.isEmpty()) {
             throw new IllegalStateException("Storage is already full. Use replaceMaterial method");
         }
-        if ((type.equals(Type.DOUBLERED) || type.equals(Type.DOUBLEBLUE)) && materials.size() > 1) {
+        if ((type.equals(Type.DOUBLE_RED) || type.equals(Type.DOUBLE_BLUE)) && materials.size() > 1) {
             throw new IllegalStateException("Storage is already full. Use replaceMaterial method");
         }
-        if (type.equals(Type.TRIPLEBLUE) && materials.size() > 2) {
+        if (type.equals(Type.TRIPLE_BLUE) && materials.size() > 2) {
             throw new IllegalStateException("Storage is already full. Use replaceMaterial method");
         }
         if (newMaterial.getType() == Material.Type.RED) {
-            if (type.equals(Type.DOUBLERED) || type.equals(Type.SINGLERED)) {
+            if (type.equals(Type.DOUBLE_RED) || type.equals(Type.SINGLE_RED)) {
                 materials.add(newMaterial);
             } else {
                 throw new IllegalArgumentException("Can't add special material to a non-special storage");

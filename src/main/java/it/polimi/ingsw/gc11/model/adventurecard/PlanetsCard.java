@@ -36,10 +36,10 @@ public class PlanetsCard extends AdventureCard {
 
 
     //handler uses the following private methods
-    @Override
-    public void handler() {
-
-    }
+//    @Override
+//    public void handler() {
+//
+//    }
 
     //Top planet is number 0
     private void landOn(int numPlanet){
