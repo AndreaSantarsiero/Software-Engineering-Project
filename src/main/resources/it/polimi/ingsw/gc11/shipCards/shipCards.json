@@ -190,6 +190,11 @@
     "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "SINGLE"
   },
+  "SingleCannon5.jpg": {
+    "subClass": "Cannon",
+    "connectors": { "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "type": "SINGLE"
+  },
 
 
 

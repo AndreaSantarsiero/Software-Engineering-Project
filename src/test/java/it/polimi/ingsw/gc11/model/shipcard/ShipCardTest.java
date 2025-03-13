@@ -77,7 +77,7 @@ class ShipCardTest {
     @Test
     void testDiscover() {
         shipCard.discover();
-        assertTrue(shipCard.isCovered(), "The ship should remain covered after discovery");
+        assertFalse(shipCard.isCovered(), "The ship should remain covered after discovery");
     }
 
     @Test

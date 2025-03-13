@@ -145,7 +145,7 @@ public abstract class ShipCard {
      * Sets ShipCard's covered attribute to true
      */
     public void discover() {
-        this.covered = true;
+        this.covered = false;
     }
 
 
