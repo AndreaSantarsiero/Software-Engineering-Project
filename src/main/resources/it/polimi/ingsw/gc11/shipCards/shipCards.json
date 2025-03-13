@@ -1,0 +1,251 @@
+{
+  "CoveredShipCard.jpg": {
+    "subClass": "CoveredLogo"
+  },
+
+
+
+  "BlueCentralUnit.jpg": {
+    "subClass": "HousingUnit",
+    "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
+    "central": true
+  },
+  "GreenCentralUnit.jpg": {
+    "subClass": "HousingUnit",
+    "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
+    "central": true
+  },
+  "RedCentralUnit.jpg": {
+    "subClass": "HousingUnit",
+    "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
+    "central": true
+  },
+  "YellowCentralUnit.jpg": {
+    "subClass": "HousingUnit",
+    "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
+    "central": true
+  },
+
+
+
+  "BlueDoubleStorage1.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "DOUBLE", "left": "UNIVERSAL" },
+    "type": "DOUBLE_BLUE"
+  },
+  "BlueDoubleStorage2.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "NONE" },
+    "type": "DOUBLE_BLUE"
+  },
+  "BlueDoubleStorage3.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "SINGLE" },
+    "type": "DOUBLE_BLUE"
+  },
+
+
+
+  "BlueTripleStorage1.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "type": "TRIPLE_BLUE"
+  },
+  "BlueTripleStorage2.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
+    "type": "TRIPLE_BLUE"
+  },
+
+
+
+  "BrownAlien1.jpg": {
+    "subClass": "AlienUnit",
+    "connectors": { "top": "SINGLE", "right": "SINGLE", "bottom": "NONE", "left": "SINGLE" },
+      "type": "BROWN"
+  },
+
+
+
+  "DoubleBattery1.jpg": {
+    "subClass": "Battery",
+    "connectors": { "top": "UNIVERSAL", "right": "SINGLE", "bottom": "DOUBLE", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery2.jpg": {
+    "subClass": "Battery",
+    "connectors": { "top": "UNIVERSAL", "right": "DOUBLE", "bottom": "NONE", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery3.jpg": {
+    "subClass": "Battery",
+    "connectors": { "top": "UNIVERSAL", "right": "DOUBLE", "bottom": "SINGLE", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+
+
+
+  "DoubleCannon1.jpg": {
+    "subClass": "Cannon",
+    "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+  "DoubleCannon2.jpg": {
+    "subClass": "Cannon",
+    "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+
+
+
+  "DoubleEngine1.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+  "DoubleEngine2.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "SINGLE", "right": "UNIVERSAL", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+  "DoubleEngine3.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
+    "type": "DOUBLE"
+  },
+
+
+
+  "HousingUnit1.jpg": {
+    "subClass": "HousingUnit",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "UNIVERSAL", "left": "SINGLE" },
+    "central": false
+  },
+
+
+
+  "PurpleAlien1.jpg": {
+    "subClass": "AlienUnit",
+    "connectors": { "top": "SINGLE", "right": "DOUBLE", "bottom": "NONE", "left": "DOUBLE" },
+    "type": "PURPLE"
+  },
+  "PurpleAlien2.jpg": {
+    "subClass": "AlienUnit",
+    "connectors": { "top": "DOUBLE", "right": "DOUBLE", "bottom": "NONE", "left": "DOUBLE" },
+    "type": "PURPLE"
+  },
+
+
+
+  "RedDoubleStorage1.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "type": "DOUBLE_RED"
+  },
+  "RedDoubleStorage2.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "NONE", "left": "SINGLE" },
+    "type": "DOUBLE_RED"
+  },
+  "RedDoubleStorage3.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "type": "DOUBLE_RED"
+  },
+
+
+
+  "RedSingleStorage1.jpg": {
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "SINGLE", "left": "UNIVERSAL" },
+    "type": "SINGLE_RED"
+  },
+
+
+
+  "Shield1.jpg": {
+    "subClass": "Shield",
+    "connectors": { "top": "NONE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "SINGLE" }
+  },
+
+
+
+  "SingleCannon1.jpg": {
+    "subClass": "Cannon",
+    "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleCannon2.jpg": {
+    "subClass": "Cannon",
+    "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleCannon3.jpg": {
+    "subClass": "Cannon",
+    "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleCannon4.jpg": {
+    "subClass": "Cannon",
+    "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+
+
+
+  "SingleEngine1.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "NONE", "right": "UNIVERSAL", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleEngine2.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "NONE", "right": "UNIVERSAL", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleEngine3.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleEngine4.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleEngine5.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "SINGLE", "right": "SINGLE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleEngine6.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+  "SingleEngine7.jpg": {
+    "subClass": "Engine",
+    "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
+    "type": "SINGLE"
+  },
+
+
+
+  "StructuralModule1.jpg": {
+    "subClass": "StructuralModule",
+    "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "NONE", "left": "SINGLE" }
+  },
+
+
+
+  "TripleBattery1.jpg": {
+    "subClass": "Battery",
+    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "type": "TRIPLE"
+  },
+  "TripleBattery2.jpg": {
+    "subClass": "Battery",
+    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "type": "TRIPLE"
+  }
+}

@@ -54,12 +54,12 @@ public class Player {
         else
             throw new IllegalArgumentException();
     }
-    public ShipBoard getShipBoard() {
-        if(shipBoard instanceof Level1ShipBoard){
-            Level1ShipBoard shipBoard1 = (Level1ShipBoard) shipBoard;
-        }
-        else{
-            throw new IllegalArgumentException();
-        }
-    }
+//    public ShipBoard getShipBoard() {
+//        if(shipBoard instanceof Level1ShipBoard){
+//            Level1ShipBoard shipBoard1 = (Level1ShipBoard) shipBoard;
+//        }
+//        else{
+//            throw new IllegalArgumentException();
+//        }
+//    }
 }

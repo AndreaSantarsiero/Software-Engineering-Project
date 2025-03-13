@@ -24,15 +24,15 @@ class StorageTest {
         blueMaterial = new Material(Material.Type.BLUE);
         greenMaterial = new Material(Material.Type.GREEN);
         yellowMaterial = new Material(Material.Type.YELLOW);
-        doubleBlueStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLEBLUE);
-        doubleRedStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLERED);
-        singleRedStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.SINGLERED);
+        doubleBlueStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLE_BLUE);
+        doubleRedStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLE_RED);
+        singleRedStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.SINGLE_RED);
     }
 
     @Test
     void testCreation() {
         assertNotNull(doubleBlueStorage, "Storage should be created successfully");
-        assertEquals(Storage.Type.DOUBLEBLUE, doubleBlueStorage.getType(), "Storage type should be DOUBLE_BLUE");
+        assertEquals(Storage.Type.DOUBLE_BLUE, doubleBlueStorage.getType(), "Storage type should be DOUBLE_BLUE");
     }
 
     @Test
