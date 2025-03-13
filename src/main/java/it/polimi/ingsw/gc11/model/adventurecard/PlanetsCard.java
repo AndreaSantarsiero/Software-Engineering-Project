@@ -2,19 +2,16 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
+
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Vector;
-
-
 
 public class PlanetsCard extends AdventureCard {
 
-    private Map<Planet, Boolean> planets;
+    private ArrayList<Planet> planets;
     private final int lostDays;
 
 
-    public PlanetsCard(AdventureCard.Type type, int lostDays, Vector<Planet> planets){
+    public PlanetsCard(AdventureCard.Type type, int lostDays, ArrayList<Planet> planets){
         super(type);
 
         if (lostDays < 0) {
@@ -26,44 +23,53 @@ public class PlanetsCard extends AdventureCard {
 
         this.lostDays = lostDays;
         for(Planet planet:planets) {
-            if (this.planets == null) {
-                throw new NullPointerException("planets is null.");
+            if (planet == null) {
+                throw new NullPointerException("planet is null.");
             }
-            this.planets.put(planet, true);
+            if (planet.isVisited()){
+                throw new IllegalArgumentException("planet is visited.");
+            }
         }
+        this.planets = new ArrayList<>(planets);
     }
 
 
-    public void land(Planet planet){
-        if(planet == null) {
-            throw new IllegalArgumentException("planet is null.");
-        }
-        if(planets.get(planet)){
-            throw new IllegalStateException("planet already occupied");
-        }
-        planets.replace(planet, false);
+    //handler uses the following private methods
+    @Override
+    public void handler() {
+
     }
 
-    public Vector<Planet> getFreePlanets(){
-        Vector<Planet> freePlanets = new Vector<>();
-        for(Planet planet:planets.keySet()){
-            if(planets.get(planet)){
+    //Top planet is number 0
+    private void landOn(int numPlanet){
+        if(numPlanet < 0 || numPlanet >= planets.size()) {
+            throw new IllegalArgumentException("Invalid planet.");
+        }
+        if(this.planets.get(numPlanet).isVisited()) {
+            throw new IllegalStateException("Planet already visited.");
+        }
+        planets.get(numPlanet).setVisited();
+    }
+
+    public ArrayList<Planet> getFreePlanets(){
+        ArrayList<Planet> freePlanets = new ArrayList<>();
+        for(Planet planet:planets){
+            if(planet.isVisited()){
                 freePlanets.add(planet);
             }
         }
         return freePlanets;
     }
 
-    public ArrayList<Material> getMaterials(Planet planet){
-        if(planet == null){
-            throw new IllegalArgumentException("planet is null.");
+    public ArrayList<Material> getMaterials(int numPlanet){
+        if(numPlanet < 0 || numPlanet >= planets.size()) {
+            throw new IllegalArgumentException("Invalid planet.");
         }
-        if(!planets.containsKey(planet)){
-            throw new IllegalArgumentException("planet does not exist.");
+        if(this.planets.get(numPlanet).isVisited()) {
+            throw new IllegalStateException("Planet already visited.");
         }
-        return planet.getMaterials();
+        return planets.get(numPlanet).getMaterials();
     }
-    public int getLostDays() {
-        return lostDays;
-    }
+
+    public int getLostDays() { return lostDays;}
 }
