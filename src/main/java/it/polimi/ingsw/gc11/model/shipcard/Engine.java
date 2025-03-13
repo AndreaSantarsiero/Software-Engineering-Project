@@ -20,15 +20,15 @@ public class Engine extends ShipCard {
 
     /**
      * Constructs an Engine with specified connectors and type
+     * Note that the connector on the bottom side must be NONE
      *
      * @param topConnector The connector on the top side
      * @param rightConnector The connector on the right side
-     * @param bottomConnector The connector on the bottom side
      * @param leftConnector The connector on the left side
      * @param type The type of the Engine (SINGLE or DOUBLE)
      */
-    public Engine(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
-        super(topConnector, rightConnector, bottomConnector, leftConnector);
+    public Engine(Connector topConnector, Connector rightConnector, Connector leftConnector, Type type) {
+        super(topConnector, rightConnector, Connector.NONE, leftConnector);
         this.type = type;
     }
 

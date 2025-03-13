@@ -87,12 +87,12 @@
 
   "DoubleCannon1.jpg": {
     "subClass": "Cannon",
-    "connectors": { "top": "NONE", "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
+    "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleCannon2.jpg": {
     "subClass": "Cannon",
-    "connectors": { "top": "NONE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "DOUBLE"
   },
 
@@ -100,17 +100,17 @@
 
   "DoubleEngine1.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleEngine2.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "SINGLE", "right": "UNIVERSAL", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "SINGLE", "right": "UNIVERSAL", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleEngine3.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
     "type": "DOUBLE"
   },
 
@@ -172,22 +172,22 @@
 
   "SingleCannon1.jpg": {
     "subClass": "Cannon",
-    "connectors": { "top": "NONE", "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
+    "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon2.jpg": {
     "subClass": "Cannon",
-    "connectors": { "top": "NONE", "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
+    "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon3.jpg": {
     "subClass": "Cannon",
-    "connectors": { "top": "NONE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon4.jpg": {
     "subClass": "Cannon",
-    "connectors": { "top": "NONE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "SINGLE"
   },
 
@@ -195,37 +195,37 @@
 
   "SingleEngine1.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "NONE", "right": "UNIVERSAL", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "NONE", "right": "UNIVERSAL", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine2.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "NONE", "right": "UNIVERSAL", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "NONE", "right": "UNIVERSAL", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine3.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine4.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine5.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "SINGLE", "right": "SINGLE", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "SINGLE", "right": "SINGLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine6.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine7.jpg": {
     "subClass": "Engine",
-    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "NONE", "left": "NONE" },
+    "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
 
