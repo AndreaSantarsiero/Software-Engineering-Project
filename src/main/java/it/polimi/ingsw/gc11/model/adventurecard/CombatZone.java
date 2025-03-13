@@ -1,39 +1,37 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 
+import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Shot;
+
+import java.util.ArrayList;
 
 public class CombatZone extends AdventureCard {
 
-    private int lostDays;
-    private int membersRequired;
-    private int enginePower;
-    private int membersKilled;
-    private int firePower;
+    private final int lostDays;
+    private final int lostMembers;
+    private final int lostMaterials;
+    private ArrayList<Shot> shots;
 
 
-    public CombatZone(AdventureCard.Type type, int lostDays, int membersRequired, int enginePower, int membersKilled, int firePower) {
+    public CombatZone(AdventureCard.Type type, int lostDays, int lostMembers, int lostMaterials, ArrayList<Shot> shots)throws IllegalArgumentException{
         super(type);
+
+        if (lostDays < 0 || lostMembers < 0 || lostMaterials < 0 || shots == null){
+            throw new IllegalArgumentException();
+        }
+        for(Shot shot: shots) {
+            if (shot == null) {
+                throw new NullPointerException("shot is null.");
+            }
+        }
+
         this.lostDays = lostDays;
-        this.membersRequired = membersRequired;
-        this.enginePower = enginePower;
-        this.membersKilled = membersKilled;
-        this.firePower = firePower;
+        this.lostMembers = lostMembers;
+        this.lostMaterials = lostMaterials;
+        this.shots = shots;
     }
 
-
-    public int getLostDays() {
-        return lostDays;
-    }
-    public int getMembersRequired() {
-        return membersRequired;
-    }
-    public int getEnginePower() {
-        return enginePower;
-    }
-    public int getMembersKilled() {
-        return membersKilled;
-    }
-    public int getFirePower() {
-        return firePower;
-    }
+    @Override
+    public void handler(GameModel model) {}
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
 import java.util.ArrayList;
@@ -31,16 +32,17 @@ public class PlanetsCard extends AdventureCard {
                 throw new IllegalArgumentException("planet is visited.");
             }
         }
-        this.planets = new ArrayList<>(planets);
+        this.planets = planets;
     }
 
 
     //handler uses the following private methods
     @Override
-    public void handler() {
+    public void handler(GameModel model) {
 
     }
 
+    //Private perchè sono da usare dentro l'handler
     //Top planet is number 0
     private void landOn(int numPlanet){
         if(numPlanet < 0 || numPlanet >= planets.size()) {

@@ -1,16 +1,16 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import java.util.ArrayList;
 
 public class AbandonedStation extends AdventureCard {
 
-    private int lostDays;
-    private int membersRequired;
+    private final int lostDays;
+    private final int membersRequired;
     private ArrayList<Material> materials;
-    private boolean resolved;
 
-    public AbandonedStation(AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed) {
+    public AbandonedStation(AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed)throws IllegalArgumentException {
         super(type);
 
         if (lostDays < 0) {
@@ -18,6 +18,9 @@ public class AbandonedStation extends AdventureCard {
         }
         if (membersRequired < 0) {
             throw new IllegalArgumentException("negative members required.");
+        }
+        if (numBlue < 0 || numGreen < 0 || numYellow < 0 || numRed < 0) {
+            throw new IllegalArgumentException("negative materials required.");
         }
 
         this.lostDays = lostDays;
@@ -32,10 +35,11 @@ public class AbandonedStation extends AdventureCard {
             materials.add(new Material(Material.Type.YELLOW));
         for (int i = 0; i < numRed; i++)
             materials.add(new Material(Material.Type.RED));
-        this.resolved = false;
     }
 
-    public void handler(){
-        //to implement
+
+    @Override
+    public void handler(GameModel model) {
+
     }
 }

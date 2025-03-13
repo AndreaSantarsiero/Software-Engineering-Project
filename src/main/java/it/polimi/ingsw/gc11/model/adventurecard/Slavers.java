@@ -1,34 +1,29 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 
+import it.polimi.ingsw.gc11.model.GameModel;
 
 public class Slavers extends AdventureCard {
 
-    private int lostDays;
-    private int firePower;
-    private int membersKilled;
-    private int coins;
+    private final int lostDays;
+    private final int firePower;
+    private final int lostMembers;
+    private final int coins;
 
 
-    public Slavers(AdventureCard.Type type, int lostDays, int firePower, int membersKilled, int coins) {
+    public Slavers(AdventureCard.Type type, int lostDays, int firePower, int coins, int lostMembers) throws IllegalArgumentException{
         super(type);
+        if (lostDays < 0 || firePower < 0 || lostMembers < 0 || coins < 0) {
+            throw new IllegalArgumentException("lostDays and numMaterials is null.");
+        }
         this.lostDays = lostDays;
         this.firePower = firePower;
-        this.membersKilled = membersKilled;
+        this.lostMembers = lostMembers;
         this.coins = coins;
     }
 
+    @Override
+    public void handler(GameModel model) {
 
-    public int getLostDays() {
-        return lostDays;
-    }
-    public int getFirePower() {
-        return firePower;
-    }
-    public int getMembersKilled() {
-        return membersKilled;
-    }
-    public int getCoins() {
-        return coins;
     }
 }
