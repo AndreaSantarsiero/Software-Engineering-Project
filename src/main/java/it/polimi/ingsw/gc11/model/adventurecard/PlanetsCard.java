@@ -2,8 +2,9 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
-
 import java.util.ArrayList;
+
+
 
 public class PlanetsCard extends AdventureCard {
 
@@ -35,10 +36,10 @@ public class PlanetsCard extends AdventureCard {
 
 
     //handler uses the following private methods
-    @Override
-    public void handler() {
-
-    }
+//    @Override
+//    public void handler() {
+//
+//    }
 
     //Top planet is number 0
     private void landOn(int numPlanet){
