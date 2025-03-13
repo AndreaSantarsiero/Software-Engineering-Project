@@ -77,8 +77,8 @@ public abstract class ShipBoard {
      * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The ship card to be added
-     * @param x        The x-coordinate where the card is placed
-     * @param y        The y-coordinate where the card is placed
+     * @param x The x-coordinate where the card is placed
+     * @param y The y-coordinate where the card is placed
      * @throws IllegalArgumentException if the ship card is null or if coordinates are invalid
      */
     public void addShipCard(ShipCard shipCard, int x, int y) {
@@ -567,6 +567,16 @@ public abstract class ShipBoard {
 
 
 
+    /**
+     * Connects an AlienUnit to a HousingUnit based on their coordinates and connector compatibility
+     * If all conditions are met, the AlienUnit is linked to the HousingUnit
+     *
+     * @param alienX the x-coordinate of the AlienUnit
+     * @param alienY the y-coordinate of the AlienUnit
+     * @param housingX the x-coordinate of the HousingUnit
+     * @param housingY the y-coordinate of the HousingUnit
+     * @throws IllegalArgumentException if not all conditions are met
+     */
     public void connectAlienUnit(int alienX, int alienY, int housingX, int housingY) {
         checkCoordinates(alienX, alienY);
         checkCoordinates(housingX, housingY);
@@ -619,6 +629,7 @@ public abstract class ShipBoard {
      * Counts the number of brown aliens present in the ship
      *
      * @return The number of brown aliens
+     * @throws IllegalStateException if {@code brownActiveUnit} is pointing at a purple AlienUnit
      */
     public int getBrownAliens() {
         if(brownActiveUnit == null){
@@ -639,6 +650,7 @@ public abstract class ShipBoard {
      * Counts the number of purple aliens present in the ship
      *
      * @return The number of purple aliens
+     * @throws IllegalStateException if {@code brownActiveUnit} is pointing at a brown AlienUnit
      */
     public int getPurpleAliens() {
         if(purpleActiveUnit == null){

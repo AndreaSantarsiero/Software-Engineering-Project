@@ -156,6 +156,13 @@ public class Storage extends ShipCard {
     }
 
 
+    /**
+     * Retrieves the most valued material from the storage
+     * If no materials are found, an {@code IllegalArgumentException} is thrown
+     *
+     * @return the most valued {@code Material}
+     * @throws IllegalArgumentException if no material is available in the storage
+     */
     public Material getMostValuedMaterial() {
         for (Material material : materials) {
             if (material.getType() == Material.Type.RED) {
