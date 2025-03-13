@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
@@ -53,7 +54,7 @@ public class PlanetsCard extends AdventureCard {
         return freePlanets;
     }
 
-    public Vector<Material> getMaterials(Planet planet){
+    public ArrayList<Material> getMaterials(Planet planet){
         if(planet == null){
             throw new IllegalArgumentException("planet is null.");
         }
