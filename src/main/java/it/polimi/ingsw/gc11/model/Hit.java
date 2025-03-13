@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gc11.model;
 
-
-
 public abstract class Hit {
 
     public enum Type {
@@ -14,16 +12,15 @@ public abstract class Hit {
     private Type type;
     private Direction direction;
 
-
     public Hit(Type type, Direction direction) {
         this.type = type;
         this.direction = direction;
     }
 
-
     public Type getType() {
         return type;
     }
+
     public Direction getDirection() {
         return direction;
     }
