@@ -16,14 +16,8 @@ public class Pirates extends AdventureCard {
         this.coins = coins;
     }
 
-
-    public int getLostDays() {
-        return lostDays;
-    }
-    public int getFirePower() {
-        return firePower;
-    }
-    public int getCoins() {
-        return coins;
+    @Override
+    public void handler() {
+        //to implement
     }
 }
