@@ -1,62 +1,41 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
-import java.util.Vector;
+import it.polimi.ingsw.gc11.model.Shot;
 
-
+import java.util.ArrayList;
 
 public class Smugglers extends AdventureCard {
 
-    private int lostDays;
-    private int firePower;
-    private int lostMaterials;
-    private Vector<Material> rewards;
-    private boolean defeated;
+    private final int lostDays;
+    private final int firePower;
+    private final int lostMaterials;
+    private final int coins;
+    private final ArrayList<Material> materials;
 
 
-    public Smugglers(AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  Vector<Material> rewards) {
+    public Smugglers(AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  int coins, ArrayList<Material> materials) throws IllegalArgumentException {
         super(type);
 
-        if(lostDays < 0 || firePower < 0 || lostMaterials < 0) {
-            throw new IllegalArgumentException("lostDays or firePower or lostMaterials cannot be negative");
+        if(lostDays < 0 || firePower < 0 || lostMaterials < 0 || coins < 0 || materials == null) {
+            throw new IllegalArgumentException("Invalid arguments");
         }
 
+        for(Material material: materials) {
+            if (material == null) {
+                throw new IllegalArgumentException("invalid material");
+            }
+        }
         this.lostDays = lostDays;
         this.firePower = firePower;
         this.lostMaterials = lostMaterials;
-        this.rewards = rewards;
-        this.defeated = false;
+        this.coins = coins;
+        this.materials = materials;
     }
 
+    @Override
+    public void handler(GameModel model) {
 
-    //se la funzione ritorna -1 il combattimento sarà perso e dovranno essere scalati materiali
-    //se ritorna 1 sarà vinto
-    //se ritorna 0 pareggio
-    public int fight(int playerFirePower){
-        if(this.defeated){
-            throw new IllegalStateException("already defeated.");
-        }
-
-        if(playerFirePower > this.firePower){
-            this.defeated = true;
-            return 1;
-        }
-        if(playerFirePower == this.firePower){
-            return 0;
-        }
-        else{
-            return -1;
-        }
     }
-
-    public int getLostDays() {
-        return lostDays;
-    }
-    public int getFirePower() {
-        return firePower;
-    }
-    public int getLostMaterials() {
-        return lostMaterials;
-    }
-    public Vector<Material> getRewards() {return rewards;}
 }

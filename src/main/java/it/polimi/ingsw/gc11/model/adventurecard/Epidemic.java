@@ -1,12 +1,15 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.GameModel;
+
 public class Epidemic extends AdventureCard {
 
     public Epidemic() {
         super(Type.LEVEL2);
     }
 
-    public void handler() {
-        //to implement
+    @Override
+    public void handler(GameModel model) {
+
     }
 }

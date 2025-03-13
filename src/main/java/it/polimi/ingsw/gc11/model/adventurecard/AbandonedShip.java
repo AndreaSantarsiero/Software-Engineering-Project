@@ -1,17 +1,19 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.GameModel;
+
 public class AbandonedShip extends AdventureCard {
 
-    private int lostDays;
-    private int lostMembers;
-    private int coins;
-    private boolean resolved;
+    private final int lostDays;
+    private final int lostMembers;
+    private final int coins;
+    private final boolean resolved;
 
-    public AbandonedShip(AdventureCard.Type type, int lostDays, int lostMembers, int coins) {
+    public AbandonedShip(AdventureCard.Type type, int lostDays, int lostMembers, int coins) throws IllegalArgumentException{
         super(type);
 
         if(lostDays < 0 || lostMembers < 0 || coins < 0) {
-            throw new IllegalArgumentException("lostDays or lostMembers or coins is null.");
+            throw new IllegalArgumentException("Invalid arguments.");
         }
 
         this.lostDays = lostDays;
@@ -21,8 +23,8 @@ public class AbandonedShip extends AdventureCard {
 
     }
 
-    public void handler(){
-        //To implement
-    }
+    @Override
+    public void handler(GameModel model) {
 
+    }
 }
