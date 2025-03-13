@@ -28,8 +28,5 @@ public class Planet {
 
     public void setVisited() { this.visited = true; }
 
-    public ArrayList<Material> getMaterials() {
-        ArrayList<Material> materialsCopy = new ArrayList<>(materials);
-        return materialsCopy;
-    }
+    public ArrayList<Material> getMaterials() { return materials;}
 }
