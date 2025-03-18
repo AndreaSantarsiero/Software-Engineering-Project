@@ -14,11 +14,11 @@ public class GameModel {
     private FlightBoard flightBoard;
     private AdventureDeck[] adventureCardsDecks;
     private AdventureDeck definitiveDeck;
-    private ArrayList<ShipCard> shipCardsALL;
-    private ArrayList<AdventureCard> adventureCardsTrial; //8 cards
-    private ArrayList<AdventureCard> adventureCardsLevel1; //12 cards
-    private ArrayList<AdventureCard> adventureCardsLevel2; //20 cards
-    private Dice[] dices;
+    private final ArrayList<ShipCard> shipCardsALL;
+    private final ArrayList<AdventureCard> adventureCardsTrial; //8 cards
+    private final ArrayList<AdventureCard> adventureCardsLevel1; //12 cards
+    private final ArrayList<AdventureCard> adventureCardsLevel2; //20 cards
+    private final Dice[] dices;
 
 
     public GameModel() {
@@ -97,6 +97,20 @@ public class GameModel {
         }
     }
 
+    public FlightBoard getFlightBoard() {return flightBoard;}
+
+    public int getValDice1(){
+        return dices[0].roll();
+    }
+
+    public int getValDice2(){
+        return dices[1].roll();
+    }
+
+
+    /**
+    * Player's methods
+    */
     public void addPlayer(Player player) throws FullLobbyException, NullPointerException {
         if (player == null)
             throw new NullPointerException();
@@ -116,47 +130,6 @@ public class GameModel {
 
     public int getNumPlayers() {
         return players.length;
-    }
-
-    //Display x shipcard in the arraylist of all shipcards down on the table
-    public ShipCard getShipCard(int pos){
-        return this.shipCardsALL.get(pos);
-    }
-
-    public ArrayList<AdventureCard> observeMiniDeck(int numDeck){
-        return this.adventureCardsDecks[numDeck].getCards();
-    }
-
-    public void createDefinitiveDeck(){
-        this.definitiveDeck = new AdventureDeck(false);
-        for (int i = 0; i < this.adventureCardsDecks.length; i++) {
-            for (int j = 0; j < adventureCardsDecks[i].getSize(); j++) {
-                this.definitiveDeck.addCard(adventureCardsDecks[i].getTopCard());
-            }
-        }
-        this.definitiveDeck.shuffle();
-    }
-
-    public AdventureCard getTopAdventureCard(){ return this.definitiveDeck.getTopCard();}
-
-    public void setReservedShipCard(ShipCard shipCard){}
-
-    public void setOrientation(ShipCard shipCard, ShipCard.Orientation orientation){}
-
-    public void setScrap(ShipCard shipCard){}
-
-    public void connectToShipBoard(Player player, ShipCard shipCard){}
-
-    public FlightBoard getFlightBoard() {
-        return flightBoard;
-    }
-
-    public int getValDice1(){
-        return dices[0].roll();
-    }
-
-    public int getValDice2(){
-        return dices[1].roll();
     }
 
     public void addCoins(int amount, String username){
@@ -203,29 +176,21 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+    //To check
     public void modifyPlayerPosition(String username, int delta){
         if (username == null){
             throw new NullPointerException("Username is null");
         }
         for (int i = 0; i < players.length; i++) {
             if (players[i].getUsername().equals(username)) {
-                //da fare
+                int realDelta = delta;
+                //Implement algorithm
+                players[i].setPosition(players[i].getPosition() + delta);
+                return;
             }
         }
         throw new IllegalArgumentException("Player " + username + " not found");
     }
-
-//    public ShipBoard getPlayerShipBoard(String username) {
-//        if (username == null){
-//            throw new NullPointerException("Username is null");
-//        }
-//        for (int i = 0; i < players.length; i++) {
-//            if (players[i].getUsername().equals(username)) {
-//                return players[i].getShipBoard();
-//            }
-//        }
-//        throw new IllegalArgumentException("Player " + username + " not found");
-//    }
 
     public void setAbort(String username){
         if (username == null){
@@ -240,17 +205,79 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-//    public void addShipCardToPlayerShipBoard(String username, ShipCard shipCard, int x, int y){
-//        if (username == null){
-//            throw new NullPointerException("Username is null");
-//        }
-//        for (int i = 0; i < players.length; i++) {
-//            if (players[i].getUsername().equals(username)) {
-//                players[i].getShipBoard().addShipCard(shipCard, x, y);
-//                return;
-//            }
-//        }
-//        throw new IllegalArgumentException("Player " + username + " not found");
-//    }
+    public ShipBoard getPlayerShipBoard(String username) {
+        if (username == null){
+            throw new NullPointerException("Username is null");
+        }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                return players[i].getShipBoard();
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+
+   /**
+    * AdventureDeck's methods
+    */
+    public ArrayList<AdventureCard> observeMiniDeck(int numDeck){
+        return this.adventureCardsDecks[numDeck].getCards();
+    }
+
+    public void createDefinitiveDeck(){
+        this.definitiveDeck = new AdventureDeck(false);
+        for (int i = 0; i < this.adventureCardsDecks.length; i++) {
+            for (int j = 0; j < adventureCardsDecks[i].getSize(); j++) {
+                this.definitiveDeck.addCard(adventureCardsDecks[i].getTopCard());
+            }
+        }
+        this.definitiveDeck.shuffle();
+    }
+
+    public AdventureCard getTopAdventureCard(){ return this.definitiveDeck.getTopCard();}
+
+
+
+    /**
+     * ShipCard's and ShipBoard's methods
+     */
+    //Get shipcard in pos position in the arraylist of all shipcards down on the table
+    public ShipCard getShipCard(int pos){
+        this.shipCardsALL.get(pos).discover();
+        return this.shipCardsALL.get(pos);
+    }
+
+    public void reserveShipCard(String username, ShipCard shipCard){}
+
+    public void setScrap(String username, ShipCard shipCard){}
+
+
+    public void connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, int x, int y){
+        if (username == null){
+            throw new NullPointerException("Username is null");
+        }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                players[i].getShipBoard().addShipCard(shipCard, x, y);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+    public void removeShipCardFromPlayerShipBoard(String username, int x, int y){
+        if (username == null){
+            throw new NullPointerException("Username is null");
+        }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getUsername().equals(username)) {
+                players[i].getShipBoard().removeShipCard(x, y);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
 
 }

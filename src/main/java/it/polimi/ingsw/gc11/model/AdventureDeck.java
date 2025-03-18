@@ -44,7 +44,5 @@ public class AdventureDeck {
         return drawed;
     }
 
-    public int getSize(){
-        return cards.size();
-    }
+    public int getSize(){ return cards.size();}
 }

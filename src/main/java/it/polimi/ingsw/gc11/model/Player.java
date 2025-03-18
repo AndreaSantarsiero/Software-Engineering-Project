@@ -6,8 +6,6 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import java.io.Serializable;
 
-
-
 public class Player {
     private String username;
     private int coins;
@@ -29,15 +27,19 @@ public class Player {
     public String getUsername() {
         return username;
     }
+
     public int getCoins() {
         return coins;
     }
+
     public void addCoins(int delta) {
         this.coins += delta;
     }
+
     public int getPosition() {
         return position;
     }
+
     public void setPosition(int position) {
         this.position = position;
     }
@@ -54,12 +56,7 @@ public class Player {
         else
             throw new IllegalArgumentException();
     }
-//    public ShipBoard getShipBoard() {
-//        if(shipBoard instanceof Level1ShipBoard){
-//            Level1ShipBoard shipBoard1 = (Level1ShipBoard) shipBoard;
-//        }
-//        else{
-//            throw new IllegalArgumentException();
-//        }
-//    }
+
+    public ShipBoard getShipBoard() { return shipBoard; }
+
 }
