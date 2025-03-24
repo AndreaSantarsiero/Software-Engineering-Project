@@ -32,4 +32,12 @@ public class CombatZone extends AdventureCard {
         this.shots = shots;
     }
 
+    public int getLostDays() {return lostDays;}
+
+    public int getLostMembers() {return lostMembers;}
+
+    public int getLostMaterials() {return lostMaterials;}
+
+    public ArrayList<Shot> getShots() {return shots;}
+
 }

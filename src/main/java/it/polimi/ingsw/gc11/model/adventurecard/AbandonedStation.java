@@ -37,6 +37,11 @@ public class AbandonedStation extends AdventureCard {
             materials.add(new Material(Material.Type.RED));
     }
 
+    public int getLostDays() {return lostDays;}
+
+    public int getMembersRequired() {return membersRequired;}
+
+    public ArrayList<Material> getMaterials() {return materials;}
 
 
 }

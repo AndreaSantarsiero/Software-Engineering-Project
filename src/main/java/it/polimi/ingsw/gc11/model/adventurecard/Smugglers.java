@@ -34,5 +34,14 @@ public class Smugglers extends AdventureCard {
         this.materials = materials;
     }
 
+    public int getLostDays() {return lostDays;}
+
+    public int getFirePower() {return firePower;}
+
+    public int getLostMaterials() {return lostMaterials;}
+
+    public int getCoins() {return coins;}
+
+    public ArrayList<Material> getMaterials() {return materials;}
 
 }

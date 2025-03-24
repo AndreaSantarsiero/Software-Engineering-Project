@@ -27,4 +27,7 @@ public class MeteorSwarm extends AdventureCard {
     }
 
 
+    public  ArrayList<Meteor> getMeteors() {
+        return meteors;
+    }
 }

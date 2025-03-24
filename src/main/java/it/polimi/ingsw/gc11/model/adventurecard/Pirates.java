@@ -30,5 +30,12 @@ public class Pirates extends AdventureCard {
         this.shots = shots;
     }
 
+    public int getLostDays() {return lostDays;}
+
+    public int getFirePower() {return firePower;}
+
+    public int getCoins() {return coins;}
+
+    public ArrayList<Shot> getShots() {return shots;}
 
 }

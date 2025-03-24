@@ -22,5 +22,12 @@ public class Slavers extends AdventureCard {
         this.coins = coins;
     }
 
+    public int getLostDays() {return lostDays;}
+
+    public int getFirePower() {return firePower;}
+
+    public int getLostMembers() {return lostMembers;}
+
+    public int getCoins() {return coins;}
 
 }

@@ -23,5 +23,10 @@ public class AbandonedShip extends AdventureCard {
 
     }
 
+    public int getLostDays() {return lostDays;}
+
+    public int getLostMembers() {return lostMembers;}
+
+    public int getCoins() {return coins;}
 
 }
