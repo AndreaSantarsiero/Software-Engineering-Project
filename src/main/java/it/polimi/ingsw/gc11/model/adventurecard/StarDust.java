@@ -8,8 +8,4 @@ public class StarDust extends AdventureCard {
         super(type);
     }
 
-    @Override
-    public void handler(GameModel model) {
-
-    }
 }

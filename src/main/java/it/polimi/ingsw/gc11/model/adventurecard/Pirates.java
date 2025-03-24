@@ -30,8 +30,5 @@ public class Pirates extends AdventureCard {
         this.shots = shots;
     }
 
-    @Override
-    public void handler(GameModel model) {
-        //to implement
-    }
+
 }

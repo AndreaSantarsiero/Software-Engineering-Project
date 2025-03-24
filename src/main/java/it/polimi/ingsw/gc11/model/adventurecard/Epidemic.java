@@ -8,8 +8,5 @@ public class Epidemic extends AdventureCard {
         super(Type.LEVEL2);
     }
 
-    @Override
-    public void handler(GameModel model) {
 
-    }
 }

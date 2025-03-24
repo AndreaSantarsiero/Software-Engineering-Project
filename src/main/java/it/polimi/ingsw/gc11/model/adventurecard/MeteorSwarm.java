@@ -26,8 +26,5 @@ public class MeteorSwarm extends AdventureCard {
         this.meteors = meteors;
     }
 
-    @Override
-    public void handler(GameModel model) {
-        //to implement
-    }
+
 }

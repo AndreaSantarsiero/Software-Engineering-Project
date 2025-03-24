@@ -32,6 +32,4 @@ public class CombatZone extends AdventureCard {
         this.shots = shots;
     }
 
-    @Override
-    public void handler(GameModel model) {}
 }

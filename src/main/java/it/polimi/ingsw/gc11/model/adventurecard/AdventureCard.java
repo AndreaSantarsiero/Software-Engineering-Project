@@ -28,6 +28,5 @@ public abstract class AdventureCard {
         return used;
     }
 
-    public abstract void handler(GameModel model);
 
 }

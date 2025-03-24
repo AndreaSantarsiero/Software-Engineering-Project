@@ -34,8 +34,5 @@ public class Smugglers extends AdventureCard {
         this.materials = materials;
     }
 
-    @Override
-    public void handler(GameModel model) {
 
-    }
 }

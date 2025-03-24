@@ -38,8 +38,5 @@ public class AbandonedStation extends AdventureCard {
     }
 
 
-    @Override
-    public void handler(GameModel model) {
 
-    }
 }

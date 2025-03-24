@@ -23,8 +23,5 @@ public class AbandonedShip extends AdventureCard {
 
     }
 
-    @Override
-    public void handler(GameModel model) {
 
-    }
 }

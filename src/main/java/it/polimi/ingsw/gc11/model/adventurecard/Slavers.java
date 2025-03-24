@@ -22,8 +22,5 @@ public class Slavers extends AdventureCard {
         this.coins = coins;
     }
 
-    @Override
-    public void handler(GameModel model) {
 
-    }
 }

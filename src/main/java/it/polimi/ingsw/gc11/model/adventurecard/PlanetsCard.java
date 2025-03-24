@@ -35,16 +35,7 @@ public class PlanetsCard extends AdventureCard {
         this.planets = planets;
     }
 
-
-    //handler uses the following private methods
-    @Override
-    public void handler(GameModel model) {
-
-    }
-
-    //Private perchè sono da usare dentro l'handler
-    //Top planet is number 0
-    private void landOn(int numPlanet){
+    public void landOn(int numPlanet){
         if(numPlanet < 0 || numPlanet >= planets.size()) {
             throw new IllegalArgumentException("Invalid planet.");
         }
@@ -57,7 +48,7 @@ public class PlanetsCard extends AdventureCard {
     public ArrayList<Planet> getFreePlanets(){
         ArrayList<Planet> freePlanets = new ArrayList<>();
         for(Planet planet:planets){
-            if(planet.isVisited()){
+            if(!planet.isVisited()){
                 freePlanets.add(planet);
             }
         }
@@ -68,8 +59,8 @@ public class PlanetsCard extends AdventureCard {
         if(numPlanet < 0 || numPlanet >= planets.size()) {
             throw new IllegalArgumentException("Invalid planet.");
         }
-        if(this.planets.get(numPlanet).isVisited()) {
-            throw new IllegalStateException("Planet already visited.");
+        if(!this.planets.get(numPlanet).isVisited()) {
+            throw new IllegalStateException("Nobody on this planet");
         }
         return planets.get(numPlanet).getMaterials();
     }
