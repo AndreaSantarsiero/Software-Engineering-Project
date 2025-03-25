@@ -1,11 +1,12 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
+import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-
 import java.util.List;
+
+
 
 public class Slavers extends AdventureCard {
 
@@ -34,13 +35,13 @@ public class Slavers extends AdventureCard {
 
     public int getCoins() {return coins;}
 
-    public void handler(GameModel model, String username, List<Integer> numBatteries, List<Battery> batteries, List<HousingUnit> housingUnitsUserAccepted, List<Integer> killedMembers, boolean wantToMove) {
+    public void handler(GameModel model, String username, List<Cannon> doubleCannons, List<Integer> numBatteries, List<Battery> batteries, List<HousingUnit> housingUnitsUserAccepted, List<Integer> killedMembers, boolean wantToMove) {
         int TotalNumBatteries = 0;
         for (int num : numBatteries) {
             TotalNumBatteries += num;
         }
 
-        int power = model.getPlayerShipBoard(username).getCannonsPower(TotalNumBatteries);
+        double power = model.getPlayerShipBoard(username).getCannonsPower(doubleCannons);
 
         //Remove Batteries
         for(int i = 0; i < batteries.size(); i++) {
@@ -57,5 +58,4 @@ public class Slavers extends AdventureCard {
             model.getPlayerShipBoard(username).killMembers(housingUnitsUserAccepted, killedMembers);
         }
     }
-
 }
