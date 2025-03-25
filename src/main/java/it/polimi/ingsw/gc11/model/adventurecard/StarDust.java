@@ -9,4 +9,10 @@ public class StarDust extends AdventureCard {
     }
 
     //NEED METHOD IN SHIPBOARD THAT COUNTS THE EXPOSED CONNECTORS
+    public void handler(GameModel model, String username) {
+        int num = model.getPlayerShipBoard(username).getExposedConnectors();
+
+        //Lose Days of flight
+        model.loseDays(username, num);
+    }
 }
