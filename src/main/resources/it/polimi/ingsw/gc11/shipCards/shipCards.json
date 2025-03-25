@@ -6,21 +6,25 @@
 
 
   "BlueCentralUnit.jpg": {
+    "id": "BlueCentralUnit",
     "subClass": "HousingUnit",
     "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
     "central": true
   },
   "GreenCentralUnit.jpg": {
+    "id": "GreenCentralUnit",
     "subClass": "HousingUnit",
     "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
     "central": true
   },
   "RedCentralUnit.jpg": {
+    "id": "RedCentralUnit",
     "subClass": "HousingUnit",
     "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
     "central": true
   },
   "YellowCentralUnit.jpg": {
+    "id": "YellowCentralUnit",
     "subClass": "HousingUnit",
     "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "UNIVERSAL", "left": "UNIVERSAL" },
     "central": true
@@ -29,16 +33,19 @@
 
 
   "BlueDoubleStorage1.jpg": {
+    "id": "BlueDoubleStorage1",
     "subClass": "Storage",
     "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "DOUBLE", "left": "UNIVERSAL" },
     "type": "DOUBLE_BLUE"
   },
   "BlueDoubleStorage2.jpg": {
+    "id": "BlueDoubleStorage2",
     "subClass": "Storage",
     "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "NONE" },
     "type": "DOUBLE_BLUE"
   },
   "BlueDoubleStorage3.jpg": {
+    "id": "BlueDoubleStorage3",
     "subClass": "Storage",
     "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "SINGLE" },
     "type": "DOUBLE_BLUE"
@@ -47,11 +54,13 @@
 
 
   "BlueTripleStorage1.jpg": {
+    "id": "BlueTripleStorage1",
     "subClass": "Storage",
     "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
     "type": "TRIPLE_BLUE"
   },
   "BlueTripleStorage2.jpg": {
+    "id": "BlueTripleStorage2",
     "subClass": "Storage",
     "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "TRIPLE_BLUE"
@@ -60,6 +69,7 @@
 
 
   "BrownAlien1.jpg": {
+    "id": "BrownAlien1",
     "subClass": "AlienUnit",
     "connectors": { "top": "SINGLE", "right": "SINGLE", "bottom": "NONE", "left": "SINGLE" },
       "type": "BROWN"
@@ -68,16 +78,19 @@
 
 
   "DoubleBattery1.jpg": {
+    "id": "DoubleBattery1",
     "subClass": "Battery",
     "connectors": { "top": "UNIVERSAL", "right": "SINGLE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleBattery2.jpg": {
+    "id": "DoubleBattery2",
     "subClass": "Battery",
     "connectors": { "top": "UNIVERSAL", "right": "DOUBLE", "bottom": "NONE", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleBattery3.jpg": {
+    "id": "DoubleBattery3",
     "subClass": "Battery",
     "connectors": { "top": "UNIVERSAL", "right": "DOUBLE", "bottom": "SINGLE", "left": "NONE" },
     "type": "DOUBLE"
@@ -86,11 +99,13 @@
 
 
   "DoubleCannon1.jpg": {
+    "id": "DoubleCannon1",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleCannon2.jpg": {
+    "id": "DoubleCannon2",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "DOUBLE"
@@ -99,16 +114,19 @@
 
 
   "DoubleEngine1.jpg": {
+    "id": "DoubleEngine1",
     "subClass": "Engine",
     "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleEngine2.jpg": {
+    "id": "DoubleEngine2",
     "subClass": "Engine",
     "connectors": { "top": "SINGLE", "right": "UNIVERSAL", "left": "NONE" },
     "type": "DOUBLE"
   },
   "DoubleEngine3.jpg": {
+    "id": "DoubleEngine3",
     "subClass": "Engine",
     "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
     "type": "DOUBLE"
@@ -117,6 +135,7 @@
 
 
   "HousingUnit1.jpg": {
+    "id": "HousingUnit1",
     "subClass": "HousingUnit",
     "connectors": { "top": "NONE", "right": "NONE", "bottom": "UNIVERSAL", "left": "SINGLE" },
     "central": false
@@ -125,11 +144,13 @@
 
 
   "PurpleAlien1.jpg": {
+    "id": "PurpleAlien1",
     "subClass": "AlienUnit",
     "connectors": { "top": "SINGLE", "right": "DOUBLE", "bottom": "NONE", "left": "DOUBLE" },
     "type": "PURPLE"
   },
   "PurpleAlien2.jpg": {
+    "id": "PurpleAlien2",
     "subClass": "AlienUnit",
     "connectors": { "top": "DOUBLE", "right": "DOUBLE", "bottom": "NONE", "left": "DOUBLE" },
     "type": "PURPLE"
@@ -138,16 +159,19 @@
 
 
   "RedDoubleStorage1.jpg": {
+    "id": "RedDoubleStorage1",
     "subClass": "Storage",
     "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
     "type": "DOUBLE_RED"
   },
   "RedDoubleStorage2.jpg": {
+    "id": "RedDoubleStorage2",
     "subClass": "Storage",
     "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "NONE", "left": "SINGLE" },
     "type": "DOUBLE_RED"
   },
   "RedDoubleStorage3.jpg": {
+    "id": "RedDoubleStorage3",
     "subClass": "Storage",
     "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
     "type": "DOUBLE_RED"
@@ -156,6 +180,7 @@
 
 
   "RedSingleStorage1.jpg": {
+    "id": "RedSingleStorage1",
     "subClass": "Storage",
     "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "SINGLE", "left": "UNIVERSAL" },
     "type": "SINGLE_RED"
@@ -164,6 +189,7 @@
 
 
   "Shield1.jpg": {
+    "id": "Shield1",
     "subClass": "Shield",
     "connectors": { "top": "NONE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "SINGLE" }
   },
@@ -171,26 +197,31 @@
 
 
   "SingleCannon1.jpg": {
+    "id": "SingleCannon1",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon2.jpg": {
+    "id": "SingleCannon2",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon3.jpg": {
+    "id": "SingleCannon3",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon4.jpg": {
+    "id": "SingleCannon4",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon5.jpg": {
+    "id": "SingleCannon5",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
     "type": "SINGLE"
@@ -199,36 +230,43 @@
 
 
   "SingleEngine1.jpg": {
+    "id": "SingleEngine1",
     "subClass": "Engine",
     "connectors": { "top": "NONE", "right": "UNIVERSAL", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine2.jpg": {
+    "id": "SingleEngine2",
     "subClass": "Engine",
     "connectors": { "top": "NONE", "right": "UNIVERSAL", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine3.jpg": {
+    "id": "SingleEngine3",
     "subClass": "Engine",
     "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine4.jpg": {
+    "id": "SingleEngine4",
     "subClass": "Engine",
     "connectors": { "top": "SINGLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine5.jpg": {
+    "id": "SingleEngine5",
     "subClass": "Engine",
     "connectors": { "top": "SINGLE", "right": "SINGLE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine6.jpg": {
+    "id": "SingleEngine6",
     "subClass": "Engine",
     "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleEngine7.jpg": {
+    "id": "SingleEngine7",
     "subClass": "Engine",
     "connectors": { "top": "DOUBLE", "right": "NONE", "left": "NONE" },
     "type": "SINGLE"
@@ -237,6 +275,7 @@
 
 
   "StructuralModule1.jpg": {
+    "id": "StructuralModule1",
     "subClass": "StructuralModule",
     "connectors": { "top": "UNIVERSAL", "right": "UNIVERSAL", "bottom": "NONE", "left": "SINGLE" }
   },
@@ -244,11 +283,13 @@
 
 
   "TripleBattery1.jpg": {
+    "id": "TripleBattery1",
     "subClass": "Battery",
     "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "TRIPLE"
   },
   "TripleBattery2.jpg": {
+    "id": "TripleBattery2",
     "subClass": "Battery",
     "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "TRIPLE"

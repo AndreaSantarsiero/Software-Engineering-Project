@@ -14,7 +14,7 @@ class ShieldTest {
 
     @BeforeEach
     void setUp() {
-        shield = new Shield(Connector.NONE, Connector.UNIVERSAL, Connector.NONE, Connector.UNIVERSAL);
+        shield = new Shield("shield", Connector.NONE, Connector.UNIVERSAL, Connector.NONE, Connector.UNIVERSAL);
     }
 
 

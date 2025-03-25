@@ -13,8 +13,8 @@ class CannonTest {
 
     @BeforeEach
     void setUp() {
-        singleCannon = new Cannon(Connector.SINGLE, Connector.DOUBLE, Connector.UNIVERSAL, Cannon.Type.SINGLE);
-        doubleCannon = new Cannon(Connector.NONE, Connector.SINGLE, Connector.UNIVERSAL, Cannon.Type.DOUBLE);
+        singleCannon = new Cannon("cannon", Connector.SINGLE, Connector.DOUBLE, Connector.UNIVERSAL, Cannon.Type.SINGLE);
+        doubleCannon = new Cannon("cannon", Connector.NONE, Connector.SINGLE, Connector.UNIVERSAL, Cannon.Type.DOUBLE);
     }
 
 

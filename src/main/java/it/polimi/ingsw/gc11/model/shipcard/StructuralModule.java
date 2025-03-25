@@ -15,7 +15,7 @@ public class StructuralModule extends ShipCard {
      * @param bottomConnector The connector on the bottom side
      * @param leftConnector The connector on the left side
      */
-    public StructuralModule(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
-        super(topConnector, rightConnector, bottomConnector, leftConnector);
+    public StructuralModule(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
+        super(id, topConnector, rightConnector, bottomConnector, leftConnector);
     }
 }

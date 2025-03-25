@@ -22,8 +22,8 @@ public class HousingUnit extends ShipCard {
      * @param leftConnector The connector on the left side
      * @param central        Indicates whether this housing unit is central
      */
-    public HousingUnit(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, boolean central) {
-        super(topConnector, rightConnector, bottomConnector, leftConnector);
+    public HousingUnit(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, boolean central) {
+        super(id, topConnector, rightConnector, bottomConnector, leftConnector);
         this.central = central;
         this.numMembers = 2;
         this.alienUnit = null;

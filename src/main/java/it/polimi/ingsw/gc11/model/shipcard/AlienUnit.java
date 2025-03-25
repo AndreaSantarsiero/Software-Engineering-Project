@@ -29,8 +29,8 @@ public class AlienUnit extends ShipCard {
      * @param leftConnector The connector on the left side
      * @param type The type of the Alien Unit (BROWN or PURPLE)
      */
-    public AlienUnit(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
-        super(topConnector, rightConnector, bottomConnector, leftConnector);
+    public AlienUnit(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
+        super(id, topConnector, rightConnector, bottomConnector, leftConnector);
         this.type = type;
         presence = false;
     }

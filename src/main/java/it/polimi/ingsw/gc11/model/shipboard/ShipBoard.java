@@ -39,6 +39,24 @@ public abstract class ShipBoard {
 
 
     /**
+     * Adjusts the given X coordinate according to the level of the shipboard
+     *
+     * @param x The original X coordinate
+     * @return The adjusted X coordinate
+     */
+    public abstract int adaptX (int x);
+
+    /**
+     * Adjusts the given Y coordinate according to the level of the shipboard
+     *
+     * @param y The original Y coordinate
+     * @return The adjusted Y coordinate
+     */
+    public abstract int adaptY (int y);
+
+
+
+    /**
      * Determines whether the given coordinates are valid within the ship's bounds based on the specific type of ShipBoard
      * This method delegates the validation to the corresponding subclass, ensuring that each type of ShipBoard applies its own coordinate validation logic
      *
@@ -86,6 +104,8 @@ public abstract class ShipBoard {
             throw new IllegalArgumentException("Ship card is null");
         }
 
+        x = adaptX(x);
+        y = adaptY(y);
         checkCoordinates(x, y);
         components[y][x] = shipCard;
         lastModifiedX = x;
@@ -101,6 +121,8 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException if the card is already null or welded
      */
     public void removeShipCard(int x, int y) {
+        x = adaptX(x);
+        y = adaptY(y);
         checkCoordinates(x, y);
         if (components[y][x] == null) {
             throw new IllegalArgumentException("Ship card already null");
@@ -122,6 +144,8 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException if the coordinates are invalid
      */
     public ShipCard getShipCard(int x, int y) {
+        x = adaptX(x);
+        y = adaptY(y);
         checkCoordinates(x, y);
         return components[y][x];
     }
@@ -168,6 +192,8 @@ public abstract class ShipBoard {
             throw new IllegalStateException("Ship card not previously reserved");
         }
         if (reservedComponents.contains(shipCard)) {
+            x = adaptX(x);
+            y = adaptY(y);
             checkCoordinates(x, y);
             reservedComponents.remove(shipCard);
             components[y][x] = shipCard;
@@ -402,6 +428,8 @@ public abstract class ShipBoard {
      * @return The total number of connected cards, including itself
      */
     private int integrityVerifier(int x, int y){
+        x = adaptX(x);
+        y = adaptY(y);
         ShipCard shipCard = this.getShipCard(x, y);
         shipCard.setVisited(true);
         boolean finalComponent = true;
@@ -578,6 +606,10 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException if not all conditions are met
      */
     public void connectAlienUnit(int alienX, int alienY, int housingX, int housingY) {
+        alienX = adaptX(alienX);
+        alienY = adaptY(alienY);
+        housingX = adaptX(housingX);
+        housingY = adaptY(housingY);
         checkCoordinates(alienX, alienY);
         checkCoordinates(housingX, housingY);
         ShipCard shipCard1 = this.getShipCard(alienX, alienY);
@@ -1070,6 +1102,7 @@ public abstract class ShipBoard {
      */
     public boolean hasAnExposedConnector(Hit.Direction direction, int coord) {
         if (direction == Hit.Direction.LEFT) {
+            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(i, coord);
@@ -1088,6 +1121,7 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.RIGHT) {
+            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(components[0].length - i, coord);
@@ -1106,6 +1140,7 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.TOP) {
+            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, i);
@@ -1124,6 +1159,7 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.BOTTOM) {
+            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, components.length - i);
@@ -1154,6 +1190,7 @@ public abstract class ShipBoard {
      */
     public boolean destroyHitComponent(Hit.Direction direction, int coord) {
         if (direction == Hit.Direction.LEFT) {
+            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(i, coord);
@@ -1168,6 +1205,7 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.RIGHT) {
+            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(components[0].length - i, coord);
@@ -1182,6 +1220,7 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.TOP) {
+            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, i);
@@ -1196,6 +1235,7 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.BOTTOM) {
+            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, components.length - i);

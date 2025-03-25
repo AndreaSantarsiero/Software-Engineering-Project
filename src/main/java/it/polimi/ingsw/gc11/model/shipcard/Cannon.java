@@ -27,8 +27,8 @@ public class Cannon extends ShipCard {
      * @param leftConnector The connector on the left side
      * @param type The type of the Cannon (SINGLE or DOUBLE)
      */
-    public Cannon(Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
-        super(Connector.NONE, rightConnector, bottomConnector, leftConnector);
+    public Cannon(String id, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
+        super(id, Connector.NONE, rightConnector, bottomConnector, leftConnector);
         this.type = type;
     }
 

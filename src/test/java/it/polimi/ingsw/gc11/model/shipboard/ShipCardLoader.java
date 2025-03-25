@@ -2,13 +2,18 @@ package it.polimi.ingsw.gc11.model.shipboard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ShipCardLoaderJSON {
+
+
+public class ShipCardLoader {
+
+    ArrayList<ShipCard> shipCards;
+
+
 
     public static ShipCard.Connector connectorFromString(String value){
         try {
@@ -21,19 +26,15 @@ public class ShipCardLoaderJSON {
     public static Storage.Type storageFromString(String value){
         return Storage.Type.valueOf(value.toUpperCase());
     }
-
     public static AlienUnit.Type alienFromString(String value){
         return AlienUnit.Type.valueOf(value.toUpperCase());
     }
-
     public static Battery.Type batteryFromString(String value){
         return Battery.Type.valueOf(value.toUpperCase());
     }
-
     public static Cannon.Type cannonFromString(String value){
         return Cannon.Type.valueOf(value.toUpperCase());
     }
-
     public static Engine.Type engineFromString(String value){
         return Engine.Type.valueOf(value.toUpperCase());
     }
@@ -41,16 +42,16 @@ public class ShipCardLoaderJSON {
 
 
 
-    public static void main(String[] args) {
-        ArrayList<ShipCard> shipCards = new ArrayList<>();
-
+    public ShipCardLoader() {
+        shipCards = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try (InputStream inputStream = ShipCardLoaderJSON.class.getClassLoader()
+
+        try (InputStream inputStream = ShipCardLoader.class.getClassLoader()
                 .getResourceAsStream("it/polimi/ingsw/gc11/shipCards/shipCards.json")) {
 
             if (inputStream == null) {
-                throw new IOException("File JSON non trovato!");
+                throw new IOException("File JSON not found!");
             }
 
             Map<String, Map<String, Object>> shipCardsMap = objectMapper.readValue(inputStream, Map.class);
@@ -58,7 +59,7 @@ public class ShipCardLoaderJSON {
             for (Map.Entry<String, Map<String, Object>> entry : shipCardsMap.entrySet()) {
                 Map<String, Object> values = entry.getValue();
 
-
+                String id = (String) values.getOrDefault("id", "Unknown");
                 String subClass = (String) values.getOrDefault("subClass", "Unknown");
                 String type = (String) values.getOrDefault("type", "Unknown");
                 boolean central = values.get("central") != null && (boolean) values.get("central");
@@ -73,42 +74,38 @@ public class ShipCardLoaderJSON {
                 ShipCard.Connector bottom = connectorFromString(connectors.getOrDefault("bottom", "NONE"));
                 ShipCard.Connector left = connectorFromString(connectors.getOrDefault("left", "NONE"));
 
-//                String top = connectors.getOrDefault("top", "NONE");
-//                String right = connectors.getOrDefault("right", "NONE");
-//                String bottom = connectors.getOrDefault("bottom", "NONE");
-//                String left = connectors.getOrDefault("left", "NONE");
 
                 switch (subClass) {
                     case "HousingUnit":
-                        shipCards.add(new HousingUnit(top, right, bottom, left, central));
+                        shipCards.add(new HousingUnit(id, top, right, bottom, left, central));
                         break;
 
                     case "Storage":
-                        shipCards.add(new Storage(top, right, bottom, left, storageFromString(type)));
+                        shipCards.add(new Storage(id, top, right, bottom, left, storageFromString(type)));
                         break;
 
                     case "AlienUnit":
-                        shipCards.add(new AlienUnit(top, right, bottom, left, alienFromString(type)));
+                        shipCards.add(new AlienUnit(id, top, right, bottom, left, alienFromString(type)));
                         break;
 
                     case "Battery":
-                        shipCards.add(new Battery(top, right, bottom, left, batteryFromString(type)));
+                        shipCards.add(new Battery(id, top, right, bottom, left, batteryFromString(type)));
                         break;
 
                     case "Cannon":
-                        shipCards.add(new Cannon(right, bottom, left, cannonFromString(type)));
+                        shipCards.add(new Cannon(id, right, bottom, left, cannonFromString(type)));
                         break;
 
                     case "Engine":
-                        shipCards.add(new Engine(top, right, left, engineFromString(type)));
+                        shipCards.add(new Engine(id, top, right, left, engineFromString(type)));
                         break;
 
                     case "Shield":
-                        shipCards.add(new Shield(top, right, bottom, left));
+                        shipCards.add(new Shield(id, top, right, bottom, left));
                         break;
 
                     case "StructuralModule":
-                        shipCards.add(new StructuralModule(top, right, bottom, left));
+                        shipCards.add(new StructuralModule(id, top, right, bottom, left));
                         break;
                 }
             }
@@ -116,5 +113,17 @@ public class ShipCardLoaderJSON {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public ShipCard getShipCard(String id) {
+        for (ShipCard shipCard : shipCards){
+            if (shipCard.getId().equals(id)){
+                return shipCard;
+            }
+        }
+
+        return null;
     }
 }

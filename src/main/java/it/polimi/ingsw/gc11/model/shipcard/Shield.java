@@ -17,8 +17,8 @@ public class Shield extends ShipCard {
      * @param bottomConnector The connector on the bottom side
      * @param leftConnector The connector on the left side
      */
-    public Shield(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
-        super(topConnector, rightConnector, bottomConnector, leftConnector);
+    public Shield(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
+        super(id, topConnector, rightConnector, bottomConnector, leftConnector);
     }
 
 

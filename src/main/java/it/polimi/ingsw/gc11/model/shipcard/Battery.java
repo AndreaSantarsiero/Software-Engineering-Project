@@ -30,8 +30,8 @@ public class Battery extends ShipCard {
      * @param type The type of the Battery (DOUBLE or TRIPLE)
      * @throws IllegalArgumentException if the provided type is not recognized
      */
-    public Battery(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
-        super(topConnector, rightConnector, bottomConnector, leftConnector);
+    public Battery(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
+        super(id, topConnector, rightConnector, bottomConnector, leftConnector);
         this.type = type;
         if (type == Type.DOUBLE) {
             availableBatteries = 2;

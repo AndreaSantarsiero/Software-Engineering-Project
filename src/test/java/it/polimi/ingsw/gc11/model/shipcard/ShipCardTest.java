@@ -12,14 +12,14 @@ class ShipCardTest {
     private ShipCard shipCard;
 
     private static class TestShipCard extends ShipCard {
-        public TestShipCard(Connector top, Connector right, Connector bottom, Connector left) {
-            super(top, right, bottom, left);
+        public TestShipCard(String id, Connector top, Connector right, Connector bottom, Connector left) {
+            super(id, top, right, bottom, left);
         }
     }
 
     @BeforeEach
     void setUp() {
-        shipCard = new TestShipCard(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL);
+        shipCard = new TestShipCard("shipCard", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL);
     }
 
 
@@ -39,7 +39,7 @@ class ShipCardTest {
 
     @Test
     void testAllNoneConnectorsFailure() {
-        assertThrows(IllegalArgumentException.class, () -> new TestShipCard(Connector.NONE, Connector.NONE, Connector.NONE, Connector.NONE), "Expected IllegalArgumentException when all connectors are NONE, but no exception was thrown");
+        assertThrows(IllegalArgumentException.class, () -> new TestShipCard("shipCard", Connector.NONE, Connector.NONE, Connector.NONE, Connector.NONE), "Expected IllegalArgumentException when all connectors are NONE, but no exception was thrown");
     }
 
     @Test

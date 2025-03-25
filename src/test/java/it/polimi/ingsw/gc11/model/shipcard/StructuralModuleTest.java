@@ -13,7 +13,7 @@ class StructuralModuleTest {
 
     @BeforeEach
     void setUp() {
-        structuralModule = new StructuralModule(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL);
+        structuralModule = new StructuralModule("structuralModule", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL);
     }
 
 

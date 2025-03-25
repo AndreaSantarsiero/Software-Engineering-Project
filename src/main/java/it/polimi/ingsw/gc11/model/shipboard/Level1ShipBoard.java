@@ -15,6 +15,31 @@ public class Level1ShipBoard extends ShipBoard {
     }
 
 
+
+    /**
+     * Adjusts the given X coordinate by subtracting 5
+     *
+     * @param x The original X coordinate
+     * @return The adjusted X coordinate
+     */
+    @Override
+    public int adaptX (int x){
+        return x - 5;
+    }
+
+    /**
+     * Adjusts the given Y coordinate by subtracting 5
+     *
+     * @param y The original Y coordinate
+     * @return The adjusted Y coordinate
+     */
+    @Override
+    public int adaptY (int y){
+        return y - 5;
+    }
+
+
+
     /**
      * Validates whether the given coordinates are within the allowed area of the shipboard
      *
@@ -24,9 +49,6 @@ public class Level1ShipBoard extends ShipBoard {
      * @throws IllegalArgumentException if the coordinates are outside the board's bounds
      */
     public boolean validateCoordinates(int x, int y){
-        x -= 5;
-        y -= 5;
-
         if (x < 0 || y < 0 || x >= 5 || y >= 5) {
             throw new IllegalArgumentException("Coordinates out of the board's bounds");
         }

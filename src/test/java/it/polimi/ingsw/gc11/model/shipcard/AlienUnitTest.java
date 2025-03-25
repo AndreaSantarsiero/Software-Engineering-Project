@@ -14,8 +14,8 @@ class AlienUnitTest {
 
     @BeforeEach
     void setUp() {
-        brownAlienUnit = new AlienUnit(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, AlienUnit.Type.BROWN);
-        purpleAlienUnit = new AlienUnit(Connector.NONE, Connector.SINGLE, Connector.DOUBLE, Connector.UNIVERSAL, AlienUnit.Type.PURPLE);
+        brownAlienUnit = new AlienUnit("alienUnit", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, AlienUnit.Type.BROWN);
+        purpleAlienUnit = new AlienUnit("alienUnit", Connector.NONE, Connector.SINGLE, Connector.DOUBLE, Connector.UNIVERSAL, AlienUnit.Type.PURPLE);
     }
 
 

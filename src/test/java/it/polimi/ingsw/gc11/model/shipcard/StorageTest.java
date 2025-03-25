@@ -24,9 +24,9 @@ class StorageTest {
         blueMaterial = new Material(Material.Type.BLUE);
         greenMaterial = new Material(Material.Type.GREEN);
         yellowMaterial = new Material(Material.Type.YELLOW);
-        doubleBlueStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLE_BLUE);
-        doubleRedStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLE_RED);
-        singleRedStorage = new Storage(Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.SINGLE_RED);
+        doubleBlueStorage = new Storage("storage", Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLE_BLUE);
+        doubleRedStorage = new Storage("storage", Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.DOUBLE_RED);
+        singleRedStorage = new Storage("storage", Connector.UNIVERSAL, Connector.NONE, Connector.NONE, Connector.NONE, Storage.Type.SINGLE_RED);
     }
 
     @Test

@@ -23,6 +23,7 @@ public abstract class ShipCard {
     }
 
 
+    private final String id;
     private final Connector topConnector;
     private final Connector rightConnector;
     private final Connector bottomConnector;
@@ -43,10 +44,11 @@ public abstract class ShipCard {
      * @param bottomConnector The connector on the bottom side
      * @param leftConnector   The connector on the left side
      */
-    public ShipCard(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
+    public ShipCard(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
         if (topConnector == Connector.NONE && rightConnector == Connector.NONE && bottomConnector == Connector.NONE && leftConnector == Connector.NONE) {
             throw new IllegalArgumentException("Cannot create a ShipCard with only NONE connectors");
         }
+        this.id = id;
         this.topConnector = topConnector;
         this.rightConnector = rightConnector;
         this.bottomConnector = bottomConnector;
@@ -59,6 +61,13 @@ public abstract class ShipCard {
     }
 
 
+
+    /**
+     * @return a String containing the id of the card
+     */
+    public String getId() {
+        return id;
+    }
 
     /**
      * Retrieves the connector on the top side, adjusted according to the current orientation

@@ -14,8 +14,8 @@ class BatteryTest {
 
     @BeforeEach
     void setUp() {
-        doubleBattery = new Battery(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, Battery.Type.DOUBLE);
-        tripleBattery = new Battery(Connector.NONE, Connector.SINGLE, Connector.DOUBLE, Connector.UNIVERSAL, Battery.Type.TRIPLE);
+        doubleBattery = new Battery("battery", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, Battery.Type.DOUBLE);
+        tripleBattery = new Battery("battery", Connector.NONE, Connector.SINGLE, Connector.DOUBLE, Connector.UNIVERSAL, Battery.Type.TRIPLE);
     }
 
 

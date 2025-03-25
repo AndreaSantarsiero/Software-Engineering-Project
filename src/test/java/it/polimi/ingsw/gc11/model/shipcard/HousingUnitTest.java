@@ -15,9 +15,9 @@ public class HousingUnitTest {
 
     @BeforeEach
     void setUp() {
-        centralHousingUnit = new HousingUnit(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, true);
-        secondaryHousingUnit = new HousingUnit(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, false);
-        alienUnit = new AlienUnit(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, AlienUnit.Type.BROWN);
+        centralHousingUnit = new HousingUnit("housingUnit", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, true);
+        secondaryHousingUnit = new HousingUnit("housingUnit", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, false);
+        alienUnit = new AlienUnit("housingUnit", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, AlienUnit.Type.BROWN);
     }
 
 
@@ -74,7 +74,7 @@ public class HousingUnitTest {
     @Test
     void testReplaceAlienUnit() {
         secondaryHousingUnit.setAlienUnit(alienUnit);
-        AlienUnit newAlien = new AlienUnit(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, AlienUnit.Type.PURPLE);
+        AlienUnit newAlien = new AlienUnit("alienUnit", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Connector.UNIVERSAL, AlienUnit.Type.PURPLE);
         secondaryHousingUnit.setAlienUnit(newAlien);
         assertEquals(AlienUnit.Type.PURPLE, secondaryHousingUnit.getAlienUnitType(), "Replacing an alien should update the alien type correctly");
     }

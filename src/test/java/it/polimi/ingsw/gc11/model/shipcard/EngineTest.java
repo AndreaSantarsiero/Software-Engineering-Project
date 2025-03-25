@@ -14,8 +14,8 @@ class EngineTest {
 
     @BeforeEach
     void setUp() {
-        singleEngine = new Engine(Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Engine.Type.SINGLE);
-        doubleEngine = new Engine(Connector.NONE, Connector.SINGLE, Connector.DOUBLE, Engine.Type.DOUBLE);
+        singleEngine = new Engine("engine", Connector.SINGLE, Connector.DOUBLE, Connector.NONE, Engine.Type.SINGLE);
+        doubleEngine = new Engine("engine", Connector.NONE, Connector.SINGLE, Connector.DOUBLE, Engine.Type.DOUBLE);
     }
 
 

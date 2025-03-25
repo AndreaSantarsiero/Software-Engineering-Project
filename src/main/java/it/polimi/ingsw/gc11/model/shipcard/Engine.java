@@ -27,8 +27,8 @@ public class Engine extends ShipCard {
      * @param leftConnector The connector on the left side
      * @param type The type of the Engine (SINGLE or DOUBLE)
      */
-    public Engine(Connector topConnector, Connector rightConnector, Connector leftConnector, Type type) {
-        super(topConnector, rightConnector, Connector.NONE, leftConnector);
+    public Engine(String id, Connector topConnector, Connector rightConnector, Connector leftConnector, Type type) {
+        super(id, topConnector, rightConnector, Connector.NONE, leftConnector);
         this.type = type;
     }
 

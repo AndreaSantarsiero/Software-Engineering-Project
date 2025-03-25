@@ -32,8 +32,8 @@ public class Storage extends ShipCard {
      * @param leftConnector The connector on the left side
      * @param type The type of the storage (defines its capacity and allowed materials)
      */
-    public Storage(Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
-        super(topConnector, rightConnector, bottomConnector, leftConnector);
+    public Storage(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
+        super(id, topConnector, rightConnector, bottomConnector, leftConnector);
         this.type = type;
         this.materials = new ArrayList<Material>();
     }
