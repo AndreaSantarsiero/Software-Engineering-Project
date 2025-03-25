@@ -900,36 +900,51 @@ public abstract class ShipBoard {
     }
 
     /**
-     * Computes the total cannon power based on available cannons and batteries
+     * Computes the total cannon power based on the selected double cannons and the available batteries
      *
-     * @param numBatteries The number of batteries allocated for double cannons
-     * @return The calculated cannon power
-     * @throws IllegalArgumentException if numBatteries is negative or exceeds available limits
+     * @param doubleCannons The list of double cannons that the user wants to activate. All cannons in this list must be of type {@code Cannon.Type.DOUBLE} and not destroyed
+     * @return The calculated total cannon power
+     * @throws IllegalArgumentException if the list contains non-double or destroyed cannons, or if the number of selected cannons exceeds the available batteries
      */
-    public int getCannonsPower (int numBatteries) {
-        if (numBatteries < 0) {
-            throw new IllegalArgumentException("numBatteries can't be negative");
+    public double getCannonsPower (List<Cannon> doubleCannons) {
+        for (Cannon cannon : doubleCannons) {
+            if (cannon.getType() != Cannon.Type.DOUBLE) {
+                throw new IllegalArgumentException("Cannot activate single cannons with batteries");
+            }
+            if (cannon.isScrap()) {
+                throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");
+            }
         }
-        if(numBatteries > getDoubleCannonsNumber()){
-            throw new IllegalArgumentException("numBatteries can't be greater than the number of double cannons");
-        }
-        if(numBatteries > getTotalAvailableBatteries()){
-            throw new IllegalArgumentException("numBatteries can't be greater than the number of available batteries");
+        if(doubleCannons.size() > getTotalAvailableBatteries()){
+            throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");
         }
 
-        int cannonPower = 0;
+        double cannonPower = 0;
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if (components[i][j] instanceof Cannon cannon && !components[i][j].isScrap()) {
                     if(cannon.getType() == Cannon.Type.SINGLE){
-                        cannonPower++;
+                        if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
+                            cannonPower++;
+                        }
+                        else{
+                            cannonPower += 0.5;
+                        }
                     }
                 }
             }
         }
 
-        cannonPower += 2*numBatteries;
+        for(Cannon cannon : doubleCannons){
+            if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
+                cannonPower += 2;
+            }
+            else{
+                cannonPower++;
+            }
+        }
+
         cannonPower += getPurpleAliens();
         return cannonPower;
     }
@@ -954,5 +969,247 @@ public abstract class ShipBoard {
         }
 
         return false;
+    }
+
+    /**
+     * Determines which cannons can be used to destroy a big meteor coming from the given direction and coordinate
+     *
+     * @param direction The direction from which a big meteor is coming
+     * @param coord The coordinate from which a big meteor is coming
+     * @return A list of {@code Cannon} objects that can be used to destroy the meteor. If no cannons are available, returns an empty list
+     */
+    public List<Cannon> canDestroy(Hit.Direction direction, int coord) {
+        List<Cannon> availableCannons = new ArrayList<>();
+
+        if (direction == Hit.Direction.LEFT) {
+            for (int j = -1; j < 1; j++) {
+                for (int i = 0; i < components[0].length; i++) {
+                    try{
+                        ShipCard shipCard = getShipCard(i, coord + j);
+                        if(shipCard != null){
+                            if (shipCard instanceof Cannon) {
+                                if(shipCard.getOrientation() == ShipCard.Orientation.DEG_270) {
+                                    availableCannons.add((Cannon) shipCard);
+                                }
+                            }
+                        }
+                    }
+                    catch(Exception _){
+
+                    }
+                }
+            }
+        }
+        else if (direction == Hit.Direction.RIGHT) {
+
+            for (int j = -1; j < 1; j++) {
+                for (int i = 0; i < components[0].length; i++) {
+                    try{
+                        ShipCard shipCard = getShipCard(components[0].length - i, coord + j);
+                        if(shipCard != null){
+                            if (shipCard instanceof Cannon) {
+                                if(shipCard.getOrientation() == ShipCard.Orientation.DEG_90) {
+                                    availableCannons.add((Cannon) shipCard);
+                                }
+                            }
+                        }
+                    }
+                    catch(Exception _){
+
+                    }
+                }
+            }
+        }
+        else if (direction == Hit.Direction.TOP) {
+            for (int i = 0; i < components.length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(coord, i);
+                    if(shipCard != null){
+                        if (shipCard instanceof Cannon) {
+                            if(shipCard.getOrientation() == ShipCard.Orientation.DEG_0) {
+                                availableCannons.add((Cannon) shipCard);
+                            }
+                        }
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+        else if (direction == Hit.Direction.BOTTOM) {
+
+            for (int j = -1; j < 1; j++) {
+                for (int i = 0; i < components.length; i++) {
+                    try{
+                        ShipCard shipCard = getShipCard(coord + j, components.length - i);
+                        if(shipCard != null){
+                            if (shipCard instanceof Cannon) {
+                                if(shipCard.getOrientation() == ShipCard.Orientation.DEG_180) {
+                                    availableCannons.add((Cannon) shipCard);
+                                }
+                            }
+                        }
+                    }
+                    catch(Exception _){
+
+                    }
+                }
+            }
+        }
+
+        return availableCannons;
+    }
+
+    /**
+     * Determines whether this ship has an exposed connector in the given direction and coordinate
+     *
+     * @param direction The direction from which a little meteor is coming
+     * @param coord The coordinate from which a little meteor is coming
+     * @return {@code true} if the ship has an exposed connector in the given direction and coordinate, {@code false} otherwise
+     */
+    public boolean hasAnExposedConnector(Hit.Direction direction, int coord) {
+        if (direction == Hit.Direction.LEFT) {
+            for (int i = 0; i < components[0].length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(i, coord);
+                    if (shipCard != null) {
+                        if(shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+        else if (direction == Hit.Direction.RIGHT) {
+            for (int i = 0; i < components[0].length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(components[0].length - i, coord);
+                    if (shipCard != null) {
+                        if(shipCard.getRightConnector() != ShipCard.Connector.NONE) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+        else if (direction == Hit.Direction.TOP) {
+            for (int i = 0; i < components.length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(coord, i);
+                    if (shipCard != null) {
+                        if(shipCard.getTopConnector() != ShipCard.Connector.NONE) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+        else if (direction == Hit.Direction.BOTTOM) {
+            for (int i = 0; i < components.length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(coord, components.length - i);
+                    if (shipCard != null) {
+                        if(shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+
+        return true;    /* didn't find any ShipCard on the given direction and coordinate => ShipBoard is not affected by the little meteor */
+    }
+
+    /**
+     * Determines which component is going to be destroyed by a hit
+     *
+     * @param direction The direction from which a hit is coming
+     * @param coord The coordinate from which a hit is coming
+     * @return {@code true} if a ShipCard was destroyed by the hit, {@code false} otherwise
+     */
+    public boolean destroyHitComponent(Hit.Direction direction, int coord) {
+        if (direction == Hit.Direction.LEFT) {
+            for (int i = 0; i < components[0].length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(i, coord);
+                    if (shipCard != null) {
+                        shipCard.destroy();
+                        return true;
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+        else if (direction == Hit.Direction.RIGHT) {
+            for (int i = 0; i < components[0].length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(components[0].length - i, coord);
+                    if (shipCard != null) {
+                        shipCard.destroy();
+                        return true;
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+        else if (direction == Hit.Direction.TOP) {
+            for (int i = 0; i < components.length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(coord, i);
+                    if (shipCard != null) {
+                        shipCard.destroy();
+                        return true;
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+        else if (direction == Hit.Direction.BOTTOM) {
+            for (int i = 0; i < components.length; i++) {
+                try{
+                    ShipCard shipCard = getShipCard(coord, components.length - i);
+                    if (shipCard != null) {
+                        shipCard.destroy();
+                        return true;
+                    }
+                }
+                catch(Exception _){
+
+                }
+            }
+        }
+
+        return false;    /* didn't find any ShipCard on the given direction and coordinate => ShipBoard is not affected by the hit */
     }
 }

@@ -8,10 +8,10 @@ package it.polimi.ingsw.gc11.model.shipboard;
 public class Level1ShipBoard extends ShipBoard {
 
     /**
-     * Constructs a Level1ShipBoard with predefined dimensions (7x5)
+     * Constructs a Level1ShipBoard with predefined dimensions (5x5)
      */
     public Level1ShipBoard() {
-        super(7, 5);
+        super(5, 5);
     }
 
 
@@ -25,22 +25,19 @@ public class Level1ShipBoard extends ShipBoard {
      */
     public boolean validateCoordinates(int x, int y){
         x -= 5;
-        y -= 4;
+        y -= 5;
 
-        if (x < 0 || y < 0 || x >= 7 || y >= 5) {
+        if (x < 0 || y < 0 || x >= 5 || y >= 5) {
             throw new IllegalArgumentException("Coordinates out of the board's bounds");
         }
 
-        if(y == 0 && x != 3){
+        if(y == 0 && x != 2){
             return false;
         }
-        else if(y == 1 && !(x ==2 || x == 3 || x == 4)){
+        else if(y == 1 && (x == 0 || x == 4)){
             return false;
         }
-        else if(y == 4 && x == 3){
-            return false;
-        }
-        else if(x == 0 || x == 6){
+        else if(y == 4 && x == 2){
             return false;
         }
         else{

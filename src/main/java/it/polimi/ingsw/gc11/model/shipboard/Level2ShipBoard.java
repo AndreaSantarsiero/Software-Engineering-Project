@@ -24,8 +24,8 @@ public class Level2ShipBoard extends ShipBoard {
      * @throws IllegalArgumentException if the coordinates are outside the board's bounds
      */
     public boolean validateCoordinates(int x, int y){
-        x -= 5;
-        y -= 4;
+        x -= 4;
+        y -= 5;
 
         if (x < 0 || y < 0 || x >= 7 || y >= 5) {
             throw new IllegalArgumentException("Coordinates out of the board");
