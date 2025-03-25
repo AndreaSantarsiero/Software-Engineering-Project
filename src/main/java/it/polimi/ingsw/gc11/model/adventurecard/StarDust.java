@@ -13,6 +13,6 @@ public class StarDust extends AdventureCard {
         int num = model.getPlayerShipBoard(username).getExposedConnectors();
 
         //Lose Days of flight
-        model.loseDays(username, num);
+        model.move(username, num);
     }
 }

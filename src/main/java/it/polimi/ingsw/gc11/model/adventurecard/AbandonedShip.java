@@ -1,8 +1,6 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 
 import java.util.List;
@@ -45,6 +43,6 @@ public class AbandonedShip extends AdventureCard {
          model.addCoins(username, coins);
 
          //Player lose days of flight
-        model.loseDays(username, lostDays);
+        model.move(username, lostDays);
     }
 }

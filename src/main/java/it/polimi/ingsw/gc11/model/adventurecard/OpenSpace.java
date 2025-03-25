@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.List;
@@ -25,6 +24,6 @@ public class OpenSpace extends AdventureCard {
         }
 
         //Move Player on flightBoard
-        model.loseDays(username, power);
+        model.move(username, power);
     }
 }

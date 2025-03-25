@@ -73,7 +73,7 @@ public class PlanetsCard extends AdventureCard {
         planets.get(planetLand).setVisited();
 
         //Lose days of flight
-        model.loseDays(username, lostDays);
+        model.move(username, lostDays);
 
         for(int i = 0; i < storageList.size(); i++) {
             for(int j = 0; j < materialsAccepted.get(i).size(); j++) {

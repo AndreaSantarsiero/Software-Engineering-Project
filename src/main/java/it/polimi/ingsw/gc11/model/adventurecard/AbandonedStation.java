@@ -49,7 +49,7 @@ public class AbandonedStation extends AdventureCard {
     //The check if the player has sufficient humans is done by controller
     public void handler(GameModel model, String username, List<List<Material>> materialsUserAccepted, List<Storage> storagesUserAccepted) {
         //User lose days of flight
-        model.loseDays(username, lostDays);
+        model.move(username, lostDays);
 
         //Add materials to user shipboard, DISCUSS THE PLAYER CAN REARRANGE MATERIALS, need method in shipboard or change
         for(int i = 0; i < storagesUserAccepted.size(); i++) {

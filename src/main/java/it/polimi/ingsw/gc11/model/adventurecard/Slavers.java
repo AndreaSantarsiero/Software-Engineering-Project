@@ -36,12 +36,16 @@ public class Slavers extends AdventureCard {
     public int getCoins() {return coins;}
 
     public void handler(GameModel model, String username, List<Cannon> doubleCannons, List<Integer> numBatteries, List<Battery> batteries, List<HousingUnit> housingUnitsUserAccepted, List<Integer> killedMembers, boolean wantToMove) {
-        int TotalNumBatteries = 0;
+        int totalNumBatteries = 0;
         for (int num : numBatteries) {
-            TotalNumBatteries += num;
+            totalNumBatteries += num;
         }
 
         double power = model.getPlayerShipBoard(username).getCannonsPower(doubleCannons);
+
+        if(totalNumBatteries != doubleCannons.size()){
+            throw new IllegalArgumentException("totalNumBatteries is not equal to the number of double Cannons");
+        }
 
         //Remove Batteries
         for(int i = 0; i < batteries.size(); i++) {
@@ -51,7 +55,7 @@ public class Slavers extends AdventureCard {
         if(power > firePower){
             if(wantToMove){
                 model.addCoins(username, coins);
-                model.loseDays(username, lostDays);
+                model.move(username, lostDays);
             }
         }
         else{

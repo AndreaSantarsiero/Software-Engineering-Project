@@ -309,7 +309,7 @@ public class GameModel {
 
 
     //numDays can be positive or negative, so this method can make you move forward or backward
-    public void loseDays(String username, int numDays){
+    public void move(String username, int numDays){
         if (username == null){
             throw new NullPointerException("Username is null");
         }
