@@ -12,6 +12,7 @@ public class Player {
     private int position;
     private boolean abort;
     private ShipBoard shipBoard;
+    private int standing;
     //It will contain client's socket
 
 
@@ -21,8 +22,17 @@ public class Player {
         position = 0;
         abort = false;
         shipBoard = null;
+        standing = 0;
     }
 
+    //Vanno inizializzati quando si mettono le pedine sulla flightBoard
+    public void setStanding(int standing) {
+        this.standing = standing;
+    }
+
+    public int getStanding() {
+        return standing;
+    }
 
     public String getUsername() {
         return username;
@@ -58,5 +68,6 @@ public class Player {
     }
 
     public ShipBoard getShipBoard() { return shipBoard; }
+
 
 }

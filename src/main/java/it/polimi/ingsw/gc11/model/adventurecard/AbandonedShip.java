@@ -1,6 +1,11 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+
+import java.util.List;
 
 public class AbandonedShip extends AdventureCard {
 
@@ -23,10 +28,16 @@ public class AbandonedShip extends AdventureCard {
 
     }
 
-    public int getLostDays() {return lostDays;}
 
-    public int getLostMembers() {return lostMembers;}
+    //Username is the player playing the card
+    public void handler(GameModel model, String username, List<HousingUnit> housingUnit, List<Integer> killedMembers) {
+        //KillMember from the shipboard of the Player
+         model.getPlayerShipBoard(username).killMembers(housingUnit, killedMembers);
 
-    public int getCoins() {return coins;}
+         //Add coins to the player
+         model.addCoins(username, coins);
 
+         //Player lose days of flight
+        model.loseDays(username, lostDays);
+    }
 }

@@ -3,8 +3,10 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
-import java.util.ArrayList;
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlanetsCard extends AdventureCard {
@@ -66,4 +68,17 @@ public class PlanetsCard extends AdventureCard {
     }
 
     public int getLostDays() { return lostDays;}
+
+    public void handler(GameModel model, String username, int planetLand, List<Storage> storageList, List<List<Material>> materialsAccepted) {
+        planets.get(planetLand).setVisited();
+
+        //Lose days of flight
+        model.loseDays(username, lostDays);
+
+        for(int i = 0; i < storageList.size(); i++) {
+            for(int j = 0; j < materialsAccepted.get(i).size(); j++) {
+                storageList.get(i).addMaterial(materialsAccepted.get(i).get(j));
+            }
+        }
+    }
 }

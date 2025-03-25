@@ -2,7 +2,10 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class AbandonedStation extends AdventureCard {
 
@@ -43,5 +46,17 @@ public class AbandonedStation extends AdventureCard {
 
     public ArrayList<Material> getMaterials() {return materials;}
 
+    //The check if the player has sufficient humans is done by controller
+    public void handler(GameModel model, String username, List<List<Material>> materialsUserAccepted, List<Storage> storagesUserAccepted) {
+        //User lose days of flight
+        model.loseDays(username, lostDays);
+
+        //Add materials to user shipboard, DISCUSS THE PLAYER CAN REARRANGE MATERIALS, need method in shipboard or change
+        for(int i = 0; i < storagesUserAccepted.size(); i++) {
+            for(int j = 0; j < materialsUserAccepted.get(i).size(); j++) {
+                storagesUserAccepted.get(i).addMaterial(materialsUserAccepted.get(i).get(j));
+            }
+        }
+    }
 
 }

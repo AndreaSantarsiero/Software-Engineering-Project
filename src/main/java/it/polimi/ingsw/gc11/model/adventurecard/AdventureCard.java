@@ -27,6 +27,4 @@ public abstract class AdventureCard {
     public boolean isUsed(){
         return used;
     }
-
-
 }

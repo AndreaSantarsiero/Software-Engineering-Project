@@ -308,4 +308,46 @@ public class GameModel {
     }
 
 
+    //numDays can be positive or negative
+    public void loseDays(String username, int numDays){
+        if (username == null){
+            throw new NullPointerException("Username is null");
+        }
+        int initial_position = 0;
+        int[] posizioni = {-1, -1, -1, -1};
+        int start_standing = 0;
+        int final_standing = 0;
+        Player player = null;
+
+        for (int i = 0; i < players.size(); i++) {
+            posizioni[i] = players.get(i).getPosition();
+
+            if (players.get(i).getUsername().equals(username)) {
+                initial_position = players.get(i).getPosition();
+                start_standing = i;
+                final_standing = i;
+                player = players.get(i);
+            }
+        }
+        int target = initial_position;
+
+        for (int i = 0; i < numDays; i++) {
+            target = (initial_position + 1) % flightBoard.getLength();
+            while (target == posizioni[0] || target == posizioni[1] || target == posizioni[2] || target == posizioni[3]) {
+                target = (initial_position + 1) % flightBoard.getLength();
+
+                //Change the standings
+                for(int j = 0; j < players.size(); j++){
+                    if (players.get(j).getStanding() < player.getStanding()) {
+                        int tmp = players.get(j).getStanding();
+                        players.get(j).setStanding(player.getStanding());
+                        player.setStanding(tmp);
+                    }
+                }
+            }
+        }
+        //Change the player position
+        player.setPosition(target);
+    }
+
 }

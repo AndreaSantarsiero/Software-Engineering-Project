@@ -8,4 +8,5 @@ public class StarDust extends AdventureCard {
         super(type);
     }
 
+    //NEED METHOD IN SHIPBOARD THAT COUNTS THE EXPOSED CONNECTORS
 }
