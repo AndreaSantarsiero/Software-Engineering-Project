@@ -28,6 +28,13 @@ public class AbandonedShip extends AdventureCard {
 
     }
 
+    public int getLostDays() {return lostDays;}
+
+    public int getLostMembers() {return lostMembers;}
+
+    public int getCoins() {return coins;}
+
+    public boolean isResolved() {return resolved;}
 
     //Username is the player playing the card
     public void handler(GameModel model, String username, List<HousingUnit> housingUnit, List<Integer> killedMembers) {
