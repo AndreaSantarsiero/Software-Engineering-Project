@@ -38,6 +38,12 @@ class ShipCardTest {
     }
 
     @Test
+    void nullOrEmptyIdFailure() {
+        assertThrows(IllegalArgumentException.class, () -> new TestShipCard(null, Connector.NONE, Connector.NONE, Connector.NONE, Connector.NONE), "Expected IllegalArgumentException when id is null");
+        assertThrows(IllegalArgumentException.class, () -> new TestShipCard("", Connector.NONE, Connector.NONE, Connector.NONE, Connector.NONE), "Expected IllegalArgumentException when id is an empty string");
+    }
+
+    @Test
     void testAllNoneConnectorsFailure() {
         assertThrows(IllegalArgumentException.class, () -> new TestShipCard("shipCard", Connector.NONE, Connector.NONE, Connector.NONE, Connector.NONE), "Expected IllegalArgumentException when all connectors are NONE, but no exception was thrown");
     }

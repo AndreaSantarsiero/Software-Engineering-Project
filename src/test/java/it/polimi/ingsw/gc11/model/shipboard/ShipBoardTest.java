@@ -12,16 +12,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShipBoardTest extends ShipCardLoader {
 
     private ShipBoard shipBoard;
+    private ShipCard shipCard;
 
 
 
     @BeforeEach
     void testLoadShipBoardFromJson() {
+        ShipCardLoader shipCardLoader = new ShipCardLoader();
+        shipCard = shipCardLoader.getShipCard("BlueCentralUnit");
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader("it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         shipBoard = shipBoardLoader.getShipBoard();
     }
 
 
+    @Test
+    void testShipCardLoader() {
+        assertNotNull(shipCard, "ShipCard should be created successfully");
+    }
 
     @Test
     void testEnginePower() {
