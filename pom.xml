@@ -83,5 +83,13 @@
                 </executions>
             </plugin>
         </plugins>
+        <testResources>
+            <testResource>
+                <directory>src/main/resources</directory> <!-- Se il file è in src/main/resources -->
+                <includes>
+                    <include>**/*.json</include>
+                </includes>
+            </testResource>
+        </testResources>
     </build>
 </project>
