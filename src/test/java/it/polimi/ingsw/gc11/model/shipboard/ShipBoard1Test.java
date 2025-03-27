@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-class ShipBoardTest {
+class ShipBoard1Test {
 
     private ShipBoard shipBoard;
 
@@ -20,7 +20,6 @@ class ShipBoardTest {
     void setUp() {
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         shipBoard = shipBoardLoader.getShipBoard();
-
         assertNotNull(shipBoard, "ShipBoard was not loaded correctly from JSON");
     }
 
@@ -28,14 +27,11 @@ class ShipBoardTest {
 
     @Test
     void testEnginePower() {
-        assertNotNull(shipBoard, "ShipBoard should not be null");
         assertEquals(1, shipBoard.getEnginesPower(0), "Engine power not calculated correctly");
     }
 
     @Test
     void testNumBatteries() {
-        assertNotNull(shipBoard, "ShipBoard should not be null");
-
         int initialBatteries = shipBoard.getTotalAvailableBatteries();
         assertEquals(2, initialBatteries, "Number of batteries at start is incorrect");
 

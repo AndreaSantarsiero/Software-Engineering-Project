@@ -8,17 +8,20 @@ import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.Level3ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+
 
 public class ShipBoardLoader {
 
     private final ShipCardLoader shipCardLoader;
     private ShipBoard shipBoard;
     private final ObjectMapper objectMapper;
+
+
 
     public ShipBoardLoader(String resourcePath) {
         shipCardLoader = new ShipCardLoader();
@@ -60,8 +63,14 @@ public class ShipBoardLoader {
 
                 ShipCard shipCard = shipCardLoader.getShipCard(id);
                 if (shipCard != null) {
-                    shipBoard.addShipCard(shipCard, x, y);
-                } else {
+                    if(shipBoard.getShipCard(x, y) == null) {
+                        shipBoard.addShipCard(shipCard, x, y);
+                    }
+                    else {
+                        System.err.println("Warning: a ShipCard was already present at this coordinates: (" + x + ", " + y +")");
+                    }
+                }
+                else {
                     System.err.println("Warning: ShipCard with id '" + id + "' not found in shipCards.json");
                     continue;
                 }
@@ -75,14 +84,44 @@ public class ShipBoardLoader {
                 }
             }
 
-        } catch (IOException e) {
+
+            List<JsonNode> reservedComponentsNode = objectMapper.convertValue(shipBoardNode.get("reservedComponents"),
+                    new TypeReference<List<JsonNode>>() {});
+            if (reservedComponentsNode != null) {
+                if(reservedComponentsNode.size() > 2){
+                    System.err.println("Warning: too many reserved components: " + reservedComponentsNode.size());
+                }
+                else {
+                    for (JsonNode cardNode : reservedComponentsNode) {
+                        String id = cardNode.path("id").asText(null);
+                        if (id == null) {
+                            System.err.println("Invalid component data: " + cardNode);
+                            continue;
+                        }
+
+                        ShipCard shipCard = shipCardLoader.getShipCard(id);
+                        if (shipCard != null) {
+                            shipBoard.reserveShipCard(shipCard);
+                        }
+                        else {
+                            System.err.println("Warning: ShipCard with id '" + id + "' not found in shipCards.json");
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        catch (IOException e) {
             System.err.println("Error reading JSON file: " + e.getMessage());
             e.printStackTrace();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+
 
     public ShipBoard getShipBoard() {
         return shipBoard;

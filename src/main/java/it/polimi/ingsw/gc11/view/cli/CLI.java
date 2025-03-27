@@ -16,7 +16,7 @@ public class CLI {
                     else{
                         System.out.print("|");
                         try{
-                            if (shipBoard.booleanCheckCoordinates(x, y)) {
+                            if (shipBoard.validateCoordinates(x, y)) {
                                 ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
                                 if (shipCard != null) {
                                     for (int j = 1; j < 10; j++) {
