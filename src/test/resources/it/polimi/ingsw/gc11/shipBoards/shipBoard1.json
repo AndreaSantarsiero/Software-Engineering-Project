@@ -1,6 +1,8 @@
 {
   "shipboard": {
     "level": 1,
+
+
     "components": [
       {
         "id": "BlueCentralUnit",
@@ -32,6 +34,9 @@
         "y": 7,
         "orientation": 90
       }
-    ]
+    ],
+
+
+    "reservedComponents": null
   }
 }

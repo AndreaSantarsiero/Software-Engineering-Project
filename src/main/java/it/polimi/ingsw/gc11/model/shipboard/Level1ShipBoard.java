@@ -48,6 +48,7 @@ public class Level1ShipBoard extends ShipBoard {
      * @return true if the coordinates are valid, false otherwise
      * @throws IllegalArgumentException if the coordinates are outside the board's bounds
      */
+    @Override
     public boolean validateCoordinates(int x, int y){
         if (x < 0 || y < 0 || x >= 5 || y >= 5) {
             throw new IllegalArgumentException("Coordinates out of the board's bounds");

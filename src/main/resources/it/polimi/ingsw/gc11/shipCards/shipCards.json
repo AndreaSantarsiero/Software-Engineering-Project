@@ -716,7 +716,7 @@
     "type": "SINGLE"
   },
   "SingleCannon19.jpg": {
-    "id": "SingleCannon5",
+    "id": "SingleCannon19",
     "subClass": "Cannon",
     "connectors": { "right": "NONE", "bottom": "SINGLE", "left": "DOUBLE" },
     "type": "SINGLE"
@@ -808,7 +808,7 @@
     "type": "SINGLE"
   },
   "SingleEngine9.jpg": {
-    "id": "SingleEngine7",
+    "id": "SingleEngine9",
     "subClass": "Engine",
     "connectors": { "top": "UNIVERSAL", "right": "DOUBLE", "left": "NONE" },
     "type": "SINGLE"

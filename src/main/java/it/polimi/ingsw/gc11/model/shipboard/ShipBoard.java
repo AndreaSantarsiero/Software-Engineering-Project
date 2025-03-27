@@ -84,16 +84,9 @@ public abstract class ShipBoard {
      * @param x The x-coordinate to check
      * @param y The y-coordinate to check
      * @return True if the coordinates are valid, false otherwise
-     * @throws IllegalStateException If the ShipBoard type is unknown or if the coordinates are out of the board's bounds
+     * @throws IllegalStateException If the coordinates are out of the board's bounds
      */
-    public boolean booleanCheckCoordinates(int x, int y) {
-        return switch (this) {
-            case Level1ShipBoard level1ShipBoard -> level1ShipBoard.validateCoordinates(x, y);
-            case Level2ShipBoard level2ShipBoard -> level2ShipBoard.validateCoordinates(x, y);
-            case Level3ShipBoard level3ShipBoard -> level3ShipBoard.validateCoordinates(x, y);
-            default -> throw new IllegalStateException("Unknown ShipBoard type");
-        };
-    }
+    public abstract boolean validateCoordinates(int x, int y);
 
     /**
      * Validates whether the given coordinates are within the allowed bounds of the ship
@@ -104,7 +97,7 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException If the coordinates are out of the ship's bounds
      */
     public void checkCoordinates(int x, int y) {
-        if (!booleanCheckCoordinates(x, y)) {
+        if (!validateCoordinates(x, y)) {
             throw new IllegalArgumentException("Coordinates out of the ship's bounds");
         }
     }
@@ -948,19 +941,30 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException if the list contains non-double or destroyed cannons, or if the number of selected cannons exceeds the available batteries
      */
     public double getCannonsPower (List<Cannon> doubleCannons) {
-        for (Cannon cannon : doubleCannons) {
-            if (cannon.getType() != Cannon.Type.DOUBLE) {
-                throw new IllegalArgumentException("Cannot activate single cannons with batteries");
-            }
-            if (cannon.isScrap()) {
-                throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");
-            }
-        }
-        if(doubleCannons.size() > getTotalAvailableBatteries()){
-            throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");
-        }
-
         double cannonPower = 0;
+
+        if(doubleCannons != null) {
+            for (Cannon cannon : doubleCannons) {
+                if (cannon.getType() != Cannon.Type.DOUBLE) {
+                    throw new IllegalArgumentException("Cannot activate single cannons with batteries");
+                }
+                if (cannon.isScrap()) {
+                    throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");
+                }
+            }
+            if(doubleCannons.size() > getTotalAvailableBatteries()){
+                throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");
+            }
+
+            for(Cannon cannon : doubleCannons){
+                if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
+                    cannonPower += 2;
+                }
+                else{
+                    cannonPower++;
+                }
+            }
+        }
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
@@ -974,15 +978,6 @@ public abstract class ShipBoard {
                         }
                     }
                 }
-            }
-        }
-
-        for(Cannon cannon : doubleCannons){
-            if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
-                cannonPower += 2;
-            }
-            else{
-                cannonPower++;
             }
         }
 
@@ -1028,7 +1023,7 @@ public abstract class ShipBoard {
                     try{
                         ShipCard shipCard = getShipCard(i, coord + j);
                         if(shipCard != null){
-                            if (shipCard instanceof Cannon) {
+                            if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_270) {
                                     availableCannons.add((Cannon) shipCard);
                                 }
@@ -1048,7 +1043,7 @@ public abstract class ShipBoard {
                     try{
                         ShipCard shipCard = getShipCard(components[0].length - i, coord + j);
                         if(shipCard != null){
-                            if (shipCard instanceof Cannon) {
+                            if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_90) {
                                     availableCannons.add((Cannon) shipCard);
                                 }
@@ -1066,7 +1061,7 @@ public abstract class ShipBoard {
                 try{
                     ShipCard shipCard = getShipCard(coord, i);
                     if(shipCard != null){
-                        if (shipCard instanceof Cannon) {
+                        if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                             if(shipCard.getOrientation() == ShipCard.Orientation.DEG_0) {
                                 availableCannons.add((Cannon) shipCard);
                             }
@@ -1085,7 +1080,7 @@ public abstract class ShipBoard {
                     try{
                         ShipCard shipCard = getShipCard(coord + j, components.length - i);
                         if(shipCard != null){
-                            if (shipCard instanceof Cannon) {
+                            if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_180) {
                                     availableCannons.add((Cannon) shipCard);
                                 }
@@ -1115,7 +1110,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(i, coord);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
                             return true;
                         }
@@ -1134,7 +1129,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(components[0].length - i, coord);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getRightConnector() != ShipCard.Connector.NONE) {
                             return true;
                         }
@@ -1153,7 +1148,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, i);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getTopConnector() != ShipCard.Connector.NONE) {
                             return true;
                         }
@@ -1172,7 +1167,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, components.length - i);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
                             return true;
                         }
@@ -1203,7 +1198,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(i, coord);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
                     }
@@ -1218,7 +1213,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components[0].length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(components[0].length - i, coord);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
                     }
@@ -1233,7 +1228,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, i);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
                     }
@@ -1248,7 +1243,7 @@ public abstract class ShipBoard {
             for (int i = 0; i < components.length; i++) {
                 try{
                     ShipCard shipCard = getShipCard(coord, components.length - i);
-                    if (shipCard != null) {
+                    if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
                     }
