@@ -1,10 +1,4 @@
 {
-  "CoveredShipCard.jpg": {
-    "subClass": "CoveredShipCard"
-  },
-
-
-
   "BlueCentralUnit.jpg": {
     "id": "BlueCentralUnit",
     "subClass": "HousingUnit",
@@ -50,6 +44,42 @@
     "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "SINGLE" },
     "type": "DOUBLE_BLUE"
   },
+  "BlueDoubleStorage4.jpg": {
+    "id": "BlueDoubleStorage4",
+    "subClass": "Storage",
+    "connectors": { "top": "DOUBLE", "right": "UNIVERSAL", "bottom": "NONE", "left": "SINGLE" },
+    "type": "DOUBLE_BLUE"
+  },
+  "BlueDoubleStorage5.jpg": {
+    "id": "BlueDoubleStorage5",
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE_BLUE"
+  },
+  "BlueDoubleStorage6.jpg": {
+    "id": "BlueDoubleStorage6",
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE_BLUE"
+  },
+  "BlueDoubleStorage7.jpg": {
+    "id": "BlueDoubleStorage7",
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE_BLUE"
+  },
+  "BlueDoubleStorage8.jpg": {
+    "id": "BlueDoubleStorage8",
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "SINGLE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE_BLUE"
+  },
+  "BlueDoubleStorage9.jpg": {
+    "id": "BlueDoubleStorage9",
+    "subClass": "Storage",
+    "connectors": { "top": "UNIVERSAL", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE_BLUE"
+  },
 
 
 
@@ -65,6 +95,30 @@
     "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "SINGLE", "left": "NONE" },
     "type": "TRIPLE_BLUE"
   },
+  "BlueTripleStorage3.jpg": {
+    "id": "BlueTripleStorage3",
+    "subClass": "Storage",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "DOUBLE" },
+    "type": "TRIPLE_BLUE"
+  },
+  "BlueTripleStorage4.jpg": {
+    "id": "BlueTripleStorage4",
+    "subClass": "Storage",
+    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "type": "TRIPLE_BLUE"
+  },
+  "BlueTripleStorage5.jpg": {
+    "id": "BlueTripleStorage5",
+    "subClass": "Storage",
+    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "DOUBLE", "left": "SINGLE" },
+    "type": "TRIPLE_BLUE"
+  },
+  "BlueTripleStorage6.jpg": {
+    "id": "BlueTripleStorage6",
+    "subClass": "Storage",
+    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "SINGLE", "left": "DOUBLE" },
+    "type": "TRIPLE_BLUE"
+  },
 
 
 
@@ -73,6 +127,42 @@
     "subClass": "AlienUnit",
     "connectors": { "top": "SINGLE", "right": "SINGLE", "bottom": "NONE", "left": "SINGLE" },
       "type": "BROWN"
+  },
+  "BrownAlien2.jpg": {
+    "id": "BrownAlien2",
+    "subClass": "AlienUnit",
+    "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "NONE", "left": "SINGLE" },
+    "type": "BROWN"
+  },
+  "BrownAlien3.jpg": {
+    "id": "BrownAlien3",
+    "subClass": "AlienUnit",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "BROWN"
+  },
+  "BrownAlien4.jpg": {
+    "id": "BrownAlien4",
+    "subClass": "AlienUnit",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "SINGLE", "left": "UNIVERSAL" },
+    "type": "BROWN"
+  },
+  "BrownAlien5.jpg": {
+    "id": "BrownAlien5",
+    "subClass": "AlienUnit",
+    "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "BROWN"
+  },
+  "BrownAlien6.jpg": {
+    "id": "BrownAlien6",
+    "subClass": "AlienUnit",
+    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "BROWN"
+  },
+
+
+
+  "CoveredShipCard.jpg": {
+    "subClass": "CoveredShipCard"
   },
 
 
@@ -95,7 +185,54 @@
     "connectors": { "top": "UNIVERSAL", "right": "DOUBLE", "bottom": "SINGLE", "left": "NONE" },
     "type": "DOUBLE"
   },
-
+  "DoubleBattery4.jpg": {
+    "id": "DoubleBattery4",
+    "subClass": "Battery",
+    "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "DOUBLE", "left": "SINGLE" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery5.jpg": {
+    "id": "DoubleBattery5",
+    "subClass": "Battery",
+    "connectors": { "top": "UNIVERSAL", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery6.jpg": {
+    "id": "DoubleBattery6",
+    "subClass": "Battery",
+    "connectors": { "top": "UNIVERSAL", "right": "SINGLE", "bottom": "SINGLE", "left": "SINGLE" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery7.jpg": {
+    "id": "DoubleBattery7",
+    "subClass": "Battery",
+    "connectors": { "top": "UNIVERSAL", "right": "DOUBLE", "bottom": "DOUBLE", "left": "DOUBLE" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery8.jpg": {
+    "id": "DoubleBattery8",
+    "subClass": "Battery",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery9.jpg": {
+    "id": "DoubleBattery9",
+    "subClass": "Battery",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE"
+  },
+  "DoubleBattery10.jpg": {
+    "id": "DoubleBattery10",
+    "subClass": "Battery",
+    "connectors": { "top": "NONE", "right": "UNIVERSAL", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE"
+  },
+  "DoubleBatterY11.jpg": {
+    "id": "DoubleBattery11",
+    "subClass": "Battery",
+    "connectors": { "top": "UNIVERSAL", "right": "NONE", "bottom": "NONE", "left": "UNIVERSAL" },
+    "type": "DOUBLE"
+  },
 
 
   "DoubleCannon1.jpg": {
@@ -192,6 +329,41 @@
     "id": "Shield1",
     "subClass": "Shield",
     "connectors": { "top": "NONE", "right": "SINGLE", "bottom": "UNIVERSAL", "left": "SINGLE" }
+  },
+  "Shield2.jpg": {
+    "id": "Shield2",
+    "subClass": "Shield",
+    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "SINGLE", "left": "SINGLE" }
+  },
+  "Shield3.jpg": {
+    "id": "Shield3",
+    "subClass": "Shield",
+    "connectors": { "top": "DOUBLE", "right": "SINGLE", "bottom": "DOUBLE", "left": "SINGLE" }
+  },
+  "Shield4.jpg": {
+    "id": "Shield4",
+    "subClass": "Shield",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "UNIVERSAL", "left": "DOUBLE" }
+  },
+  "Shield5.jpg": {
+    "id": "Shield5",
+    "subClass": "Shield",
+    "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "DOUBLE", "left": "DOUBLE" }
+  },
+  "Shield6.jpg": {
+    "id": "Shield6",
+    "subClass": "Shield",
+    "connectors": { "top": "SINGLE", "right": "DOUBLE", "bottom": "SINGLE", "left": "DOUBLE" }
+  },
+  "Shield7.jpg": {
+    "id": "Shield7",
+    "subClass": "Shield",
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "SINGLE", "left": "UNIVERSAL" }
+  },
+  "Shield8.jpg": {
+    "id": "Shield8",
+    "subClass": "Shield",
+    "connectors": { "top": "NONE", "right": "DOUBLE", "bottom": "DOUBLE", "left": "UNIVERSAL" }
   },
 
 
