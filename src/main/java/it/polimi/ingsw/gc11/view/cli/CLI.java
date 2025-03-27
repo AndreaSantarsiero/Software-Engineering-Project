@@ -3,11 +3,13 @@ package it.polimi.ingsw.gc11.view.cli;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 
+
+
 public class CLI {
     public static void printShipBoard(ShipBoard shipBoard) {
-        for (int y = 0; y < 5; y++) {
+        for (int y = 0; y < shipBoard.getLength(); y++) {
             for (int i = 0; i < 4; i++) {
-                for (int x = 0; x < 5; x++) {
+                for (int x = 0; x < shipBoard.getWidth(); x++) {
                     if (i == 0){
                         System.out.print("+---------");
                     }
@@ -15,7 +17,7 @@ public class CLI {
                         System.out.print("|");
                         try{
                             if (shipBoard.booleanCheckCoordinates(x, y)) {
-                                ShipCard shipCard = shipBoard.getShipCard(x+5, y+5);
+                                ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
                                 if (shipCard != null) {
                                     for (int j = 1; j < 10; j++) {
                                         if (i == 1 && j == 5) {
@@ -55,32 +57,33 @@ public class CLI {
                         }
                     }
                 }
-                System.out.println("|");
+                if(i == 0){
+                    System.out.println("+");
+                }
+                else {
+                    System.out.println("|");
+                }
             }
         }
 
-        for (int x = 0; x < 5; x++) {
+        for (int x = 0; x < shipBoard.getWidth(); x++) {
             System.out.print("+---------");
         }
         System.out.println("+");
     }
 
-    public static String connectorToString(ShipCard.Connector connector) {
-        if (connector.equals(ShipCard.Connector.NONE)) {
-            return "0";
-        }
-        else if (connector.equals(ShipCard.Connector.SINGLE)) {
-            return "1";
-        }
-        else if (connector.equals(ShipCard.Connector.DOUBLE)) {
-            return "2";
-        }
-        else if (connector.equals(ShipCard.Connector.UNIVERSAL)) {
-            return "3";
-        }
 
-        throw new IllegalArgumentException("Unknown connector " + connector);
+
+    public static String connectorToString(ShipCard.Connector connector) {
+        return switch (connector) {
+            case ShipCard.Connector.NONE -> "0";
+            case ShipCard.Connector.SINGLE -> "1";
+            case ShipCard.Connector.DOUBLE -> "2";
+            case ShipCard.Connector.UNIVERSAL -> "3";
+        };
     }
+
+
 
     public static String shipCardToEmoji(ShipCard shipCard) {
         return switch (shipCard) {

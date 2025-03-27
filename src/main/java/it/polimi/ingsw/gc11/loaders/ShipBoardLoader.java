@@ -36,12 +36,12 @@ public class ShipBoardLoader {
                 throw new IllegalArgumentException("Missing 'shipboard' node in JSON");
             }
 
-            String type = shipBoardNode.path("type").asText("");
-            switch (type) {
-                case "Level1ShipBoard" -> shipBoard = new Level1ShipBoard();
-                case "Level2ShipBoard" -> shipBoard = new Level2ShipBoard();
-                case "Level3ShipBoard" -> shipBoard = new Level3ShipBoard();
-                default -> throw new IllegalArgumentException("Unknown ship board type: " + type);
+            int level = shipBoardNode.path("level").asInt(-1);
+            switch (level) {
+                case 1 -> shipBoard = new Level1ShipBoard();
+                case 2 -> shipBoard = new Level2ShipBoard();
+                case 3 -> shipBoard = new Level3ShipBoard();
+                default -> throw new IllegalArgumentException("Unknown ship board level: " + level);
             }
 
             List<JsonNode> componentsNode = objectMapper.convertValue(shipBoardNode.get("components"),

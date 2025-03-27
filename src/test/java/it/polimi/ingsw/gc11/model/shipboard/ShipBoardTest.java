@@ -18,7 +18,7 @@ class ShipBoardTest {
 
     @BeforeEach
     void setUp() {
-        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
+        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         shipBoard = shipBoardLoader.getShipBoard();
 
         assertNotNull(shipBoard, "ShipBoard was not loaded correctly from JSON");

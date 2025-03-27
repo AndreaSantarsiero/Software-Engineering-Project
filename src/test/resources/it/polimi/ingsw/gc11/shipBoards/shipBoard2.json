@@ -1,6 +1,6 @@
 {
   "shipboard": {
-    "level": 1,
+    "level": 2,
     "components": [
       {
         "id": "BlueCentralUnit",

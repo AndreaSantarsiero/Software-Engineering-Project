@@ -57,6 +57,27 @@ public abstract class ShipBoard {
 
 
     /**
+     * Returns the width of the shipboard (x coordinate)
+     *
+     * @return The number of columns in the shipboard
+     */
+    public int getWidth(){
+        return this.components[0].length;
+    }
+
+    /**
+     * Returns the length of the shipboard (y coordinate)
+     *
+     * @return The number of rows in the shipboard
+     */
+    public int getLength(){
+        return this.components.length;
+    }
+
+
+
+
+    /**
      * Determines whether the given coordinates are valid within the ship's bounds based on the specific type of ShipBoard
      * This method delegates the validation to the corresponding subclass, ensuring that each type of ShipBoard applies its own coordinate validation logic
      *
