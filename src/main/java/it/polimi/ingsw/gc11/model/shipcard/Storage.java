@@ -187,4 +187,19 @@ public class Storage extends ShipCard {
 
         throw new IllegalArgumentException("Storage empty, no material found");
     }
+
+
+
+    /**
+     * Compares this Storage to another object for equality
+     * Two Storages are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type
+     *
+     * @param obj The object to compare with this Storage
+     * @return {@code true} if the given object is a Storage with the same attributes, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        Storage storage = (Storage) obj;
+        return super.equals(obj) && this.type == storage.getType();
+    }
 }

@@ -90,6 +90,16 @@ public class HousingUnit extends ShipCard {
 
 
     /**
+     * Returns the alien unit connected to this housing unit
+     *
+     * @return The alien unit connected to this housing unit
+     */
+    public AlienUnit getAlienUnit() {
+        return alienUnit;
+    }
+
+
+    /**
      * Sets the alien unit connected to this housing unit
      * If an alien unit is set, the housing unit will only hold 1 alien
      *
@@ -108,5 +118,20 @@ public class HousingUnit extends ShipCard {
         this.numMembers = 1;
         this.alienUnit = alienUnit;
         alienUnit.connectUnit();
+    }
+
+
+
+    /**
+     * Compares this HousingUnit to another object for equality
+     * Two HousingUnits are considered equal if they are of the same class, pass the equality check of the superclass, and have the same central status, the same associated AlienUnit, and the same number of members
+     *
+     * @param obj The object to compare with this HousingUnit
+     * @return {@code true} if the given object is a HousingUnit with the same attributes, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        HousingUnit housingUnit = (HousingUnit) obj;
+        return super.equals(obj) && this.central == housingUnit.isCentral() && this.alienUnit.equals(housingUnit.getAlienUnit()) && this.numMembers == housingUnit.numMembers;
     }
 }

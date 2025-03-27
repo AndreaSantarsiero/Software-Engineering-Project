@@ -18,4 +18,18 @@ public class StructuralModule extends ShipCard {
     public StructuralModule(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector) {
         super(id, topConnector, rightConnector, bottomConnector, leftConnector);
     }
+
+
+
+    /**
+     * Compares this StructuralModule to another object for equality
+     * Two StructuralModules are considered equal if they are of the same class and pass the equality check of the superclass
+     *
+     * @param obj The object to compare with this StructuralModule
+     * @return {@code true} if the given object is a StructuralModule and has the same attributes as this StructuralModule, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }

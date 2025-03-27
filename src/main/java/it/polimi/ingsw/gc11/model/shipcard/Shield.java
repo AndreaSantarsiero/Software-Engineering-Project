@@ -1,7 +1,8 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
-
 import it.polimi.ingsw.gc11.model.Hit;
+
+
 
 /**
  * Represents a Shield, a defensive component of a ShipCard
@@ -70,5 +71,19 @@ public class Shield extends ShipCard {
         }
 
         throw new IllegalArgumentException("Invalid direction: " + direction);
+    }
+
+
+
+    /**
+     * Compares this Shield to another object for equality
+     * Two Shields are considered equal if they are of the same class and pass the equality check of the superclass
+     *
+     * @param obj The object to compare with this Shield
+     * @return {@code true} if the given object is a Shield and has the same attributes as this Shield, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

@@ -39,4 +39,19 @@ public class Engine extends ShipCard {
     public Type getType() {
         return type;
     }
+
+
+
+    /**
+     * Compares this Engine to another object for equality
+     * Two Engines are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type
+     *
+     * @param obj The object to compare with this Engine
+     * @return {@code true} if the given object is an Engine with the same attributes, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        Engine engine = (Engine) obj;
+        return super.equals(obj) && this.type == engine.getType();
+    }
 }

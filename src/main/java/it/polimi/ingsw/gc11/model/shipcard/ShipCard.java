@@ -208,4 +208,33 @@ public abstract class ShipCard {
     public void destroy() {
         this.scrap = true;
     }
+
+
+
+    /**
+     * Compares this ShipCard to another object for equality
+     * Two ShipCards are considered equal if they have the same ID, orientation, connectors, and state attributes (only scrap and covered)
+     *
+     * @param obj The object to compare with this ShipCard
+     * @return {@code true} if the given object is a ShipCard with the same attributes, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        ShipCard shipCard = (ShipCard) obj;
+        return this.id.equals(shipCard.getId()) &&
+                this.orientation.equals(shipCard.getOrientation()) &&
+                this.topConnector.equals(shipCard.getTopConnector()) &&
+                this.rightConnector.equals(shipCard.getRightConnector()) &&
+                this.bottomConnector.equals(shipCard.getBottomConnector()) &&
+                this.leftConnector.equals(shipCard.getLeftConnector()) &&
+                this.scrap == shipCard.isScrap() &&
+                this.covered == shipCard.isCovered();
+    }
 }

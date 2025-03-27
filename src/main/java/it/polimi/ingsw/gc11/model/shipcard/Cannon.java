@@ -39,5 +39,20 @@ public class Cannon extends ShipCard {
     public Type getType() {
         return type;
     }
+
+
+
+    /**
+     * Compares this Cannon to another object for equality
+     * Two Cannons are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type
+     *
+     * @param obj The object to compare with this Cannon
+     * @return {@code true} if the given object is a Cannon with the same attributes, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        Cannon cannon = (Cannon) obj;
+        return super.equals(obj) && this.type == cannon.getType();
+    }
 }
 

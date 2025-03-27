@@ -68,4 +68,19 @@ public class AlienUnit extends ShipCard {
         }
         this.presence = false;
     }
+
+
+
+    /**
+     * Compares this AlienUnit to another object for equality
+     * Two AlienUnits are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type and presence attributes
+     *
+     * @param obj The object to compare with this AlienUnit
+     * @return {@code true} if the given object is an AlienUnit with the same attributes, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        AlienUnit alienUnit = (AlienUnit) obj;
+        return super.equals(obj) && this.type == alienUnit.getType() && this.presence == alienUnit.isPresent();
+    }
 }

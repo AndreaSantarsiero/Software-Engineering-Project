@@ -73,5 +73,20 @@ public class Battery extends ShipCard {
         }
         availableBatteries -= numBatteries;
     }
+
+
+
+    /**
+     * Compares this Battery to another object for equality
+     * Two Batteries are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type and available battery count
+     *
+     * @param obj The object to compare with this Battery
+     * @return {@code true} if the given object is a Battery with the same attributes, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        Battery battery = (Battery) obj;
+        return super.equals(obj) && this.type == battery.getType() && this.availableBatteries == battery.getAvailableBatteries();
+    }
 }
 
