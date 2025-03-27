@@ -65,7 +65,7 @@ public abstract class ShipBoard {
      * @return True if the coordinates are valid, false otherwise
      * @throws IllegalStateException If the ShipBoard type is unknown or if the coordinates are out of the board's bounds
      */
-    private boolean booleanCheckCoordinates(int x, int y) {
+    public boolean booleanCheckCoordinates(int x, int y) {
         return switch (this) {
             case Level1ShipBoard level1ShipBoard -> level1ShipBoard.validateCoordinates(x, y);
             case Level2ShipBoard level2ShipBoard -> level2ShipBoard.validateCoordinates(x, y);
@@ -346,45 +346,50 @@ public abstract class ShipBoard {
     private boolean checkShipConnections() {
         boolean status = true;
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] != null) {
-                    if(components[i][j-1] != null) {
-                        if(!checkConnection(components[i][j].getLeftConnector(), components[i][j-1].getRightConnector())){
-                            components[i][j].setIllegal(true);
-                            components[i][j-1].setIllegal(true);
-                            status = false;
+        try {
+            for (int i = 0; i < components.length; i++) {
+                for (int j = 0; j < components[i].length; j++) {
+                    if (components[i][j] != null) {
+                        if(components[i][j-1] != null) {
+                            if(!checkConnection(components[i][j].getLeftConnector(), components[i][j-1].getRightConnector())){
+                                components[i][j].setIllegal(true);
+                                components[i][j-1].setIllegal(true);
+                                status = false;
+                            }
+                        }
+                        if(components[i][j+1] != null) {
+                            if(!checkConnection(components[i][j].getRightConnector(), components[i][j+1].getLeftConnector())){
+                                components[i][j].setIllegal(true);
+                                components[i][j+1].setIllegal(true);
+                                status = false;
+                            }
+                        }
+                        if(components[i][j-1] != null) {
+                            if(!checkConnection(components[i][j].getTopConnector(), components[i-1][j].getBottomConnector())){
+                                components[i][j].setIllegal(true);
+                                components[i-1][j].setIllegal(true);
+                                status = false;
+                            }
+                        }
+                        if(components[i][j-1] != null) {
+                            if(!checkConnection(components[i][j].getBottomConnector(), components[i][j-1].getTopConnector())){
+                                components[i][j].setIllegal(true);
+                                components[i+1][j].setIllegal(true);
+                                status = false;
+                            }
                         }
                     }
-                    if(components[i][j+1] != null) {
-                        if(!checkConnection(components[i][j].getRightConnector(), components[i][j+1].getLeftConnector())){
-                            components[i][j].setIllegal(true);
-                            components[i][j+1].setIllegal(true);
-                            status = false;
-                        }
-                    }
-                    if(components[i][j-1] != null) {
-                        if(!checkConnection(components[i][j].getBottomConnector(), components[i-1][j].getTopConnector())){
-                            components[i][j].setIllegal(true);
-                            components[i-1][j].setIllegal(true);
-                            status = false;
-                        }
-                    }
-                    if(components[i][j-1] != null) {
-                        if(!checkConnection(components[i][j].getTopConnector(), components[i][j-1].getBottomConnector())){
-                            components[i][j].setIllegal(true);
-                            components[i+1][j].setIllegal(true);
-                            status = false;
-                        }
-                    }
-                }
 
-                j++;
-                if(j == components[i].length) {
-                    j = 0;
-                    i++;
+                    j++;
+                    if(j == components[i].length) {
+                        j = 1;
+                        i++;
+                    }
                 }
             }
+        }
+        catch (Exception _) {
+
         }
 
         return status;
@@ -428,67 +433,50 @@ public abstract class ShipBoard {
      * @return The total number of connected cards, including itself
      */
     private int integrityVerifier(int x, int y){
-        x = adaptX(x);
-        y = adaptY(y);
-        ShipCard shipCard = this.getShipCard(x, y);
-        shipCard.setVisited(true);
-        boolean finalComponent = true;
-        int connectedComponents = 1;
+        try{
+            ShipCard shipCard = this.getShipCard(x, y);
+            shipCard.setVisited(true);
+            boolean finalComponent = true;
+            int connectedComponents = 1;
 
-        if (shipCard.getTopConnector() != ShipCard.Connector.NONE) {
-            try {
+            if (shipCard.getTopConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x, y-1);
                 if (components[x][y-1] != null && !components[x][y-1].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x, y-1);   /* inductive step */
                 }
             }
-            catch (Exception _) {
-
-            }
-        }
-        if (shipCard.getRightConnector() != ShipCard.Connector.NONE) {
-            try {
+            if (shipCard.getRightConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x+1, y);
                 if (components[x+1][y] != null && !components[x+1][y].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x+1, y);   /* inductive step */
                 }
             }
-            catch (Exception _) {
-
-            }
-        }
-        if (shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
-            try {
+            if (shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x, y+1);
                 if (components[x][y+1] != null && !components[x][y+1].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x, y+1);   /* inductive step */
                 }
             }
-            catch (Exception _) {
-
-            }
-        }
-        if (shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
-            try {
+            if (shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x-1, y);
                 if (components[x-1][y] != null && !components[x-1][y].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x-1, y);   /* inductive step */
                 }
             }
-            catch (Exception _) {
 
+            if (finalComponent) {
+                return 1;   /* base case */
             }
-        }
 
-        if (finalComponent) {
-            return 1;   /* base case */
+            return connectedComponents;
         }
-
-        return connectedComponents;
+        catch (Exception _) {
+            return 0;
+        }
     }
 
 

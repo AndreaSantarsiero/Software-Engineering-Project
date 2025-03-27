@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc11.model.shipboard.Level3ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ShipBoardLoader {
         shipCardLoader = new ShipCardLoader();
         objectMapper = new ObjectMapper();
 
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+        try (InputStream inputStream = new FileInputStream(resourcePath);) {
             if (inputStream == null) {
                 throw new IOException("File JSON not found: " + resourcePath);
             }

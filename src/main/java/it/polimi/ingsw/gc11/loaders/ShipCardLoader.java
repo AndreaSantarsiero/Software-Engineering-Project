@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc11.loaders;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.*;
@@ -12,7 +14,7 @@ import java.util.*;
 public class ShipCardLoader {
 
     private final List<ShipCard> shipCards;
-    private static final String RESOURCE_PATH = "it/polimi/ingsw/gc11/shipCards/shipCards.json";
+    private static final String RESOURCE_PATH = "src/main/resources/it/polimi/ingsw/gc11/shipCards/shipCards.json";
 
 
 
@@ -21,7 +23,8 @@ public class ShipCardLoader {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            InputStream inputStream = ShipCardLoader.class.getClassLoader().getResourceAsStream(RESOURCE_PATH);
+            InputStream inputStream = new FileInputStream(RESOURCE_PATH);
+            //InputStream inputStream = ShipCardLoader.class.getClassLoader().getResourceAsStream(RESOURCE_PATH);
             if (inputStream == null) {
                 throw new IOException("File JSON not found: " + RESOURCE_PATH);
             }
