@@ -13,19 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShipBoardTest {
 
     private ShipBoard shipBoard;
-    private ShipCard shipCard;
 
 
 
     @BeforeEach
     void setUp() {
-        ShipCardLoader shipCardLoader = new ShipCardLoader();
-        shipCard = shipCardLoader.getShipCard("BlueCentralUnit");
-
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader("it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         shipBoard = shipBoardLoader.getShipBoard();
 
-        assertNotNull(shipCard, "ShipCard was not loaded correctly from JSON");
         assertNotNull(shipBoard, "ShipBoard was not loaded correctly from JSON");
     }
 

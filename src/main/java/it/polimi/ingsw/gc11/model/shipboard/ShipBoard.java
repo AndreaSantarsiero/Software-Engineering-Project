@@ -28,12 +28,12 @@ public abstract class ShipBoard {
      * @param Y_MAX The maximum height of the board
      */
     public ShipBoard(int X_MAX, int Y_MAX) {
-        ShipCard[][] components = new ShipCard[Y_MAX][X_MAX];
-        reservedComponents = new ArrayList<ShipCard>();
-        lastModifiedX = -1;
-        lastModifiedY = -1;
-        brownActiveUnit = null;
-        purpleActiveUnit = null;
+        this.components = new ShipCard[Y_MAX][X_MAX];
+        this.reservedComponents = new ArrayList<ShipCard>();
+        this.lastModifiedX = -1;
+        this.lastModifiedY = -1;
+        this.brownActiveUnit = null;
+        this.purpleActiveUnit = null;
     }
 
 
@@ -779,7 +779,7 @@ public abstract class ShipBoard {
         }
         for (int i = 0; i < batteryModules.size(); i++) {
             Battery battery = batteryModules.get(i);
-            if (!battery.isScrap()){
+            if (battery.isScrap()){
                 throw new IllegalArgumentException("Scraps cannot be used anymore");
             }
             int numBatteries = usedBatteries.get(i);

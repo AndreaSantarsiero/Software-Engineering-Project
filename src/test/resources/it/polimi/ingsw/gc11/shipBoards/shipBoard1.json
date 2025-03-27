@@ -5,27 +5,32 @@
       {
         "id": "BlueCentralUnit",
         "x": 7,
-        "y": 7
+        "y": 7,
+        "orientation": 0
       },
       {
         "id": "DoubleBattery1",
         "x": 6,
-        "y": 7
+        "y": 7,
+        "orientation": 0
       },
       {
         "id": "SingleEngine3",
         "x": 7,
-        "y": 8
+        "y": 8,
+        "orientation": 0
       },
       {
         "id": "RedSingleStorage1",
         "x": 7,
-        "y": 6
+        "y": 6,
+        "orientation": 0
       },
       {
         "id": "Shield1",
         "x": 8,
-        "y": 7
+        "y": 7,
+        "orientation": 0
       }
     ]
   }
