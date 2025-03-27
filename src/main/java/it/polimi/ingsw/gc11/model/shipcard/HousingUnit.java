@@ -132,6 +132,11 @@ public class HousingUnit extends ShipCard {
     @Override
     public boolean equals(Object obj) {
         HousingUnit housingUnit = (HousingUnit) obj;
-        return super.equals(obj) && this.central == housingUnit.isCentral() && this.alienUnit.equals(housingUnit.getAlienUnit()) && this.numMembers == housingUnit.numMembers;
+        if(this.alienUnit == null){
+            return super.equals(obj) && this.central == housingUnit.isCentral() && this.numMembers == housingUnit.numMembers;
+        }
+        else{
+            return super.equals(obj) && this.central == housingUnit.isCentral() && this.alienUnit.equals(housingUnit.getAlienUnit()) && this.numMembers == housingUnit.numMembers;
+        }
     }
 }
