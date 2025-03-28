@@ -220,18 +220,18 @@ public abstract class ShipBoard {
 
 
     /**
-     * Counts the total number of ShipCards used to build the ship
+     * Counts the total number of ShipCards used to build the ship that are still not destroyed
      *
-     * @return The total number of ShipCards used to build the ship
+     * @return The total number of ShipCards used to build the ship that are still not destroyed
      */
-    private int getShipCardsNumber(){
+    public int getShipCardsNumber(){
         int numComponents = 0;
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 try {
                     checkCoordinates(j, i);
-                    if (components[i][j] != null) {
+                    if (components[i][j] != null && !components[i][j].isScrap()) {
                         numComponents++;
                     }
                 }
@@ -279,11 +279,11 @@ public abstract class ShipBoard {
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] != null) {
+                if (components[i][j] != null && !components[i][j].isScrap()) {
                     if (components[i][j].getRightConnector() != ShipCard.Connector.NONE) {
                         try {
                             checkCoordinates(j+1, i);
-                            if (components[i][j+1] == null) {
+                            if (components[i][j+1] == null || components[i][j+1].isScrap()) {
                                 exposedConnectors++;
                             }
                         }
@@ -294,7 +294,7 @@ public abstract class ShipBoard {
                     if (components[i][j].getLeftConnector() != ShipCard.Connector.NONE) {
                         try {
                             checkCoordinates(j-1, i);
-                            if (components[i][j-1] == null) {
+                            if (components[i][j-1] == null || components[i][j-1].isScrap()) {
                                 exposedConnectors++;
                             }
                         }
@@ -305,7 +305,7 @@ public abstract class ShipBoard {
                     if (components[i][j].getTopConnector() != ShipCard.Connector.NONE) {
                         try {
                             checkCoordinates(j, i-1);
-                            if (components[i-1][j] == null) {
+                            if (components[i-1][j] == null || components[i-1][j].isScrap()) {
                                 exposedConnectors++;
                             }
                         }
@@ -316,7 +316,7 @@ public abstract class ShipBoard {
                     if (components[i][j].getBottomConnector() != ShipCard.Connector.NONE) {
                         try {
                             checkCoordinates(j, i+1);
-                            if (components[i+1][j] == null) {
+                            if (components[i+1][j] == null || components[i+1][j].isScrap()) {
                                 exposedConnectors++;
                             }
                         }
@@ -341,7 +341,7 @@ public abstract class ShipBoard {
     private void checkShipInitialization(){
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
-                if(components[i][j] != null){
+                if(components[i][j] != null && !components[i][j].isScrap()){
                     checkCoordinates(j, i);
                     components[i][j].setIllegal(false);
                     components[i][j].setVisited(false);
@@ -363,30 +363,30 @@ public abstract class ShipBoard {
         try {
             for (int i = 0; i < components.length; i++) {
                 for (int j = 0; j < components[i].length; j++) {
-                    if (components[i][j] != null) {
-                        if(components[i][j-1] != null) {
+                    if (components[i][j] != null && !components[i][j].isScrap()) {
+                        if(components[i][j-1] != null && !components[i][j-1].isScrap()) {
                             if(!checkConnection(components[i][j].getLeftConnector(), components[i][j-1].getRightConnector())){
                                 components[i][j].setIllegal(true);
                                 components[i][j-1].setIllegal(true);
                                 status = false;
                             }
                         }
-                        if(components[i][j+1] != null) {
+                        if(components[i][j+1] != null && !components[i][j+1].isScrap()) {
                             if(!checkConnection(components[i][j].getRightConnector(), components[i][j+1].getLeftConnector())){
                                 components[i][j].setIllegal(true);
                                 components[i][j+1].setIllegal(true);
                                 status = false;
                             }
                         }
-                        if(components[i][j-1] != null) {
+                        if(components[i-1][j] != null && !components[i-1][j].isScrap()) {
                             if(!checkConnection(components[i][j].getTopConnector(), components[i-1][j].getBottomConnector())){
                                 components[i][j].setIllegal(true);
                                 components[i-1][j].setIllegal(true);
                                 status = false;
                             }
                         }
-                        if(components[i][j-1] != null) {
-                            if(!checkConnection(components[i][j].getBottomConnector(), components[i][j-1].getTopConnector())){
+                        if(components[i+1][j] != null && !components[i+1][j].isScrap()) {
+                            if(!checkConnection(components[i][j].getBottomConnector(), components[i+1][j].getTopConnector())){
                                 components[i][j].setIllegal(true);
                                 components[i+1][j].setIllegal(true);
                                 status = false;
@@ -422,7 +422,7 @@ public abstract class ShipBoard {
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] != null) {
+                if (components[i][j] != null && !components[i][j].isScrap()) {
                     connectedComponents = integrityVerifier(j, i);
                     if (connectedComponents == this.getShipCardsNumber()) {
                         return true;
@@ -455,28 +455,28 @@ public abstract class ShipBoard {
 
             if (shipCard.getTopConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x, y-1);
-                if (components[x][y-1] != null && !components[x][y-1].isVisited()) {
+                if (components[y-1][x] != null && !components[y-1][x].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x, y-1);   /* inductive step */
                 }
             }
             if (shipCard.getRightConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x+1, y);
-                if (components[x+1][y] != null && !components[x+1][y].isVisited()) {
+                if (components[y][x+1] != null && !components[y][x+1].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x+1, y);   /* inductive step */
                 }
             }
             if (shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x, y+1);
-                if (components[x][y+1] != null && !components[x][y+1].isVisited()) {
+                if (components[y+1][x] != null && !components[y+1][x].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x, y+1);   /* inductive step */
                 }
             }
             if (shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
                 checkCoordinates(x-1, y);
-                if (components[x-1][y] != null && !components[x-1][y].isVisited()) {
+                if (components[y][x-1] != null && !components[y][x-1].isVisited()) {
                     finalComponent = false;
                     connectedComponents += integrityVerifier(x-1, y);   /* inductive step */
                 }
@@ -508,7 +508,7 @@ public abstract class ShipBoard {
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if (components[i][j] != null) {
-                    if (components[i][j] instanceof Engine engine) {
+                    if (components[i][j] instanceof Engine engine && !components[i][j].isScrap()) {
                         if (engine.getOrientation() != ShipCard.Orientation.DEG_0){
                             engine.setIllegal(true);
                             status = false;
@@ -525,7 +525,7 @@ public abstract class ShipBoard {
                         }
                     }
 
-                    if (components[i][j] instanceof Cannon cannon) {
+                    if (components[i][j] instanceof Cannon cannon && !components[i][j].isScrap()) {
                         if (cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
                             try {
                                 checkCoordinates(j, i-1);
@@ -608,12 +608,6 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException if not all conditions are met
      */
     public void connectAlienUnit(int alienX, int alienY, int housingX, int housingY) {
-        alienX = adaptX(alienX);
-        alienY = adaptY(alienY);
-        housingX = adaptX(housingX);
-        housingY = adaptY(housingY);
-        checkCoordinates(alienX, alienY);
-        checkCoordinates(housingX, housingY);
         ShipCard shipCard1 = this.getShipCard(alienX, alienY);
         ShipCard shipCard2 = this.getShipCard(housingX, housingY);
 
@@ -633,16 +627,16 @@ public abstract class ShipBoard {
             throw new IllegalArgumentException("Cannot connect an AlienUnit to a central HousingUnit");
         }
 
-        if(alienX == housingX && alienY == housingY-1 && alienUnit.getTopConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getTopConnector(), housingUnit.getBottomConnector())){
+        if(alienX == housingX && alienY == housingY+1 && alienUnit.getTopConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getTopConnector(), housingUnit.getBottomConnector())){
             housingUnit.setAlienUnit(alienUnit);
         }
-        else if(alienX == housingX+1 && alienY == housingY && alienUnit.getRightConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getRightConnector(), housingUnit.getLeftConnector())){
+        else if(alienX == housingX-1 && alienY == housingY && alienUnit.getRightConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getRightConnector(), housingUnit.getLeftConnector())){
             housingUnit.setAlienUnit(alienUnit);
         }
-        else if(alienX == housingX && alienY == housingY+1 && alienUnit.getBottomConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getBottomConnector(), housingUnit.getTopConnector())){
+        else if(alienX == housingX && alienY == housingY-1 && alienUnit.getBottomConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getBottomConnector(), housingUnit.getTopConnector())){
             housingUnit.setAlienUnit(alienUnit);
         }
-        else if(alienX == housingX-1 && alienY == housingY && alienUnit.getLeftConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getLeftConnector(), housingUnit.getRightConnector())) {
+        else if(alienX == housingX+1 && alienY == housingY && alienUnit.getLeftConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getLeftConnector(), housingUnit.getRightConnector())) {
             housingUnit.setAlienUnit(alienUnit);
         }
         else{
@@ -736,7 +730,7 @@ public abstract class ShipBoard {
         }
         for (int i = 0; i < housingUnitModules.size(); i++) {
             HousingUnit housingUnit = housingUnitModules.get(i);
-            if (!housingUnit.isScrap()){
+            if (housingUnit.isScrap()){
                 throw new IllegalArgumentException("Scraps cannot be used anymore");
             }
             int numMembers = killedMembers.get(i);
@@ -1018,10 +1012,10 @@ public abstract class ShipBoard {
         List<Cannon> availableCannons = new ArrayList<>();
 
         if (direction == Hit.Direction.LEFT) {
-            for (int j = -1; j < 1; j++) {
+            for (int j = -1; j < 2; j++) {
                 for (int i = 0; i < components[0].length; i++) {
                     try{
-                        ShipCard shipCard = getShipCard(i, coord + j);
+                        ShipCard shipCard = this.getShipCard(i - adaptX(0), coord + j);
                         if(shipCard != null){
                             if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_270) {
@@ -1038,10 +1032,10 @@ public abstract class ShipBoard {
         }
         else if (direction == Hit.Direction.RIGHT) {
 
-            for (int j = -1; j < 1; j++) {
+            for (int j = -1; j < 2; j++) {
                 for (int i = 0; i < components[0].length; i++) {
                     try{
-                        ShipCard shipCard = getShipCard(components[0].length - i, coord + j);
+                        ShipCard shipCard = this.getShipCard(components[0].length - i - adaptX(0), coord + j);
                         if(shipCard != null){
                             if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_90) {
@@ -1059,7 +1053,7 @@ public abstract class ShipBoard {
         else if (direction == Hit.Direction.TOP) {
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, i);
+                    ShipCard shipCard = this.getShipCard(coord, i - adaptY(0));
                     if(shipCard != null){
                         if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                             if(shipCard.getOrientation() == ShipCard.Orientation.DEG_0) {
@@ -1075,10 +1069,10 @@ public abstract class ShipBoard {
         }
         else if (direction == Hit.Direction.BOTTOM) {
 
-            for (int j = -1; j < 1; j++) {
+            for (int j = -1; j < 2; j++) {
                 for (int i = 0; i < components.length; i++) {
                     try{
-                        ShipCard shipCard = getShipCard(coord + j, components.length - i);
+                        ShipCard shipCard = this.getShipCard(coord + j, components.length - i - adaptY(0));
                         if(shipCard != null){
                             if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_180) {
