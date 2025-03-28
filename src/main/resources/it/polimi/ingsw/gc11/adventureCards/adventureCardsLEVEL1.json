@@ -1,0 +1,22 @@
+{
+  "Level1AbandonedShip.jpg": {
+    "id": "Level1AbandonedShip",
+    "subClass": "AbandonedShip",
+    "type": "LEVEL1",
+    "lostDays": "1",
+    "lostMembers": "2",
+    "coins": "3"
+  },
+  "Level1AbandonedStation.jpg": {
+    "id": "Level1AbandonedStation",
+    "subClass": "AbandonedStation",
+    "type": "LEVEL1",
+    "lostDays": "1",
+    "membersRequired": "6",
+    "numBlue": "0",
+    "numGreen": "0",
+    "numYellow": "0",
+    "numRed": "2"
+  }
+
+}

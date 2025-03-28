@@ -11,7 +11,7 @@ public class AbandonedStation extends AdventureCard {
 
     private final int lostDays;
     private final int membersRequired;
-    private ArrayList<Material> materials;
+    private final ArrayList<Material> materials;
 
     public AbandonedStation(AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed)throws IllegalArgumentException {
         super(type);
