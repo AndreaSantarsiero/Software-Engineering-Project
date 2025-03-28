@@ -13,7 +13,7 @@ import java.util.*;
 
 public class ShipCardLoader {
 
-    private final List<ShipCard> shipCards;
+    private final ArrayList<ShipCard> shipCards;
     private static final String RESOURCE_PATH = "src/main/resources/it/polimi/ingsw/gc11/shipCards/shipCards.json";
 
 
@@ -80,12 +80,13 @@ public class ShipCardLoader {
 
     }
 
-
+    public ArrayList<ShipCard> getAllShipCards() {
+        return shipCards;
+    }
 
     public ShipCard getShipCard(String id) {
         return shipCards.stream().filter(card -> card.getId().equals(id)).findFirst().orElse(null);
     }
-
 
 
 

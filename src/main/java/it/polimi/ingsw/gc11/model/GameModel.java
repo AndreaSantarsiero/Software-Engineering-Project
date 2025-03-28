@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.*;
+import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
@@ -35,8 +36,8 @@ public class GameModel {
     }
 
     private ArrayList<ShipCard> allShipCardsInit() {
-        //to implement
-        return null;
+        ShipCardLoader loader = new ShipCardLoader();
+        return loader.getAllShipCards();
     }
 
     private ArrayList<AdventureCard> adventureCardsTrialInit() {
