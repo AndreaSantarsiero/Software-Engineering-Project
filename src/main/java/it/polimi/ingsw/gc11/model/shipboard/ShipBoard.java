@@ -334,7 +334,7 @@ public abstract class ShipBoard {
 
 
     /**
-     * Ensures every ship component is within valid bounds and reset its illegal and visited status to false
+     * Ensures every ship component is within valid bounds and reset its illegal status to false
      *
      * @throws IllegalArgumentException if any component is out of ship's bounds
      */
@@ -344,6 +344,20 @@ public abstract class ShipBoard {
                 if(components[i][j] != null && !components[i][j].isScrap()){
                     checkCoordinates(j, i);
                     components[i][j].setIllegal(false);
+                }
+            }
+        }
+    }
+
+    /**
+     * Initializes the visited state of the components
+     * This method iterates through the {@code components} array and sets the visited flag to {@code false}
+     * for all non-null, non-scrap components
+     */
+    private void visitedInitialization(){
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                if(components[i][j] != null && !components[i][j].isScrap()){
                     components[i][j].setVisited(false);
                 }
             }
@@ -419,6 +433,7 @@ public abstract class ShipBoard {
      */
     public boolean checkShipIntegrity(){
         int connectedComponents = 0;
+        this.visitedInitialization();
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
@@ -739,6 +754,28 @@ public abstract class ShipBoard {
     }
 
 
+    public void epidemic(){
+        this.visitedInitialization();
+
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                if(components[i][j] instanceof HousingUnit housingUnit && !housingUnit.isScrap()) {
+                    if(housingUnit.getLeftConnector() != ShipCard.Connector.NONE){
+                        if(components[i][j-1] instanceof HousingUnit housingUnitLeft && !housingUnitLeft.isScrap()) {
+                            if(checkConnection(housingUnit.getLeftConnector(), housingUnitLeft.getRightConnector())){
+                                //da implementare
+                            }
+                        }
+                    }
+
+                    //da implementare top, bottom e right
+                }
+
+            }
+        }
+    }
+
+
 
     /**
      * Calculates the total number of available batteries
@@ -802,6 +839,53 @@ public abstract class ShipBoard {
         }
 
         return totalMaterialsValue;
+    }
+
+    /**
+     * Adds or replaces materials in a list of storage units based on provided new and old material lists
+     * This method ensures that the provided lists are non-null and have matching sizes
+     * It iterates through each storage unit, adding new materials if the corresponding old material is null, or replacing it otherwise
+     *
+     * @param storages      The list of {@link Storage} units where materials will be added or replaced
+     * @param newMaterials  A list of lists containing the new {@link Material} objects to be added
+     * @param oldMaterials  A list of lists containing the old {@link Material} objects to be replaced
+     * @throws IllegalArgumentException If any of the input lists are null, or if their sizes do not match
+     *                                  Also thrown if any inner material list is null or has mismatched sizes
+     */
+    public void addMaterials(List<Storage> storages, List<List<Material>> newMaterials, List<List<Material>> oldMaterials) {
+        if (storages == null || newMaterials == null || oldMaterials == null) {
+            throw new IllegalArgumentException("Storage modules, newMaterial or oldMaterial is null");
+        }
+        if (storages.size() != newMaterials.size()) {
+            throw new IllegalArgumentException("Storage and new materials do not match");
+        }
+        if (newMaterials.size() != oldMaterials.size()) {
+            throw new IllegalArgumentException("New and old materials do not match");
+        }
+        for (int i = 0; i < newMaterials.size(); i++) {
+            List<Material> newStorageMaterials = newMaterials.get(i);
+            List<Material> oldStorageMaterials = oldMaterials.get(i);
+            if (newStorageMaterials == null || oldStorageMaterials == null) {
+                throw new IllegalArgumentException("New or old material list is null for a single storage at index " + i);
+            }
+            if (newStorageMaterials.size() != oldStorageMaterials.size()) {
+                throw new IllegalArgumentException("New and old materials for a single storage do not match at index " + i);
+            }
+        }
+
+        for (int i = 0; i < storages.size(); i++) {
+            Storage storage = storages.get(i);
+            List<Material> newStorageMaterials = newMaterials.get(i);
+            List<Material> oldStorageMaterials = oldMaterials.get(i);
+            for (int j = 0; j < newStorageMaterials.size(); j++) {
+                if(oldStorageMaterials.get(j) == null){
+                    storage.addMaterial(newStorageMaterials.get(j));
+                }
+                else {
+                    storage.replaceMaterial(newStorageMaterials.get(j), oldStorageMaterials.get(j));
+                }
+            }
+        }
     }
 
     /**
