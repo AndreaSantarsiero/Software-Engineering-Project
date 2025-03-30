@@ -1,9 +1,6 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-
-import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Shot;
-
 import java.util.ArrayList;
 
 public class Pirates extends AdventureCard {

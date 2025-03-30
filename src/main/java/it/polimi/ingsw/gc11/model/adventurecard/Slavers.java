@@ -16,7 +16,7 @@ public class Slavers extends AdventureCard {
     private final int coins;
 
 
-    public Slavers(AdventureCard.Type type, int lostDays, int firePower, int coins, int lostMembers) throws IllegalArgumentException{
+    public Slavers(AdventureCard.Type type, int lostDays, int firePower, int lostMembers, int coins) throws IllegalArgumentException{
         super(type);
         if (lostDays < 0 || firePower < 0 || lostMembers < 0 || coins < 0) {
             throw new IllegalArgumentException("lostDays and numMaterials is null.");

@@ -7,6 +7,7 @@
     "lostMembers": "2",
     "coins": "3"
   },
+
   "Level1AbandonedStation.jpg": {
     "id": "Level1AbandonedStation",
     "subClass": "AbandonedStation",
@@ -17,6 +18,180 @@
     "numGreen": "0",
     "numYellow": "0",
     "numRed": "2"
-  }
+  },
 
+  "Level1MeteorSwarm1.jpg": {
+    "id": "Level1MeteorSwarm1",
+    "subClass": "MeteorSwarm",
+    "type": "LEVEL1",
+    "meteors": [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "LEFT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "RIGHT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "BOTTOM"
+      }
+    ]
+  },
+  "Level1MeteorSwarm2.jpg": {
+    "id": "Level1MeteorSwarm2",
+    "subClass": "MeteorSwarm",
+    "type": "LEVEL1",
+    "meteors": [
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      }
+    ]
+  },
+
+  "Level1OpenSpace1.jpg": {
+    "id": "Level1OpenSpace1",
+    "subClass": "OpenSpace",
+    "type": "LEVEL1"
+  },
+  "Level1OpenSpace2.jpg": {
+    "id": "Level1OpenSpace2",
+    "subClass": "OpenSpace",
+    "type": "LEVEL1"
+  },
+  "Level1OpenSpace3.jpg": {
+    "id": "Level1OpenSpace3",
+    "subClass": "OpenSpace",
+    "type": "LEVEL1"
+  },
+
+  "Level1Pirates.jpg": {
+    "id": "Level1Pirates",
+    "subClass": "Pirates",
+    "type": "LEVEL1",
+    "lostDays": "1",
+    "firePower": "5",
+    "coins": "4",
+    "shots": [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      }
+    ]
+  },
+
+  "Level1Planets1.jpg": {
+    "id": "Level1Planets1",
+    "subClass": "PlanetsCard",
+    "type": "LEVEL1",
+    "lostDays": "3",
+    "planets": [
+      {
+        "numBlue": "3",
+        "numGreen": "1",
+        "numYellow": "0",
+        "numRed": "1"
+      },
+      {
+        "numBlue": "1",
+        "numGreen": "0",
+        "numYellow": "1",
+        "numRed": "1"
+      },
+      {
+        "numBlue": "3",
+        "numGreen": "0",
+        "numYellow": "0",
+        "numRed": "1"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "1",
+        "numYellow": "0",
+        "numRed": "1"
+      }
+    ]
+  },
+  "Level1Planets2.jpg": {
+    "id": "Level1Planets2",
+    "subClass": "PlanetsCard",
+    "type": "LEVEL1",
+    "lostDays": "3",
+    "planets": [
+      {
+        "numBlue": "2",
+        "numGreen": "1",
+        "numYellow": "1",
+        "numRed": "0"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "2",
+        "numRed": "0"
+      }
+    ]
+  },
+  "Level1Planets3.jpg": {
+    "id": "Level1Planets3",
+    "subClass": "PlanetsCard",
+    "type": "LEVEL1",
+    "lostDays": "1",
+    "planets": [
+      {
+        "numBlue": "0",
+        "numGreen": "2",
+        "numYellow": "0",
+        "numRed": "0"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "1",
+        "numRed": ""
+      },
+      {
+        "numBlue": "3",
+        "numGreen": "0",
+        "numYellow": "0",
+        "numRed": "0"
+      }
+    ]
+  },
+
+  "Level1Slavers.jpg": {
+    "id": "Level1Slavers",
+    "subClass": "Slavers",
+    "type": "LEVEL1",
+    "lostDays": "1",
+    "firePower": "6",
+    "lostMembers": "3",
+    "coins": "5"
+  }
 }
