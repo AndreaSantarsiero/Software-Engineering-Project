@@ -449,7 +449,7 @@ public abstract class ShipBoard {
             }
         }
 
-        throw new IllegalStateException("Ship does not contain any component");
+        throw new IllegalStateException("Ship does not contain any component (or they're all scraped)");
     }
 
 
@@ -463,37 +463,57 @@ public abstract class ShipBoard {
      */
     private int integrityVerifier(int x, int y){
         try{
-            ShipCard shipCard = this.getShipCard(x, y);
+            ShipCard shipCard = this.getShipCard(x - adaptX(0), y - adaptY(0));
             shipCard.setVisited(true);
             boolean finalComponent = true;
             int connectedComponents = 1;
 
             if (shipCard.getTopConnector() != ShipCard.Connector.NONE) {
-                checkCoordinates(x, y-1);
-                if (components[y-1][x] != null && !components[y-1][x].isVisited()) {
-                    finalComponent = false;
-                    connectedComponents += integrityVerifier(x, y-1);   /* inductive step */
+                try {
+                    checkCoordinates(x, y-1);
+                    if (components[y-1][x] != null && !components[y-1][x].isVisited() && !components[y-1][x].isScrap()) {
+                        finalComponent = false;
+                        connectedComponents += integrityVerifier(x, y-1);   /* inductive step */
+                    }
+                }
+                catch (Exception _) {
+
                 }
             }
             if (shipCard.getRightConnector() != ShipCard.Connector.NONE) {
-                checkCoordinates(x+1, y);
-                if (components[y][x+1] != null && !components[y][x+1].isVisited()) {
-                    finalComponent = false;
-                    connectedComponents += integrityVerifier(x+1, y);   /* inductive step */
+                try {
+                    checkCoordinates(x+1, y);
+                    if (components[y][x+1] != null && !components[y][x+1].isVisited() && !components[y][x+1].isScrap()) {
+                        finalComponent = false;
+                        connectedComponents += integrityVerifier(x+1, y);   /* inductive step */
+                    }
+                }
+                    catch (Exception _) {
+
                 }
             }
             if (shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
-                checkCoordinates(x, y+1);
-                if (components[y+1][x] != null && !components[y+1][x].isVisited()) {
-                    finalComponent = false;
-                    connectedComponents += integrityVerifier(x, y+1);   /* inductive step */
+                try {
+                    checkCoordinates(x, y+1);
+                    if (components[y+1][x] != null && !components[y+1][x].isVisited() && !components[y+1][x].isScrap()) {
+                        finalComponent = false;
+                        connectedComponents += integrityVerifier(x, y+1);   /* inductive step */
+                    }
+                }
+                catch (Exception _) {
+
                 }
             }
             if (shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
-                checkCoordinates(x-1, y);
-                if (components[y][x-1] != null && !components[y][x-1].isVisited()) {
-                    finalComponent = false;
-                    connectedComponents += integrityVerifier(x-1, y);   /* inductive step */
+                try {
+                    checkCoordinates(x-1, y);
+                    if (components[y][x-1] != null && !components[y][x-1].isVisited() && !components[y][x-1].isScrap()) {
+                        finalComponent = false;
+                        connectedComponents += integrityVerifier(x-1, y);   /* inductive step */
+                    }
+                }
+                catch (Exception _) {
+
                 }
             }
 
