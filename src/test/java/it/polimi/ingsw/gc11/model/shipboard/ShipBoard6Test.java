@@ -29,11 +29,11 @@ public class ShipBoard6Test {
 
     @Test
     void testCheckShip(){
-        assertTrue(shipBoard.checkShip(), "ShipBoard4 respects all the rules");
+        assertTrue(shipBoard.checkShip(), "ShipBoard6 respects all the rules");
 
         shipBoard.getShipCard(4, 7).destroy();
         shipBoard.getShipCard(7, 6).destroy();
-        assertTrue(shipBoard.checkShip(), "ShipBoard4 respects all the rules");
+        assertTrue(shipBoard.checkShip(), "ShipBoard6 respects all the rules");
 
         shipBoard.getShipCard(5, 9).destroy();
         assertFalse(shipBoard.checkShip(), "Ship integrity is compromised");
