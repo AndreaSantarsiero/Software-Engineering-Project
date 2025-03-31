@@ -18,10 +18,7 @@ class AdventureCardLoaderTest {
     void setUp() {
         adventureCardLoader = new AdventureCardLoader();
         cardsLv1 = adventureCardLoader.getCardsLevel1();
-        /*
         cardsLv2 = adventureCardLoader.getCardsLevel2();
-
-         */
         cardsTrial = adventureCardLoader.getCardsTrial();
 
         assertNotNull(adventureCardLoader, "ShipBoard was not loaded correctly from JSON");
@@ -32,12 +29,10 @@ class AdventureCardLoaderTest {
         assertEquals(12, cardsLv1.size(), "Adventure cards number not calculated correctly");
     }
 
-    /*
     @Test
     void testAdventureCardsLv2Number() {
         assertEquals(20, cardsLv2.size(), "Adventure cards number not calculated correctly");
     }
-    */
 
     @Test
     void testAdventureCardsTrialNumber() {
