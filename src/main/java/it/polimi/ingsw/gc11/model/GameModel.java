@@ -62,9 +62,9 @@ public class GameModel {
             this.adventureCardsDecks.add(new AdventureDeck(true));
             this.adventureCardsDecks.add(new AdventureDeck(false));
             for (int i = 0; i < this.adventureCardsDecks.size(); i++) {
-                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get((int )(Math.random() * (20+1))));
-                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get((int )(Math.random() * (20+1))));
-                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel1.get((int )(Math.random() * (12+1))));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get((int )(Math.random() * (20))));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get((int )(Math.random() * (20))));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel1.get((int )(Math.random() * (12))));
             }
         }
         else
