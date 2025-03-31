@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.model.shipboard;
 
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.model.Hit;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -141,6 +142,60 @@ public class ShipBoard4Test {
         assertEquals(0, shipBoard.getPurpleAliens(), "Purple aliens number not calculated correctly");
         shipBoard.connectAlienUnit(10, 8, 9, 8);
         assertEquals(1, shipBoard.getBrownAliens(), "Brown aliens number not calculated correctly after connecting an alien unit to a housing unit");
+    }
+
+
+    @Test
+    void testAddMaterials() {
+        assertEquals(0, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly");
+
+        Material redMaterial = new Material(Material.Type.RED);
+        Material yellowMaterial = new Material(Material.Type.YELLOW);
+        Material greenMaterial = new Material(Material.Type.GREEN);
+        Material blueMaterial = new Material(Material.Type.BLUE);
+
+        List<Storage> storages = new ArrayList<>();
+        storages.add((Storage) shipBoard.getShipCard(9, 9));
+        storages.add((Storage) shipBoard.getShipCard(4, 7));
+
+        List<Material> newMaterials1 = new ArrayList<>();
+        newMaterials1.add(yellowMaterial);
+        newMaterials1.add(blueMaterial);
+        List<Material> newMaterials2 = new ArrayList<>();
+        newMaterials2.add(redMaterial);
+
+        List<Material> oldMaterials1 = new ArrayList<>();
+        oldMaterials1.add(null);
+        oldMaterials1.add(null);
+        List<Material> oldMaterials2 = new ArrayList<>();
+        oldMaterials2.add(null);
+
+        List<List<Material>> newMaterials = new ArrayList<>();
+        List<List<Material>> oldMaterials = new ArrayList<>();
+        newMaterials.add(newMaterials1);
+        newMaterials.add(newMaterials2);
+        oldMaterials.add(oldMaterials1);
+        oldMaterials.add(oldMaterials2);
+
+        shipBoard.addMaterials(storages, newMaterials, oldMaterials);
+        assertEquals(8, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly");
+        assertEquals(0, shipBoard.removeMaterials(2), "Materials not removed correctly");
+        assertEquals(1, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after removing materials");
+
+        newMaterials1.clear();
+        oldMaterials1.clear();
+        newMaterials1.add(greenMaterial);
+        oldMaterials1.add(blueMaterial);
+        newMaterials.clear();
+        oldMaterials.clear();
+        newMaterials.add(newMaterials1);
+        oldMaterials.add(oldMaterials1);
+        storages.clear();
+        storages.add((Storage) shipBoard.getShipCard(9, 9));
+
+        shipBoard.addMaterials(storages, newMaterials, oldMaterials);
+        assertEquals(2, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after replacing materials");
+        assertEquals(3, shipBoard.removeMaterials(4), "Materials not removed correctly when exceeding the number of available materials on the ship");
     }
 
 

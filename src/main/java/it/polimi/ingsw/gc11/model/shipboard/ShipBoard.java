@@ -921,6 +921,11 @@ public abstract class ShipBoard {
         Material materialToRemove = null;
 
         for (int k = 0; k < numMaterials; k++) {
+            mostValuableMaterial = 0;
+            targetStorage = null;
+            targetMaterial = null;
+            materialToRemove = null;
+
             for (int i = 0; i < components.length; i++) {
                 for (int j = 0; j < components[i].length; j++) {
                     if (components[i][j] instanceof Storage storage && !components[i][j].isScrap()) {
