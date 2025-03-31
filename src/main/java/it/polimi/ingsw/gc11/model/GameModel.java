@@ -1,11 +1,10 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.*;
-import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
+import it.polimi.ingsw.gc11.loaders.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -28,31 +27,13 @@ public class GameModel {
         this.flightBoard = null;
         this.adventureCardsDecks = new ArrayList<AdventureDeck>();
         this.definitiveDeck = null;
-        this.shipCardsALL = allShipCardsInit();
-        this.adventureCardsTrial = adventureCardsTrialInit();
-        this.adventureCardsLevel1 = adventureCardsLevel1Init();
-        this.adventureCardsLevel2 = adventureCardsLevel2Init();
+        ShipCardLoader shipCardLoader = new ShipCardLoader();
+        this.shipCardsALL = shipCardLoader.getAllShipCards();
+        AdventureCardLoader adventureCardLoader = new AdventureCardLoader();
+        this.adventureCardsTrial = adventureCardLoader.getCardsTrial();
+        this.adventureCardsLevel1 = adventureCardLoader.getCardsLevel1();
+        this.adventureCardsLevel2 = adventureCardLoader.getCardsLevel2();
         this.dices = new Dice[2];
-    }
-
-    private ArrayList<ShipCard> allShipCardsInit() {
-        ShipCardLoader loader = new ShipCardLoader();
-        return loader.getAllShipCards();
-    }
-
-    private ArrayList<AdventureCard> adventureCardsTrialInit() {
-        //to implement
-        return null;
-    }
-
-    private ArrayList<AdventureCard> adventureCardsLevel1Init() {
-        //to implement
-        return null;
-    }
-
-    private ArrayList<AdventureCard> adventureCardsLevel2Init() {
-        //to implement
-        return null;
     }
 
 

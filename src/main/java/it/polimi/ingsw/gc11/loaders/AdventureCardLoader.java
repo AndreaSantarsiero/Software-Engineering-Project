@@ -98,10 +98,56 @@ public class AdventureCardLoader {
         }
     }
 
-
     public ArrayList<AdventureCard> getCardsLevel2() {
-    return null;
+        String PATH_LEVEL2 = "src/main/resources/it/polimi/ingsw/gc11/adventureCards/adventureCardsLEVEL2.json";
+        ArrayList<AdventureCard> adventureCards = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode rootNode = objectMapper.readTree(new File(PATH_LEVEL2));
+            for (JsonNode node : rootNode){
+                String subClass = node.get("subClass").asText();
+                switch (subClass){
+                    case "AbandonedShip":
+                        adventureCards.add(getNewAbandonedShip(node));
+                        break;
+                    case "AbandonedStation":
+                        adventureCards.add(getNewAbandonedStation(node));
+                        break;
+                    case "Epidemic":
+                        adventureCards.add(new Epidemic());
+                        break;
+                    case "MeteorSwarm":
+                        adventureCards.add(getNewMeteorSwarm(node));
+                        break;
+                    case "OpenSpace":
+                        adventureCards.add(getNewOpenSpace(node));
+                        break;
+                    case "Pirates":
+                        adventureCards.add(getNewPirates(node));
+                        break;
+                    case "PlanetsCard":
+                        adventureCards.add(getNewPlanetsCard(node));
+                        break;
+                    case "Slavers":
+                        adventureCards.add(getNewSlavers(node));
+                        break;
+                    case "Smugglers":
+                        adventureCards.add(getNewSmugglers(node));
+                        break;
+                    case "StarDust":
+                        adventureCards.add(getNewStarDust(node));
+                        break;
+                    case "CombatZone":
+                        adventureCards.add(getNewCombatZone(node));
+                        break;
+                }
+            }
+            return adventureCards;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 
     private AbandonedShip getNewAbandonedShip(JsonNode node){
         return new AbandonedShip(

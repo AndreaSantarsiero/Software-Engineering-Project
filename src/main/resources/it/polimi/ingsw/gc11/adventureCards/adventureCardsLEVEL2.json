@@ -1,0 +1,334 @@
+{
+  "Level2AbandonedShip1.jpg": {
+  "id": "Level2AbandonedShip1",
+  "subClass": "AbandonedShip",
+  "type": "LEVEL2",
+  "lostDays": "1",
+  "lostMembers": "4",
+  "coins": "6"
+  },
+  "Level2AbandonedShip2.jpg": {
+    "id": "Level2AbandonedShip2",
+    "subClass": "AbandonedShip",
+    "type": "LEVEL2",
+    "lostDays": "2",
+    "lostMembers": "5",
+    "coins": "8"
+  },
+
+  "Level2AbandonedStation1.jpg": {
+    "id": "Level2AbandonedStation1",
+    "subClass": "AbandonedStation",
+    "type": "LEVEL2",
+    "lostDays": "1",
+    "membersRequired": "7",
+    "numBlue": "0",
+    "numGreen": "0",
+    "numYellow": "1",
+    "numRed": "1"
+  },
+  "Level2AbandonedStation2.jpg": {
+    "id": "Level2AbandonedStation2",
+    "subClass": "AbandonedStation",
+    "type": "LEVEL2",
+    "lostDays": "2",
+    "membersRequired": "8",
+    "numBlue": "0",
+    "numGreen": "1",
+    "numYellow": "2",
+    "numRed": ""
+  },
+
+  "Level2Epidemic.jpg": {
+    "id": "Level2Epidemic",
+    "subClass": "Epidemic",
+    "type": "LEVEL2"
+  },
+
+  "Level2MeteorSwarm1.jpg": {
+    "id": "Level2MeteorSwarm1",
+    "subClass": "MeteorSwarm",
+    "type": "LEVEL2",
+    "meteors": [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "LEFT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "LEFT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "LEFT"
+      }
+    ]
+  },
+  "Level2MeteorSwarm2.jpg": {
+    "id": "Level2MeteorSwarm2",
+    "subClass": "MeteorSwarm",
+    "type": "LEVEL2",
+    "meteors": [
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "BOTTOM"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "BOTTOM"
+      }
+    ]
+  },
+  "Level2MeteorSwarm3.jpg": {
+    "id": "Level2MeteorSwarm3",
+    "subClass": "MeteorSwarm",
+    "type": "LEVEL2",
+    "meteors": [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "RIGHT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "RIGHT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "RIGHT"
+      }
+    ]
+  },
+
+  "Level2OpenSpace1.jpg": {
+    "id": "Level2OpenSpace1",
+    "subClass": "OpenSpace",
+    "type": "LEVEL2"
+  },
+  "Level2OpenSpace2.jpg": {
+    "id": "Level2OpenSpace2",
+    "subClass": "OpenSpace",
+    "type": "LEVEL2"
+  },
+  "Level2OpenSpace3.jpg": {
+    "id": "Level2OpenSpace3",
+    "subClass": "OpenSpace",
+    "type": "LEVEL2"
+  },
+
+  "Level2Pirates.jpg": {
+    "id": "Level2Pirates",
+    "subClass": "Pirates",
+    "type": "LEVEL2",
+    "lostDays": "2",
+    "firePower": "6",
+    "coins": "7",
+    "shots": [
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      }
+    ]
+  },
+
+  "Level2Planets1.jpg": {
+    "id": "Level2Planets1",
+    "subClass": "PlanetsCard",
+    "type": "LEVEL2",
+    "lostDays": "4",
+    "planets": [
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "1",
+        "numRed": "3"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "2",
+        "numYellow": "0",
+        "numRed": "2"
+      },
+      {
+        "numBlue": "4",
+        "numGreen": "0",
+        "numYellow": "0",
+        "numRed": "1"
+      }
+    ]
+  },
+  "Level2Planets2.jpg": {
+    "id": "Level2Planets2",
+    "subClass": "PlanetsCard",
+    "type": "LEVEL2",
+    "lostDays": "3",
+    "planets": [
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "0",
+        "numRed": "2"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "4",
+        "numYellow": "0",
+        "numRed": "0"
+      }
+    ]
+  },
+  "Level2Planets3.jpg": {
+    "id": "Level2Planets3",
+    "subClass": "PlanetsCard",
+    "type": "LEVEL2",
+    "lostDays": "2",
+    "planets": [
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "1",
+        "numRed": "1"
+      },
+      {
+        "numBlue": "1",
+        "numGreen": "1",
+        "numYellow": "1",
+        "numRed": "0"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "2",
+        "numYellow": "0",
+        "numRed": "0"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "1",
+        "numRed": "0"
+      }
+    ]
+  },
+  "Level2Planets4.jpg": {
+    "id": "Level2Planets4",
+    "subClass": "PlanetsCard",
+    "type": "LEVEL2",
+    "lostDays": "3",
+    "planets": [
+      {
+        "numBlue": "0",
+        "numGreen": "4",
+        "numYellow": "0",
+        "numRed": "0"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "2",
+        "numRed": "0"
+      },
+      {
+        "numBlue": "4",
+        "numGreen": "0",
+        "numYellow": "0",
+        "numRed": "0"
+      }
+
+    ]
+  },
+
+  "Level2Slavers.jpg": {
+    "id": "Level2Slavers",
+    "subClass": "Slavers",
+    "type": "LEVEL2",
+    "lostDays": "2",
+    "firePower": "7",
+    "lostMembers": "4",
+    "coins": "8"
+  },
+
+  "Level2Smugglers.jpg": {
+    "id": "Level2Smugglers",
+    "subClass": "Smugglers",
+    "type": "LEVEL2",
+    "lostDays": "1",
+    "firePower": "8",
+    "lostMaterials": "3",
+    "materials": [
+      {
+        "type": "YELLOW"
+      },
+      {
+        "type": "YELLOW"
+      },
+      {
+        "type": "RED"
+      }
+    ]
+  },
+
+  "Level2StarDust.jpg": {
+    "id": "Level2StarDust",
+    "subClass": "StarDust",
+    "type": "LEVEL2"
+  },
+
+  "Level2WarZone.jpg": {
+    "id": "Level2WarZone",
+    "subClass": "CombatZone",
+    "type": "LEVEL2",
+    "lostDays": "4",
+    "lostMembers": "0",
+    "lostMaterials": "3",
+    "shots":
+    [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "LEFT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "RIGHT"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "BOTTOM"
+      }
+    ]
+  }
+}
