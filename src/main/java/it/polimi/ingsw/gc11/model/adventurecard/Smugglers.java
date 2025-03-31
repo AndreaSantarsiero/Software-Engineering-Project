@@ -11,14 +11,13 @@ public class Smugglers extends AdventureCard {
     private final int lostDays;
     private final int firePower;
     private final int lostMaterials;
-    private final int coins;
     private final ArrayList<Material> materials;
 
 
-    public Smugglers(AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  int coins, ArrayList<Material> materials) throws IllegalArgumentException {
+    public Smugglers(AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  ArrayList<Material> materials) throws IllegalArgumentException {
         super(type);
 
-        if(lostDays < 0 || firePower < 0 || lostMaterials < 0 || coins < 0 || materials == null) {
+        if(lostDays < 0 || firePower < 0 || lostMaterials < 0 || materials == null) {
             throw new IllegalArgumentException("Invalid arguments");
         }
 
@@ -30,7 +29,6 @@ public class Smugglers extends AdventureCard {
         this.lostDays = lostDays;
         this.firePower = firePower;
         this.lostMaterials = lostMaterials;
-        this.coins = coins;
         this.materials = materials;
     }
 
@@ -39,8 +37,6 @@ public class Smugglers extends AdventureCard {
     public int getFirePower() {return firePower;}
 
     public int getLostMaterials() {return lostMaterials;}
-
-    public int getCoins() {return coins;}
 
     public ArrayList<Material> getMaterials() {return materials;}
 

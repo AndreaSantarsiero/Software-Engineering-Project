@@ -20,19 +20,18 @@ public class SmugglersTest {
 
     @Test
     public void testConstructorValidArguments() {
-        Smugglers smugglers = new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, 100, materials);
+        Smugglers smugglers = new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, materials);
 
         assertEquals(3, smugglers.getLostDays());
         assertEquals(5, smugglers.getFirePower());
         assertEquals(2, smugglers.getLostMaterials());
-        assertEquals(100, smugglers.getCoins());
         assertEquals(materials, smugglers.getMaterials());
     }
 
     @Test
     public void testConstructorWithNullMaterials() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, 100, null);
+            new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2,  null);
         });
 
         assertEquals("Invalid arguments", exception.getMessage());
@@ -41,7 +40,7 @@ public class SmugglersTest {
     @Test
     public void testConstructorWithNegativeLostDays() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Smugglers(AdventureCard.Type.TRIAL, -1, 5, 2, 100, materials);
+            new Smugglers(AdventureCard.Type.TRIAL, -1, 5, 2, materials);
         });
 
         assertEquals("Invalid arguments", exception.getMessage());
@@ -52,7 +51,7 @@ public class SmugglersTest {
         materials.add(null);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, 100, materials);
+            new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, materials);
         });
 
         assertEquals("invalid material", exception.getMessage());
@@ -61,7 +60,7 @@ public class SmugglersTest {
     @Test
     public void testConstructorWithNegativeFirePower() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Smugglers(AdventureCard.Type.TRIAL, 3, -5, 2, 100, materials);
+            new Smugglers(AdventureCard.Type.TRIAL, 3, -5, 2, materials);
         });
 
         assertEquals("Invalid arguments", exception.getMessage());
@@ -70,16 +69,7 @@ public class SmugglersTest {
     @Test
     public void testConstructorWithNegativeLostMaterials() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Smugglers(AdventureCard.Type.TRIAL, 3, 5, -2, 100, materials);
-        });
-
-        assertEquals("Invalid arguments", exception.getMessage());
-    }
-
-    @Test
-    public void testConstructorWithNegativeCoins() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, -100, materials);
+            new Smugglers(AdventureCard.Type.TRIAL, 3, 5, -2, materials);
         });
 
         assertEquals("Invalid arguments", exception.getMessage());
@@ -87,13 +77,12 @@ public class SmugglersTest {
 
     @Test
     public void testConstructorWithValidMaterials() {
-        Smugglers smugglers = new Smugglers(AdventureCard.Type.TRIAL, 1, 2, 3, 50, materials);
+        Smugglers smugglers = new Smugglers(AdventureCard.Type.TRIAL, 1, 2, 3, materials);
 
         assertNotNull(smugglers.getMaterials());
         assertEquals(1, smugglers.getLostDays());
         assertEquals(2, smugglers.getFirePower());
         assertEquals(3, smugglers.getLostMaterials());
-        assertEquals(50, smugglers.getCoins());
     }
 }
 

@@ -1,0 +1,121 @@
+{
+  "TrialAbandonedShip.jpg": {
+    "id": "TrialAbandonedShip",
+    "subClass": "AbandonedShip",
+    "type": "TRIAL",
+    "lostDays": "1",
+    "lostMembers": "3",
+    "coins": "4"
+  },
+
+  "TrialAbandonedStation.jpg": {
+    "id": "TrialAbandonedStation",
+    "subClass": "AbandonedStation",
+    "type": "TRIAL",
+    "lostDays": "1",
+    "membersRequired": "5",
+    "numBlue": "0",
+    "numGreen": "1",
+    "numYellow": "1",
+    "numRed": "0"
+  },
+
+  "TrialMeteorSwarm.jpg": {
+    "id": "TrialMeteorSwarm",
+    "subClass": "MeteorSwarm",
+    "type": "TRIAL",
+    "meteors": [
+      {
+        "hitType": "BIG",
+        "hitDirection": "TOP"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "LEFT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "RIGHT"
+      }
+    ]
+  },
+
+  "TrialOpenSpace.jpg": {
+    "id": "TrialOpenSpace",
+    "subClass": "OpenSpace",
+    "type": "TRIAL"
+  },
+
+  "TrialPlanets.jpg": {
+    "id": "TrialPlanets",
+    "subClass": "PlanetsCard",
+    "type": "TRIAL",
+    "lostDays": "2",
+    "planets": [
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "0",
+        "numRed": "2"
+      },
+      {
+        "numBlue": "2",
+        "numGreen": "0",
+        "numYellow": "0",
+        "numRed": "0"
+      },
+      {
+        "numBlue": "0",
+        "numGreen": "0",
+        "numYellow": "1",
+        "numRed": "0"
+      }
+    ]
+  },
+
+  "TrialSmugglers.jpg": {
+    "id": "TrialSmugglers",
+    "subClass": "Smugglers",
+    "type": "TRIAL",
+    "lostDays": "1",
+    "firePower": "4",
+    "lostMaterials": "2",
+    "materials": [
+      {
+        "type": "BLUE"
+      },
+      {
+        "type": "GREEN"
+      },
+      {
+        "type": "YELLOW"
+      }
+    ]
+  },
+
+  "TrialStarDust.jpg": {
+    "id": "TrialStarDust",
+    "subClass": "StarDust",
+    "type": "TRIAL"
+  },
+
+  "TrialWarZone.jpg": {
+    "id": "TrialWarZone",
+    "subClass": "CombatZone",
+    "type": "TRIAL",
+    "lostDays": "3",
+    "lostMembers": "2",
+    "lostMaterials": "0",
+    "shots":
+    [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "BOTTOM"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "BOTTOM"
+      }
+    ]
+  }
+}

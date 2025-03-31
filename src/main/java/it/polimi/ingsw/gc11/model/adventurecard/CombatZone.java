@@ -11,7 +11,7 @@ public class CombatZone extends AdventureCard {
     private final int lostDays;
     private final int lostMembers;
     private final int lostMaterials;
-    private ArrayList<Shot> shots;
+    private final ArrayList<Shot> shots;
 
 
     public CombatZone(AdventureCard.Type type, int lostDays, int lostMembers, int lostMaterials, ArrayList<Shot> shots)throws IllegalArgumentException{
@@ -25,11 +25,20 @@ public class CombatZone extends AdventureCard {
                 throw new NullPointerException("shot is null.");
             }
         }
+        if (type == Type.TRIAL){
+            this.lostDays = lostDays;
+            this.lostMembers = lostMembers;
+            this.lostMaterials = 0;
+            this.shots = shots;
+        } else if (type == Type.LEVEL2) {
+            this.lostDays = lostDays;
+            this.lostMembers = 0;
+            this.lostMaterials = lostMaterials;
+            this.shots = shots;
+        }
+        else
+            throw new IllegalArgumentException();
 
-        this.lostDays = lostDays;
-        this.lostMembers = lostMembers;
-        this.lostMaterials = lostMaterials;
-        this.shots = shots;
     }
 
     public int getLostDays() {return lostDays;}

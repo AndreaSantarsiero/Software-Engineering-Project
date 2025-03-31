@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.loaders;
 
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Meteor;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
@@ -18,7 +19,44 @@ public class AdventureCardLoader {
     public AdventureCardLoader() {super();}
 
     public  ArrayList<AdventureCard> getCardsTrial() {
-        return null;
+        String PATH_TRIAL = "src/main/resources/it/polimi/ingsw/gc11/adventureCards/adventureCardsTRIAL.json";
+        ArrayList<AdventureCard> adventureCards = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode rootNode = objectMapper.readTree(new File(PATH_TRIAL));
+            for (JsonNode node : rootNode){
+                String subClass = node.get("subClass").asText();
+                switch (subClass){
+                    case "AbandonedShip":
+                        adventureCards.add(getNewAbandonedShip(node));
+                        break;
+                    case "AbandonedStation":
+                        adventureCards.add(getNewAbandonedStation(node));
+                        break;
+                    case "MeteorSwarm":
+                        adventureCards.add(getNewMeteorSwarm(node));
+                        break;
+                    case "OpenSpace":
+                        adventureCards.add(getNewOpenSpace(node));
+                        break;
+                    case "PlanetsCard":
+                        adventureCards.add(getNewPlanetsCard(node));
+                        break;
+                    case "Smugglers":
+                        adventureCards.add(getNewSmugglers(node));
+                        break;
+                    case "StarDust":
+                        adventureCards.add(getNewStarDust(node));
+                        break;
+                    case "CombatZone":
+                        adventureCards.add(getNewCombatZone(node));
+                        break;
+                }
+            }
+            return adventureCards;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<AdventureCard> getCardsLevel1() {
@@ -58,7 +96,7 @@ public class AdventureCardLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        }
+    }
 
 
     public ArrayList<AdventureCard> getCardsLevel2() {
@@ -150,6 +188,47 @@ public class AdventureCardLoader {
                 node.get("firePower").asInt(),
                 node.get("lostMembers").asInt(),
                 node.get("coins").asInt()
+        );
+    }
+
+    private Smugglers getNewSmugglers(JsonNode node){
+        JsonNode materialsRootNode = node.get("materials");
+        ArrayList<Material> materials = new ArrayList<>();
+        for (JsonNode materialNode : materialsRootNode){
+            materials.add(new Material(
+                    Material.Type.valueOf(materialNode.get("type").asText()))
+            );
+        }
+        return new Smugglers(
+                AdventureCard.Type.valueOf(node.get("type").asText()),
+                node.get("lostDays").asInt(),
+                node.get("firePower").asInt(),
+                node.get("lostMaterials").asInt(),
+                materials
+        );
+    }
+
+    private StarDust getNewStarDust(JsonNode node){
+        return new StarDust(
+                AdventureCard.Type.valueOf(node.get("type").asText())
+        );
+    }
+
+    private CombatZone getNewCombatZone(JsonNode node){
+        JsonNode shotsRootNode = node.get("shots");
+        ArrayList<Shot> shots = new ArrayList<>();
+        for (JsonNode shotNode : shotsRootNode){
+            shots.add(new Shot(
+                    Hit.Type.valueOf(shotNode.get("hitType").asText()),
+                    Hit.Direction.valueOf(shotNode.get("hitDirection").asText())
+            ));
+        }
+        return new CombatZone(
+                AdventureCard.Type.valueOf(node.get("type").asText()),
+                node.get("lostDays").asInt(),
+                node.get("lostMembers").asInt(),
+                node.get("lostMaterials").asInt(),
+                shots
         );
     }
 }
