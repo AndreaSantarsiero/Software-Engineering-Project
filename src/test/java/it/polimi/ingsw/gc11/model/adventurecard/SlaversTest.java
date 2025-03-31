@@ -11,8 +11,8 @@ class SlaversTest {
 
         assertEquals(3, slavers.getLostDays());
         assertEquals(8, slavers.getFirePower());
-        assertEquals(5, slavers.getCoins());
-        assertEquals(2, slavers.getLostMembers());
+        assertEquals(5, slavers.getLostMembers());
+        assertEquals(2, slavers.getCoins());
     }
 
     @Test

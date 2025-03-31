@@ -519,7 +519,7 @@
   "RedDoubleStorage3.jpg": {
     "id": "RedDoubleStorage3",
     "subClass": "Storage",
-    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "DOUBLE" },
     "type": "DOUBLE_RED"
   },
 
@@ -634,7 +634,7 @@
   "SingleCannon5.jpg": {
     "id": "SingleCannon5",
     "subClass": "Cannon",
-    "connectors": { "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "connectors": { "right": "SINGLE", "bottom": "NONE", "left": "NONE" },
     "type": "SINGLE"
   },
   "SingleCannon6.jpg": {
