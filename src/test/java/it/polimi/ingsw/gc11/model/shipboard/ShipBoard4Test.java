@@ -199,6 +199,27 @@ public class ShipBoard4Test {
 
 
     @Test
+    void testIsBeingProtected() {
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.TOP), "Shield protection not calculated correctly");
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.RIGHT), "Shield protection not calculated correctly");
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.BOTTOM), "Shield protection not calculated correctly");
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.LEFT), "Shield protection not calculated correctly");
+
+        shipBoard.getShipCard(4, 9).destroy();
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.TOP), "Shield protection not calculated correctly after destroying a shield");
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.RIGHT), "Shield protection not calculated correctly after destroying a shield");
+        assertFalse(shipBoard.isBeingProtected(Hit.Direction.BOTTOM), "Shield protection not calculated correctly after destroying a shield");
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.LEFT), "Shield protection not calculated correctly after destroying a shield");
+
+        shipBoard.getShipCard(9, 6).destroy();
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.TOP), "Shield protection not calculated correctly after destroying some shields");
+        assertFalse(shipBoard.isBeingProtected(Hit.Direction.RIGHT), "Shield protection not calculated correctly after destroying some shields");
+        assertFalse(shipBoard.isBeingProtected(Hit.Direction.BOTTOM), "Shield protection not calculated correctly after destroying some shields");
+        assertTrue(shipBoard.isBeingProtected(Hit.Direction.LEFT), "Shield protection not calculated correctly after destroying some shields");
+    }
+
+
+    @Test
     void testCanDestroy() {
         assertEquals(0, shipBoard.canDestroy(Hit.Direction.TOP, 3).size(), "Shipboard cannot destroy that meteor");
         assertEquals(0, shipBoard.canDestroy(Hit.Direction.TOP, 4).size(), "Shipboard cannot destroy that meteor");
