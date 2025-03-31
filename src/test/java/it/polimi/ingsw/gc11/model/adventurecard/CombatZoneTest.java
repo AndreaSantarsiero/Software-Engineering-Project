@@ -15,11 +15,11 @@ class CombatZoneTest {
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL,  Hit.Direction.BOTTOM));
 
-        CombatZone combatZone = new CombatZone(AdventureCard.Type.TRIAL, 3, 2, 5, shots);
+        CombatZone combatZone = new CombatZone(AdventureCard.Type.TRIAL, 3, 2, 0, shots);
 
         assertEquals(3, combatZone.getLostDays());
         assertEquals(2, combatZone.getLostMembers());
-        assertEquals(5, combatZone.getLostMaterials());
+        assertEquals(0, combatZone.getLostMaterials());
         assertEquals(2, combatZone.getShots().size());
     }
 
