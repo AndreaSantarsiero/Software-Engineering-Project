@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 
@@ -251,5 +250,70 @@ public class ShipBoard4Test {
         assertEquals(0, shipBoard.canDestroy(Hit.Direction.RIGHT, 6).size(), "Shipboard cannot destroy a meteor with a broken cannon");
         assertEquals(0, shipBoard.canDestroy(Hit.Direction.RIGHT, 7).size(), "Shipboard cannot destroy a meteor with a broken cannon");
         assertEquals(0, shipBoard.canDestroy(Hit.Direction.RIGHT, 8).size(), "Shipboard cannot destroy a meteor with a broken cannon");
+    }
+
+
+    @Test
+    void testHasAnExposedConnector() {
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 3), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 4), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 5), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 6), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 7), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 8), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 9), "There is NOT an exposed connector at this side and coordinate");
+        assertTrue(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 10), "There is an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.TOP, 11), "There is NOT an exposed connector at this side and coordinate");
+
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.RIGHT, 4), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.RIGHT, 5), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.RIGHT, 6), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.RIGHT, 7), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.RIGHT, 8), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.RIGHT, 9), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.RIGHT, 10), "There is NOT an exposed connector at this side and coordinate");
+
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 3), "There is NOT an exposed connector at this side and coordinate");
+        assertTrue(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 4), "There is an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 5), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 6), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 7), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 8), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 9), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 10), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.BOTTOM, 11), "There is NOT an exposed connector at this side and coordinate");
+
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.LEFT, 4), "There is NOT an exposed connector at this side and coordinate");
+        assertTrue(shipBoard.hasAnExposedConnector(Hit.Direction.LEFT, 5), "There is an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.LEFT, 6), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.LEFT, 7), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.LEFT, 8), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.LEFT, 9), "There is NOT an exposed connector at this side and coordinate");
+        assertFalse(shipBoard.hasAnExposedConnector(Hit.Direction.LEFT, 10), "There is NOT an exposed connector at this side and coordinate");
+    }
+
+
+    @Test
+    void destroyHitComponent() {
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.TOP, 2), "This hit should NOT destroy something");
+        assertTrue(shipBoard.destroyHitComponent(Hit.Direction.TOP, 7), "This hit should destroy something");
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.TOP, 12), "This hit should NOT destroy something");
+        assertTrue(shipBoard.getShipCard(7, 6).isScrap(), "This component should be destroyed");
+
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.RIGHT, 4), "This hit should NOT destroy something");
+        assertTrue(shipBoard.destroyHitComponent(Hit.Direction.RIGHT, 7), "This hit should destroy something");
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.RIGHT, 10), "This hit should NOT destroy something");
+        assertTrue(shipBoard.getShipCard(10, 7).isScrap(), "This component should be destroyed");
+
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.BOTTOM, -4), "This hit should NOT destroy something");
+        assertTrue(shipBoard.destroyHitComponent(Hit.Direction.BOTTOM, 4), "This hit should destroy something");
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.BOTTOM, 17), "This hit should NOT destroy something");
+        assertTrue(shipBoard.getShipCard(4, 9).isScrap(), "This component should be destroyed");
+
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.LEFT, 0), "This hit should NOT destroy something");
+        assertTrue(shipBoard.destroyHitComponent(Hit.Direction.LEFT, 6), "This hit should destroy something");
+        assertFalse(shipBoard.destroyHitComponent(Hit.Direction.LEFT, 13), "This hit should NOT destroy something");
+        assertTrue(shipBoard.getShipCard(5, 6).isScrap(), "This component should be destroyed");
+
     }
 }

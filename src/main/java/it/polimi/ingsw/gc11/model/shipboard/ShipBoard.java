@@ -1209,10 +1209,9 @@ public abstract class ShipBoard {
      */
     public boolean hasAnExposedConnector(Hit.Direction direction, int coord) {
         if (direction == Hit.Direction.LEFT) {
-            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(i, coord);
+                    ShipCard shipCard = getShipCard(i - adaptX(0), coord);
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1228,10 +1227,9 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.RIGHT) {
-            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(components[0].length - i, coord);
+                    ShipCard shipCard = getShipCard(components[0].length - i - adaptX(0), coord);
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getRightConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1247,10 +1245,9 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.TOP) {
-            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, i);
+                    ShipCard shipCard = getShipCard(coord, i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getTopConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1266,10 +1263,9 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.BOTTOM) {
-            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, components.length - i);
+                    ShipCard shipCard = getShipCard(coord, components.length - i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1285,7 +1281,7 @@ public abstract class ShipBoard {
             }
         }
 
-        return true;    /* didn't find any ShipCard on the given direction and coordinate => ShipBoard is not affected by the little meteor */
+        return false;    /* didn't find any ShipCard on the given direction and coordinate => ShipBoard is not affected by the little meteor */
     }
 
     /**
@@ -1297,10 +1293,9 @@ public abstract class ShipBoard {
      */
     public boolean destroyHitComponent(Hit.Direction direction, int coord) {
         if (direction == Hit.Direction.LEFT) {
-            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(i, coord);
+                    ShipCard shipCard = getShipCard(i - adaptX(0), coord);
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
@@ -1312,10 +1307,9 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.RIGHT) {
-            coord = adaptY(coord);
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(components[0].length - i, coord);
+                    ShipCard shipCard = getShipCard(components[0].length - i - adaptX(0), coord);
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
@@ -1327,10 +1321,9 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.TOP) {
-            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, i);
+                    ShipCard shipCard = getShipCard(coord, i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
@@ -1342,10 +1335,9 @@ public abstract class ShipBoard {
             }
         }
         else if (direction == Hit.Direction.BOTTOM) {
-            coord = adaptX(coord);
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, components.length - i);
+                    ShipCard shipCard = getShipCard(coord, components.length - i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
