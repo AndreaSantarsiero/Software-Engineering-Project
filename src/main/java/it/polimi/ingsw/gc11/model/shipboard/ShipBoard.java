@@ -1084,7 +1084,7 @@ public abstract class ShipBoard {
             }
         }
 
-        cannonPower += getPurpleAliens();
+        cannonPower += 2*getPurpleAliens();
         return cannonPower;
     }
 
