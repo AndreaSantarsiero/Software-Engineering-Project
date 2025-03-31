@@ -137,6 +137,18 @@ public class ShipBoard6Test {
 
 
     @Test
+    void testEpidemic() {
+        assertEquals(12, shipBoard.getMembers(), "Members number not calculated correctly");
+        shipBoard.connectAlienUnit(6, 8, 5, 8);
+        assertEquals(11, shipBoard.getMembers(), "Members number not calculated correctly after connecting an alien unit to a housing unit");
+        shipBoard.epidemic();
+        assertEquals(11, shipBoard.getMembers(), "Members number not calculated correctly after an epidemic");
+        shipBoard.epidemic();
+        assertEquals(11, shipBoard.getMembers(), "Members number not calculated correctly after another epidemic");
+    }
+
+
+    @Test
     void testAddMaterials() {
         assertEquals(0, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly");
 
