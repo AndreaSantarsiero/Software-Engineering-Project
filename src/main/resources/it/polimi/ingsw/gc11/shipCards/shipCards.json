@@ -519,7 +519,7 @@
   "RedDoubleStorage3.jpg": {
     "id": "RedDoubleStorage3",
     "subClass": "Storage",
-    "connectors": { "top": "DOUBLE", "right": "NONE", "bottom": "NONE", "left": "SINGLE" },
+    "connectors": { "top": "NONE", "right": "NONE", "bottom": "NONE", "left": "DOUBLE" },
     "type": "DOUBLE_RED"
   },
 

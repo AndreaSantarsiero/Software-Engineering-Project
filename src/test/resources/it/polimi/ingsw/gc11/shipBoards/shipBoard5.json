@@ -1,0 +1,174 @@
+{
+  "shipboard": {
+    "level": 2,
+
+
+    "components": [
+      {
+        "id": "DoubleCannon1",
+        "x": 6,
+        "y": 5,
+        "orientation": 0
+      },
+      {
+        "id": "SingleCannon12",
+        "x": 8,
+        "y": 5,
+        "orientation": 270
+      },
+      {
+        "id": "RedDoubleStorage3",
+        "x": 5,
+        "y": 6,
+        "orientation": 180
+      },
+      {
+        "id": "DoubleBattery7",
+        "x": 6,
+        "y": 6,
+        "orientation": 0
+      },
+      {
+        "id": "RedSingleStorage5",
+        "x": 7,
+        "y": 6,
+        "orientation": 0
+      },
+      {
+        "id": "StructuralModule2",
+        "x": 8,
+        "y": 6,
+        "orientation": 0
+      },
+      {
+        "id": "BlueDoubleStorage9",
+        "x": 9,
+        "y": 6,
+        "orientation": 270
+      },
+      {
+        "id": "RedDoubleStorage1",
+        "x": 4,
+        "y": 7,
+        "orientation": 270
+      },
+      {
+        "id": "SingleCannon8",
+        "x": 5,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "Shield3",
+        "x": 6,
+        "y": 7,
+        "orientation": 270
+      },
+      {
+        "id": "YellowCentralUnit",
+        "x": 7,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "SingleEngine18",
+        "x": 8,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "StructuralModule5",
+        "x": 9,
+        "y": 7,
+        "orientation": 90
+      },
+      {
+        "id": "SingleEngine1",
+        "x": 10,
+        "y": 7,
+        "orientation": 180
+      },
+      {
+        "id": "Shield2",
+        "x": 4,
+        "y": 8,
+        "orientation": 180
+      },
+      {
+        "id": "DoubleCannon5",
+        "x": 5,
+        "y": 8,
+        "orientation": 90
+      },
+      {
+        "id": "BlueDoubleStorage4",
+        "x": 6,
+        "y": 8,
+        "orientation": 90
+      },
+      {
+        "id": "RedSingleStorage4",
+        "x": 7,
+        "y": 8,
+        "orientation": 0
+      },
+      {
+        "id": "DoubleBattery8",
+        "x": 8,
+        "y": 8,
+        "orientation": 0
+      },
+      {
+        "id": "RedSingleStorage3",
+        "x": 9,
+        "y": 8,
+        "orientation": 0
+      },
+      {
+        "id": "BrownAlien4",
+        "x": 10,
+        "y": 8,
+        "orientation": 0
+      },
+      {
+        "id": "SingleEngine3",
+        "x": 4,
+        "y": 9,
+        "orientation": 0
+      },
+      {
+        "id": "PurpleAlien6",
+        "x": 5,
+        "y": 9,
+        "orientation": 90
+      },
+      {
+        "id": "SingleEngine16",
+        "x": 6,
+        "y": 9,
+        "orientation": 0
+      },
+      {
+        "id": "SingleCannon2",
+        "x": 8,
+        "y": 9,
+        "orientation": 270
+      },
+      {
+        "id": "DoubleBattery5",
+        "x": 9,
+        "y": 9,
+        "orientation": 0
+      },
+      {
+        "id": "DoubleBattery9",
+        "x": 10,
+        "y": 9,
+        "orientation": 90
+      }
+    ],
+
+
+    "reservedComponents": null
+  }
+}
