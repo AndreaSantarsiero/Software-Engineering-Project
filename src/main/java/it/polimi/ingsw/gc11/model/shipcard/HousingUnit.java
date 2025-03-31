@@ -63,6 +63,22 @@ public class HousingUnit extends ShipCard {
 
 
     /**
+     * Applies the effects of the epidemic AdventureCard to a single housing unit
+     * The housing unit is marked as visited in order to not apply this effect multiple times in the same turn
+     * If an exception occurs while killing a member, it is caught and ignored
+     */
+    public void epidemic(){
+        this.setVisited(true);
+        try{
+            this.killMembers(1);
+        }
+        catch(Exception _){
+
+        }
+    }
+
+
+    /**
      * Returns whether the housing unit is a central unit
      *
      * @return True if the housing unit is central, false otherwise

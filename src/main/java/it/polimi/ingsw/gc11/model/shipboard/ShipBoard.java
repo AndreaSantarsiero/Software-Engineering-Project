@@ -701,7 +701,7 @@ public abstract class ShipBoard {
         if (brownActiveUnit.getType() == AlienUnit.Type.PURPLE) {
             throw new IllegalStateException("Purple AlienUnit are not supposed to be pointed by this variable");
         }
-        if (brownActiveUnit.isPresent()) {
+        if (!brownActiveUnit.isScrap() && brownActiveUnit.isPresent()) {
             return 1;
         }
         else{
@@ -722,7 +722,7 @@ public abstract class ShipBoard {
         if (purpleActiveUnit.getType() == AlienUnit.Type.BROWN) {
             throw new IllegalStateException("Brown AlienUnit are not supposed to be pointed by this variable");
         }
-        if (purpleActiveUnit.isPresent()) {
+        if (!purpleActiveUnit.isScrap() && purpleActiveUnit.isPresent()) {
             return 1;
         }
         else{
@@ -773,24 +773,69 @@ public abstract class ShipBoard {
         }
     }
 
-
+    /**
+     * Applies the effects of the epidemic AdventureCard to the ship
+     */
     public void epidemic(){
         this.visitedInitialization();
 
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if(components[i][j] instanceof HousingUnit housingUnit && !housingUnit.isScrap()) {
-                    if(housingUnit.getLeftConnector() != ShipCard.Connector.NONE){
-                        if(components[i][j-1] instanceof HousingUnit housingUnitLeft && !housingUnitLeft.isScrap()) {
-                            if(checkConnection(housingUnit.getLeftConnector(), housingUnitLeft.getRightConnector())){
-                                //da implementare
+                    if(housingUnit.getTopConnector() != ShipCard.Connector.NONE){
+                        if(components[i-1][j] instanceof HousingUnit housingUnitTop && !housingUnitTop.isScrap()) {
+                            if(checkConnection(housingUnit.getTopConnector(), housingUnitTop.getBottomConnector())){
+                                if(!housingUnitTop.isVisited()){
+                                    housingUnitTop.epidemic();
+                                }
+                                if(!housingUnit.isVisited()){
+                                    housingUnit.epidemic();
+                                }
                             }
                         }
                     }
 
-                    //da implementare top, bottom e right
-                }
+                    if(housingUnit.getRightConnector() != ShipCard.Connector.NONE){
+                        if(components[i][j+1] instanceof HousingUnit housingUnitRight && !housingUnitRight.isScrap()) {
+                            if(checkConnection(housingUnit.getRightConnector(), housingUnitRight.getLeftConnector())){
+                                if(!housingUnitRight.isVisited()){
+                                    housingUnitRight.epidemic();
+                                }
+                                if(!housingUnit.isVisited()){
+                                    housingUnit.epidemic();
+                                }
+                            }
+                        }
+                    }
 
+                    if(housingUnit.getBottomConnector() != ShipCard.Connector.NONE){
+                        if(components[i+1][j] instanceof HousingUnit housingUnitBottom && !housingUnitBottom.isScrap()) {
+                            if(checkConnection(housingUnit.getBottomConnector(), housingUnitBottom.getTopConnector())){
+                                if(!housingUnitBottom.isVisited()){
+                                    housingUnitBottom.epidemic();
+                                }
+                                if(!housingUnit.isVisited()){
+                                    housingUnit.epidemic();
+                                }
+                            }
+                        }
+                    }
+
+                    if(housingUnit.getLeftConnector() != ShipCard.Connector.NONE){
+                        if(components[i][j-1] instanceof HousingUnit housingUnitLeft && !housingUnitLeft.isScrap()) {
+                            if(checkConnection(housingUnit.getLeftConnector(), housingUnitLeft.getRightConnector())){
+                                if(!housingUnitLeft.isVisited()){
+                                    housingUnitLeft.epidemic();
+                                }
+                                if(!housingUnit.isVisited()){
+                                    housingUnit.epidemic();
+                                }
+                            }
+                        }
+                    }
+
+                    housingUnit.setVisited(true);
+                }
             }
         }
     }
@@ -1009,7 +1054,10 @@ public abstract class ShipBoard {
         }
 
         enginePower += 2*numBatteries;
-        enginePower += getBrownAliens();
+        if(enginePower > 0){
+            enginePower += 2*getBrownAliens();
+        }
+
         return enginePower;
     }
 
@@ -1084,7 +1132,10 @@ public abstract class ShipBoard {
             }
         }
 
-        cannonPower += 2*getPurpleAliens();
+        if(cannonPower > 0){
+            cannonPower += 2*getPurpleAliens();
+        }
+
         return cannonPower;
     }
 
