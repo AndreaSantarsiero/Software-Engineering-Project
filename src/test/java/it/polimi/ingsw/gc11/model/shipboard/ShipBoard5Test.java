@@ -1,19 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipboard;
 
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
-import it.polimi.ingsw.gc11.model.Hit;
-import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 
 
 public class ShipBoard5Test {
