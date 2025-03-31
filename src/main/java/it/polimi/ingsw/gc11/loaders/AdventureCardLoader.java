@@ -98,7 +98,6 @@ public class AdventureCardLoader {
         }
     }
 
-
     public ArrayList<AdventureCard> getCardsLevel2() {
         String PATH_LEVEL2 = "src/main/resources/it/polimi/ingsw/gc11/adventureCards/adventureCardsLEVEL2.json";
         ArrayList<AdventureCard> adventureCards = new ArrayList<>();
@@ -148,6 +147,7 @@ public class AdventureCardLoader {
             throw new RuntimeException(e);
         }
     }
+
 
     private AbandonedShip getNewAbandonedShip(JsonNode node){
         return new AbandonedShip(
