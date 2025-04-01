@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 
+import it.polimi.ingsw.gc11.controller.GameContext;
+
 public class BuildingState implements GamePhase {
     @Override
     public void nextState(GameContext context) {

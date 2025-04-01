@@ -1,6 +1,7 @@
-package it.polimi.ingsw.gc11.controller.State;
+package it.polimi.ingsw.gc11.controller;
 
-import it.polimi.ingsw.gc11.controller.PlayerContext;
+import it.polimi.ingsw.gc11.controller.State.GamePhase;
+import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 
 

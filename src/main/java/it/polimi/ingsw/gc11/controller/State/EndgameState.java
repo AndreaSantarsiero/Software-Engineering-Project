@@ -2,14 +2,14 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 
-public class IdleState implements GamePhase {
+public class EndgameState implements GamePhase {
     @Override
     public void nextState(GameContext context) {
-        context.setState(new BuildingState()); // Change to Building
+
     }
 
     @Override
-    public String getStateName() {
-        return "IDLE";
+    public String getStateName(){
+        return "ENDGAME";
     }
 }
