@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,15 +30,48 @@ public class ShipBoard6Test {
 
     @Test
     void testCheckShip(){
-        assertTrue(shipBoard.checkShip(), "ShipBoard6 respects all the rules");
-
-        shipBoard.getShipCard(4, 7).destroy();
-        shipBoard.getShipCard(7, 6).destroy();
-        assertTrue(shipBoard.checkShip(), "ShipBoard6 respects all the rules");
-
-        shipBoard.getShipCard(5, 9).destroy();
-        assertFalse(shipBoard.checkShip(), "Ship integrity is compromised");
+        assertFalse(shipBoard.checkShip(), "ShipBoard6 DO NOT respect all the rules");
     }
+
+
+    @Test
+    void testCheckShipConnections() throws Exception{
+        Method method = ShipBoard.class.getDeclaredMethod("checkShipConnections");
+        method.setAccessible(true);
+        boolean result = (boolean) method.invoke(shipBoard);
+        assertFalse(result, "ShipBoard6 DO NOT respect all connection rules");
+
+        shipBoard.getShipCard(6, 8).destroy();
+        result = (boolean) method.invoke(shipBoard);
+        assertTrue(result, "ShipBoard6 now respects all connection rules");
+    }
+
+
+    @Test
+    void testCheckShipIntegrity() throws Exception{
+        Method method = ShipBoard.class.getDeclaredMethod("checkShipIntegrity");
+        method.setAccessible(true);
+        boolean result = (boolean) method.invoke(shipBoard);
+        assertTrue(result, "ShipBoard6 respects integrity restrictions");
+
+        shipBoard.getShipCard(6, 8).destroy();
+        result = (boolean) method.invoke(shipBoard);
+        assertFalse(result, "ShipBoard6 DO NOT respect integrity restrictions after destroying a component");
+    }
+
+
+    @Test
+    void testCheckOtherRestrictions() throws Exception{
+        Method method = ShipBoard.class.getDeclaredMethod("checkOtherRestrictions");
+        method.setAccessible(true);
+        boolean result = (boolean) method.invoke(shipBoard);
+        assertTrue(result, "ShipBoard6 respects all the other restrictions");
+
+        shipBoard.addShipCard(shipBoard.getShipCard(8, 9), 9, 7);
+        result = (boolean) method.invoke(shipBoard);
+        assertFalse(result, "ShipBoard6 DO NOT respect all the other restrictions after adding a ship card");
+    }
+
 
     @Test
     void testShipCardNumber(){
@@ -49,6 +83,18 @@ public class ShipBoard6Test {
         assertEquals(22, shipBoard.getShipCardsNumber(), "Ship card number not calculated correctly after destroying some components");
         assertThrows(NullPointerException.class, () -> shipBoard.getShipCard(9, 7).destroy(), "Cannot destroy a null component");
         assertEquals(22, shipBoard.getShipCardsNumber(), "Ship card number not calculated correctly after destroying a null component");
+    }
+
+    @Test
+    void testScrapedCardsNumber(){
+        assertEquals(0, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly");
+        shipBoard.getShipCard(9, 6).destroy();
+        assertEquals(1, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying a component");
+        shipBoard.getShipCard(8, 5).destroy();
+        shipBoard.getShipCard(5, 9).destroy();
+        assertEquals(3, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying some components");
+        assertThrows(NullPointerException.class, () -> shipBoard.getShipCard(9, 7).destroy(), "Cannot destroy a null component");
+        assertEquals(3, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying a null component");
     }
 
 
