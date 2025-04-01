@@ -1,48 +1,52 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-import it.polimi.ingsw.gc11.model.Hit;
-import it.polimi.ingsw.gc11.model.Shot;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class CombatZoneTest {
+public class CombatZoneTest {
 
-    @Test
-    void testValidCombatZone() {
-        ArrayList<Shot> shots = new ArrayList<>();
-        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
-        shots.add(new Shot(Hit.Type.SMALL,  Hit.Direction.BOTTOM));
+    private CombatPhase phase1;
+    private CombatPhase phase2;
+    private CombatPhase phase3;
+    private CombatZone combatZone;
 
-        CombatZone combatZone = new CombatZone(AdventureCard.Type.TRIAL, 3, 2, 0, shots);
-
-        assertEquals(3, combatZone.getLostDays());
-        assertEquals(2, combatZone.getLostMembers());
-        assertEquals(0, combatZone.getLostMaterials());
-        assertEquals(2, combatZone.getShots().size());
+    @BeforeEach
+    void setUp() {
+        phase1 = new CombatPhase(CombatPhase.Condition.LESS_FIRE_POWER, CombatPhase.Penalty.LOST_DAYS, 2);
+        phase2 = new CombatPhase(CombatPhase.Condition.LESS_ENGINE_POWER, CombatPhase.Penalty.LOST_MATERIALS, 3);
+        phase3 = new CombatPhase(CombatPhase.Condition.LESS_MEMBERS_NUM, CombatPhase.Penalty.LOST_MEMBERS, 1);
+        combatZone = new CombatZone(AdventureCard.Type.TRIAL, new CombatPhase[]{phase1, phase2, phase3});
     }
 
     @Test
-    void testNegativeValuesThrowException() {
-        ArrayList<Shot> shots = new ArrayList<>();
-        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.RIGHT));
-
-        assertThrows(IllegalArgumentException.class, () -> new CombatZone(AdventureCard.Type.TRIAL, -1, 2, 5, shots));
-        assertThrows(IllegalArgumentException.class, () -> new CombatZone(AdventureCard.Type.TRIAL, 3, -2, 5, shots));
-        assertThrows(IllegalArgumentException.class, () -> new CombatZone(AdventureCard.Type.TRIAL, 3, 2, -5, shots));
+    void testConstructor_ValidPhases() {
+        assertNotNull(combatZone);
     }
 
     @Test
-    void testNullShotsListThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> new CombatZone(AdventureCard.Type.TRIAL, 3, 2, 5, null));
+    void testConstructor_NullPhases() {
+        assertThrows(IllegalArgumentException.class, () -> new CombatZone(AdventureCard.Type.TRIAL, null));
     }
 
     @Test
-    void testNullShotInListThrowsException() {
-        ArrayList<Shot> shots = new ArrayList<>();
-        shots.add(null);
+    void testConstructor_WrongNumberOfPhases() {
+        CombatPhase[] invalidPhases = {phase1, phase2};
+        assertThrows(IllegalArgumentException.class, () -> new CombatZone(AdventureCard.Type.TRIAL, invalidPhases));
+    }
 
-        assertThrows(NullPointerException.class, () -> new CombatZone(AdventureCard.Type.TRIAL, 3, 2, 5, shots));
+    @Test
+    void testGetCombatPhase_ValidIndex() {
+        assertEquals(phase1, combatZone.getCombatPhase(0));
+        assertEquals(phase2, combatZone.getCombatPhase(1));
+        assertEquals(phase3, combatZone.getCombatPhase(2));
+    }
+
+    @Test
+    void testGetCombatPhase_InvalidIndex() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> combatZone.getCombatPhase(-1));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> combatZone.getCombatPhase(3));
     }
 }
