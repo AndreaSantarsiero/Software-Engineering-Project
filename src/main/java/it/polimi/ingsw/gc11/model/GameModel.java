@@ -104,6 +104,15 @@ public class GameModel {
         return players.size();
     }
 
+    public Player getPlayer(String username)  {
+        for (Player player : players) {
+            if(player.getUsername().equals(username)){
+                return player;
+            }
+        }
+        throw new IllegalArgumentException("Player not found");
+    }
+
     public void addCoins(String username, int amount){
         if (username == null){
             throw new NullPointerException("Username is null");
@@ -142,7 +151,7 @@ public class GameModel {
         }
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getUsername().equals(username)) {
-                return players.get(i).getPosition();
+                return players.get(i).getPosition() % flightBoard.getLength();
             }
         }
         throw new IllegalArgumentException("Player " + username + " not found");
@@ -290,61 +299,45 @@ public class GameModel {
     }
 
 
-    //numDays can be positive or negative, so this method can make you move forward or backward
     public void move(String username, int numDays){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        int initial_position = 0;
-        int[] posizioni = {-1, -1, -1, -1};
-        Player player = null;
-
+        Player curr = null;
+        int tmp;
         for (int i = 0; i < players.size(); i++) {
-            posizioni[i] = players.get(i).getPosition();
-
             if (players.get(i).getUsername().equals(username)) {
-                initial_position = players.get(i).getPosition();
-                player = players.get(i);
+                curr = players.get(i);
             }
         }
-        int target = initial_position;
 
-        if(numDays > 0){
-            for (int i = 0; i < numDays; i++) {
-                target = (initial_position + 1) % flightBoard.getLength();
-                while (target == posizioni[0] || target == posizioni[1] || target == posizioni[2] || target == posizioni[3]) {
-                    target = (initial_position + 1) % flightBoard.getLength();
-
-                    //Change the standings
-                    for(int j = 0; j < players.size(); j++){
-                        if (players.get(j).getStanding() < player.getStanding()) {
-                            int tmp = players.get(j).getStanding();
-                            players.get(j).setStanding(player.getStanding());
-                            player.setStanding(tmp);
+        if(numDays  >= 0) {
+            for (int i = curr.getPosition() + 1; i < curr.getPosition() + numDays; i++) {
+                for (Player p : players) {
+                    if (!p.getUsername().equals(username)) {
+                        if (p.getPosition() % flightBoard.getLength() == i % flightBoard.getLength()) {
+                            numDays++;
+                            tmp = curr.getStanding();
+                            curr.setStanding(p.getStanding());
+                            p.setStanding(tmp);
                         }
                     }
                 }
             }
         }
-        else{
-            for (int i = 0; i < numDays; i++) {
-                target = (initial_position - 1) % flightBoard.getLength();
-                while (target == posizioni[0] || target == posizioni[1] || target == posizioni[2] || target == posizioni[3]) {
-                    target = (initial_position - 1) % flightBoard.getLength();
-
-                    //Change the standings
-                    for(int j = 0; j < players.size(); j++){
-                        if (players.get(j).getStanding() > player.getStanding()) {
-                            int tmp = players.get(j).getStanding();
-                            players.get(j).setStanding(player.getStanding());
-                            player.setStanding(tmp);
+        else {
+            for (int i = curr.getPosition() + 1; i > curr.getPosition() + numDays; i--) {
+                for (Player p : players) {
+                    if (!p.getUsername().equals(username)) {
+                        if (p.getPosition() % flightBoard.getLength() == i % flightBoard.getLength()) {
+                            numDays--;
+                            tmp = curr.getStanding();
+                            curr.setStanding(p.getStanding());
+                            p.setStanding(tmp);
                         }
                     }
                 }
             }
         }
-        //Change the player position
-        player.setPosition(target);
+        curr.setPosition(curr.getPosition()+numDays);
+
+
     }
-
 }

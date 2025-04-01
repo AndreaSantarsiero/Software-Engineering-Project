@@ -118,6 +118,30 @@ class GameModelTest {
     }
 
     @Test
-    void move() {
+    void movePositiveTest() {
+        gameModel.setLevel(FlightBoard.Type.LEVEL2);
+
+        gameModel.addPlayer("player1");
+        gameModel.getPlayer("player1").setPosition(55);
+
+        gameModel.addPlayer("player2");
+        gameModel.getPlayer("player2").setPosition(58);
+
+        gameModel.move("player1", 4);
+        assertEquals(gameModel.getPlayer("player1").getPosition(), 60);
+    }
+
+    @Test
+    void moveNegativeTest() {
+        gameModel.setLevel(FlightBoard.Type.LEVEL2);
+
+        gameModel.addPlayer("player1");
+        gameModel.getPlayer("player1").setPosition(10);
+
+        gameModel.addPlayer("player2");
+        gameModel.getPlayer("player2").setPosition(-2);
+
+        gameModel.move("player1", -20);
+        assertEquals(gameModel.getPlayer("player1").getPosition(), -11);
     }
 }
