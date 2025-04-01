@@ -244,6 +244,32 @@ public abstract class ShipBoard {
         return numComponents;
     }
 
+    /**
+     * Counts the total number of ShipCards used to build the ship that got destroyed or were reserved and remained unused
+     *
+     * @return The total number of ShipCards used to build the ship that got destroyed or were reserved and remained unused
+     */
+    public int getScrapedCardsNumber(){
+        int numComponents = 0;
+
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                try {
+                    checkCoordinates(j, i);
+                    if (components[i][j] != null && components[i][j].isScrap()) {
+                        numComponents++;
+                    }
+                }
+                catch (Exception _) {
+
+                }
+            }
+        }
+
+        numComponents += reservedComponents.size();
+        return numComponents;
+    }
+
 
 
     /**

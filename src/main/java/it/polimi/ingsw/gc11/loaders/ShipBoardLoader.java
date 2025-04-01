@@ -105,7 +105,6 @@ public class ShipBoardLoader {
                         }
                         else {
                             System.err.println("Warning: ShipCard with id '" + id + "' not found in shipCards.json");
-                            continue;
                         }
                     }
                 }

@@ -79,6 +79,16 @@ public class ShipBoard5Test {
         assertEquals(24, shipBoard.getShipCardsNumber(), "Ship card number not calculated correctly after destroying some components");
     }
 
+    @Test
+    void testScrapedCardsNumber(){
+        assertEquals(0, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly");
+        shipBoard.getShipCard(7, 8).destroy();
+        assertEquals(1, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying a component");
+        shipBoard.getShipCard(5, 8).destroy();
+        shipBoard.getShipCard(7, 6).destroy();
+        assertEquals(3, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying some components");
+    }
+
 
     @Test
     void testExposedConnectors() {

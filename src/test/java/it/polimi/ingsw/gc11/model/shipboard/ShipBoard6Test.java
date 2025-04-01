@@ -85,6 +85,18 @@ public class ShipBoard6Test {
         assertEquals(22, shipBoard.getShipCardsNumber(), "Ship card number not calculated correctly after destroying a null component");
     }
 
+    @Test
+    void testScrapedCardsNumber(){
+        assertEquals(0, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly");
+        shipBoard.getShipCard(9, 6).destroy();
+        assertEquals(1, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying a component");
+        shipBoard.getShipCard(8, 5).destroy();
+        shipBoard.getShipCard(5, 9).destroy();
+        assertEquals(3, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying some components");
+        assertThrows(NullPointerException.class, () -> shipBoard.getShipCard(9, 7).destroy(), "Cannot destroy a null component");
+        assertEquals(3, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly after destroying a null component");
+    }
+
 
     @Test
     void testEnginePower() {
