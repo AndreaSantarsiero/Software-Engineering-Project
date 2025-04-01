@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model.shipboard;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -25,8 +26,48 @@ public class ShipBoard5Test {
     @Test
     void testCheckShip(){
         assertFalse(shipBoard.checkShip(), "ShipBoard5 DO NOT respect all the rules");
-        //da completare
     }
+
+
+    @Test
+    void testCheckShipConnections() throws Exception{
+        Method method = ShipBoard.class.getDeclaredMethod("checkShipConnections");
+        method.setAccessible(true);
+        boolean result = (boolean) method.invoke(shipBoard);
+        assertFalse(result, "ShipBoard5 DO NOT respect all connection rules");
+
+        shipBoard.getShipCard(4, 8).destroy();
+        result = (boolean) method.invoke(shipBoard);
+        assertFalse(result, "ShipBoard5 still DO NOT respect all connection rules");
+
+        shipBoard.getShipCard(8, 8).destroy();
+        shipBoard.getShipCard(6, 7).destroy();
+        result = (boolean) method.invoke(shipBoard);
+        assertTrue(result, "ShipBoard5 now respects all connection rules");
+    }
+
+
+    @Test
+    void testCheckShipIntegrity() throws Exception{
+        Method method = ShipBoard.class.getDeclaredMethod("checkShipIntegrity");
+        method.setAccessible(true);
+        boolean result = (boolean) method.invoke(shipBoard);
+        assertTrue(result, "ShipBoard5 respects integrity restrictions");
+
+        shipBoard.getShipCard(4, 8).destroy();
+        result = (boolean) method.invoke(shipBoard);
+        assertFalse(result, "ShipBoard5 DO NOT respect integrity restrictions after destroying a component");
+    }
+
+
+    @Test
+    void testCheckOtherRestrictions() throws Exception{
+        Method method = ShipBoard.class.getDeclaredMethod("checkOtherRestrictions");
+        method.setAccessible(true);
+        boolean result = (boolean) method.invoke(shipBoard);
+        assertFalse(result, "ShipBoard5 DO NOT respect all the other restrictions");
+    }
+
 
     @Test
     void testShipCardNumber(){

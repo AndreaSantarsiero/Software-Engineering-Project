@@ -374,10 +374,10 @@ public abstract class ShipBoard {
     private boolean checkShipConnections() {
         boolean status = true;
 
-        try {
-            for (int i = 0; i < components.length; i++) {
-                for (int j = 0; j < components[i].length; j++) {
-                    if (components[i][j] != null && !components[i][j].isScrap()) {
+        for (int i = 0; i < components.length; i++) {
+            for (int j = 0; j < components[i].length; j++) {
+                if (components[i][j] != null && !components[i][j].isScrap()) {
+                    try {
                         if(components[i][j-1] != null && !components[i][j-1].isScrap()) {
                             if(!checkConnection(components[i][j].getLeftConnector(), components[i][j-1].getRightConnector())){
                                 components[i][j].setIllegal(true);
@@ -385,6 +385,12 @@ public abstract class ShipBoard {
                                 status = false;
                             }
                         }
+                    }
+                    catch (Exception _) {
+
+                    }
+
+                    try {
                         if(components[i][j+1] != null && !components[i][j+1].isScrap()) {
                             if(!checkConnection(components[i][j].getRightConnector(), components[i][j+1].getLeftConnector())){
                                 components[i][j].setIllegal(true);
@@ -392,6 +398,12 @@ public abstract class ShipBoard {
                                 status = false;
                             }
                         }
+                    }
+                    catch (Exception _) {
+
+                    }
+
+                    try {
                         if(components[i-1][j] != null && !components[i-1][j].isScrap()) {
                             if(!checkConnection(components[i][j].getTopConnector(), components[i-1][j].getBottomConnector())){
                                 components[i][j].setIllegal(true);
@@ -399,6 +411,12 @@ public abstract class ShipBoard {
                                 status = false;
                             }
                         }
+                    }
+                    catch (Exception _) {
+
+                    }
+
+                    try {
                         if(components[i+1][j] != null && !components[i+1][j].isScrap()) {
                             if(!checkConnection(components[i][j].getBottomConnector(), components[i+1][j].getTopConnector())){
                                 components[i][j].setIllegal(true);
@@ -407,17 +425,11 @@ public abstract class ShipBoard {
                             }
                         }
                     }
+                    catch (Exception _) {
 
-                    j++;
-                    if(j == components[i].length) {
-                        j = 1;
-                        i++;
                     }
                 }
             }
-        }
-        catch (Exception _) {
-
         }
 
         return status;
