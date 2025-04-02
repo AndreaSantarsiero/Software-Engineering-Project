@@ -37,7 +37,7 @@ public class AbandonedShip extends AdventureCard {
     //Username is the player playing the card
     public void handler(GameModel model, String username, List<HousingUnit> housingUnit, List<Integer> killedMembers) {
         //KillMember from the shipboard of the Player
-         model.getPlayerShipBoard(username).killMembers(housingUnit, killedMembers);
+         //model.getPlayerShipBoard(username).killMembers(housingUnit, killedMembers);  /* da adattare usando la mappa al posto delle due liste */
 
          //Add coins to the player
          model.addCoins(username, coins);

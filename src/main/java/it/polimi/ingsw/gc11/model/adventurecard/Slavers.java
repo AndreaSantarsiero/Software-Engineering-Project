@@ -59,7 +59,7 @@ public class Slavers extends AdventureCard {
             }
         }
         else{
-            model.getPlayerShipBoard(username).killMembers(housingUnitsUserAccepted, killedMembers);
+            //model.getPlayerShipBoard(username).killMembers(housingUnitsUserAccepted, killedMembers);  /* da adattare usando la mappa al posto delle due liste */
         }
     }
 }

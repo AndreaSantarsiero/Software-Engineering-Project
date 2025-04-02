@@ -3,8 +3,12 @@ package it.polimi.ingsw.gc11.model.shipboard;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 
 
 /**
@@ -803,26 +807,32 @@ public abstract class ShipBoard {
     /**
      * Removes a specified number of crew members from designated housing units
      *
-     * @param housingUnitModules The housing units from which members are removed
-     * @param killedMembers      The number of members to remove from each unit
-     * @throws IllegalArgumentException if input lists are null, mismatched in size, or invalid
+     * @param housingUsage A map associating each housing unit with the number of members to remove
+     * @throws IllegalArgumentException if the map is null, contains invalid entries, references scrap housing units, or has null values
      */
-    public void killMembers(List<HousingUnit> housingUnitModules, List<Integer> killedMembers) {
-        if (housingUnitModules == null || killedMembers == null) {
-            throw new IllegalArgumentException("Housing unit modules or killed members is null");
+    public void killMembers(Map<HousingUnit, Integer> housingUsage) {
+        if (housingUsage == null) {
+            throw new IllegalArgumentException("Housing usage map cannot be null");
         }
-        if (housingUnitModules.size() != killedMembers.size()) {
-            throw new IllegalArgumentException("Housing unit modules and killed members do not match");
-        }
-        for (int i = 0; i < housingUnitModules.size(); i++) {
-            HousingUnit housingUnit = housingUnitModules.get(i);
-            if (housingUnit.isScrap()){
-                throw new IllegalArgumentException("Scraps cannot be used anymore");
+
+        for (Map.Entry<HousingUnit, Integer> entry : housingUsage.entrySet()) {
+            HousingUnit housingUnit = entry.getKey();
+            Integer numMembers = entry.getValue();
+
+            if (housingUnit == null) {
+                throw new IllegalArgumentException("Housing unit module cannot be null");
             }
-            int numMembers = killedMembers.get(i);
+            if (numMembers == null) {
+                throw new IllegalArgumentException("Number of members to remove cannot be null");
+            }
+            if (housingUnit.isScrap()) {
+                throw new IllegalArgumentException("Scrap housing units cannot be used");
+            }
+
             housingUnit.killMembers(numMembers);
         }
     }
+
 
     /**
      * Applies the effects of the epidemic AdventureCard to the ship
@@ -915,26 +925,33 @@ public abstract class ShipBoard {
     /**
      * Uses a specified number of batteries from designated battery modules
      *
-     * @param batteryModules The battery units to use batteries from
-     * @param usedBatteries  The number of batteries to use from each unit
-     * @throws IllegalArgumentException if input lists are null, mismatched in size, or invalid
+     * @param batteryUsage A map associating each battery module with the number of batteries to use
+     * @throws IllegalArgumentException if the map is null, contains invalid entries, references scrap batteries, or has null values
      */
-    public void useBatteries(List<Battery> batteryModules, List<Integer> usedBatteries) {
-        if (batteryModules == null || usedBatteries == null) {
-            throw new IllegalArgumentException("Battery modules or used batteries is null");
+    public void useBatteries(Map<Battery, Integer> batteryUsage) {
+        if (batteryUsage == null) {
+            throw new IllegalArgumentException("Battery usage map cannot be null");
         }
-        if (batteryModules.size() != usedBatteries.size()) {
-            throw new IllegalArgumentException("Battery modules and used batteries do not match");
-        }
-        for (int i = 0; i < batteryModules.size(); i++) {
-            Battery battery = batteryModules.get(i);
-            if (battery.isScrap()){
-                throw new IllegalArgumentException("Scraps cannot be used anymore");
+
+        for (Map.Entry<Battery, Integer> entry : batteryUsage.entrySet()) {
+            Battery battery = entry.getKey();
+            Integer numBatteries = entry.getValue();
+
+            if (battery == null) {
+                throw new IllegalArgumentException("Battery module cannot be null");
             }
-            int numBatteries = usedBatteries.get(i);
+            if (numBatteries == null) {
+                throw new IllegalArgumentException("Number of batteries to use cannot be null");
+            }
+            if (battery.isScrap()) {
+                throw new IllegalArgumentException("Scrap batteries cannot be used");
+            }
+
             battery.useBatteries(numBatteries);
         }
     }
+
+
 
 
 
@@ -959,50 +976,47 @@ public abstract class ShipBoard {
 
     /**
      * Adds or replaces materials in a list of storage units based on provided new and old material lists
-     * This method ensures that the provided lists are non-null and have matching sizes
-     * It iterates through each storage unit, adding new materials if the corresponding old material is null, or replacing it otherwise
+     * This method ensures that the provided map is non-null and contains valid entries
+     * Each storage unit is mapped to a pair of lists: one for new materials to add and one for old materials to replace
      *
-     * @param storages      The list of {@link Storage} units where materials will be added or replaced
-     * @param newMaterials  A list of lists containing the new {@link Material} objects to be added
-     * @param oldMaterials  A list of lists containing the old {@link Material} objects to be replaced
-     * @throws IllegalArgumentException If any of the input lists are null, or if their sizes do not match
-     *                                  Also thrown if any inner material list is null or has mismatched sizes
+     * @param storageMaterials A map associating each {@link Storage} unit with a pair of lists:
+     *                         - The first list contains the new {@link Material} objects to be added
+     *                         - The second list contains the old {@link Material} objects to be replaced
+     * @throws IllegalArgumentException If the map is null, contains null keys or values, or if any inner material list is null or has mismatched sizes
      */
-    public void addMaterials(List<Storage> storages, List<List<Material>> newMaterials, List<List<Material>> oldMaterials) {
-        if (storages == null || newMaterials == null || oldMaterials == null) {
-            throw new IllegalArgumentException("Storage modules, newMaterial or oldMaterial is null");
-        }
-        if (storages.size() != newMaterials.size()) {
-            throw new IllegalArgumentException("Storage and new materials do not match");
-        }
-        if (newMaterials.size() != oldMaterials.size()) {
-            throw new IllegalArgumentException("New and old materials do not match");
-        }
-        for (int i = 0; i < newMaterials.size(); i++) {
-            List<Material> newStorageMaterials = newMaterials.get(i);
-            List<Material> oldStorageMaterials = oldMaterials.get(i);
-            if (newStorageMaterials == null || oldStorageMaterials == null) {
-                throw new IllegalArgumentException("New or old material list is null for a single storage at index " + i);
-            }
-            if (newStorageMaterials.size() != oldStorageMaterials.size()) {
-                throw new IllegalArgumentException("New and old materials for a single storage do not match at index " + i);
-            }
+    public void addMaterials(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
+        if (storageMaterials == null) {
+            throw new IllegalArgumentException("Storage materials map cannot be null");
         }
 
-        for (int i = 0; i < storages.size(); i++) {
-            Storage storage = storages.get(i);
-            List<Material> newStorageMaterials = newMaterials.get(i);
-            List<Material> oldStorageMaterials = oldMaterials.get(i);
-            for (int j = 0; j < newStorageMaterials.size(); j++) {
-                if(oldStorageMaterials.get(j) == null){
-                    storage.addMaterial(newStorageMaterials.get(j));
-                }
-                else {
-                    storage.replaceMaterial(newStorageMaterials.get(j), oldStorageMaterials.get(j));
+        for (Map.Entry<Storage, SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
+            Storage storage = entry.getKey();
+            SimpleEntry<List<Material>, List<Material>> materialsPair = entry.getValue();
+
+            if (storage == null) {
+                throw new IllegalArgumentException("Storage unit cannot be null");
+            }
+            if (materialsPair == null || materialsPair.getKey() == null || materialsPair.getValue() == null) {
+                throw new IllegalArgumentException("Material lists cannot be null for storage: " + storage);
+            }
+
+            List<Material> newMaterials = materialsPair.getKey();
+            List<Material> oldMaterials = materialsPair.getValue();
+
+            if (newMaterials.size() != oldMaterials.size()) {
+                throw new IllegalArgumentException("New and old materials lists do not match in size for storage: " + storage);
+            }
+
+            for (int i = 0; i < newMaterials.size(); i++) {
+                if (oldMaterials.get(i) == null) {
+                    storage.addMaterial(newMaterials.get(i));
+                } else {
+                    storage.replaceMaterial(newMaterials.get(i), oldMaterials.get(i));
                 }
             }
         }
     }
+
 
     /**
      * Removes materials from storage, prioritizing the most valuable

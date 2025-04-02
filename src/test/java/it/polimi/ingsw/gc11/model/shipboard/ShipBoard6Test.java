@@ -7,8 +7,8 @@ import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -137,11 +137,10 @@ public class ShipBoard6Test {
         assertEquals(5, shipBoard.getTotalAvailableBatteries(), "Available batteries number not calculated correctly");
         shipBoard.getShipCard(8, 8).destroy();
         assertEquals(3, shipBoard.getTotalAvailableBatteries(), "Available batteries number not calculated correctly after destroying a component");
-        List<Battery> batteries = new ArrayList<>();
-        List<Integer> numBatteries = new ArrayList<>();
-        batteries.add((Battery) shipBoard.getShipCard(9, 8));
-        numBatteries.add(3);
-        shipBoard.useBatteries(batteries, numBatteries);
+
+        Map<Battery, Integer> batteryUsage = new HashMap<>();
+        batteryUsage.put((Battery) shipBoard.getShipCard(9, 8), 3);
+        shipBoard.useBatteries(batteryUsage);
         assertEquals(0, shipBoard.getTotalAvailableBatteries(), "Available batteries number not calculated correctly after using some batteries");
     }
 
@@ -150,24 +149,19 @@ public class ShipBoard6Test {
     void testGetMembers() {
         assertEquals(12, shipBoard.getMembers(), "Members number not calculated correctly");
         shipBoard.getShipCard(10, 8).destroy();
-        assertEquals(10, shipBoard.getMembers(), "Members number not calculated correctly after destroying an housing unit");
+        assertEquals(10, shipBoard.getMembers(), "Members number not calculated correctly after destroying a housing unit");
 
-        List<HousingUnit> housingUnits = new ArrayList<>();
-        List<Integer> numMembers = new ArrayList<>();
-        housingUnits.add((HousingUnit) shipBoard.getShipCard(7, 7));
-        numMembers.add(1);
-        housingUnits.add((HousingUnit) shipBoard.getShipCard(5, 7));
-        numMembers.add(2);
-        shipBoard.killMembers(housingUnits, numMembers);
+        Map<HousingUnit, Integer> housingUsage = new HashMap<>();
+        housingUsage.put((HousingUnit) shipBoard.getShipCard(7, 7), 1);
+        housingUsage.put((HousingUnit) shipBoard.getShipCard(5, 7), 2);
+        shipBoard.killMembers(housingUsage);
         assertEquals(7, shipBoard.getMembers(), "Members number not calculated correctly after killing some members");
         shipBoard.connectAlienUnit(6, 8, 5, 8);
         assertEquals(6, shipBoard.getMembers(), "Members number not calculated correctly after connecting an alien unit to a housing unit");
 
-        housingUnits.clear();
-        numMembers.clear();
-        housingUnits.add((HousingUnit) shipBoard.getShipCard(5, 8));
-        numMembers.add(1);
-        shipBoard.killMembers(housingUnits, numMembers);
+        housingUsage.clear();
+        housingUsage.put((HousingUnit) shipBoard.getShipCard(5, 8), 1);
+        shipBoard.killMembers(housingUsage);
         assertEquals(5, shipBoard.getMembers(), "Members number not calculated correctly after killing an alien");
     }
 
@@ -203,60 +197,39 @@ public class ShipBoard6Test {
         Material greenMaterial = new Material(Material.Type.GREEN);
         Material blueMaterial = new Material(Material.Type.BLUE);
 
-        List<Storage> storages = new ArrayList<>();
-        storages.add((Storage) shipBoard.getShipCard(5, 9));
-        storages.add((Storage) shipBoard.getShipCard(8, 9));
-
-        List<Material> newMaterials1 = new ArrayList<>();
-        newMaterials1.add(yellowMaterial);
-        List<Material> newMaterials2 = new ArrayList<>();
-        newMaterials2.add(blueMaterial);
-        newMaterials2.add(greenMaterial);
-
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials = new HashMap<>();
+        Storage storage1 = (Storage) shipBoard.getShipCard(5, 9);
+        List<Material> newMaterials1 = new ArrayList<>(List.of(yellowMaterial));
         List<Material> oldMaterials1 = new ArrayList<>();
         oldMaterials1.add(null);
+        storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
+        Storage storage2 = (Storage) shipBoard.getShipCard(8, 9);
+        List<Material> newMaterials2 = new ArrayList<>(List.of(blueMaterial, greenMaterial));
         List<Material> oldMaterials2 = new ArrayList<>();
         oldMaterials2.add(null);
         oldMaterials2.add(null);
+        storageMaterials.put(storage2, new AbstractMap.SimpleEntry<>(newMaterials2, oldMaterials2));
 
-        List<List<Material>> newMaterials = new ArrayList<>();
-        List<List<Material>> oldMaterials = new ArrayList<>();
-        newMaterials.add(newMaterials1);
-        newMaterials.add(newMaterials2);
-        oldMaterials.add(oldMaterials1);
-        oldMaterials.add(oldMaterials2);
-
-        shipBoard.addMaterials(storages, newMaterials, oldMaterials);
+        shipBoard.addMaterials(storageMaterials);
         assertEquals(6, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly");
         assertEquals(0, shipBoard.removeMaterials(2), "Materials not removed correctly");
         assertEquals(1, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after removing materials");
 
+        storageMaterials.clear();
         newMaterials1.clear();
         oldMaterials1.clear();
         newMaterials1.add(redMaterial);
         oldMaterials1.add(null);
-        newMaterials.clear();
-        oldMaterials.clear();
-        newMaterials.add(newMaterials1);
-        oldMaterials.add(oldMaterials1);
-        storages.clear();
-        storages.add((Storage) shipBoard.getShipCard(6, 5));
+        storage1 = (Storage) shipBoard.getShipCard(6, 5);
+        storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
 
-        shipBoard.addMaterials(storages, newMaterials, oldMaterials);
+        shipBoard.addMaterials(storageMaterials);
         assertEquals(5, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after replacing materials");
 
-        newMaterials1.clear();
-        oldMaterials1.clear();
-        newMaterials1.add(redMaterial);
-        oldMaterials1.add(null);
-        newMaterials.clear();
-        oldMaterials.clear();
-        newMaterials.add(newMaterials1);
-        oldMaterials.add(oldMaterials1);
-        storages.clear();
-        storages.add((Storage) shipBoard.getShipCard(8, 9));
-
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.addMaterials(storages, newMaterials, oldMaterials), "Cannot add red materials to a blue storage");
+        storageMaterials.clear();
+        storage1 = (Storage) shipBoard.getShipCard(8, 9);
+        storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.addMaterials(storageMaterials), "Cannot add red materials to a blue storage");
     }
 
 

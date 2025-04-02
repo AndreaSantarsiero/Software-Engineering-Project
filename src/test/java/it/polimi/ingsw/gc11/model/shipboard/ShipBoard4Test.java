@@ -6,8 +6,7 @@ import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -99,11 +98,10 @@ public class ShipBoard4Test {
         assertEquals(6, shipBoard.getTotalAvailableBatteries(), "Available batteries number not calculated correctly");
         shipBoard.getShipCard(10, 9).destroy();
         assertEquals(4, shipBoard.getTotalAvailableBatteries(), "Available batteries number not calculated correctly after destroying a component");
-        List<Battery> batteries = new ArrayList<>();
-        List<Integer> numBatteries = new ArrayList<>();
-        batteries.add((Battery) shipBoard.getShipCard(6, 8));
-        numBatteries.add(1);
-        shipBoard.useBatteries(batteries, numBatteries);
+
+        Map<Battery, Integer> batteryUsage = new HashMap<>();
+        batteryUsage.put((Battery) shipBoard.getShipCard(6, 8), 1);
+        shipBoard.useBatteries(batteryUsage);
         assertEquals(3, shipBoard.getTotalAvailableBatteries(), "Available batteries number not calculated correctly after using some batteries");
     }
 
@@ -112,24 +110,19 @@ public class ShipBoard4Test {
     void testGetMembers() {
         assertEquals(12, shipBoard.getMembers(), "Members number not calculated correctly");
         shipBoard.getShipCard(5, 6).destroy();
-        assertEquals(10, shipBoard.getMembers(), "Members number not calculated correctly after destroying an housing unit");
+        assertEquals(10, shipBoard.getMembers(), "Members number not calculated correctly after destroying a housing unit");
 
-        List<HousingUnit> housingUnits = new ArrayList<>();
-        List<Integer> numMembers = new ArrayList<>();
-        housingUnits.add((HousingUnit) shipBoard.getShipCard(7, 7));
-        numMembers.add(1);
-        housingUnits.add((HousingUnit) shipBoard.getShipCard(9, 7));
-        numMembers.add(2);
-        shipBoard.killMembers(housingUnits, numMembers);
+        Map<HousingUnit, Integer> housingUsage = new HashMap<>();
+        housingUsage.put((HousingUnit) shipBoard.getShipCard(7, 7), 1);
+        housingUsage.put((HousingUnit) shipBoard.getShipCard(9, 7), 2);
+        shipBoard.killMembers(housingUsage);
         assertEquals(7, shipBoard.getMembers(), "Members number not calculated correctly after killing some members");
         shipBoard.connectAlienUnit(10, 8, 9, 8);
         assertEquals(6, shipBoard.getMembers(), "Members number not calculated correctly after connecting an alien unit to a housing unit");
 
-        housingUnits.clear();
-        numMembers.clear();
-        housingUnits.add((HousingUnit) shipBoard.getShipCard(9, 8));
-        numMembers.add(1);
-        shipBoard.killMembers(housingUnits, numMembers);
+        housingUsage.clear();
+        housingUsage.put((HousingUnit) shipBoard.getShipCard(9, 8), 1);
+        shipBoard.killMembers(housingUsage);
         assertEquals(5, shipBoard.getMembers(), "Members number not calculated correctly after killing an alien");
     }
 
@@ -165,46 +158,32 @@ public class ShipBoard4Test {
         Material greenMaterial = new Material(Material.Type.GREEN);
         Material blueMaterial = new Material(Material.Type.BLUE);
 
-        List<Storage> storages = new ArrayList<>();
-        storages.add((Storage) shipBoard.getShipCard(9, 9));
-        storages.add((Storage) shipBoard.getShipCard(4, 7));
-
-        List<Material> newMaterials1 = new ArrayList<>();
-        newMaterials1.add(yellowMaterial);
-        newMaterials1.add(blueMaterial);
-        List<Material> newMaterials2 = new ArrayList<>();
-        newMaterials2.add(redMaterial);
-
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials = new HashMap<>();
+        Storage storage1 = (Storage) shipBoard.getShipCard(9, 9);
+        List<Material> newMaterials1 = new ArrayList<>(List.of(yellowMaterial, blueMaterial));
         List<Material> oldMaterials1 = new ArrayList<>();
         oldMaterials1.add(null);
         oldMaterials1.add(null);
+        storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
+        Storage storage2 = (Storage) shipBoard.getShipCard(4, 7);
+        List<Material> newMaterials2 = new ArrayList<>(List.of(redMaterial));
         List<Material> oldMaterials2 = new ArrayList<>();
         oldMaterials2.add(null);
+        storageMaterials.put(storage2, new AbstractMap.SimpleEntry<>(newMaterials2, oldMaterials2));
 
-        List<List<Material>> newMaterials = new ArrayList<>();
-        List<List<Material>> oldMaterials = new ArrayList<>();
-        newMaterials.add(newMaterials1);
-        newMaterials.add(newMaterials2);
-        oldMaterials.add(oldMaterials1);
-        oldMaterials.add(oldMaterials2);
-
-        shipBoard.addMaterials(storages, newMaterials, oldMaterials);
+        shipBoard.addMaterials(storageMaterials);
         assertEquals(8, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly");
         assertEquals(0, shipBoard.removeMaterials(2), "Materials not removed correctly");
         assertEquals(1, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after removing materials");
 
+        storageMaterials.clear();
         newMaterials1.clear();
         oldMaterials1.clear();
         newMaterials1.add(greenMaterial);
         oldMaterials1.add(blueMaterial);
-        newMaterials.clear();
-        oldMaterials.clear();
-        newMaterials.add(newMaterials1);
-        oldMaterials.add(oldMaterials1);
-        storages.clear();
-        storages.add((Storage) shipBoard.getShipCard(9, 9));
+        storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
 
-        shipBoard.addMaterials(storages, newMaterials, oldMaterials);
+        shipBoard.addMaterials(storageMaterials);
         assertEquals(2, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after replacing materials");
         assertEquals(3, shipBoard.removeMaterials(4), "Materials not removed correctly when exceeding the number of available materials on the ship");
     }
