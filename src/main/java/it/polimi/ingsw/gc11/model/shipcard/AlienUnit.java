@@ -11,7 +11,7 @@ public class AlienUnit extends ShipCard {
      * Defines the possible types of Alien Units
      */
     public enum Type {
-        BROWN, PURPLE;
+        BROWN, PURPLE
     }
 
 

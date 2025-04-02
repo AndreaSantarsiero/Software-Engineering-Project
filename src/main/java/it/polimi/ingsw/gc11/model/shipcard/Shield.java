@@ -38,36 +38,16 @@ public class Shield extends ShipCard {
      */
     public boolean isProtecting(Hit.Direction direction) {
         if (direction == Hit.Direction.RIGHT) {
-            if (this.getOrientation() == Orientation.DEG_0 || this.getOrientation() == Orientation.DEG_90) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return this.getOrientation() == Orientation.DEG_0 || this.getOrientation() == Orientation.DEG_90;
         }
         else if (direction == Hit.Direction.BOTTOM) {
-            if (this.getOrientation() == Orientation.DEG_90 || this.getOrientation() == Orientation.DEG_180) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return this.getOrientation() == Orientation.DEG_90 || this.getOrientation() == Orientation.DEG_180;
         }
         else if (direction == Hit.Direction.LEFT) {
-            if (this.getOrientation() == Orientation.DEG_180 || this.getOrientation() == Orientation.DEG_270) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return this.getOrientation() == Orientation.DEG_180 || this.getOrientation() == Orientation.DEG_270;
         }
         else if (direction == Hit.Direction.TOP) {
-            if (this.getOrientation() == Orientation.DEG_270 || this.getOrientation() == Orientation.DEG_0) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return this.getOrientation() == Orientation.DEG_270 || this.getOrientation() == Orientation.DEG_0;
         }
 
         throw new IllegalArgumentException("Invalid direction: " + direction);

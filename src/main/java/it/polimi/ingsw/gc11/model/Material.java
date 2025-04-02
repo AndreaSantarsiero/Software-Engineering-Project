@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
+
+
 /**
  * Represents a material in the game. Each material has a specific type
  * that can be BLUE, GREEN, YELLOW, or RED
@@ -10,7 +12,7 @@ public class Material {
      * Defines the possible types of materials
      */
     public enum Type {
-        BLUE, GREEN, YELLOW, RED;
+        BLUE, GREEN, YELLOW, RED
     }
 
 
@@ -50,5 +52,26 @@ public class Material {
             case RED -> 4;
             default -> throw new IllegalArgumentException("Unknown material type: " + type);
         };
+    }
+
+
+    /**
+     * Compares this Material to another object for equality
+     * Two Materials are considered equal if they have the same type
+     *
+     * @param obj The object to compare with this Material
+     * @return {@code true} if the given object is a Material with the same type, {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Material material = (Material) obj;
+        return this.type.equals(material.getType());
     }
 }

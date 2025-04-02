@@ -11,7 +11,7 @@ public class Engine extends ShipCard {
      * Defines the possible types of Engines.
      */
     public enum Type {
-        SINGLE, DOUBLE;
+        SINGLE, DOUBLE
     }
 
 

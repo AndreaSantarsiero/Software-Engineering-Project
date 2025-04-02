@@ -11,7 +11,7 @@ public class Cannon extends ShipCard {
      * Defines the possible types of Cannons
      */
     public enum Type {
-        SINGLE, DOUBLE;
+        SINGLE, DOUBLE
     }
 
 

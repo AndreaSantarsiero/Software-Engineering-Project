@@ -11,7 +11,7 @@ public class Battery extends ShipCard {
      * Defines the possible types of Batteries
      */
     public enum Type {
-        DOUBLE, TRIPLE;
+        DOUBLE, TRIPLE
     }
 
 

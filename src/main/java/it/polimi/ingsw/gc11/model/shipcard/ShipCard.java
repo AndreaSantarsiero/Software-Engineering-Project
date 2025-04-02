@@ -11,7 +11,7 @@ public abstract class ShipCard {
      * Defines the possible types of connectors for a ShipCard
      */
     public enum Connector {
-        NONE, SINGLE, DOUBLE, UNIVERSAL;
+        NONE, SINGLE, DOUBLE, UNIVERSAL
     }
 
     /**
@@ -19,7 +19,7 @@ public abstract class ShipCard {
      * Rotations are in a clockwise direction
      */
     public enum Orientation {
-        DEG_0, DEG_90, DEG_180, DEG_270;
+        DEG_0, DEG_90, DEG_180, DEG_270
     }
 
 

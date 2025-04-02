@@ -15,12 +15,12 @@ public class Storage extends ShipCard {
      * Defines the possible types of storage
      */
     public enum Type {
-        DOUBLE_BLUE, TRIPLE_BLUE, SINGLE_RED, DOUBLE_RED;
+        DOUBLE_BLUE, TRIPLE_BLUE, SINGLE_RED, DOUBLE_RED
     }
 
 
     private final Type type;
-    private List<Material> materials;
+    private final List<Material> materials;
 
 
     /**
@@ -35,7 +35,7 @@ public class Storage extends ShipCard {
     public Storage(String id, Connector topConnector, Connector rightConnector, Connector bottomConnector, Connector leftConnector, Type type) {
         super(id, topConnector, rightConnector, bottomConnector, leftConnector);
         this.type = type;
-        this.materials = new ArrayList<Material>();
+        this.materials = new ArrayList<>();
     }
 
 

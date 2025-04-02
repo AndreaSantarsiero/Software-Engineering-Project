@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public abstract class ShipBoard {
 
-    private ShipCard[][] components;
+    private final ShipCard[][] components;
     private final List<ShipCard> reservedComponents;
     private int lastModifiedX;
     private int lastModifiedY;
@@ -33,7 +33,7 @@ public abstract class ShipBoard {
      */
     public ShipBoard(int X_MAX, int Y_MAX) {
         this.components = new ShipCard[Y_MAX][X_MAX];
-        this.reservedComponents = new ArrayList<ShipCard>();
+        this.reservedComponents = new ArrayList<>();
         this.lastModifiedX = -1;
         this.lastModifiedY = -1;
         this.brownActiveUnit = null;
@@ -474,7 +474,7 @@ public abstract class ShipBoard {
      * @throws IllegalStateException if the ship has no components
      */
     public boolean checkShipIntegrity(){
-        int connectedComponents = 0;
+        int connectedComponents;
         this.visitedInitialization();
         ShipCard centralUnit = this.getShipCard(7, 7);
 
@@ -1025,16 +1025,15 @@ public abstract class ShipBoard {
      * @return The number of materials that could not be removed due to shortages
      */
     public int removeMaterials(int numMaterials) {
-        int mostValuableMaterial = 0;
-        Storage targetStorage = null;
-        Material targetMaterial = null;
-        Material materialToRemove = null;
+        int mostValuableMaterial;
+        Storage targetStorage;
+        Material targetMaterial;
+        Material materialToRemove;
 
         for (int k = 0; k < numMaterials; k++) {
             mostValuableMaterial = 0;
             targetStorage = null;
             targetMaterial = null;
-            materialToRemove = null;
 
             for (int i = 0; i < components.length; i++) {
                 for (int j = 0; j < components[i].length; j++) {
