@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gc11.controller;
 
-import it.polimi.ingsw.gc11.controller.State.*;
-import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import java.util.HashMap;
 
@@ -12,44 +10,25 @@ public class ServerController {
         this.games = new HashMap<>();
     }
 
-
-    //Create new match and specifies the level, return its ID
-    public String createNewMatch(FlightBoard.Type flightType) {
-        GameContext newGameContext = new GameContext();
-        newGameContext.getGameModel().setLevel(flightType);
-        String id = newGameContext.getGameModel().getID();
+    /**
+     * Creates a new match with the specified flight type and player username.
+     *
+     * <p>This method initializes a new {@link GameContext}, sets the game level
+     * based on the provided flight type, adds the player to the game context,
+     * and stores the new game instance in the {@code games} map. The unique
+     * game ID is then returned.
+     *
+     * @param flightType      the type of flight level for the game
+     * @param playerUsername  the username of the player creating the match
+     * @return the unique identifier of the newly created match
+     */
+    public String createNewMatch(FlightBoard.Type flightType, String playerUsername) {
+        GameContext newGameContext = new GameContext(flightType);
+        newGameContext.connectPlayerToGame(playerUsername);
+        String id = newGameContext.getMatchID();
         this.games.put(id,newGameContext);
         return id;
     }
 
-    public void startGame(String gameID) throws GameAlreadyStartedException {
-        GameContext selectedGame = this.games.get(gameID);
-        if (selectedGame == null) {
-            throw new IllegalArgumentException("Game ID " + gameID + " not found");
-        }
-        if (selectedGame.getState() instanceof IdleState) {
-            selectedGame.nextState();
-        }
-        else {
-            throw new GameAlreadyStartedException("Game ID " + gameID + " is already running");
-        }
 
-    }
-
-    public void endGame(String gameID) {
-        GameContext selectedGame = this.games.get(gameID);
-        if (selectedGame == null) {
-            throw new IllegalArgumentException("Game ID " + gameID + " not found");
-        }
-        if (selectedGame.getState() instanceof AdventureState) {
-            selectedGame.nextState();
-        }
-        else {
-
-        }
-    }
-
-    public void connectPlayer(){
-
-    }
 }
