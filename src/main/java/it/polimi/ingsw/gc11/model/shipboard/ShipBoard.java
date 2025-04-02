@@ -401,7 +401,7 @@ public abstract class ShipBoard {
         boolean status = true;
 
         for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
+            for (int j = (i % 2); j < components[i].length; j += 2) {
                 if (components[i][j] != null && !components[i][j].isScrap()) {
                     try {
                         if(components[i][j-1] != null && !components[i][j-1].isScrap()) {
@@ -472,7 +472,20 @@ public abstract class ShipBoard {
     public boolean checkShipIntegrity(){
         int connectedComponents = 0;
         this.visitedInitialization();
+        ShipCard centralUnit = this.getShipCard(7, 7);
 
+        /* trying to start from the central housing unit */
+        if (centralUnit != null && !centralUnit.isScrap()) {
+            connectedComponents = integrityVerifier(adaptX(7), adaptY(7));
+            if (connectedComponents == this.getShipCardsNumber()) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        /* trying to start from any other valid ship card */
         for (int i = 0; i < components.length; i++) {
             for (int j = 0; j < components[i].length; j++) {
                 if (components[i][j] != null && !components[i][j].isScrap()) {
