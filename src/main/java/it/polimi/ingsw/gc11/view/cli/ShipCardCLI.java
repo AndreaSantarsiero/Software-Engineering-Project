@@ -1,90 +1,13 @@
 package it.polimi.ingsw.gc11.view.cli;
 
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
-import java.util.List;
 
 
 
-public class CLI {
+public class ShipCardCLI {
 
     public static int cardWidth = 15;
     public static int cardLength = 7;
-
-
-
-    public static void printShipBoard(ShipBoard shipBoard) {
-        AnsiConsole.systemInstall();
-        System.out.println(Ansi.ansi()
-                .bg(Ansi.Color.BLUE)
-                .fg(Ansi.Color.BLUE)
-                .a(" ".repeat(50))
-                .reset());
-
-
-        printReservedCards(shipBoard);
-        System.out.println();
-
-
-        for (int y = 0; y < shipBoard.getLength(); y++) {
-            for (int i = 0; i < cardLength; i++) {
-                System.out.print("  ");
-                for (int x = 0; x < shipBoard.getWidth(); x++) {
-                    if (shipBoard.validateCoordinates(x, y)) {
-                        ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-                        printShipCard(shipCard, i);
-                    }
-                    else {
-                        printInvalidSquare(i);
-                    }
-                }
-                System.out.println("  ");
-            }
-        }
-
-
-        System.out.println(Ansi.ansi()
-                .bg(Ansi.Color.BLUE)
-                .fg(Ansi.Color.BLUE)
-                .a(" ".repeat(50))
-                .reset());
-        AnsiConsole.systemUninstall();
-    }
-
-
-
-    public static void printReservedCards(ShipBoard shipBoard) {
-        List<ShipCard> reservedCards = shipBoard.getReservedComponents();
-        while (reservedCards.size() < 2) {
-            reservedCards.add(null);
-        }
-
-        for (int x = 0; x < shipBoard.getWidth(); x++) {
-            if(x < (shipBoard.getWidth() - 2)){
-                printInvalidSquare(0);
-            }
-            else if(x == (shipBoard.getWidth() - 1)){
-                System.out.println("   Reserved components:");
-            }
-        }
-
-        for (int i = 0; i < cardLength; i++) {
-            System.out.print("  ");
-            for (int x = 0; x < shipBoard.getWidth(); x++) {
-                if(x < (shipBoard.getWidth() - 2)){
-                    printInvalidSquare(i);
-                }
-                else if(x == (shipBoard.getWidth() - 1)){
-                    for (ShipCard shipCard : reservedCards) {
-                        printShipCard(shipCard, i);
-                    }
-                }
-            }
-            System.out.println("  ");
-        }
-    }
 
 
 
@@ -180,9 +103,7 @@ public class CLI {
 
 
 
-    public static void printShipCard(ShipCard shipCard, int i) {
-        StringBuilder currentLine = new StringBuilder();
-
+    public static void print(ShipCard shipCard, int i) {
         if (i == 0) {
             System.out.print("┌─────────────┐");
         }
@@ -190,7 +111,9 @@ public class CLI {
             System.out.print("└─────────────┘");
         }
         else {
+            StringBuilder currentLine = new StringBuilder();
             currentLine.append("│");
+
             if (shipCard != null) {
                 if (i == 1) {
                     currentLine.append("   ").append(topConnectorToString(shipCard.getTopConnector())).append("   ");
@@ -227,15 +150,33 @@ public class CLI {
             else {
                 currentLine.append("             ");
             }
-            currentLine.append("│");
-        }
 
-        System.out.print(currentLine.toString());
+            currentLine.append("│");
+            System.out.print(currentLine.toString());
+        }
     }
 
 
 
-    public static void printInvalidSquare(int i){
-        System.out.print("               ");
+    public static void printCovered() {
+        for(int i = 0; i < cardLength; i++){
+            if (i == 0) {
+                System.out.print("┌─────────────┐");
+            }
+            else if (i == 1 || i == (cardLength - 2)) {
+                System.out.print("│ *         * │");
+            }
+            else if (i == cardLength/2){
+                System.out.print("│   COVERED   │");
+            }
+            else if (i == (cardLength - 1)){
+                System.out.print("└─────────────┘");
+            }
+            else {
+                System.out.print("│             │");
+            }
+
+            System.out.println();
+        }
     }
 }
