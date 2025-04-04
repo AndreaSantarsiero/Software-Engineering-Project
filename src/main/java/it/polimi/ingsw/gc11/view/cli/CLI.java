@@ -4,12 +4,13 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
+import java.util.List;
 
 
 
 public class CLI {
 
-    public static int cardWidth = 17;
+    public static int cardWidth = 15;
     public static int cardLength = 7;
 
 
@@ -22,37 +23,143 @@ public class CLI {
                 .a(" ".repeat(50))
                 .reset());
 
+
+        printReservedCards(shipBoard);
+        System.out.println();
+
+
         for (int y = 0; y < shipBoard.getLength(); y++) {
             for (int i = 0; i < cardLength; i++) {
                 System.out.print("  ");
                 for (int x = 0; x < shipBoard.getWidth(); x++) {
                     if (shipBoard.validateCoordinates(x, y)) {
                         ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-                        System.out.print(printShipCard(shipCard, i));
+                        printShipCard(shipCard, i);
                     }
                     else {
-                        System.out.print(printInvalidSquare(i));
+                        printInvalidSquare(i);
                     }
                 }
                 System.out.println("  ");
             }
         }
 
+
         System.out.println(Ansi.ansi()
                 .bg(Ansi.Color.BLUE)
+                .fg(Ansi.Color.BLUE)
+                .a(" ".repeat(50))
                 .reset());
         AnsiConsole.systemUninstall();
     }
 
 
 
-    public static String connectorToString(ShipCard.Connector connector) {
+    public static void printReservedCards(ShipBoard shipBoard) {
+        List<ShipCard> reservedCards = shipBoard.getReservedComponents();
+        while (reservedCards.size() < 2) {
+            reservedCards.add(null);
+        }
+
+        for (int x = 0; x < shipBoard.getWidth(); x++) {
+            if(x < (shipBoard.getWidth() - 2)){
+                printInvalidSquare(0);
+            }
+            else if(x == (shipBoard.getWidth() - 1)){
+                System.out.println("   Reserved components:");
+            }
+        }
+
+        for (int i = 0; i < cardLength; i++) {
+            System.out.print("  ");
+            for (int x = 0; x < shipBoard.getWidth(); x++) {
+                if(x < (shipBoard.getWidth() - 2)){
+                    printInvalidSquare(i);
+                }
+                else if(x == (shipBoard.getWidth() - 1)){
+                    for (ShipCard shipCard : reservedCards) {
+                        printShipCard(shipCard, i);
+                    }
+                }
+            }
+            System.out.println("  ");
+        }
+    }
+
+
+
+    public static String topConnectorToString(ShipCard.Connector connector) {
         return switch (connector) {
-            case ShipCard.Connector.NONE -> "0";
-            case ShipCard.Connector.SINGLE -> "1";
-            case ShipCard.Connector.DOUBLE -> "2";
-            case ShipCard.Connector.UNIVERSAL -> "3";
+            case ShipCard.Connector.NONE -> "       ";
+            case ShipCard.Connector.SINGLE -> "   ╩   ";
+            case ShipCard.Connector.DOUBLE -> "╚═════╝";
+            case ShipCard.Connector.UNIVERSAL -> "╚══╩══╝";
         };
+    }
+
+
+
+    public static String leftConnectorToString(ShipCard.Connector connector, int i) {
+        if(i == (cardLength/2 - 1)){
+            return switch (connector) {
+                case ShipCard.Connector.NONE, ShipCard.Connector.SINGLE -> "  ";
+                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "═╗";
+            };
+        }
+        else if(i == cardLength/2){
+            return switch (connector) {
+                case ShipCard.Connector.NONE -> "  ";
+                case ShipCard.Connector.SINGLE -> "══";
+                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "═╣";
+            };
+        }
+        else if(i == (cardLength/2 + 1)){
+            return switch (connector) {
+                case ShipCard.Connector.NONE, ShipCard.Connector.SINGLE -> "  ";
+                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "═╝";
+            };
+        }
+        else{
+            return "   ";
+        }
+    }
+
+
+
+    public static String bottomConnectorToString(ShipCard.Connector connector) {
+        return switch (connector) {
+            case ShipCard.Connector.NONE -> "       ";
+            case ShipCard.Connector.SINGLE -> "   ╦   ";
+            case ShipCard.Connector.DOUBLE -> "╔═════╗";
+            case ShipCard.Connector.UNIVERSAL -> "╔══╦══╗";
+        };
+    }
+
+
+
+    public static String rightConnectorToString(ShipCard.Connector connector, int i) {
+        if(i == (cardLength/2 - 1)){
+            return switch (connector) {
+                case ShipCard.Connector.NONE, ShipCard.Connector.SINGLE -> "  ";
+                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "╔═";
+            };
+        }
+        else if(i == cardLength/2){
+            return switch (connector) {
+                case ShipCard.Connector.NONE -> "  ";
+                case ShipCard.Connector.SINGLE -> "══";
+                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "╠═";
+            };
+        }
+        else if(i == (cardLength/2 + 1)){
+            return switch (connector) {
+                case ShipCard.Connector.NONE, ShipCard.Connector.SINGLE -> "  ";
+                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "╚═";
+            };
+        }
+        else{
+            return "   ";
+        }
     }
 
 
@@ -73,53 +180,62 @@ public class CLI {
 
 
 
-    public static String printShipCard(ShipCard shipCard, int i) {
+    public static void printShipCard(ShipCard shipCard, int i) {
         StringBuilder currentLine = new StringBuilder();
 
-        if (i == 0 || i == (cardLength - 1)) {
-            currentLine.append("+---------------+");
+        if (i == 0) {
+            System.out.print("┌─────────────┐");
+        }
+        else if (i == (cardLength - 1)){
+            System.out.print("└─────────────┘");
         }
         else {
-            currentLine.append("|");
+            currentLine.append("│");
             if (shipCard != null) {
-                for (int j = 1; j < (cardWidth - 1); j++) {
-                    if (i == 1 && j == 8) {
-                        currentLine.append(connectorToString(shipCard.getTopConnector()));
-                    }
-                    else if (i == 3) {
+                if (i == 1) {
+                    currentLine.append("   ").append(topConnectorToString(shipCard.getTopConnector())).append("   ");
+                }
+                else if (i == (cardLength/2 - 1)){
+                    currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i)).append("         ").append(rightConnectorToString(shipCard.getRightConnector(), i));
+                }
+                else if (i == cardLength/2){
+                    for (int j = 1; j < (cardWidth - 1); j++) {
                         if (j == 1){
-                            currentLine.append(connectorToString(shipCard.getLeftConnector()));
+                            currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i));
                         }
-                        else if (j == 15){
-                            currentLine.append(connectorToString(shipCard.getRightConnector()));
-                        }
-                        else if (j == 8){
+                        else if (j == (cardWidth/2 + 1)){
                             currentLine.append(shipCardToEmoji(shipCard));
                         }
-                        else {
+                        else if (j == (cardWidth - 2)){
+                            currentLine.append(rightConnectorToString(shipCard.getRightConnector(), i));
+                        }
+                        else if (!(j == 2|| j == cardWidth/2)){
                             currentLine.append(" ");
                         }
                     }
-                    else if (i == 5 && j == 8) {
-                        currentLine.append(connectorToString(shipCard.getBottomConnector()));
-                    }
-                    else {
-                        currentLine.append(" ");
-                    }
+                }
+                else if (i == (cardLength/2 + 1)){
+                    currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i)).append("         ").append(rightConnectorToString(shipCard.getRightConnector(), i));
+                }
+                else if (i == (cardLength - 2)) {
+                    currentLine.append("   ").append(bottomConnectorToString(shipCard.getBottomConnector())).append("   ");
+                }
+                else {
+                    currentLine.append("             ");
                 }
             }
             else {
-                currentLine.append("               ");
+                currentLine.append("             ");
             }
-            currentLine.append("|");
+            currentLine.append("│");
         }
 
-        return currentLine.toString();
+        System.out.print(currentLine.toString());
     }
 
 
 
-    public static String printInvalidSquare(int i){
-        return "                 ";
+    public static void printInvalidSquare(int i){
+        System.out.print("               ");
     }
 }

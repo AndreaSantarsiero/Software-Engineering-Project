@@ -86,6 +86,11 @@ public class ShipBoard6Test {
     }
 
     @Test
+    void testReservedComponents(){
+        assertEquals(0, shipBoard.getReservedComponents().size(), "Reserved components number not calculated correctly");
+    }
+
+    @Test
     void testScrapedCardsNumber(){
         assertEquals(0, shipBoard.getScrapedCardsNumber(), "Scraped card number not calculated correctly");
         shipBoard.getShipCard(9, 6).destroy();

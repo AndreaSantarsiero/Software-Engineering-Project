@@ -221,6 +221,14 @@ public abstract class ShipBoard {
         }
     }
 
+    /**
+     * Return the list of the reserved ship cards
+     * @return the list of the reserved ship cards
+     */
+    public List<ShipCard> getReservedComponents() {
+        return this.reservedComponents;
+    }
+
 
 
     /**
