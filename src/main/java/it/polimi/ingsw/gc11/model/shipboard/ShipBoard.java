@@ -1474,4 +1474,6 @@ public abstract class ShipBoard {
 
         return false;    /* didn't find any ShipCard on the given direction and coordinate => ShipBoard is not affected by the hit */
     }
+
+    public abstract String getType();
 }

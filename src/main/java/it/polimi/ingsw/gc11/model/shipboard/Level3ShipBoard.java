@@ -70,4 +70,9 @@ public class Level3ShipBoard extends ShipBoard {
             return true;
         }
     }
+
+    @Override
+    public String getType() {
+        return "Level3";
+    }
 }

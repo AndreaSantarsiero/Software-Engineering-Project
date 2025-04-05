@@ -44,9 +44,12 @@ public class GameModel {
     public void setLevel(FlightBoard.Type flightType) throws NullPointerException, IllegalArgumentException {
         if (flightType == null)
             throw new NullPointerException();
-
+        if(this.flightBoard != null){
+            throw new IllegalStateException("The flight board has already been set");
+        }
         //Trial Flight has only 1 deck which contains all the trial adventure cards
         if (flightType.equals(FlightBoard.Type.TRIAL)) {
+            this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
             this.adventureCardsDecks.add(new AdventureDeck(true));
             for (int i = 0; i < this.adventureCardsTrial.size(); i++) {
                 this.adventureCardsDecks.get(0).addCard(adventureCardsTrial.get(i));
@@ -76,7 +79,12 @@ public class GameModel {
         }
     }
 
-    public FlightBoard getFlightBoard() {return flightBoard;}
+    public FlightBoard getFlightBoard() {
+        if(this.flightBoard == null){
+            throw new IllegalStateException("The flight board has not been set");
+        }
+        return flightBoard;
+    }
 
     public int getValDice1(){
         return dices[0].roll();
@@ -97,6 +105,9 @@ public class GameModel {
             throw new FullLobbyException("The lobby you're trying to join is full at the moment.");
         }
         Player newPlayer = new Player(username);
+        if(this.flightBoard != null){
+            newPlayer.setShipBoard(this.flightBoard.getType());
+        }
         players.add(newPlayer);
     }
 
