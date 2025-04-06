@@ -54,6 +54,8 @@ public class Player {
         this.position = position;
     }
 
+    public boolean isAbort() {return abort;}
+
     public void setAbort() { this.abort = true; }
 
     public void setShipBoard(FlightBoard.Type flightType) throws NullPointerException, IllegalArgumentException {

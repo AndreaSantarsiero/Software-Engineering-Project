@@ -30,7 +30,7 @@ class GameModelTest {
     @Test
     void testSetLevel() {
         gameModel.setLevel(FlightBoard.Type.LEVEL2);
-        assertEquals(gameModel.getFlightBoard().getType(), FlightBoard.Type.LEVEL2);
+        assertEquals(FlightBoard.Type.LEVEL2, gameModel.getFlightBoard().getType());
     }
 
     @Test
@@ -43,9 +43,9 @@ class GameModelTest {
         gameModel.addPlayer("Player1");
         gameModel.setLevel(FlightBoard.Type.TRIAL);
         gameModel.addPlayer("Player2");
-        assertEquals(gameModel.getFlightBoard().getType(), FlightBoard.Type.TRIAL);
-        assertEquals(gameModel.getPlayer("Player1").getShipBoard().getType(), "Level1");
-        assertEquals(gameModel.getPlayer("Player2").getShipBoard().getType(), "Level1");
+        assertEquals(FlightBoard.Type.TRIAL, gameModel.getFlightBoard().getType());
+        assertEquals("Level1", gameModel.getPlayer("Player1").getShipBoard().getType());
+        assertEquals("Level1", gameModel.getPlayer("Player2").getShipBoard().getType());
         assertThrows(IllegalStateException.class, () -> gameModel.setLevel(FlightBoard.Type.LEVEL2));
     }
 
@@ -74,26 +74,26 @@ class GameModelTest {
         gameModel.addPlayer("Player2");
         gameModel.addPlayer("Player3");
         gameModel.addPlayer("Player4");
-        assertEquals(gameModel.getPlayer("Player1").getUsername(), "Player1");
-        assertEquals(gameModel.getPlayer("Player2").getUsername(), "Player2");
-        assertEquals(gameModel.getPlayer("Player3").getUsername(), "Player3");
-        assertEquals(gameModel.getPlayer("Player4").getUsername(), "Player4");
+        assertEquals("Player1", gameModel.getPlayer("Player1").getUsername());
+        assertEquals("Player2", gameModel.getPlayer("Player2").getUsername());
+        assertEquals("Player3", gameModel.getPlayer("Player3").getUsername());
+        assertEquals("Player4", gameModel.getPlayer("Player4").getUsername());
         assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayer("Player5"));
     }
 
     @Test
     void testGetNumPlayers() {
-        assertEquals(gameModel.getNumPlayers(), 0);
+        assertEquals(0, gameModel.getNumPlayers());
         gameModel.addPlayer("Player1");
-        assertEquals(gameModel.getNumPlayers(), 1);
+        assertEquals(1, gameModel.getNumPlayers());
         gameModel.addPlayer("Player2");
-        assertEquals(gameModel.getNumPlayers(), 2);
+        assertEquals(2, gameModel.getNumPlayers());
         gameModel.addPlayer("Player3");
-        assertEquals(gameModel.getNumPlayers(), 3);
+        assertEquals(3, gameModel.getNumPlayers());
         gameModel.addPlayer("Player4");
-        assertEquals(gameModel.getNumPlayers(), 4);
+        assertEquals(4, gameModel.getNumPlayers());
         assertThrows(FullLobbyException.class, () -> gameModel.addPlayer("Player5"));
-        assertEquals(gameModel.getNumPlayers(), 4);
+        assertEquals(4, gameModel.getNumPlayers());
 
     }
 
@@ -104,14 +104,15 @@ class GameModelTest {
 
     @Test
     void testAddNegativeCoins(){
-        assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins("player1",-1));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins("Player1",-1));
     }
 
     @Test
     void testAddCoinsToNotFoundPlayer(){
-        assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins("player1",1));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins("Player1",1));
         gameModel.addPlayer("Player1");
-        assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins("player2",1));
+        assertDoesNotThrow(() -> gameModel.addCoins("Player1",1));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins("Player2",1));
     }
 
     @Test
@@ -124,42 +125,144 @@ class GameModelTest {
         gameModel.addPlayer("Player2");
         gameModel.addCoins("Player2",20);
         assertEquals(20, gameModel.getPlayer("Player2").getCoins());
+        assertEquals(15, gameModel.getPlayer("Player1").getCoins());
     }
 
     @Test
-    void removeCoins() {
+    void testRemoveCoins() {
+        gameModel.addPlayer("Player1");
+        gameModel.addCoins("Player1",10);
+        gameModel.addPlayer("Player2");
+        gameModel.addCoins("Player2",20);
+        gameModel.removeCoins("Player1",5);
+        assertEquals(5, gameModel.getPlayer("Player1").getCoins());
+        assertEquals(20, gameModel.getPlayer("Player2").getCoins());
+        gameModel.removeCoins("Player1",10);
+        assertEquals(0, gameModel.getPlayer("Player1").getCoins());
     }
 
     @Test
-    void getPlayerPosition() {
+    void testRemoveCoinsNotFoundPlayer(){
+        assertThrows(IllegalArgumentException.class, () -> gameModel.removeCoins("player1",1));
+        gameModel.addPlayer("Player1");
+        assertDoesNotThrow(() -> gameModel.removeCoins("Player1",1));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.removeCoins("player2",1));
+
     }
 
     @Test
-    void modifyPlayerPosition() {
+    void testRemoveCoinsNullUsername(){
+        assertThrows(NullPointerException.class, () -> gameModel.removeCoins(null,19));
     }
 
     @Test
-    void setAbort() {
+    void testRemoveCoinsInvalidAmount(){
+        assertThrows(IllegalArgumentException.class, () -> gameModel.removeCoins("player1",-1));
+    }
+
+    @Test
+    void testgetPlayerPosition() {
+        gameModel.addPlayer("Player1");
+        gameModel.addPlayer("Player2");
+        gameModel.setLevel(FlightBoard.Type.TRIAL);
+        assertEquals(0, gameModel.getPlayerPosition("Player1"));
+        gameModel.getPlayer("Player1").setPosition(18);
+        assertEquals(0, gameModel.getPlayerPosition("Player1"));
+        gameModel.getPlayer("Player2").setPosition(-18);
+        assertEquals(0, gameModel.getPlayerPosition("Player2"));
+        gameModel.getPlayer("Player1").setPosition(20);
+        assertEquals(2, gameModel.getPlayerPosition("Player1"));
+        gameModel.getPlayer("Player2").setPosition(-20);
+        assertEquals(16, gameModel.getPlayerPosition("Player2"));
+        gameModel.getPlayer("Player1").setPosition(67);
+        assertEquals(13, gameModel.getPlayerPosition("Player1"));
+        gameModel.getPlayer("Player2").setPosition(-67);
+        assertEquals(5, gameModel.getPlayerPosition("Player2"));
+    }
+
+    @Test
+    void testGetPlayerPositionNullUsername(){
+        assertThrows(NullPointerException.class, () -> gameModel.getPlayerPosition(null));
+    }
+
+    @Test
+    void testGetPlayerPositionPlayerNotFound(){
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerPosition("Player1"));
+        gameModel.addPlayer("Player1");
+        gameModel.setLevel(FlightBoard.Type.TRIAL);
+        assertDoesNotThrow(() -> gameModel.getPlayerPosition("Player1"));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerPosition("Player2"));
+    }
+
+    @Test
+    void testSetAbort() {
+        gameModel.addPlayer("Player1");
+        gameModel.addPlayer("Player2");
+        assertFalse(gameModel.getPlayer("Player1").isAbort());
+        assertFalse(gameModel.getPlayer("Player2").isAbort());
+        gameModel.setAbort("Player1");
+        assertTrue(gameModel.getPlayer("Player1").isAbort());
+        assertFalse(gameModel.getPlayer("Player2").isAbort());
+    }
+
+    @Test
+    void testSetAbortNullUsername(){
+        assertThrows(NullPointerException.class, () -> gameModel.setAbort(null));
+    }
+
+    @Test
+    void testSetAbortPlayerNotFound(){
+        assertThrows(IllegalArgumentException.class, () -> gameModel.setAbort("Player1"));
+        gameModel.addPlayer("Player1");
+        assertDoesNotThrow(() -> gameModel.setAbort("Player1"));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.setAbort("Player2"));
     }
 
     @Test
     void getPlayerShipBoard() {
+        gameModel.setLevel(FlightBoard.Type.TRIAL);
+        gameModel.addPlayer("Player1");
+        assertEquals("Level1", gameModel.getPlayerShipBoard("Player1").getType() );
+    }
+
+    @Test
+    void getPlayerShipBoardNullUsername(){
+        assertThrows(NullPointerException.class, () -> gameModel.getPlayerShipBoard(null));
+    }
+
+    @Test
+    void getPlayerShipBoardPlayerNotFound(){
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerShipBoard("Player1"));
+        gameModel.addPlayer("Player1");
+        gameModel.setLevel(FlightBoard.Type.TRIAL);
+        assertDoesNotThrow(() -> gameModel.getPlayerShipBoard("Player1"));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerShipBoard("Player2"));
     }
 
     @Test
     void observeMiniDeck() {
+        gameModel.setLevel(FlightBoard.Type.LEVEL2);
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck(4));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck(-1));
+        assertThrows(IllegalStateException.class, () -> gameModel.observeMiniDeck(3));
+        assertDoesNotThrow(() -> gameModel.observeMiniDeck(1));
+        assertEquals(3, gameModel.observeMiniDeck(1).size());
     }
 
     @Test
     void createDefinitiveDeck() {
-    }
-
-    @Test
-    void getTopAdventureCard() {
+        gameModel.setLevel(FlightBoard.Type.LEVEL2);
+        assertNull(gameModel.getDefinitiveDeck());
+        gameModel.createDefinitiveDeck();
+        assertNotNull(gameModel.getDefinitiveDeck());
+        assertEquals(12,gameModel.getDefinitiveDeck().getSize());
+        gameModel.getTopAdventureCard();
+        assertEquals(11,gameModel.getDefinitiveDeck().getSize());
     }
 
     @Test
     void getFreeShipCard() {
+
     }
 
     @Test

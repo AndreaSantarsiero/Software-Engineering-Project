@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.UUID;
 
 public class GameModel {
@@ -54,6 +55,7 @@ public class GameModel {
             for (int i = 0; i < this.adventureCardsTrial.size(); i++) {
                 this.adventureCardsDecks.get(0).addCard(adventureCardsTrial.get(i));
             }
+            adventureCardsDecks.getFirst().shuffle();
         }
 
         //Level 2 Flight has 4 deck, anyone of them has inside: 2 level2 card, 1 level1 card
@@ -64,10 +66,12 @@ public class GameModel {
             this.adventureCardsDecks.add(new AdventureDeck(true));
             this.adventureCardsDecks.add(new AdventureDeck(true));
             this.adventureCardsDecks.add(new AdventureDeck(false));
+            Collections.shuffle(this.adventureCardsLevel1);
+            Collections.shuffle(this.adventureCardsLevel2);
             for (int i = 0; i < this.adventureCardsDecks.size(); i++) {
-                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get((int )(Math.random() * (20))));
-                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get((int )(Math.random() * (20))));
-                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel1.get((int )(Math.random() * (12))));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get(i*2));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get(i*2+1));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel1.get(i));
             }
         }
         else
@@ -144,12 +148,17 @@ public class GameModel {
         if (username == null){
             throw new NullPointerException("Username is null");
         }
-        if(amount > 0) {
+        if(amount < 0) {
             throw new IllegalArgumentException("Invalid positive amount of coins");
         }
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getUsername().equals(username)) {
-                players.get(i).addCoins(amount);
+                if(players.get(i).getCoins() >= amount) {
+                    players.get(i).addCoins(amount * -1);
+                }
+                else{
+                    players.get(i).addCoins(players.get(i).getCoins() * -1);
+                }
                 return;
             }
         }
@@ -162,23 +171,8 @@ public class GameModel {
         }
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getUsername().equals(username)) {
-                return players.get(i).getPosition() % flightBoard.getLength();
-            }
-        }
-        throw new IllegalArgumentException("Player " + username + " not found");
-    }
-
-    //To check
-    public void modifyPlayerPosition(String username, int delta){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                int realDelta = delta;
-                //Implement algorithm
-                players.get(i).setPosition(players.get(i).getPosition() + delta);
-                return;
+                return ((players.get(i).getPosition() % flightBoard.getLength()) +
+                        flightBoard.getLength()) % flightBoard.getLength();
             }
         }
         throw new IllegalArgumentException("Player " + username + " not found");
@@ -214,17 +208,27 @@ public class GameModel {
     * AdventureDeck's methods
     */
     public ArrayList<AdventureCard> observeMiniDeck(int numDeck){
+        if(numDeck < 0 || numDeck >= adventureCardsDecks.size()){
+            throw new IllegalArgumentException("Invalid deck number");
+        }
+        if(!adventureCardsDecks.get(numDeck).isObservable()){
+            throw new IllegalStateException("Deck isn't observable");
+        }
         return this.adventureCardsDecks.get(numDeck).getCards();
     }
 
     public void createDefinitiveDeck(){
         this.definitiveDeck = new AdventureDeck(false);
         for (int i = 0; i < this.adventureCardsDecks.size(); i++) {
-            for (int j = 0; j < adventureCardsDecks.get(i).getSize(); j++) {
+            while(adventureCardsDecks.get(i).getSize() > 0){
                 this.definitiveDeck.addCard(adventureCardsDecks.get(i).getTopCard());
             }
         }
         this.definitiveDeck.shuffle();
+    }
+
+    public AdventureDeck getDefinitiveDeck() {
+        return definitiveDeck;
     }
 
     public AdventureCard getTopAdventureCard(){ return this.definitiveDeck.getTopCard();}
