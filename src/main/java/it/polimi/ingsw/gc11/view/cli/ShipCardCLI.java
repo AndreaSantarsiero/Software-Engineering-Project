@@ -37,7 +37,8 @@ public class ShipCardCLI {
             return switch (connector) {
                 case ShipCard.Connector.NONE -> "  ";
                 case ShipCard.Connector.SINGLE -> "══";
-                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "═╣";
+                case ShipCard.Connector.DOUBLE -> " ║";
+                case ShipCard.Connector.UNIVERSAL -> "═╣";
             };
         }
         else if(i == (cardLength/2 + 1)){
@@ -75,7 +76,8 @@ public class ShipCardCLI {
             return switch (connector) {
                 case ShipCard.Connector.NONE -> "  ";
                 case ShipCard.Connector.SINGLE -> "══";
-                case ShipCard.Connector.DOUBLE, ShipCard.Connector.UNIVERSAL -> "╠═";
+                case ShipCard.Connector.DOUBLE -> "║ ";
+                case ShipCard.Connector.UNIVERSAL -> "╠═";
             };
         }
         else if(i == (cardLength/2 + 1)){
