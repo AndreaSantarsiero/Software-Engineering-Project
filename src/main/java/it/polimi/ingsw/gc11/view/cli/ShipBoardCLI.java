@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc11.view.cli;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
 import java.util.List;
 
 
@@ -11,7 +10,6 @@ import java.util.List;
 public class ShipBoardCLI {
 
     public static void print(ShipBoard shipBoard) {
-//        AnsiConsole.systemInstall();
 //        System.out.println(Ansi.ansi()
 //                .bg(Ansi.Color.BLUE)
 //                .fg(Ansi.Color.BLUE)
@@ -20,7 +18,7 @@ public class ShipBoardCLI {
 
 
         printReservedCards(shipBoard);
-        System.out.println();
+        System.out.println(Ansi.ansi().reset());
 
 
         for (int y = 0; y < shipBoard.getLength(); y++) {
@@ -32,12 +30,13 @@ public class ShipBoardCLI {
                         ShipCardCLI.print(shipCard, i);
                     }
                     else {
-                        printInvalidSquare(i);
+                        printInvalidSquare();
                     }
                 }
                 System.out.println("  ");
             }
         }
+        System.out.println(Ansi.ansi().reset());
     }
 
 
@@ -50,7 +49,7 @@ public class ShipBoardCLI {
 
         for (int x = 0; x < shipBoard.getWidth(); x++) {
             if(x < (shipBoard.getWidth() - 2)){
-                printInvalidSquare(0);
+                printInvalidSquare();
             }
             else if(x == (shipBoard.getWidth() - 1)){
                 System.out.println("   Reserved components:");
@@ -61,7 +60,7 @@ public class ShipBoardCLI {
             System.out.print("  ");
             for (int x = 0; x < shipBoard.getWidth(); x++) {
                 if(x < (shipBoard.getWidth() - 2)){
-                    printInvalidSquare(i);
+                    printInvalidSquare();
                 }
                 else if(x == (shipBoard.getWidth() - 1)){
                     for (ShipCard shipCard : reservedCards) {
@@ -75,7 +74,7 @@ public class ShipBoardCLI {
 
 
 
-    public static void printInvalidSquare(int i){
+    public static void printInvalidSquare(){
         System.out.print("               ");
     }
 }
