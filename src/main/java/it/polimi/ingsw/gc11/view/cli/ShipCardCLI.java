@@ -94,6 +94,40 @@ public class ShipCardCLI {
     public static String shipCardToString(ShipCard shipCard, int i) {
         if(i == (cardLength/2 - 1)){
             switch (shipCard) {
+                case Cannon cannon -> {
+                    if(cannon.getOrientation().equals(ShipCard.Orientation.DEG_0) && cannon.getType().equals(Cannon.Type.SINGLE)){
+                        return "    ∧    ";
+                    }
+                    else if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_0) && cannon.getType().equals(Cannon.Type.DOUBLE)){
+                        return "   ∧ ∧   ";
+                    }
+                    else if (cannon.getType().equals(Cannon.Type.DOUBLE) && cannon.getOrientation().equals(Cannon.Orientation.DEG_90)) {
+                        return "        >";
+                    }
+                    else if (cannon.getType().equals(Cannon.Type.DOUBLE) && cannon.getOrientation().equals(Cannon.Orientation.DEG_270)){
+                        return "<        ";
+                    }
+                    else {
+                        return "         ";
+                    }
+                }
+                case Engine engine -> {
+                    if(engine.getOrientation().equals(ShipCard.Orientation.DEG_180) && engine.getType().equals(Engine.Type.SINGLE)){
+                        return "    ∧    ";
+                    }
+                    else if (engine.getOrientation().equals(ShipCard.Orientation.DEG_180) && engine.getType().equals(Engine.Type.DOUBLE)){
+                        return "   ∧ ∧   ";
+                    }
+                    else if(engine.getType().equals(Engine.Type.DOUBLE) && engine.getOrientation().equals(Engine.Orientation.DEG_90)){
+                        return "<        ";
+                    }
+                    else if (engine.getType().equals(Engine.Type.DOUBLE) && engine.getOrientation().equals(Engine.Orientation.DEG_270)){
+                        return "        >";
+                    }
+                    else {
+                        return "         ";
+                    }
+                }
                 case HousingUnit housingUnit -> {
                     if (housingUnit.isCentral()) {
                         return " CENTRAL ";
@@ -145,10 +179,46 @@ public class ShipCardCLI {
                     return " BATTERY ";
                 }
                 case Cannon cannon -> {
-                    return " CANNON  ";
+                    if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_90)){
+                        if (cannon.getType().equals(Cannon.Type.SINGLE)){
+                            return " CANNON >";
+                        }
+                        else {
+                            return " CANNON  ";
+                        }
+                    }
+                    else if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_270)){
+                        if (cannon.getType().equals(Cannon.Type.SINGLE)){
+                            return "< CANNON ";
+                        }
+                        else {
+                            return "  CANNON ";
+                        }
+                    }
+                    else{
+                        return "  CANNON ";
+                    }
                 }
                 case Engine engine -> {
-                    return " ENGINE  ";
+                    if (engine.getOrientation().equals(ShipCard.Orientation.DEG_90)){
+                        if (engine.getType().equals(Engine.Type.SINGLE)){
+                            return "< ENGINE ";
+                        }
+                        else {
+                            return "  ENGINE ";
+                        }
+                    }
+                    else if (engine.getOrientation().equals(ShipCard.Orientation.DEG_270)){
+                        if (engine.getType().equals(Engine.Type.SINGLE)){
+                            return " ENGINE >";
+                        }
+                        else {
+                            return " ENGINE  ";
+                        }
+                    }
+                    else{
+                        return "  ENGINE ";
+                    }
                 }
                 case HousingUnit housingUnit -> {
                     return "  CABIN  ";
@@ -202,6 +272,40 @@ public class ShipCardCLI {
 
                     return result.toString();
                 }
+                case Cannon cannon -> {
+                    if(cannon.getOrientation().equals(ShipCard.Orientation.DEG_180) && cannon.getType().equals(Cannon.Type.SINGLE)){
+                        return "    v    ";
+                    }
+                    else if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_180) && cannon.getType().equals(Cannon.Type.DOUBLE)){
+                        return "   v v   ";
+                    }
+                    else if (cannon.getType().equals(Cannon.Type.DOUBLE) && cannon.getOrientation().equals(Cannon.Orientation.DEG_90)) {
+                        return "        >";
+                    }
+                    else if (cannon.getType().equals(Cannon.Type.DOUBLE) && cannon.getOrientation().equals(Cannon.Orientation.DEG_270)){
+                        return "<        ";
+                    }
+                    else {
+                        return "         ";
+                    }
+                }
+                case Engine engine -> {
+                    if(engine.getOrientation().equals(ShipCard.Orientation.DEG_0) && engine.getType().equals(Engine.Type.SINGLE)){
+                        return "    v    ";
+                    }
+                    else if (engine.getOrientation().equals(ShipCard.Orientation.DEG_0) && engine.getType().equals(Engine.Type.DOUBLE)){
+                        return "   v v   ";
+                    }
+                    else if(engine.getType().equals(Engine.Type.DOUBLE) && engine.getOrientation().equals(Engine.Orientation.DEG_90)){
+                        return "<        ";
+                    }
+                    else if (engine.getType().equals(Engine.Type.DOUBLE) && engine.getOrientation().equals(Engine.Orientation.DEG_270)){
+                        return "        >";
+                    }
+                    else {
+                        return "         ";
+                    }
+                }
                 case HousingUnit housingUnit -> {
                     StringBuilder result = new StringBuilder();
 
@@ -239,7 +343,7 @@ public class ShipCardCLI {
                     if(storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.DOUBLE_BLUE)){
                         System.out.print("   ");
                         printMaterials(storage.getMaterials());
-                        setColor((ShipCard) storage);
+                        setColor(storage);
                         for (int j = 0; j < (2 - storage.getMaterials().size()); j++) {
                             System.out.print("□ ");
                         }
@@ -248,7 +352,7 @@ public class ShipCardCLI {
                     else if(storage.getType().equals(Storage.Type.SINGLE_RED)){
                         System.out.print("    ");
                         printMaterials(storage.getMaterials());
-                        setColor((ShipCard) storage);
+                        setColor(storage);
                         for (int j = 0; j < (1 - storage.getMaterials().size()); j++) {
                             System.out.print("□ ");
                         }
@@ -257,7 +361,7 @@ public class ShipCardCLI {
                     else if(storage.getType().equals(Storage.Type.TRIPLE_BLUE)){
                         System.out.print("  ");
                         printMaterials(storage.getMaterials());
-                        setColor((ShipCard) storage);
+                        setColor(storage);
                         for (int j = 0; j < (3 - storage.getMaterials().size()); j++) {
                             System.out.print("□ ");
                         }
@@ -369,7 +473,7 @@ public class ShipCardCLI {
             }
 
             currentLine.append("│");
-            System.out.print(currentLine.toString());
+            System.out.print(currentLine);
         }
     }
 
