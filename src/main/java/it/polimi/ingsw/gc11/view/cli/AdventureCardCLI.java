@@ -6,18 +6,18 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
 public class AdventureCardCLI {
 
-    public static int cardWidth = 19;
-    public static int cardLength = 14;
+    public static int cardWidth = 23;
+    public static int cardLength = 15;
 
 
 
     public static void string(AdventureCard adventureCard){
         for(int i = 0; i < cardLength; i++){
             if (i == 0) {
-                System.out.print("┌─────────────────┐");
+                System.out.print("┌─────────────────────┐");
             }
             else if (i == (cardLength - 1)){
-                System.out.print("└─────────────────┘");
+                System.out.print("└─────────────────────┘");
             }
             else {
                 StringBuilder currentLine = new StringBuilder();
@@ -28,10 +28,10 @@ public class AdventureCardCLI {
                 }
                 else {
                     if (i == 1){
-                        currentLine.append("    StarDust     ");
+                        currentLine.append("      StarDust       ");
                     }
                     else {
-                        currentLine.append("                 ");
+                        currentLine.append("                     ");
                     }
                 }
 

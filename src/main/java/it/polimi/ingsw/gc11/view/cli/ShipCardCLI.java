@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.view.cli;
 
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+import org.fusesource.jansi.Ansi;
 
 
 
@@ -87,23 +89,153 @@ public class ShipCardCLI {
 
 
 
-    public static String shipCardToEmoji(ShipCard shipCard) {
-        return switch (shipCard) {
-            case AlienUnit alienUnit -> "A";
-            case Battery battery -> "B";
-            case Cannon cannon -> "C";
-            case Engine engine -> "E";
-            case HousingUnit housingUnit -> "H";
-            case Shield shield -> "S";
-            case Storage storage -> "s";
-            case StructuralModule structuralModule -> "T";
-            case null, default -> "?";
-        };
+    public static String shipCardToString(ShipCard shipCard, int i) {
+        if(i == (cardLength/2 - 1)){
+            switch (shipCard) {
+                case HousingUnit housingUnit -> {
+                    if (housingUnit.isCentral()) {
+                        return " CENTRAL ";
+                    } else {
+                        return "         ";
+                    }
+                }
+                case Shield shield -> {
+                    StringBuilder result = new StringBuilder();
+
+                    if (shield.isProtecting(Hit.Direction.LEFT)) {
+                        result.append("< ");
+                    } else {
+                        result.append("  ");
+                    }
+                    if (shield.isProtecting(Hit.Direction.TOP)) {
+                        result.append("∧ ∧ ∧");
+                    } else {
+                        result.append("     ");
+                    }
+                    if (shield.isProtecting(Hit.Direction.RIGHT)) {
+                        result.append(" >");
+                    } else {
+                        result.append("  ");
+                    }
+
+                    return result.toString();
+                }
+                case Storage storage -> {
+                    if (storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.SINGLE_RED)) {
+                        return " SPECIAL ";
+                    } else {
+                        return "         ";
+                    }
+                }
+                case null, default -> {
+                    return "         ";
+                }
+            }
+        }
+
+
+        else if(i == (cardLength/2)){
+            return switch (shipCard) {
+                case AlienUnit alienUnit -> "  ALIEN  ";
+                case Battery battery -> " BATTERY ";
+                case Cannon cannon -> " CANNON  ";
+                case Engine engine -> " ENGINE  ";
+                case HousingUnit housingUnit -> "  CABIN  ";
+                case Shield shield -> " SHIELD  ";
+                case Storage storage -> "  CARGO  ";
+                case StructuralModule structuralModule -> "STRUCTURE";
+                case null, default -> " UNKNOWN ";
+            };
+        }
+
+
+        else if(i == (cardLength/2 + 1)){
+            switch (shipCard) {
+                case AlienUnit alienUnit -> {
+                    if (alienUnit.getType().equals(AlienUnit.Type.BROWN)) {
+                        return "  BROWN  ";
+                    } else if (alienUnit.getType().equals(AlienUnit.Type.PURPLE)) {
+                        return "  PURPLE ";
+                    } else {
+                        return "   ???   ";
+                    }
+                }
+                case Battery battery -> {
+                    StringBuilder result = new StringBuilder();
+
+                    result.append("   ").append(battery.getAvailableBatteries()).append("/");
+                    if (battery.getType().equals(Battery.Type.DOUBLE)) {
+                        result.append("2   ");
+                    } else if (battery.getType().equals(Battery.Type.TRIPLE)) {
+                        result.append("3   ");
+                    } else {
+                        result.append("?   ");
+                    }
+
+                    return result.toString();
+                }
+                case HousingUnit housingUnit -> {
+                    StringBuilder result = new StringBuilder();
+
+                    result.append("   ").append(housingUnit.getNumMembers()).append("/");
+                    if (housingUnit.getAlienUnit() != null) {
+                        result.append("1   ");
+                    } else {
+                        result.append("2   ");
+                    }
+
+                    return result.toString();
+                }
+                case Shield shield -> {
+                    StringBuilder result = new StringBuilder();
+
+                    if (shield.isProtecting(Hit.Direction.LEFT)) {
+                        result.append("< ");
+                    } else {
+                        result.append("  ");
+                    }
+                    if (shield.isProtecting(Hit.Direction.BOTTOM)) {
+                        result.append("v v v");
+                    } else {
+                        result.append("     ");
+                    }
+                    if (shield.isProtecting(Hit.Direction.RIGHT)) {
+                        result.append(" >");
+                    } else {
+                        result.append("  ");
+                    }
+
+                    return result.toString();
+                }
+                case StructuralModule structuralModule -> {
+                    return " MODULE  ";
+                }
+                case null, default -> {
+                    return "         ";
+                }
+            }
+        }
+        else {
+            return "         ";
+        }
+    }
+
+
+
+    public static void setColor(ShipCard shipCard){
+        if (shipCard != null) {
+            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+        }
+        else {
+            System.out.print(Ansi.ansi().reset());
+        }
     }
 
 
 
     public static void print(ShipCard shipCard, int i) {
+        setColor(shipCard);
+
         if (i == 0) {
             System.out.print("┌─────────────┐");
         }
@@ -118,27 +250,8 @@ public class ShipCardCLI {
                 if (i == 1) {
                     currentLine.append("   ").append(topConnectorToString(shipCard.getTopConnector())).append("   ");
                 }
-                else if (i == (cardLength/2 - 1)){
-                    currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i)).append("         ").append(rightConnectorToString(shipCard.getRightConnector(), i));
-                }
-                else if (i == cardLength/2){
-                    for (int j = 1; j < (cardWidth - 1); j++) {
-                        if (j == 1){
-                            currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i));
-                        }
-                        else if (j == (cardWidth/2 + 1)){
-                            currentLine.append(shipCardToEmoji(shipCard));
-                        }
-                        else if (j == (cardWidth - 2)){
-                            currentLine.append(rightConnectorToString(shipCard.getRightConnector(), i));
-                        }
-                        else if (!(j == 2|| j == cardWidth/2)){
-                            currentLine.append(" ");
-                        }
-                    }
-                }
-                else if (i == (cardLength/2 + 1)){
-                    currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i)).append("         ").append(rightConnectorToString(shipCard.getRightConnector(), i));
+                else if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
+                    currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i)).append(shipCardToString(shipCard, i)).append(rightConnectorToString(shipCard.getRightConnector(), i));
                 }
                 else if (i == (cardLength - 2)) {
                     currentLine.append("   ").append(bottomConnectorToString(shipCard.getBottomConnector())).append("   ");
