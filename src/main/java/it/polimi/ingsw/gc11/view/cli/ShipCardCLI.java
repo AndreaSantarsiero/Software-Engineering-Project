@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.model.Hit;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.fusesource.jansi.Ansi;
+import java.util.List;
 
 
 
@@ -135,17 +137,43 @@ public class ShipCardCLI {
 
 
         else if(i == (cardLength/2)){
-            return switch (shipCard) {
-                case AlienUnit alienUnit -> "  ALIEN  ";
-                case Battery battery -> " BATTERY ";
-                case Cannon cannon -> " CANNON  ";
-                case Engine engine -> " ENGINE  ";
-                case HousingUnit housingUnit -> "  CABIN  ";
-                case Shield shield -> " SHIELD  ";
-                case Storage storage -> "  CARGO  ";
-                case StructuralModule structuralModule -> "STRUCTURE";
-                case null, default -> " UNKNOWN ";
-            };
+            switch (shipCard) {
+                case AlienUnit alienUnit -> {
+                    return "  ALIEN  ";
+                }
+                case Battery battery -> {
+                    return " BATTERY ";
+                }
+                case Cannon cannon -> {
+                    return " CANNON  ";
+                }
+                case Engine engine -> {
+                    return " ENGINE  ";
+                }
+                case HousingUnit housingUnit -> {
+                    return "  CABIN  ";
+                }
+                case Shield shield -> {
+                    if (shield.isProtecting(Hit.Direction.LEFT)) {
+                        return "< SHIELD ";
+                    }
+                    else if (shield.isProtecting(Hit.Direction.RIGHT)) {
+                        return " SHIELD >";
+                    }
+                    else {
+                        return "  SHIELD ";
+                    }
+                }
+                case Storage storage -> {
+                    return "  CARGO  ";
+                }
+                case StructuralModule structuralModule -> {
+                    return "STRUCTURE";
+                }
+                case null, default -> {
+                    return " UNKNOWN ";
+                }
+            }
         }
 
 
@@ -207,6 +235,38 @@ public class ShipCardCLI {
 
                     return result.toString();
                 }
+                case Storage storage -> {
+                    if(storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.DOUBLE_BLUE)){
+                        System.out.print("   ");
+                        printMaterials(storage.getMaterials());
+                        setColor((ShipCard) storage);
+                        for (int j = 0; j < (2 - storage.getMaterials().size()); j++) {
+                            System.out.print("□ ");
+                        }
+                        return "  ";
+                    }
+                    else if(storage.getType().equals(Storage.Type.SINGLE_RED)){
+                        System.out.print("    ");
+                        printMaterials(storage.getMaterials());
+                        setColor((ShipCard) storage);
+                        for (int j = 0; j < (1 - storage.getMaterials().size()); j++) {
+                            System.out.print("□ ");
+                        }
+                        return "   ";
+                    }
+                    else if(storage.getType().equals(Storage.Type.TRIPLE_BLUE)){
+                        System.out.print("  ");
+                        printMaterials(storage.getMaterials());
+                        setColor((ShipCard) storage);
+                        for (int j = 0; j < (3 - storage.getMaterials().size()); j++) {
+                            System.out.print("□ ");
+                        }
+                        return " ";
+                    }
+                    else{
+                        return "   ???   ";
+                    }
+                }
                 case StructuralModule structuralModule -> {
                     return " MODULE  ";
                 }
@@ -217,6 +277,26 @@ public class ShipCardCLI {
         }
         else {
             return "         ";
+        }
+    }
+
+
+
+    public static void printMaterials(List<Material> materials) {
+        for(Material material : materials) {
+            if (material.getType().equals(Material.Type.BLUE)) {
+                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + "■ ");
+            }
+            else if (material.getType().equals(Material.Type.GREEN)) {
+                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN) + "■ ");
+            }
+            else if (material.getType().equals(Material.Type.YELLOW)) {
+                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW) + "■ ");
+            }
+            else if (material.getType().equals(Material.Type.RED)) {
+                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "■ ");
+            }
+
         }
     }
 
@@ -267,6 +347,12 @@ public class ShipCardCLI {
             if (shipCard != null) {
                 if (i == 1) {
                     currentLine.append("   ").append(topConnectorToString(shipCard.getTopConnector())).append("   ");
+                }
+                else if(i == (cardLength/2 + 1) && shipCard instanceof Storage storage) {
+                    System.out.print("│" + leftConnectorToString(shipCard.getLeftConnector(), i));
+                    System.out.print(shipCardToString(shipCard, i));
+                    System.out.print(rightConnectorToString(shipCard.getRightConnector(), i) + "│");
+                    return;
                 }
                 else if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
                     currentLine.append(leftConnectorToString(shipCard.getLeftConnector(), i)).append(shipCardToString(shipCard, i)).append(rightConnectorToString(shipCard.getRightConnector(), i));

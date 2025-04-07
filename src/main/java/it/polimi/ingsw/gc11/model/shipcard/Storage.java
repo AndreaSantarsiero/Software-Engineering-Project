@@ -51,6 +51,16 @@ public class Storage extends ShipCard {
 
 
     /**
+     * Returns the list of materials currently stored
+     *
+     * @return The list of materials currently stored
+     */
+    public List<Material> getMaterials() {
+        return materials;
+    }
+
+
+    /**
      * Adds a new material to the storage
      * Throws an exception if the storage is full or the material type is incompatible with the storage type
      *
