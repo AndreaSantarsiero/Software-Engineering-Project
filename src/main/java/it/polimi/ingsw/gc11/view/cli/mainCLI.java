@@ -26,5 +26,13 @@ public class mainCLI {
 
         System.out.println("\n\nExample of an adventure card:");
         AdventureCardCLI.string(null);
+
+
+        System.out.println("\n\nExample of a level 1 flight board with one player on it:");
+        FlightBoardCLI.printLevel1();
+
+
+        System.out.println("\n\nExample of a level 2 flight board with two players on it:");
+        FlightBoardCLI.printLevel2();
     }
 }
