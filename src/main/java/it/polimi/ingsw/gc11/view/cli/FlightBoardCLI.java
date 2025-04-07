@@ -37,11 +37,7 @@ public class FlightBoardCLI {
 
     public static void printLevel2() {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
-        System.out.print("               ( )  (");
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN) + ">");
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA) + ")  ( )  (");
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + ">");
-        System.out.println(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA) + ")  ( )               ");
+        System.out.println("               ( )  ( )  ( )  ( )  ( )               ");
         System.out.println("          ( )                           ( )          ");
         System.out.println("      ( )                                   ( )      ");
         System.out.println("                                                     ");
@@ -53,7 +49,38 @@ public class FlightBoardCLI {
         System.out.println("                                                     ");
         System.out.println("      ( )                                   ( )      ");
         System.out.println("          ( )                           ( )          ");
-        System.out.println("               ( )  ( )  ( )  ( )  ( )               ");
+        System.out.print("               ( )  (");
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN) + "<");
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA) + ")  ( )  (");
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "<");
+        System.out.println(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA) + ")  ( )               ");
+
+        System.out.print(Ansi.ansi().reset());
+    }
+
+
+
+    public static void printLevel3() {
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED));
+        System.out.println("                ( )  ( )  ( )  ( )  ( )  ( )  ( )  ( )                ");
+        System.out.println("           ( )                                          ( )           ");
+        System.out.println("       ( )                                                  ( )       ");
+        System.out.println("                                                                      ");
+        System.out.println("    ( )                                                        ( )    ");
+        System.out.println("                                                                      ");
+        System.out.println("  ( )                                                            ( )  ");
+        System.out.println("                                                                      ");
+        System.out.print(" ( )                                                              (");
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + "v");
+        System.out.println(Ansi.ansi().reset().fg(Ansi.Color.RED) + ") ");
+        System.out.println("                                                                      ");
+        System.out.println("  ( )                                                            ( )  ");
+        System.out.println("                                                                      ");
+        System.out.println("    ( )                                                        ( )    ");
+        System.out.println("                                                                      ");
+        System.out.println("       ( )                                                  ( )       ");
+        System.out.println("           ( )                                          ( )           ");
+        System.out.println("                ( )  ( )  ( )  ( )  ( )  ( )  ( )  ( )                ");
 
         System.out.print(Ansi.ansi().reset());
     }

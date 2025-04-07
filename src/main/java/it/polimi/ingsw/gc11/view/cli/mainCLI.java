@@ -34,5 +34,9 @@ public class mainCLI {
 
         System.out.println("\n\nExample of a level 2 flight board with two players on it:");
         FlightBoardCLI.printLevel2();
+
+
+        System.out.println("\n\nExample of a level 3 flight board with one player on it:");
+        FlightBoardCLI.printLevel3();
     }
 }
