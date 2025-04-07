@@ -19,7 +19,7 @@ public class FlightBoardCLI {
     public static void printLevel1() {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
         System.out.print("             ( )  (");
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "✈");
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "⚛");
         System.out.println(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + ")  ( )  ( )             ");
         System.out.println("        ( )                      ( )        ");
         System.out.println("    ( )                              ( )    ");
@@ -38,9 +38,9 @@ public class FlightBoardCLI {
     public static void printLevel2() {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
         System.out.print("               ( )  (");
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN) + "✈");
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN) + "⚛");
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA) + ")  ( )  (");
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "✈");
+        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "⚛");
         System.out.println(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA) + ")  ( )               ");
         System.out.println("          ( )                           ( )          ");
         System.out.println("      ( )                                   ( )      ");
