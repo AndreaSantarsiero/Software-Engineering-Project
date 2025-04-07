@@ -223,11 +223,29 @@ public class ShipCardCLI {
 
 
     public static void setColor(ShipCard shipCard){
-        if (shipCard != null) {
-            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
-        }
-        else {
-            System.out.print(Ansi.ansi().reset());
+        switch (shipCard) {
+            case AlienUnit alienUnit -> {
+                if (alienUnit.getType().equals(AlienUnit.Type.BROWN)) {
+                    System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
+                }
+                else if (alienUnit.getType().equals(AlienUnit.Type.PURPLE)) {
+                    System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
+                }
+            }
+            case Battery battery -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
+            case Cannon cannon -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
+            case Engine engine -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
+            case HousingUnit housingUnit -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+            case Shield shield -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
+            case Storage storage -> {
+                if (storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.SINGLE_RED)) {
+                    System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED));
+                }
+                else if (storage.getType().equals(Storage.Type.TRIPLE_BLUE) || storage.getType().equals(Storage.Type.DOUBLE_BLUE)) {
+                    System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+                }
+            }
+            case null, default -> System.out.print(Ansi.ansi().reset());
         }
     }
 

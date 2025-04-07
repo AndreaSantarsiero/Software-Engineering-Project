@@ -11,12 +11,12 @@ import java.util.List;
 public class ShipBoardCLI {
 
     public static void print(ShipBoard shipBoard) {
-        AnsiConsole.systemInstall();
-        System.out.println(Ansi.ansi()
-                .bg(Ansi.Color.BLUE)
-                .fg(Ansi.Color.BLUE)
-                .a(" ".repeat(50))
-                .reset());
+//        AnsiConsole.systemInstall();
+//        System.out.println(Ansi.ansi()
+//                .bg(Ansi.Color.BLUE)
+//                .fg(Ansi.Color.BLUE)
+//                .a(" ".repeat(50))
+//                .reset());
 
 
         printReservedCards(shipBoard);
@@ -38,14 +38,6 @@ public class ShipBoardCLI {
                 System.out.println("  ");
             }
         }
-
-
-        System.out.println(Ansi.ansi()
-                .bg(Ansi.Color.BLUE)
-                .fg(Ansi.Color.BLUE)
-                .a(" ".repeat(50))
-                .reset());
-        AnsiConsole.systemUninstall();
     }
 
 
