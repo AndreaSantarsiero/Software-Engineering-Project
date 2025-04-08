@@ -1,7 +1,11 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
+import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.adventurecard.StarDust;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -24,8 +28,24 @@ public class mainCLI {
         ShipCardCLI.printCovered();
 
 
-        System.out.println("\n\nExample of an adventure card:");
-        AdventureCardCLI.string(null);
+        System.out.println("\n\nExample of some adventure cards:");
+        List<AdventureCard> adventureCards = new ArrayList<>();
+        adventureCards.add(new StarDust(AdventureCard.Type.TRIAL));
+        adventureCards.add(new StarDust(AdventureCard.Type.LEVEL2));
+        StarDust starDust = new StarDust(AdventureCard.Type.TRIAL);
+        starDust.useCard();
+        adventureCards.add(starDust);
+        starDust = new StarDust(AdventureCard.Type.LEVEL2);
+        starDust.useCard();
+        adventureCards.add(starDust);
+        adventureCards.add(null);
+        for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
+            for (AdventureCard adventureCard : adventureCards) {
+                AdventureCardCLI.string(adventureCard, i);
+            }
+            System.out.println();
+        }
+
 
 
         System.out.println("\n\nExample of a level 1 flight board with one player on it:");

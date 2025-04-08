@@ -18,17 +18,17 @@ public class FlightBoardCLI {
 
     public static void printLevel1() {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
-        System.out.print("             ( )  (");
+        System.out.print("          ( )  (");
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + ">");
-        System.out.println(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + ")  ( )  ( )             ");
-        System.out.println("        ( )                      ( )        ");
-        System.out.println("    ( )                              ( )    ");
-        System.out.println("                                            ");
-        System.out.println(" ( )                                    ( ) ");
-        System.out.println("                                            ");
-        System.out.println("    ( )                              ( )    ");
-        System.out.println("        ( )                      ( )        ");
-        System.out.println("             ( )  ( )  ( )  ( )             ");
+        System.out.println(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + ")  ( )  ( )          ");
+        System.out.println("      ( )                    ( )      ");
+        System.out.println("   ( )                          ( )   ");
+        System.out.println("                                      ");
+        System.out.println(" ( )                              ( ) ");
+        System.out.println("                                      ");
+        System.out.println("   ( )                          ( )   ");
+        System.out.println("      ( )                    ( )      ");
+        System.out.println("          ( )  ( )  ( )  ( )          ");
 
         System.out.print(Ansi.ansi().reset());
     }

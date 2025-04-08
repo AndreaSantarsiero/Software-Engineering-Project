@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli;
 
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
+import org.fusesource.jansi.Ansi;
 
 
 
@@ -11,35 +12,211 @@ public class AdventureCardCLI {
 
 
 
-    public static void string(AdventureCard adventureCard){
-        for(int i = 0; i < cardLength; i++){
-            if (i == 0) {
-                System.out.print("┌─────────────────────┐");
-            }
-            else if (i == (cardLength - 1)){
-                System.out.print("└─────────────────────┘");
-            }
-            else {
-                StringBuilder currentLine = new StringBuilder();
-                currentLine.append("│");
+    public static void string(AdventureCard adventureCard, int i){
 
-                if (adventureCard != null) {
-                    currentLine.append("                 ");
-                }
-                else {
-                    if (i == 1){
-                        currentLine.append("      StarDust       ");
-                    }
-                    else {
-                        currentLine.append("                     ");
+        setColor(adventureCard);
+
+        if (i == 0) {
+            System.out.print("┌─────────────────────┐");
+        }
+        else if (i == (cardLength - 1)){
+            System.out.print("└─────────────────────┘");
+        }
+        else {
+            System.out.print("│");
+
+            if (adventureCard != null) {
+                if (!adventureCard.isUsed()){
+                    switch (adventureCard.getType()){
+                        case TRIAL, LEVEL1 -> printCoveredLevel1(i);
+                        case LEVEL2 -> printCoveredLevel2(i);
+                        case null, default -> System.out.print("Unknown adventure card type");
                     }
                 }
-
-                currentLine.append("│");
-                System.out.print(currentLine.toString());
+                else{
+                    switch (adventureCard){
+                        case AbandonedShip abandonedShip -> printAbandonedShip(abandonedShip, i);
+                        case AbandonedStation abandonedStation -> printAbandonedStation(abandonedStation, i);
+                        case CombatZone combatZone -> printCombatZone(combatZone, i);
+                        case Epidemic epidemic -> printEpidemic(i);
+                        case MeteorSwarm meteorSwarm -> printMeteorSwarm(meteorSwarm, i);
+                        case OpenSpace openSpace -> printOpenSpace(i);
+                        case Pirates pirates -> printPirates(pirates, i);
+                        case PlanetsCard planetsCard -> printPlanetsCard(planetsCard, i);
+                        case Slavers slavers -> printSlavers(slavers, i);
+                        case Smugglers smugglers -> printSmugglers(smugglers, i);
+                        case StarDust starDust -> printStarDust(i);
+                        default -> printInvalid(i);
+                    }
+                }
+            }
+            else{
+                printInvalid(i);
             }
 
-            System.out.println();
+            System.out.print("│");
+        }
+
+        System.out.print(Ansi.ansi().reset());
+    }
+
+
+
+    public static void setColor(AdventureCard adventureCard){
+        if (adventureCard != null) {
+            switch (adventureCard.getType()){
+                case TRIAL, LEVEL1 -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+                case LEVEL2 -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
+                //case LEVEL3 -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED));
+                case null, default -> System.out.print(Ansi.ansi().reset());
+            }
+        }
+        else{
+            System.out.print(Ansi.ansi().reset());
+        }
+
+    }
+
+
+
+    public static void printCoveredLevel1(int i){
+        if (i == 2){
+            System.out.print("       ══╦═╦══       ");
+        }
+        else if (i > 2 && i < (cardLength - 3)){
+            System.out.print("         ║ ║         ");
+        }
+        else if (i == (cardLength - 3)){
+            System.out.print("       ══╩═╩══       ");
+        }
+        else {
+            System.out.print("                     ");
+        }
+    }
+
+
+
+    public static void printCoveredLevel2(int i){
+        if (i == 2){
+            System.out.print("    ══╦═╦═══╦═╦══    ");
+        }
+        else if (i > 2 && i < (cardLength - 3)){
+            System.out.print("      ║ ║   ║ ║      ");
+        }
+        else if (i == (cardLength - 3)){
+            System.out.print("    ══╩═╩═══╩═╩══    ");
+        }
+        else {
+            System.out.print("                     ");
+        }
+    }
+
+
+
+    public static void printCoveredLevel3(int i){
+        if (i == 2){
+            System.out.print(" ══╦═╦═══╦═╦═══╦═╦══ ");
+        }
+        else if (i > 2 && i < (cardLength - 3)){
+            System.out.print("   ║ ║   ║ ║   ║ ║   ");
+        }
+        else if (i == (cardLength - 3)){
+            System.out.print(" ══╩═╩═══╩═╩═══╩═╩══ ");
+        }
+        else {
+            System.out.print("                     ");
+        }
+    }
+
+
+
+    public static void printAbandonedShip(AbandonedShip abandonedShip, int i){
+
+    }
+
+
+
+    public static void printAbandonedStation(AbandonedStation abandonedStation, int i){
+
+    }
+
+
+
+    public static void printCombatZone(CombatZone combatZone, int i){
+
+    }
+
+
+
+    public static void printEpidemic(int i){
+        if (i == 1){
+            System.out.print("      Epidemic       ");
+        }
+        else {
+            System.out.print("                     ");
+        }
+    }
+
+
+
+    public static void printMeteorSwarm(MeteorSwarm meteorSwarm, int i){
+
+    }
+
+
+
+    public static void printOpenSpace(int i){
+        if (i == 1){
+            System.out.print("      OpenSpace      ");
+        }
+        else {
+            System.out.print("                     ");
+        }
+    }
+
+
+
+    public static void printPirates(Pirates pirates, int i){
+
+    }
+
+
+
+    public static void printPlanetsCard(PlanetsCard planetsCard, int i){
+
+    }
+
+
+
+    public static void printSlavers(Slavers slavers, int i){
+
+    }
+
+
+
+    public static void printSmugglers(Smugglers smugglers, int i){
+
+    }
+
+
+
+    public static void printStarDust(int i){
+        if (i == 1){
+            System.out.print("      StarDust       ");
+        }
+        else {
+            System.out.print("                     ");
+        }
+    }
+
+
+
+    public static void printInvalid(int i){
+        if (i == 1){
+            System.out.print("    INVALID CARD     ");
+        }
+        else {
+            System.out.print("                     ");
         }
     }
 }
