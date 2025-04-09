@@ -13,10 +13,10 @@ import java.util.List;
 
 public class mainCLI {
     public static void main(String[] args) {
-        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard6.json");
+        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard4.json");
         ShipBoard shipBoard = shipBoardLoader.getShipBoard();
         ShipBoardCLI.print(shipBoard);
-        System.out.println("Exposed connectors: " + shipBoard.getExposedConnectors());
+        System.out.println("\nExposed connectors: " + shipBoard.getExposedConnectors());
 
         if(shipBoard.checkShip()){
             System.out.println("Shipboard respects every rule");
@@ -26,11 +26,11 @@ public class mainCLI {
         }
         
 
-        System.out.println("\n\nExample of a covered ship card:");
+        System.out.println("\n\n\nExample of a covered ship card:");
         ShipCardCLI.printCovered();
 
 
-        System.out.println("\n\nExample of some adventure cards:");
+        System.out.println("\n\n\nExample of some adventure cards:");
         List<AdventureCard> adventureCards = new ArrayList<>();
         adventureCards.add(new StarDust(AdventureCard.Type.TRIAL));
         adventureCards.add(new StarDust(AdventureCard.Type.LEVEL2));
@@ -58,15 +58,15 @@ public class mainCLI {
 
 
 
-        System.out.println("\n\nExample of a level 1 flight board with one player on it:");
+        System.out.println("\n\n\nExample of a level 1 flight board with one player on it:");
         FlightBoardCLI.printLevel1();
 
 
-        System.out.println("\n\nExample of a level 2 flight board with two players on it:");
+        System.out.println("\n\n\nExample of a level 2 flight board with two players on it:");
         FlightBoardCLI.printLevel2();
 
 
-        System.out.println("\n\nExample of a level 3 flight board with one player on it:");
+        System.out.println("\n\n\nExample of a level 3 flight board with one player on it:");
         FlightBoardCLI.printLevel3();
     }
 }

@@ -18,6 +18,7 @@ public class ShipBoardCLI {
 
 
         printReservedCards(shipBoard);
+        System.out.println();
         printHorizontalCoordinates(shipBoard);
 
         for (int y = 0; y < shipBoard.getLength(); y++) {
@@ -55,12 +56,23 @@ public class ShipBoardCLI {
                 printInvalidSquare();
             }
             else if(x == (shipBoard.getWidth() - 1)){
-                System.out.println("   Reserved components:");
+                System.out.println("    Reserved components:");
             }
         }
 
+        System.out.print("   ");
+        for (int x = 0; x < shipBoard.getWidth(); x++) {
+            if(x < (shipBoard.getWidth() - 2)){
+                printInvalidSquare();
+            }
+            else {
+                System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
+            }
+        }
+        System.out.println();
+
         for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-            System.out.print("  ");
+            System.out.print("   ");
             for (int x = 0; x < shipBoard.getWidth(); x++) {
                 if(x < (shipBoard.getWidth() - 2)){
                     printInvalidSquare();
@@ -71,7 +83,7 @@ public class ShipBoardCLI {
                     }
                 }
             }
-            System.out.println("  ");
+            System.out.println("   ");
         }
     }
 
