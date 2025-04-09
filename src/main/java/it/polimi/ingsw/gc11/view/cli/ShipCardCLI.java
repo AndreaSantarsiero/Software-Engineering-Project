@@ -1,10 +1,8 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.model.Hit;
-import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.fusesource.jansi.Ansi;
-import java.util.List;
 
 
 
@@ -344,28 +342,28 @@ public class ShipCardCLI {
                 case Storage storage -> {
                     if(storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.DOUBLE_BLUE)){
                         System.out.print("   ");
-                        printMaterials(storage.getMaterials());
+                        MaterialCLI.print(storage.getMaterials());
                         setColor(storage);
                         for (int j = 0; j < (2 - storage.getMaterials().size()); j++) {
-                            System.out.print("□ ");
+                            MaterialCLI.printEmpty();
                         }
                         return "  ";
                     }
                     else if(storage.getType().equals(Storage.Type.SINGLE_RED)){
                         System.out.print("    ");
-                        printMaterials(storage.getMaterials());
+                        MaterialCLI.print(storage.getMaterials());
                         setColor(storage);
                         for (int j = 0; j < (1 - storage.getMaterials().size()); j++) {
-                            System.out.print("□ ");
+                            MaterialCLI.printEmpty();
                         }
                         return "   ";
                     }
                     else if(storage.getType().equals(Storage.Type.TRIPLE_BLUE)){
                         System.out.print("  ");
-                        printMaterials(storage.getMaterials());
+                        MaterialCLI.print(storage.getMaterials());
                         setColor(storage);
                         for (int j = 0; j < (3 - storage.getMaterials().size()); j++) {
-                            System.out.print("□ ");
+                            MaterialCLI.printEmpty();
                         }
                         return " ";
                     }
@@ -383,26 +381,6 @@ public class ShipCardCLI {
         }
         else {
             return "         ";
-        }
-    }
-
-
-
-    public static void printMaterials(List<Material> materials) {
-        for(Material material : materials) {
-            if (material.getType().equals(Material.Type.BLUE)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + "■ ");
-            }
-            else if (material.getType().equals(Material.Type.GREEN)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN) + "■ ");
-            }
-            else if (material.getType().equals(Material.Type.YELLOW)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW) + "■ ");
-            }
-            else if (material.getType().equals(Material.Type.RED)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "■ ");
-            }
-
         }
     }
 
