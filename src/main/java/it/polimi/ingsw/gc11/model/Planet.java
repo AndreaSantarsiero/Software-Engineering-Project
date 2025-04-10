@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class Planet {
     private boolean visited;
     private ArrayList<Material> materials;
+    private Player player;
 
 
     public Planet(int numBlue, int numGreen, int numYellow, int numRed) {
         materials = new ArrayList<>();
         visited = false;
+        player = null;
         //add materials
         for (int i = 0; i < numBlue; i++)
             materials.add(new Material(Material.Type.BLUE));
@@ -26,7 +28,10 @@ public class Planet {
         return visited;
     }
 
-    public void setVisited() { this.visited = true; }
+    public void setVisited(Player player) {
+        this.visited = true;
+        this.player = player;
+    }
 
     public ArrayList<Material> getMaterials() { return materials;}
 }

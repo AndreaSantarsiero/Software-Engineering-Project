@@ -37,15 +37,16 @@ public class PlanetsCard extends AdventureCard {
         this.planets = planets;
     }
 
-    public void landOn(int numPlanet){
-        if(numPlanet < 0 || numPlanet >= planets.size()) {
-            throw new IllegalArgumentException("Invalid planet.");
-        }
-        if(this.planets.get(numPlanet).isVisited()) {
-            throw new IllegalStateException("Planet already visited.");
-        }
-        planets.get(numPlanet).setVisited();
-    }
+
+//    public void landOn(int numPlanet){
+//        if(numPlanet < 0 || numPlanet >= planets.size()) {
+//            throw new IllegalArgumentException("Invalid planet.");
+//        }
+//        if(this.planets.get(numPlanet).isVisited()) {
+//            throw new IllegalStateException("Planet already visited.");
+//        }
+//        planets.get(numPlanet).setVisited(null);
+//    }
 
     public ArrayList<Planet> getFreePlanets(){
         ArrayList<Planet> freePlanets = new ArrayList<>();
@@ -55,6 +56,30 @@ public class PlanetsCard extends AdventureCard {
             }
         }
         return freePlanets;
+    }
+
+    public Planet getPlanet(Planet planet){
+        for(Planet planet2:planets){
+            if(planet == planet2){
+                return planet2;
+            }
+        }
+        throw new IllegalArgumentException("Planet not found.");
+    }
+
+    public Planet getPlanet(int index){
+        if(index < 0 || index >= planets.size()){
+            throw new IllegalArgumentException("Invalid index.");
+        }
+        return planets.get(index);
+    }
+
+    public void setVisitedPlanet(Planet planet){
+        for(Planet planet2:planets){
+            if(planet2.equals(planet)){
+                planet2.setVisited(null);
+            }
+        }
     }
 
     public ArrayList<Material> getMaterials(int numPlanet){
@@ -70,7 +95,7 @@ public class PlanetsCard extends AdventureCard {
     public int getLostDays() { return lostDays;}
 
     public void handler(GameModel model, String username, int planetLand, List<Storage> storageList, List<List<Material>> materialsAccepted) {
-        planets.get(planetLand).setVisited();
+        planets.get(planetLand).setVisited(null);
 
         //Lose days of flight
         model.move(username, lostDays);

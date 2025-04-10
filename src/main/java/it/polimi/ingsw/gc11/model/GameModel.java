@@ -12,6 +12,7 @@ import java.util.UUID;
 public class GameModel {
     private final String id;
     private ArrayList<Player> players;
+    private Player currentPlayer;
     private FlightBoard flightBoard;
     private ArrayList<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
@@ -25,6 +26,7 @@ public class GameModel {
     public GameModel() {
         this.id = UUID.randomUUID().toString(); //unique id generation
         this.players = new  ArrayList<Player>();
+        this.currentPlayer = null;
         this.flightBoard = null;
         this.adventureCardsDecks = new ArrayList<AdventureDeck>();
         this.definitiveDeck = null;
@@ -126,6 +128,18 @@ public class GameModel {
             }
         }
         throw new IllegalArgumentException("Player not found");
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public Player getLastPlayer() {
+        return players.getLast();
     }
 
     public void addCoins(String username, int amount){
