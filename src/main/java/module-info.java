@@ -6,6 +6,7 @@ module it.polimi.ingsw.gc11 {
     requires jdk.jdi;
     requires com.fasterxml.jackson.databind;
     requires org.fusesource.jansi;
+    requires java.rmi;
 
     opens it.polimi.ingsw.gc11 to javafx.fxml;
     exports it.polimi.ingsw.gc11;

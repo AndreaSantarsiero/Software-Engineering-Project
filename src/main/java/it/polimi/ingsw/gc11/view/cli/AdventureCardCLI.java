@@ -1,7 +1,9 @@
 package it.polimi.ingsw.gc11.view.cli;
 
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import org.fusesource.jansi.Ansi;
+import java.util.List;
 
 
 
@@ -150,7 +152,7 @@ public class AdventureCardCLI {
 
     public static void printEpidemic(int i){
         if (i == 1){
-            System.out.print("      Epidemic       ");
+            System.out.print("      EPIDEMIC       ");
         }
         else {
             System.out.print("                     ");
@@ -167,7 +169,7 @@ public class AdventureCardCLI {
 
     public static void printOpenSpace(int i){
         if (i == 1){
-            System.out.print("      OpenSpace      ");
+            System.out.print("     OPEN SPACE      ");
         }
         else {
             System.out.print("                     ");
@@ -183,7 +185,26 @@ public class AdventureCardCLI {
 
 
     public static void printPlanetsCard(PlanetsCard planetsCard, int i){
-
+        if (i == 1){
+            System.out.print("       PLANETS       ");
+        }
+        else if ((i % 3) == 0){
+            System.out.print(" ");
+            try{
+                List<Material> materials = planetsCard.getFreePlanets().get((i/3) - 1).getMaterials();
+                MaterialCLI.print(materials);
+                setColor(planetsCard);
+                for (int j = 0; j < (10 - materials.size()); j++) {
+                    System.out.print("  ");
+                }
+            }
+            catch (Exception _){
+                System.out.print("                    ");
+            }
+        }
+        else{
+            System.out.print("                     ");
+        }
     }
 
 
@@ -202,7 +223,7 @@ public class AdventureCardCLI {
 
     public static void printStarDust(int i){
         if (i == 1){
-            System.out.print("      StarDust       ");
+            System.out.print("      STARDUST       ");
         }
         else {
             System.out.print("                     ");
