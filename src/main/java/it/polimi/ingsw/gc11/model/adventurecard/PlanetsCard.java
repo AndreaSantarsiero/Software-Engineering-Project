@@ -82,28 +82,28 @@ public class PlanetsCard extends AdventureCard {
         }
     }
 
-    public ArrayList<Material> getMaterials(int numPlanet){
-        if(numPlanet < 0 || numPlanet >= planets.size()) {
+    public ArrayList<Material> getMaterials(Planet planet){
+        if(!planets.contains(planet) || planet == null) {
             throw new IllegalArgumentException("Invalid planet.");
         }
-        if(!this.planets.get(numPlanet).isVisited()) {
+        if(!getPlanet(planet).isVisited()) {
             throw new IllegalStateException("Nobody on this planet");
         }
-        return planets.get(numPlanet).getMaterials();
+        return getPlanet(planet).getMaterials();
     }
 
     public int getLostDays() { return lostDays;}
 
-    public void handler(GameModel model, String username, int planetLand, List<Storage> storageList, List<List<Material>> materialsAccepted) {
-        planets.get(planetLand).setVisited(null);
-
-        //Lose days of flight
-        model.move(username, lostDays);
-
-        for(int i = 0; i < storageList.size(); i++) {
-            for(int j = 0; j < materialsAccepted.get(i).size(); j++) {
-                storageList.get(i).addMaterial(materialsAccepted.get(i).get(j));
-            }
-        }
-    }
+//    public void handler(GameModel model, String username, int planetLand, List<Storage> storageList, List<List<Material>> materialsAccepted) {
+//        planets.get(planetLand).setVisited(null);
+//
+//        //Lose days of flight
+//        model.move(username, lostDays);
+//
+//        for(int i = 0; i < storageList.size(); i++) {
+//            for(int j = 0; j < materialsAccepted.get(i).size(); j++) {
+//                storageList.get(i).addMaterial(materialsAccepted.get(i).get(j));
+//            }
+//        }
+//    }
 }

@@ -91,8 +91,8 @@ class PlanetsCardTest {
     @Test
     void testGetMaterialsThrowsForInvalidPlanetIndex() {
         PlanetsCard card = new PlanetsCard(AdventureCard.Type.TRIAL, 2, validPlanets);
-        assertThrows(IllegalArgumentException.class, () -> card.getMaterials(-1));
-        assertThrows(IllegalArgumentException.class, () -> card.getMaterials(2));
+        assertThrows(IllegalArgumentException.class, () -> card.getMaterials(null));
+        assertThrows(IllegalArgumentException.class, () -> card.getMaterials(new Planet(0,0,0,0)));
     }
 
 //    @Test

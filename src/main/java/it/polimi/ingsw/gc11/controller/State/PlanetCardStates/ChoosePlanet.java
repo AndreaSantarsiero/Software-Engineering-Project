@@ -24,7 +24,7 @@ public class ChoosePlanet extends PlanetCardState {
 
     @Override
     public void nextState(GameContext context) {
-        context.setState(new ChooseMaterialsPlanet());
+
     }
 
     public void landOn(Planet  planet){
