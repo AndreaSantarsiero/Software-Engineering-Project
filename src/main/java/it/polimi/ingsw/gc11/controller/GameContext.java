@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
 
 import java.util.ArrayList;
@@ -61,18 +62,12 @@ public class GameContext {
 
     }
 
-    public void getShipCard(String gameID){
-        if (this.state instanceof BuildingState) {
-
-        }
-    }
-
-    public void endGame(String gameID) {
+    public void endGame() {
         if (this.state instanceof AdventureState) {
             this.nextState();
         }
         else {
-            //states check
+            //states checking
         }
     }
 
@@ -84,6 +79,16 @@ public class GameContext {
             System.out.println(e.getMessage());
         }
     }
+
+    public ShipCard getFreeShipCard(int pos) {
+        if (state instanceof BuildingState){
+            return gameModel.getFreeShipCard(pos);
+        }
+        else {
+            throw new IllegalStateException();
+        }
+    }
+
 
 
 }
