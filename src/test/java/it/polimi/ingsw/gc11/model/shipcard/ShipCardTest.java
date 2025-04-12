@@ -15,6 +15,11 @@ class ShipCardTest {
         public TestShipCard(String id, Connector top, Connector right, Connector bottom, Connector left) {
             super(id, top, right, bottom, left);
         }
+
+        @Override
+        public void accept(ShipCardVisitor shipCardVisitor) {
+
+        }
     }
 
     @BeforeEach
