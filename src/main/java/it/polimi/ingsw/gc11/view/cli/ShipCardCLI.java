@@ -317,21 +317,11 @@ public class ShipCardCLI implements ShipCardVisitor {
             }
         }
         else if (i == cardLength/2) {
-            if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_90)){
-                if (cannon.getType().equals(Cannon.Type.SINGLE)){
-                    System.out.print(" CANNON >");
-                }
-                else {
-                    System.out.print(" CANNON  ");
-                }
+            if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_90) && cannon.getType().equals(Cannon.Type.SINGLE)){
+                System.out.print(" CANNON >");
             }
-            else if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_270)){
-                if (cannon.getType().equals(Cannon.Type.SINGLE)){
-                    System.out.print("< CANNON ");
-                }
-                else {
-                    System.out.print("  CANNON ");
-                }
+            else if (cannon.getOrientation().equals(ShipCard.Orientation.DEG_270) && cannon.getType().equals(Cannon.Type.SINGLE)){
+                System.out.print("< CANNON ");
             }
             else{
                 System.out.print("  CANNON ");
@@ -390,21 +380,11 @@ public class ShipCardCLI implements ShipCardVisitor {
             }
         }
         else if (i == cardLength/2) {
-            if (engine.getOrientation().equals(ShipCard.Orientation.DEG_90)){
-                if (engine.getType().equals(Engine.Type.SINGLE)){
-                    System.out.print("< ENGINE ");
-                }
-                else {
-                    System.out.print("  ENGINE ");
-                }
+            if (engine.getOrientation().equals(ShipCard.Orientation.DEG_90) && engine.getType().equals(Engine.Type.SINGLE)){
+                System.out.print("< ENGINE ");
             }
-            else if (engine.getOrientation().equals(ShipCard.Orientation.DEG_270)){
-                if (engine.getType().equals(Engine.Type.SINGLE)){
-                    System.out.print(" ENGINE >");
-                }
-                else {
-                    System.out.print(" ENGINE  ");
-                }
+            else if (engine.getOrientation().equals(ShipCard.Orientation.DEG_270) && engine.getType().equals(Engine.Type.SINGLE)){
+                System.out.print(" ENGINE >");
             }
             else{
                 System.out.print("  ENGINE ");

@@ -9,13 +9,15 @@ import java.util.List;
 
 public class ShipBoardCLI {
 
-    private static ShipCardCLI shipCardCLI;
+    private final ShipCardCLI shipCardCLI;
 
 
 
-    public ShipBoardCLI() {
-        shipCardCLI = new ShipCardCLI();
+    public ShipBoardCLI(ShipCardCLI shipCardCLI) {
+        this.shipCardCLI = shipCardCLI;
     }
+
+
 
     public void print(ShipBoard shipBoard) {
 //        System.out.println(Ansi.ansi()
