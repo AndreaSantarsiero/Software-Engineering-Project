@@ -155,4 +155,9 @@ public class HousingUnit extends ShipCard {
             return super.equals(obj) && this.central == housingUnit.isCentral() && this.alienUnit.equals(housingUnit.getAlienUnit()) && this.numMembers == housingUnit.numMembers;
         }
     }
+
+    @Override
+    public void accept(ShipCardVisitor shipCardVisitor){
+        shipCardVisitor.visit(this);
+    }
 }

@@ -15,7 +15,9 @@ public class mainCLI {
     public static void main(String[] args) {
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard4.json");
         ShipBoard shipBoard = shipBoardLoader.getShipBoard();
-        ShipBoardCLI.print(shipBoard);
+        ShipBoardCLI shipBoardCLI = new ShipBoardCLI();
+
+        shipBoardCLI.print(shipBoard);
         System.out.println("\nExposed connectors: " + shipBoard.getExposedConnectors());
 
         if(shipBoard.checkShip()){
@@ -27,7 +29,12 @@ public class mainCLI {
         
 
         System.out.println("\n\n\nExample of a covered ship card:");
-        ShipCardCLI.printCovered();
+        ShipCardCLI shipCardCLI = new ShipCardCLI();
+        for (int i = 0; i < ShipCardCLI.cardLength; i++){
+            shipCardCLI.setIndex(i);
+            shipCardCLI.printCovered();
+            System.out.println();
+        }
 
 
         System.out.println("\n\n\nExample of some adventure cards:");

@@ -83,4 +83,9 @@ public class AlienUnit extends ShipCard {
         AlienUnit alienUnit = (AlienUnit) obj;
         return super.equals(obj) && this.type == alienUnit.getType() && this.presence == alienUnit.isPresent();
     }
+
+    @Override
+    public void accept(ShipCardVisitor shipCardVisitor){
+        shipCardVisitor.visit(this);
+    }
 }

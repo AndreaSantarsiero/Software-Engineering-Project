@@ -212,4 +212,9 @@ public class Storage extends ShipCard {
         Storage storage = (Storage) obj;
         return super.equals(obj) && this.type == storage.getType();
     }
+
+    @Override
+    public void accept(ShipCardVisitor shipCardVisitor){
+        shipCardVisitor.visit(this);
+    }
 }
