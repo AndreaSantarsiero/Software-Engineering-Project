@@ -12,6 +12,7 @@ public class Smugglers extends AdventureCard {
     private final int firePower;
     private final int lostMaterials;
     private final ArrayList<Material> materials;
+    private boolean defeated;
 
 
     public Smugglers(AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  ArrayList<Material> materials) throws IllegalArgumentException {
@@ -30,6 +31,7 @@ public class Smugglers extends AdventureCard {
         this.firePower = firePower;
         this.lostMaterials = lostMaterials;
         this.materials = materials;
+        this.defeated = false;
     }
 
     public int getLostDays() {return lostDays;}
@@ -39,5 +41,9 @@ public class Smugglers extends AdventureCard {
     public int getLostMaterials() {return lostMaterials;}
 
     public ArrayList<Material> getMaterials() {return materials;}
+
+    public boolean isDefeated() {return defeated;}
+
+    public void defeate() {defeated = true;}
 
 }

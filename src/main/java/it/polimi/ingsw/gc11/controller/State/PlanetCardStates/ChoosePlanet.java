@@ -16,15 +16,15 @@ public class ChoosePlanet extends PlanetCardState {
     private GameModel gameModel;
 
     public ChoosePlanet(PlanetsCard planetsCard, GameModel gameModel, Player player) {
+
+        if(planetsCard==null || gameModel==null || player==null){
+            throw new NullPointerException();
+        }
+
         this.planetsCard = planetsCard;
         this.player = player;
         this.gameModel = gameModel;
         this.freePlanets = planetsCard.getFreePlanets();
-    }
-
-    @Override
-    public void nextState(GameContext context) {
-
     }
 
     public void landOn(Planet  planet){
@@ -42,5 +42,10 @@ public class ChoosePlanet extends PlanetCardState {
         else{
             throw new IllegalArgumentException("this planet in not available");
         }
+    }
+
+    @Override
+    public void nextState(GameContext context) {
+
     }
 }

@@ -10,7 +10,7 @@ public class AbandonedShip extends AdventureCard {
     private final int lostDays;
     private final int lostMembers;
     private final int coins;
-    private final boolean resolved;
+    private boolean resolved;
 
     public AbandonedShip(AdventureCard.Type type, int lostDays, int lostMembers, int coins) throws IllegalArgumentException{
         super(type);
@@ -34,15 +34,19 @@ public class AbandonedShip extends AdventureCard {
 
     public boolean isResolved() {return resolved;}
 
-    //Username is the player playing the card
-    public void handler(GameModel model, String username, List<HousingUnit> housingUnit, List<Integer> killedMembers) {
-        //KillMember from the shipboard of the Player
-         //model.getPlayerShipBoard(username).killMembers(housingUnit, killedMembers);  /* da adattare usando la mappa al posto delle due liste */
-
-         //Add coins to the player
-         model.addCoins(username, coins);
-
-         //Player lose days of flight
-        model.move(username, lostDays);
+    public void resolveCard(){
+        this.resolved = true;
     }
+
+//    //Username is the player playing the card
+//    public void handler(GameModel model, String username, List<HousingUnit> housingUnit, List<Integer> killedMembers) {
+//        //KillMember from the shipboard of the Player
+//         //model.getPlayerShipBoard(username).killMembers(housingUnit, killedMembers);  /* da adattare usando la mappa al posto delle due liste */
+//
+//         //Add coins to the player
+//         model.addCoins(username, coins);
+//
+//         //Player lose days of flight
+//        model.move(username, lostDays);
+//    }
 }

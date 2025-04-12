@@ -1,4 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State.AbandonedStationStates;
 
-public interface AbandonedStationState {
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
+
+public abstract class AbandonedStationState extends AdventureState {
+    public AbandonedStationState() {}
 }

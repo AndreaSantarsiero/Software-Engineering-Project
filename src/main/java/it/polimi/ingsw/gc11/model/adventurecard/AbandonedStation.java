@@ -12,6 +12,7 @@ public class AbandonedStation extends AdventureCard {
     private final int lostDays;
     private final int membersRequired;
     private final ArrayList<Material> materials;
+    private boolean resolved;
 
     public AbandonedStation(AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed)throws IllegalArgumentException {
         super(type);
@@ -29,6 +30,7 @@ public class AbandonedStation extends AdventureCard {
         this.lostDays = lostDays;
         this.membersRequired = membersRequired;
         this.materials = new ArrayList<>();
+        this.resolved = false;
         //add materials
         for (int i = 0; i < numBlue; i++)
             materials.add(new Material(Material.Type.BLUE));
@@ -46,17 +48,21 @@ public class AbandonedStation extends AdventureCard {
 
     public ArrayList<Material> getMaterials() {return materials;}
 
-    //The check if the player has sufficient humans is done by controller
-    public void handler(GameModel model, String username, List<List<Material>> materialsUserAccepted, List<Storage> storagesUserAccepted) {
-        //User lose days of flight
-        model.move(username, lostDays);
+    public boolean isResolved() {return resolved;}
 
-        //Add materials to user shipboard, DISCUSS THE PLAYER CAN REARRANGE MATERIALS, need method in shipboard or change
-        for(int i = 0; i < storagesUserAccepted.size(); i++) {
-            for(int j = 0; j < materialsUserAccepted.get(i).size(); j++) {
-                storagesUserAccepted.get(i).addMaterial(materialsUserAccepted.get(i).get(j));
-            }
-        }
-    }
+    public void resolveCard() {this.resolved = true;}
+
+//    //The check if the player has sufficient humans is done by controller
+//    public void handler(GameModel model, String username, List<List<Material>> materialsUserAccepted, List<Storage> storagesUserAccepted) {
+//        //User lose days of flight
+//        model.move(username, lostDays);
+//
+//        //Add materials to user shipboard, DISCUSS THE PLAYER CAN REARRANGE MATERIALS, need method in shipboard or change
+//        for(int i = 0; i < storagesUserAccepted.size(); i++) {
+//            for(int j = 0; j < materialsUserAccepted.get(i).size(); j++) {
+//                storagesUserAccepted.get(i).addMaterial(materialsUserAccepted.get(i).get(j));
+//            }
+//        }
+//    }
 
 }
