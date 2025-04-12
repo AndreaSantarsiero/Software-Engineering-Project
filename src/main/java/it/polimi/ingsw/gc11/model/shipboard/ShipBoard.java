@@ -15,10 +15,16 @@ import java.util.Map;
  * Represents a ship's board where ship components can be placed and managed
  * The board maintains information about ship cards, reserved components, and the last modified position
  */
-public abstract class ShipBoard {
+public abstract class ShipBoard implements ShipCardVisitor {
 
     private final ShipCard[][] components;
     private final List<ShipCard> reservedComponents;
+    private final List<Battery> batteries;
+    private final List<Cannon> cannons;
+    private final List<Engine> engines;
+    private final List<HousingUnit> housingUnits;
+    private final List<Shield> shields;
+    private final List<Storage> storages;
     private int lastModifiedX;
     private int lastModifiedY;
     private AlienUnit brownActiveUnit;
@@ -34,10 +40,84 @@ public abstract class ShipBoard {
     public ShipBoard(int X_MAX, int Y_MAX) {
         this.components = new ShipCard[Y_MAX][X_MAX];
         this.reservedComponents = new ArrayList<>();
+        this.batteries = new ArrayList<>();
+        this.cannons = new ArrayList<>();
+        this.engines = new ArrayList<>();
+        this.housingUnits = new ArrayList<>();
+        this.shields = new ArrayList<>();
+        this.storages = new ArrayList<>();
         this.lastModifiedX = -1;
         this.lastModifiedY = -1;
         this.brownActiveUnit = null;
         this.purpleActiveUnit = null;
+    }
+
+
+
+    private void addBattery(Battery battery) {
+        batteries.add(battery);
+    }
+
+    private void addCannon(Cannon cannon) {
+        cannons.add(cannon);
+    }
+
+    private void addEngine(Engine engine) {
+        engines.add(engine);
+    }
+
+    private void addHousingUnit(HousingUnit housingUnit) {
+        housingUnits.add(housingUnit);
+    }
+
+    private void addShield(Shield shield) {
+        shields.add(shield);
+    }
+
+    private void addStorage(Storage storage) {
+        storages.add(storage);
+    }
+
+
+
+    @Override
+    public void visit(AlienUnit alienUnit) {
+
+    }
+
+    @Override
+    public void visit(Battery battery) {
+        addBattery(battery);
+    }
+
+    @Override
+    public void visit(Cannon cannon) {
+        addCannon(cannon);
+    }
+
+    @Override
+    public void visit(Engine engine) {
+        addEngine(engine);
+    }
+
+    @Override
+    public void visit(HousingUnit housingUnit) {
+        addHousingUnit(housingUnit);
+    }
+
+    @Override
+    public void visit(Shield shield) {
+        addShield(shield);
+    }
+
+    @Override
+    public void visit(Storage storage) {
+        addStorage(storage);
+    }
+
+    @Override
+    public void visit(StructuralModule structuralModule) {
+
     }
 
 
@@ -128,6 +208,7 @@ public abstract class ShipBoard {
         components[y][x] = shipCard;
         lastModifiedX = x;
         lastModifiedY = y;
+        shipCard.accept(this);
     }
 
     /**
@@ -147,6 +228,7 @@ public abstract class ShipBoard {
         }
         if (x == lastModifiedX && y == lastModifiedY) {
             components[y][x] = null;
+            //rimuovere la shipcard dalle liste
         }
         else {
             throw new IllegalArgumentException("Ship card already welded");
@@ -801,11 +883,9 @@ public abstract class ShipBoard {
     public int getMembers(){
         int members = 0;
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if(components[i][j] instanceof HousingUnit housingUnit && !components[i][j].isScrap()) {
-                    members += housingUnit.getNumMembers();
-                }
+        for(HousingUnit housingUnit : housingUnits){
+            if(!housingUnit.isScrap()){
+                members += housingUnit.getNumMembers();
             }
         }
 
@@ -919,11 +999,9 @@ public abstract class ShipBoard {
     public int getTotalAvailableBatteries(){
         int availableBatteries = 0;
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] instanceof Battery battery && !components[i][j].isScrap()) {
-                    availableBatteries += battery.getAvailableBatteries();
-                }
+        for(Battery battery : batteries){
+            if(!battery.isScrap()){
+                availableBatteries += battery.getAvailableBatteries();
             }
         }
 
@@ -971,11 +1049,9 @@ public abstract class ShipBoard {
     public int getTotalMaterialsValue(){
         int totalMaterialsValue = 0;
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] instanceof Storage storage && !components[i][j].isScrap()) {
-                    totalMaterialsValue += storage.getMaterialsValue();
-                }
+        for (Storage storage : storages) {
+            if(!storage.isScrap()){
+                totalMaterialsValue += storage.getMaterialsValue();
             }
         }
 
@@ -1043,20 +1119,18 @@ public abstract class ShipBoard {
             targetStorage = null;
             targetMaterial = null;
 
-            for (int i = 0; i < components.length; i++) {
-                for (int j = 0; j < components[i].length; j++) {
-                    if (components[i][j] instanceof Storage storage && !components[i][j].isScrap()) {
-                        try{
-                            materialToRemove = storage.getMostValuedMaterial();
-                            if(materialToRemove.getValue() > mostValuableMaterial) {
-                                mostValuableMaterial = materialToRemove.getValue();
-                                targetStorage = storage;
-                                targetMaterial = materialToRemove;
-                            }
+            for (Storage storage : storages) {
+                if (!storage.isScrap()) {
+                    try{
+                        materialToRemove = storage.getMostValuedMaterial();
+                        if(materialToRemove.getValue() > mostValuableMaterial) {
+                            mostValuableMaterial = materialToRemove.getValue();
+                            targetStorage = storage;
+                            targetMaterial = materialToRemove;
                         }
-                        catch(IllegalArgumentException _){
+                    }
+                    catch(IllegalArgumentException _){
 
-                        }
                     }
                 }
             }
@@ -1082,13 +1156,9 @@ public abstract class ShipBoard {
     public int getDoubleEnginesNumber(){
         int doubleEngines = 0;
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] instanceof Engine engine && !components[i][j].isScrap()) {
-                    if(engine.getType() == Engine.Type.DOUBLE){
-                        doubleEngines++;
-                    }
-                }
+        for(Engine engine : engines){
+            if(!engine.isScrap() && engine.getType() == Engine.Type.DOUBLE){
+                doubleEngines++;
             }
         }
 
@@ -1114,14 +1184,9 @@ public abstract class ShipBoard {
         }
 
         int enginePower = 0;
-
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] instanceof Engine engine && !components[i][j].isScrap()) {
-                    if(engine.getType() == Engine.Type.SINGLE){
-                        enginePower++;
-                    }
-                }
+        for(Engine engine : engines){
+            if(!engine.isScrap() && engine.getType() == Engine.Type.SINGLE){
+                enginePower++;
             }
         }
 
@@ -1143,13 +1208,9 @@ public abstract class ShipBoard {
     public int getDoubleCannonsNumber(){
         int doubleCannons = 0;
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] instanceof Cannon cannon && !components[i][j].isScrap()) {
-                    if(cannon.getType() == Cannon.Type.DOUBLE){
-                        doubleCannons++;
-                    }
-                }
+        for (Cannon cannon : cannons) {
+            if (!cannon.isScrap() && cannon.getType() == Cannon.Type.DOUBLE) {
+                doubleCannons++;
             }
         }
 
@@ -1189,17 +1250,13 @@ public abstract class ShipBoard {
             }
         }
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] instanceof Cannon cannon && !components[i][j].isScrap()) {
-                    if(cannon.getType() == Cannon.Type.SINGLE){
-                        if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
-                            cannonPower++;
-                        }
-                        else{
-                            cannonPower += 0.5;
-                        }
-                    }
+        for (Cannon cannon : cannons) {
+            if (!cannon.isScrap() && cannon.getType() == Cannon.Type.SINGLE) {
+                if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
+                    cannonPower++;
+                }
+                else{
+                    cannonPower += 0.5;
                 }
             }
         }
@@ -1220,13 +1277,9 @@ public abstract class ShipBoard {
      * @return {@code true} if there is at least one active shield protecting from the given direction, {@code false} otherwise
      */
     public boolean isBeingProtected(Hit.Direction direction) {
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if(components[i][j] instanceof Shield shield && !components[i][j].isScrap()){
-                    if(shield.isProtecting(direction)){
-                        return true;
-                    }
-                }
+        for(Shield shield : shields){
+            if(!shield.isScrap() && shield.isProtecting(direction)){
+                return true;
             }
         }
 
