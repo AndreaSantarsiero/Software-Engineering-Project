@@ -67,6 +67,12 @@ public class Shield extends ShipCard {
         return super.equals(obj);
     }
 
+    /**
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * This enables the visitor to perform operations specific to this type of ship card
+     *
+     * @param shipCardVisitor the visitor that will operate on this ship card instance
+     */
     @Override
     public void accept(ShipCardVisitor shipCardVisitor){
         shipCardVisitor.visit(this);

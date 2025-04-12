@@ -54,67 +54,111 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
 
 
+    /**
+     * Adds a {@link Battery} to the list of battery modules installed on the ship
+     *
+     * @param battery the {@code Battery} to be added
+     */
     private void addBattery(Battery battery) {
         batteries.add(battery);
     }
 
+
+    /**
+     * Adds a {@link Cannon} to the list of cannons installed on the ship
+     *
+     * @param cannon the {@code Cannon} to be added
+     */
     private void addCannon(Cannon cannon) {
         cannons.add(cannon);
     }
 
+
+    /**
+     * Adds an {@link Engine} to the list of engines installed on the ship
+     *
+     * @param engine the {@code Engine} to be added
+     */
     private void addEngine(Engine engine) {
         engines.add(engine);
     }
 
+
+    /**
+     * Adds a {@link HousingUnit} to the list of housing units installed on the ship
+     *
+     * @param housingUnit the {@code HousingUnit} to be added
+     */
     private void addHousingUnit(HousingUnit housingUnit) {
         housingUnits.add(housingUnit);
     }
 
+
+    /**
+     * Adds a {@link Shield} to the list of shields installed on the ship
+     *
+     * @param shield the {@code Shield} to be added
+     */
     private void addShield(Shield shield) {
         shields.add(shield);
     }
 
+
+    /**
+     * Adds a {@link Storage} to the list of storages installed on the ship
+     *
+     * @param storage the {@code Storage} to be added
+     */
     private void addStorage(Storage storage) {
         storages.add(storage);
     }
 
 
 
+
+    /** {@inheritDoc} */
     @Override
     public void visit(AlienUnit alienUnit) {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Battery battery) {
         addBattery(battery);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Cannon cannon) {
         addCannon(cannon);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Engine engine) {
         addEngine(engine);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(HousingUnit housingUnit) {
         addHousingUnit(housingUnit);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Shield shield) {
         addShield(shield);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Storage storage) {
         addStorage(storage);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(StructuralModule structuralModule) {
 

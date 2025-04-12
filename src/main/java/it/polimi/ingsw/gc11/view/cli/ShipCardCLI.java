@@ -6,6 +6,10 @@ import org.fusesource.jansi.Ansi;
 
 
 
+/**
+ * CLI (Command Line Interface) renderer for ShipCard elements
+ * Implements the {@link ShipCardVisitor} to render different ship cards using the visitor pattern
+ */
 public class ShipCardCLI implements ShipCardVisitor {
 
     public static int cardWidth = 15;
@@ -18,12 +22,21 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Sets the current line index for rendering a specific part of a card
+     * @param i line index
+     */
     public void setIndex(int i){
         this.i = i;
     }
 
 
 
+    /**
+     * Converts a top connector type to its string representation
+     * @param connector connector type
+     * @return formatted string for top connector
+     */
     public String topConnectorToString(ShipCard.Connector connector) {
         return switch (connector) {
             case ShipCard.Connector.NONE -> "       ";
@@ -35,6 +48,11 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Converts a left connector type to its string representation based on current line index
+     * @param connector connector type
+     * @return formatted string for left connector
+     */
     public String leftConnectorToString(ShipCard.Connector connector) {
         if(i == (cardLength/2 - 1)){
             return switch (connector) {
@@ -63,6 +81,11 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Converts a bottom connector type to its string representation
+     * @param connector connector type
+     * @return formatted string for bottom connector
+     */
     public String bottomConnectorToString(ShipCard.Connector connector) {
         return switch (connector) {
             case ShipCard.Connector.NONE -> "       ";
@@ -74,6 +97,11 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Converts a right connector type to its string representation based on current line index
+     * @param connector connector type
+     * @return formatted string for right connector
+     */
     public String rightConnectorToString(ShipCard.Connector connector) {
         if(i == (cardLength/2 - 1)){
             return switch (connector) {
@@ -102,41 +130,49 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /** {@inheritDoc} */
     @Override
     public void visit(AlienUnit alienUnit) {
         printAlienUnit(alienUnit);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Battery battery) {
         printBattery(battery);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Cannon cannon) {
         printCannon(cannon);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Engine engine) {
         printEngine(engine);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(HousingUnit housingUnit) {
         printHousingUnit(housingUnit);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Shield shield) {
         printShield(shield);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(Storage storage) {
         printStorage(storage);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void visit(StructuralModule structuralModule) {
         printStructuralModule(structuralModule);
@@ -144,6 +180,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Sets the printing color for an AlienUnit card based on its type
+     * @param alienUnit the AlienUnit instance
+     */
     public void setColor(AlienUnit alienUnit) {
         if (alienUnit.getType().equals(AlienUnit.Type.BROWN)) {
             System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
@@ -153,26 +193,56 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+
+    /**
+     * Sets the printing color for a Battery card
+     * @param battery the Battery instance
+     */
     public void setColor(Battery battery) {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
     }
 
+
+    /**
+     * Sets the printing color for a Cannon card
+     * @param cannon the Cannon instance
+     */
     public void setColor(Cannon cannon) {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
     }
 
+
+    /**
+     * Sets the printing color for an Engine card
+     * @param engine the Engine instance
+     */
     public void setColor(Engine engine) {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
     }
 
+
+    /**
+     * Sets the printing color for a HousingUnit card
+     * @param housingUnit the HousingUnit instance
+     */
     public void setColor(HousingUnit housingUnit) {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
     }
 
+
+    /**
+     * Sets the printing color for a Shield card
+     * @param shield the Shield instance
+     */
     public void setColor(Shield shield) {
         System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
     }
 
+
+    /**
+     * Sets the printing color for a Storage card based on its type
+     * @param storage the Storage instance
+     */
     public void setColor(Storage storage) {
         if (storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.SINGLE_RED)) {
             System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED));
@@ -182,12 +252,21 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+
+    /**
+     * Sets the printing color for a StructuralModule card
+     * @param structuralModule the StructuralModule instance
+     */
     public void setColor(StructuralModule structuralModule) {
         System.out.print(Ansi.ansi().reset());
     }
 
 
 
+    /**
+     * Prints a generic ship card depending on the current line index
+     * @param shipCard the ShipCard to render
+     */
     public void printShipCard(ShipCard shipCard) {
         if (i == 0) {
             System.out.print("┌─────────────┐");
@@ -214,6 +293,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders an AlienUnit card based on the current line index
+     * @param alienUnit the AlienUnit instance
+     */
     public void printAlienUnit(AlienUnit alienUnit) {
         setColor(alienUnit);
 
@@ -227,6 +310,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of an AlienUnit card
+     * @param alienUnit the AlienUnit instance
+     */
     public void printAlienUnitCenter(AlienUnit alienUnit) {
         if(i == (cardLength/2 - 1)) {
             System.out.print("         ");
@@ -247,6 +334,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders a Battery card based on the current line index
+     * @param battery the Battery instance
+     */
     public void printBattery(Battery battery) {
         setColor(battery);
 
@@ -260,6 +351,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of a Battery card
+     * @param battery the Battery instance
+     */
     public void printBatteryCenter(Battery battery) {
         if(i == (cardLength/2 - 1)) {
             System.out.print("         ");
@@ -285,6 +380,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders a Cannon card based on the current line index
+     * @param cannon the Cannon instance
+     */
     public void printCannon(Cannon cannon) {
         setColor(cannon);
 
@@ -298,6 +397,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of a Cannon card
+     * @param cannon the Cannon instance
+     */
     public void printCannonCenter(Cannon cannon) {
         if(i == (cardLength/2 - 1)) {
             if(cannon.getOrientation().equals(ShipCard.Orientation.DEG_0) && cannon.getType().equals(Cannon.Type.SINGLE)){
@@ -348,6 +451,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders an Engine card based on the current line index
+     * @param engine the Engine instance
+     */
     public void printEngine(Engine engine) {
         setColor(engine);
 
@@ -361,6 +468,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of an Engine card
+     * @param engine the Engine instance
+     */
     public void printEngineCenter(Engine engine) {
         if(i == (cardLength/2 - 1)) {
             if(engine.getOrientation().equals(ShipCard.Orientation.DEG_180) && engine.getType().equals(Engine.Type.SINGLE)){
@@ -411,6 +522,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders a HousingUnit card based on the current line index
+     * @param housingUnit the HousingUnit instance
+     */
     public void printHousingUnit(HousingUnit housingUnit) {
         setColor(housingUnit);
 
@@ -424,6 +539,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of a HousingUnit card
+     * @param housingUnit the HousingUnit instance
+     */
     public void printHousingUnitCenter(HousingUnit housingUnit) {
         if(i == (cardLength/2 - 1)) {
             if (housingUnit.isCentral()) {
@@ -451,6 +570,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders a Shield card based on the current line index
+     * @param shield the Shield instance
+     */
     public void printShield(Shield shield) {
         setColor(shield);
 
@@ -464,6 +587,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of a Shield card
+     * @param shield the Shield instance
+     */
     public void printShieldCenter(Shield shield) {
         if(i == (cardLength/2 - 1)) {
             StringBuilder result = new StringBuilder();
@@ -522,6 +649,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders a Storage card based on the current line index
+     * @param storage the Storage instance
+     */
     public void printStorage(Storage storage) {
         setColor(storage);
 
@@ -535,6 +666,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of a Storage card
+     * @param storage the Storage instance
+     */
     public void printStorageCenter(Storage storage) {
         if(i == (cardLength/2 - 1)) {
             if (storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.SINGLE_RED)) {
@@ -582,6 +717,10 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders a StructuralModule card based on the current line index
+     * @param structuralModule the StructuralModule instance
+     */
     public void printStructuralModule(StructuralModule structuralModule) {
         setColor(structuralModule);
 
@@ -595,6 +734,10 @@ public class ShipCardCLI implements ShipCardVisitor {
         }
     }
 
+    /**
+     * Prints the central section of a StructuralModule card
+     * @param structuralModule the StructuralModule instance
+     */
     public void printStructuralModuleCenter(StructuralModule structuralModule) {
         if(i == (cardLength/2 - 1)) {
             System.out.print("         ");
@@ -609,6 +752,9 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders an empty ship card based on the current line index
+     */
     public void printEmptyShipCard() {
         System.out.print(Ansi.ansi().reset());
 
@@ -625,6 +771,9 @@ public class ShipCardCLI implements ShipCardVisitor {
 
 
 
+    /**
+     * Renders a covered ship card based on the current line index
+     */
     public void printCovered() {
         System.out.print(Ansi.ansi().reset());
 

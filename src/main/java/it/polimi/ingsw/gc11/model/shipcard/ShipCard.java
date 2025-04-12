@@ -238,5 +238,11 @@ public abstract class ShipCard {
                 this.covered == shipCard.isCovered();
     }
 
+    /**
+     * Accepts a {@link ShipCardVisitor} and calls the appropriate visit method on it
+     * This method is part of the Visitor design pattern, allowing operations to be performed on ship cards without modifying their classes
+     *
+     * @param shipCardVisitor the visitor performing the operation on this ship card
+     */
     public abstract void accept(ShipCardVisitor shipCardVisitor);
 }
