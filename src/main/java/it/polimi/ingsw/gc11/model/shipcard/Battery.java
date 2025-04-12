@@ -88,5 +88,10 @@ public class Battery extends ShipCard {
         Battery battery = (Battery) obj;
         return super.equals(obj) && this.type == battery.getType() && this.availableBatteries == battery.getAvailableBatteries();
     }
+
+    @Override
+    public void accept(ShipCardVisitor shipCardVisitor){
+        shipCardVisitor.visit(this);
+    }
 }
 

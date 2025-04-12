@@ -32,4 +32,9 @@ public class StructuralModule extends ShipCard {
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
+
+    @Override
+    public void accept(ShipCardVisitor shipCardVisitor){
+        shipCardVisitor.visit(this);
+    }
 }

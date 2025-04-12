@@ -237,4 +237,6 @@ public abstract class ShipCard {
                 this.scrap == shipCard.isScrap() &&
                 this.covered == shipCard.isCovered();
     }
+
+    public abstract void accept(ShipCardVisitor shipCardVisitor);
 }

@@ -54,4 +54,9 @@ public class Engine extends ShipCard {
         Engine engine = (Engine) obj;
         return super.equals(obj) && this.type == engine.getType();
     }
+
+    @Override
+    public void accept(ShipCardVisitor shipCardVisitor){
+        shipCardVisitor.visit(this);
+    }
 }

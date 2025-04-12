@@ -54,5 +54,10 @@ public class Cannon extends ShipCard {
         Cannon cannon = (Cannon) obj;
         return super.equals(obj) && this.type == cannon.getType();
     }
+
+    @Override
+    public void accept(ShipCardVisitor shipCardVisitor){
+        shipCardVisitor.visit(this);
+    }
 }
 
