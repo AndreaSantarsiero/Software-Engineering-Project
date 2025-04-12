@@ -44,8 +44,8 @@ class GameModelTest {
         gameModel.setLevel(FlightBoard.Type.TRIAL);
         gameModel.addPlayer("Player2");
         assertEquals(FlightBoard.Type.TRIAL, gameModel.getFlightBoard().getType());
-        assertEquals("Level1", gameModel.getPlayer("Player1").getShipBoard().getType());
-        assertEquals("Level1", gameModel.getPlayer("Player2").getShipBoard().getType());
+        assertInstanceOf(Level1ShipBoard.class, gameModel.getPlayer("Player1").getShipBoard());
+        assertInstanceOf(Level1ShipBoard.class, gameModel.getPlayer("Player2").getShipBoard());
         assertThrows(IllegalStateException.class, () -> gameModel.setLevel(FlightBoard.Type.LEVEL2));
     }
 
@@ -222,7 +222,7 @@ class GameModelTest {
     void getPlayerShipBoard() {
         gameModel.setLevel(FlightBoard.Type.TRIAL);
         gameModel.addPlayer("Player1");
-        assertEquals("Level1", gameModel.getPlayerShipBoard("Player1").getType() );
+        assertInstanceOf(Level1ShipBoard.class, gameModel.getPlayerShipBoard("Player1"));
     }
 
     @Test

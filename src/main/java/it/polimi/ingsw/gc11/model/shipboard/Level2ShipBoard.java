@@ -67,9 +67,4 @@ public class Level2ShipBoard extends ShipBoard {
             return true;
         }
     }
-
-    @Override
-    public String getType() {
-        return "Level2";
-    }
 }
