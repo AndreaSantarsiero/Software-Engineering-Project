@@ -4,6 +4,9 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Smugglers;
+import it.polimi.ingsw.gc11.model.shipcard.Battery;
+
+import java.util.Map;
 
 public class FightSmugglers extends AdventureState {
 
@@ -27,9 +30,12 @@ public class FightSmugglers extends AdventureState {
         this.cannonPower = cannonPower;
     }
 
-    public void fight(){
+    public void fight(Map<Battery, Integer> batteryUsage){
         if(cannonPower < smugglers.getFirePower()){
-            player.getShipBoard().removeMaterials(smugglers.getFirePower());
+            int batteries = player.getShipBoard().removeMaterials(smugglers.getLostMaterials());
+            if(batteries > 0){
+                player.getShipBoard().useBatteries(batteryUsage);
+            }
             //go to next state
         }
         if(cannonPower == smugglers.getFirePower()){
