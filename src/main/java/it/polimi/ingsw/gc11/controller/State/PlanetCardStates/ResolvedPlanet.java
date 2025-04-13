@@ -23,7 +23,7 @@ public class ResolvedPlanet extends PlanetCardState{
     }
 
     public void resolve(){
-        gameModel.move(player.getUsername(), planetsCard.getLostDays());
+        gameModel.move(player.getUsername(), planetsCard.getLostDays() * -1);
 
         if(player == gameModel.getLastPlayer()){
             //go to next state

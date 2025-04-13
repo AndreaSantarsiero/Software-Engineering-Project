@@ -22,7 +22,7 @@ public class ResolvedShip extends AbandonedShipState{
 
     public void resolve(){
         player.addCoins(abandonedShip.getCoins());
-        gameModel.move(player.getUsername(), abandonedShip.getLostDays());
+        gameModel.move(player.getUsername(), abandonedShip.getLostDays() * -1);
         //go to next state
     }
 }

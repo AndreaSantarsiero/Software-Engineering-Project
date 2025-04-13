@@ -130,6 +130,8 @@ public class GameModel {
         throw new IllegalArgumentException("Player not found");
     }
 
+    public ArrayList<Player> getPlayers() {return players;}
+
     public Player getCurrentPlayer() {
         return currentPlayer;
     }

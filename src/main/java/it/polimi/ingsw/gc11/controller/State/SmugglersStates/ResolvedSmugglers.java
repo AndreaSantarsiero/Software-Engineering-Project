@@ -21,7 +21,7 @@ public class ResolvedSmugglers extends SmugglersState {
     }
 
     public void resolve(){
-        gameModel.move(player.getUsername(), smugglers.getLostDays());
+        gameModel.move(player.getUsername(), smugglers.getLostDays() * -1);
         //go to next state
     }
 }

@@ -1,16 +1,14 @@
 package it.polimi.ingsw.gc11.controller.State.CombatZoneStates;
 
-import it.polimi.ingsw.gc11.model.Dice;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZone;
 
-public class RollDicesCombat extends CombatZoneState{
+public class ChooseCombat extends CombatZoneState{
     private CombatZone combatZone;
     private int numPhase;
     private GameModel gameModel;
-    private Dice dice1, dice2;
 
-    public RollDicesCombat(CombatZone combatZone, GameModel gameModel, int numPhase) {
+    public ChooseCombat(GameModel gameModel, CombatZone combatZone, int numPhase) {
         if(gameModel == null || combatZone == null) {
             throw new NullPointerException();
         }
@@ -21,15 +19,19 @@ public class RollDicesCombat extends CombatZoneState{
         this.gameModel = gameModel;
         this.combatZone = combatZone;
         this.numPhase = numPhase;
-        this.dice1 = new Dice();
-        this.dice2 = new Dice();
     }
 
-    public void rollDices() {
-        int coord = 0;
-
-        coord = dice1.roll() +  dice2.roll();
-
-        //go to next state
+    public void chooseCondition(){
+        switch(combatZone.getCombatPhase(numPhase).getCondition()){
+            case LESS_FIRE_POWER:
+                //go to next state
+                break;
+            case LESS_ENGINE_POWER:
+                //go to next state
+                break;
+            case LESS_MEMBERS_NUM:
+                //go to next state
+                break;
+        }
     }
 }

@@ -21,7 +21,7 @@ public class ResolvedStation extends AbandonedStationState{
     }
 
     public void resolve(){
-        gameModel.move(player.getUsername(), abandonedStation.getLostDays());
+        gameModel.move(player.getUsername(), abandonedStation.getLostDays() * -1);
 
         if(player == gameModel.getLastPlayer()){
             //go to next state
