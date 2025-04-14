@@ -1147,15 +1147,24 @@ public abstract class ShipBoard implements ShipCardVisitor {
     }
 
     /**
-     * Adds or replaces materials in a list of storage units based on provided new and old material lists
+     * Adds or replaces materials in a list of storage units based on the provided new and old material lists
      * <p>
-     * This method ensures that the provided map is non-null and contains valid entries
+     * This method ensures that the provided map is non-null and contains valid entries.
      * Each storage unit is mapped to a pair of lists: one for new materials to add and one for old materials to replace
      *
      * @param storageMaterials A map associating each {@link Storage} unit with a pair of lists:
-     *                         - The first list contains the new {@link Material} objects to be added
-     *                         - The second list contains the old {@link Material} objects to be replaced
-     * @throws IllegalArgumentException If the map is null, contains null keys or values, or if any inner material list is null or has mismatched sizes
+     * <ul>
+     *     <li>The first list contains the new {@link Material} objects to be added</li>
+     *     <li>The second list contains the old {@link Material} objects to be replaced</li>
+     * </ul>
+     *
+     * @throws IllegalArgumentException if:
+     * <ul>
+     *     <li>the map is {@code null}</li>
+     *     <li>it contains {@code null} keys or values</li>
+     *     <li>any inner material list is {@code null}</li>
+     *     <li>or the sizes of the new and old material lists do not match for a given storage unit</li>
+     * </ul>
      */
     public void addMaterials(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
         if (storageMaterials == null) {
