@@ -3,11 +3,9 @@ package it.polimi.ingsw.gc11.model.shipboard;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-import java.util.AbstractMap;
+import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.awt.Point;
 
 
 
@@ -21,11 +19,11 @@ public abstract class ShipBoard implements ShipCardVisitor {
     private final ShipCard[][] components;
     private final List<ShipCard> reservedComponents;
 
-    private final List<AlienUnit> alienUnits;
+    private final Map<AlienUnit, Point> alienUnits;
     private final List<Battery> batteries;
-    private final List<Cannon> cannons;
-    private final List<Engine> engines;
-    private final List<HousingUnit> housingUnits;
+    private final Map<Cannon, Point> cannons;
+    private final Map<Engine, Point> engines;
+    private final Map<HousingUnit, Point> housingUnits;
     private final List<Shield> shields;
     private final List<Storage> storages;
 
@@ -45,11 +43,11 @@ public abstract class ShipBoard implements ShipCardVisitor {
     public ShipBoard(int X_MAX, int Y_MAX) {
         this.components = new ShipCard[Y_MAX][X_MAX];
         this.reservedComponents = new ArrayList<>();
-        this.alienUnits = new ArrayList<>();
+        this.alienUnits = new HashMap<>();
         this.batteries = new ArrayList<>();
-        this.cannons = new ArrayList<>();
-        this.engines = new ArrayList<>();
-        this.housingUnits = new ArrayList<>();
+        this.cannons = new HashMap<>();
+        this.engines = new HashMap<>();
+        this.housingUnits = new HashMap<>();
         this.shields = new ArrayList<>();
         this.storages = new ArrayList<>();
         this.lastModifiedX = -1;
@@ -63,15 +61,15 @@ public abstract class ShipBoard implements ShipCardVisitor {
     /**
      * {@inheritDoc}
      * <p>
-     * If <code>addMode</code> is <code>true</code>, adds the {@link AlienUnit} instance to the alienUnits list if it is not already present.
-     * Otherwise, removes it from the list if present
+     * If {@code addMode} is {@code true}, associates the given {@link AlienUnit} with the current coordinates
+     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code alienUnits} map, only if it is not already present
+     * <br>
+     * Otherwise, removes the {@link AlienUnit} from the map if it exists
      */
     @Override
     public void visit(AlienUnit alienUnit) {
         if(addMode) {
-            if(!alienUnits.contains(alienUnit)) {
-                alienUnits.add(alienUnit);
-            }
+            alienUnits.putIfAbsent(alienUnit, new Point(lastModifiedX, lastModifiedY));
         }
         else {
             alienUnits.remove(alienUnit);
@@ -81,7 +79,8 @@ public abstract class ShipBoard implements ShipCardVisitor {
     /**
      * {@inheritDoc}
      * <p>
-     * If <code>addMode</code> is <code>true</code>, adds the {@link Battery} instance to the batteries list if it is not already present.
+     * If {@code addMode} is {@code true}, adds the {@link Battery} instance to the batteries list if it is not already present
+     * <br>
      * Otherwise, removes it from the list if present
      */
     @Override
@@ -99,15 +98,15 @@ public abstract class ShipBoard implements ShipCardVisitor {
     /**
      * {@inheritDoc}
      * <p>
-     * If <code>addMode</code> is <code>true</code>, adds the {@link Cannon} instance to the cannons list if it is not already present.
-     * Otherwise, removes it from the list if present
+     * If {@code addMode} is {@code true}, associates the given {@link Cannon} with the current coordinates
+     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code cannons} map, only if it is not already present
+     * <br>
+     * Otherwise, removes the {@link Cannon} from the map if it exists
      */
     @Override
     public void visit(Cannon cannon) {
         if(addMode) {
-            if(!cannons.contains(cannon)) {
-                cannons.add(cannon);
-            }
+            cannons.putIfAbsent(cannon, new Point(lastModifiedX, lastModifiedY));
         }
         else {
             cannons.remove(cannon);
@@ -117,15 +116,15 @@ public abstract class ShipBoard implements ShipCardVisitor {
     /**
      * {@inheritDoc}
      * <p>
-     * If <code>addMode</code> is <code>true</code>, adds the {@link Engine} instance to the engines list if it is not already present.
-     * Otherwise, removes it from the list if present
+     * If {@code addMode} is {@code true}, associates the given {@link Engine} with the current coordinates
+     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code engines} map, only if it is not already present
+     * <br>
+     * Otherwise, removes the {@link Engine} from the map if it exists
      */
     @Override
     public void visit(Engine engine) {
         if(addMode) {
-            if(!engines.contains(engine)) {
-                engines.add(engine);
-            }
+            engines.putIfAbsent(engine, new Point(lastModifiedX, lastModifiedY));
         }
         else {
             engines.remove(engine);
@@ -135,15 +134,15 @@ public abstract class ShipBoard implements ShipCardVisitor {
     /**
      * {@inheritDoc}
      * <p>
-     * If <code>addMode</code> is <code>true</code>, adds the {@link HousingUnit} instance to the housingUnits list if it is not already present.
-     * Otherwise, removes it from the list if present
+     * If {@code addMode} is {@code true}, associates the given {@link HousingUnit} with the current coordinates
+     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code housingUnits} map, only if it is not already present
+     * <br>
+     * Otherwise, removes the {@link HousingUnit} from the map if it exists
      */
     @Override
     public void visit(HousingUnit housingUnit) {
         if(addMode) {
-            if(!housingUnits.contains(housingUnit)) {
-                housingUnits.add(housingUnit);
-            }
+            housingUnits.putIfAbsent(housingUnit, new Point(lastModifiedX, lastModifiedY));
         }
         else {
             housingUnits.remove(housingUnit);
@@ -153,7 +152,8 @@ public abstract class ShipBoard implements ShipCardVisitor {
     /**
      * {@inheritDoc}
      * <p>
-     * If <code>addMode</code> is <code>true</code>, adds the {@link Shield} instance to the shields list if it is not already present.
+     * If {@code addMode} is {@code true}, adds the {@link Shield} instance to the shields list if it is not already present
+     * <br>
      * Otherwise, removes it from the list if present
      */
     @Override
@@ -171,7 +171,8 @@ public abstract class ShipBoard implements ShipCardVisitor {
     /**
      * {@inheritDoc}
      * <p>
-     * If <code>addMode</code> is <code>true</code>, adds the {@link Storage} instance to the storages list if it is not already present.
+     * If {@code addMode} is {@code true}, adds the {@link Storage} instance to the storages list if it is not already present
+     * <br>
      * Otherwise, removes it from the list if present
      */
     @Override
@@ -971,7 +972,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
     public int getMembers(){
         int members = 0;
 
-        for(HousingUnit housingUnit : housingUnits){
+        for(HousingUnit housingUnit : housingUnits.keySet()){
             if(!housingUnit.isScrap()){
                 members += housingUnit.getNumMembers();
             }
@@ -1254,7 +1255,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
     public int getDoubleEnginesNumber(){
         int doubleEngines = 0;
 
-        for(Engine engine : engines){
+        for(Engine engine : engines.keySet()){
             if(!engine.isScrap() && engine.getType() == Engine.Type.DOUBLE){
                 doubleEngines++;
             }
@@ -1282,7 +1283,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         }
 
         int enginePower = 0;
-        for(Engine engine : engines){
+        for(Engine engine : engines.keySet()){
             if(!engine.isScrap() && engine.getType() == Engine.Type.SINGLE){
                 enginePower++;
             }
@@ -1306,7 +1307,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
     public int getDoubleCannonsNumber(){
         int doubleCannons = 0;
 
-        for (Cannon cannon : cannons) {
+        for (Cannon cannon : cannons.keySet()) {
             if (!cannon.isScrap() && cannon.getType() == Cannon.Type.DOUBLE) {
                 doubleCannons++;
             }
@@ -1348,7 +1349,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
             }
         }
 
-        for (Cannon cannon : cannons) {
+        for (Cannon cannon : cannons.keySet()) {
             if (!cannon.isScrap() && cannon.getType() == Cannon.Type.SINGLE) {
                 if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
                     cannonPower++;
