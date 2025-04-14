@@ -7,13 +7,13 @@ import java.util.List;
 
 
 /**
- * Handles the CLI (Command Line Interface) representation of materials using colored symbols
+ * Handles the CLI (Command Line Interface) representation of materials using colored symbols.
  * Prints colored blocks representing each material type
  */
 public class MaterialCLI {
 
     /**
-     * Prints the given list of materials to the CLI using colored blocks
+     * Prints the given list of materials to the CLI using colored blocks.
      * Each material is represented by a colored "■" symbol corresponding to its type
      *
      * @param materials the list of materials to print

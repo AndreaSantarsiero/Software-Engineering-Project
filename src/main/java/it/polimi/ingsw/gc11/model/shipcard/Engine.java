@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+
 /**
  * Represents an Engine, a specialized type of ShipCard
+ * <p>
  * An Engine has a specific type, either SINGLE or DOUBLE, which defines its power
  */
 public class Engine extends ShipCard {
@@ -19,7 +21,7 @@ public class Engine extends ShipCard {
 
 
     /**
-     * Constructs an Engine with specified connectors and type
+     * Constructs an Engine with specified connectors and type.
      * Note that the connector on the bottom side must be NONE
      *
      * @param topConnector The connector on the top side
@@ -44,6 +46,7 @@ public class Engine extends ShipCard {
 
     /**
      * Compares this Engine to another object for equality
+     * <p>
      * Two Engines are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type
      *
      * @param obj The object to compare with this Engine
@@ -56,7 +59,7 @@ public class Engine extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance

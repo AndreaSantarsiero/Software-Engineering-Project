@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Handles the CLI (Command Line Interface) rendering of the ShipBoard
+ * <p>
  * This class contains methods that can be used to print the entire ship including components, reserved cards, coordinates, and invalid spaces
  */
 public class ShipBoardCLI {

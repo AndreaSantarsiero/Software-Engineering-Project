@@ -13,18 +13,23 @@ import java.util.Map;
 
 /**
  * Represents a ship's board where ship components can be placed and managed
+ * <p>
  * The board maintains information about ship cards, reserved components, and the last modified position
  */
 public abstract class ShipBoard implements ShipCardVisitor {
 
     private final ShipCard[][] components;
     private final List<ShipCard> reservedComponents;
+
+    private final List<AlienUnit> alienUnits;
     private final List<Battery> batteries;
     private final List<Cannon> cannons;
     private final List<Engine> engines;
     private final List<HousingUnit> housingUnits;
     private final List<Shield> shields;
     private final List<Storage> storages;
+
+    private boolean addMode;
     private int lastModifiedX;
     private int lastModifiedY;
     private AlienUnit brownActiveUnit;
@@ -40,6 +45,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
     public ShipBoard(int X_MAX, int Y_MAX) {
         this.components = new ShipCard[Y_MAX][X_MAX];
         this.reservedComponents = new ArrayList<>();
+        this.alienUnits = new ArrayList<>();
         this.batteries = new ArrayList<>();
         this.cannons = new ArrayList<>();
         this.engines = new ArrayList<>();
@@ -55,110 +61,136 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
 
     /**
-     * Adds a {@link Battery} to the list of battery modules installed on the ship
-     *
-     * @param battery the {@code Battery} to be added
+     * {@inheritDoc}
+     * <p>
+     * If <code>addMode</code> is <code>true</code>, adds the {@link AlienUnit} instance to the alienUnits list if it is not already present.
+     * Otherwise, removes it from the list if present
      */
-    private void addBattery(Battery battery) {
-        batteries.add(battery);
-    }
-
-
-    /**
-     * Adds a {@link Cannon} to the list of cannons installed on the ship
-     *
-     * @param cannon the {@code Cannon} to be added
-     */
-    private void addCannon(Cannon cannon) {
-        cannons.add(cannon);
-    }
-
-
-    /**
-     * Adds an {@link Engine} to the list of engines installed on the ship
-     *
-     * @param engine the {@code Engine} to be added
-     */
-    private void addEngine(Engine engine) {
-        engines.add(engine);
-    }
-
-
-    /**
-     * Adds a {@link HousingUnit} to the list of housing units installed on the ship
-     *
-     * @param housingUnit the {@code HousingUnit} to be added
-     */
-    private void addHousingUnit(HousingUnit housingUnit) {
-        housingUnits.add(housingUnit);
-    }
-
-
-    /**
-     * Adds a {@link Shield} to the list of shields installed on the ship
-     *
-     * @param shield the {@code Shield} to be added
-     */
-    private void addShield(Shield shield) {
-        shields.add(shield);
-    }
-
-
-    /**
-     * Adds a {@link Storage} to the list of storages installed on the ship
-     *
-     * @param storage the {@code Storage} to be added
-     */
-    private void addStorage(Storage storage) {
-        storages.add(storage);
-    }
-
-
-
-
-    /** {@inheritDoc} */
     @Override
     public void visit(AlienUnit alienUnit) {
-
+        if(addMode) {
+            if(!alienUnits.contains(alienUnit)) {
+                alienUnits.add(alienUnit);
+            }
+        }
+        else {
+            alienUnits.remove(alienUnit);
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If <code>addMode</code> is <code>true</code>, adds the {@link Battery} instance to the batteries list if it is not already present.
+     * Otherwise, removes it from the list if present
+     */
     @Override
     public void visit(Battery battery) {
-        addBattery(battery);
+        if(addMode) {
+            if(!batteries.contains(battery)) {
+                batteries.add(battery);
+            }
+        }
+        else {
+            batteries.remove(battery);
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If <code>addMode</code> is <code>true</code>, adds the {@link Cannon} instance to the cannons list if it is not already present.
+     * Otherwise, removes it from the list if present
+     */
     @Override
     public void visit(Cannon cannon) {
-        addCannon(cannon);
+        if(addMode) {
+            if(!cannons.contains(cannon)) {
+                cannons.add(cannon);
+            }
+        }
+        else {
+            cannons.remove(cannon);
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If <code>addMode</code> is <code>true</code>, adds the {@link Engine} instance to the engines list if it is not already present.
+     * Otherwise, removes it from the list if present
+     */
     @Override
     public void visit(Engine engine) {
-        addEngine(engine);
+        if(addMode) {
+            if(!engines.contains(engine)) {
+                engines.add(engine);
+            }
+        }
+        else {
+            engines.remove(engine);
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If <code>addMode</code> is <code>true</code>, adds the {@link HousingUnit} instance to the housingUnits list if it is not already present.
+     * Otherwise, removes it from the list if present
+     */
     @Override
     public void visit(HousingUnit housingUnit) {
-        addHousingUnit(housingUnit);
+        if(addMode) {
+            if(!housingUnits.contains(housingUnit)) {
+                housingUnits.add(housingUnit);
+            }
+        }
+        else {
+            housingUnits.remove(housingUnit);
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If <code>addMode</code> is <code>true</code>, adds the {@link Shield} instance to the shields list if it is not already present.
+     * Otherwise, removes it from the list if present
+     */
     @Override
     public void visit(Shield shield) {
-        addShield(shield);
+        if(addMode) {
+            if(!shields.contains(shield)) {
+                shields.add(shield);
+            }
+        }
+        else {
+            shields.remove(shield);
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * If <code>addMode</code> is <code>true</code>, adds the {@link Storage} instance to the storages list if it is not already present.
+     * Otherwise, removes it from the list if present
+     */
     @Override
     public void visit(Storage storage) {
-        addStorage(storage);
+        if(addMode) {
+            if(!storages.contains(storage)) {
+                storages.add(storage);
+            }
+        }
+        else {
+            storages.remove(storage);
+        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     * <p>
+     * No operation is performed on {@link StructuralModule}
+     */
     @Override
     public void visit(StructuralModule structuralModule) {
 
@@ -207,6 +239,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Determines whether the given coordinates are valid within the ship's bounds based on the specific type of ShipBoard
+     * <p>
      * This method delegates the validation to the corresponding subclass, ensuring that each type of ShipBoard applies its own coordinate validation logic
      *
      * @param x The x-coordinate to check
@@ -217,8 +250,8 @@ public abstract class ShipBoard implements ShipCardVisitor {
     public abstract boolean validateCoordinates(int x, int y);
 
     /**
-     * Validates whether the given coordinates are within the allowed bounds of the ship
-     * This method calls {@code booleanCheckCoordinates} to verify the coordinates and throws an exception if they are out of bounds
+     * Validates whether the given coordinates are within the allowed bounds of the ship.
+     * This method calls {@code validateCoordinates} to verify the coordinates and throws an exception if they are out of bounds
      *
      * @param x The x-coordinate to check
      * @param y The y-coordinate to check
@@ -234,6 +267,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Adds a ship card to the specified position on the board
+     * <p>
      * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The ship card to be added
@@ -252,11 +286,13 @@ public abstract class ShipBoard implements ShipCardVisitor {
         components[y][x] = shipCard;
         lastModifiedX = x;
         lastModifiedY = y;
+        addMode = true;
         shipCard.accept(this);
     }
 
     /**
      * Removes a ship card from the specified position on the board
+     * <p>
      * This method is intended to be used only during the initial construction of the ship
      *
      * @param x The x-coordinate of the card to be removed
@@ -271,8 +307,9 @@ public abstract class ShipBoard implements ShipCardVisitor {
             throw new IllegalArgumentException("Ship card already null");
         }
         if (x == lastModifiedX && y == lastModifiedY) {
+            addMode = false;
+            components[y][x].accept(this);
             components[y][x] = null;
-            //rimuovere la shipcard dalle liste
         }
         else {
             throw new IllegalArgumentException("Ship card already welded");
@@ -298,6 +335,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Reserves a ship card for later use
+     * <p>
      * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The ship card to be reserved
@@ -318,7 +356,8 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Moves a reserved ship card onto the ship board at the specified coordinates
-     * This method ensures that the ship card is valid, has been previously reserved, and is placed within the ship's valid bounds before adding it to the board
+     * <p>
+     * This method ensures that the ship card is valid, has been previously reserved, and is placed within the ship's valid bounds before adding it to the board.
      * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The reserved ship card to be placed on the board
@@ -349,6 +388,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Return the list of the reserved ship cards
+     *
      * @return the list of the reserved ship cards
      */
     public List<ShipCard> getReservedComponents() {
@@ -412,6 +452,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Checks if two connectors can be connected based on their type
+     * <p>
      * Two connectors are compatible if they are identical or if one of them is UNIVERSAL and the other is not NONE
      *
      * @param connector1 The first connector to be checked
@@ -515,6 +556,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Initializes the visited state of the components
+     * <p>
      * This method iterates through the {@code components} array and sets the visited flag to {@code false}
      * for all non-null, non-scrap components
      */
@@ -720,11 +762,13 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
 
     /**
-     * Ensures additional ship restrictions are met:
-     * - all engines must point at the back and have a free space behind them
-     * - all cannons must have a free space in front of the direction aimed
+     * Ensures that additional ship restrictions are met:
+     * <ul>
+     *     <li>All engines must be facing the back and have a free space behind them</li>
+     *     <li>All cannons must have a free space in front of the direction they are aiming</li>
+     * </ul>
      *
-     * @return false if a restriction is violated, true otherwise
+     * @return {@code false} if any restriction is violated, {@code true} otherwise
      */
     private boolean checkOtherRestrictions(){
         boolean status = true;
@@ -822,7 +866,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
 
     /**
-     * Connects an AlienUnit to a HousingUnit based on their coordinates and connector compatibility
+     * Connects an AlienUnit to a HousingUnit based on their coordinates and connector compatibility.
      * If all conditions are met, the AlienUnit is linked to the HousingUnit
      *
      * @param alienX the x-coordinate of the AlienUnit
@@ -1104,6 +1148,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
     /**
      * Adds or replaces materials in a list of storage units based on provided new and old material lists
+     * <p>
      * This method ensures that the provided map is non-null and contains valid entries
      * Each storage unit is mapped to a pair of lists: one for new materials to add and one for old materials to replace
      *
@@ -1334,17 +1379,17 @@ public abstract class ShipBoard implements ShipCardVisitor {
      * Determines which cannons can be used to destroy a big meteor coming from the given direction and coordinate
      *
      * @param direction The direction from which a big meteor is coming
-     * @param coord The coordinate from which a big meteor is coming
+     * @param coordinate The coordinate from which a big meteor is coming
      * @return A list of {@code Cannon} objects that can be used to destroy the meteor. If no cannons are available, returns an empty list
      */
-    public List<Cannon> canDestroy(Hit.Direction direction, int coord) {
+    public List<Cannon> canDestroy(Hit.Direction direction, int coordinate) {
         List<Cannon> availableCannons = new ArrayList<>();
 
         if (direction == Hit.Direction.LEFT) {
             for (int j = -1; j < 2; j++) {
                 for (int i = 0; i < components[0].length; i++) {
                     try{
-                        ShipCard shipCard = this.getShipCard(i - adaptX(0), coord + j);
+                        ShipCard shipCard = this.getShipCard(i - adaptX(0), coordinate + j);
                         if(shipCard != null){
                             if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_270) {
@@ -1364,7 +1409,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
             for (int j = -1; j < 2; j++) {
                 for (int i = 0; i < components[0].length; i++) {
                     try{
-                        ShipCard shipCard = this.getShipCard(components[0].length - i - adaptX(0), coord + j);
+                        ShipCard shipCard = this.getShipCard(components[0].length - i - adaptX(0), coordinate + j);
                         if(shipCard != null){
                             if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_90) {
@@ -1382,7 +1427,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         else if (direction == Hit.Direction.TOP) {
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = this.getShipCard(coord, i - adaptY(0));
+                    ShipCard shipCard = this.getShipCard(coordinate, i - adaptY(0));
                     if(shipCard != null){
                         if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                             if(shipCard.getOrientation() == ShipCard.Orientation.DEG_0) {
@@ -1401,7 +1446,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
             for (int j = -1; j < 2; j++) {
                 for (int i = 0; i < components.length; i++) {
                     try{
-                        ShipCard shipCard = this.getShipCard(coord + j, components.length - i - adaptY(0));
+                        ShipCard shipCard = this.getShipCard(coordinate + j, components.length - i - adaptY(0));
                         if(shipCard != null){
                             if (shipCard instanceof Cannon && !shipCard.isScrap()) {
                                 if(shipCard.getOrientation() == ShipCard.Orientation.DEG_180) {
@@ -1424,14 +1469,14 @@ public abstract class ShipBoard implements ShipCardVisitor {
      * Determines whether this ship has an exposed connector in the given direction and coordinate
      *
      * @param direction The direction from which a little meteor is coming
-     * @param coord The coordinate from which a little meteor is coming
+     * @param coordinate The coordinate from which a little meteor is coming
      * @return {@code true} if the ship has an exposed connector in the given direction and coordinate, {@code false} otherwise
      */
-    public boolean hasAnExposedConnector(Hit.Direction direction, int coord) {
+    public boolean hasAnExposedConnector(Hit.Direction direction, int coordinate) {
         if (direction == Hit.Direction.LEFT) {
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(i - adaptX(0), coord);
+                    ShipCard shipCard = getShipCard(i - adaptX(0), coordinate);
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1449,7 +1494,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         else if (direction == Hit.Direction.RIGHT) {
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(components[0].length - i - adaptX(0), coord);
+                    ShipCard shipCard = getShipCard(components[0].length - i - adaptX(0), coordinate);
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getRightConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1467,7 +1512,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         else if (direction == Hit.Direction.TOP) {
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, i - adaptY(0));
+                    ShipCard shipCard = getShipCard(coordinate, i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getTopConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1485,7 +1530,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         else if (direction == Hit.Direction.BOTTOM) {
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, components.length - i - adaptY(0));
+                    ShipCard shipCard = getShipCard(coordinate, components.length - i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         if(shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
                             return true;
@@ -1508,14 +1553,14 @@ public abstract class ShipBoard implements ShipCardVisitor {
      * Determines which component is going to be destroyed by a hit
      *
      * @param direction The direction from which a hit is coming
-     * @param coord The coordinate from which a hit is coming
+     * @param coordinate The coordinate from which a hit is coming
      * @return {@code true} if a ShipCard was destroyed by the hit, {@code false} otherwise
      */
-    public boolean destroyHitComponent(Hit.Direction direction, int coord) {
+    public boolean destroyHitComponent(Hit.Direction direction, int coordinate) {
         if (direction == Hit.Direction.LEFT) {
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(i - adaptX(0), coord);
+                    ShipCard shipCard = getShipCard(i - adaptX(0), coordinate);
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
@@ -1529,7 +1574,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         else if (direction == Hit.Direction.RIGHT) {
             for (int i = 0; i < components[0].length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(components[0].length - i - adaptX(0), coord);
+                    ShipCard shipCard = getShipCard(components[0].length - i - adaptX(0), coordinate);
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
@@ -1543,7 +1588,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         else if (direction == Hit.Direction.TOP) {
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, i - adaptY(0));
+                    ShipCard shipCard = getShipCard(coordinate, i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;
@@ -1557,7 +1602,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         else if (direction == Hit.Direction.BOTTOM) {
             for (int i = 0; i < components.length; i++) {
                 try{
-                    ShipCard shipCard = getShipCard(coord, components.length - i - adaptY(0));
+                    ShipCard shipCard = getShipCard(coordinate, components.length - i - adaptY(0));
                     if (shipCard != null && !shipCard.isScrap()) {
                         shipCard.destroy();
                         return true;

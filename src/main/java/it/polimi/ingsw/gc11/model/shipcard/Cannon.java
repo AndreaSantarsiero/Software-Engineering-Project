@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+
 /**
  * Represents a Cannon, a specialized type of ShipCard
+ * <p>
  * A Cannon has a specific type, either SINGLE or DOUBLE, which defines its strength
  */
 public class Cannon extends ShipCard {
@@ -19,7 +21,7 @@ public class Cannon extends ShipCard {
 
 
     /**
-     * Constructs a Cannon with specified connectors and type
+     * Constructs a Cannon with specified connectors and type.
      * Note that the connector on the top side must be NONE
      *
      * @param rightConnector The connector on the right side
@@ -44,6 +46,7 @@ public class Cannon extends ShipCard {
 
     /**
      * Compares this Cannon to another object for equality
+     * <p>
      * Two Cannons are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type
      *
      * @param obj The object to compare with this Cannon
@@ -56,7 +59,7 @@ public class Cannon extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance

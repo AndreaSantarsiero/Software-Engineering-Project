@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipboard;
 
 
+
 /**
  * Represents a level 2 shipboard, extending the general ShipBoard class
+ * <p>
  * This class defines the board's dimensions and provides a method to validate coordinates
  */
 public class Level2ShipBoard extends ShipBoard {

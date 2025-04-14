@@ -8,6 +8,7 @@ import org.fusesource.jansi.Ansi;
 
 /**
  * CLI (Command Line Interface) renderer for ShipCard elements
+ * <p>
  * Implements the {@link ShipCardVisitor} to render different ship cards using the visitor pattern
  */
 public class ShipCardCLI implements ShipCardVisitor {

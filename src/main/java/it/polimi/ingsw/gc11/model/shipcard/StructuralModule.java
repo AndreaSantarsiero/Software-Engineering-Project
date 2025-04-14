@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+
 /**
  * Represents a StructuralModule, a basic component of a ShipCard
+ * <p>
  * This module does not have additional attributes or behaviors beyond those inherited from ShipCard
  */
 public class StructuralModule extends ShipCard {
@@ -23,6 +25,7 @@ public class StructuralModule extends ShipCard {
 
     /**
      * Compares this StructuralModule to another object for equality
+     * <p>
      * Two StructuralModules are considered equal if they are of the same class and pass the equality check of the superclass
      *
      * @param obj The object to compare with this StructuralModule
@@ -34,7 +37,7 @@ public class StructuralModule extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance

@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.Hit;
 
 /**
  * Represents a Shield, a defensive component of a ShipCard
+ * <p>
  * This module does not have additional attributes or behaviors beyond those inherited from ShipCard
  */
 public class Shield extends ShipCard {
@@ -26,11 +27,15 @@ public class Shield extends ShipCard {
 
     /**
      * Determines whether this shield provides protection from the given direction
+     * <p>
      * Protection is determined based on the component's orientation:
-     * - Protects from the RIGHT if oriented at 0° or 90°
-     * - Protects from the BOTTOM if oriented at 90° or 180°
-     * - Protects from the LEFT if oriented at 180° or 270°
-     * - Protects from the TOP if oriented at 270° or 0°
+     * <ul>
+     *     <li>Protects from the RIGHT if oriented at 0° or 90°</li>
+     *     <li>Protects from the BOTTOM if oriented at 90° or 180°</li>
+     *     <li>Protects from the LEFT if oriented at 180° or 270°</li>
+     *     <li>Protects from the TOP if oriented at 270° or 0°</li>
+     * </ul>
+     *
      *
      * @param direction The direction from which an attack is coming
      * @return {@code true} if this component protects from an attack in the given direction, {@code false} otherwise
@@ -57,6 +62,7 @@ public class Shield extends ShipCard {
 
     /**
      * Compares this Shield to another object for equality
+     * <p>
      * Two Shields are considered equal if they are of the same class and pass the equality check of the superclass
      *
      * @param obj The object to compare with this Shield
@@ -68,7 +74,7 @@ public class Shield extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance

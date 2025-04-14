@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+
 /**
  * Represents a Battery, a specialized type of ShipCard
+ * <p>
  * A Battery has a specific type (DOUBLE or TRIPLE), which determines the number of available batteries
  */
 public class Battery extends ShipCard {
@@ -20,7 +22,7 @@ public class Battery extends ShipCard {
 
 
     /**
-     * Constructs a Battery with specified connectors and type
+     * Constructs a Battery with specified connectors and type.
      * The number of available batteries is determined by the type
      *
      * @param topConnector The connector on the top side
@@ -78,6 +80,7 @@ public class Battery extends ShipCard {
 
     /**
      * Compares this Battery to another object for equality
+     * <p>
      * Two Batteries are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type and available battery count
      *
      * @param obj The object to compare with this Battery
@@ -90,7 +93,7 @@ public class Battery extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance

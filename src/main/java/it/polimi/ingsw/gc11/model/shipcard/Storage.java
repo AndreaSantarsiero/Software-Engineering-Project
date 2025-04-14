@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 /**
  * Represents a Storage, a specialized type of ShipCard
+ * <p>
  * Different storage types allow different amounts of material and specific material types
  */
 public class Storage extends ShipCard {
@@ -61,7 +63,7 @@ public class Storage extends ShipCard {
 
 
     /**
-     * Adds a new material to the storage
+     * Adds a new material to the storage.
      * Throws an exception if the storage is full or the material type is incompatible with the storage type
      *
      * @param newMaterial The material to add
@@ -94,7 +96,7 @@ public class Storage extends ShipCard {
 
 
     /**
-     * Removes a specified material from the storage
+     * Removes a specified material from the storage.
      * Throws an exception if the material is not found or the storage is empty
      *
      * @param material The material to remove
@@ -117,7 +119,7 @@ public class Storage extends ShipCard {
 
 
     /**
-     * Replaces an old material with a new one in the storage
+     * Replaces an old material with a new one in the storage.
      * Throws an exception if the storage is empty or the old material is not found
      *
      * @param newMaterial The material to replace the old one with
@@ -143,11 +145,14 @@ public class Storage extends ShipCard {
 
     /**
      * Calculates and returns the total value of the materials in the storage
+     * <p>
      * The value is determined by the type of material:
-     * - RED = 4 coins
-     * - YELLOW = 3 coins
-     * - GREEN = 2 coins
-     * - BLUE = 1 coin
+     * <ul>
+     *     <li>RED = 4 coins</li>
+     *     <li>YELLOW = 3 coins</li>
+     *     <li>GREEN = 2 coins</li>
+     *     <li>BLUE = 1 coin</li>
+     * </ul>
      *
      * @return The total value of the materials in the storage
      */
@@ -167,7 +172,7 @@ public class Storage extends ShipCard {
 
 
     /**
-     * Retrieves the most valued material from the storage
+     * Retrieves the most valued material from the storage.
      * If no materials are found, an {@code IllegalArgumentException} is thrown
      *
      * @return the most valued {@code Material}
@@ -202,6 +207,7 @@ public class Storage extends ShipCard {
 
     /**
      * Compares this Storage to another object for equality
+     * <p>
      * Two Storages are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type
      *
      * @param obj The object to compare with this Storage
@@ -214,7 +220,7 @@ public class Storage extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance

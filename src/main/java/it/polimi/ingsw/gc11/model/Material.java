@@ -57,6 +57,7 @@ public class Material {
 
     /**
      * Compares this Material to another object for equality
+     * <p>
      * Two Materials are considered equal if they have the same type
      *
      * @param obj The object to compare with this Material

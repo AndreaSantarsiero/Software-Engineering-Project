@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+
 /**
  * Represents an abstract ShipCard that defines the structure of a ship's component
+ * <p>
  * Each ShipCard has connectors on its four sides and can have different orientations
  */
 public abstract class ShipCard {
@@ -15,7 +17,7 @@ public abstract class ShipCard {
     }
 
     /**
-     * Defines the possible orientations for a ShipCard
+     * Defines the possible orientations for a ShipCard.
      * Rotations are in a clockwise direction
      */
     public enum Orientation {
@@ -36,7 +38,7 @@ public abstract class ShipCard {
 
 
     /**
-     * Constructs a ShipCard with specified connectors on each side
+     * Constructs a ShipCard with specified connectors on each side.
      * The default orientation is 0 degrees, it is initially covered and not scrapped
      *
      * @param topConnector    The connector on the top side
@@ -213,6 +215,7 @@ public abstract class ShipCard {
 
     /**
      * Compares this ShipCard to another object for equality
+     * <p>
      * Two ShipCards are considered equal if they have the same ID, orientation, connectors, and state attributes (only scrap and covered)
      *
      * @param obj The object to compare with this ShipCard
@@ -239,7 +242,7 @@ public abstract class ShipCard {
     }
 
     /**
-     * Accepts a {@link ShipCardVisitor} and calls the appropriate visit method on it
+     * Accepts a {@link ShipCardVisitor} and calls the appropriate visit method on it.
      * This method is part of the Visitor design pattern, allowing operations to be performed on ship cards without modifying their classes
      *
      * @param shipCardVisitor the visitor performing the operation on this ship card

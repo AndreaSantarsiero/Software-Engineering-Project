@@ -4,7 +4,8 @@ package it.polimi.ingsw.gc11.model.shipcard;
 
 /**
  * Visitor interface for different types of ShipCard
- * Defines visit methods for each possible ShipCard type that can be part of a ship
+ * <p>
+ * Defines visit methods for each possible ShipCard type that can be part of a ship.
  * This interface follows the Visitor design pattern to separate operations from the object structure
  */
 public interface ShipCardVisitor {

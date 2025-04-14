@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+
 /**
  * Represents a HousingUnit, a special type of ShipCard
- * A HousingUnit can hold members and is considered the center of the ship if it's marked as central
+ * <p>
+ * A HousingUnit can hold members and is considered the center of the ship if it's marked as central.
  * A central housing unit cannot have an alien unit connected to it
  */
 public class HousingUnit extends ShipCard {
@@ -64,7 +66,8 @@ public class HousingUnit extends ShipCard {
 
     /**
      * Applies the effects of the epidemic AdventureCard to a single housing unit
-     * The housing unit is marked as visited in order to not apply this effect multiple times in the same turn
+     * <p>
+     * The housing unit is marked as visited in order to not apply this effect multiple times in the same turn.
      * If an exception occurs while killing a member, it is caught and ignored
      */
     public void epidemic(){
@@ -116,7 +119,7 @@ public class HousingUnit extends ShipCard {
 
 
     /**
-     * Sets the alien unit connected to this housing unit
+     * Sets the alien unit connected to this housing unit.
      * If an alien unit is set, the housing unit will only hold 1 alien
      *
      * @param alienUnit The alien unit to connect to this housing unit
@@ -140,6 +143,7 @@ public class HousingUnit extends ShipCard {
 
     /**
      * Compares this HousingUnit to another object for equality
+     * <p>
      * Two HousingUnits are considered equal if they are of the same class, pass the equality check of the superclass, and have the same central status, the same associated AlienUnit, and the same number of members
      *
      * @param obj The object to compare with this HousingUnit
@@ -157,7 +161,7 @@ public class HousingUnit extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance

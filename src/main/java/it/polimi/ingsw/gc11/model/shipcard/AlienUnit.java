@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+
 /**
  * Represents an AlienUnit, a special type of ShipCard
+ * <p>
  * An AlienUnit can be either BROWN or PURPLE and has a presence state that determines if the alien is present
  */
 public class AlienUnit extends ShipCard {
@@ -20,7 +22,7 @@ public class AlienUnit extends ShipCard {
 
 
     /**
-     * Constructs an AlienUnit with specified connectors and type
+     * Constructs an AlienUnit with specified connectors and type.
      * Initially, the presence of the alien is set to false
      *
      * @param topConnector The connector on the top side
@@ -73,6 +75,7 @@ public class AlienUnit extends ShipCard {
 
     /**
      * Compares this AlienUnit to another object for equality
+     * <p>
      * Two AlienUnits are considered equal if they are of the same class, pass the equality check of the superclass, and have the same type and presence attributes
      *
      * @param obj The object to compare with this AlienUnit
@@ -85,7 +88,7 @@ public class AlienUnit extends ShipCard {
     }
 
     /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument
+     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
      * This enables the visitor to perform operations specific to this type of ship card
      *
      * @param shipCardVisitor the visitor that will operate on this ship card instance
