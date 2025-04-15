@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 //da cancellare
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureState.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
 public class AdventurePhase extends GamePhase {
@@ -20,8 +20,9 @@ public class AdventurePhase extends GamePhase {
 
 
     public void initAdventureState(AdventureCard adventureCard) {
-        AdventureState adventureState = adventureCard.getStartState();
-        this.state = adventureState;
+        //AdventureState adventureState = adventureCard.getStartState();
+        //this.state = adventureState;
+        //da fare con visitor
     }
 
     public void setAdventureState(AdventureState adventureState) {

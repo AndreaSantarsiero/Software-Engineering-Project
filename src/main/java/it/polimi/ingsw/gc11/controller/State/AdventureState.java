@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 
-public class AdventureState implements GamePhase {
+public class AdventureState extends GamePhase {
     @Override
     public void nextState(GameContext context) {
         context.setState(new EndgameState());
