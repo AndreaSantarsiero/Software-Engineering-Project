@@ -21,7 +21,13 @@ public class AdventurePhase extends GamePhase{
     }
 
 
-
+    /**
+         * Initializes the adventure state for the current adventure card extracted by the player using the specified game model.
+     *
+     * @param adventureCard The adventure card extracted by the player.
+     * @param gameModel The current state of the game model.
+     * @param player The player participating in the adventure.
+     */
     public void initAdventureState(AdventureCard adventureCard, GameModel gameModel, Player player) {
         state = adventureCard.getInitialState(gameModel, player);
     }
