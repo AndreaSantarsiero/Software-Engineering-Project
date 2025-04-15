@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import it.polimi.ingsw.gc11.model.Player;
 
-import java.util.List;
+
 
 public class AbandonedShip extends AdventureCard {
 
@@ -39,8 +41,8 @@ public class AbandonedShip extends AdventureCard {
     }
 
     @Override
-    public void accept(AdventureCardVisitor adventureCardVisitor) {
-        adventureCardVisitor.visit(this);
+    public AdventureState getInitialState(GameModel gameModel, Player player){
+        return new ChooseHousing(this, gameModel, player);
     }
 
 //    //Username is the player playing the card

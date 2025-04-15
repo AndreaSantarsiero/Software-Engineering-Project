@@ -1,12 +1,13 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.PlanetCardStates.ChoosePlanet;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
-
+import it.polimi.ingsw.gc11.model.Player;
 import java.util.ArrayList;
-import java.util.List;
+
 
 
 public class PlanetsCard extends AdventureCard {
@@ -38,8 +39,8 @@ public class PlanetsCard extends AdventureCard {
     }
 
     @Override
-    public void accept(AdventureCardVisitor adventureCardVisitor) {
-        adventureCardVisitor.visit(this);
+    public AdventureState getInitialState(GameModel gameModel, Player player){
+        return new ChoosePlanet(this, gameModel, player);
     }
 
 

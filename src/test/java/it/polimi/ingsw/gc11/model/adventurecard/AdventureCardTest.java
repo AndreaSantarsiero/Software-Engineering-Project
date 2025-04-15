@@ -1,10 +1,12 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCardVisitor;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Player;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+
 
 public class AdventureCardTest {
 
@@ -14,8 +16,8 @@ public class AdventureCardTest {
         }
 
         @Override
-        public void accept(AdventureCardVisitor adventureCardVisitor) {
-
+        public AdventureState getInitialState(GameModel gameModel, Player player){
+            return null;
         }
     }
 

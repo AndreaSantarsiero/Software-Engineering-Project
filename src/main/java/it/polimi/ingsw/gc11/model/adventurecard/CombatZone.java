@@ -1,10 +1,11 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.SelectPlayerCombat;
 import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.Shot;
+import it.polimi.ingsw.gc11.model.Player;
 
-import java.util.ArrayList;
+
 
 public class CombatZone extends AdventureCard {
 
@@ -24,8 +25,8 @@ public class CombatZone extends AdventureCard {
     }
 
     @Override
-    public void accept(AdventureCardVisitor adventureCardVisitor) {
-        adventureCardVisitor.visit(this);
+    public AdventureState getInitialState(GameModel gameModel, Player player){
+        return new SelectPlayerCombat(this, gameModel, 0);
     }
 
 

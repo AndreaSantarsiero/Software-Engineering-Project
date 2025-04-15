@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
@@ -64,8 +66,8 @@ public class Slavers extends AdventureCard {
     }
 
     @Override
-    public void accept(AdventureCardVisitor adventureCardVisitor) {
-        adventureCardVisitor.visit(this);
+    public AdventureState getInitialState(GameModel gameModel, Player player){
+        return null;
     }
 
 }

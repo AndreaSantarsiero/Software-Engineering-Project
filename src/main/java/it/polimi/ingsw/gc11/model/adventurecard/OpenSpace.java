@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
-import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
-import java.util.List;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.OpenSpaceStates.ChooseOpen;
+import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Player;
+
 
 
 public class OpenSpace extends AdventureCard {
@@ -12,8 +14,8 @@ public class OpenSpace extends AdventureCard {
     }
 
     @Override
-    public void accept(AdventureCardVisitor adventureCardVisitor) {
-        adventureCardVisitor.visit(this);
+    public AdventureState getInitialState(GameModel gameModel, Player player){
+        return new ChooseOpen(this, gameModel, player);
     }
 
 

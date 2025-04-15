@@ -1,10 +1,13 @@
 package it.polimi.ingsw.gc11.controller.State;
-//da cancellare
-import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
-public class AdventurePhase extends GamePhase {
+import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
+
+
+
+public class AdventurePhase extends GamePhase{
     private AdventureState state;
 
     @Override
@@ -19,14 +22,11 @@ public class AdventurePhase extends GamePhase {
 
 
 
-    public void initAdventureState(AdventureCard adventureCard) {
-        //AdventureState adventureState = adventureCard.getStartState();
-        //this.state = adventureState;
-        //da fare con visitor
+    public void initAdventureState(AdventureCard adventureCard, GameModel gameModel, Player player) {
+        state = adventureCard.getInitialState(gameModel, player);
     }
 
     public void setAdventureState(AdventureState adventureState) {
         this.state = adventureState;
     }
-
 }

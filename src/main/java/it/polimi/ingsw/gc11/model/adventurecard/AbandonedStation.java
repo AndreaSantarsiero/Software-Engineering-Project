@@ -1,11 +1,13 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
-
+import it.polimi.ingsw.gc11.model.Player;
 import java.util.ArrayList;
-import java.util.List;
+
+
 
 public class AbandonedStation extends AdventureCard {
 
@@ -53,8 +55,8 @@ public class AbandonedStation extends AdventureCard {
     public void resolveCard() {this.resolved = true;}
 
     @Override
-    public void accept(AdventureCardVisitor adventureCardVisitor) {
-        adventureCardVisitor.visit(this);
+    public AdventureState getInitialState(GameModel gameModel, Player player){
+        return new ChooseMaterialStation(this, gameModel, player);
     }
 
 
