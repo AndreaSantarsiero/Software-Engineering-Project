@@ -62,4 +62,10 @@ public class Slavers extends AdventureCard {
             //model.getPlayerShipBoard(username).killMembers(housingUnitsUserAccepted, killedMembers);  /* da adattare usando la mappa al posto delle due liste */
         }
     }
+
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
 }

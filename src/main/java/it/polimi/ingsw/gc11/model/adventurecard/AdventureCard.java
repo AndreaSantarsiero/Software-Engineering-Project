@@ -1,6 +1,4 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
-//da cancellare
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureState.AdventureState;
 
 public abstract class AdventureCard {
 
@@ -28,5 +26,5 @@ public abstract class AdventureCard {
         return used;
     }
 
-    public abstract AdventureState getStartState();
+    public abstract void accept(AdventureCardVisitor adventureCardVisitor);
 }

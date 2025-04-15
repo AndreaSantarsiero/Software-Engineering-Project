@@ -1,20 +1,36 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCardVisitor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AdventureCardTest {
+
+    private static class TestAdventureCard extends AdventureCard {
+        public TestAdventureCard(AdventureCard.Type type) {
+            super(type);
+        }
+
+        @Override
+        public void accept(AdventureCardVisitor adventureCardVisitor) {
+
+        }
+    }
+
+
+
     @Test
     void testCardInitialization() {
-        AdventureCard card = new AdventureCard(AdventureCard.Type.TRIAL) {};
+        AdventureCard card = new TestAdventureCard(AdventureCard.Type.TRIAL) {};
         assertEquals(AdventureCard.Type.TRIAL, card.getType());
         assertFalse(card.isUsed());
     }
 
     @Test
     void testUseCard() {
-        AdventureCard card = new AdventureCard(AdventureCard.Type.LEVEL1) {};
+        AdventureCard card = new TestAdventureCard(AdventureCard.Type.LEVEL1) {};
         assertFalse(card.isUsed());
         card.useCard();
         assertTrue(card.isUsed());

@@ -52,6 +52,12 @@ public class AbandonedStation extends AdventureCard {
 
     public void resolveCard() {this.resolved = true;}
 
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
+
 //    //The check if the player has sufficient humans is done by controller
 //    public void handler(GameModel model, String username, List<List<Material>> materialsUserAccepted, List<Storage> storagesUserAccepted) {
 //        //User lose days of flight

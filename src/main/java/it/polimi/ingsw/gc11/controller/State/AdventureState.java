@@ -2,14 +2,14 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 
-public class CheckState implements GamePhase {
+public class AdventureState implements GamePhase {
     @Override
     public void nextState(GameContext context) {
-        context.setState(new AdventureState());
+        context.setState(new EndgameState());
     }
 
     @Override
     public String getStateName(){
-        return "CHECK";
+        return "ADVENTURE";
     }
 }

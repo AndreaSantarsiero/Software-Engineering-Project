@@ -23,4 +23,10 @@ public class CombatZone extends AdventureCard {
         return combatPhases[index];
     }
 
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
+
 }

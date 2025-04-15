@@ -11,6 +11,12 @@ public class OpenSpace extends AdventureCard {
         super(type);
     }
 
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
+
 //    public void handler(GameModel model, String username, List<Battery> batteriesUserAccepted, List<Integer> numBatteries) {
 //        int TotalNumBatteries = 0;
 //        for (int num : numBatteries) {

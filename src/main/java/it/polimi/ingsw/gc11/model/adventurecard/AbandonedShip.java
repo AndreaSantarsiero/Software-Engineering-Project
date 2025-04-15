@@ -38,6 +38,11 @@ public class AbandonedShip extends AdventureCard {
         this.resolved = true;
     }
 
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
 //    //Username is the player playing the card
 //    public void handler(GameModel model, String username, List<HousingUnit> housingUnit, List<Integer> killedMembers) {
 //        //KillMember from the shipboard of the Player

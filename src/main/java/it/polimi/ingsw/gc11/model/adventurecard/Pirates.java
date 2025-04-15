@@ -35,4 +35,9 @@ public class Pirates extends AdventureCard {
 
     public ArrayList<Shot> getShots() {return shots;}
 
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
 }
