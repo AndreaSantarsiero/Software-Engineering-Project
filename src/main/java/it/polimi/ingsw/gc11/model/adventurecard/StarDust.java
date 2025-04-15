@@ -15,4 +15,10 @@ public class StarDust extends AdventureCard {
         //Lose Days of flight
         model.move(username, num);
     }
+
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
 }

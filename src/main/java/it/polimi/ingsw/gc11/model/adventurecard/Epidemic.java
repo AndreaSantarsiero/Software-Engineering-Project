@@ -8,7 +8,8 @@ public class Epidemic extends AdventureCard {
         super(Type.LEVEL2);
     }
 
-
-
-
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
 }

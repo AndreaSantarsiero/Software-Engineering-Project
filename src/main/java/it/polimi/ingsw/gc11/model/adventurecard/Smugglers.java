@@ -46,4 +46,10 @@ public class Smugglers extends AdventureCard {
 
     public void defeate() {defeated = true;}
 
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
+
 }

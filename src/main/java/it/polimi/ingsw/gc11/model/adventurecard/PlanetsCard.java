@@ -37,6 +37,11 @@ public class PlanetsCard extends AdventureCard {
         this.planets = planets;
     }
 
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
 
 //    public void landOn(int numPlanet){
 //        if(numPlanet < 0 || numPlanet >= planets.size()) {

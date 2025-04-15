@@ -24,4 +24,10 @@ public class MeteorSwarm extends AdventureCard {
     public  ArrayList<Meteor> getMeteors() {
         return meteors;
     }
+
+    @Override
+    public void accept(AdventureCardVisitor adventureCardVisitor) {
+        adventureCardVisitor.visit(this);
+    }
+
 }

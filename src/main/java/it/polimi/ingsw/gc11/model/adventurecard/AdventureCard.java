@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-import it.polimi.ingsw.gc11.model.GameModel;
-
 public abstract class AdventureCard {
 
     public enum Type {
@@ -27,4 +25,6 @@ public abstract class AdventureCard {
     public boolean isUsed(){
         return used;
     }
+
+    public abstract void accept(AdventureCardVisitor adventureCardVisitor);
 }
