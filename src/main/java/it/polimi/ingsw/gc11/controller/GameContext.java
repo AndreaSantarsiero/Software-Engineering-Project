@@ -60,7 +60,7 @@ public class GameContext {
     }
 
     public void endGame() {
-        if (this.state instanceof AdventurePhase) {
+        if (this.state instanceof AdventureState) {
             this.nextState();
         }
         else {
