@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.view.cli.ShipCardCLI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +19,17 @@ class ShipCardTest {
         }
 
         @Override
-        public void accept(ShipCardVisitor shipCardVisitor) {
+        public void place(ShipBoard shipBoard, int x, int y){
+
+        }
+
+        @Override
+        public void unPlace(ShipBoard shipBoard){
+
+        }
+
+        @Override
+        public void print(ShipCardCLI shipCardCLI, int i){
 
         }
     }

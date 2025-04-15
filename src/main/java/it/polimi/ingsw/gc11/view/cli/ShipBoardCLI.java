@@ -54,8 +54,7 @@ public class ShipBoardCLI {
                     if (shipBoard.validateCoordinates(x, y)) {
                         ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
                         if(shipCard != null) {
-                            shipCardCLI.setIndex(i);
-                            shipCard.accept(shipCardCLI);
+                            shipCard.print(shipCardCLI, i);
                         }
                         else{
                             printInvalidSquare();
@@ -116,11 +115,10 @@ public class ShipBoardCLI {
                 else if(x == (shipBoard.getWidth() - 1)){
                     for (ShipCard shipCard : reservedCards) {
                         if (shipCard != null) {
-                            shipCardCLI.setIndex(i);
-                            shipCard.accept(shipCardCLI);
+                            shipCard.print(shipCardCLI, i);
                         }
                         else {
-                            shipCardCLI.printEmptyShipCard();
+                            shipCardCLI.printEmptyShipCard(i);
                         }
                     }
                 }

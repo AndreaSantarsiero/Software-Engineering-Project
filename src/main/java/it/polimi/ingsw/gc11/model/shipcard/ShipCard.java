@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.view.cli.ShipCardCLI;
 
 /**
  * Represents an abstract ShipCard that defines the structure of a ship's component
@@ -241,11 +243,10 @@ public abstract class ShipCard {
                 this.covered == shipCard.isCovered();
     }
 
-    /**
-     * Accepts a {@link ShipCardVisitor} and calls the appropriate visit method on it.
-     * This method is part of the Visitor design pattern, allowing operations to be performed on ship cards without modifying their classes
-     *
-     * @param shipCardVisitor the visitor performing the operation on this ship card
-     */
-    public abstract void accept(ShipCardVisitor shipCardVisitor);
+
+    public abstract void place(ShipBoard shipBoard, int x, int y);
+
+    public abstract void unPlace(ShipBoard shipBoard);
+
+    public abstract void print(ShipCardCLI shipCardCLI, int i);
 }

@@ -1,6 +1,10 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
 
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.view.cli.ShipCardCLI;
+
+
 
 /**
  * Represents an Engine, a specialized type of ShipCard
@@ -58,14 +62,18 @@ public class Engine extends ShipCard {
         return super.equals(obj) && this.type == engine.getType();
     }
 
-    /**
-     * Calls the corresponding {@code visit} method on the given {@link ShipCardVisitor}, passing this specific subclass instance as the argument.
-     * This enables the visitor to perform operations specific to this type of ship card
-     *
-     * @param shipCardVisitor the visitor that will operate on this ship card instance
-     */
     @Override
-    public void accept(ShipCardVisitor shipCardVisitor){
-        shipCardVisitor.visit(this);
+    public void place(ShipBoard shipBoard, int x, int y){
+        shipBoard.addToList(this, x, y);
+    }
+
+    @Override
+    public void unPlace(ShipBoard shipBoard){
+        shipBoard.removeFromList(this);
+    }
+
+    @Override
+    public void print(ShipCardCLI shipCardCLI, int i){
+        shipCardCLI.draw(this, i);
     }
 }

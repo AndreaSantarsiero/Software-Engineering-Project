@@ -8,28 +8,15 @@ import org.fusesource.jansi.Ansi;
 
 /**
  * CLI (Command Line Interface) renderer for ShipCard elements
- * <p>
- * Implements the {@link ShipCardVisitor} to render different ship cards using the visitor pattern
  */
-public class ShipCardCLI implements ShipCardVisitor {
+public class ShipCardCLI {
 
     public static int cardWidth = 15;
     public static int cardLength = 7;
-    public int i;
 
 
 
     public ShipCardCLI(){}
-
-
-
-    /**
-     * Sets the current line index for rendering a specific part of a card
-     * @param i line index
-     */
-    public void setIndex(int i){
-        this.i = i;
-    }
 
 
 
@@ -54,7 +41,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * @param connector connector type
      * @return formatted string for left connector
      */
-    public String leftConnectorToString(ShipCard.Connector connector) {
+    public String leftConnectorToString(ShipCard.Connector connector, int i) {
         if(i == (cardLength/2 - 1)){
             return switch (connector) {
                 case ShipCard.Connector.NONE, ShipCard.Connector.SINGLE -> "  ";
@@ -103,7 +90,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * @param connector connector type
      * @return formatted string for right connector
      */
-    public String rightConnectorToString(ShipCard.Connector connector) {
+    public String rightConnectorToString(ShipCard.Connector connector, int i) {
         if(i == (cardLength/2 - 1)){
             return switch (connector) {
                 case ShipCard.Connector.NONE, ShipCard.Connector.SINGLE -> "  ";
@@ -127,56 +114,6 @@ public class ShipCardCLI implements ShipCardVisitor {
         else{
             return "   ";
         }
-    }
-
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(AlienUnit alienUnit) {
-        printAlienUnit(alienUnit);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(Battery battery) {
-        printBattery(battery);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(Cannon cannon) {
-        printCannon(cannon);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(Engine engine) {
-        printEngine(engine);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(HousingUnit housingUnit) {
-        printHousingUnit(housingUnit);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(Shield shield) {
-        printShield(shield);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(Storage storage) {
-        printStorage(storage);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void visit(StructuralModule structuralModule) {
-        printStructuralModule(structuralModule);
     }
 
 
@@ -268,7 +205,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints a generic ship card depending on the current line index
      * @param shipCard the ShipCard to render
      */
-    public void printShipCard(ShipCard shipCard) {
+    public void printShipCard(ShipCard shipCard, int i) {
         if (i == 0) {
             System.out.print("┌─────────────┐");
         }
@@ -298,16 +235,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders an AlienUnit card based on the current line index
      * @param alienUnit the AlienUnit instance
      */
-    public void printAlienUnit(AlienUnit alienUnit) {
+    public void draw(AlienUnit alienUnit, int i) {
         setColor(alienUnit);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(alienUnit.getLeftConnector()));
-            printAlienUnitCenter(alienUnit);
-            System.out.print(rightConnectorToString(alienUnit.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(alienUnit.getLeftConnector(), i));
+            printAlienUnitCenter(alienUnit, i);
+            System.out.print(rightConnectorToString(alienUnit.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(alienUnit);
+            printShipCard(alienUnit, i);
         }
     }
 
@@ -315,7 +252,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of an AlienUnit card
      * @param alienUnit the AlienUnit instance
      */
-    public void printAlienUnitCenter(AlienUnit alienUnit) {
+    public void printAlienUnitCenter(AlienUnit alienUnit, int i) {
         if(i == (cardLength/2 - 1)) {
             System.out.print("         ");
         }
@@ -339,16 +276,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders a Battery card based on the current line index
      * @param battery the Battery instance
      */
-    public void printBattery(Battery battery) {
+    public void draw(Battery battery, int i) {
         setColor(battery);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(battery.getLeftConnector()));
-            printBatteryCenter(battery);
-            System.out.print(rightConnectorToString(battery.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(battery.getLeftConnector(), i));
+            printBatteryCenter(battery, i);
+            System.out.print(rightConnectorToString(battery.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(battery);
+            printShipCard(battery, i);
         }
     }
 
@@ -356,7 +293,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of a Battery card
      * @param battery the Battery instance
      */
-    public void printBatteryCenter(Battery battery) {
+    public void printBatteryCenter(Battery battery, int i) {
         if(i == (cardLength/2 - 1)) {
             System.out.print("         ");
         }
@@ -385,16 +322,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders a Cannon card based on the current line index
      * @param cannon the Cannon instance
      */
-    public void printCannon(Cannon cannon) {
+    public void draw(Cannon cannon, int i) {
         setColor(cannon);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(cannon.getLeftConnector()));
-            printCannonCenter(cannon);
-            System.out.print(rightConnectorToString(cannon.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(cannon.getLeftConnector(), i));
+            printCannonCenter(cannon, i);
+            System.out.print(rightConnectorToString(cannon.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(cannon);
+            printShipCard(cannon, i);
         }
     }
 
@@ -402,7 +339,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of a Cannon card
      * @param cannon the Cannon instance
      */
-    public void printCannonCenter(Cannon cannon) {
+    public void printCannonCenter(Cannon cannon, int i) {
         if(i == (cardLength/2 - 1)) {
             if(cannon.getOrientation().equals(ShipCard.Orientation.DEG_0) && cannon.getType().equals(Cannon.Type.SINGLE)){
                 System.out.print("    ∧    ");
@@ -456,16 +393,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders an Engine card based on the current line index
      * @param engine the Engine instance
      */
-    public void printEngine(Engine engine) {
+    public void draw(Engine engine, int i) {
         setColor(engine);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(engine.getLeftConnector()));
-            printEngineCenter(engine);
-            System.out.print(rightConnectorToString(engine.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(engine.getLeftConnector(), i));
+            printEngineCenter(engine, i);
+            System.out.print(rightConnectorToString(engine.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(engine);
+            printShipCard(engine, i);
         }
     }
 
@@ -473,7 +410,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of an Engine card
      * @param engine the Engine instance
      */
-    public void printEngineCenter(Engine engine) {
+    public void printEngineCenter(Engine engine, int i) {
         if(i == (cardLength/2 - 1)) {
             if(engine.getOrientation().equals(ShipCard.Orientation.DEG_180) && engine.getType().equals(Engine.Type.SINGLE)){
                 System.out.print("    ∧    ");
@@ -527,16 +464,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders a HousingUnit card based on the current line index
      * @param housingUnit the HousingUnit instance
      */
-    public void printHousingUnit(HousingUnit housingUnit) {
+    public void draw(HousingUnit housingUnit, int i) {
         setColor(housingUnit);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(housingUnit.getLeftConnector()));
-            printHousingUnitCenter(housingUnit);
-            System.out.print(rightConnectorToString(housingUnit.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(housingUnit.getLeftConnector(), i));
+            printHousingUnitCenter(housingUnit, i);
+            System.out.print(rightConnectorToString(housingUnit.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(housingUnit);
+            printShipCard(housingUnit, i);
         }
     }
 
@@ -544,7 +481,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of a HousingUnit card
      * @param housingUnit the HousingUnit instance
      */
-    public void printHousingUnitCenter(HousingUnit housingUnit) {
+    public void printHousingUnitCenter(HousingUnit housingUnit, int i) {
         if(i == (cardLength/2 - 1)) {
             if (housingUnit.isCentral()) {
                 System.out.print(" CENTRAL ");
@@ -575,16 +512,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders a Shield card based on the current line index
      * @param shield the Shield instance
      */
-    public void printShield(Shield shield) {
+    public void draw(Shield shield, int i) {
         setColor(shield);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(shield.getLeftConnector()));
-            printShieldCenter(shield);
-            System.out.print(rightConnectorToString(shield.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(shield.getLeftConnector(), i));
+            printShieldCenter(shield, i);
+            System.out.print(rightConnectorToString(shield.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(shield);
+            printShipCard(shield, i);
         }
     }
 
@@ -592,7 +529,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of a Shield card
      * @param shield the Shield instance
      */
-    public void printShieldCenter(Shield shield) {
+    public void printShieldCenter(Shield shield, int i) {
         if(i == (cardLength/2 - 1)) {
             StringBuilder result = new StringBuilder();
 
@@ -654,16 +591,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders a Storage card based on the current line index
      * @param storage the Storage instance
      */
-    public void printStorage(Storage storage) {
+    public void draw(Storage storage, int i) {
         setColor(storage);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(storage.getLeftConnector()));
-            printStorageCenter(storage);
-            System.out.print(rightConnectorToString(storage.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(storage.getLeftConnector(), i));
+            printStorageCenter(storage, i);
+            System.out.print(rightConnectorToString(storage.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(storage);
+            printShipCard(storage, i);
         }
     }
 
@@ -671,7 +608,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of a Storage card
      * @param storage the Storage instance
      */
-    public void printStorageCenter(Storage storage) {
+    public void printStorageCenter(Storage storage, int i) {
         if(i == (cardLength/2 - 1)) {
             if (storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.SINGLE_RED)) {
                 System.out.print(" SPECIAL ");
@@ -722,16 +659,16 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Renders a StructuralModule card based on the current line index
      * @param structuralModule the StructuralModule instance
      */
-    public void printStructuralModule(StructuralModule structuralModule) {
+    public void draw(StructuralModule structuralModule, int i) {
         setColor(structuralModule);
 
         if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(structuralModule.getLeftConnector()));
-            printStructuralModuleCenter(structuralModule);
-            System.out.print(rightConnectorToString(structuralModule.getRightConnector()) + "│");
+            System.out.print("│" + leftConnectorToString(structuralModule.getLeftConnector(), i));
+            printStructuralModuleCenter(structuralModule, i);
+            System.out.print(rightConnectorToString(structuralModule.getRightConnector(), i) + "│");
         }
         else {
-            printShipCard(structuralModule);
+            printShipCard(structuralModule, i);
         }
     }
 
@@ -739,7 +676,7 @@ public class ShipCardCLI implements ShipCardVisitor {
      * Prints the central section of a StructuralModule card
      * @param structuralModule the StructuralModule instance
      */
-    public void printStructuralModuleCenter(StructuralModule structuralModule) {
+    public void printStructuralModuleCenter(StructuralModule structuralModule, int i) {
         if(i == (cardLength/2 - 1)) {
             System.out.print("         ");
         }
@@ -756,7 +693,7 @@ public class ShipCardCLI implements ShipCardVisitor {
     /**
      * Renders an empty ship card based on the current line index
      */
-    public void printEmptyShipCard() {
+    public void printEmptyShipCard(int i) {
         System.out.print(Ansi.ansi().reset());
 
         if (i == 0) {
@@ -775,7 +712,7 @@ public class ShipCardCLI implements ShipCardVisitor {
     /**
      * Renders a covered ship card based on the current line index
      */
-    public void printCovered() {
+    public void printCovered(int i) {
         System.out.print(Ansi.ansi().reset());
 
         if (i == 1 || i == (cardLength - 2)) {
@@ -785,7 +722,7 @@ public class ShipCardCLI implements ShipCardVisitor {
             System.out.print("│   COVERED   │");
         }
         else {
-            printEmptyShipCard();
+            printEmptyShipCard(i);
         }
     }
 }

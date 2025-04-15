@@ -14,7 +14,7 @@ import java.awt.Point;
  * <p>
  * The board maintains information about ship cards, reserved components, and the last modified position
  */
-public abstract class ShipBoard implements ShipCardVisitor {
+public abstract class ShipBoard {
 
     private final ShipCard[][] components;
     private final List<ShipCard> reservedComponents;
@@ -27,7 +27,6 @@ public abstract class ShipBoard implements ShipCardVisitor {
     private final List<Shield> shields;
     private final List<Storage> storages;
 
-    private boolean addMode;
     private int lastModifiedX;
     private int lastModifiedY;
     private AlienUnit brownActiveUnit;
@@ -58,142 +57,69 @@ public abstract class ShipBoard implements ShipCardVisitor {
 
 
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If {@code addMode} is {@code true}, associates the given {@link AlienUnit} with the current coordinates
-     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code alienUnits} map, only if it is not already present
-     * <br>
-     * Otherwise, removes the {@link AlienUnit} from the map if it exists
-     */
-    @Override
-    public void visit(AlienUnit alienUnit) {
-        if(addMode) {
-            alienUnits.putIfAbsent(alienUnit, new Point(lastModifiedX, lastModifiedY));
-        }
-        else {
-            alienUnits.remove(alienUnit);
-        }
+    public void addToList(AlienUnit alienUnit, int x, int y) {
+        alienUnits.putIfAbsent(alienUnit, new Point(x, y));
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If {@code addMode} is {@code true}, adds the {@link Battery} instance to the batteries list if it is not already present
-     * <br>
-     * Otherwise, removes it from the list if present
-     */
-    @Override
-    public void visit(Battery battery) {
-        if(addMode) {
-            if(!batteries.contains(battery)) {
-                batteries.add(battery);
-            }
-        }
-        else {
-            batteries.remove(battery);
-        }
+    public void addToList(Battery battery, int x, int y) {
+        batteries.add(battery);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If {@code addMode} is {@code true}, associates the given {@link Cannon} with the current coordinates
-     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code cannons} map, only if it is not already present
-     * <br>
-     * Otherwise, removes the {@link Cannon} from the map if it exists
-     */
-    @Override
-    public void visit(Cannon cannon) {
-        if(addMode) {
-            cannons.putIfAbsent(cannon, new Point(lastModifiedX, lastModifiedY));
-        }
-        else {
-            cannons.remove(cannon);
-        }
+    public void addToList(Cannon cannon, int x, int y) {
+        cannons.putIfAbsent(cannon, new Point(x, y));
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If {@code addMode} is {@code true}, associates the given {@link Engine} with the current coordinates
-     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code engines} map, only if it is not already present
-     * <br>
-     * Otherwise, removes the {@link Engine} from the map if it exists
-     */
-    @Override
-    public void visit(Engine engine) {
-        if(addMode) {
-            engines.putIfAbsent(engine, new Point(lastModifiedX, lastModifiedY));
-        }
-        else {
-            engines.remove(engine);
-        }
+    public void addToList(Engine engine, int x, int y) {
+        engines.putIfAbsent(engine, new Point(x, y));
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If {@code addMode} is {@code true}, associates the given {@link HousingUnit} with the current coordinates
-     * ({@code lastModifiedX}, {@code lastModifiedY}) in the {@code housingUnits} map, only if it is not already present
-     * <br>
-     * Otherwise, removes the {@link HousingUnit} from the map if it exists
-     */
-    @Override
-    public void visit(HousingUnit housingUnit) {
-        if(addMode) {
-            housingUnits.putIfAbsent(housingUnit, new Point(lastModifiedX, lastModifiedY));
-        }
-        else {
-            housingUnits.remove(housingUnit);
-        }
+    public void addToList(HousingUnit housingUnit, int x, int y) {
+        housingUnits.putIfAbsent(housingUnit, new Point(x, y));
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If {@code addMode} is {@code true}, adds the {@link Shield} instance to the shields list if it is not already present
-     * <br>
-     * Otherwise, removes it from the list if present
-     */
-    @Override
-    public void visit(Shield shield) {
-        if(addMode) {
-            if(!shields.contains(shield)) {
-                shields.add(shield);
-            }
-        }
-        else {
-            shields.remove(shield);
-        }
+    public void addToList(Shield shield, int x, int y) {
+        shields.add(shield);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If {@code addMode} is {@code true}, adds the {@link Storage} instance to the storages list if it is not already present
-     * <br>
-     * Otherwise, removes it from the list if present
-     */
-    @Override
-    public void visit(Storage storage) {
-        if(addMode) {
-            if(!storages.contains(storage)) {
-                storages.add(storage);
-            }
-        }
-        else {
-            storages.remove(storage);
-        }
+    public void addToList(Storage storage, int x, int y) {
+        storages.add(storage);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * No operation is performed on {@link StructuralModule}
-     */
-    @Override
-    public void visit(StructuralModule structuralModule) {
+    public void addToList(StructuralModule structuralModule, int x, int y) {
+
+    }
+
+
+
+    public void removeFromList(AlienUnit alienUnit) {
+        alienUnits.remove(alienUnit);
+    }
+
+    public void removeFromList(Battery battery) {
+        batteries.remove(battery);
+    }
+
+    public void removeFromList(Cannon cannon) {
+        cannons.remove(cannon);
+    }
+
+    public void removeFromList(Engine engine) {
+        engines.remove(engine);
+    }
+
+    public void removeFromList(HousingUnit housingUnit) {
+        housingUnits.remove(housingUnit);
+    }
+
+    public void removeFromList(Shield shield) {
+        shields.remove(shield);
+    }
+
+    public void removeFromList(Storage storage) {
+        storages.remove(storage);
+    }
+
+    public void removeFromList(StructuralModule structuralModule) {
 
     }
 
@@ -287,8 +213,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
         components[y][x] = shipCard;
         lastModifiedX = x;
         lastModifiedY = y;
-        addMode = true;
-        shipCard.accept(this);
+        shipCard.place(this, x, y);
     }
 
     /**
@@ -308,8 +233,7 @@ public abstract class ShipBoard implements ShipCardVisitor {
             throw new IllegalArgumentException("Ship card already null");
         }
         if (x == lastModifiedX && y == lastModifiedY) {
-            addMode = false;
-            components[y][x].accept(this);
+            components[y][x].unPlace(this);
             components[y][x] = null;
         }
         else {

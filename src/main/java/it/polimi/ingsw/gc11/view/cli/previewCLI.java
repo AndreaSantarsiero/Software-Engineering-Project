@@ -31,8 +31,7 @@ public class previewCLI {
 
         System.out.println("\n\n\nExample of a covered ship card:");
         for (int i = 0; i < ShipCardCLI.cardLength; i++){
-            shipCardCLI.setIndex(i);
-            shipCardCLI.printCovered();
+            shipCardCLI.printCovered(i);
             System.out.println();
         }
 
