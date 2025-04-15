@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
-import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.adventurecard.AdventureState.AdventureState;
 
 public abstract class AdventureCard {
 
@@ -27,4 +27,6 @@ public abstract class AdventureCard {
     public boolean isUsed(){
         return used;
     }
+
+    public abstract AdventureState getStartState();
 }
