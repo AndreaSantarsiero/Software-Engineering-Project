@@ -50,24 +50,6 @@ public class GameContext {
         }
     }
 
-    public void startGame() throws GameAlreadyStartedException {
-        if (this.state instanceof IdleState) {
-            this.nextState();
-        }
-        else {
-            throw new GameAlreadyStartedException("Game ID " + matchID + " is already running");
-        }
-    }
-
-    public void endGame() {
-        if (this.state instanceof AdventurePhase) {
-            this.nextState();
-        }
-        else {
-            //states checking
-        }
-    }
-
     public void connectPlayerToGame(String playerUsername) {
         try {
             this.addPlayerContext(playerUsername);
@@ -77,16 +59,34 @@ public class GameContext {
         }
     }
 
+    public void startGame() {
+        try {
+            state.startGame(this);
+        }
+        catch (GameAlreadyStartedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void endGame() {
+        try{
+            this.state.endGame(this);
+        }
+        catch (Exception e) {
+            System.out.println("Can't end game in this state");
+        }
+    }
+
     public ShipCard getFreeShipCard(int pos) throws IndexOutOfBoundsException {
         if (pos < 0) {
             throw new IndexOutOfBoundsException();
         }
-
-        if (state instanceof BuildingState){
-            return gameModel.getFreeShipCard(pos);
+        try{
+            return this.state.getFreeShipCard(this.gameModel, pos);
         }
-        else {
-            throw new IllegalStateException();
+        catch (IllegalStateException e){
+            System.out.println("Can't get free ship card in the current game phase.");
+            return null;
         }
     }
 
@@ -98,11 +98,11 @@ public class GameContext {
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException();
         }
-        if (state instanceof BuildingState){
+        try{
             this.gameModel.getPlayerShipBoard(username).addShipCard(shipCard, x, y);
         }
-        else {
-            throw new IllegalStateException();
+        catch (IllegalStateException e) {
+            System.out.println("Can't place a ship card in the current game phase.");
         }
     }
 
@@ -110,17 +110,11 @@ public class GameContext {
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException();
         }
-
-        if (state instanceof BuildingState){
-            try {
-                this.gameModel.getPlayerShipBoard(username).removeShipCard(x, y);
-            }
-            catch (IllegalArgumentException e) {
-                //can't remove shipcard
-            }
+        try {
+            this.state.removeShipCard(this.gameModel, username, x, y);
         }
-        else {
-            throw new IllegalStateException();
+        catch (IllegalArgumentException e) {
+            System.out.println("Can't remove ship card in the current game phase.");
         }
     }
 
@@ -128,16 +122,11 @@ public class GameContext {
         if (shipCard == null) {
             throw new NullPointerException();
         }
-        if (state instanceof BuildingState){
-            try {
-                this.gameModel.getPlayerShipBoard(username).reserveShipCard(shipCard);
-            }
-            catch (IllegalStateException e) {
-                //can't reserve shipcard
-            }
+        try {
+            this.gameModel.getPlayerShipBoard(username).reserveShipCard(shipCard);
         }
-        else {
-            throw new IllegalStateException();
+        catch (IllegalStateException e) {
+            System.out.println("Can't reserve ship card in the current game phase.");
         }
     }
 
@@ -148,16 +137,11 @@ public class GameContext {
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException();
         }
-        if (state instanceof BuildingState){
-            try {
-                this.gameModel.getPlayerShipBoard(username).useReservedShipCard(shipCard, x, y);
-            }
-            catch (IllegalStateException e) {
-                //can't use reserved shipcard
-            }
+        try {
+            this.gameModel.getPlayerShipBoard(username).useReservedShipCard(shipCard, x, y);
         }
-        else {
-            throw new IllegalStateException();
+        catch (IllegalStateException e) {
+            System.out.println("Can't use reserved ship card in the current game phase.");
         }
     }
 

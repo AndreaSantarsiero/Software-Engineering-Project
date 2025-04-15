@@ -1,5 +1,5 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
-
+//da cancellare
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureState.AdventureState;
 
 public abstract class AdventureCard {
