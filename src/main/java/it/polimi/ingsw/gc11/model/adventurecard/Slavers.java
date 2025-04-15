@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
 import java.util.List;
 
 
@@ -70,4 +71,8 @@ public class Slavers extends AdventureCard {
         return null;
     }
 
+    @Override
+    public void print(AdventureCardCLI adventureCardCLI, int i){
+        adventureCardCLI.draw(this, i);
+    }
 }

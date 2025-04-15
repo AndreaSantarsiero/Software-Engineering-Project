@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
 import java.util.ArrayList;
 
 
@@ -57,6 +58,11 @@ public class AbandonedStation extends AdventureCard {
     @Override
     public AdventureState getInitialState(GameModel gameModel, Player player){
         return new ChooseMaterialStation(this, gameModel, player);
+    }
+
+    @Override
+    public void print(AdventureCardCLI adventureCardCLI, int i){
+        adventureCardCLI.draw(this, i);
     }
 
 

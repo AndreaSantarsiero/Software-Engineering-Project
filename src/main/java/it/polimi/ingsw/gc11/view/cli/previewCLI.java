@@ -17,6 +17,7 @@ public class previewCLI {
         ShipBoard shipBoard = shipBoardLoader.getShipBoard();
         ShipCardCLI shipCardCLI = new ShipCardCLI();
         ShipBoardCLI shipBoardCLI = new ShipBoardCLI(shipCardCLI);
+        AdventureCardCLI adventureCardCLI = new AdventureCardCLI();
 
         shipBoardCLI.print(shipBoard);
         System.out.println("\nExposed connectors: " + shipBoard.getExposedConnectors());
@@ -57,7 +58,7 @@ public class previewCLI {
         adventureCards.add(null);
         for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
             for (AdventureCard adventureCard : adventureCards) {
-                AdventureCardCLI.string(adventureCard, i);
+                adventureCardCLI.print(adventureCard, i);
             }
             System.out.println();
         }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.controller.State.SmugglersStates.ChooseSmugglers;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
 import java.util.ArrayList;
 
 
@@ -54,5 +55,8 @@ public class Smugglers extends AdventureCard {
         return new ChooseSmugglers(this, gameModel, player);
     }
 
-
+    @Override
+    public void print(AdventureCardCLI adventureCardCLI, int i){
+        adventureCardCLI.draw(this, i);
+    }
 }

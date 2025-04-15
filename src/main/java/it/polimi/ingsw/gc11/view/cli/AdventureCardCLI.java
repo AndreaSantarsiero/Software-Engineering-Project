@@ -14,8 +14,7 @@ public class AdventureCardCLI {
 
 
 
-    public static void string(AdventureCard adventureCard, int i){
-
+    public void print(AdventureCard adventureCard, int i){
         setColor(adventureCard);
 
         if (i == 0) {
@@ -36,20 +35,7 @@ public class AdventureCardCLI {
                     }
                 }
                 else{
-                    switch (adventureCard){
-                        case AbandonedShip abandonedShip -> printAbandonedShip(abandonedShip, i);
-                        case AbandonedStation abandonedStation -> printAbandonedStation(abandonedStation, i);
-                        case CombatZone combatZone -> printCombatZone(combatZone, i);
-                        case Epidemic epidemic -> printEpidemic(i);
-                        case MeteorSwarm meteorSwarm -> printMeteorSwarm(meteorSwarm, i);
-                        case OpenSpace openSpace -> printOpenSpace(i);
-                        case Pirates pirates -> printPirates(pirates, i);
-                        case PlanetsCard planetsCard -> printPlanetsCard(planetsCard, i);
-                        case Slavers slavers -> printSlavers(slavers, i);
-                        case Smugglers smugglers -> printSmugglers(smugglers, i);
-                        case StarDust starDust -> printStarDust(i);
-                        default -> printInvalid(i);
-                    }
+                    adventureCard.print(this, i);
                 }
             }
             else{
@@ -58,8 +44,6 @@ public class AdventureCardCLI {
 
             System.out.print("│");
         }
-
-        System.out.print(Ansi.ansi().reset());
     }
 
 
@@ -132,25 +116,40 @@ public class AdventureCardCLI {
 
 
 
-    public static void printAbandonedShip(AbandonedShip abandonedShip, int i){
-
+    public void draw(AbandonedShip abandonedShip, int i){
+        if (i == 1){
+            System.out.print("   ABANDONED SHIP    ");
+        }
+        else {
+            System.out.print("                     ");
+        }
     }
 
 
 
-    public static void printAbandonedStation(AbandonedStation abandonedStation, int i){
-
+    public void draw(AbandonedStation abandonedStation, int i){
+        if (i == 1){
+            System.out.print("  ABANDONED STATION  ");
+        }
+        else {
+            System.out.print("                     ");
+        }
     }
 
 
 
-    public static void printCombatZone(CombatZone combatZone, int i){
-
+    public void draw(CombatZone combatZone, int i){
+        if (i == 1){
+            System.out.print("     COMBAT ZONE     ");
+        }
+        else {
+            System.out.print("                     ");
+        }
     }
 
 
 
-    public static void printEpidemic(int i){
+    public void draw(Epidemic epidemic, int i){
         if (i == 1){
             System.out.print("      EPIDEMIC       ");
         }
@@ -161,13 +160,18 @@ public class AdventureCardCLI {
 
 
 
-    public static void printMeteorSwarm(MeteorSwarm meteorSwarm, int i){
-
+    public void draw(MeteorSwarm meteorSwarm, int i){
+        if (i == 1){
+            System.out.print("     METEOR SWARM    ");
+        }
+        else {
+            System.out.print("                     ");
+        }
     }
 
 
 
-    public static void printOpenSpace(int i){
+    public void draw(OpenSpace openSpace, int i){
         if (i == 1){
             System.out.print("     OPEN SPACE      ");
         }
@@ -178,13 +182,18 @@ public class AdventureCardCLI {
 
 
 
-    public static void printPirates(Pirates pirates, int i){
-
+    public void draw(Pirates pirates, int i){
+        if (i == 1){
+            System.out.print("       PIRATES       ");
+        }
+        else {
+            System.out.print("                     ");
+        }
     }
 
 
 
-    public static void printPlanetsCard(PlanetsCard planetsCard, int i){
+    public void draw(PlanetsCard planetsCard, int i){
         if (i == 1){
             System.out.print("       PLANETS       ");
         }
@@ -209,19 +218,29 @@ public class AdventureCardCLI {
 
 
 
-    public static void printSlavers(Slavers slavers, int i){
-
+    public void draw(Slavers slavers, int i){
+        if (i == 1){
+            System.out.print("       SLAVERS       ");
+        }
+        else {
+            System.out.print("                     ");
+        }
     }
 
 
 
-    public static void printSmugglers(Smugglers smugglers, int i){
-
+    public void draw(Smugglers smugglers, int i){
+        if (i == 1){
+            System.out.print("      SMUGGLERS      ");
+        }
+        else {
+            System.out.print("                     ");
+        }
     }
 
 
 
-    public static void printStarDust(int i){
+    public void draw(StarDust starDust, int i){
         if (i == 1){
             System.out.print("      STARDUST       ");
         }

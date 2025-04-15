@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.model.Shot;
-
 import java.util.ArrayList;
+
+
 
 public class CombatPhase {
     public enum Condition {
