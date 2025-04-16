@@ -13,6 +13,7 @@ public class MaterialTest {
     private Material yellowMaterial;
     private Material redMaterial;
 
+
     @BeforeEach
     void setUp() {
         blueMaterial = new Material(Material.Type.BLUE);
@@ -45,5 +46,20 @@ public class MaterialTest {
         assertEquals(2, greenMaterial.getValue(), "The value of the green material should be 2 coins");
         assertEquals(3, yellowMaterial.getValue(), "The value of the yellow material should be 3 coins");
         assertEquals(4, redMaterial.getValue(), "The value of the red material should be 4 coins");
+    }
+
+
+    @Test
+    void testEquals() {
+        Material blueMaterial2 = new Material(Material.Type.BLUE);
+        Material greenMaterial2 = new Material(Material.Type.GREEN);
+        Material yellowMaterial2 = new Material(Material.Type.YELLOW);
+        Material redMaterial2 = new Material(Material.Type.RED);
+        assertEquals(blueMaterial, blueMaterial2, "The blue materials should be considered the same");
+        assertEquals(greenMaterial, greenMaterial2, "The green materials should be considered the same");
+        assertEquals(yellowMaterial, yellowMaterial2, "The yellow materials should be considered the same");
+        assertEquals(redMaterial, redMaterial2, "The red materials should be considered the same");
+        assertNotEquals(blueMaterial, yellowMaterial, "The blue material should not be considered the same as the yellow material");
+        assertNotEquals(null, blueMaterial, "The blue materials should not be considered the same as a null material");
     }
 }

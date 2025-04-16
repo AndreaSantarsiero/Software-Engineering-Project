@@ -50,7 +50,6 @@ public class Material {
             case GREEN -> 2;
             case YELLOW -> 3;
             case RED -> 4;
-            default -> throw new IllegalArgumentException("Unknown material type: " + type);
         };
     }
 
