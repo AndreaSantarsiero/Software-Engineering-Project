@@ -1,5 +1,5 @@
 package it.polimi.ingsw.gc11.controller.State;
-//da cancellare
+
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -8,9 +8,9 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 public abstract class GamePhase {
     private GameModel gameModel;
 
-    public abstract void nextState(GameContext context);
+    public abstract void nextPhase(GameContext context);
 
-    public abstract String getStateName();
+    public abstract String getPhaseName();
 
     //default
     public void startGame(GameContext context) throws GameAlreadyStartedException {

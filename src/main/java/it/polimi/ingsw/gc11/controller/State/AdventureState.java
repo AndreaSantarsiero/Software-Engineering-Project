@@ -1,15 +1,8 @@
 package it.polimi.ingsw.gc11.controller.State;
 
-import it.polimi.ingsw.gc11.controller.GameContext;
-
-public class AdventureState extends GamePhase {
-    @Override
-    public void nextState(GameContext context) {
-        context.setState(new EndgameState());
-    }
-
-    @Override
-    public String getStateName(){
-        return "ADVENTURE";
-    }
+public interface AdventureState{
+    void nextAdvState(AdventurePhase advContext);
+    /* Idea: metodo che esegue ciò che va fatto in quel determinato stato
+    void resolveState();
+     */
 }

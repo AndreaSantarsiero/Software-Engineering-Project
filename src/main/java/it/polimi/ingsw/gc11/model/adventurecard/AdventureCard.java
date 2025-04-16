@@ -33,7 +33,7 @@ public abstract class AdventureCard {
         return used;
     }
 
-    public abstract AdventureState getInitialState(GameModel gameModel, Player player);
+    public abstract AdventureState getInitialState(AdventureCard adventureCard, GameModel gameModel, Player player);
 
     public abstract void print(AdventureCardCLI adventureCardCLI, int i);
 }

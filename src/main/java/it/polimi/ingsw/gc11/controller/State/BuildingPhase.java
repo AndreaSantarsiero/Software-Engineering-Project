@@ -1,17 +1,17 @@
 package it.polimi.ingsw.gc11.controller.State;
-//da cancellare
+
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
-public class BuildingState extends GamePhase {
+public class BuildingPhase extends GamePhase {
     @Override
-    public void nextState(GameContext context) {
-        context.setState(new CheckState()); // Change to Check
+    public void nextPhase(GameContext context) {
+        context.setPhase(new CheckPhase()); // Change to Check
     }
 
     @Override
-    public String getStateName(){
+    public String getPhaseName(){
         return "BUILDING";
     }
 
@@ -42,6 +42,6 @@ public class BuildingState extends GamePhase {
 
     @Override
     public void goToCheckPhase(GameContext context){
-        this.nextState(context);
+        this.nextPhase(context);
     }
 }

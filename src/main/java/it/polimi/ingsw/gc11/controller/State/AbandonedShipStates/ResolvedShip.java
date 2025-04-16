@@ -1,10 +1,12 @@
 package it.polimi.ingsw.gc11.controller.State.AbandonedShipStates;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
 
-public class ResolvedShip extends AbandonedShipState{
+public class ResolvedShip implements AdventureState {
 
     private AbandonedShip abandonedShip;
     private GameModel gameModel;
@@ -20,6 +22,12 @@ public class ResolvedShip extends AbandonedShipState{
         this.player = player;
     }
 
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
+    }
+
+    //Idea: farei ovveride e lo chiamerei resolveState()
     public void resolve(){
         player.addCoins(abandonedShip.getCoins());
         gameModel.move(player.getUsername(), abandonedShip.getLostDays() * -1);

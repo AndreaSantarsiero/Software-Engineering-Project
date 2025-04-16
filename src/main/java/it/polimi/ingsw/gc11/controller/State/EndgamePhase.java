@@ -2,14 +2,14 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 
-public class EndgameState extends GamePhase {
+public class EndgamePhase extends GamePhase {
     @Override
-    public void nextState(GameContext context) {
+    public void nextPhase(GameContext context) {
 
     }
 
     @Override
-    public String getStateName(){
+    public String getPhaseName(){
         return "ENDGAME";
     }
 }

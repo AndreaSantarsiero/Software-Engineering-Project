@@ -13,7 +13,7 @@ public class GameContext {
 
     private final GameModel gameModel;
     private final String matchID;
-    private GamePhase state;
+    private GamePhase phase;
     private final ArrayList<PlayerContext> playerContexts;
 
     public GameContext(FlightBoard.Type flightType) {
@@ -22,23 +22,23 @@ public class GameContext {
         this.playerContexts = new ArrayList<>();
         this.matchID = gameModel.getID();
         // Initial state
-        this.state = new IdleState();
+        this.phase = new IdlePhase();
     }
 
     public String getMatchID() {
         return matchID;
     }
 
-    public void setState(GamePhase state) {
-        this.state = state;
+    public void setPhase(GamePhase phase) {
+        this.phase = phase;
     }
 
-    public void nextState() {
-        state.nextState(this);
+    public void nextPhase() {
+        phase.nextPhase(this);
     }
 
-    public GamePhase getState() {
-        return state;
+    public GamePhase getPhase() {
+        return phase;
     }
 
     public void addPlayerContext(String playerUsername) throws FullLobbyException {
@@ -61,7 +61,7 @@ public class GameContext {
 
     public void startGame() {
         try {
-            state.startGame(this);
+            phase.startGame(this);
         }
         catch (GameAlreadyStartedException e) {
             System.out.println(e.getMessage());
@@ -70,7 +70,7 @@ public class GameContext {
 
     public void endGame() {
         try{
-            this.state.endGame(this);
+            this.phase.endGame(this);
         }
         catch (Exception e) {
             System.out.println("Can't end game in this state");
@@ -82,7 +82,7 @@ public class GameContext {
             throw new IndexOutOfBoundsException();
         }
         try{
-            return this.state.getFreeShipCard(this.gameModel, pos);
+            return this.phase.getFreeShipCard(this.gameModel, pos);
         }
         catch (IllegalStateException e){
             System.out.println("Can't get free ship card in the current game phase.");
@@ -111,7 +111,7 @@ public class GameContext {
             throw new IllegalArgumentException();
         }
         try {
-            this.state.removeShipCard(this.gameModel, username, x, y);
+            this.phase.removeShipCard(this.gameModel, username, x, y);
         }
         catch (IllegalArgumentException e) {
             System.out.println("Can't remove ship card in the current game phase.");
@@ -147,7 +147,7 @@ public class GameContext {
 
     public void goToCheckPhase(){
         try {
-            state.goToCheckPhase(this);
+            phase.goToCheckPhase(this);
         }
         catch (IllegalStateException e) {
             System.out.println("Can't go to check state in the current game phase.");
