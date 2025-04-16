@@ -19,19 +19,27 @@ public abstract class GamePhase {
     public void endGame(GameContext context) throws Exception {
         throw new Exception("Game is already ended.");
     };
-    public ShipCard getFreeShipCard(GameModel gameModel, int pos) throws IllegalArgumentException {
+    public ShipCard getFreeShipCard(GameModel gameModel, int pos)
+            throws IllegalStateException {
         throw new IllegalStateException();
     }
-    public void placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y){
+    public void placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y)
+            throws IllegalStateException{
         throw new IllegalStateException();
     }
-    public void removeShipCard(GameModel gameModel, String username, int x, int y){
+    public void removeShipCard(GameModel gameModel, String username, int x, int y)
+            throws IllegalStateException {
         throw new IllegalStateException();
     }
-    public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard){
+    public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard)
+            throws IllegalStateException{
         throw new IllegalStateException();
     }
-    public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y){
+    public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y)
+            throws IllegalStateException{
+        throw new IllegalStateException();
+    }
+    public void goToCheckPhase(GameContext context){
         throw new IllegalStateException();
     }
 }

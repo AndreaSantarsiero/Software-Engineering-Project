@@ -39,4 +39,9 @@ public class BuildingState extends GamePhase {
     public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y){
         gameModel.getPlayerShipBoard(username).useReservedShipCard(shipCard, x, y);
     }
+
+    @Override
+    public void goToCheckPhase(GameContext context){
+        this.nextState(context);
+    }
 }

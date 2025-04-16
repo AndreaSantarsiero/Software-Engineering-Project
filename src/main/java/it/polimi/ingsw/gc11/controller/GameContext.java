@@ -146,11 +146,11 @@ public class GameContext {
     }
 
     public void goToCheckPhase(){
-        if (this.state instanceof BuildingState) {
-            this.nextState();
+        try {
+            state.goToCheckPhase(this);
         }
-        else {
-            throw new IllegalStateException();
+        catch (IllegalStateException e) {
+            System.out.println("Can't go to check state in the current game phase.");
         }
     }
 
