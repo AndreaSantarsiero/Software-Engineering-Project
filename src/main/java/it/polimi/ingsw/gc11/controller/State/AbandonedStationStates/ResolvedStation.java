@@ -1,10 +1,12 @@
 package it.polimi.ingsw.gc11.controller.State.AbandonedStationStates;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
 
-public class ResolvedStation extends AbandonedStationState{
+public class ResolvedStation implements AdventureState {
 
     private AbandonedStation abandonedStation;
     private GameModel gameModel;
@@ -18,6 +20,11 @@ public class ResolvedStation extends AbandonedStationState{
         this.abandonedStation = abandonedStation;
         this.gameModel = gameModel;
         this.player = player;
+    }
+
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
     }
 
     public void resolve(){

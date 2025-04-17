@@ -40,7 +40,7 @@ public class PlanetsCard extends AdventureCard {
     }
 
     @Override
-    public AdventureState getInitialState(GameModel gameModel, Player player){
+    public AdventureState getInitialState(AdventureCard adventureCard, GameModel gameModel, Player player){
         return new ChoosePlanet(this, gameModel, player);
     }
 

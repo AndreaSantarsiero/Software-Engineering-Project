@@ -42,7 +42,7 @@ public class Pirates extends AdventureCard {
     public ArrayList<Shot> getShots() {return shots;}
 
     @Override
-    public AdventureState getInitialState(GameModel gameModel, Player player){
+    public AdventureState getInitialState(AdventureCard adventureCard,GameModel gameModel, Player player){
         return null;
     }
 

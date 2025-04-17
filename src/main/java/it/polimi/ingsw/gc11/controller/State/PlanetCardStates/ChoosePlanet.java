@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.controller.State.PlanetCardStates;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.model.Player;
@@ -8,7 +10,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 
 import java.util.ArrayList;
 
-public class ChoosePlanet extends PlanetCardState {
+public class ChoosePlanet implements AdventureState {
 
     private PlanetsCard planetsCard;
     private ArrayList<Planet> freePlanets;
@@ -27,6 +29,11 @@ public class ChoosePlanet extends PlanetCardState {
         this.freePlanets = planetsCard.getFreePlanets();
     }
 
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
+    }
+
     public void landOn(Planet  planet){
         if(freePlanets.contains(planet)){
             planetsCard.setVisitedPlanet(planet);
@@ -42,10 +49,5 @@ public class ChoosePlanet extends PlanetCardState {
         else{
             throw new IllegalArgumentException("this planet in not available");
         }
-    }
-
-    @Override
-    public void nextState(GameContext context) {
-
     }
 }

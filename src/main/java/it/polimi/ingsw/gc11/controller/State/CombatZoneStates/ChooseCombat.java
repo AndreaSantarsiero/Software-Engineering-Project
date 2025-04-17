@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc11.controller.State.CombatZoneStates;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZone;
 
-public class ChooseCombat extends CombatZoneState{
+public class ChooseCombat implements AdventureState {
     private CombatZone combatZone;
     private int numPhase;
     private GameModel gameModel;
@@ -19,6 +21,11 @@ public class ChooseCombat extends CombatZoneState{
         this.gameModel = gameModel;
         this.combatZone = combatZone;
         this.numPhase = numPhase;
+    }
+
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
     }
 
     public void chooseCondition(){

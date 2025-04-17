@@ -1,10 +1,12 @@
 package it.polimi.ingsw.gc11.controller.State.OpenSpaceStates;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.OpenSpace;
 
-public class ResolvedOpenSpace extends OpenSpaceState {
+public class ResolvedOpenSpace implements AdventureState {
     private OpenSpace openSpace;
     private GameModel gameModel;
     private Player player;
@@ -21,6 +23,11 @@ public class ResolvedOpenSpace extends OpenSpaceState {
         this.gameModel = gameModel;
         this.player = player;
         this.enginePower = enginePower;
+    }
+
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
     }
 
     public void resolve(){

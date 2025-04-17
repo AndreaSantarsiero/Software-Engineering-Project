@@ -1,4 +1,11 @@
 package it.polimi.ingsw.gc11.controller.State.SlaversStates;
 
-public class CheckVictoryandResolved {
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
+
+public class CheckVictoryandResolved implements AdventureState {
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
+    }
 }

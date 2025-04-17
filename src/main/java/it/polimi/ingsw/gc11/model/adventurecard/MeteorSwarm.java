@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.RollDicesCombat;
+import it.polimi.ingsw.gc11.controller.State.MeteorSwarnStates.RollDicesMeteor;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Meteor;
 import it.polimi.ingsw.gc11.model.Player;
@@ -31,8 +33,8 @@ public class MeteorSwarm extends AdventureCard {
     }
 
     @Override
-    public AdventureState getInitialState(GameModel gameModel, Player player){
-        return null;
+    public AdventureState getInitialState(AdventureCard adventureCard,GameModel gameModel, Player player){
+        return new RollDicesMeteor(this, gameModel, player);
     }
 
     @Override

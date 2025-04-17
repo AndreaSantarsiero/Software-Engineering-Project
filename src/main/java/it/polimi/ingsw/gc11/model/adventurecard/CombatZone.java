@@ -26,7 +26,7 @@ public class CombatZone extends AdventureCard {
     }
 
     @Override
-    public AdventureState getInitialState(GameModel gameModel, Player player){
+    public AdventureState getInitialState(AdventureCard adventureCard, GameModel gameModel, Player player){
         return new SelectPlayerCombat(this, gameModel, 0);
     }
 

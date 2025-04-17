@@ -22,7 +22,7 @@ public class StarDust extends AdventureCard {
     }
 
     @Override
-    public AdventureState getInitialState(GameModel gameModel, Player player){
+    public AdventureState getInitialState(AdventureCard adventureCard, GameModel gameModel, Player player){
         return null;
     }
 

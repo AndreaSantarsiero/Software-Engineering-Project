@@ -56,7 +56,7 @@ public class AbandonedStation extends AdventureCard {
     public void resolveCard() {this.resolved = true;}
 
     @Override
-    public AdventureState getInitialState(GameModel gameModel, Player player){
+    public AdventureState getInitialState(AdventureCard adventureCard,GameModel gameModel, Player player){
         return new ChooseMaterialStation(this, gameModel, player);
     }
 

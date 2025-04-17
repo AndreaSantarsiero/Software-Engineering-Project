@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.controller.State.PlanetCardStates;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseMaterialsPlanet extends PlanetCardState{
+public class ChooseMaterialsPlanet implements AdventureState {
 
     private PlanetsCard planetsCard;
     private Planet planet;
@@ -32,6 +34,11 @@ public class ChooseMaterialsPlanet extends PlanetCardState{
         this.planet = planet;
     }
 
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
+    }
+
     public void getMaterials(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
         ArrayList<Material> availableMaterials = planetsCard.getMaterials(planet);
         for (Map.Entry<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
@@ -48,11 +55,6 @@ public class ChooseMaterialsPlanet extends PlanetCardState{
         else{
             //go to next state
         }
-
-    }
-
-    @Override
-    public void nextState(GameContext context) {
 
     }
 }

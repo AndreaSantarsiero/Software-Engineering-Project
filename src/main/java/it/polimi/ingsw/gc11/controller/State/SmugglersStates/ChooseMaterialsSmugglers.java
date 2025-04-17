@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State.SmugglersStates;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseMaterialsSmugglers extends SmugglersState {
+public class ChooseMaterialsSmugglers implements AdventureState {
 
     private Smugglers smugglers;
     private GameModel gameModel;
@@ -25,6 +27,11 @@ public class ChooseMaterialsSmugglers extends SmugglersState {
         this.smugglers = smugglers;
         this.gameModel = gameModel;
         this.player = player;
+    }
+
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
     }
 
     public void getMaterial(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){

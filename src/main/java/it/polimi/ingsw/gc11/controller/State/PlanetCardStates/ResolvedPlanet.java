@@ -1,11 +1,12 @@
 package it.polimi.ingsw.gc11.controller.State.PlanetCardStates;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
+import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 
-public class ResolvedPlanet extends PlanetCardState{
+public class ResolvedPlanet implements AdventureState {
 
     private PlanetsCard planetsCard;
     private GameModel gameModel;
@@ -20,6 +21,11 @@ public class ResolvedPlanet extends PlanetCardState{
         this.planetsCard = planetsCard;
         this.gameModel = gameModel;
         this.player = player;
+    }
+
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
     }
 
     public void resolve(){

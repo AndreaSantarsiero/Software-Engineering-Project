@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.SmugglersStates;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
@@ -8,7 +9,7 @@ import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.Map;
 
-public class FightSmugglers extends AdventureState {
+public class FightSmugglers implements AdventureState {
 
     private Smugglers smugglers;
     private GameModel gameModel;
@@ -28,6 +29,11 @@ public class FightSmugglers extends AdventureState {
         this.gameModel = gameModel;
         this.player = player;
         this.cannonPower = cannonPower;
+    }
+
+    @Override
+    public void nextAdvState(AdventurePhase advContext) {
+
     }
 
     public void fight(Map<Battery, Integer> batteryUsage){
