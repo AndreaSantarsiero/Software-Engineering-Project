@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -120,7 +119,9 @@ public class ShipBoard6Test {
         List<Cannon> doubleCannons = new ArrayList<>();
         doubleCannons.add((Cannon) shipBoard.getShipCard(4,9));
         assertEquals(3.5, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly when adding a double cannon");
-        shipBoard.connectAlienUnit(6, 8, 5, 8);
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(5.5, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly after connecting a purple alien unit");
     }
 
@@ -161,7 +162,9 @@ public class ShipBoard6Test {
         housingUsage.put((HousingUnit) shipBoard.getShipCard(5, 7), 2);
         shipBoard.killMembers(housingUsage);
         assertEquals(7, shipBoard.getMembers(), "Members number not calculated correctly after killing some members");
-        shipBoard.connectAlienUnit(6, 8, 5, 8);
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(6, shipBoard.getMembers(), "Members number not calculated correctly after connecting an alien unit to a housing unit");
 
         housingUsage.clear();
@@ -175,7 +178,9 @@ public class ShipBoard6Test {
     void testGetAliens() {
         assertEquals(0, shipBoard.getBrownAliens(), "Brown aliens number not calculated correctly");
         assertEquals(0, shipBoard.getPurpleAliens(), "Purple aliens number not calculated correctly");
-        shipBoard.connectAlienUnit(6, 8, 5, 8);
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(1, shipBoard.getPurpleAliens(), "Purple aliens number not calculated correctly after connecting an alien unit to a housing unit");
         assertEquals(0, shipBoard.getBrownAliens(), "Brown aliens number not calculated correctly after connecting an alien unit to a housing unit");
     }
@@ -184,7 +189,9 @@ public class ShipBoard6Test {
     @Test
     void testEpidemic() {
         assertEquals(12, shipBoard.getMembers(), "Members number not calculated correctly");
-        shipBoard.connectAlienUnit(6, 8, 5, 8);
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(11, shipBoard.getMembers(), "Members number not calculated correctly after connecting an alien unit to a housing unit");
         shipBoard.epidemic();
         assertEquals(11, shipBoard.getMembers(), "Members number not calculated correctly after an epidemic");

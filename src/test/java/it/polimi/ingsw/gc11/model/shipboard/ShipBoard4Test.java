@@ -122,7 +122,9 @@ public class ShipBoard4Test {
         housingUsage.put((HousingUnit) shipBoard.getShipCard(9, 7), 2);
         shipBoard.killMembers(housingUsage);
         assertEquals(7, shipBoard.getMembers(), "Members number not calculated correctly after killing some members");
-        shipBoard.connectAlienUnit(10, 8, 9, 8);
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(10, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(9, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(6, shipBoard.getMembers(), "Members number not calculated correctly after connecting an alien unit to a housing unit");
 
         housingUsage.clear();
@@ -136,7 +138,9 @@ public class ShipBoard4Test {
     void testGetAliens() {
         assertEquals(0, shipBoard.getBrownAliens(), "Brown aliens number not calculated correctly");
         assertEquals(0, shipBoard.getPurpleAliens(), "Purple aliens number not calculated correctly");
-        shipBoard.connectAlienUnit(10, 8, 9, 8);
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(10, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(9, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(1, shipBoard.getBrownAliens(), "Brown aliens number not calculated correctly after connecting an alien unit to a housing unit");
         assertEquals(0, shipBoard.getPurpleAliens(), "Purple aliens number not calculated correctly after connecting an alien unit to a housing unit");
     }
@@ -145,7 +149,9 @@ public class ShipBoard4Test {
     @Test
     void testEpidemic() {
         assertEquals(12, shipBoard.getMembers(), "Members number not calculated correctly");
-        shipBoard.connectAlienUnit(10, 8, 9, 8);
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(10, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(9, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(11, shipBoard.getMembers(), "Members number not calculated correctly after connecting an alien unit to a housing unit");
         shipBoard.epidemic();
         assertEquals(8, shipBoard.getMembers(), "Members number not calculated correctly after an epidemic");

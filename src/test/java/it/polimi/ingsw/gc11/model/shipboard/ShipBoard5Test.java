@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.model.shipboard;
 
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
+import it.polimi.ingsw.gc11.model.shipcard.AlienUnit;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
@@ -116,9 +118,12 @@ public class ShipBoard5Test {
     @Test
     void testGetMembers() {
         assertEquals(2, shipBoard.getMembers(), "Members number not calculated correctly");
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.connectAlienUnit(5, 9, 7, 7), "Cannot connect this alien unit to that central unit");
+        AlienUnit alienUnit1 = (AlienUnit) shipBoard.getShipCard(5, 9);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(7, 7);
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.connectAlienUnit(alienUnit1, housingUnit), "Cannot connect this alien unit to that central unit");
         assertEquals(2, shipBoard.getMembers(), "Members number not calculated correctly after trying to connect an alien unit to a housing unit");
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.connectAlienUnit(10, 8, 7, 7), "Cannot connect this alien unit to that central unit");
+        AlienUnit alienUnit2 = (AlienUnit) shipBoard.getShipCard(10, 8);
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.connectAlienUnit(alienUnit2, housingUnit), "Cannot connect this alien unit to that central unit");
         assertEquals(2, shipBoard.getMembers(), "Members number not calculated correctly after trying to connect an alien unit to a housing unit");
     }
 }

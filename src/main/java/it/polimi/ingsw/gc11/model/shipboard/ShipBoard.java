@@ -27,8 +27,8 @@ public abstract class ShipBoard {
     private final List<Shield> shields;
     private final List<Storage> storages;
 
-    private int lastModifiedX;
-    private int lastModifiedY;
+    private int lastModifiedI;
+    private int lastModifiedJ;
     private AlienUnit brownActiveUnit;
     private AlienUnit purpleActiveUnit;
 
@@ -49,8 +49,8 @@ public abstract class ShipBoard {
         this.housingUnits = new HashMap<>();
         this.shields = new ArrayList<>();
         this.storages = new ArrayList<>();
-        this.lastModifiedX = -1;
-        this.lastModifiedY = -1;
+        this.lastModifiedI = -1;
+        this.lastModifiedJ = -1;
         this.brownActiveUnit = null;
         this.purpleActiveUnit = null;
     }
@@ -207,12 +207,12 @@ public abstract class ShipBoard {
             throw new IllegalArgumentException("Ship card is null");
         }
 
-        x = adaptX(x);
-        y = adaptY(y);
-        checkCoordinates(x, y);
-        components[y][x] = shipCard;
-        lastModifiedX = x;
-        lastModifiedY = y;
+        int i = adaptY(y);
+        int j = adaptX(x);
+        checkCoordinates(j, i);
+        components[i][j] = shipCard;
+        lastModifiedI = i;
+        lastModifiedJ = j;
         shipCard.place(this, x, y);
     }
 
@@ -226,15 +226,15 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException if the card is already null or welded
      */
     public void removeShipCard(int x, int y) {
-        x = adaptX(x);
-        y = adaptY(y);
-        checkCoordinates(x, y);
-        if (components[y][x] == null) {
+        int i = adaptY(y);
+        int j = adaptX(x);
+        checkCoordinates(j, i);
+        if (components[i][j] == null) {
             throw new IllegalArgumentException("Ship card already null");
         }
-        if (x == lastModifiedX && y == lastModifiedY) {
-            components[y][x].unPlace(this);
-            components[y][x] = null;
+        if (x == lastModifiedJ && y == lastModifiedI) {
+            components[i][j].unPlace(this);
+            components[i][j] = null;
         }
         else {
             throw new IllegalArgumentException("Ship card already welded");
@@ -250,10 +250,10 @@ public abstract class ShipBoard {
      * @throws IllegalArgumentException if the coordinates are invalid
      */
     public ShipCard getShipCard(int x, int y) {
-        x = adaptX(x);
-        y = adaptY(y);
-        checkCoordinates(x, y);
-        return components[y][x];
+        int i = adaptY(y);
+        int j = adaptX(x);
+        checkCoordinates(j, i);
+        return components[i][j];
     }
 
 
@@ -300,11 +300,11 @@ public abstract class ShipBoard {
             throw new IllegalStateException("Ship card not previously reserved");
         }
         if (reservedComponents.contains(shipCard)) {
-            x = adaptX(x);
-            y = adaptY(y);
-            checkCoordinates(x, y);
+            int i = adaptY(y);
+            int j = adaptX(x);
+            checkCoordinates(j, i);
             reservedComponents.remove(shipCard);
-            components[y][x] = shipCard;
+            components[i][j] = shipCard;
         }
         else {
             throw new IllegalStateException("Ship card not previously reserved");
@@ -698,76 +698,83 @@ public abstract class ShipBoard {
     private boolean checkOtherRestrictions(){
         boolean status = true;
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if (components[i][j] != null) {
-                    if (components[i][j] instanceof Engine engine && !components[i][j].isScrap()) {
-                        if (engine.getOrientation() != ShipCard.Orientation.DEG_0){
-                            engine.setIllegal(true);
+        for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
+            Cannon cannon = entry.getKey();
+            int i = adaptY((int )entry.getValue().getY());
+            int j = adaptX((int )entry.getValue().getX());
+
+            if(!cannon.isScrap()){
+                if (cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
+                    try {
+                        checkCoordinates(j, i-1);
+                        if (components[i-1][j] != null) {
+                            cannon.setIllegal(true);
+                            components[i-1][j].setIllegal(true);
                             status = false;
                         }
-                        try {
-                            checkCoordinates(j, i+1);
-                            if (components[i+1][j] != null) {
-                                engine.setIllegal(true);
-                                components[i+1][j].setIllegal(true);
-                                status = false;
-                            }
-                        } catch (Exception _) {
+                    } catch (Exception _) {
 
-                        }
                     }
-
-                    if (components[i][j] instanceof Cannon cannon && !components[i][j].isScrap()) {
-                        if (cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
-                            try {
-                                checkCoordinates(j, i-1);
-                                if (components[i-1][j] != null) {
-                                    cannon.setIllegal(true);
-                                    components[i-1][j].setIllegal(true);
-                                    status = false;
-                                }
-                            } catch (Exception _) {
-
-                            }
+                }
+                else if (cannon.getOrientation() == ShipCard.Orientation.DEG_90) {
+                    try {
+                        checkCoordinates(j+1, i);
+                        if (components[i][j+1] != null) {
+                            cannon.setIllegal(true);
+                            components[i][j+1].setIllegal(true);
+                            status = false;
                         }
-                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_90) {
-                            try {
-                                checkCoordinates(j+1, i);
-                                if (components[i][j+1] != null) {
-                                    cannon.setIllegal(true);
-                                    components[i][j+1].setIllegal(true);
-                                    status = false;
-                                }
-                            } catch (Exception _) {
+                    } catch (Exception _) {
 
-                            }
-                        }
-                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_180) {
-                            try {
-                                checkCoordinates(j, i+1);
-                                if (components[i+1][j] != null) {
-                                    cannon.setIllegal(true);
-                                    components[i+1][j].setIllegal(true);
-                                    status = false;
-                                }
-                            } catch (Exception _) {
-
-                            }
-                        }
-                        else if (cannon.getOrientation() == ShipCard.Orientation.DEG_270) {
-                            try {
-                                checkCoordinates(j-1, i);
-                                if (components[i][j-1] != null) {
-                                    cannon.setIllegal(true);
-                                    components[i][j-1].setIllegal(true);
-                                    status = false;
-                                }
-                            } catch (Exception _) {
-
-                            }
-                        }
                     }
+                }
+                else if (cannon.getOrientation() == ShipCard.Orientation.DEG_180) {
+                    try {
+                        checkCoordinates(j, i+1);
+                        if (components[i+1][j] != null) {
+                            cannon.setIllegal(true);
+                            components[i+1][j].setIllegal(true);
+                            status = false;
+                        }
+                    } catch (Exception _) {
+
+                    }
+                }
+                else if (cannon.getOrientation() == ShipCard.Orientation.DEG_270) {
+                    try {
+                        checkCoordinates(j-1, i);
+                        if (components[i][j-1] != null) {
+                            cannon.setIllegal(true);
+                            components[i][j-1].setIllegal(true);
+                            status = false;
+                        }
+                    } catch (Exception _) {
+
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<Engine, Point> entry : engines.entrySet()) {
+            Engine engine = entry.getKey();
+            int i = adaptY((int )entry.getValue().getY());
+            int j = adaptX((int )entry.getValue().getX());
+
+
+            if(!engine.isScrap()){
+                if (engine.getOrientation() != ShipCard.Orientation.DEG_0){
+                    engine.setIllegal(true);
+                    status = false;
+                }
+                try {
+                    checkCoordinates(j, i+1);
+                    if (components[i+1][j] != null) {
+                        engine.setIllegal(true);
+                        components[i+1][j].setIllegal(true);
+                        status = false;
+                    }
+                } catch (Exception _) {
+
                 }
             }
         }
@@ -794,22 +801,11 @@ public abstract class ShipBoard {
      * Connects an AlienUnit to a HousingUnit based on their coordinates and connector compatibility.
      * If all conditions are met, the AlienUnit is linked to the HousingUnit
      *
-     * @param alienX the x-coordinate of the AlienUnit
-     * @param alienY the y-coordinate of the AlienUnit
-     * @param housingX the x-coordinate of the HousingUnit
-     * @param housingY the y-coordinate of the HousingUnit
+     * @param alienUnit the AlienUnit to connect
+     * @param housingUnit the HousingUnit to connect
      * @throws IllegalArgumentException if not all conditions are met
      */
-    public void connectAlienUnit(int alienX, int alienY, int housingX, int housingY) {
-        ShipCard shipCard1 = this.getShipCard(alienX, alienY);
-        ShipCard shipCard2 = this.getShipCard(housingX, housingY);
-
-        if (!(shipCard1 instanceof AlienUnit alienUnit)){
-            throw new IllegalArgumentException("AlienUnit coordinates do not point to an AlienUnit");
-        }
-        if (!(shipCard2 instanceof HousingUnit housingUnit)){
-            throw new IllegalArgumentException("HousingUnit coordinates do not point to a HousingUnit");
-        }
+    public void connectAlienUnit(AlienUnit alienUnit, HousingUnit housingUnit) {
         if(alienUnit.getType() == AlienUnit.Type.BROWN && brownActiveUnit != null) {
             throw new IllegalArgumentException("This ship has already activate a brown AlienUnit");
         }
@@ -819,6 +815,11 @@ public abstract class ShipBoard {
         if(housingUnit.isCentral()){
             throw new IllegalArgumentException("Cannot connect an AlienUnit to a central HousingUnit");
         }
+
+        int alienX = alienUnits.get(alienUnit).x;
+        int alienY = alienUnits.get(alienUnit).y;
+        int housingX = housingUnits.get(housingUnit).x;
+        int housingY = housingUnits.get(housingUnit).y;
 
         if(alienX == housingX && alienY == housingY+1 && alienUnit.getTopConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getTopConnector(), housingUnit.getBottomConnector())){
             housingUnit.setAlienUnit(alienUnit);
@@ -941,12 +942,20 @@ public abstract class ShipBoard {
     public void epidemic(){
         this.visitedInitialization();
 
-        for (int i = 0; i < components.length; i++) {
-            for (int j = 0; j < components[i].length; j++) {
-                if(components[i][j] instanceof HousingUnit housingUnit && !housingUnit.isScrap()) {
-                    if(housingUnit.getTopConnector() != ShipCard.Connector.NONE){
-                        if(components[i-1][j] instanceof HousingUnit housingUnitTop && !housingUnitTop.isScrap()) {
-                            if(checkConnection(housingUnit.getTopConnector(), housingUnitTop.getBottomConnector())){
+        for (Map.Entry<HousingUnit, Point> entry : housingUnits.entrySet()) {
+            HousingUnit housingUnit = entry.getKey();
+
+            if (!housingUnit.isScrap()) {
+                int x = (int) entry.getValue().getX();
+                int y = (int) entry.getValue().getY();
+
+                if(housingUnit.getTopConnector() != ShipCard.Connector.NONE){
+                    Point topPoint = new Point(x, y-1);
+
+                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
+                        if (entry2.getValue().equals(topPoint)) {
+                            HousingUnit housingUnitTop = entry2.getKey();
+                            if(!housingUnitTop.isScrap() && checkConnection(housingUnit.getTopConnector(), housingUnitTop.getBottomConnector())){
                                 if(!housingUnitTop.isVisited()){
                                     housingUnitTop.epidemic();
                                 }
@@ -954,12 +963,18 @@ public abstract class ShipBoard {
                                     housingUnit.epidemic();
                                 }
                             }
+                            break;
                         }
                     }
+                }
 
-                    if(housingUnit.getRightConnector() != ShipCard.Connector.NONE){
-                        if(components[i][j+1] instanceof HousingUnit housingUnitRight && !housingUnitRight.isScrap()) {
-                            if(checkConnection(housingUnit.getRightConnector(), housingUnitRight.getLeftConnector())){
+                if(housingUnit.getRightConnector() != ShipCard.Connector.NONE){
+                    Point rightPoint = new Point(x+1, y);
+
+                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
+                        if (entry2.getValue().equals(rightPoint)) {
+                            HousingUnit housingUnitRight = entry2.getKey();
+                            if(!housingUnitRight.isScrap() && checkConnection(housingUnit.getRightConnector(), housingUnitRight.getLeftConnector())){
                                 if(!housingUnitRight.isVisited()){
                                     housingUnitRight.epidemic();
                                 }
@@ -967,12 +982,18 @@ public abstract class ShipBoard {
                                     housingUnit.epidemic();
                                 }
                             }
+                            break;
                         }
                     }
+                }
 
-                    if(housingUnit.getBottomConnector() != ShipCard.Connector.NONE){
-                        if(components[i+1][j] instanceof HousingUnit housingUnitBottom && !housingUnitBottom.isScrap()) {
-                            if(checkConnection(housingUnit.getBottomConnector(), housingUnitBottom.getTopConnector())){
+                if(housingUnit.getBottomConnector() != ShipCard.Connector.NONE){
+                    Point bottomPoint = new Point(x, y+1);
+
+                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
+                        if (entry2.getValue().equals(bottomPoint)) {
+                            HousingUnit housingUnitBottom = entry2.getKey();
+                            if(!housingUnitBottom.isScrap() && checkConnection(housingUnit.getBottomConnector(), housingUnitBottom.getTopConnector())){
                                 if(!housingUnitBottom.isVisited()){
                                     housingUnitBottom.epidemic();
                                 }
@@ -980,12 +1001,18 @@ public abstract class ShipBoard {
                                     housingUnit.epidemic();
                                 }
                             }
+                            break;
                         }
                     }
+                }
 
-                    if(housingUnit.getLeftConnector() != ShipCard.Connector.NONE){
-                        if(components[i][j-1] instanceof HousingUnit housingUnitLeft && !housingUnitLeft.isScrap()) {
-                            if(checkConnection(housingUnit.getLeftConnector(), housingUnitLeft.getRightConnector())){
+                if(housingUnit.getLeftConnector() != ShipCard.Connector.NONE){
+                    Point leftPoint = new Point(x-1, y);
+
+                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
+                        if (entry2.getValue().equals(leftPoint)) {
+                            HousingUnit housingUnitLeft = entry2.getKey();
+                            if(!housingUnitLeft.isScrap() && checkConnection(housingUnit.getLeftConnector(), housingUnitLeft.getRightConnector())){
                                 if(!housingUnitLeft.isVisited()){
                                     housingUnitLeft.epidemic();
                                 }
@@ -993,11 +1020,12 @@ public abstract class ShipBoard {
                                     housingUnit.epidemic();
                                 }
                             }
+                            break;
                         }
                     }
-
-                    housingUnit.setVisited(true);
                 }
+
+                housingUnit.setVisited(true);
             }
         }
     }
@@ -1320,77 +1348,66 @@ public abstract class ShipBoard {
         List<Cannon> availableCannons = new ArrayList<>();
 
         if (direction == Hit.Direction.LEFT) {
-            for (int j = -1; j < 2; j++) {
-                for (int i = 0; i < components[0].length; i++) {
-                    try{
-                        ShipCard shipCard = this.getShipCard(i - adaptX(0), coordinate + j);
-                        if(shipCard != null){
-                            if (shipCard instanceof Cannon && !shipCard.isScrap()) {
-                                if(shipCard.getOrientation() == ShipCard.Orientation.DEG_270) {
-                                    availableCannons.add((Cannon) shipCard);
-                                }
+            for (int offset = -1; offset < 2; offset++) {
+                for (int j = 0; j < components[0].length; j++) {
+                    Point point = new Point(j - adaptX(0), coordinate + offset);
+
+                    for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
+                        if (entry.getValue().equals(point)) {
+                            Cannon cannon = entry.getKey();
+                            if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_270) {
+                                availableCannons.add(cannon);
                             }
                         }
-                    }
-                    catch(Exception _){
-
                     }
                 }
             }
         }
         else if (direction == Hit.Direction.RIGHT) {
 
-            for (int j = -1; j < 2; j++) {
-                for (int i = 0; i < components[0].length; i++) {
-                    try{
-                        ShipCard shipCard = this.getShipCard(components[0].length - i - adaptX(0), coordinate + j);
-                        if(shipCard != null){
-                            if (shipCard instanceof Cannon && !shipCard.isScrap()) {
-                                if(shipCard.getOrientation() == ShipCard.Orientation.DEG_90) {
-                                    availableCannons.add((Cannon) shipCard);
-                                }
+            for (int offset = -1; offset < 2; offset++) {
+                for (int j = 0; j < components[0].length; j++) {
+                    Point point = new Point(components[0].length - j - adaptX(0), coordinate + offset);
+
+                    for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
+                        if (entry.getValue().equals(point)) {
+                            Cannon cannon = entry.getKey();
+                            if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_90) {
+                                availableCannons.add(cannon);
                             }
                         }
-                    }
-                    catch(Exception _){
-
                     }
                 }
             }
         }
         else if (direction == Hit.Direction.TOP) {
+
             for (int i = 0; i < components.length; i++) {
-                try{
-                    ShipCard shipCard = this.getShipCard(coordinate, i - adaptY(0));
-                    if(shipCard != null){
-                        if (shipCard instanceof Cannon && !shipCard.isScrap()) {
-                            if(shipCard.getOrientation() == ShipCard.Orientation.DEG_0) {
-                                availableCannons.add((Cannon) shipCard);
-                            }
+                Point point = new Point(coordinate, i - adaptY(0));
+
+                for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
+                    if (entry.getValue().equals(point)) {
+                        Cannon cannon = entry.getKey();
+                        if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
+                            availableCannons.add(cannon);
                         }
                     }
-                }
-                catch(Exception _){
-
                 }
             }
         }
         else if (direction == Hit.Direction.BOTTOM) {
 
-            for (int j = -1; j < 2; j++) {
+            for (int offset = -1; offset < 2; offset++) {
                 for (int i = 0; i < components.length; i++) {
-                    try{
-                        ShipCard shipCard = this.getShipCard(coordinate + j, components.length - i - adaptY(0));
-                        if(shipCard != null){
-                            if (shipCard instanceof Cannon && !shipCard.isScrap()) {
-                                if(shipCard.getOrientation() == ShipCard.Orientation.DEG_180) {
-                                    availableCannons.add((Cannon) shipCard);
-                                }
+                    Point point = new Point(coordinate + offset, components.length - i - adaptY(0));
+
+                    for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
+                        if (entry.getValue().equals(point)) {
+                            Cannon cannon = entry.getKey();
+                            if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_180) {
+                                availableCannons.add(cannon);
                             }
                         }
-                    }
-                    catch(Exception _){
-
                     }
                 }
             }
