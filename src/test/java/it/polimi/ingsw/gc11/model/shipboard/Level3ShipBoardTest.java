@@ -34,30 +34,30 @@ class Level3ShipBoardTest {
     }
 
     @Test
-    void testValidateCoordinates_ValidCases() {
-        assertTrue(shipBoard.validateCoordinates(4, 0));
-        assertTrue(shipBoard.validateCoordinates(3, 1));
-        assertTrue(shipBoard.validateCoordinates(5, 1));
-        assertTrue(shipBoard.validateCoordinates(2, 2));
-        assertTrue(shipBoard.validateCoordinates(6, 3));
+    void testValidateIndexes_ValidCases() {
+        assertTrue(shipBoard.validateIndexes(4, 0));
+        assertTrue(shipBoard.validateIndexes(3, 1));
+        assertTrue(shipBoard.validateIndexes(5, 1));
+        assertTrue(shipBoard.validateIndexes(2, 2));
+        assertTrue(shipBoard.validateIndexes(6, 3));
     }
 
     @Test
-    void testValidateCoordinates_InvalidCases() {
-        assertFalse(shipBoard.validateCoordinates(0, 0));
-        assertFalse(shipBoard.validateCoordinates(1, 0));
-        assertFalse(shipBoard.validateCoordinates(3, 0));
-        assertFalse(shipBoard.validateCoordinates(5, 0));
-        assertFalse(shipBoard.validateCoordinates(8, 0));
-        assertFalse(shipBoard.validateCoordinates(0, 1));
-        assertFalse(shipBoard.validateCoordinates(2, 5));
-        assertFalse(shipBoard.validateCoordinates(6, 5));
+    void testValidateIndexes_InvalidCases() {
+        assertFalse(shipBoard.validateIndexes(0, 0));
+        assertFalse(shipBoard.validateIndexes(1, 0));
+        assertFalse(shipBoard.validateIndexes(3, 0));
+        assertFalse(shipBoard.validateIndexes(5, 0));
+        assertFalse(shipBoard.validateIndexes(8, 0));
+        assertFalse(shipBoard.validateIndexes(0, 1));
+        assertFalse(shipBoard.validateIndexes(2, 5));
+        assertFalse(shipBoard.validateIndexes(6, 5));
     }
 
     @Test
-    void testValidateCoordinates_OutOfBounds() {
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateCoordinates(-1, 0));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateCoordinates(9, 6));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateCoordinates(10, 3));
+    void testValidateIndexes_OutOfBounds() {
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(9, 6));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(10, 3));
     }
 }

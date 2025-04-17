@@ -51,7 +51,7 @@ public class ShipBoardCLI {
                 printVerticalCoordinates(shipBoard, y, i);
 
                 for (int x = 0; x < shipBoard.getWidth(); x++) {
-                    if (shipBoard.validateCoordinates(x, y)) {
+                    if (shipBoard.validateIndexes(x, y)) {
                         ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
                         if(shipCard != null) {
                             shipCard.print(shipCardCLI, i);
