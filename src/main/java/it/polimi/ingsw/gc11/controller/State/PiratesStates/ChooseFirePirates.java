@@ -12,22 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Represents the state where a player must decide how much firepower to use against the Pirates.
- *
- * <p>This state is part of the Adventure phase involving Pirate encounters.
- * The player attempts to defeat the Pirates by using cannons and activating batteries.
- * The outcome determines whether the player wins, loses and passes the challenge to the next player.</p>
- *
- * <p>Key behaviors:
- * <ul>
- *     <li>Calculates the total firepower available based on player's cannons and used batteries.</li>
- *     <li>Decides the transition to WinAgainstPirates or LoseAgainstPirates depending on firepower comparison.</li>
- *     <li>Accumulates defeated players if the encounter is sequential and the player loses.</li>
- * </ul>
- * </p>
- */
 
+/**
+ * Represents the state where a player must choose how to fire against pirates during an adventure phase.
+ *
+ * <p>This state allows the player to configure their attack power based on available batteries and cannons.</p>
+ * <p>The outcome of the attack determines if the player defeats the pirates or if they fail, with additional consequences
+ * depending on whether it is the last player's turn.</p>
+ *
+ * @see AdventureState
+ * @see AdventurePhase
+ * @see WinAgainstPirates
+ * @see LoseAgainstPirates
+ */
 public class ChooseFirePirates implements AdventureState {
     Player player;
     GameModel gameModel;
@@ -79,13 +76,14 @@ public class ChooseFirePirates implements AdventureState {
         return playerFirePower;
     }
 
+
     /**
-     * Returns the first player who was defeated by the Pirates.
+     * Retrieves the list of players defeated by the pirates.
      *
-     * @return The first player in the defeated list.
+     * @return A list of players who were defeated by the pirates.
      */
-    public Player getFirstPlayerDefeated() {
-        return playersDefeated.getFirst();
+    public List<Player> getPlayersDefeated() {
+        return playersDefeated;
     }
 
     /**

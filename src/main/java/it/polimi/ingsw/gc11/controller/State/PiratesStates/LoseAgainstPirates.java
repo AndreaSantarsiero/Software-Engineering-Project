@@ -13,26 +13,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents the state where players, having lost against the Pirates,
- * must withstand a series of shots targeting their ship.
+ * Represents the state when a player has lost against pirates during an adventure phase.
  *
- * <p>Each shot described in the {@link Pirates} card is processed sequentially for every defeated player.
- * Players can attempt to protect their ship components using batteries; otherwise, components are destroyed.</p>
+ * <p>This state handles the consequences for defeated players. Players who lose must defend their ship
+ * from pirate shots using shields and batteries. If they fail to properly defend, parts of their ship are destroyed.</p>
+ * <p>The state will process each pirate shot until all the defeated players have been handled.</p>
  *
- * <p>Key behaviors:
- * <ul>
- *     <li>Processes each shot in order as described in the Pirates' card.</li>
- *     <li>Checks if players have protection active via batteries; if not, ship components are destroyed.</li>
- *     <li>Ensures correct consumption of batteries if used to block a shot.</li>
- *     <li>Iterates shots across multiple players that were defeated.</li>
- * </ul>
- * </p>
- *
- * <p>This state does not allow normal progression through {@code nextAdvState}, which is intentionally unsupported.</p>
- *
- * @see Pirates
- * @see AdventurePhase
  * @see AdventureState
+ * @see AdventurePhase
+ * @see Pirates
+ * @see WinAgainstPirates
  */
 public class LoseAgainstPirates implements AdventureState {
     List<Player> playerDefeated;
@@ -42,12 +32,12 @@ public class LoseAgainstPirates implements AdventureState {
     int coordinates;
 
     /**
-     * Constructs the LoseAgainstPirates state.
+     * Constructs the LoseAgainstPirates state for the given defeated players and pirates encounter.
      *
-     * @param player The list of players who have lost against the Pirates.
-     * @param gameModel The current game model instance.
-     * @param pirates The Pirates adventure card causing the damage.
-     * @throws NullPointerException if any parameter is null.
+     * @param player The list of players defeated by pirates.
+     * @param gameModel The game model containing the state of the game.
+     * @param pirates The Pirates adventure card the players are facing.
+     * @throws NullPointerException if any of the parameters are null.
      */
     public LoseAgainstPirates(List<Player> player, GameModel gameModel, Pirates pirates) {
         if(player == null || gameModel == null || pirates == null){
@@ -60,24 +50,23 @@ public class LoseAgainstPirates implements AdventureState {
         this.coordinates = 0;
     }
 
+
     /**
-     * Processes a single shot from the Pirates towards all defeated players' ships.
+     * Handles the impact of a pirate shot on a defeated player.
      *
-     * <p>For each shot:
-     * <ul>
-     *     <li>If the shot is of type {@code SMALL} and the targeted component is not protected, the component is destroyed.</li>
-     *     <li>If the shot is protected by batteries, batteries are consumed if available; otherwise, the component is destroyed.</li>
-     *     <li>If the shot is not of type {@code SMALL}, the component is destroyed regardless of protection.</li>
-     * </ul>
-     * </p>
+     * <p>This method checks if the shot type is small or large and applies the appropriate defense mechanism
+     * (using shields and batteries if available) to prevent ship damage. If the defense fails, the affected component is destroyed.</p>
      *
-     * <p>It is assumed that this method is called once per shot, in sequence, by the controller logic.</p>
-     *
-     * @param coordinates The coordinate on the ship board that the shot targets.
-     * @param batteries The map of batteries and their remaining available uses; can be null.
-     * @throws IndexOutOfBoundsException if all shots have already been processed.
+     * @param coordinates The coordinates of the affected ship component.
+     * @param batteries The batteries used by the player for defense.
+     * @param player The player who is being attacked by pirates.
+     * @throws IllegalArgumentException if the player is not in the list of defeated players.
+     * @throws IndexOutOfBoundsException if there are no more pirate shots to process.
      */
-    public void hitPirate(int coordinates, Map<Battery, Integer> batteries) {
+    public void hitPirate(int coordinates, Map<Battery, Integer> batteries, Player player) {
+        if(!playerDefeated.contains(player)){
+            throw new IllegalArgumentException();
+        }
         if(iterations >= pirates.getShots().size()){
             throw new IndexOutOfBoundsException();
         }
@@ -85,38 +74,37 @@ public class LoseAgainstPirates implements AdventureState {
         this.coordinates = coordinates;
         Shot shot = pirates.getShots().get(iterations);
 
-        for(Player player : playerDefeated){
-            if(shot.getType() == Hit.Type.SMALL){
-                //Direction it's not protected
-                if(!player.getShipBoard().isBeingProtected(shot.getDirection())){
+        if(shot.getType() == Hit.Type.SMALL){
+            //Direction it's not protected
+            if(!player.getShipBoard().isBeingProtected(shot.getDirection())){
+                player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
+            }
+            else{
+                if(batteries == null){
                     player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
                 }
                 else{
-                    if(batteries == null){
+                    //Controllo che abbia usato almeno una batteria, nel caso l'abbia usata elimino batterie usate e avanzo. Altrimenti distruggo il pezzo
+                    boolean usedBatteries = false;
+                    for(Battery battery : batteries.keySet()){
+                        if(batteries.get(battery) > 0){
+                            usedBatteries = true;
+                        }
+                    }
+
+                    if(!usedBatteries){
                         player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
                     }
                     else{
-                        //Controllo che abbia usato almeno una batteria, nel caso l'abbia usata elimino batterie usate e avanzo. Altrimenti distruggo il pezzo
-                        boolean usedBatteries = false;
-                        for(Battery battery : batteries.keySet()){
-                            if(batteries.get(battery) > 0){
-                                usedBatteries = true;
-                            }
-                        }
-
-                        if(!usedBatteries){
-                            player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
-                        }
-                        else{
-                            player.getShipBoard().useBatteries(batteries);
-                        }
+                        player.getShipBoard().useBatteries(batteries);
                     }
                 }
             }
-            else{
-                player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
-            }
         }
+        else{
+            player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
+        }
+
         this.iterations++;
     }
 
