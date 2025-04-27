@@ -61,5 +61,6 @@ public class LoseState implements AdventureState {
 
     @Override
     public void nextAdvState(AdventurePhase advContext) {
+        throw new UnsupportedOperationException("Not supported");
     }
 }
