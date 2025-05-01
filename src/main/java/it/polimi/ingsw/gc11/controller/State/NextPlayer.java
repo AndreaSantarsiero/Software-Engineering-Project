@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
-public class NextPlayer implements AdventureState {
+public class NextPlayer extends AdventureState {
     private AdventureCard adventureCard;
 
     public NextPlayer(AdventureCard adventureCard) {
