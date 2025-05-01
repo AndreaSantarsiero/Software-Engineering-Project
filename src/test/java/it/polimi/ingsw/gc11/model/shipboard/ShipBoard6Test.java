@@ -29,7 +29,7 @@ public class ShipBoard6Test {
 
     @Test
     void testCheckShip(){
-        assertFalse(shipBoard.checkShip(), "ShipBoard6 DO NOT respect all the rules");
+        assertTrue(shipBoard.checkShip(), "ShipBoard6 respects all the rules");
     }
 
 
@@ -38,11 +38,7 @@ public class ShipBoard6Test {
         Method method = ShipBoard.class.getDeclaredMethod("checkShipConnections");
         method.setAccessible(true);
         boolean result = (boolean) method.invoke(shipBoard);
-        assertFalse(result, "ShipBoard6 DO NOT respect all connection rules");
-
-        shipBoard.getShipCard(6, 8).destroy();
-        result = (boolean) method.invoke(shipBoard);
-        assertTrue(result, "ShipBoard6 now respects all connection rules");
+        assertTrue(result, "ShipBoard6 respects all connection rules");
     }
 
 
@@ -109,6 +105,10 @@ public class ShipBoard6Test {
         assertEquals(6, shipBoard.getEnginesPower(1), "Engine power not calculated correctly");
         assertThrows(IllegalArgumentException.class, () -> shipBoard.getEnginesPower(2), "Cannot use more batteries then the number of double engines");
         assertThrows(IllegalArgumentException.class, () -> shipBoard.getEnginesPower(-1), "Negative number of batteries");
+        AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
+        HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
+        assertEquals(8, shipBoard.getEnginesPower(1), "Engine power not calculated correctly after connecting a brown alien unit");
     }
 
 
@@ -122,7 +122,12 @@ public class ShipBoard6Test {
         AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
         HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
         shipBoard.connectAlienUnit(alienUnit, housingUnit);
-        assertEquals(5.5, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly after connecting a purple alien unit");
+        assertEquals(3.5, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly after connecting a brown alien unit");
+        doubleCannons.add(new Cannon("doubleCannon", ShipCard.Connector.SINGLE,  ShipCard.Connector.NONE,  ShipCard.Connector.SINGLE, Cannon.Type.DOUBLE));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.getCannonsPower(doubleCannons), "Too many double cannons");
+        doubleCannons.clear();
+        doubleCannons.add(new Cannon("singleCannon", ShipCard.Connector.SINGLE,  ShipCard.Connector.NONE,  ShipCard.Connector.SINGLE, Cannon.Type.SINGLE));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.getCannonsPower(doubleCannons), "Cannot add single cannon to double cannons list");
     }
 
 
@@ -181,8 +186,8 @@ public class ShipBoard6Test {
         AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
         HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
         shipBoard.connectAlienUnit(alienUnit, housingUnit);
-        assertEquals(1, shipBoard.getPurpleAliens(), "Purple aliens number not calculated correctly after connecting an alien unit to a housing unit");
-        assertEquals(0, shipBoard.getBrownAliens(), "Brown aliens number not calculated correctly after connecting an alien unit to a housing unit");
+        assertEquals(0, shipBoard.getPurpleAliens(), "Purple aliens number not calculated correctly after connecting an alien unit to a housing unit");
+        assertEquals(1, shipBoard.getBrownAliens(), "Brown aliens number not calculated correctly after connecting an alien unit to a housing unit");
     }
 
 

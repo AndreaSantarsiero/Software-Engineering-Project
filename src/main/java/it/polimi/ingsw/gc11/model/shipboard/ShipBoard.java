@@ -1286,9 +1286,15 @@ public abstract class ShipBoard {
                 if (cannon.isScrap()) {
                     throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");
                 }
+                if (cannon.getType() == Cannon.Type.SINGLE){
+                    throw new IllegalArgumentException("Cannot use batteries on a single cannon");
+                }
             }
             if(doubleCannons.size() > getTotalAvailableBatteries()){
                 throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");
+            }
+            if(doubleCannons.size() > getDoubleCannonsNumber()){
+                throw new IllegalArgumentException("Double cannons number cannot be greater than the number of double cannons on this ship");
             }
 
             for(Cannon cannon : doubleCannons){
