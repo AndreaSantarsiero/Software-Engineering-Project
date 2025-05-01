@@ -29,21 +29,22 @@ public class GameContext implements GameInterface{
         this.phase = new IdlePhase();
     }
 
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+
     public String getMatchID() {
         return matchID;
+    }
+
+    public GamePhase getPhase() {
+        return phase;
     }
 
     public void setPhase(GamePhase phase) {
         this.phase = phase;
     }
 
-    public void nextPhase() {
-        phase.nextPhase(this);
-    }
-
-    public GamePhase getPhase() {
-        return phase;
-    }
 
     public void addPlayerContext(String playerUsername) throws FullLobbyException {
         if (playerContexts.size() < 4) {
@@ -93,7 +94,7 @@ public class GameContext implements GameInterface{
             return this.phase.getFreeShipCard(this.gameModel, pos);
         }
         catch (IllegalStateException e){
-            System.out.println("Can't get free ship card in the current game phase.");
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -111,7 +112,7 @@ public class GameContext implements GameInterface{
             this.gameModel.getPlayerShipBoard(username).addShipCard(shipCard, x, y);
         }
         catch (IllegalStateException e) {
-            System.out.println("Can't place a ship card in the current game phase.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -124,7 +125,7 @@ public class GameContext implements GameInterface{
             this.phase.removeShipCard(this.gameModel, username, x, y);
         }
         catch (IllegalArgumentException e) {
-            System.out.println("Can't remove ship card in the current game phase.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -137,7 +138,7 @@ public class GameContext implements GameInterface{
             this.gameModel.getPlayerShipBoard(username).reserveShipCard(shipCard);
         }
         catch (IllegalStateException e) {
-            System.out.println("Can't reserve ship card in the current game phase.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -153,7 +154,7 @@ public class GameContext implements GameInterface{
             this.gameModel.getPlayerShipBoard(username).useReservedShipCard(shipCard, x, y);
         }
         catch (IllegalStateException e) {
-            System.out.println("Can't use reserved ship card in the current game phase.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -167,9 +168,57 @@ public class GameContext implements GameInterface{
 
     }
 
+    public void goToCheckPhase(){
+        try {
+            phase.goToCheckPhase(this);
+        }
+        catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void checkAllShipBoards(){
+    }
+
+
     @Override
     public AdventureCard getAdventureCard(String username) {
-        return null;
+        if (username == null) {
+            throw new NullPointerException();
+        }
+        try {
+            return phase.getAdventureCard(username);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public void acceptAdventureCard(String username) {
+        if (username == null) {
+            throw new NullPointerException();
+        }
+        try {
+            phase.acceptAdventureCard(username);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void declineAdventureCard(String username) {
+        if (username == null) {
+            throw new NullPointerException();
+        }
+        try {
+            phase.declineAdventureCard(username);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -198,16 +247,6 @@ public class GameContext implements GameInterface{
     }
 
     @Override
-    public void acceptAdventureCard(String username) {
-
-    }
-
-    @Override
-    public void skipAdventureCard(String username) {
-
-    }
-
-    @Override
     public void selectPlanet(String username, int pos) {
 
     }
@@ -222,16 +261,5 @@ public class GameContext implements GameInterface{
 
     }
 
-    public void goToCheckPhase(){
-        try {
-            phase.goToCheckPhase(this);
-        }
-        catch (IllegalStateException e) {
-            System.out.println("Can't go to check state in the current game phase.");
-        }
-    }
-
-    public void checkAllShipBoards(){
-    }
 
 }

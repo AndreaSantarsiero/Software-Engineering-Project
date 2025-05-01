@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseMaterialsSmugglers implements AdventureState {
+public class ChooseMaterialsSmugglers extends AdventureState {
 
     private Smugglers smugglers;
     private GameModel gameModel;

@@ -11,7 +11,7 @@ import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseSmugglers implements AdventureState {
+public class ChooseSmugglers extends AdventureState {
 
     private Smugglers smugglers;
     private GameModel gameModel;

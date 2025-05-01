@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZone;
 
-public class ChooseCombat implements AdventureState {
+public class ChooseCombat extends AdventureState {
     private CombatZone combatZone;
     private int numPhase;
     private GameModel gameModel;

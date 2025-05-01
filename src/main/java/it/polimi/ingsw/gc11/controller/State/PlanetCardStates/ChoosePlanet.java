@@ -10,7 +10,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 
 import java.util.ArrayList;
 
-public class ChoosePlanet implements AdventureState {
+public class ChoosePlanet extends AdventureState {
 
     private PlanetsCard planetsCard;
     private ArrayList<Planet> freePlanets;

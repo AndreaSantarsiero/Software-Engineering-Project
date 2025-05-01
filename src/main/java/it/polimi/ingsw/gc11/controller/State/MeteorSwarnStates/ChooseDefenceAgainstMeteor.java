@@ -31,7 +31,7 @@ import java.util.Map;
  * @see AdventureState
  * @see AdventurePhase
  */
-public class ChooseDefenceAgainstMeteor implements AdventureState {
+public class ChooseDefenceAgainstMeteor extends AdventureState {
     Player player;
     GameModel gameModel;
     MeteorSwarm meteorSwarm;

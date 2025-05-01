@@ -23,7 +23,7 @@ import java.util.Map;
  * </p>
  **/
 
-public class LoseState implements AdventureState {
+public class LoseState extends AdventureState {
     Player player;
     GameModel gameModel;
     Slavers slavers;

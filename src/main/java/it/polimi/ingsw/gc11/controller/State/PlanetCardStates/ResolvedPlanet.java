@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 
-public class ResolvedPlanet implements AdventureState {
+public class ResolvedPlanet extends AdventureState {
 
     private PlanetsCard planetsCard;
     private GameModel gameModel;

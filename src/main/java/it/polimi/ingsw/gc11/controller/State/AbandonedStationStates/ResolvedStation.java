@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
 
-public class ResolvedStation implements AdventureState {
+public class ResolvedStation extends AdventureState {
 
     private AbandonedStation abandonedStation;
     private GameModel gameModel;

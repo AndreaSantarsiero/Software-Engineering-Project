@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.model.Dice;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZone;
 
-public class RollDicesCombat implements AdventureState {
+public class RollDicesCombat extends AdventureState {
     private CombatZone combatZone;
     private int numPhase;
     private GameModel gameModel;

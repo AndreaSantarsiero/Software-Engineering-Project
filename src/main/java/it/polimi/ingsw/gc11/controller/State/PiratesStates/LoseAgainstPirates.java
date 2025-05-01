@@ -24,7 +24,7 @@ import java.util.Map;
  * @see Pirates
  * @see WinAgainstPirates
  */
-public class LoseAgainstPirates implements AdventureState {
+public class LoseAgainstPirates extends AdventureState {
     List<Player> playerDefeated;
     GameModel gameModel;
     Pirates pirates;

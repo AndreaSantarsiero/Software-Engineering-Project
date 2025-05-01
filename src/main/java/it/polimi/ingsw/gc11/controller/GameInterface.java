@@ -22,13 +22,13 @@ public interface GameInterface {
 
     //Adventure phase methods
     AdventureCard getAdventureCard(String username);
+    void acceptAdventureCard(String username);
+    void declineAdventureCard(String username);
     void useBatteries(String username, Map<Battery, Integer> batteryUsage);
     int getTotalAvailableBatteries(String username);
     int getEnginesPower (String username, int numBatteries);
     double getCannonsPower(String username, int numBatteries);
     void removeMaterials(String username, int x, int y, ArrayList<Material> materials);
-    void acceptAdventureCard(String username);
-    void skipAdventureCard(String username);
     void selectPlanet(String username, int pos);
     void selectEnginePower(String username, int numBatteries);
     void selectCannonsPower(String username, int numBatteries);

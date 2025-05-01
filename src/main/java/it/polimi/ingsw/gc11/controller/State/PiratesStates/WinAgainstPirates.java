@@ -26,7 +26,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
  * @see AdventurePhase
  * @see AdventureState
  */
-public class WinAgainstPirates implements AdventureState {
+public class WinAgainstPirates extends AdventureState {
     Player player;
     GameModel gameModel;
     Pirates pirates;

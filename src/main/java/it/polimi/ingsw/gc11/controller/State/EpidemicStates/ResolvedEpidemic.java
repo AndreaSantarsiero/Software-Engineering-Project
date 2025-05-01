@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.Player;
 
-public class ResolvedEpidemic implements AdventureState {
+public class ResolvedEpidemic extends AdventureState {
     Player player;
     public ResolvedEpidemic(Player player) {
         if(player==null){

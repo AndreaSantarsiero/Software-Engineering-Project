@@ -20,7 +20,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
  * to ensure a consistent and valid state.
  * </p>
  */
-public class WinState implements AdventureState {
+public class WinState extends AdventureState {
     Player player;
     GameModel gameModel;
     Slavers slavers;

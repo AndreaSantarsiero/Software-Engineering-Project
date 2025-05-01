@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
 
-public class ResolvedShip implements AdventureState {
+public class ResolvedShip extends AdventureState {
 
     private AbandonedShip abandonedShip;
     private GameModel gameModel;

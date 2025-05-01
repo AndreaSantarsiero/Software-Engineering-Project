@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
 
 
@@ -22,7 +22,7 @@ public class StarDust extends AdventureCard {
     }
 
     @Override
-    public AdventureState getInitialState(AdventureCard adventureCard, GameModel gameModel, Player player){
+    public AdventureState getInitialState(AdventurePhase advContext, AbandonedShip advCard){
         return null;
     }
 

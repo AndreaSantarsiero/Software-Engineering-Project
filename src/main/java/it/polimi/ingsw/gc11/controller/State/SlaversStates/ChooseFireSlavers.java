@@ -28,7 +28,7 @@ import java.util.Map;
  * </p>
  *
  */
-public class ChooseFireSlavers implements AdventureState {
+public class ChooseFireSlavers extends AdventureState {
     Player player;
     GameModel gameModel;
     Slavers slavers;
@@ -89,10 +89,10 @@ public class ChooseFireSlavers implements AdventureState {
     public void nextAdvState(AdventurePhase advContext) {
         if(playerFirePower > slavers.getFirePower()){
             //VictoryState
-            advContext.setAdventureState(new WinState(this.player, this.gameModel, this.slavers));
+            advContext.setAdvState(new WinState(this.player, this.gameModel, this.slavers));
         }
         //Go LoseState
-        advContext.setAdventureState(new LoseState(this.player, this.gameModel, this.slavers));
+        advContext.setAdvState(new LoseState(this.player, this.gameModel, this.slavers));
     }
 }
 

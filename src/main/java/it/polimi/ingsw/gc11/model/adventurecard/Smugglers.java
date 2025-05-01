@@ -1,10 +1,9 @@
 package it.polimi.ingsw.gc11.model.adventurecard;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.ChooseSmugglers;
-import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
 import java.util.ArrayList;
 
@@ -51,7 +50,7 @@ public class Smugglers extends AdventureCard {
     public void defeate() {defeated = true;}
 
     @Override
-    public AdventureState getInitialState(AdventureCard adventureCard, GameModel gameModel, Player player){
+    public AdventureState getInitialState(AdventurePhase advContext, AbandonedShip advCard){
         return new ChooseSmugglers(this, gameModel, player);
     }
 

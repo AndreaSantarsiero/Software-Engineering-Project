@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseMaterialsPlanet implements AdventureState {
+public class ChooseMaterialsPlanet extends AdventureState {
 
     private PlanetsCard planetsCard;
     private Planet planet;

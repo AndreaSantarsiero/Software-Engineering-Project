@@ -12,7 +12,7 @@ import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 
 import java.util.Map;
 
-public class ResolvedCombat implements AdventureState {
+public class ResolvedCombat extends AdventureState {
     private CombatZone combatZone;
     private int numPhase;
     private GameModel gameModel;

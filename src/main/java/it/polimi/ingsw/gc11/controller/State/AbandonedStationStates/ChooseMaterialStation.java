@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseMaterialStation implements AdventureState {
+public class ChooseMaterialStation extends AdventureState {
 
     AbandonedStation abandonedStation;
     GameModel gameModel;

@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.OpenSpace;
 
-public class ResolvedOpenSpace implements AdventureState {
+public class ResolvedOpenSpace extends AdventureState {
     private OpenSpace openSpace;
     private GameModel gameModel;
     private Player player;

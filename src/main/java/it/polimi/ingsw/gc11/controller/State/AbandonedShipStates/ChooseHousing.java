@@ -9,27 +9,22 @@ import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 
 import java.util.Map;
 
-//Ipotesi: questo è il PRIMO stato della advCard AbandonedShip,
-//cioè quello che ottengo dal metodo initAdventureState() in AdventurePhase
-public class ChooseHousing implements AdventureState {
+
+public class ChooseHousing extends AdventureState {
 
     private AbandonedShip abandonedShip;
     private GameModel gameModel;
     private Player player;
 
-    public ChooseHousing(AbandonedShip abandonedShip, GameModel gameModel, Player player) {
-        if(abandonedShip == null ||  gameModel == null || player == null){
-            throw new NullPointerException();
-        }
-
-        this.abandonedShip = abandonedShip;
-        this.gameModel = gameModel;
+    public ChooseHousing(AdventurePhase advContext, Player player) {
+        super(advContext);
+        this.abandonedShip = (AbandonedShip) this.advContext.getDrawnAdvCard();
+        this.gameModel = this.advContext.getGameModel();
         this.player = player;
     }
 
-    @Override
     public void nextAdvState(AdventurePhase advContext) {
-        advContext.setAdventureState(new ResolvedShip(abandonedShip, gameModel, player));
+        advContext.setAdvState(new ResolvedShip(abandonedShip, gameModel, player));
     }
 
     //Idea: farei ovveride e lo chiamerei resolveState()
@@ -45,5 +40,6 @@ public class ChooseHousing implements AdventureState {
         abandonedShip.resolveCard();
 
         //go to next state
+        this.advContext.setAdvState(new ResolvedShip(abandonedShip, gameModel, player));
     }
 }

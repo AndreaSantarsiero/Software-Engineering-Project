@@ -12,7 +12,7 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
-public class SelectPlayerCombat implements AdventureState {
+public class SelectPlayerCombat extends AdventureState {
     private CombatZone combatZone;
     private int numPhase;
     private GameModel gameModel;

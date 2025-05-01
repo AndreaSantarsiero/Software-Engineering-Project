@@ -26,7 +26,7 @@ import java.util.Map;
  * @see WinAgainstPirates
  * @see LoseAgainstPirates
  */
-public class ChooseFirePirates implements AdventureState {
+public class ChooseFirePirates extends AdventureState {
     Player player;
     GameModel gameModel;
     Pirates pirates;
@@ -102,7 +102,7 @@ public class ChooseFirePirates implements AdventureState {
     public void nextAdvState(AdventurePhase advContext) {
         if(playerFirePower > pirates.getFirePower()){
             //VictoryState
-            advContext.setAdventureState(new WinAgainstPirates(this.player, this.gameModel, this.pirates));
+            advContext.setAdvState(new WinAgainstPirates(this.player, this.gameModel, this.pirates));
         }
         else if(playerFirePower < pirates.getFirePower() && !lastPlayer){
             playersDefeated.add(this.player);
@@ -111,7 +111,7 @@ public class ChooseFirePirates implements AdventureState {
         }
 
         if(lastPlayer && !playersDefeated.isEmpty()){
-            advContext.setAdventureState(new LoseAgainstPirates(this.playersDefeated, this.gameModel, this.pirates));
+            advContext.setAdvState(new LoseAgainstPirates(this.playersDefeated, this.gameModel, this.pirates));
         }
     }
 }

@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Smugglers;
 
-public class ResolvedSmugglers implements AdventureState {
+public class ResolvedSmugglers extends AdventureState {
     private Smugglers smugglers;
     private GameModel gameModel;
     private Player player;

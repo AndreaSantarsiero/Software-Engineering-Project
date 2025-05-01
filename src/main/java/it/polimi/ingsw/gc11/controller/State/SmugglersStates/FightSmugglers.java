@@ -9,7 +9,7 @@ import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.Map;
 
-public class FightSmugglers implements AdventureState {
+public class FightSmugglers extends AdventureState {
 
     private Smugglers smugglers;
     private GameModel gameModel;

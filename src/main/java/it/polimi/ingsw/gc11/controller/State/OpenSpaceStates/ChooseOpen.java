@@ -9,7 +9,7 @@ import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.Map;
 
-public class ChooseOpen implements AdventureState {
+public class ChooseOpen extends AdventureState {
 
     private OpenSpace openSpace;
     private GameModel gameModel;
