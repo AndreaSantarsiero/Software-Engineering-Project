@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.State.PiratesStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.NextPlayer;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
@@ -105,6 +106,7 @@ public class ChooseFirePirates implements AdventureState {
         }
         else if(playerFirePower < pirates.getFirePower() && !lastPlayer){
             playersDefeated.add(this.player);
+            advContext.setAdventureState(new NextPlayer(this.pirates));
             //Controller take the nextplayer, recall ChooseFirePirates(player2) and so on...
         }
 

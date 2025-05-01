@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.State.PiratesStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.NextPlayer;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
@@ -69,15 +70,9 @@ public class WinAgainstPirates implements AdventureState {
         }
     }
 
-    /**
-     * Advances to the next adventure state.
-     *
-     * <p>Currently, this method is left empty, assuming the controller will manage the correct transition externally.</p>
-     *
-     * @param advContext The current AdventurePhase context.
-     */
+
     @Override
     public void nextAdvState(AdventurePhase advContext) {
-        // Method intentionally left empty; state transition is managed externally.
+        advContext.setAdventureState(new NextPlayer(this.pirates));
     }
 }
