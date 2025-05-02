@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.UUID;
 
 public class GameModel {
@@ -329,7 +330,7 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-
+    //VA AGGIUNTO CONTROLLO DEL DOPPIAGGIO
     public void move(String username, int numDays){
         Player curr = null;
         int tmp;
@@ -369,6 +370,7 @@ public class GameModel {
         }
         curr.setPosition(curr.getPosition()+numDays);
 
-
+        //Ordino arraylist di player in base alla classifica
+        this.players.sort(Comparator.comparing(Player::getStanding));
     }
 }

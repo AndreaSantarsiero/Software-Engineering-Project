@@ -16,8 +16,8 @@ public class IdleState extends AdventureState{
         Player firstPlayer = gameModel.getPlayers().get(0);
         if (firstPlayer.getUsername().equals(username) ) { //the player who is calling the method is the first one
             AdventureCard drawnCard = gameModel.getTopAdventureCard();
-            this.advContext.initAdventureState();
             this.advContext.setDrawnAdvCard(drawnCard);
+            this.advContext.initAdventureState();
             return drawnCard;
         }
         else {

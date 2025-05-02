@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.State.AbandonedStationStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
@@ -19,23 +20,15 @@ public class ChooseMaterialStation extends AdventureState {
     GameModel gameModel;
     Player player;
 
-    public ChooseMaterialStation(AbandonedStation abandonedStation, GameModel gameModel, Player player) {
-
-        if(abandonedStation == null || gameModel == null || player == null){
-            throw new NullPointerException();
-        }
-
-        this.abandonedStation = abandonedStation;
-        this.gameModel = gameModel;
+    public ChooseMaterialStation(AdventurePhase advContext, Player player) {
+        super(advContext);
+        this.abandonedStation = (AbandonedStation) advContext.getDrawnAdvCard();
+        this.gameModel = advContext.getGameModel();
         this.player = player;
     }
 
     @Override
-    public void nextAdvState(AdventurePhase advContext) {
-
-    }
-
-    public void getMaterial(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         if(abandonedStation.isResolved()){
             throw new IllegalStateException("AbandonedStation already resolved");
         }
@@ -53,12 +46,9 @@ public class ChooseMaterialStation extends AdventureState {
         player.getShipBoard().addMaterials(storageMaterials);
 
         abandonedStation.resolveCard();
+        gameModel.move(player.getUsername(), abandonedStation.getLostDays() * -1);
 
-        if(player == gameModel.getLastPlayer()){
-            //go to next state
-        }
-        else{
-            //go to next state
-        }
+        //next state
+        this.advContext.setAdvState(new IdleState(advContext));
     }
 }

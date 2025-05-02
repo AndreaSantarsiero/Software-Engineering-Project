@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.State.AbandonedShipStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
@@ -9,26 +10,21 @@ import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 
 import java.util.Map;
 
-
 public class ChooseHousing extends AdventureState {
-
-    private AbandonedShip abandonedShip;
     private GameModel gameModel;
+    private AbandonedShip abandonedShip;
     private Player player;
 
     public ChooseHousing(AdventurePhase advContext, Player player) {
         super(advContext);
+        this.gameModel = advContext.getGameModel();
         this.abandonedShip = (AbandonedShip) this.advContext.getDrawnAdvCard();
-        this.gameModel = this.advContext.getGameModel();
         this.player = player;
     }
 
-    public void nextAdvState(AdventurePhase advContext) {
-        advContext.setAdvState(new ResolvedShip(abandonedShip, gameModel, player));
-    }
-
     //Idea: farei ovveride e lo chiamerei resolveState()
-    public void killMembers(Map<HousingUnit, Integer> housingUsage){
+    @Override
+    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
         if(abandonedShip.isResolved()){
             throw new IllegalStateException("Abandoned ship already resolved");
         }
@@ -39,7 +35,10 @@ public class ChooseHousing extends AdventureState {
         player.getShipBoard().killMembers(housingUsage);
         abandonedShip.resolveCard();
 
+        player.addCoins(abandonedShip.getCoins());
+        gameModel.move(player.getUsername(), abandonedShip.getLostDays() * -1);
+
         //go to next state
-        this.advContext.setAdvState(new ResolvedShip(abandonedShip, gameModel, player));
+        this.advContext.setAdvState(new IdleState(advContext));
     }
 }

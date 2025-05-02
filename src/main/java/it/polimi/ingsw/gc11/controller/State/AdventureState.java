@@ -1,6 +1,13 @@
 package it.polimi.ingsw.gc11.controller.State;
 
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
+
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class AdventureState{
     protected AdventurePhase advContext;
@@ -21,4 +28,11 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't decline an adventure card in the current adventure state.");
     }
 
+    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        throw new IllegalStateException("Can't kill members in the current adventure state.");
+    }
+
+    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        throw new IllegalStateException("Can't choose material in the current adventure state.");
+    }
 }

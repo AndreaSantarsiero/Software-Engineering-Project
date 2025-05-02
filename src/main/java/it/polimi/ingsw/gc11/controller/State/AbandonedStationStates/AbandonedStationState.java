@@ -1,25 +1,23 @@
-package it.polimi.ingsw.gc11.controller.State.AbandonedShipStates;
+package it.polimi.ingsw.gc11.controller.State.AbandonedStationStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
+import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
 
-//Ipotesi: questo è il PRIMO stato della advCard AbandonedShip,
-//cioè quello che ottengo dal metodo initAdventureState() in AdventurePhase
-public class AbandonedShipState extends AdventureState {
+public class AbandonedStationState extends AdventureState {
 
-    public AbandonedShipState(AdventurePhase advContext) {
+    public AbandonedStationState(AdventurePhase advContext) {
         super(advContext);
     }
 
     @Override
-    public void acceptAdventureCard(String username) {
+    public void acceptAdventureCard(String username){
         GameModel gameModel = this.advContext.getGameModel();
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
-        AbandonedShip abandonedShip = (AbandonedShip) this.advContext.getDrawnAdvCard();
+        AbandonedStation abandonedStation = (AbandonedStation) this.advContext.getDrawnAdvCard();
 
         if (expectedPlayer.getUsername().equals(username)) {
 
@@ -28,9 +26,9 @@ public class AbandonedShipState extends AdventureState {
             }
             else {
 
-                if(expectedPlayer.getShipBoard().getMembers() >= abandonedShip.getLostMembers()){
+                if(expectedPlayer.getShipBoard().getMembers() >= abandonedStation.getMembersRequired()){
                     advContext.setResolvingAdvCard(true);
-                    advContext.setAdvState(new ChooseHousing(this.advContext, expectedPlayer));
+                    advContext.setAdvState(new ChooseMaterialStation(this.advContext, expectedPlayer));
                 }
                 else{
                     throw new IllegalStateException("You don't have enough members to accept this adventure card!");
@@ -47,6 +45,7 @@ public class AbandonedShipState extends AdventureState {
     public void declineAdventureCard(String username) {
         GameModel gameModel = this.advContext.getGameModel();
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+
         if (expectedPlayer.getUsername().equals(username)) {
             int idx = this.advContext.getIdxCurrentPlayer();
             this.advContext.setIdxCurrentPlayer(idx+1);
@@ -64,5 +63,4 @@ public class AbandonedShipState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play!");
         }
     }
-
 }

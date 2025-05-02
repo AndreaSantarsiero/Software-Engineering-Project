@@ -8,8 +8,13 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GameContext implements GameInterface{
@@ -219,6 +224,34 @@ public class GameContext implements GameInterface{
         catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        if (username == null) {
+            throw new NullPointerException();
+        }
+        try {
+            phase.killMembers(username, housingUsage);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        if(username == null) {
+            throw new NullPointerException();
+        }
+
+        try{
+            phase.chosenMaterial(username, storageMaterials);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Override

@@ -3,8 +3,15 @@ package it.polimi.ingsw.gc11.controller.State;
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
+
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class GamePhase {
 
@@ -62,5 +69,11 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't decline an adventure card in the current game phase.");
     }
 
+    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        throw new IllegalStateException("Can't kill members of an adventure card in the current game phase.");
+    }
 
+    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        throw new IllegalStateException("Can't choose materials of an adventure card in the current game phase.");
+    }
 }

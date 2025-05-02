@@ -2,8 +2,15 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
+
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
 
 //Adventure Context
 public class AdventurePhase extends GamePhase {
@@ -73,9 +80,6 @@ public class AdventurePhase extends GamePhase {
 
     @Override
     public AdventureCard getAdventureCard(String username) throws IllegalStateException {
-        if (username == null) {
-            throw new NullPointerException();
-        }
         try {
             return this.advState.getAdventureCard(username);
         }
@@ -87,9 +91,6 @@ public class AdventurePhase extends GamePhase {
 
     @Override
     public void acceptAdventureCard(String username) {
-        if (username == null) {
-            throw new NullPointerException();
-        }
         try {
             this.advState.getAdventureCard(username);
         }
@@ -102,11 +103,30 @@ public class AdventurePhase extends GamePhase {
     public void declineAdventureCard(String username) {
         Player expectedPlayer = this.gameModel.getPlayers().get(this.idxCurrentPlayer);
         if (expectedPlayer.getUsername().equals(username)) {
-            this.idxCurrentPlayer++;
+            this.advState.declineAdventureCard(username);
         }
         else {
             throw new IllegalArgumentException("It's not your turn to play!");
         }
     }
 
+    @Override
+    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        try {
+            this.advState.killMembers(username, housingUsage);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        try {
+            this.advState.chosenMaterial(username, storageMaterials);
+        }
+        catch(IllegalStateException | IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
+    }
 }
