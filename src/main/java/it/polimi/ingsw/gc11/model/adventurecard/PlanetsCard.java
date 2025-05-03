@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.PlanetCardStates.ChoosePlanet;
+import it.polimi.ingsw.gc11.controller.State.PlanetCardStates.PlanetsState;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
@@ -39,8 +39,8 @@ public class PlanetsCard extends AdventureCard {
     }
 
     @Override
-    public AdventureState getInitialState(AdventurePhase advContext, AbandonedShip advCard){
-        return new ChoosePlanet(this, gameModel, player);
+    public AdventureState getInitialState(AdventurePhase advContext){
+        return new PlanetsState(advContext);
     }
 
     @Override
@@ -106,16 +106,4 @@ public class PlanetsCard extends AdventureCard {
 
     public int getLostDays() { return lostDays;}
 
-//    public void handler(GameModel model, String username, int planetLand, List<Storage> storageList, List<List<Material>> materialsAccepted) {
-//        planets.get(planetLand).setVisited(null);
-//
-//        //Lose days of flight
-//        model.move(username, lostDays);
-//
-//        for(int i = 0; i < storageList.size(); i++) {
-//            for(int j = 0; j < materialsAccepted.get(i).size(); j++) {
-//                storageList.get(i).addMaterial(materialsAccepted.get(i).get(j));
-//            }
-//        }
-//    }
 }
