@@ -1,0 +1,166 @@
+{
+  "shipboard": {
+    "level": 2,
+
+
+    "components": [
+      {
+        "id": "SingleCannon1",
+        "x": 6,
+        "y": 5,
+        "orientation": 0
+      },
+      {
+        "id": "SingleCannon2",
+        "x": 8,
+        "y": 5,
+        "orientation": 0
+      },
+
+      {
+        "id": "SingleCannon15",
+        "x": 6,
+        "y": 6,
+        "orientation": 270
+      },
+      {
+        "id": "SingleCannon13",
+        "x": 7,
+        "y": 6,
+        "orientation": 0
+      },
+      {
+        "id": "SingleCannon17",
+        "x": 8,
+        "y": 6,
+        "orientation": 90
+      },
+
+      {
+        "id": "SingleCannon8",
+        "x": 4,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "SingleCannon25",
+        "x": 5,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "DoubleBattery7",
+        "x": 6,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "YellowCentralUnit",
+        "x": 7,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "DoubleBattery4",
+        "x": 8,
+        "y": 7,
+        "orientation": 90
+      },
+      {
+        "id": "SingleCannon23",
+        "x": 9,
+        "y": 7,
+        "orientation": 0
+      },
+      {
+        "id": "DoubleCannon10",
+        "x": 10,
+        "y": 7,
+        "orientation": 0
+      },
+
+      {
+        "id": "SingleCannon3",
+        "x": 4,
+        "y": 8,
+        "orientation": 270
+      },
+      {
+        "id": "HousingUnit8",
+        "x": 5,
+        "y": 8,
+        "orientation": 180
+      },
+      {
+        "id": "RedSingleStorage6",
+        "x": 6,
+        "y": 8,
+        "orientation": 0
+      },
+      {
+        "id": "DoubleCannon1",
+        "x": 7,
+        "y": 8,
+        "orientation": 180
+      },
+      {
+        "id": "BlueDoubleStorage4",
+        "x": 8,
+        "y": 8,
+        "orientation": 90
+      },
+      {
+        "id": "HousingUnit17",
+        "x": 9,
+        "y": 8,
+        "orientation": 270
+      },
+      {
+        "id": "SingleCannon5",
+        "x": 10,
+        "y": 8,
+        "orientation": 90
+      },
+
+      {
+        "id": "SingleEngine1",
+        "x": 4,
+        "y": 9,
+        "orientation": 0
+      },
+      {
+        "id": "SingleCannon16",
+        "x": 5,
+        "y": 9,
+        "orientation": 180
+      },
+      {
+        "id": "SingleEngine18",
+        "x": 6,
+        "y": 9,
+        "orientation": 0
+      },
+      {
+        "id": "SingleEngine8",
+        "x": 8,
+        "y": 9,
+        "orientation": 0
+      },
+      {
+        "id": "DoubleCannon9",
+        "x": 9,
+        "y": 9,
+        "orientation": 180
+      },
+      {
+        "id": "DoubleEngine7",
+        "x": 10,
+        "y": 9,
+        "orientation": 0
+      }
+    ],
+
+
+    "reservedComponents": null
+  }
+}
