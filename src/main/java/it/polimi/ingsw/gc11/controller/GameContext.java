@@ -1,12 +1,14 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
+import it.polimi.ingsw.gc11.controller.State.PiratesStates.HandleHit;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 
 import java.util.AbstractMap;
@@ -280,44 +282,31 @@ public class GameContext implements GameInterface{
     }
 
     @Override
-    public void useBatteries(String username, Map<Battery, Integer> batteryUsage) {
+    public void getCoordinate(String username){
+        if(username == null) {
+            throw new NullPointerException();
+        }
 
+        try{
+            phase.getCoordinate(username);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
-    public int getTotalAvailableBatteries(String username) {
-        return 0;
+    public void handleShot(String username, Map<Battery, Integer> batteries){
+        if(username == null) {
+            throw new NullPointerException();
+        }
+
+        try{
+            phase.handleShot(username, batteries);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
-
-    @Override
-    public int getEnginesPower(String username, int numBatteries) {
-        return 0;
-    }
-
-    @Override
-    public double getCannonsPower(String username, int numBatteries) {
-        return 0;
-    }
-
-    @Override
-    public void removeMaterials(String username, int x, int y, ArrayList<Material> materials) {
-
-    }
-
-    @Override
-    public void selectPlanet(String username, int pos) {
-
-    }
-
-    @Override
-    public void selectEnginePower(String username, int numBatteries) {
-
-    }
-
-    @Override
-    public void selectCannonsPower(String username, int numBatteries) {
-
-    }
-
 
 }

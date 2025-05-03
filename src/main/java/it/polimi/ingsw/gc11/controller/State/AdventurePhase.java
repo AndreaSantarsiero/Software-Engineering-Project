@@ -152,4 +152,24 @@ public class AdventurePhase extends GamePhase {
         }
     }
 
+    @Override
+    public void getCoordinate(String username){
+        try{
+            this.advState.getCoordinate(username);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void handleShot(String username, Map<Battery, Integer> batteries){
+        try{
+            this.advState.handleShot(username, batteries);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

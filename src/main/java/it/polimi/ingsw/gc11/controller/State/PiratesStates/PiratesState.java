@@ -33,15 +33,17 @@ public class PiratesState extends AdventureState {
     @Override
     public void chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
 
-        if(this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayers().size()){
-            this.advContext.setAdvState(new IdleState(advContext));
-        }
-
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
+
+        //Imposto che il giorcatore sta effettivamente giocando la carta
+        if(this.advContext.isResolvingAdvCard() == true){
+            throw new IllegalStateException("You are already accepted this adventure card!");
+        }
+        this.advContext.setResolvingAdvCard(true);
 
         if(Batteries == null || doubleCannons == null){
             throw new NullPointerException();
@@ -52,6 +54,7 @@ public class PiratesState extends AdventureState {
             sum += entry.getValue();
         }
 
+        //Potrebbe essere <= al posto che !=
         if(sum != doubleCannons.size()){
             throw new IllegalArgumentException("Batteries and Double Cannons do not match");
         }
@@ -64,15 +67,23 @@ public class PiratesState extends AdventureState {
             //VictoryState
             advContext.setAdvState(new WinAgainstPirates(advContext, player, playersDefeated));
         } else if (playerFirePower == pirates.getFirePower()) {
+            this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new PiratesState(advContext));
         }
-        else {//Go LoseState
+        else {
             this.playersDefeated.add(player);
+            this.advContext.setResolvingAdvCard(false);
 
-            if (this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayers().size()) {
-                advContext.setAdvState(new LoseAgainstPirates(advContext, this.playersDefeated));
+            if (this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayers().size() - 1) {
+                advContext.setAdvState(new CoordinateState(advContext, this.playersDefeated, 0));
+            }
+            else{
+                advContext.setAdvState(new PiratesState(advContext));
             }
         }
+
+
+
     }
 }

@@ -12,23 +12,7 @@ import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Represents the state in the adventure phase where the player decides how much firepower
- * to allocate against the Slavers encounter.
- * <p>
- * This state is responsible for:
- * <ul>
- *     <li>Consuming selected batteries from the player's shipboard</li>
- *     <li>Calculating the player's firepower based on selected cannons</li>
- *     <li>Determining the outcome of the encounter based on the firepower comparison</li>
- * </ul>
- * </p>
- *
- * <p>
- * Upon instantiation, all parameters must be non-null; otherwise, a {@link NullPointerException} is thrown.
- * </p>
- *
- */
+
 public class SlaversState extends AdventureState {
     private GameModel gameModel;
     private Slavers slavers;
@@ -41,32 +25,21 @@ public class SlaversState extends AdventureState {
         this.playerFirePower = 0;
     }
 
-    /**
-     * Calculates the player's firepower against the Slavers based on the selected batteries and cannons.
-     * <p>
-     * The method:
-     * <ul>
-     *     <li>Consumes the specified batteries from the player's shipboard</li>
-     *     <li>Computes the total firepower considering the selected double cannons</li>
-     * </ul>
-     * </p>
-     *
-     * @param Batteries      a map associating each {@link Battery} to the quantity the player wants to use.
-     * @param doubleCannons   a list of {@link Cannon} representing double cannons selected for the attack.
-     * @return the total firepower value calculated for the attack.
-     */
+
     @Override
     public void chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
-
-        if(this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayers().size()){
-            this.advContext.setAdvState(new IdleState(advContext));
-        }
 
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
+
+        //Imposto che il giorcatore sta effettivamente giocando la carta
+        if(this.advContext.isResolvingAdvCard() == true){
+            throw new IllegalStateException("You are already accepted this adventure card!");
+        }
+        this.advContext.setResolvingAdvCard(true);
 
         if(Batteries == null || doubleCannons == null){
             throw new NullPointerException();
@@ -89,12 +62,16 @@ public class SlaversState extends AdventureState {
             //VictoryState
             advContext.setAdvState(new WinState(advContext, player));
         } else if (playerFirePower == slavers.getFirePower()) {
+
+            //Imposto che la carta non è più giocata da nessun player e passo al prossimo player.
+            this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new SlaversState(advContext));
         }
         else {//Go LoseState
             advContext.setAdvState(new LoseState(advContext, player));
         }
+
     }
 
 }

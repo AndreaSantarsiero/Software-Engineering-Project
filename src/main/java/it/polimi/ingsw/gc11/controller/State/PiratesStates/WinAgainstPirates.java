@@ -26,15 +26,22 @@ public class WinAgainstPirates extends AdventureState {
 
     @Override
     public void rewardDecision(String username, boolean decision){
+
+        if(!player.getUsername().equals(username)){
+            throw new IllegalArgumentException("It's not your turn to play");
+        }
+
         if(decision){
             player.addCoins(pirates.getCoins());
-            gameModel.move(player.getUsername(), pirates.getLostDays());
+            gameModel.move(player.getUsername(), pirates.getLostDays() * -1);
         }
-        if (playersDefeated.isEmpty()) {
-            this.advContext.setAdvState(new IdleState(this.advContext));
+
+        //NextState
+        if(playersDefeated.isEmpty()){
+            this.advContext.setAdvState(new IdleState(advContext));
         }
         else {
-            this.advContext.setAdvState(new LoseAgainstPirates(this.advContext, playersDefeated));
+            this.advContext.setAdvState(new CoordinateState(advContext, this.playersDefeated, 0));
         }
     }
 

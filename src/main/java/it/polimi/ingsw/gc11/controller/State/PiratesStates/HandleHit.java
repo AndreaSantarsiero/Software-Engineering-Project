@@ -13,34 +13,42 @@ import java.util.List;
 import java.util.Map;
 
 
-public class LoseAgainstPirates extends AdventureState {
-    private Player player;
+public class HandleHit extends AdventureState {
     private List<Player> playersDefeated;
-    private GameModel gameModel;
+    private List<Boolean> alreadyPlayed;
     private Pirates pirates;
-    int iterations;
-    int coordinates;
+    private int coordinates;
+    private int iterationsHit;
+    private int iterationsPlayers;
 
-
-    public LoseAgainstPirates(AdventurePhase advContext, List<Player> playersDefeated) {
+    public HandleHit(AdventurePhase advContext, List<Player> playersDefeated, int coordinates, int iterationsHit, int iterationsPlayers, List<Boolean> alreadyPlayed) {
+        super(advContext);
         this.playersDefeated = playersDefeated;
-        this.gameModel = this.advContext.getGameModel();
+        this.alreadyPlayed = alreadyPlayed;
         this.pirates = (Pirates) this.advContext.getDrawnAdvCard();
-        this.iterations = 0;
-        this.coordinates = 0;
+        this.coordinates = coordinates;
+        this.iterationsHit = iterationsHit;
+        this.iterationsPlayers = iterationsPlayers;
     }
 
     //Assumiamo che i comandi siano memorizzati in una coda
-    public void hitPirate(int coordinates, Map<Battery, Integer> batteries, Player player) {
+    @Override
+    public void handleShot(String username, Map<Battery, Integer> batteries) {
+        Player player = this.advContext.getGameModel().getPlayer(username);
+
+        //Checko che il player sia stato effettivamente sconfitto
         if(!playersDefeated.contains(player)){
-            throw new IllegalArgumentException();
-        }
-        if(iterations >= pirates.getShots().size()){
-            throw new IndexOutOfBoundsException();
+            throw new IllegalArgumentException("You are not in the List of defeated players");
         }
 
-        this.coordinates = coordinates;
-        Shot shot = pirates.getShots().get(iterations);
+        //Controllo non si sia già difeso
+        int index = playersDefeated.indexOf(player);
+
+        if(alreadyPlayed.get(index)){
+            throw new IllegalArgumentException("You have already defended this shot");
+        }
+
+        Shot shot = pirates.getShots().get(iterationsHit);
 
         if(shot.getType() == Hit.Type.SMALL){
             //Direction it's not protected
@@ -73,17 +81,20 @@ public class LoseAgainstPirates extends AdventureState {
             player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
         }
 
-        this.iterations++;
+        //Setto che il giocatore si è già difeso da questo shot
+        alreadyPlayed.set(index, true);
+        this.iterationsPlayers++;
+
+        if(this.iterationsPlayers == this.playersDefeated.size()){
+            this.iterationsHit++;
+
+            //nextstate
+            this.advContext.setAdvState(new CoordinateState(advContext, playersDefeated, iterationsHit));
+        }
+        else{
+            this.advContext.setAdvState(new HandleHit(advContext, playersDefeated, coordinates, iterationsHit, iterationsPlayers, alreadyPlayed));
+        }
+
     }
 
-    /**
-     * This method is unsupported in the LoseAgainstPirates state.
-     *
-     * @param advContext The current AdventurePhase context.
-     * @throws UnsupportedOperationException Always thrown to indicate invalid operation.
-     */
-    @Override
-    public void nextAdvState(AdventurePhase advContext) {
-        throw new UnsupportedOperationException("Not supported");
-    }
 }

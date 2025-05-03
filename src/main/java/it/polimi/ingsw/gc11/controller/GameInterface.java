@@ -32,13 +32,6 @@ public interface GameInterface {
     void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials);
     void rewardDecision(String username, boolean decision);
     void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons);
-    void useBatteries(String username, Map<Battery, Integer> batteryUsage);
-    int getTotalAvailableBatteries(String username);
-    int getEnginesPower (String username, int numBatteries);
-    double getCannonsPower(String username, int numBatteries);
-    void removeMaterials(String username, int x, int y, ArrayList<Material> materials);
-    void selectPlanet(String username, int pos);
-    void selectEnginePower(String username, int numBatteries);
-    void selectCannonsPower(String username, int numBatteries);
-    //... to add other methods
+    void getCoordinate(String username);
+    void handleShot(String username, Map<Battery, Integer> batteries);
 }

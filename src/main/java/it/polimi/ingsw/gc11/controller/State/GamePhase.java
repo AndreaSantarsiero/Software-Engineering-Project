@@ -83,4 +83,11 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't make the reward decision of the adventure card in the current game phase.");
     }
 
+    public void getCoordinate(String username){
+        throw new IllegalStateException("Can't get a coordinate of the adventure card in the current game phase.");
+    }
+
+    public void handleShot(String username, Map<Battery, Integer> batteries){
+        throw new IllegalStateException("Can't handle shot of the adventure card in the current game phase.");
+    }
 }

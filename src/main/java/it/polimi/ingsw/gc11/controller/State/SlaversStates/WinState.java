@@ -30,6 +30,9 @@ public class  WinState extends AdventureState {
             gameModel.move(player.getUsername(), slavers.getLostDays() * -1);
         }
 
+        //Resetto resolving card
+        this.advContext.setResolvingAdvCard(false);
+        //La carta è finita torno in IDLE
         this.advContext.setAdvState(new IdleState(advContext));
     }
 

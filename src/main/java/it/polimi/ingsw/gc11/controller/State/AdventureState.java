@@ -46,4 +46,12 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't make the reward decision in the current adventure state.");
     }
 
+    public void getCoordinate(String username){
+        throw new IllegalStateException("Can't get coordinate in the current adventure state.");
+    }
+
+    public void handleShot(String username, Map<Battery, Integer> batteries){
+        throw new IllegalStateException("Can't handle shot in the current adventure state.");
+    }
+
 }
