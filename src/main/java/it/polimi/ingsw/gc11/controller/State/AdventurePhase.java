@@ -5,6 +5,8 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipcard.Battery;
+import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
 
@@ -129,4 +131,25 @@ public class AdventurePhase extends GamePhase {
             System.out.println(e.getMessage());
         }
     }
+
+    @Override
+    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
+        try{
+            this.advState.chooseFirePower(username, batteries, doubleCannons);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void rewardDecision(String username, boolean decision){
+        try{
+            this.advState.rewardDecision(username, decision);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

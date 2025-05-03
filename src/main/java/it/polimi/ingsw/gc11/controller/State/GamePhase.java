@@ -5,9 +5,7 @@ import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
+import it.polimi.ingsw.gc11.model.shipcard.*;
 
 import java.util.AbstractMap;
 import java.util.List;
@@ -76,4 +74,13 @@ public abstract class GamePhase {
     public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         throw new IllegalStateException("Can't choose materials of an adventure card in the current game phase.");
     }
+
+    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
+        throw new IllegalStateException("Can't choose fire powers of an adventure card in the current game phase.");
+    }
+
+    public void rewardDecision(String username, boolean decision){
+        throw new IllegalStateException("Can't make the reward decision of the adventure card in the current game phase.");
+    }
+
 }

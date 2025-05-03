@@ -8,6 +8,9 @@ public class IdleState extends AdventureState{
 
     public IdleState(AdventurePhase advContext) {
         super(advContext);
+        this.advContext.setIdxCurrentPlayer(0);
+        this.advContext.setResolvingAdvCard(false);
+        this.advContext.setDrawnAdvCard(null);
     }
 
     @Override

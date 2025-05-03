@@ -12,59 +12,27 @@ import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Represents the state when a player has lost against pirates during an adventure phase.
- *
- * <p>This state handles the consequences for defeated players. Players who lose must defend their ship
- * from pirate shots using shields and batteries. If they fail to properly defend, parts of their ship are destroyed.</p>
- * <p>The state will process each pirate shot until all the defeated players have been handled.</p>
- *
- * @see AdventureState
- * @see AdventurePhase
- * @see Pirates
- * @see WinAgainstPirates
- */
+
 public class LoseAgainstPirates extends AdventureState {
-    List<Player> playerDefeated;
-    GameModel gameModel;
-    Pirates pirates;
+    private Player player;
+    private List<Player> playersDefeated;
+    private GameModel gameModel;
+    private Pirates pirates;
     int iterations;
     int coordinates;
 
-    /**
-     * Constructs the LoseAgainstPirates state for the given defeated players and pirates encounter.
-     *
-     * @param player The list of players defeated by pirates.
-     * @param gameModel The game model containing the state of the game.
-     * @param pirates The Pirates adventure card the players are facing.
-     * @throws NullPointerException if any of the parameters are null.
-     */
-    public LoseAgainstPirates(List<Player> player, GameModel gameModel, Pirates pirates) {
-        if(player == null || gameModel == null || pirates == null){
-            throw new NullPointerException();
-        }
-        this.playerDefeated = player;
-        this.gameModel = gameModel;
-        this.pirates = pirates;
+
+    public LoseAgainstPirates(AdventurePhase advContext, List<Player> playersDefeated) {
+        this.playersDefeated = playersDefeated;
+        this.gameModel = this.advContext.getGameModel();
+        this.pirates = (Pirates) this.advContext.getDrawnAdvCard();
         this.iterations = 0;
         this.coordinates = 0;
     }
 
-
-    /**
-     * Handles the impact of a pirate shot on a defeated player.
-     *
-     * <p>This method checks if the shot type is small or large and applies the appropriate defense mechanism
-     * (using shields and batteries if available) to prevent ship damage. If the defense fails, the affected component is destroyed.</p>
-     *
-     * @param coordinates The coordinates of the affected ship component.
-     * @param batteries The batteries used by the player for defense.
-     * @param player The player who is being attacked by pirates.
-     * @throws IllegalArgumentException if the player is not in the list of defeated players.
-     * @throws IndexOutOfBoundsException if there are no more pirate shots to process.
-     */
+    //Assumiamo che i comandi siano memorizzati in una coda
     public void hitPirate(int coordinates, Map<Battery, Integer> batteries, Player player) {
-        if(!playerDefeated.contains(player)){
+        if(!playersDefeated.contains(player)){
             throw new IllegalArgumentException();
         }
         if(iterations >= pirates.getShots().size()){

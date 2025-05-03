@@ -25,6 +25,10 @@ public class ChooseHousing extends AdventureState {
     //Idea: farei ovveride e lo chiamerei resolveState()
     @Override
     public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        if(!player.getUsername().equals(username)){
+            throw new IllegalArgumentException("It's not your turn to play");
+        }
+
         if(abandonedShip.isResolved()){
             throw new IllegalStateException("Abandoned ship already resolved");
         }

@@ -7,10 +7,7 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
+import it.polimi.ingsw.gc11.model.shipcard.*;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -252,6 +249,34 @@ public class GameContext implements GameInterface{
             System.out.println(e.getMessage());
         }
 
+    }
+
+    @Override
+    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
+        if(username == null) {
+            throw new NullPointerException();
+        }
+
+        try{
+            phase.chooseFirePower(username, batteries, doubleCannons);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void rewardDecision(String username, boolean decision){
+        if(username == null) {
+            throw new NullPointerException();
+        }
+
+        try{
+            phase.rewardDecision(username, decision);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

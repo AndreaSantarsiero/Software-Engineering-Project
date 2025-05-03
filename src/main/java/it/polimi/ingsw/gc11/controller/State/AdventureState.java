@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipcard.Battery;
+import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
 
@@ -35,4 +37,13 @@ public abstract class AdventureState{
     public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         throw new IllegalStateException("Can't choose material in the current adventure state.");
     }
+
+    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
+        throw new IllegalStateException("Can't choose fire power in the current adventure state.");
+    }
+
+    public void rewardDecision(String username, boolean decision){
+        throw new IllegalStateException("Can't make the reward decision in the current adventure state.");
+    }
+
 }

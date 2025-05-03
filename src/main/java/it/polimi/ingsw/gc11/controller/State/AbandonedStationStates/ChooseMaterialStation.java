@@ -29,6 +29,10 @@ public class ChooseMaterialStation extends AdventureState {
 
     @Override
     public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        if(!player.getUsername().equals(username)){
+            throw new IllegalArgumentException("It's not your turn to play");
+        }
+
         if(abandonedStation.isResolved()){
             throw new IllegalStateException("AbandonedStation already resolved");
         }
