@@ -3,12 +3,10 @@ package it.polimi.ingsw.gc11.controller.State.PiratesStates;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
-import it.polimi.ingsw.gc11.controller.State.NextPlayer;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WinAgainstPirates extends AdventureState {
