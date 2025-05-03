@@ -28,6 +28,16 @@ public class LoseState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        int sum = 0;
+        for(HousingUnit housingUnit : housingUsage.keySet()){
+            sum += housingUsage.get(housingUnit);
+        }
+
+        if(sum <= slavers.getLostMembers()){
+            throw new IllegalStateException("You are out of the game");
+            //Il giocatore va eliminato dalla partita
+        }
+
         player.getShipBoard().killMembers(housingUsage);
 
         //next state

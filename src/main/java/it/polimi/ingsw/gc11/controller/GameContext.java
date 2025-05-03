@@ -309,4 +309,18 @@ public class GameContext implements GameInterface{
         }
     }
 
+    @Override
+    public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
+        if(username == null) {
+            throw new NullPointerException();
+        }
+
+        try{
+            phase.eliminateBatteries(username, batteries);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

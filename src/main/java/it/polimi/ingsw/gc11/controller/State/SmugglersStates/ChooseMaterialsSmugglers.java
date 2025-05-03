@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.State.SmugglersStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
@@ -19,22 +20,18 @@ public class ChooseMaterialsSmugglers extends AdventureState {
     private GameModel gameModel;
     private Player player;
 
-    public  ChooseMaterialsSmugglers(Smugglers smugglers, GameModel gameModel, Player player) {
-        if(smugglers==null || gameModel==null || player==null){
-            throw new NullPointerException();
-        }
-
+    public  ChooseMaterialsSmugglers(AdventurePhase advContext, Player player) {
+        super(advContext);
         this.smugglers = smugglers;
         this.gameModel = gameModel;
         this.player = player;
     }
 
     @Override
-    public void nextAdvState(AdventurePhase advContext) {
-
-    }
-
-    public void getMaterial(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        if(!player.getUsername().equals(username)){
+            throw new IllegalArgumentException("It's not your turn to play");
+        }
 
         ArrayList<Material> availableMaterials = smugglers.getMaterials();
         for (Map.Entry<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
@@ -45,12 +42,9 @@ public class ChooseMaterialsSmugglers extends AdventureState {
         }
         player.getShipBoard().addMaterials(storageMaterials);
 
+        gameModel.move(player.getUsername(), smugglers.getLostDays() * -1);
 
-        if(player == gameModel.getLastPlayer()){
-            //go to next state
-        }
-        else{
-            //go to next state
-        }
+        //next state
+        this.advContext.setAdvState(new IdleState(advContext));
     }
 }

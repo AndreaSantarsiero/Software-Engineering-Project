@@ -29,6 +29,16 @@ public class ChooseHousing extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        int sum = 0;
+        for(HousingUnit housingUnit : housingUsage.keySet()){
+            sum += housingUsage.get(housingUnit);
+        }
+
+        if(sum <= abandonedShip.getLostMembers()){
+            throw new IllegalStateException("You are out of the game");
+            //Il giocatore va eliminato dalla partita
+        }
+
         if(abandonedShip.isResolved()){
             throw new IllegalStateException("Abandoned ship already resolved");
         }

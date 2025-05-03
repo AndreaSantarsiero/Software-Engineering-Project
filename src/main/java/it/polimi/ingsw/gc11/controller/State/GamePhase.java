@@ -90,4 +90,8 @@ public abstract class GamePhase {
     public void handleShot(String username, Map<Battery, Integer> batteries){
         throw new IllegalStateException("Can't handle shot of the adventure card in the current game phase.");
     }
+
+    public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
+        throw new IllegalStateException("Can't elimine batteries of the adventure card in the current game phase.");
+    }
 }

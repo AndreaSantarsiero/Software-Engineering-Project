@@ -34,4 +34,5 @@ public interface GameInterface {
     void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons);
     void getCoordinate(String username);
     void handleShot(String username, Map<Battery, Integer> batteries);
+    void eliminateBatteries(String username, Map<Battery, Integer> batteries);
 }

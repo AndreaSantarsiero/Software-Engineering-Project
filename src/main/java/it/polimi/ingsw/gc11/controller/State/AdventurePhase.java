@@ -172,4 +172,14 @@ public class AdventurePhase extends GamePhase {
         }
     }
 
+    @Override
+    public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
+        try{
+            this.advState.eliminateBatteries(username, batteries);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

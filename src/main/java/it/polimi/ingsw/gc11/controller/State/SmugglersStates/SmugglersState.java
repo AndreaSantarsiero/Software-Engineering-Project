@@ -1,34 +1,31 @@
-package it.polimi.ingsw.gc11.controller.State.SlaversStates;
+package it.polimi.ingsw.gc11.controller.State.SmugglersStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
+import it.polimi.ingsw.gc11.model.adventurecard.Smugglers;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 
 import java.util.List;
 import java.util.Map;
 
-
-public class SlaversState extends AdventureState {
+public class SmugglersState extends AdventureState {
     private GameModel gameModel;
-    private Slavers slavers;
+    private Smugglers smugglers;
     private double playerFirePower;
 
-    public SlaversState(AdventurePhase advContext) {
+    public SmugglersState(AdventurePhase advContext){
         super(advContext);
         this.gameModel = advContext.getGameModel();
-        this.slavers = (Slavers) advContext.getDrawnAdvCard();
+        this.smugglers = (Smugglers) advContext.getDrawnAdvCard();
         this.playerFirePower = 0;
     }
 
-
     @Override
     public void chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
-
         int sum = 0;
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
@@ -59,21 +56,37 @@ public class SlaversState extends AdventureState {
 
         playerFirePower = player.getShipBoard().getCannonsPower(doubleCannons);
 
-        if(playerFirePower > slavers.getFirePower()){
+        if(playerFirePower > smugglers.getFirePower()){
             //VictoryState
-            advContext.setAdvState(new WinState(advContext, player));
-        } else if (playerFirePower == slavers.getFirePower()) {
+            advContext.setAdvState(new WinSmugglersState(advContext, player));
+        } else if (playerFirePower == smugglers.getFirePower()) {
 
             //Imposto che la carta non è più giocata da nessun player e passo al prossimo player.
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
-            advContext.setAdvState(new SlaversState(advContext));
+            advContext.setAdvState(new SmugglersState(advContext));
+
         }
-        else {//Go LoseState
-            advContext.setAdvState(new LoseState(advContext, player));
+        else {// Gestisco la sconfitta
+            int num = player.getShipBoard().removeMaterials(smugglers.getLostMaterials());
+
+            if(num > 0){
+                this.advContext.setResolvingAdvCard(false);
+                this.advContext.setAdvState(new LoseBatteriesSmugglers(advContext, player, num));
+            }
+            else{
+                this.advContext.setResolvingAdvCard(false);
+                this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
+
+                if(advContext.getIdxCurrentPlayer() == gameModel.getPlayers().size()){
+                    this.advContext.setAdvState(new IdleState(advContext));
+                }
+                else {
+                    this.advContext.setAdvState(new SmugglersState(advContext));
+                }
+
+            }
         }
 
     }
-
 }
-
