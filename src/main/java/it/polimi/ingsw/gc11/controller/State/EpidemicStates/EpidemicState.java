@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.State.EpidemicStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.Player;
 
 public class EpidemicState extends AdventureState {
@@ -11,6 +12,7 @@ public class EpidemicState extends AdventureState {
         for (Player player : advContext.getGameModel().getPlayers()) {
             player.getShipBoard().epidemic();
         }
+        this.advContext.setAdvState(new IdleState(advContext));
     }
 
 }
