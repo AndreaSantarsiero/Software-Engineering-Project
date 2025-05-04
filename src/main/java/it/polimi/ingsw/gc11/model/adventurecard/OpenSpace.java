@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.OpenSpaceStates.ChooseOpen;
+import it.polimi.ingsw.gc11.controller.State.OpenSpaceStates.OpenSpaceState;
 import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
 
 
@@ -14,8 +14,8 @@ public class OpenSpace extends AdventureCard {
     }
 
     @Override
-    public AdventureState getInitialState(AdventurePhase advContext, AbandonedShip advCard){
-        return new ChooseOpen(this, gameModel, player);
+    public AdventureState getInitialState(AdventurePhase advContext){
+        return new OpenSpaceState(advContext);
     }
 
     @Override
