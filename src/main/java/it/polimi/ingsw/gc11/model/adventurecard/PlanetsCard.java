@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.PlanetCardStates.PlanetsState;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
@@ -40,7 +39,8 @@ public class PlanetsCard extends AdventureCard {
 
     @Override
     public AdventureState getInitialState(AdventurePhase advContext){
-        return new PlanetsState(advContext);
+        //return new PlanetsState(advContext, 0);
+        return null;
     }
 
     @Override

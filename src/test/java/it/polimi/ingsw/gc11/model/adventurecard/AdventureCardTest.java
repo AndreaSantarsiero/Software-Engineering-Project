@@ -16,7 +16,7 @@ public class AdventureCardTest {
         }
 
         @Override
-        public AdventureState getInitialState(AdventurePhase advContext, AbandonedShip advCard){
+        public AdventureState getInitialState(AdventurePhase advContext){
             return null;
         }
 

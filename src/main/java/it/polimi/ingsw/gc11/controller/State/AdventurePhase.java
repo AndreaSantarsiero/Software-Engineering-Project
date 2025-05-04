@@ -22,8 +22,8 @@ public class AdventurePhase extends GamePhase {
     private int idxCurrentPlayer;
     private boolean resolvingAdvCard; //Flag is used to know if an advCard is currently being resolved
 
-    public AdventurePhase(GameModel gameModel) {
-        this.gameModel = gameModel;
+    public AdventurePhase(GameContext context) {
+        this.gameModel = context.getGameModel();
         this.advState = new IdleState(this);
         this.drawnAdvCard = null;
         this.idxCurrentPlayer = 0;
