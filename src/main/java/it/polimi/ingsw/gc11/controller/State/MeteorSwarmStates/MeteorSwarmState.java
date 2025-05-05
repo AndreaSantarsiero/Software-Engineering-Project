@@ -37,6 +37,7 @@ public class MeteorSwarmState extends AdventureState {
         else{
             this.advContext.setAdvState(new HandleMeteor(advContext, player, coordinates, iterationsHit, 0));
         }
+
     }
 
 }
