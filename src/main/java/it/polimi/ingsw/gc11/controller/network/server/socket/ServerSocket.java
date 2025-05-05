@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc11.controller.network.server.socket;
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.server.Server;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import java.io.IOException;
 import java.util.UUID;
 
 
@@ -13,8 +15,17 @@ import java.util.UUID;
  */
 public class ServerSocket extends Server {
 
-    public ServerSocket(ServerController serverController) {
+    private final java.net.ServerSocket serverSocket;
+
+
+
+    public ServerSocket(ServerController serverController, int port) {
         super(serverController);
+        try{
+            this.serverSocket = new java.net.ServerSocket(port);
+        } catch (IOException e) {
+            throw new NetworkException("Socket server could not bind to port: " + port);
+        }
     }
 
 

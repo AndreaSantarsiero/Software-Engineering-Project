@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.network.client.rmi;
 
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerInterface;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -34,90 +35,197 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
 
-    public void createMatch(String username, FlightBoard.Type flightType) throws RemoteException {
-        this.clientSessionToken = stub.createMatch(username, flightType);
+    @Override
+    public void createMatch(String username, FlightBoard.Type flightType) throws NetworkException {
+        try {
+            this.clientSessionToken = stub.createMatch(username, flightType);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not create match");
+        }
+
     }
 
-    public void connectToGame(String username, String matchId) throws RemoteException {
-        this.clientSessionToken = stub.connectPlayerToGame(username, matchId);
+    @Override
+    public void connectToGame(String username, String matchId) throws NetworkException {
+        try{
+            this.clientSessionToken = stub.connectPlayerToGame(username, matchId);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not connect to game");
+        }
     }
 
-    void startGame(String username, UUID token) throws RemoteException {
-        stub.startGame(username, clientSessionToken);
-    }
-    void endGame(String username, UUID token) throws RemoteException {
-        stub.endGame(username, clientSessionToken);
-    }
-
-
-
-    ShipCard getFreeShipCard(String username, UUID token, int pos) throws RemoteException{
-        return stub.getFreeShipCard(username, token, pos);
+    @Override
+    public void startGame(String username) throws NetworkException {
+        try{
+            stub.startGame(username, clientSessionToken);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not start game");
+        }
     }
 
-    void placeShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException{
-        stub.placeShipCard(username, token, shipCard, x, y);
-    }
-
-    void removeShipCard(String username, UUID token, int x, int y) throws RemoteException{
-        stub.removeShipCard(username, token, x, y);
-    }
-
-    void reserveShipCard(String username, UUID token, ShipCard shipCard) throws RemoteException{
-        stub.reserveShipCard(username, token, shipCard);
-    }
-
-    void useReservedShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException{
-        stub.useReservedShipCard(username, token, shipCard, x, y);
-    }
-
-    ArrayList<AdventureCard> observeMiniDeck(String username, UUID token, int numDeck) throws RemoteException{
-        return stub.observeMiniDeck(username, token, numDeck);
-    }
-
-    void endBuilding(String username, UUID token, int pos) throws RemoteException{
-        stub.endBuilding(username, token, pos);
+    @Override
+    public void endGame(String username) throws NetworkException {
+        try {
+            stub.endGame(username, clientSessionToken);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not end game");
+        }
     }
 
 
 
-    AdventureCard getAdventureCard(String username, UUID token) throws RemoteException{
-        return stub.getAdventureCard(username, clientSessionToken);
+    @Override
+    public ShipCard getFreeShipCard(String username, int pos) throws NetworkException {
+        try {
+            return stub.getFreeShipCard(username, clientSessionToken, pos);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not get free card");
+        }
     }
 
-    void acceptAdventureCard(String username, UUID token) throws RemoteException{
-        stub.acceptAdventureCard(username, clientSessionToken);
+    @Override
+    public void placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
+        try {
+            stub.placeShipCard(username, clientSessionToken, shipCard, x, y);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not place ship card");
+        }
     }
 
-    void declineAdventureCard(String username, UUID token) throws RemoteException{
-        stub.declineAdventureCard(username, clientSessionToken);
+    @Override
+    public void removeShipCard(String username, int x, int y) throws NetworkException {
+        try {
+            stub.removeShipCard(username, clientSessionToken, x, y);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not remove ship card");
+        }
     }
 
-    void killMembers(String username, UUID token, Map<HousingUnit, Integer> housingUsage) throws RemoteException{
-        stub.killMembers(username, token, housingUsage);
+    @Override
+    public void reserveShipCard(String username, ShipCard shipCard) throws NetworkException {
+        try {
+            stub.reserveShipCard(username, clientSessionToken, shipCard);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not reserve ship card");
+        }
     }
 
-    void chosenMaterial(String username, UUID token, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) throws RemoteException{
-        stub.chosenMaterial(username, token, storageMaterials);
+    @Override
+    public void useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
+        try {
+            stub.useReservedShipCard(username, clientSessionToken, shipCard, x, y);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not use reserved ship card");
+        }
     }
 
-    void rewardDecision(String username, UUID token, boolean decision) throws RemoteException{
-        stub.rewardDecision(username, token, decision);
+    @Override
+    public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) throws NetworkException {
+        try {
+            return stub.observeMiniDeck(username, clientSessionToken, numDeck);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not observe mini deck");
+        }
     }
 
-    void chooseFirePower(String username, UUID token, Map<Battery, Integer> batteries, List<Cannon> doubleCannons) throws RemoteException{
-        stub.chooseFirePower(username, token, batteries, doubleCannons);
+    @Override
+    public void endBuilding(String username, int pos) throws NetworkException {
+        try {
+            stub.endBuilding(username, clientSessionToken, pos);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not end building");
+        }
     }
 
-    void getCoordinate(String username, UUID token) throws RemoteException{
-        stub.getCoordinate(username, token);
+
+
+    @Override
+    public AdventureCard getAdventureCard(String username) throws NetworkException {
+        try {
+            return stub.getAdventureCard(username, clientSessionToken);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not get adventure card");
+        }
     }
 
-    void handleShot(String username, UUID token, Map<Battery, Integer> batteries) throws RemoteException{
-        stub.handleShot(username, token, batteries);
+    @Override
+    public void acceptAdventureCard(String username) throws NetworkException {
+        try {
+            stub.acceptAdventureCard(username, clientSessionToken);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not accept");
+        }
     }
 
-    void eliminateBatteries(String username, UUID token, Map<Battery, Integer> batteries) throws RemoteException{
-        stub.eliminateBatteries(username, token, batteries);
+    @Override
+    public void declineAdventureCard(String username) throws NetworkException {
+        try {
+            stub.declineAdventureCard(username, clientSessionToken);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not decline");
+        }
+    }
+
+    @Override
+    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage) throws NetworkException {
+        try {
+            stub.killMembers(username, clientSessionToken, housingUsage);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not kill members");
+        }
+    }
+
+    @Override
+    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) throws NetworkException {
+        try {
+            stub.chosenMaterial(username, clientSessionToken, storageMaterials);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not chosen material");
+        }
+    }
+
+    @Override
+    public void rewardDecision(String username, boolean decision) throws NetworkException {
+        try {
+            stub.rewardDecision(username, clientSessionToken, decision);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not reward decision");
+        }
+    }
+
+    @Override
+    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons) throws NetworkException {
+        try {
+            stub.chooseFirePower(username, clientSessionToken, batteries, doubleCannons);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not choose fire power");
+        }
+    }
+
+    @Override
+    public void getCoordinate(String username) throws NetworkException {
+        try {
+            stub.getCoordinate(username, clientSessionToken);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not get coordinate");
+        }
+    }
+
+    @Override
+    public void handleShot(String username, Map<Battery, Integer> batteries) throws NetworkException {
+        try {
+            stub.handleShot(username, clientSessionToken, batteries);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not handle shot");
+        }
+    }
+
+    @Override
+    public void eliminateBatteries(String username, Map<Battery, Integer> batteries) throws NetworkException {
+        try {
+            stub.eliminateBatteries(username, clientSessionToken, batteries);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not eliminate batteries");
+        }
     }
 }

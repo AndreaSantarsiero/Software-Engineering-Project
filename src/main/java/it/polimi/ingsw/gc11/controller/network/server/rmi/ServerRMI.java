@@ -4,9 +4,7 @@ import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.Server;
-import java.rmi.AlreadyBoundException;
-import java.rmi.RemoteException;
-import java.rmi.ServerException;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -24,7 +22,7 @@ public class ServerRMI extends Server implements ServerInterface {
 
 
 
-    public ServerRMI(ServerController serverController, int port) throws RemoteException, AlreadyBoundException {
+    public ServerRMI(ServerController serverController, int port) throws NetworkException {
         super(serverController);
         try {
             ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, port);
@@ -32,7 +30,7 @@ public class ServerRMI extends Server implements ServerInterface {
             registry.bind("ServerInterface", stub);
         }
         catch (Exception e) {
-            throw new ServerException(e.getMessage());
+            throw new NetworkException("RMI server could not bind to port: " + port);
         }
     }
 
