@@ -94,4 +94,8 @@ public abstract class GamePhase {
     public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
         throw new IllegalStateException("Can't elimine batteries of the adventure card in the current game phase.");
     }
+
+    public void landOn(String username, int numPlanet){
+        throw new IllegalStateException("Can't land on a planet in the current game phase.");
+    }
 }

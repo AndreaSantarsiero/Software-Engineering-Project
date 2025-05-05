@@ -182,4 +182,14 @@ public class AdventurePhase extends GamePhase {
         }
     }
 
+    @Override
+    public void landOn(String username, int numPlanet){
+        try{
+            this.advState.landOn(username, numPlanet);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

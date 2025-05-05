@@ -57,4 +57,8 @@ public abstract class AdventureState{
     public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
         throw new IllegalStateException("Can't eliminate batteries in the current adventure state.");
     }
+
+    public void landOn(String username, int numPlanet){
+        throw new IllegalStateException("Can't land on a planet in the current adventure state.");
+    }
 }

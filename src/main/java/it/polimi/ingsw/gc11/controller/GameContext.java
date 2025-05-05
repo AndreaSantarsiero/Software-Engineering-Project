@@ -327,4 +327,17 @@ public class GameContext {
             System.out.println(e.getMessage());
         }
     }
+
+    public void landOn(String username, int numPlanet){
+        if(username == null) {
+            throw new NullPointerException();
+        }
+
+        try{
+            phase.landOn(username, numPlanet);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
