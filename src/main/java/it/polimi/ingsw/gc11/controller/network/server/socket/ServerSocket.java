@@ -27,7 +27,7 @@ public class ServerSocket extends Server {
      * @return the UUID token assigned to the session
      */
     @Override
-    public UUID connectPlayerToGame(String username, String matchId){
+    protected UUID registerPlayerSession(String username, String matchId){
         return serverController.registerPlayerSession(username, matchId, Utils.ConnectionType.SOCKET);
     }
 }
