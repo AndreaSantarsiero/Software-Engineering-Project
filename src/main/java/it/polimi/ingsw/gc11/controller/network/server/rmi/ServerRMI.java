@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.controller.network.server.rmi;
 
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.ServerController;
-import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.Server;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.rmi.registry.LocateRegistry;
@@ -18,7 +17,7 @@ import java.util.UUID;
  */
 public class ServerRMI extends Server implements ServerInterface {
 
-    private ClientInterface clientStub;
+    private final Registry registry;
 
 
 
@@ -26,7 +25,7 @@ public class ServerRMI extends Server implements ServerInterface {
         super(serverController);
         try {
             ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, port);
-            Registry registry = LocateRegistry.createRegistry(port);
+            registry = LocateRegistry.createRegistry(port);
             registry.bind("ServerInterface", stub);
         }
         catch (Exception e) {
@@ -46,5 +45,15 @@ public class ServerRMI extends Server implements ServerInterface {
     @Override
     protected UUID registerPlayerSession(String username, String matchId){
         return serverController.registerPlayerSession(username, matchId, Utils.ConnectionType.RMI);
+    }
+
+
+
+    @Override
+    public void shutdown() throws Exception {
+        if (registry != null) {
+            registry.unbind("ServerInterface");
+            UnicastRemoteObject.unexportObject(this, true);
+        }
     }
 }

@@ -65,7 +65,7 @@ public class ClientSocket extends Client {
 
     @Override
     public ShipCard getFreeShipCard(String username, int pos) throws NetworkException {
-
+        return null;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ClientSocket extends Client {
 
     @Override
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) throws NetworkException {
-
+        return null;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class ClientSocket extends Client {
 
     @Override
     public AdventureCard getAdventureCard(String username) throws NetworkException {
-
+        return null;
     }
 
     @Override

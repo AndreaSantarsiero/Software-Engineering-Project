@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.server.Server;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.UUID;
 
 
@@ -23,9 +24,27 @@ public class ServerSocket extends Server {
         super(serverController);
         try{
             this.serverSocket = new java.net.ServerSocket(port);
+            start();
         } catch (IOException e) {
             throw new NetworkException("Socket server could not bind to port: " + port);
         }
+    }
+
+
+
+    public void start() {
+        new Thread(() -> {
+            try {
+                while (!serverSocket.isClosed()) {
+                    Socket clientSocket = serverSocket.accept();
+                    //new Thread(new ClientHandler(clientSocket, serverController)).start();
+                }
+            } catch (IOException e) {
+                if (!serverSocket.isClosed()) {
+                    System.err.println("Error accepting client connection: " + e.getMessage());
+                }
+            }
+        }).start();
     }
 
 
@@ -40,5 +59,14 @@ public class ServerSocket extends Server {
     @Override
     protected UUID registerPlayerSession(String username, String matchId){
         return serverController.registerPlayerSession(username, matchId, Utils.ConnectionType.SOCKET);
+    }
+
+
+
+    @Override
+    public void shutdown() throws IOException {
+        if (serverSocket != null && !serverSocket.isClosed()) {
+            serverSocket.close();
+        }
     }
 }
