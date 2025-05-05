@@ -209,4 +209,8 @@ public abstract class Server {
     public void eliminateBatteries(String username, UUID token, Map<Battery, Integer> batteries){
         getGameContext(username, token).eliminateBatteries(username, batteries);
     }
+
+
+
+    public abstract void shutdown() throws Exception;
 }

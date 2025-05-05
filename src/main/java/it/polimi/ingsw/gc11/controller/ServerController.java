@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.server.*;
+import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
+import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import java.util.Map;
 import java.util.UUID;
@@ -19,15 +21,19 @@ public class ServerController {
 
     private final Map<String, ClientSession> playerSessions;
     private final Map<String, GameContext> availableMatches;
+    private final ServerRMI serverRMI;
+    private final ServerSocket serverSocket;
 
 
 
     /**
      * Constructs a new {@code ServerController} with empty session and match registries
      */
-    public ServerController() {
+    public ServerController(int port) {
         this.playerSessions = new ConcurrentHashMap<>();
         this.availableMatches = new ConcurrentHashMap<>();
+        this.serverRMI = new ServerRMI(this, port);
+        this.serverSocket = new ServerSocket(this, port);
     }
 
 
@@ -100,6 +106,29 @@ public class ServerController {
     }
 
 
+
     //cosa facciamo se il player si disconnette?
     //cosa facciamo a fine game?
+
+
+
+    public void shutdown() {
+        try {
+            if (serverRMI != null) {
+                serverRMI.shutdown();
+                System.out.println("Server RMI shut down successfully");
+            }
+        } catch (Exception e) {
+            System.err.println("error during server RMI shut down: " + e.getMessage());
+        }
+
+        try {
+            if (serverSocket != null) {
+                serverSocket.shutdown();
+                System.out.println("Server socket shut down successfully");
+            }
+        } catch (Exception e) {
+            System.err.println("error during server socket shut down: " + e.getMessage());
+        }
+    }
 }
