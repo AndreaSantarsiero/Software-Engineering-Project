@@ -10,19 +10,22 @@ import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GameContext implements GameInterface{
+
+
+public class GameContext {
     //Controller of a specific gameModel and multiple gameView
 
     private final GameModel gameModel;
     private final String matchID;
     private GamePhase phase;
     private final ArrayList<PlayerContext> playerContexts;
+
+
 
     public GameContext(FlightBoard.Type flightType) {
         this.gameModel = new GameModel();
@@ -32,6 +35,8 @@ public class GameContext implements GameInterface{
         // Initial state
         this.phase = new IdlePhase();
     }
+
+
 
     public GameModel getGameModel() {
         return gameModel;
@@ -59,7 +64,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void connectPlayerToGame(String playerUsername) {
         try {
             this.addPlayerContext(playerUsername);
@@ -69,7 +74,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void startGame() {
         try {
             phase.startGame(this);
@@ -79,7 +84,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void endGame() {
         try{
             this.phase.endGame(this);
@@ -89,7 +94,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public ShipCard getFreeShipCard(int pos) throws IndexOutOfBoundsException {
         if (pos < 0) {
             throw new IndexOutOfBoundsException();
@@ -103,7 +108,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void placeShipCard(String username, ShipCard shipCard, int x, int y)
             throws NullPointerException, IllegalArgumentException {
         if (shipCard == null) {
@@ -120,7 +125,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void removeShipCard(String username, int x, int y) throws IllegalArgumentException {
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException();
@@ -133,7 +138,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void reserveShipCard(String username, ShipCard shipCard) throws NullPointerException {
         if (shipCard == null) {
             throw new NullPointerException();
@@ -146,7 +151,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void useReservedShipCard(String username, ShipCard shipCard, int x, int y){
         if (shipCard == null) {
             throw new NullPointerException();
@@ -162,12 +167,12 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
         return null;
     }
 
-    @Override
+
     public void endBuilding(String username, int pos) {
 
     }
@@ -185,7 +190,7 @@ public class GameContext implements GameInterface{
     }
 
 
-    @Override
+
     public AdventureCard getAdventureCard(String username) {
         if (username == null) {
             throw new NullPointerException();
@@ -199,7 +204,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void acceptAdventureCard(String username) {
         if (username == null) {
             throw new NullPointerException();
@@ -212,7 +217,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void declineAdventureCard(String username) {
         if (username == null) {
             throw new NullPointerException();
@@ -225,7 +230,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
         if (username == null) {
             throw new NullPointerException();
@@ -238,7 +243,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         if(username == null) {
             throw new NullPointerException();
@@ -253,7 +258,7 @@ public class GameContext implements GameInterface{
 
     }
 
-    @Override
+
     public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
         if(username == null) {
             throw new NullPointerException();
@@ -267,7 +272,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void rewardDecision(String username, boolean decision){
         if(username == null) {
             throw new NullPointerException();
@@ -281,7 +286,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void getCoordinate(String username){
         if(username == null) {
             throw new NullPointerException();
@@ -295,7 +300,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void handleShot(String username, Map<Battery, Integer> batteries){
         if(username == null) {
             throw new NullPointerException();
@@ -309,7 +314,7 @@ public class GameContext implements GameInterface{
         }
     }
 
-    @Override
+
     public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
         if(username == null) {
             throw new NullPointerException();
@@ -322,5 +327,4 @@ public class GameContext implements GameInterface{
             System.out.println(e.getMessage());
         }
     }
-
 }
