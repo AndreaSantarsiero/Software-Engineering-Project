@@ -353,4 +353,17 @@ public class GameContext {
             System.out.println(e.getMessage());
         }
     }
+
+    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
+        if(username == null) {
+            throw new NullPointerException();
+        }
+
+        try{
+            phase.meteorHit(username, batteries, cannon);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

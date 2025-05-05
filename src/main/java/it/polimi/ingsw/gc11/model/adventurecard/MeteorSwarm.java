@@ -32,7 +32,8 @@ public class MeteorSwarm extends AdventureCard {
 
     @Override
     public AdventureState getInitialState(AdventurePhase advContext){
-        return new MeteorSwarmState(advContext);
+        int iterationsHit = 0;
+        return new MeteorSwarmState(advContext, 0);
     }
 
     @Override

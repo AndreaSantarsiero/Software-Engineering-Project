@@ -102,4 +102,8 @@ public abstract class GamePhase {
     public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
         throw new IllegalStateException("Can't choose engine power in the current game phase.");
     }
+
+    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
+        throw new IllegalStateException("Can't meteor hit in the current game phase.");
+    }
 }

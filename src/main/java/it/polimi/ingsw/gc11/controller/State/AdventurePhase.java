@@ -201,4 +201,14 @@ public class AdventurePhase extends GamePhase {
         }
     }
 
+    @Override
+    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
+        try{
+            this.advState.meteorHit(username, batteries, cannon);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

@@ -2,10 +2,41 @@ package it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.IdleState;
+import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.adventurecard.MeteorSwarm;
 
 
 public class MeteorSwarmState extends AdventureState {
-    public MeteorSwarmState(AdventurePhase advContext) {
+    private GameModel gameModel;
+    private int iterationsHit;
+
+    public MeteorSwarmState(AdventurePhase advContext, int iterationsHit) {
         super(advContext);
+        this.gameModel = this.advContext.getGameModel();
+        this.iterationsHit = iterationsHit;
     }
+
+    @Override
+    public void getCoordinate(String username){
+        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+
+        if(!player.getUsername().equals(username)){
+            throw new IllegalArgumentException("It's not your turn to play");
+        }
+
+        int coordinates = gameModel.getValDice1() + gameModel.getValDice2();
+        //La coordinata calcolata va poi inviata a tutti i client
+
+        //NextState
+        MeteorSwarm meteorSwarm = (MeteorSwarm) this.advContext.getDrawnAdvCard();
+        if(iterationsHit == meteorSwarm.getMeteors().size()){
+            this.advContext.setAdvState(new IdleState(advContext));
+        }
+        else{
+            this.advContext.setAdvState(new HandleMeteor(advContext, player, coordinates, iterationsHit, 0));
+        }
+    }
+
 }
