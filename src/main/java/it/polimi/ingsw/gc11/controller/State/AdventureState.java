@@ -61,4 +61,8 @@ public abstract class AdventureState{
     public void landOn(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current adventure state.");
     }
+
+    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+        throw new IllegalStateException("Can't choose engine power in the current adventure state.");
+    }
 }

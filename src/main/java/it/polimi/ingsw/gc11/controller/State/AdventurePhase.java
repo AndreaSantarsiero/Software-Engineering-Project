@@ -192,4 +192,13 @@ public class AdventurePhase extends GamePhase {
         }
     }
 
+    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+        try{
+            this.advState.chosenEnginePower(username, Batteries);
+        }
+        catch (IllegalStateException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

@@ -98,4 +98,8 @@ public abstract class GamePhase {
     public void landOn(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current game phase.");
     }
+
+    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+        throw new IllegalStateException("Can't choose engine power in the current game phase.");
+    }
 }
