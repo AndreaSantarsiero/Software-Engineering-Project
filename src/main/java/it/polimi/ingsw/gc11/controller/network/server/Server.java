@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc11.controller.network.server;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.ServerController;
+import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
+import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -10,6 +12,11 @@ import java.util.*;
 
 
 
+/**
+ * Abstract class representing a network server that mediates communication between clients and the core game logic
+ * This class handles common game-related operations, while delegating connection-specific methods
+ * to its subclasses (e.g., {@link ServerRMI}, {@link ServerSocket})
+ */
 public abstract class Server {
 
     protected final ServerController serverController;
@@ -28,6 +35,13 @@ public abstract class Server {
 
 
 
+    /**
+     * Creates a new match and connects the player to it
+     *
+     * @param username     the player's username
+     * @param flightLevel  the difficulty level of flight
+     * @return the UUID token identifying the player's session (to be stored in the client)
+     */
     public UUID createMatch(String username, FlightBoard.Type flightLevel){
         String matchId = serverController.createMatch(flightLevel);
         UUID token = registerPlayerSession(username, matchId);
@@ -35,92 +49,163 @@ public abstract class Server {
         return token;
     }
 
+    /**
+     * Connects the player to an existing match
+     *
+     * @param username the player's username
+     * @param matchId  the identifier of the match to join
+     * @return the UUID token identifying the player's session (to be stored in the client)
+     */
     public UUID connectPlayerToGame(String username, String matchId){
         UUID token = registerPlayerSession(username, matchId);
         getGameContext(username, token).connectPlayerToGame(username);
         return token;
     }
 
+    /**
+     * Registers a new player session. Must be implemented by subclasses to reflect the specific connection type
+     *
+     * @param username the player's username
+     * @param matchId  the match to join
+     * @return the session token (to be stored in the client)
+     */
     protected abstract UUID registerPlayerSession(String username, String matchId);
 
 
 
+    /**
+     * Starts the game
+     */
     public void startGame(String username, UUID token){
         getGameContext(username, token).startGame();
     }
 
+    /**
+     * Ends the game
+     */
     public void endGame(String username, UUID token){
         getGameContext(username, token).endGame();
     }
 
 
 
+    /**
+     * Returns a ship card from the specified position on the common area
+     */
     public ShipCard getFreeShipCard(String username, UUID token, int pos){
         return getGameContext(username, token).getFreeShipCard(pos);
     }
 
+    /**
+     * Places a ship card on the ship board at the given coordinates
+     */
     public void placeShipCard(String username, UUID token, ShipCard shipCard, int x, int y){
         getGameContext(username, token).placeShipCard(username, shipCard, x, y);
     }
 
+    /**
+     * Removes a ship card from the ship board at the specified coordinates
+     */
     public void removeShipCard(String username, UUID token, int x, int y){
         getGameContext(username, token).removeShipCard(username, x, y);
     }
 
+    /**
+     * Reserves a ship card for later use
+     */
     public void reserveShipCard(String username, UUID token, ShipCard shipCard){
         getGameContext(username, token).reserveShipCard(username, shipCard);
     }
 
+    /**
+     * Uses a previously reserved ship card
+     */
     public void useReservedShipCard(String username, UUID token, ShipCard shipCard, int x, int y){
         getGameContext(username, token).useReservedShipCard(username, shipCard, x, y);
     }
 
+    /**
+     * Lets the player observe a mini-deck of adventure cards
+     */
     public ArrayList<AdventureCard> observeMiniDeck(String username, UUID token, int numDeck){
         return getGameContext(username, token).observeMiniDeck(username, numDeck);
     }
 
+    /**
+     * Marks the end of the building phase and sets the starting position on the flight board
+     */
     public void endBuilding(String username, UUID token, int pos){
         getGameContext(username, token).endBuilding(username, pos);
     }
 
 
 
+    /**
+     * Draws a new adventure card for the player
+     */
     public AdventureCard getAdventureCard(String username, UUID token){
         return getGameContext(username, token).getAdventureCard(username);
     }
 
+    /**
+     * Accepts the current adventure card
+     */
     public void acceptAdventureCard(String username, UUID token){
         getGameContext(username, token).acceptAdventureCard(username);
     }
 
+    /**
+     * Declines the current adventure card
+     */
     public void declineAdventureCard(String username, UUID token){
         getGameContext(username, token).declineAdventureCard(username);
     }
 
+    /**
+     * Registers the player's decision to sacrifice members from housing units
+     */
     public void killMembers(String username, UUID token, Map<HousingUnit, Integer> housingUsage){
         getGameContext(username, token).killMembers(username, housingUsage);
     }
 
+    /**
+     * Allows the player to choose materials from storage units
+     */
     public void chosenMaterial(String username, UUID token, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         getGameContext(username, token).chosenMaterial(username, storageMaterials);
     }
 
+    /**
+     * Handles the player's decision regarding a reward
+     */
     public void rewardDecision(String username, UUID token, boolean decision){
         getGameContext(username, token).rewardDecision(username, decision);
     }
 
+    /**
+     * Allows the player to choose which batteries and cannons to use
+     */
     public void chooseFirePower(String username, UUID token, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
         getGameContext(username, token).chooseFirePower(username, batteries, doubleCannons);
     }
 
+    /**
+     * Requests the player's next movement coordinate
+     */
     public void getCoordinate(String username, UUID token){
         getGameContext(username, token).getCoordinate(username);
     }
 
+    /**
+     * Handles a shot fired on the player ship
+     */
     public void handleShot(String username, UUID token, Map<Battery, Integer> batteries){
         getGameContext(username, token).handleShot(username, batteries);
     }
 
+    /**
+     * Removes batteries used by the player
+     */
     public void eliminateBatteries(String username, UUID token, Map<Battery, Integer> batteries){
         getGameContext(username, token).eliminateBatteries(username, batteries);
     }
