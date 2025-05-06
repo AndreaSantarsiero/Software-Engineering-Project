@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.controller.network.client.socket.ClientSocket;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -35,7 +36,12 @@ public class VirtualServer {
             throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port);
         }
 
-        this.username = username;
+        if(!username.isEmpty()){ //controllare che l'username sia univoco
+            this.username = username;
+        }
+        else {
+            throw new UsernameAlreadyTakenException("The username " + username + " is already taken. Choose another one");
+        }
     }
 
 
