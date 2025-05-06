@@ -36,19 +36,27 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     @Override
+    public void registerSession(String username) throws NetworkException {
+        try {
+            this.clientSessionToken = stub.registerPlayerSession(username);
+        } catch (RemoteException e) {
+            throw new NetworkException("RMI CONNECTION ERROR: could not register RMI session");
+        }
+    }
+
+    @Override
     public void createMatch(String username, FlightBoard.Type flightType) throws NetworkException {
         try {
-            this.clientSessionToken = stub.createMatch(username, flightType);
+            stub.createMatch(username, clientSessionToken, flightType);
         } catch (RemoteException e) {
             throw new NetworkException("RMI CONNECTION ERROR: could not create match");
         }
-
     }
 
     @Override
     public void connectToGame(String username, String matchId) throws NetworkException {
         try{
-            this.clientSessionToken = stub.connectPlayerToGame(username, matchId);
+            stub.connectPlayerToGame(username, clientSessionToken, matchId);
         } catch (RemoteException e) {
             throw new NetworkException("RMI CONNECTION ERROR: could not connect to game");
         }

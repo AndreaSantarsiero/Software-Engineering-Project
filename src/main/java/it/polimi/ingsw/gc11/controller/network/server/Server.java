@@ -36,17 +36,21 @@ public abstract class Server {
 
 
     /**
+     * Registers a new player session into the server. Must be implemented by subclasses to reflect the specific connection type
+     *
+     * @param username the player's username
+     * @return the session token (to be stored in the client)
+     */
+    public abstract UUID registerPlayerSession(String username);
+
+    /**
      * Creates a new match and connects the player to it
      *
      * @param username     the player's username
      * @param flightLevel  the difficulty level of flight
-     * @return the UUID token identifying the player's session (to be stored in the client)
      */
-    public UUID createMatch(String username, FlightBoard.Type flightLevel){
-        String matchId = serverController.createMatch(flightLevel);
-        UUID token = registerPlayerSession(username, matchId);
-        getGameContext(username, token).connectPlayerToGame(username);
-        return token;
+    public void createMatch(String username, UUID token, FlightBoard.Type flightLevel){
+        serverController.createMatch(flightLevel, username, token);
     }
 
     /**
@@ -54,22 +58,10 @@ public abstract class Server {
      *
      * @param username the player's username
      * @param matchId  the identifier of the match to join
-     * @return the UUID token identifying the player's session (to be stored in the client)
      */
-    public UUID connectPlayerToGame(String username, String matchId){
-        UUID token = registerPlayerSession(username, matchId);
-        getGameContext(username, token).connectPlayerToGame(username);
-        return token;
+    public void connectPlayerToGame(String username, UUID token, String matchId){
+        serverController.connectPlayerToGame(username, token, matchId);
     }
-
-    /**
-     * Registers a new player session. Must be implemented by subclasses to reflect the specific connection type
-     *
-     * @param username the player's username
-     * @param matchId  the match to join
-     * @return the session token (to be stored in the client)
-     */
-    protected abstract UUID registerPlayerSession(String username, String matchId);
 
 
 

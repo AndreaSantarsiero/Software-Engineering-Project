@@ -42,6 +42,11 @@ public class ClientSocket extends Client {
 
 
     @Override
+    public void registerSession(String username) throws NetworkException {
+
+    }
+
+    @Override
     public void createMatch(String username, FlightBoard.Type flightType) throws NetworkException {
 
     }

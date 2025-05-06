@@ -15,11 +15,7 @@ public abstract class Client {
 
 
 
-    public UUID checkConnection(){
-        return clientSessionToken;
-    }
-
-
+    abstract public void registerSession(String username) throws NetworkException;
 
     abstract public void createMatch(String username, FlightBoard.Type flightType) throws NetworkException;
 
@@ -66,4 +62,10 @@ public abstract class Client {
     abstract public void handleShot(String username, Map<Battery, Integer> batteries) throws NetworkException;
 
     abstract public void eliminateBatteries(String username, Map<Battery, Integer> batteries) throws NetworkException;
+
+
+
+    public void notifyException(String message){
+        System.out.println(message);    //da cambiare
+    }
 }

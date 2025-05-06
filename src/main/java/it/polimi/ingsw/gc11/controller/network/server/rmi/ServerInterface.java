@@ -13,8 +13,9 @@ import java.util.*;
 public interface ServerInterface extends Remote {
 
     //creating, joining and handling matches
-    UUID connectPlayerToGame(String username, String matchId) throws RemoteException;
-    UUID createMatch(String username, FlightBoard.Type flightLevel) throws RemoteException;
+    UUID registerPlayerSession(String username) throws RemoteException;
+    void createMatch(String username, UUID token, FlightBoard.Type flightLevel) throws RemoteException;
+    void connectPlayerToGame(String username, UUID token, String matchId) throws RemoteException;
     void startGame(String username, UUID token) throws RemoteException;
     void endGame(String username, UUID token) throws RemoteException;
 

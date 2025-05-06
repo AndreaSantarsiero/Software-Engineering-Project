@@ -36,15 +36,14 @@ public class ServerRMI extends Server implements ServerInterface {
 
 
     /**
-     * Registers a new RMI-based player session with the specified match ID
+     * Registers a new RMI-based player session
      *
      * @param username the player's unique identifier
-     * @param matchId the identifier of the match to join
      * @return the UUID token assigned to the session
      */
     @Override
-    protected UUID registerPlayerSession(String username, String matchId){
-        return serverController.registerPlayerSession(username, matchId, Utils.ConnectionType.RMI);
+    public UUID registerPlayerSession(String username){
+        return serverController.registerPlayerSession(username, Utils.ConnectionType.RMI);
     }
 
 

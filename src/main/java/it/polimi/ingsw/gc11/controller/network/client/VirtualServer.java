@@ -36,12 +36,8 @@ public class VirtualServer {
             throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port);
         }
 
-        if(!username.isEmpty()){ //controllare che l'username sia univoco
-            this.username = username;
-        }
-        else {
-            throw new UsernameAlreadyTakenException("The username " + username + " is already taken. Choose another one");
-        }
+        client.registerSession(username);
+        this.username = username;
     }
 
 

@@ -39,19 +39,25 @@ public class ServerController {
 
 
     /**
-     * Creates a new match with the specified flight difficulty level
+     * Retrieves the {@link ClientSession} associated with a given username and token
      *
-     * <p>This method initializes a new {@link GameContext}, sets the game level
-     * based on the provided flight type, and stores the game instance in the
-     * {@code availableMatches} map using a generated unique match ID
+     * <p>This method validates that the session exists and that the token matches the one
+     * stored in the corresponding {@link ClientSession}. If the session is not found or the
+     * token is invalid, a {@link RuntimeException} is thrown
      *
-     * @param flightLevel the difficulty level for the new match
-     * @return the unique identifier of the newly created match
+     * @param username the username associated with the client
+     * @param token    the authentication token issued at login
+     * @return the {@code ClientSession} associated with the username
+     * @throws RuntimeException if no valid session is found for the username and token
      */
-    public String createMatch(FlightBoard.Type flightLevel) {
-        GameContext match = new GameContext(flightLevel);
-        availableMatches.put(match.getMatchID(), match);
-        return match.getMatchID();
+    private ClientSession getPlayerSession(String username, UUID token) {
+        if (!playerSessions.containsKey(username)) {
+            throw new RuntimeException("No session found for username " + username);
+        }
+        if (!playerSessions.get(username).checkToken(token)) {
+            throw new RuntimeException("Invalid connection token for username " + username);
+        }
+        return playerSessions.get(username);
     }
 
 
@@ -68,41 +74,70 @@ public class ServerController {
      * @throws RuntimeException if no valid session is found for the username and token
      */
     public VirtualClient getPlayerVirtualClient(String username, UUID token) {
-        ClientSession session = playerSessions.get(username);
-
-        if (session != null && session.checkToken(token)) {
-            return session.getVirtualClient();
-        }
-
-        throw new RuntimeException("No session found for username " + username + " and token " + token);
+        return getPlayerSession(username, token).getVirtualClient();
     }
 
 
     /**
-     * Registers a new player session for the specified username and match
+     * Registers a new player session for the specified username and connection type
      *
-     * <p>If a session for the username already exists, the method throws an exception.
-     * A new {@link ClientSession} is created and linked to the specified match context,
-     * and the unique session token is returned (not exposed outside this class)
+     * <p>This method creates a new {@link ClientSession} containing a {@link VirtualClient}
+     * associated with the specified connection type. If a session already exists for the given
+     * username, the method throws an exception
      *
      * @param username the username of the connecting player
-     * @param matchID  the identifier of the match the player wants to join
-     * @return the unique token associated with the new session
-     * @throws RuntimeException if the match ID is invalid or a session already exists for the username
+     * @param type the networking protocol used by the client (RMI or SOCKET)
+     * @return the unique session token associated with the new session
+     * @throws RuntimeException if a session already exists for the username
      */
-    public UUID registerPlayerSession(String username, String matchID, Utils.ConnectionType type) {
+    public UUID registerPlayerSession(String username, Utils.ConnectionType type) {
         if (playerSessions.containsKey(username)) {
             throw new RuntimeException("A session already exists for username: " + username);
         }
 
+        ClientSession clientSession = new ClientSession(username, new VirtualClient(type));
+        playerSessions.put(username, clientSession);
+        return clientSession.getToken();
+    }
+
+
+    /**
+     * Creates a new match with the specified flight difficulty level
+     *
+     * <p>This method initializes a new {@link GameContext}, sets the game level
+     * based on the provided flight type, and stores the game instance in the
+     * {@code availableMatches} map using a generated unique match ID
+     *
+     * @param flightLevel the difficulty level for the new match
+     */
+    public void createMatch(FlightBoard.Type flightLevel, String username, UUID token) {
+        getPlayerSession(username, token);
+        GameContext match = new GameContext(flightLevel);
+        availableMatches.put(match.getMatchID(), match);
+        connectPlayerToGame(username, token, match.getMatchID());
+    }
+
+
+    /**
+     * Enrolls an existing player session to a specific game match
+     *
+     * <p>This method associates the player's {@link VirtualClient} with the specified game context,
+     * identified by the given match ID. The session must already be registered via {@link #registerPlayerSession}
+     *
+     * @param username the username of the player to enroll
+     * @param matchID the identifier of the match the player wants to join
+     * @throws RuntimeException if the match ID is invalid or the session is not found
+     */
+    public void connectPlayerToGame(String username, UUID token, String matchID) {
+        ClientSession clientSession = getPlayerSession(username, token);
         GameContext match = availableMatches.get(matchID);
         if (match == null) {
             throw new RuntimeException("No matches found for matchID " + matchID);
         }
+        //controllo che il match non sia già iniziato
 
-        ClientSession clientSession = new ClientSession(username, new VirtualClient(match, type));
-        playerSessions.put(username, clientSession);
-        return clientSession.getToken();
+        match.connectPlayerToGame(username);
+        clientSession.getVirtualClient().setGameContext(match);
     }
 
 
