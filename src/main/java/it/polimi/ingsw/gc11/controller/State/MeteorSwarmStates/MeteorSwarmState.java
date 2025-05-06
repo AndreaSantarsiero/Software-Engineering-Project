@@ -26,6 +26,12 @@ public class MeteorSwarmState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        //Imposto che il giocatore sta effettivamente giocando la carta
+        if(this.advContext.isResolvingAdvCard() == true){
+            throw new IllegalStateException("You are already accepted this adventure card!");
+        }
+        this.advContext.setResolvingAdvCard(true);
+
         int coordinates = gameModel.getValDice1() + gameModel.getValDice2();
         //La coordinata calcolata va poi inviata a tutti i client
 
@@ -35,7 +41,7 @@ public class MeteorSwarmState extends AdventureState {
             this.advContext.setAdvState(new IdleState(advContext));
         }
         else{
-            this.advContext.setAdvState(new HandleMeteor(advContext, player, coordinates, iterationsHit, 0));
+            this.advContext.setAdvState(new HandleMeteor(advContext, coordinates, iterationsHit, 0));
         }
 
     }

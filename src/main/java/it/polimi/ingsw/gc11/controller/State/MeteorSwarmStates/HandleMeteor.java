@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Meteor;
@@ -21,7 +22,7 @@ public class HandleMeteor extends AdventureState {
     private int iterationsPlayer;
     private MeteorSwarm meteorSwarm;
 
-    public HandleMeteor(AdventurePhase advContext, Player player, int coordinates, int iterationsHit, int iterationsPlayer) {
+    public HandleMeteor(AdventurePhase advContext, int coordinates, int iterationsHit, int iterationsPlayer) {
        super(advContext);
        this.gameModel = advContext.getGameModel();
        this.player = player;
@@ -34,6 +35,8 @@ public class HandleMeteor extends AdventureState {
     //Assumiamo che i comandi siano memorizzati in una coda
     @Override
     public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon) {
+        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
@@ -99,17 +102,20 @@ public class HandleMeteor extends AdventureState {
         this.iterationsPlayer++;
 
         //next state
-        if(iterationsPlayer == gameModel.getPlayers().size()){
+        if(iterationsPlayer == gameModel.getPlayers().size() && iterationsHit < meteorSwarm.getMeteors().size()){
             //No more player left to handle
             this.iterationsHit++;
+            this.advContext.setResolvingAdvCard(false);
             this.advContext.setAdvState(new MeteorSwarmState(advContext, iterationsHit));
+        }
+        else if(iterationsHit == meteorSwarm.getMeteors().size() && iterationsPlayer == gameModel.getPlayers().size()){
+            this.advContext.setAdvState(new IdleState(advContext));
         }
         else{
             //Passo al prossimo player
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
-            Player nextPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
-            this.advContext.setAdvState(new HandleMeteor(advContext, nextPlayer, coordinates, iterationsHit, iterationsPlayer));
+            this.advContext.setAdvState(new HandleMeteor(advContext, coordinates, iterationsHit, iterationsPlayer));
         }
     }
 
