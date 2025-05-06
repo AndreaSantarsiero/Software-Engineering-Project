@@ -57,7 +57,8 @@ class Level2ShipBoardTest {
     @Test
     void testValidateIndexes_OutOfBounds() {
         assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(-1, 0));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(7, 5));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(8, 2));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(7, 0));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(0, 5));
     }
 }

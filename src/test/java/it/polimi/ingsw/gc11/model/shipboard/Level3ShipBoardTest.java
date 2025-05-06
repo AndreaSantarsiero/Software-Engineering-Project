@@ -37,9 +37,25 @@ class Level3ShipBoardTest {
     void testValidateIndexes_ValidCases() {
         assertTrue(shipBoard.validateIndexes(4, 0));
         assertTrue(shipBoard.validateIndexes(3, 1));
+        assertTrue(shipBoard.validateIndexes(4, 1));
         assertTrue(shipBoard.validateIndexes(5, 1));
+        assertTrue(shipBoard.validateIndexes(0, 2));
         assertTrue(shipBoard.validateIndexes(2, 2));
+        assertTrue(shipBoard.validateIndexes(3, 2));
+        assertTrue(shipBoard.validateIndexes(4, 2));
+        assertTrue(shipBoard.validateIndexes(5, 2));
+        assertTrue(shipBoard.validateIndexes(6, 2));
+        assertTrue(shipBoard.validateIndexes(8, 2));
         assertTrue(shipBoard.validateIndexes(6, 3));
+        assertTrue(shipBoard.validateIndexes(0, 5));
+        assertTrue(shipBoard.validateIndexes(1, 5));
+        assertTrue(shipBoard.validateIndexes(3, 5));
+        assertTrue(shipBoard.validateIndexes(4, 5));
+        assertTrue(shipBoard.validateIndexes(5, 5));
+        assertTrue(shipBoard.validateIndexes(7, 5));
+        assertTrue(shipBoard.validateIndexes(8, 5));
+        assertTrue(shipBoard.validateIndexes(0, 3));
+        assertTrue(shipBoard.validateIndexes(8, 4));
     }
 
     @Test
@@ -50,6 +66,8 @@ class Level3ShipBoardTest {
         assertFalse(shipBoard.validateIndexes(5, 0));
         assertFalse(shipBoard.validateIndexes(8, 0));
         assertFalse(shipBoard.validateIndexes(0, 1));
+        assertFalse(shipBoard.validateIndexes(1, 2));
+        assertFalse(shipBoard.validateIndexes(7, 2));
         assertFalse(shipBoard.validateIndexes(2, 5));
         assertFalse(shipBoard.validateIndexes(6, 5));
     }
@@ -57,7 +75,8 @@ class Level3ShipBoardTest {
     @Test
     void testValidateIndexes_OutOfBounds() {
         assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(-1, 0));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(9, 6));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(10, 3));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(9, 0));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(0, 6));
     }
 }

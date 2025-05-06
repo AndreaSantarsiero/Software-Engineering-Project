@@ -35,9 +35,14 @@ class Level1ShipBoardTest {
     void testValidateIndexes_ValidCases() {
         assertTrue(shipBoard.validateIndexes(2, 0));
         assertTrue(shipBoard.validateIndexes(1, 1));
+        assertTrue(shipBoard.validateIndexes(2, 1));
         assertTrue(shipBoard.validateIndexes(3, 1));
         assertTrue(shipBoard.validateIndexes(0, 2));
         assertTrue(shipBoard.validateIndexes(4, 3));
+        assertTrue(shipBoard.validateIndexes(0, 4));
+        assertTrue(shipBoard.validateIndexes(1, 4));
+        assertTrue(shipBoard.validateIndexes(3, 4));
+        assertTrue(shipBoard.validateIndexes(4, 4));
     }
 
     @Test
@@ -54,7 +59,8 @@ class Level1ShipBoardTest {
     @Test
     void testValidateIndexes_OutOfBounds() {
         assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(-1, 0));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(5, 5));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(6, 1));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(0, -1));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(5, 0));
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.validateIndexes(0, 5));
     }
 }

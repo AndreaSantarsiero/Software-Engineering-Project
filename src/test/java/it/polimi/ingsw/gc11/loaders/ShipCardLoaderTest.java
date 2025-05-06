@@ -1,9 +1,10 @@
-package it.polimi.ingsw.gc11.model.shipcard;
+package it.polimi.ingsw.gc11.loaders;
 
-import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
+import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 
 public class ShipCardLoaderTest {
