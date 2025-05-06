@@ -26,6 +26,7 @@ public class MeteorSwarm extends AdventureCard {
         this.meteors = meteors;
     }
 
+
     public  ArrayList<Meteor> getMeteors() {
         return meteors;
     }
