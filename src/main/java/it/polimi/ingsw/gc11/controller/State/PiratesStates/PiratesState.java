@@ -82,8 +82,5 @@ public class PiratesState extends AdventureState {
                 advContext.setAdvState(new PiratesState(advContext));
             }
         }
-
-
-
     }
 }

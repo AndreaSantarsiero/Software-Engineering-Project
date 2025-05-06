@@ -48,8 +48,8 @@ public class AdventureCardLoader {
                     case "StarDust":
                         adventureCards.add(getNewStarDust(node));
                         break;
-                    case "CombatZone":
-                        adventureCards.add(getNewCombatZone(node));
+                    case "CombatZoneLv1":
+                        adventureCards.add(getNewCombatZoneLv1(node));
                         break;
                 }
             }
@@ -137,8 +137,8 @@ public class AdventureCardLoader {
                     case "StarDust":
                         adventureCards.add(getNewStarDust(node));
                         break;
-                    case "CombatZone":
-                        adventureCards.add(getNewCombatZone(node));
+                    case "CombatZoneLv2":
+                        adventureCards.add(getNewCombatZoneLv2(node));
                         break;
                 }
             }
@@ -260,91 +260,37 @@ public class AdventureCardLoader {
         );
     }
 
-    private CombatZone getNewCombatZone(JsonNode node){
-        JsonNode phase1Node = node.get("phase1");
-        JsonNode phase2Node = node.get("phase2");
-        JsonNode phase3Node = node.get("phase3");
-        JsonNode shotsRootNode;
-        CombatPhase[] combatPhases = new CombatPhase[3];
+    private CombatZoneLv1 getNewCombatZoneLv1(JsonNode node){
+        JsonNode shotsRootNode = node.get("shots");
         ArrayList<Shot> shots = new ArrayList<>();
-
-        for(int i=0; i<3; i++){
-            if(i == 0){
-                if(phase1Node.get("penalty").asText().equals("SHOTS")){
-                    shotsRootNode = phase1Node.get("shots");
-                    for (JsonNode shotNode : shotsRootNode){
-                        shots.add(new Shot(
-                                Hit.Type.valueOf(shotNode.get("hitType").asText()),
-                                Hit.Direction.valueOf(shotNode.get("hitDirection").asText())
-                        ));
-                    }
-                    combatPhases[i] = new CombatPhase(
-                            CombatPhase.Condition.valueOf(phase1Node.get("condition").asText()),
-                            CombatPhase.Penalty.valueOf(phase1Node.get("penalty").asText()),
-                            shots
-                    );
-                }
-                else{
-                    combatPhases[i] = new CombatPhase(
-                            CombatPhase.Condition.valueOf(phase1Node.get("condition").asText()),
-                            CombatPhase.Penalty.valueOf(phase1Node.get("penalty").asText()),
-                            phase1Node.get("amount").asInt()
-                    );
-                }
-            }
-            if(i == 1){
-                if(phase2Node.get("penalty").asText().equals("SHOTS")){
-                    shotsRootNode = phase2Node.get("shots");
-                    for (JsonNode shotNode : shotsRootNode){
-                        shots.add(new Shot(
-                                Hit.Type.valueOf(shotNode.get("hitType").asText()),
-                                Hit.Direction.valueOf(shotNode.get("hitDirection").asText())
-                        ));
-                    }
-                    combatPhases[i] = new CombatPhase(
-                            CombatPhase.Condition.valueOf(phase2Node.get("condition").asText()),
-                            CombatPhase.Penalty.valueOf(phase2Node.get("penalty").asText()),
-                            shots
-                    );
-                }
-                else{
-                    combatPhases[i] = new CombatPhase(
-                            CombatPhase.Condition.valueOf(phase2Node.get("condition").asText()),
-                            CombatPhase.Penalty.valueOf(phase2Node.get("penalty").asText()),
-                            phase2Node.get("amount").asInt()
-                    );
-                }
-            }
-            if(i == 2){
-                if(phase3Node.get("penalty").asText().equals("SHOTS")){
-                    shotsRootNode = phase3Node.get("shots");
-                    for (JsonNode shotNode : shotsRootNode){
-                        shots.add(new Shot(
-                                Hit.Type.valueOf(shotNode.get("hitType").asText()),
-                                Hit.Direction.valueOf(shotNode.get("hitDirection").asText())
-                        ));
-                    }
-                    combatPhases[i] = new CombatPhase(
-                            CombatPhase.Condition.valueOf(phase3Node.get("condition").asText()),
-                            CombatPhase.Penalty.valueOf(phase3Node.get("penalty").asText()),
-                            shots
-                    );
-                }
-                else{
-                    combatPhases[i] = new CombatPhase(
-                            CombatPhase.Condition.valueOf(phase3Node.get("condition").asText()),
-                            CombatPhase.Penalty.valueOf(phase3Node.get("penalty").asText()),
-                            phase3Node.get("amount").asInt()
-                    );
-                }
-            }
+        for (JsonNode shotNode : shotsRootNode){
+            shots.add(new Shot(
+                    Hit.Type.valueOf(shotNode.get("hitType").asText()),
+                    Hit.Direction.valueOf(shotNode.get("hitDirection").asText())
+            ));
         }
+        return new CombatZoneLv1(
+               AdventureCard.Type.valueOf(node.get("type").asText()),
+                node.get("lostDays").asInt(),
+                node.get("lostMembers").asInt(),
+                shots
+        );
+    }
 
-
-
-        return new CombatZone(
+    private CombatZoneLv2 getNewCombatZoneLv2(JsonNode node){
+        JsonNode shotsRootNode = node.get("shots");
+        ArrayList<Shot> shots = new ArrayList<>();
+        for (JsonNode shotNode : shotsRootNode){
+            shots.add(new Shot(
+                    Hit.Type.valueOf(shotNode.get("hitType").asText()),
+                    Hit.Direction.valueOf(shotNode.get("hitDirection").asText())
+            ));
+        }
+        return new CombatZoneLv2(
                 AdventureCard.Type.valueOf(node.get("type").asText()),
-                combatPhases
+                node.get("lostDays").asInt(),
+                node.get("lostMaterials").asInt(),
+                shots
         );
     }
 }

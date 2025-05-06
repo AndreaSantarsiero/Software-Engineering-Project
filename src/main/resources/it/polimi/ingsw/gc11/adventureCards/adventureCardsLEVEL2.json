@@ -313,7 +313,7 @@
     "shots" : [
       {
         "hitType": "SMALL",
-        "hitDirection": "TOP  "
+        "hitDirection": "TOP"
       },
       {
         "hitType": "SMALL",
