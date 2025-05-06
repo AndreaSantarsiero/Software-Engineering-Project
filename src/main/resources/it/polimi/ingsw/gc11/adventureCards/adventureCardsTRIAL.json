@@ -101,32 +101,19 @@
 
   "TrialWarZone.jpg": {
     "id": "TrialWarZone",
-    "subClass": "CombatZone",
+    "subClass": "CombatZoneLv1",
     "type": "TRIAL",
-    "phase1": {
-      "condition": "LESS_MEMBERS_NUM",
-      "penalty": "LOST_DAYS",
-      "amount": 3
-    },
-    "phase2": {
-      "condition": "LESS_ENGINE_POWER",
-      "penalty": "LOST_MEMBERS",
-      "amount": 2
-    },
-    "phase3": {
-      "condition": "LESS_FIRE_POWER",
-      "penalty": "SHOTS",
-      "shots":
-      [
-        {
-          "hitType": "SMALL",
-          "hitDirection": "BOTTOM"
-        },
-        {
-          "hitType": "BIG",
-          "hitDirection": "BOTTOM"
-        }
-      ]
-    }
+    "lostDays" : "3",
+    "lostMembers" : "2",
+    "shots" : [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "BOTTOM"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "BOTTOM"
+      }
+    ]
   }
 }

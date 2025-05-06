@@ -19,7 +19,7 @@ public class Pirates extends AdventureCard {
 
     public Pirates(AdventureCard.Type type, int lostDays, int firePower, int coins, ArrayList<Shot> shots) throws IllegalArgumentException{
         super(type);
-        if (shots == null || lostDays < 0 || firePower < 0 || coins < 0){
+        if (shots == null || shots.isEmpty()|| lostDays < 0 || firePower < 0 || coins < 0){
             throw new IllegalArgumentException();
         }
         for(Shot shot: shots) {

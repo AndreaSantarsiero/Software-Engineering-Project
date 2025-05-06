@@ -304,34 +304,29 @@
     "type": "LEVEL2"
   },
 
-  "Level2WarZone.jpg": {
+  "LevelWarZone.jpg": {
     "id": "Level2WarZone",
-    "subClass": "CombatZone",
-    "type": "LEVEL2",
-    "phase1": {
-      "condition": "LESS_MEMBERS_NUM",
-      "penalty": "LOST_DAYS",
-      "amount": 3
-    },
-    "phase2": {
-      "condition": "LESS_ENGINE_POWER",
-      "penalty": "LOST_MEMBERS",
-      "amount": 2
-    },
-    "phase3": {
-      "condition": "LESS_FIRE_POWER",
-      "penalty": "SHOTS",
-      "shots":
-      [
-        {
-          "hitType": "SMALL",
-          "hitDirection": "BOTTOM"
-        },
-        {
-          "hitType": "BIG",
-          "hitDirection": "BOTTOM"
-        }
-      ]
-    }
+    "subClass": "CombatZoneLv2",
+    "type": "TRIAL",
+    "lostDays" : "4",
+    "lostMaterials" : "3",
+    "shots" : [
+      {
+        "hitType": "SMALL",
+        "hitDirection": "TOP  "
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "RIGHT"
+      },
+      {
+        "hitType": "SMALL",
+        "hitDirection": "LEFT"
+      },
+      {
+        "hitType": "BIG",
+        "hitDirection": "BOTTOM"
+      }
+    ]
   }
 }

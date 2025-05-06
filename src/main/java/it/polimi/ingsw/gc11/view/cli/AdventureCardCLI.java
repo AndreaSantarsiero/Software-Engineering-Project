@@ -138,7 +138,16 @@ public class AdventureCardCLI {
 
 
 
-    public void draw(CombatZone combatZone, int i){
+    public void draw(CombatZoneLv1 combatZone, int i){
+        if (i == 1){
+            System.out.print("     COMBAT ZONE     ");
+        }
+        else {
+            System.out.print("                     ");
+        }
+    }
+
+    public void draw(CombatZoneLv2 combatZone, int i){
         if (i == 1){
             System.out.print("     COMBAT ZONE     ");
         }
@@ -259,4 +268,5 @@ public class AdventureCardCLI {
             System.out.print("                     ");
         }
     }
+
 }
