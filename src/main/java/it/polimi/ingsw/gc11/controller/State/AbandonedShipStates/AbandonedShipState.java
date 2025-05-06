@@ -7,8 +7,6 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
 
-//Ipotesi: questo è il PRIMO stato della advCard AbandonedShip,
-//cioè quello che ottengo dal metodo initAdventureState() in AdventurePhase
 public class AbandonedShipState extends AdventureState {
 
     public AbandonedShipState(AdventurePhase advContext) {
@@ -17,52 +15,47 @@ public class AbandonedShipState extends AdventureState {
 
     @Override
     public void acceptAdventureCard(String username) {
+
         GameModel gameModel = this.advContext.getGameModel();
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
         AbandonedShip abandonedShip = (AbandonedShip) this.advContext.getDrawnAdvCard();
 
-        if (expectedPlayer.getUsername().equals(username)) {
-
-            if (advContext.isResolvingAdvCard()) {
-                throw new IllegalStateException("You are already accepted this adventure card!");
-            }
-            else {
-
-                if(expectedPlayer.getShipBoard().getMembers() >= abandonedShip.getLostMembers()){
-                    advContext.setResolvingAdvCard(true);
-                    advContext.setAdvState(new ChooseHousing(this.advContext, expectedPlayer));
-                }
-                else{
-                    throw new IllegalStateException("You don't have enough members to accept this adventure card!");
-                }
-            }
-
-        }
-        else {
+        if (!expectedPlayer.getUsername().equals(username)) {
             throw new IllegalArgumentException("It's not your turn to play!");
         }
+
+        if (advContext.isResolvingAdvCard()) {
+            throw new IllegalStateException("You are already accepted this adventure card!");
+        }
+
+        if(expectedPlayer.getShipBoard().getMembers() >= abandonedShip.getLostMembers()){
+            advContext.setResolvingAdvCard(true);
+            advContext.setAdvState(new ChooseHousing(this.advContext, expectedPlayer));
+        }
+        else{
+            throw new IllegalStateException("You don't have enough members to accept this adventure card!");
+        }
+
     }
 
     @Override
     public void declineAdventureCard(String username) {
+
         GameModel gameModel = this.advContext.getGameModel();
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
-        if (expectedPlayer.getUsername().equals(username)) {
-            int idx = this.advContext.getIdxCurrentPlayer();
-            this.advContext.setIdxCurrentPlayer(idx+1);
 
-            int numPlayers = gameModel.getPlayers().size();
-            if (this.advContext.getIdxCurrentPlayer() == numPlayers) {
-                //There are no players that must decide
-                this.advContext.setAdvState(new IdleState(this.advContext));
-            }
-            else {
-                //The advState remains the same as before
-            }
+        if(!expectedPlayer.getUsername().equals(username)){
+            throw new IllegalArgumentException("It's not your turn to play");
         }
-        else {
-            throw new IllegalArgumentException("It's not your turn to play!");
+
+        int idx = this.advContext.getIdxCurrentPlayer();
+        this.advContext.setIdxCurrentPlayer(idx+1);
+
+        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayers().size()) {
+            //There are no players that must decide
+            this.advContext.setAdvState(new IdleState(this.advContext));
         }
+        //The advState remains the same as before
     }
 
 }

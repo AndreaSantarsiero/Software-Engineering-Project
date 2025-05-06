@@ -22,11 +22,17 @@ public class ChooseHousing extends AdventureState {
         this.player = player;
     }
 
-    //Idea: farei ovveride e lo chiamerei resolveState()
+
     @Override
     public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
+        }
+
+        if(player.getShipBoard().getMembers() < abandonedShip.getLostMembers()){
+            //Il giocatore va eliminato dalla partita
+            throw new IllegalStateException("You don't have enough members... Game over");
         }
 
         int sum = 0;
@@ -34,21 +40,8 @@ public class ChooseHousing extends AdventureState {
             sum += housingUsage.get(housingUnit);
         }
 
-        if(sum <= abandonedShip.getLostMembers()){
-            throw new IllegalStateException("You are out of the game");
-            //Il giocatore va eliminato dalla partita
-        }
-
-        if(abandonedShip.isResolved()){
-            throw new IllegalStateException("Abandoned ship already resolved");
-        }
-        if(player.getShipBoard().getMembers() < abandonedShip.getLostMembers()){
-            throw new IllegalStateException("Player does not have enough members");
-        }
 
         player.getShipBoard().killMembers(housingUsage);
-        abandonedShip.resolveCard();
-
         player.addCoins(abandonedShip.getCoins());
         gameModel.move(player.getUsername(), abandonedShip.getLostDays() * -1);
 
