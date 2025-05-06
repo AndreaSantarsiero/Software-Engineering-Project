@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.CheckAndPenalty1Lv1;
 import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
 
@@ -45,7 +46,7 @@ public class CombatZoneLv1 extends AdventureCard {
 
     @Override
     public AdventureState getInitialState(AdventurePhase advContext) {
-        return null;
+        return new CheckAndPenalty1Lv1(advContext);
     }
 
     @Override

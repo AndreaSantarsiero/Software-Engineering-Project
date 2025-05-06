@@ -14,12 +14,18 @@ public class CoordinateState extends AdventureState {
     private GameModel gameModel;
     private List<Player> playersDefeated;
     private int iterationsHit;
+    private Pirates pirates;
 
     public CoordinateState(AdventurePhase advContext, List<Player> playersDefeated, int iterationsHit) {
         super(advContext);
         this.playersDefeated = playersDefeated;
         this.gameModel = advContext.getGameModel();
         this.iterationsHit = iterationsHit;
+        pirates = (Pirates) this.advContext.getDrawnAdvCard();
+        //No Hit left to handle
+        if(iterationsHit == pirates.getShots().size()){
+            this.advContext.setAdvState(new IdleState(advContext));
+        }
     }
 
     @Override
@@ -32,18 +38,13 @@ public class CoordinateState extends AdventureState {
         //La coordinata calcolata va poi inviata a tutti i client
 
         //NextState
-        Pirates pirates = (Pirates) this.advContext.getDrawnAdvCard();
-        if(iterationsHit == pirates.getShots().size()){
-            this.advContext.setAdvState(new IdleState(advContext));
+        List<Boolean> alreadyPlayed = new ArrayList<>();
+        for(int i = 0; i < playersDefeated.size(); i++){
+            alreadyPlayed.add(false);
         }
-        else{
-            List<Boolean> alreadyPlayed = new ArrayList<>();
 
-            for(int i = 0; i < playersDefeated.size(); i++){
-                alreadyPlayed.add(false);
-            }
+        this.advContext.setAdvState(new HandleHit(advContext, playersDefeated, coordinates, iterationsHit,
+                                    0, alreadyPlayed));
 
-            this.advContext.setAdvState(new HandleHit(advContext, playersDefeated, coordinates, iterationsHit, 0, alreadyPlayed));
-        }
     }
 }

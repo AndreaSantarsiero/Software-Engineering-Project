@@ -87,7 +87,6 @@ public class HandleHit extends AdventureState {
 
         if(this.iterationsPlayers == this.playersDefeated.size()){
             this.iterationsHit++;
-
             //nextstate
             this.advContext.setAdvState(new CoordinateState(advContext, playersDefeated, iterationsHit));
         }
