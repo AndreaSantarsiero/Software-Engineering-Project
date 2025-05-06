@@ -73,7 +73,7 @@ public class ShipBoard7Test {
         shipBoard.getShipCard(7, 8).destroy();
         assertEquals(22, shipBoard.getShipCardsNumber(), "Ship card number not calculated correctly after destroying some components");
         assertThrows(NullPointerException.class, () -> shipBoard.getShipCard(5, 6).destroy(), "Cannot destroy a null component");
-        assertThrows(NullPointerException.class, () -> shipBoard.getShipCard(7, 9).destroy(), "Cannot destroy components on invalid coordinates");
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.getShipCard(7, 9).destroy(), "Cannot destroy components on invalid coordinates");
         assertEquals(22, shipBoard.getShipCardsNumber(), "Ship card number not calculated correctly after invalid destroy calls");
     }
 
@@ -143,18 +143,17 @@ public class ShipBoard7Test {
         assertEquals(1, shipBoard.getTotalAvailableBatteries(), "Available batteries number not calculated correctly after using some batteries");
 
         batteryUsage.put((Battery) shipBoard.getShipCard(6, 7), 1);
-        shipBoard.useBatteries(batteryUsage);
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.getTotalAvailableBatteries(), "Cannot use destroyed battery modules");
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.useBatteries(batteryUsage), "Cannot use destroyed battery modules");
 
         batteryUsage.clear();
         batteryUsage.put((Battery) shipBoard.getShipCard(8, 7), -1);
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.getTotalAvailableBatteries(), "Cannot use a negative number of batteries");
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.useBatteries(batteryUsage), "Cannot use a negative number of batteries");
         batteryUsage.clear();
         batteryUsage.put((Battery) shipBoard.getShipCard(8, 7), 3);
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.getTotalAvailableBatteries(), "Cannot use 3 batteries on a double battery module");
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.useBatteries(batteryUsage), "Cannot use 3 batteries on a double battery module");
         batteryUsage.clear();
         batteryUsage.put((Battery) shipBoard.getShipCard(8, 7), 2);
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.getTotalAvailableBatteries(), "Not enough batteries on this battery module");
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.useBatteries(batteryUsage), "Not enough batteries on this battery module");
     }
 
 

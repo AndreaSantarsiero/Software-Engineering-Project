@@ -13,7 +13,7 @@ import java.util.List;
 
 public class previewCLI {
     public static void main(String[] args) {
-        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard6.json");
+        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard7.json");
         ShipBoard shipBoard = shipBoardLoader.getShipBoard();
         ShipCardCLI shipCardCLI = new ShipCardCLI();
         ShipBoardCLI shipBoardCLI = new ShipBoardCLI(shipCardCLI);

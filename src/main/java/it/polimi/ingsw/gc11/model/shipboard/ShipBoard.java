@@ -172,7 +172,7 @@ public abstract class ShipBoard {
      * @param j The x-coordinate index to check
      * @param i The y-coordinate index to check
      * @return True if the coordinate indexes are valid, false otherwise
-     * @throws IllegalStateException If the coordinate indexes are out of the board's bounds
+     * @throws IllegalArgumentException If the coordinate indexes are out of the board's bounds
      */
     public abstract boolean validateIndexes(int j, int i);
 
