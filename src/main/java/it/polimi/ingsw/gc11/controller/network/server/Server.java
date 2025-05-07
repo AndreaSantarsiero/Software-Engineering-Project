@@ -36,14 +36,6 @@ public abstract class Server {
 
 
     /**
-     * Registers a new player session into the server. Must be implemented by subclasses to reflect the specific connection type
-     *
-     * @param username the player's username
-     * @return the session token (to be stored in the client)
-     */
-    public abstract UUID registerPlayerSession(String username);
-
-    /**
      * Creates a new match and connects the player to it
      *
      * @param username     the player's username

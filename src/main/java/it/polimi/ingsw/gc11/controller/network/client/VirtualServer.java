@@ -23,13 +23,13 @@ public class VirtualServer {
 
 
 
-    public VirtualServer(Utils.ConnectionType type, String username, String ip, int port) throws NetworkException {
+    public VirtualServer(Utils.ConnectionType type, String username, String ip, int port) throws NetworkException, UsernameAlreadyTakenException {
         try{
             if(type.equals(Utils.ConnectionType.RMI)){
-                this.client = new ClientRMI(ip, port);
+                this.client = new ClientRMI(this, ip, port);
             }
             else{
-                this.client = new ClientSocket(ip, port);
+                this.client = new ClientSocket(this, ip, port);
             }
         }
         catch (Exception e){
@@ -128,5 +128,11 @@ public class VirtualServer {
 
     public void eliminateBatteries(Map<Battery, Integer> batteries) throws NetworkException{
         client.eliminateBatteries(username, batteries);
+    }
+
+
+
+    public void notifyException(String message){
+        System.out.println("Server exception: " + message);
     }
 }

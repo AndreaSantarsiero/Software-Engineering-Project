@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.network.client.rmi;
 
 import it.polimi.ingsw.gc11.controller.network.client.Client;
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerInterface;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -20,6 +21,7 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     private final ServerInterface stub;
+    private final ClientStubExporter stubExporter;
 
 
 
@@ -29,9 +31,11 @@ public class ClientRMI extends Client implements ClientInterface {
      * @param ip   the IP address of the RMI server
      * @param port the port of the RMI registry
      */
-    public ClientRMI(String ip, int port) throws RemoteException, NotBoundException {
+    public ClientRMI(VirtualServer virtualServer, String ip, int port) throws RemoteException, NotBoundException {
+        super(virtualServer);
         Registry registry = LocateRegistry.getRegistry(ip, port);
         this.stub = (ServerInterface) registry.lookup("ServerInterface");
+        this.stubExporter = new ClientStubExporter(this);
     }
 
 
@@ -39,7 +43,7 @@ public class ClientRMI extends Client implements ClientInterface {
     @Override
     public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
         try {
-            this.clientSessionToken = stub.registerPlayerSession(username);
+            this.clientSessionToken = stub.registerPlayerSession(username, stubExporter);
         } catch (RemoteException e) {
             throw new NetworkException("RMI CONNECTION ERROR: could not register RMI session");
         }

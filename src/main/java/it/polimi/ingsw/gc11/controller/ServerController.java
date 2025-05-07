@@ -1,9 +1,10 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.network.Utils;
+import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.*;
-import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
-import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
+import it.polimi.ingsw.gc11.controller.network.server.rmi.*;
+import it.polimi.ingsw.gc11.controller.network.server.socket.*;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import java.util.Map;
@@ -87,16 +88,38 @@ public class ServerController {
      * username, the method throws an exception
      *
      * @param username the username of the connecting player
-     * @param type the networking protocol used by the client (RMI or SOCKET)
+     * @param playerStub the networking interface used by the client
      * @return the unique session token associated with the new session
      * @throws UsernameAlreadyTakenException if a session already exists for the username
      */
-    public UUID registerPlayerSession(String username, Utils.ConnectionType type) {
+    public UUID registerRMISession(String username, ClientInterface playerStub) {
         if (playerSessions.containsKey(username)) {
             throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
         }
 
-        ClientSession clientSession = new ClientSession(username, new VirtualClient(type));
+        ClientSession clientSession = new ClientSession(username, new VirtualRMIClient(playerStub));
+        playerSessions.put(username, clientSession);
+        return clientSession.getToken();
+    }
+
+
+    /**
+     * Registers a new player session for the specified username and connection type
+     *
+     * <p>This method creates a new {@link ClientSession} containing a {@link VirtualClient}
+     * associated with the specified connection type. If a session already exists for the given
+     * username, the method throws an exception
+     *
+     * @param username the username of the connecting player
+     * @return the unique session token associated with the new session
+     * @throws UsernameAlreadyTakenException if a session already exists for the username
+     */
+    public UUID registerSocketSession(String username) {
+        if (playerSessions.containsKey(username)) {
+            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
+        }
+
+        ClientSession clientSession = new ClientSession(username, new VirtualSocketClient());
         playerSessions.put(username, clientSession);
         return clientSession.getToken();
     }
@@ -123,7 +146,8 @@ public class ServerController {
      * Enrolls an existing player session to a specific game match
      *
      * <p>This method associates the player's {@link VirtualClient} with the specified game context,
-     * identified by the given match ID. The session must already be registered via {@link #registerPlayerSession}
+     * identified by the given match ID. The session must already be registered via {@link #registerRMISession}
+     * or via {@link #registerSocketSession}
      *
      * @param username the username of the player to enroll
      * @param matchID the identifier of the match the player wants to join

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.server.socket;
 
 import it.polimi.ingsw.gc11.controller.ServerController;
-import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.server.Server;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.io.IOException;
@@ -55,9 +54,8 @@ public class ServerSocket extends Server {
      * @param username the player's unique identifier
      * @return the UUID token assigned to the session
      */
-    @Override
     public UUID registerPlayerSession(String username){
-        return serverController.registerPlayerSession(username, Utils.ConnectionType.SOCKET);
+        return serverController.registerSocketSession(username);
     }
 
 

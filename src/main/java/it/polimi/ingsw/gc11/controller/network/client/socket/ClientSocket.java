@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.network.client.socket;
 
 import it.polimi.ingsw.gc11.controller.network.client.Client;
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
@@ -25,7 +26,8 @@ public class ClientSocket extends Client {
 
 
 
-    public ClientSocket(String ip, int port) throws IOException {
+    public ClientSocket(VirtualServer virtualServer, String ip, int port) throws IOException {
+        super(virtualServer);
         this.socket = new Socket(ip, port);
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
         this.inputStream = new ObjectInputStream(socket.getInputStream());

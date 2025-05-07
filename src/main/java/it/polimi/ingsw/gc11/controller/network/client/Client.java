@@ -12,6 +12,13 @@ import java.util.*;
 public abstract class Client {
 
     protected UUID clientSessionToken;
+    protected VirtualServer virtualServer;
+
+
+
+    public Client(VirtualServer virtualServer) {
+        this.virtualServer = virtualServer;
+    }
 
 
 
@@ -66,6 +73,6 @@ public abstract class Client {
 
 
     public void notifyException(String message){
-        System.out.println(message);    //da cambiare
+        virtualServer.notifyException(message);
     }
 }
