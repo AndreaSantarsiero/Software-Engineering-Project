@@ -27,7 +27,7 @@ public class ServerRMI extends Server implements ServerInterface {
     public ServerRMI(ServerController serverController, int port) throws NetworkException, UsernameAlreadyTakenException {
         super(serverController);
         try {
-            ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, port);
+            ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, 0);
             registry = LocateRegistry.createRegistry(port);
             registry.bind("ServerInterface", stub);
         }

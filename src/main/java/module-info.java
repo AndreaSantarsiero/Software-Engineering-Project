@@ -11,4 +11,7 @@ module it.polimi.ingsw.gc11 {
 
     opens it.polimi.ingsw.gc11 to javafx.fxml;
     exports it.polimi.ingsw.gc11;
+    exports it.polimi.ingsw.gc11.controller.network.server.rmi to java.rmi;
+    exports it.polimi.ingsw.gc11.exceptions to java.rmi;
+    exports it.polimi.ingsw.gc11.controller.network.client.rmi;
 }

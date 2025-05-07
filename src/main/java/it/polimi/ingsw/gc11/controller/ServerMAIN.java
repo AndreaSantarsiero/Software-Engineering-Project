@@ -9,12 +9,13 @@ import java.util.Properties;
 public class ServerMAIN {
     public static void main(String[] args) {
 
-        int port, connectionTimeout;
+        int RMIPort, SocketPort, connectionTimeout;
 
         try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(input);
-            port = Integer.parseInt(prop.getProperty("port"));
+            RMIPort = Integer.parseInt(prop.getProperty("RMIPort"));
+            SocketPort = Integer.parseInt(prop.getProperty("SocketPort"));
             connectionTimeout = Integer.parseInt(prop.getProperty("connectionTimeout"));
         }
         catch (Exception e) {
@@ -22,21 +23,30 @@ public class ServerMAIN {
             return;
         }
 
-        if (args.length == 1) {
+        if (args.length == 2) {
             try{
-                port = Integer.parseInt(args[0]);
-                if (port <= 0 || port > 65535) {
-                    throw new NumberFormatException("Port number out of range");
+                RMIPort = Integer.parseInt(args[0]);
+                if (RMIPort <= 0 || RMIPort > 65535) {
+                    throw new NumberFormatException("RMI port number out of range");
                 }
             }
             catch (NumberFormatException e){
-                System.out.println("Invalid port number: " + args[0] + ". Using default port: " + port);
+                System.out.println("Invalid port number: " + args[0] + ". Using default RMI port: " + RMIPort);
+            }
+            try{
+                SocketPort = Integer.parseInt(args[1]);
+                if (SocketPort <= 0 || SocketPort > 65535) {
+                    throw new NumberFormatException("Socket port number out of range");
+                }
+            }
+            catch (NumberFormatException e){
+                System.out.println("Invalid port number: " + args[1] + ". Using default Socket port: " + SocketPort);
             }
         }
 
         try {
-            ServerController serverController = new ServerController(port);
-            System.out.println("Server started on port: " + port);
+            ServerController serverController = new ServerController(RMIPort, SocketPort);
+            System.out.println("Server started on RMI port: " + RMIPort + ", Socket port: " + SocketPort);
         } catch (NetworkException e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
         }

@@ -33,7 +33,7 @@ public class VirtualServer {
             }
         }
         catch (Exception e){
-            throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port);
+            throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port + "\n" + e.getMessage());
         }
 
         client.registerSession(username);

@@ -31,11 +31,11 @@ public class ServerController {
     /**
      * Constructs a new {@code ServerController} with empty session and match registries
      */
-    public ServerController(int port) {
+    public ServerController(int RMIPort, int SocketPort) {
         this.playerSessions = new ConcurrentHashMap<>();
         this.availableMatches = new ConcurrentHashMap<>();
-        this.serverRMI = new ServerRMI(this, port);
-        this.serverSocket = new ServerSocket(this, port);
+        this.serverRMI = new ServerRMI(this, RMIPort);
+        this.serverSocket = new ServerSocket(this, SocketPort);
     }
 
 
