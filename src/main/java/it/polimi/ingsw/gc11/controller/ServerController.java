@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.server.*;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
 import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import java.util.Map;
 import java.util.UUID;
@@ -88,11 +89,11 @@ public class ServerController {
      * @param username the username of the connecting player
      * @param type the networking protocol used by the client (RMI or SOCKET)
      * @return the unique session token associated with the new session
-     * @throws RuntimeException if a session already exists for the username
+     * @throws UsernameAlreadyTakenException if a session already exists for the username
      */
     public UUID registerPlayerSession(String username, Utils.ConnectionType type) {
         if (playerSessions.containsKey(username)) {
-            throw new RuntimeException("A session already exists for username: " + username);
+            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
         }
 
         ClientSession clientSession = new ClientSession(username, new VirtualClient(type));

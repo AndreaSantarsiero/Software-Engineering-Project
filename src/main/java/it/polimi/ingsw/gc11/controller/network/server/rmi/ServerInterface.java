@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.server.rmi;
 
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -13,7 +14,7 @@ import java.util.*;
 public interface ServerInterface extends Remote {
 
     //creating, joining and handling matches
-    UUID registerPlayerSession(String username) throws RemoteException;
+    UUID registerPlayerSession(String username) throws RemoteException, UsernameAlreadyTakenException;
     void createMatch(String username, UUID token, FlightBoard.Type flightLevel) throws RemoteException;
     void connectPlayerToGame(String username, UUID token, String matchId) throws RemoteException;
     void startGame(String username, UUID token) throws RemoteException;

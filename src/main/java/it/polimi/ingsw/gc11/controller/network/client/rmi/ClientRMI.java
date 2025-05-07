@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.controller.network.client.rmi;
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerInterface;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -36,7 +37,7 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     @Override
-    public void registerSession(String username) throws NetworkException {
+    public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
         try {
             this.clientSessionToken = stub.registerPlayerSession(username);
         } catch (RemoteException e) {
