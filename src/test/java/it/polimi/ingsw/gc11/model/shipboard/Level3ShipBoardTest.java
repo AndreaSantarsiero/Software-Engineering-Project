@@ -34,6 +34,16 @@ class Level3ShipBoardTest {
     }
 
     @Test
+    void testGetWidth() {
+        assertEquals(9, shipBoard.getWidth());
+    }
+
+    @Test
+    void testGetLength() {
+        assertEquals(6, shipBoard.getLength());
+    }
+
+    @Test
     void testValidateIndexes_ValidCases() {
         assertTrue(shipBoard.validateIndexes(4, 0));
         assertTrue(shipBoard.validateIndexes(3, 1));

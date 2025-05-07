@@ -232,7 +232,7 @@ public abstract class ShipBoard {
         if (components[i][j] == null) {
             throw new IllegalArgumentException("Ship card already null");
         }
-        if (x == lastModifiedJ && y == lastModifiedI) {
+        if (j == lastModifiedJ && i == lastModifiedI) {
             components[i][j].unPlace(this);
             components[i][j] = null;
         }
