@@ -1,24 +1,23 @@
-package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1;
+package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.Shot;
-import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
+import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.Map;
 
 
-public class HandleShotLv1 extends AdventureState {
+public class HandleShotLv2 extends AdventureState {
     private Player player;
     private int coordinate;
     private int iterationsHit;
-    private CombatZoneLv1 combatZoneLv1;
+    private CombatZoneLv2 combatZoneLv2;
 
-    public HandleShotLv1(AdventurePhase advContext, Player player, int coordinate, int iterationsHit) {
+    public HandleShotLv2(AdventurePhase advContext, Player player, int coordinate, int iterationsHit) {
         super(advContext);
         this.player = player;
         this.coordinate = coordinate;
@@ -31,7 +30,7 @@ public class HandleShotLv1 extends AdventureState {
 
         Player player = this.advContext.getGameModel().getPlayer(username);
 
-        Shot shot = combatZoneLv1.getShots().get(iterationsHit);
+        Shot shot = combatZoneLv2.getShots().get(iterationsHit);
 
         if(shot.getType() == Hit.Type.SMALL){
             //Direction it's not protected
@@ -69,7 +68,7 @@ public class HandleShotLv1 extends AdventureState {
         this.iterationsHit++;
 
         //nextstate
-        this.advContext.setAdvState(new Penalty3Lv1(advContext, player, iterationsHit));
+        this.advContext.setAdvState(new Penalty3Lv2(advContext, player, iterationsHit));
     }
 
 }
