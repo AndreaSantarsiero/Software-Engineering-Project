@@ -107,9 +107,9 @@ public class GameModel {
     */
     public void addPlayer(String username) throws FullLobbyException, NullPointerException {
         if (username == null)
-            throw new NullPointerException();
+            throw new NullPointerException("cannot add player without a username");
         else if (players.size() == this.numPlayers) {
-            throw new FullLobbyException("The lobby you're trying to join is full at the moment.");
+            throw new FullLobbyException("The lobby you're trying to join is currently full");
         }
         Player newPlayer = new Player(username);
         if(this.flightBoard != null){

@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.network.client.socket;
 
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
@@ -54,7 +55,7 @@ public class ClientSocket extends Client {
     }
 
     @Override
-    public void connectToGame(String username, String matchId) throws NetworkException {
+    public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException {
 
     }
 

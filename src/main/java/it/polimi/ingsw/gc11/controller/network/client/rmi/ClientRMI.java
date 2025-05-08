@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.controller.network.client.rmi;
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerInterface;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
@@ -59,7 +60,7 @@ public class ClientRMI extends Client implements ClientInterface {
     }
 
     @Override
-    public void connectToGame(String username, String matchId) throws NetworkException {
+    public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException {
         try{
             stub.connectPlayerToGame(username, clientSessionToken, matchId);
         } catch (RemoteException e) {

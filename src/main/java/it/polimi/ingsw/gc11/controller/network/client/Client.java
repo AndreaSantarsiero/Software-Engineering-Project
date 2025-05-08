@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client;
 
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
@@ -26,7 +27,7 @@ public abstract class Client {
 
     abstract public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException;
 
-    abstract public void connectToGame(String username, String matchId) throws NetworkException;
+    abstract public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException;
 
 
 

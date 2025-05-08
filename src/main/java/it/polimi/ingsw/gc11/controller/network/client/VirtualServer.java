@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.controller.network.client;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.controller.network.client.socket.ClientSocket;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
@@ -46,7 +47,7 @@ public class VirtualServer {
         client.createMatch(username, flightType, numPlayers);
     }
 
-    public void connectToGame(String matchId) throws NetworkException {
+    public void connectToGame(String matchId) throws NetworkException, FullLobbyException, NullPointerException {
         client.connectToGame(username, matchId);
     }
 

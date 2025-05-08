@@ -1,10 +1,10 @@
 package it.polimi.ingsw.gc11.controller;
 
-import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.*;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.*;
 import it.polimi.ingsw.gc11.controller.network.server.socket.*;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import java.util.Map;
@@ -91,10 +91,14 @@ public class ServerController {
      * @param playerStub the networking interface used by the client
      * @return the unique session token associated with the new session
      * @throws UsernameAlreadyTakenException if a session already exists for the username
+     * @throws IllegalArgumentException if the username is null or empty
      */
-    public UUID registerRMISession(String username, ClientInterface playerStub) {
+    public UUID registerRMISession(String username, ClientInterface playerStub) throws UsernameAlreadyTakenException, IllegalArgumentException {
         if (playerSessions.containsKey(username)) {
             throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
+        }
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username is null or empty");
         }
 
         ClientSession clientSession = new ClientSession(username, new VirtualRMIClient(playerStub));
@@ -113,10 +117,14 @@ public class ServerController {
      * @param username the username of the connecting player
      * @return the unique session token associated with the new session
      * @throws UsernameAlreadyTakenException if a session already exists for the username
+     * @throws IllegalArgumentException if the username is null or empty
      */
-    public UUID registerSocketSession(String username) {
+    public UUID registerSocketSession(String username) throws UsernameAlreadyTakenException, IllegalArgumentException {
         if (playerSessions.containsKey(username)) {
             throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
+        }
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username is null or empty");
         }
 
         ClientSession clientSession = new ClientSession(username, new VirtualSocketClient());
@@ -152,14 +160,14 @@ public class ServerController {
      * @param username the username of the player to enroll
      * @param matchID the identifier of the match the player wants to join
      * @throws RuntimeException if the match ID is invalid or the session is not found
+     * @throws FullLobbyException if the player cannot join this match
      */
-    public void connectPlayerToGame(String username, UUID token, String matchID) {
+    public void connectPlayerToGame(String username, UUID token, String matchID) throws RuntimeException, FullLobbyException {
         ClientSession clientSession = getPlayerSession(username, token);
         GameContext match = availableMatches.get(matchID);
         if (match == null) {
             throw new RuntimeException("No matches found for matchID " + matchID);
         }
-        //controllo che il match non sia già iniziato
 
         match.connectPlayerToGame(username);
         clientSession.getVirtualClient().setGameContext(match);

@@ -52,13 +52,8 @@ public class GameContext implements GameInterface {
 
 
 
-    public void connectPlayerToGame(String playerUsername) {
-        try {
-            this.gameModel.addPlayer(playerUsername);
-        }
-        catch (FullLobbyException e) {
-            System.out.println(e.getMessage());
-        }
+    public void connectPlayerToGame(String playerUsername) throws FullLobbyException, NullPointerException {
+        this.gameModel.addPlayer(playerUsername);
     }
 
 

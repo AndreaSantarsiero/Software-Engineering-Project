@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
 import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -54,7 +55,7 @@ public abstract class Server {
      * @param token    the session token associated with the player
      * @param matchId  the identifier of the match to join
      */
-    public void connectPlayerToGame(String username, UUID token, String matchId){
+    public void connectPlayerToGame(String username, UUID token, String matchId) throws FullLobbyException, NullPointerException{
         serverController.connectPlayerToGame(username, token, matchId);
     }
 
