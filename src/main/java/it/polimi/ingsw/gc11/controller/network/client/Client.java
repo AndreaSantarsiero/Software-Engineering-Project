@@ -28,10 +28,6 @@ public abstract class Client {
 
     abstract public void connectToGame(String username, String matchId) throws NetworkException;
 
-    abstract public void startGame(String username) throws NetworkException;
-
-    abstract public void endGame(String username) throws NetworkException;
-
 
 
     abstract public ShipCard getFreeShipCard(String username, int pos) throws NetworkException;

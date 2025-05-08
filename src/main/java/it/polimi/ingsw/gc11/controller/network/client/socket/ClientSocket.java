@@ -58,16 +58,6 @@ public class ClientSocket extends Client {
 
     }
 
-    @Override
-    public void startGame(String username) throws NetworkException {
-
-    }
-
-    @Override
-    public void endGame(String username) throws NetworkException {
-
-    }
-
 
 
     @Override

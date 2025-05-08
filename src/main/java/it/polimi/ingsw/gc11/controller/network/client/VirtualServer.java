@@ -50,14 +50,6 @@ public class VirtualServer {
         client.connectToGame(username, matchId);
     }
 
-    public void startGame() throws NetworkException {
-        client.startGame(username);
-    }
-
-    public void endGame() throws NetworkException {
-        client.endGame(username);
-    }
-
 
 
     public ShipCard getFreeShipCard(int pos) throws NetworkException{

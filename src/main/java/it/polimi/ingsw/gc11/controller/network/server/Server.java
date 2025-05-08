@@ -38,37 +38,24 @@ public abstract class Server {
     /**
      * Creates a new match and connects the player to it
      *
-     * @param username     the player's username
-     * @param flightLevel  the difficulty level of flight
+     * @param username    the player's username
+     * @param token       the session token associated with the player
+     * @param flightLevel the difficulty level of the flight board
+     * @param numPlayers  the number of players in the match
      */
     public void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers){
-        serverController.createMatch(flightLevel, numPlayers,username, token);
+        serverController.createMatch(flightLevel, numPlayers, username, token);
     }
 
     /**
      * Connects the player to an existing match
      *
      * @param username the player's username
+     * @param token    the session token associated with the player
      * @param matchId  the identifier of the match to join
      */
     public void connectPlayerToGame(String username, UUID token, String matchId){
         serverController.connectPlayerToGame(username, token, matchId);
-    }
-
-
-
-    /**
-     * Starts the game
-     */
-    public void startGame(String username, UUID token){
-        getGameContext(username, token).startGame();
-    }
-
-    /**
-     * Ends the game
-     */
-    public void endGame(String username, UUID token){
-        getGameContext(username, token).endGame();
     }
 
 

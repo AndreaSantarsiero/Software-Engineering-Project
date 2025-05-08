@@ -67,24 +67,6 @@ public class ClientRMI extends Client implements ClientInterface {
         }
     }
 
-    @Override
-    public void startGame(String username) throws NetworkException {
-        try{
-            stub.startGame(username, clientSessionToken);
-        } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not start game");
-        }
-    }
-
-    @Override
-    public void endGame(String username) throws NetworkException {
-        try {
-            stub.endGame(username, clientSessionToken);
-        } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not end game");
-        }
-    }
-
 
 
     @Override

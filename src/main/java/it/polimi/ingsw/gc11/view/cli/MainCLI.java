@@ -26,8 +26,6 @@ public class MainCLI {
             System.out.println("Aborting...");
             return;
         }
-
-        virtualServer.startGame();
     }
 
 
