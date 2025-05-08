@@ -42,8 +42,8 @@ public class VirtualServer {
 
 
 
-    public void createMatch(FlightBoard.Type flightType) throws NetworkException {
-        client.createMatch(username, flightType);
+    public void createMatch(FlightBoard.Type flightType, int numPlayers) throws NetworkException {
+        client.createMatch(username, flightType, numPlayers);
     }
 
     public void connectToGame(String matchId) throws NetworkException {

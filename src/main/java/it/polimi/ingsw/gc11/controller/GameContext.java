@@ -21,14 +21,12 @@ public class GameContext implements GameInterface {
     private final GameModel gameModel;
     private final String matchID;
     private GamePhase phase;
-    private final ArrayList<PlayerContext> playerContexts;
 
 
 
-    public GameContext(FlightBoard.Type flightType) {
-        this.gameModel = new GameModel();
+    public GameContext(FlightBoard.Type flightType, int numPlayers) {
+        this.gameModel = new GameModel(numPlayers);
         this.gameModel.setLevel(flightType);
-        this.playerContexts = new ArrayList<>();
         this.matchID = gameModel.getID();
         // Initial state
         this.phase = new IdlePhase();
@@ -53,19 +51,10 @@ public class GameContext implements GameInterface {
     }
 
 
-    public void addPlayerContext(String playerUsername) throws FullLobbyException {
-        if (playerContexts.size() < 4) {
-            this.playerContexts.add(new PlayerContext(playerUsername));
-        }
-        else {
-            throw new FullLobbyException("The lobby you're trying to join is full at the moment.");
-        }
-    }
-
 
     public void connectPlayerToGame(String playerUsername) {
         try {
-            this.addPlayerContext(playerUsername);
+            this.gameModel.addPlayer(playerUsername);
         }
         catch (FullLobbyException e) {
             System.out.println(e.getMessage());

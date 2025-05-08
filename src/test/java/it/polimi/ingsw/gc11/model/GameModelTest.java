@@ -18,7 +18,7 @@ class GameModelTest {
 
     @BeforeEach
     void setUp() {
-        gameModel = new GameModel();
+        gameModel = new GameModel(4);
         assertNotNull(gameModel);
     }
 

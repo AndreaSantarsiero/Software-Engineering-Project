@@ -134,9 +134,9 @@ public class ServerController {
      *
      * @param flightLevel the difficulty level for the new match
      */
-    public void createMatch(FlightBoard.Type flightLevel, String username, UUID token) {
+    public void createMatch(FlightBoard.Type flightLevel, int numPlayers, String username, UUID token) {
         getPlayerSession(username, token);
-        GameContext match = new GameContext(flightLevel);
+        GameContext match = new GameContext(flightLevel, numPlayers);
         availableMatches.put(match.getMatchID(), match);
         connectPlayerToGame(username, token, match.getMatchID());
     }

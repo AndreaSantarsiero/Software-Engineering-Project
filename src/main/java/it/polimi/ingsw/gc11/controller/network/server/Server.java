@@ -41,8 +41,8 @@ public abstract class Server {
      * @param username     the player's username
      * @param flightLevel  the difficulty level of flight
      */
-    public void createMatch(String username, UUID token, FlightBoard.Type flightLevel){
-        serverController.createMatch(flightLevel, username, token);
+    public void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers){
+        serverController.createMatch(flightLevel, numPlayers,username, token);
     }
 
     /**

@@ -50,9 +50,9 @@ public class ClientRMI extends Client implements ClientInterface {
     }
 
     @Override
-    public void createMatch(String username, FlightBoard.Type flightType) throws NetworkException {
+    public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException {
         try {
-            stub.createMatch(username, clientSessionToken, flightType);
+            stub.createMatch(username, clientSessionToken, flightType, numPlayers);
         } catch (RemoteException e) {
             throw new NetworkException("RMI CONNECTION ERROR: could not create match");
         }

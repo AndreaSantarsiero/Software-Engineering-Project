@@ -49,7 +49,7 @@ public class ClientSocket extends Client {
     }
 
     @Override
-    public void createMatch(String username, FlightBoard.Type flightType) throws NetworkException {
+    public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException {
 
     }
 

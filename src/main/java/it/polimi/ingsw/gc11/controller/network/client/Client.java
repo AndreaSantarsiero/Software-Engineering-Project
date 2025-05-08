@@ -24,7 +24,7 @@ public abstract class Client {
 
     abstract public void registerSession(String username) throws NetworkException;
 
-    abstract public void createMatch(String username, FlightBoard.Type flightType) throws NetworkException;
+    abstract public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException;
 
     abstract public void connectToGame(String username, String matchId) throws NetworkException;
 

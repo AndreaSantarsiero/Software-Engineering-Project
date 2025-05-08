@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public class GameModel {
     private final String id;
+    private final int numPlayers;
     private ArrayList<Player> players;
-    private Player currentPlayer;
     private FlightBoard flightBoard;
     private ArrayList<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
@@ -24,10 +24,10 @@ public class GameModel {
     private final Dice[] dices;
 
 
-    public GameModel() {
+    public GameModel(int numPlayers) {
         this.id = UUID.randomUUID().toString(); //unique id generation
         this.players = new  ArrayList<Player>();
-        this.currentPlayer = null;
+        this.numPlayers = numPlayers;
         this.flightBoard = null;
         this.adventureCardsDecks = new ArrayList<AdventureDeck>();
         this.definitiveDeck = null;
@@ -108,7 +108,7 @@ public class GameModel {
     public void addPlayer(String username) throws FullLobbyException, NullPointerException {
         if (username == null)
             throw new NullPointerException();
-        else if (players.size() >= 4) {
+        else if (players.size() == this.numPlayers) {
             throw new FullLobbyException("The lobby you're trying to join is full at the moment.");
         }
         Player newPlayer = new Player(username);
@@ -132,14 +132,6 @@ public class GameModel {
     }
 
     public ArrayList<Player> getPlayers() {return players;}
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
 
     public Player getLastPlayer() {
         return players.getLast();

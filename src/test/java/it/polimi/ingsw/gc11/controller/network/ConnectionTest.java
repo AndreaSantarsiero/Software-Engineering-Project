@@ -31,9 +31,9 @@ public class ConnectionTest {
     @Test
     void testCreateMatch() {
         VirtualServer playerUno = new VirtualServer(Utils.ConnectionType.RMI, "playerUno", serverIp, RMIPort);
-        playerUno.createMatch(FlightBoard.Type.LEVEL2);
+        playerUno.createMatch(FlightBoard.Type.LEVEL2, 4);
         VirtualServer playerDue = new VirtualServer(Utils.ConnectionType.RMI, "playerDue", serverIp, RMIPort);
-        playerDue.createMatch(FlightBoard.Type.TRIAL);
+        playerDue.createMatch(FlightBoard.Type.TRIAL, 4);
     }
 
 

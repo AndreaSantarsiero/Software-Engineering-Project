@@ -63,8 +63,7 @@ class PiratesTest {
     @Test
     void testEmptyShotsList() {
         ArrayList<Shot> shots = new ArrayList<>();
-        Pirates pirates = new Pirates(AdventureCard.Type.LEVEL1, 3, 10, 5, shots);
 
-        assertTrue(pirates.getShots().isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> new Pirates(AdventureCard.Type.LEVEL1, 3, 10, 5, shots));
     }
 }
