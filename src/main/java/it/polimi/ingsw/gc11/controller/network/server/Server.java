@@ -59,6 +59,18 @@ public abstract class Server {
         serverController.connectPlayerToGame(username, token, matchId);
     }
 
+    /**
+     * Retrieves a list of available match identifiers that the player can join
+     *
+     * @param username the player's username
+     * @param token    the session token associated with the player
+     * @return a list of match IDs representing the currently available matches
+     * @throws RuntimeException if the session is invalid
+     */
+    public List<String> getAvailableMatches(String username, UUID token) {
+        return serverController.getAvailableMatches(username, token);
+    }
+
 
 
     /**

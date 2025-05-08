@@ -29,6 +29,8 @@ public abstract class Client {
 
     abstract public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException;
 
+    abstract public List<String> getAvailableMatches(String username) throws NetworkException;
+
 
 
     abstract public ShipCard getFreeShipCard(String username, int pos) throws NetworkException;

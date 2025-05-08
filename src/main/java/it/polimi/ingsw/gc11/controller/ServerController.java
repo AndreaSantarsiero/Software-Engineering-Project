@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc11.controller.network.server.socket.*;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -171,6 +173,21 @@ public class ServerController {
 
         match.connectPlayerToGame(username);
         clientSession.getVirtualClient().setGameContext(match);
+    }
+
+
+    /**
+     * Retrieves a list of available match identifiers that the player can join
+     *
+     * @param username the player's username
+     * @param token    the session token associated with the player
+     * @return a list of match IDs representing the currently available matches
+     * @throws RuntimeException if the session is invalid
+     */
+    public List<String> getAvailableMatches(String username, UUID token){
+        getPlayerSession(username, token);
+
+        return new ArrayList<>(availableMatches.keySet());
     }
 
 

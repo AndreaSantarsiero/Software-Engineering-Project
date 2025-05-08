@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 
@@ -57,6 +54,11 @@ public class ClientSocket extends Client {
     @Override
     public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException {
 
+    }
+
+    @Override
+    public List<String> getAvailableMatches(String username) throws NetworkException {
+        return null;
     }
 
 

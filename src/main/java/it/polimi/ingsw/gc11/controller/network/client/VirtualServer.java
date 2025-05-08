@@ -10,11 +10,7 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 
 public class VirtualServer {
@@ -49,6 +45,10 @@ public class VirtualServer {
 
     public void connectToGame(String matchId) throws NetworkException, FullLobbyException, NullPointerException {
         client.connectToGame(username, matchId);
+    }
+
+    public List<String> getAvailableMatches() throws NetworkException {
+        return client.getAvailableMatches(username);
     }
 
 
