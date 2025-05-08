@@ -4,7 +4,8 @@ import it.polimi.ingsw.gc11.controller.ServerMAIN;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-
+import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Scanner;
@@ -16,7 +17,6 @@ public class MainCLI {
     public static void main(String[] args) {
         VirtualServer virtualServer;
         final Scanner scanner = new Scanner(System.in);
-
         clearView();
 
         try {
@@ -26,14 +26,47 @@ public class MainCLI {
             System.out.println("Aborting...");
             return;
         }
+
+        System.out.println("Press 1 to create a new match, 2 to see available matches");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        if (choice == 1) {
+            virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
+            System.out.println("game created");
+        }
+        else if (choice == 2) {
+            int i = 0;
+            if(!virtualServer.getAvailableMatches().isEmpty()) {
+                for(String matchId : virtualServer.getAvailableMatches()){
+                    i++;
+                    System.out.println(i + ") " + matchId);
+                }
+                System.out.println("insert game to join: ");
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
+                System.out.println("joined game");
+
+                //la partita dovrebbe essere iniziata, provo a stampare una ShipCard
+                ShipCardCLI shipCardCLI = new ShipCardCLI();
+                ShipCard shipCard = virtualServer.getFreeShipCard(0);
+                for (int j = 0; j < 7; j++) {
+                    shipCard.print(shipCardCLI, j);
+                    System.out.println();
+                }
+            }
+            else{
+                System.out.println("No matches available");
+            }
+        }
     }
 
 
 
     public static VirtualServer setup(Scanner scanner, String[] args) {
         Utils.ConnectionType connectionType = connectionTypeSetup(scanner);
-        String serverIp = ipSetup(scanner, args);
-        int serverPort = portSetup(scanner, args);
+        String serverIp = ipSetup(args);
+        int serverPort = portSetup(args, connectionType);
 
         if(args.length == 2){
             System.out.println("Using custom address " + serverIp + ":" + serverPort);
@@ -88,7 +121,7 @@ public class MainCLI {
 
 
 
-    public static String ipSetup(Scanner scanner, String[] args) {
+    public static String ipSetup(String[] args) {
         String serverIp;
 
         try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
@@ -109,13 +142,18 @@ public class MainCLI {
 
 
 
-    public static int portSetup(Scanner scanner, String[] args) {
+    public static int portSetup(String[] args, Utils.ConnectionType connectionType) {
         int serverPort;
 
         try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(input);
-            serverPort = Integer.parseInt(prop.getProperty("port"));
+            if (connectionType == Utils.ConnectionType.RMI) {
+                serverPort = Integer.parseInt(prop.getProperty("serverRMIPort"));
+            }
+            else {
+                serverPort = Integer.parseInt(prop.getProperty("serverSocketPort"));
+            }
         }
         catch (Exception e) {
             throw new RuntimeException("error loading config.properties: " + e.getMessage());
@@ -142,7 +180,7 @@ public class MainCLI {
         String username = "";
 
         while (username == null || username.isEmpty()) {
-            System.out.println("Enter username: ");
+            System.out.print("Enter username: ");
             username = scanner.nextLine();
             if (username == null || username.isEmpty()) {
                 System.out.println("Error: invalid username. Try again");

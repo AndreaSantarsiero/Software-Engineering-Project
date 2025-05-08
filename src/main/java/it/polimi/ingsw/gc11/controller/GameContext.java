@@ -53,7 +53,13 @@ public class GameContext implements GameInterface {
 
 
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, NullPointerException {
-        this.gameModel.addPlayer(playerUsername);
+        try{
+            this.gameModel.addPlayer(playerUsername);
+        }
+        catch (FullLobbyException e) {
+            startGame();
+            throw new FullLobbyException(e.getMessage());
+        }
     }
 
 

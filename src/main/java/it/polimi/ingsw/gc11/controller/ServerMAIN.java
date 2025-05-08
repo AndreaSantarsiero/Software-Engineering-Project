@@ -15,7 +15,7 @@ public class ServerMAIN {
             Properties prop = new Properties();
             prop.load(input);
             RMIPort = Integer.parseInt(prop.getProperty("RMIPort"));
-            SocketPort = Integer.parseInt(prop.getProperty("SocketPort"));
+            SocketPort = Integer.parseInt(prop.getProperty("socketPort"));
             connectionTimeout = Integer.parseInt(prop.getProperty("connectionTimeout"));
         }
         catch (Exception e) {
