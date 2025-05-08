@@ -24,7 +24,7 @@ class GameModelTest {
 
     @Test
     void getID() {
-        System.out.println("Game ID: " + gameModel.getID());
+        assertNotNull(gameModel.getID());
     }
 
     @Test
@@ -56,7 +56,7 @@ class GameModelTest {
 
     @Test
     void addNullPlayer() {
-        assertThrows(NullPointerException.class, () -> gameModel.addPlayer(null));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.addPlayer(null));
     }
 
     @Test

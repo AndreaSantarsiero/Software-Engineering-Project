@@ -10,12 +10,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 
+
+
 public class GameModel {
     private final String id;
     private final int numPlayers;
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
     private FlightBoard flightBoard;
-    private ArrayList<AdventureDeck> adventureCardsDecks;
+    private final ArrayList<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
     private final ArrayList<ShipCard> shipCardsALL;
     private final ArrayList<AdventureCard> adventureCardsTrial; //8 cards
@@ -56,7 +58,7 @@ public class GameModel {
             this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
             this.adventureCardsDecks.add(new AdventureDeck(true));
             for (int i = 0; i < this.adventureCardsTrial.size(); i++) {
-                this.adventureCardsDecks.get(0).addCard(adventureCardsTrial.get(i));
+                this.adventureCardsDecks.getFirst().addCard(adventureCardsTrial.get(i));
             }
             adventureCardsDecks.getFirst().shuffle();
         }
@@ -105,9 +107,10 @@ public class GameModel {
     /**
     * Player's methods
     */
-    public void addPlayer(String username) throws FullLobbyException, NullPointerException {
-        if (username == null)
-            throw new NullPointerException("cannot add player without a username");
+    public void addPlayer(String username) throws FullLobbyException, IllegalArgumentException {
+        if (username == null || username.isEmpty()){
+            throw new IllegalArgumentException("cannot add player without a username");
+        }
         else if (players.size() == this.numPlayers) {
             throw new FullLobbyException("The lobby you're trying to join is currently full");
         }

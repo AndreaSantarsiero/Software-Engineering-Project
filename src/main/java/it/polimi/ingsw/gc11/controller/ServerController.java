@@ -96,11 +96,11 @@ public class ServerController {
      * @throws IllegalArgumentException if the username is null or empty
      */
     public UUID registerRMISession(String username, ClientInterface playerStub) throws UsernameAlreadyTakenException, IllegalArgumentException {
-        if (playerSessions.containsKey(username)) {
-            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
-        }
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("Username is null or empty");
+        }
+        if (playerSessions.containsKey(username)) {
+            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
         }
 
         ClientSession clientSession = new ClientSession(username, new VirtualRMIClient(playerStub));
