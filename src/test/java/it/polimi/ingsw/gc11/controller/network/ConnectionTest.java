@@ -43,7 +43,6 @@ public class ConnectionTest {
 
 
     @Test
-    @Order(1)
     void testCreateMatch() {
         VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, "username1", serverIp, RMIPort);
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 4);
@@ -56,7 +55,6 @@ public class ConnectionTest {
 
 
     @Test
-    @Order(2)
     void testUsername() {
         VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, "username", serverIp, RMIPort);
         assertThrows(UsernameAlreadyTakenException.class, () -> new VirtualServer(Utils.ConnectionType.RMI, "username", serverIp, RMIPort), "Username already taken");
@@ -67,7 +65,6 @@ public class ConnectionTest {
 
 
     @Test
-    @Order(3)
     void testFullLobby() {
         VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, "playerOne", serverIp, RMIPort);
         VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, "playerTwo", serverIp, RMIPort);
