@@ -1,15 +1,17 @@
 package it.polimi.ingsw.gc11.model.shipcard;
 
-
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.cli.ShipCardCLI;
+import java.io.Serializable;
+
+
 
 /**
  * Represents an abstract ShipCard that defines the structure of a ship's component
  * <p>
  * Each ShipCard has connectors on its four sides and can have different orientations
  */
-public abstract class ShipCard {
+public abstract class ShipCard implements Serializable {
 
     /**
      * Defines the possible types of connectors for a ShipCard

@@ -21,8 +21,7 @@ public abstract class GamePhase {
     //default
 
     public void connectPlayerToGame(String playerUsername){
-        //throw new IllegalStateException("Cannot connect player to game in the current game phase.");
-        throw new FullLobbyException("The lobby you're trying to join is currently full");
+        throw new FullLobbyException("Cannot connect player to game in the current game phase");
     }
 
     public void endGame(GameContext context) throws Exception {

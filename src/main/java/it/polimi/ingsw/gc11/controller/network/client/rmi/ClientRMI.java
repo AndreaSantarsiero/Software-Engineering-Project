@@ -84,7 +84,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             return stub.getFreeShipCard(username, clientSessionToken, pos);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not get free card");
+            throw new NetworkException("RMI CONNECTION ERROR: could not get free card\n" + e.getMessage());
         }
     }
 

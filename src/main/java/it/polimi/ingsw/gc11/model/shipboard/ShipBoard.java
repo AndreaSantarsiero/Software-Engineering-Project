@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model.shipboard;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.awt.Point;
@@ -14,7 +15,7 @@ import java.awt.Point;
  * <p>
  * The board maintains information about ship cards, reserved components, and the last modified position
  */
-public abstract class ShipBoard {
+public abstract class ShipBoard  implements Serializable {
 
     private final ShipCard[][] components;
     private final List<ShipCard> reservedComponents;

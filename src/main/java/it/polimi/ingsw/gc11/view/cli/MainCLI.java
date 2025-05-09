@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -47,11 +49,18 @@ public class MainCLI {
                 virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
                 System.out.println("joined game");
 
-                //la partita dovrebbe essere iniziata, provo a stampare una ShipCard
+                //la partita dovrebbe essere iniziata, provo a stampare 5 ShipCard
+                System.out.println("premi invio per richiedere una ship card");
+                scanner.nextLine();
                 ShipCardCLI shipCardCLI = new ShipCardCLI();
-                ShipCard shipCard = virtualServer.getFreeShipCard(0);
+                List<ShipCard> shipCards = new ArrayList<>();
+                for (int j = 0; j < 5; j++) {
+                    shipCards.add(virtualServer.getFreeShipCard(j+20));
+                }
                 for (int j = 0; j < 7; j++) {
-                    shipCard.print(shipCardCLI, j);
+                    for (ShipCard shipCard : shipCards) {
+                        shipCard.print(shipCardCLI, j);
+                    }
                     System.out.println();
                 }
             }

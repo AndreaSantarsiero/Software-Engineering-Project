@@ -3,10 +3,11 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
+import java.io.Serializable;
 
 
 
-public abstract class AdventureCard {
+public abstract class AdventureCard implements Serializable {
 
     public enum Type {
         TRIAL, LEVEL1, LEVEL2;
