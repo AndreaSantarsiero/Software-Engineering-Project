@@ -28,7 +28,7 @@ public class GameModel {
 
     public GameModel(int numPlayers) {
         this.id = UUID.randomUUID().toString(); //unique id generation
-        this.players = new  ArrayList<Player>();
+        this.players = new  ArrayList<Player>(0);
         this.numPlayers = numPlayers;
         this.flightBoard = null;
         this.adventureCardsDecks = new ArrayList<AdventureDeck>();
@@ -119,6 +119,8 @@ public class GameModel {
         if (players.size() == this.numPlayers) {
             throw new FullLobbyException("The lobby you're trying to join is currently full");
         }
+
+
         Player newPlayer = new Player(username);
         if(this.flightBoard != null){
             newPlayer.setShipBoard(this.flightBoard.getType());
@@ -126,8 +128,8 @@ public class GameModel {
         players.add(newPlayer);
     }
 
-    public int getNumPlayers() {
-        return players.size();
+    public int getMaxNumPlayers() {
+        return this.numPlayers;
     }
 
     public Player getPlayer(String username)  {

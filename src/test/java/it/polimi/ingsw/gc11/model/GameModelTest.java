@@ -1,14 +1,10 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
-import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,18 +78,18 @@ class GameModelTest {
     }
 
     @Test
-    void testGetNumPlayers() {
-        assertEquals(0, gameModel.getNumPlayers());
+    void testGetMaxNumPlayers() {
+        assertEquals(0, gameModel.getPlayers().size());
         gameModel.addPlayer("Player1");
-        assertEquals(1, gameModel.getNumPlayers());
+        assertEquals(1, gameModel.getPlayers().size());
         gameModel.addPlayer("Player2");
-        assertEquals(2, gameModel.getNumPlayers());
+        assertEquals(2, gameModel.getPlayers().size());
         gameModel.addPlayer("Player3");
-        assertEquals(3, gameModel.getNumPlayers());
+        assertEquals(3, gameModel.getPlayers().size());
         gameModel.addPlayer("Player4");
-        assertEquals(4, gameModel.getNumPlayers());
+        assertEquals(4, gameModel.getPlayers().size());
         assertThrows(FullLobbyException.class, () -> gameModel.addPlayer("Player5"));
-        assertEquals(4, gameModel.getNumPlayers());
+        assertEquals(4, gameModel.getPlayers().size());
 
     }
 
