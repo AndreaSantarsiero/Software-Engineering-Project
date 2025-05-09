@@ -30,7 +30,7 @@ public class GameContext implements GameInterface {
         this.gameModel.setLevel(flightType);
         this.matchID = gameModel.getID();
         // Initial state
-        this.phase = new IdlePhase();
+        this.phase = new IdlePhase(this);
     }
 
 
@@ -54,23 +54,9 @@ public class GameContext implements GameInterface {
 
 
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, IllegalArgumentException, UsernameAlreadyTakenException {
-        try{
-            this.gameModel.addPlayer(playerUsername);
-        }
-        catch (FullLobbyException e) {
-            startGame();
-            throw new FullLobbyException(e.getMessage());
-        }
-    }
 
+        this.phase.connectPlayerToGame(playerUsername);
 
-    public void startGame() {
-        try {
-            phase.startGame(this);
-        }
-        catch (GameAlreadyStartedException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
@@ -18,13 +19,15 @@ public abstract class GamePhase {
     public abstract String getPhaseName();
 
     //default
-    public void startGame(GameContext context) throws GameAlreadyStartedException {
-        throw new GameAlreadyStartedException("Game is already running.");
+
+    public void connectPlayerToGame(String playerUsername){
+        //throw new IllegalStateException("Cannot connect player to game in the current game phase.");
+        throw new FullLobbyException("The lobby you're trying to join is currently full");
     }
 
     public void endGame(GameContext context) throws Exception {
         throw new Exception("Game is already ended.");
-    };
+    }
 
     public ShipCard getFreeShipCard(GameModel gameModel, int pos)
             throws IllegalStateException {

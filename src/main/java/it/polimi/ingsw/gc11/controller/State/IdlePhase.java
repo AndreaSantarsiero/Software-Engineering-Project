@@ -1,8 +1,15 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.model.GameModel;
 
 public class IdlePhase extends GamePhase {
+    GameContext gameContext;
+
+    public IdlePhase(GameContext gameContext) {
+        this.gameContext = gameContext;
+    }
+
     @Override
     public void nextPhase(GameContext context) {
         context.setPhase(new BuildingPhase()); // Change to Building
@@ -13,8 +20,14 @@ public class IdlePhase extends GamePhase {
         return "IDLE";
     }
 
+
     @Override
-    public void startGame(GameContext context) {
-        this.nextPhase(context);
+    public void connectPlayerToGame(String playerUsername){
+        GameModel gameModel = this.gameContext.getGameModel();
+        gameModel.addPlayer(playerUsername);
+        if (gameModel.getPlayers().size() == gameModel.getMaxNumPlayers()){
+            this.nextPhase(this.gameContext);
+        }
     }
+
 }
