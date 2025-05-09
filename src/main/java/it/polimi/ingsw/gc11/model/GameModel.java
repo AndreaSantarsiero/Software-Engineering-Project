@@ -107,11 +107,16 @@ public class GameModel {
     /**
     * Player's methods
     */
-    public void addPlayer(String username) throws FullLobbyException, IllegalArgumentException {
+    public void addPlayer(String username) throws FullLobbyException, IllegalArgumentException, UsernameAlreadyTakenException {
         if (username == null || username.isEmpty()){
             throw new IllegalArgumentException("cannot add player without a username");
         }
-        else if (players.size() == this.numPlayers) {
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                throw new UsernameAlreadyTakenException("username already taken by another player");
+            }
+        }
+        if (players.size() == this.numPlayers) {
             throw new FullLobbyException("The lobby you're trying to join is currently full");
         }
         Player newPlayer = new Player(username);

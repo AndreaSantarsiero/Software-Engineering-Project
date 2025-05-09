@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.controller;
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
@@ -52,7 +53,7 @@ public class GameContext implements GameInterface {
 
 
 
-    public void connectPlayerToGame(String playerUsername) throws FullLobbyException, NullPointerException {
+    public void connectPlayerToGame(String playerUsername) throws FullLobbyException, IllegalArgumentException, UsernameAlreadyTakenException {
         try{
             this.gameModel.addPlayer(playerUsername);
         }
