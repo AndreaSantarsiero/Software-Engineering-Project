@@ -35,6 +35,7 @@ public class GameModel {
         this.definitiveDeck = null;
         ShipCardLoader shipCardLoader = new ShipCardLoader();
         this.shipCardsALL = shipCardLoader.getAllShipCards();
+        Collections.shuffle(shipCardsALL);
         AdventureCardLoader adventureCardLoader = new AdventureCardLoader();
         this.adventureCardsTrial = adventureCardLoader.getCardsTrial();
         this.adventureCardsLevel1 = adventureCardLoader.getCardsLevel1();
