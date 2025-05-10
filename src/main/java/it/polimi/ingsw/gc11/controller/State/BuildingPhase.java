@@ -3,6 +3,9 @@ package it.polimi.ingsw.gc11.controller.State;
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import java.util.List;
+
+
 
 public class BuildingPhase extends GamePhase {
     @Override
@@ -16,7 +19,7 @@ public class BuildingPhase extends GamePhase {
     }
 
     @Override
-    public ShipCard getFreeShipCard(GameModel gameModel, int pos){
+    public List<ShipCard> getFreeShipCard(GameModel gameModel, int pos){
         return gameModel.getFreeShipCard(pos);
     }
 

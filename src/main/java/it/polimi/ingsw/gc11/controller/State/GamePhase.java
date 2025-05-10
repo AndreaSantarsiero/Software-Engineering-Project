@@ -28,28 +28,23 @@ public abstract class GamePhase {
         throw new Exception("Game is already ended.");
     }
 
-    public ShipCard getFreeShipCard(GameModel gameModel, int pos)
-            throws IllegalStateException {
+    public List<ShipCard> getFreeShipCard(GameModel gameModel, int pos) throws IllegalStateException {
         throw new IllegalStateException("Can't get free ship card in the current game phase.");
     }
 
-    public void placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y)
-            throws IllegalStateException{
+    public void placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y) throws IllegalStateException{
         throw new IllegalStateException("Can't place a ship card in the current game phase.");
     }
 
-    public void removeShipCard(GameModel gameModel, String username, int x, int y)
-            throws IllegalStateException {
+    public void removeShipCard(GameModel gameModel, String username, int x, int y) throws IllegalStateException {
         throw new IllegalStateException("Can't remove ship card in the current game phase.");
     }
 
-    public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard)
-            throws IllegalStateException{
+    public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard) throws IllegalStateException{
         throw new IllegalStateException("Can't reserve ship card in the current game phase.");
     }
 
-    public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y)
-            throws IllegalStateException{
+    public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y) throws IllegalStateException{
         throw new IllegalStateException("Can't use reserved ship card in the current game phase.");
     }
 

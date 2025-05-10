@@ -13,24 +13,19 @@ import java.util.*;
 
 public class ShipCardLoader {
 
-    private final ArrayList<ShipCard> shipCards;
+    private final List<ShipCard> shipCards;
+    private final List<HousingUnit> centralUnits;
     private static final String RESOURCE_PATH = "src/main/resources/it/polimi/ingsw/gc11/shipCards/shipCards.json";
 
 
 
     public ShipCardLoader() {
         shipCards = new ArrayList<>();
+        centralUnits = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try {
-            InputStream inputStream = new FileInputStream(RESOURCE_PATH);
-            //InputStream inputStream = ShipCardLoader.class.getClassLoader().getResourceAsStream(RESOURCE_PATH);
-            if (inputStream == null) {
-                throw new IOException("File JSON not found: " + RESOURCE_PATH);
-            }
-
-            Map<String, Map<String, Object>> shipCardsMap = objectMapper.readValue(inputStream,
-                    new TypeReference<Map<String, Map<String, Object>>>() {});
+        try (InputStream inputStream = new FileInputStream(RESOURCE_PATH)) {
+            Map<String, Map<String, Object>> shipCardsMap = objectMapper.readValue(inputStream, new TypeReference<>() {});
 
             for (Map.Entry<String, Map<String, Object>> entry : shipCardsMap.entrySet()) {
                 Map<String, Object> values = entry.getValue();
@@ -54,38 +49,53 @@ public class ShipCardLoader {
             }
 
         } catch (IOException e) {
-            System.err.println("Errore nel caricamento delle ShipCards: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error while loading ShipCards: " + e.getMessage());
         }
     }
+
+
 
     private ShipCard createShipCard(String subClass, String id, ShipCard.Connector top, ShipCard.Connector right,
                                     ShipCard.Connector bottom, ShipCard.Connector left, String type, boolean central) {
 
-        return switch (subClass) {
-            case "HousingUnit" -> new HousingUnit(id, top, right, bottom, left, central);
-            case "Storage" -> new Storage(id, top, right, bottom, left, storageFromString(type));
-            case "AlienUnit" -> new AlienUnit(id, top, right, bottom, left, alienFromString(type));
-            case "Battery" -> new Battery(id, top, right, bottom, left, batteryFromString(type));
-            case "Cannon" -> new Cannon(id, right, bottom, left, cannonFromString(type));
-            case "Engine" -> new Engine(id, top, right, left, engineFromString(type));
-            case "Shield" -> new Shield(id, top, right, bottom, left);
-            case "StructuralModule" -> new StructuralModule(id, top, right, bottom, left);
-            case "CoveredShipCard" -> null;
+        switch (subClass) {
+            case "HousingUnit" -> {
+                HousingUnit housingUnit = new HousingUnit(id, top, right, bottom, left, central);
+                if (housingUnit.isCentral()) {
+                    centralUnits.add(housingUnit);
+                }
+                return housingUnit;
+            }
+            case "Storage" -> {
+                return new Storage(id, top, right, bottom, left, storageFromString(type));
+            }
+            case "AlienUnit" -> {
+                return new AlienUnit(id, top, right, bottom, left, alienFromString(type));
+            }
+            case "Battery" -> {
+                return new Battery(id, top, right, bottom, left, batteryFromString(type));
+            }
+            case "Cannon" -> {
+                return new Cannon(id, right, bottom, left, cannonFromString(type));
+            }
+            case "Engine" -> {
+                return new Engine(id, top, right, left, engineFromString(type));
+            }
+            case "Shield" -> {
+                return new Shield(id, top, right, bottom, left);
+            }
+            case "StructuralModule" -> {
+                return new StructuralModule(id, top, right, bottom, left);
+            }
+            case "CoveredShipCard" -> {
+                return null;
+            }
             default -> {
                 System.err.println("SubClass not found: " + subClass);
-                yield null;
+                return null;
             }
-        };
+        }
 
-    }
-
-    public ArrayList<ShipCard> getAllShipCards() {
-        return shipCards;
-    }
-
-    public ShipCard getShipCard(String id) {
-        return shipCards.stream().filter(card -> card.getId().equals(id)).findFirst().orElse(null);
     }
 
 
@@ -124,6 +134,20 @@ public class ShipCardLoader {
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+
+
+
+    public List<ShipCard> getAllShipCards() {
+        return shipCards;
+    }
+
+    public ShipCard getShipCard(String id) {
+        return shipCards.stream().filter(card -> card.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public List<HousingUnit> getCentralUnits() {
+        return centralUnits;
     }
 }
 

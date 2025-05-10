@@ -49,14 +49,13 @@ public class MainCLI {
                 virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
                 System.out.println("joined game");
 
-                //la partita dovrebbe essere iniziata, provo a stampare 5 ShipCard
+                //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
                 System.out.println("premi invio per richiedere una ship card");
                 scanner.nextLine();
                 ShipCardCLI shipCardCLI = new ShipCardCLI();
-                List<ShipCard> shipCards = new ArrayList<>();
-                for (int j = 0; j < 5; j++) {
-                    shipCards.add(virtualServer.getFreeShipCard(j+20));
-                }
+                List<ShipCard> shipCards = virtualServer.getFreeShipCard(4);
+                System.out.println("Ci sono " + shipCards.size() + " ship cards sul tavolo");
+
                 for (int j = 0; j < 7; j++) {
                     for (ShipCard shipCard : shipCards) {
                         shipCard.print(shipCardCLI, j);

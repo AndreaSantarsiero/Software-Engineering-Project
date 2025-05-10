@@ -53,7 +53,7 @@ public class VirtualServer {
 
 
 
-    public ShipCard getFreeShipCard(int pos) throws NetworkException{
+    public List<ShipCard> getFreeShipCard(int pos) throws NetworkException{
         return client.getFreeShipCard(username, pos);
     }
 

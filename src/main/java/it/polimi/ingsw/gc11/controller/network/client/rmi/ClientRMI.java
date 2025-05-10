@@ -80,7 +80,7 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     @Override
-    public ShipCard getFreeShipCard(String username, int pos) throws NetworkException {
+    public List<ShipCard> getFreeShipCard(String username, int pos) throws NetworkException {
         try {
             return stub.getFreeShipCard(username, clientSessionToken, pos);
         } catch (RemoteException e) {

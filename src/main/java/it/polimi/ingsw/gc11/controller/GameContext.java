@@ -69,17 +69,8 @@ public class GameContext implements GameInterface {
     }
 
 
-    public ShipCard getFreeShipCard(int pos) throws IndexOutOfBoundsException {
-        if (pos < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        try{
-            return this.phase.getFreeShipCard(this.gameModel, pos);
-        }
-        catch (IllegalStateException e){
-            System.out.println(e.getMessage());
-            return null;
-        }
+    public List<ShipCard> getFreeShipCard(int pos) throws IndexOutOfBoundsException {
+        return this.phase.getFreeShipCard(this.gameModel, pos);
     }
 
 

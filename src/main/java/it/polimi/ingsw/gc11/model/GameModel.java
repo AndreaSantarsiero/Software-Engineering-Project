@@ -5,42 +5,43 @@ import it.polimi.ingsw.gc11.loaders.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.UUID;
+import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
+import java.util.*;
 
 
 
 public class GameModel {
+
     private final String id;
     private final int numPlayers;
-    private final ArrayList<Player> players;
+    private final List<Player> players;
     private FlightBoard flightBoard;
-    private final ArrayList<AdventureDeck> adventureCardsDecks;
+    private final List<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
-    private final ArrayList<ShipCard> shipCardsALL;
-    private final ArrayList<AdventureCard> adventureCardsTrial; //8 cards
-    private final ArrayList<AdventureCard> adventureCardsLevel1; //12 cards
-    private final ArrayList<AdventureCard> adventureCardsLevel2; //20 cards
+    private final List<ShipCard> shipCardsALL;
+    private final List<AdventureCard> adventureCardsTrial; //8 cards
+    private final List<AdventureCard> adventureCardsLevel1; //12 cards
+    private final List<AdventureCard> adventureCardsLevel2; //20 cards
     private final Dice[] dices;
 
 
+
     public GameModel(int numPlayers) {
-        this.id = UUID.randomUUID().toString(); //unique id generation
-        this.players = new  ArrayList<Player>(0);
+        id = UUID.randomUUID().toString(); //unique id generation
+        players = new  ArrayList<>();
         this.numPlayers = numPlayers;
-        this.flightBoard = null;
-        this.adventureCardsDecks = new ArrayList<AdventureDeck>();
-        this.definitiveDeck = null;
+        flightBoard = null;
+        adventureCardsDecks = new ArrayList<AdventureDeck>();
+        definitiveDeck = null;
         ShipCardLoader shipCardLoader = new ShipCardLoader();
-        this.shipCardsALL = shipCardLoader.getAllShipCards();
+        shipCardsALL = shipCardLoader.getAllShipCards();
+        //shipCardsALL.removeAll(shipCardLoader.getCentralUnits());
         Collections.shuffle(shipCardsALL);
         AdventureCardLoader adventureCardLoader = new AdventureCardLoader();
-        this.adventureCardsTrial = adventureCardLoader.getCardsTrial();
-        this.adventureCardsLevel1 = adventureCardLoader.getCardsLevel1();
-        this.adventureCardsLevel2 = adventureCardLoader.getCardsLevel2();
-        this.dices = new Dice[2];
+        adventureCardsTrial = adventureCardLoader.getCardsTrial();
+        adventureCardsLevel1 = adventureCardLoader.getCardsLevel1();
+        adventureCardsLevel2 = adventureCardLoader.getCardsLevel2();
+        dices = new Dice[2];
     }
 
 
@@ -142,7 +143,7 @@ public class GameModel {
         throw new IllegalArgumentException("Player not found");
     }
 
-    public ArrayList<Player> getPlayers() {return players;}
+    public List<Player> getPlayers() {return players;}
 
     public Player getLastPlayer() {
         return players.getLast();
@@ -259,9 +260,24 @@ public class GameModel {
      * ShipCard's and ShipBoard's methods
      */
     //Get shipcard in pos position in the arraylist of all shipcards down on the table
-    public ShipCard getFreeShipCard(int pos){
+    public List<ShipCard> getFreeShipCard(int pos){
+        if(pos < 0 || pos >= this.shipCardsALL.size()){
+            throw new IllegalArgumentException("Invalid position");
+        }
         this.shipCardsALL.get(pos).discover();
-        return this.shipCardsALL.get(pos);
+        List<ShipCard> shipCards = new ArrayList<>();
+        StructuralModule coveredShipCard = new StructuralModule("covered", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL);
+
+        for(ShipCard shipCard : shipCardsALL){
+            if(!shipCard.isCovered()){
+                shipCards.add(shipCard);
+            }
+            else{
+                shipCards.add(coveredShipCard);
+            }
+        }
+
+        return shipCards;
     }
 
     public ShipCard getShipCardFromShipBoard(String username, int x, int y){
@@ -284,8 +300,14 @@ public class GameModel {
 
 
     public void connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, int x, int y){
-        if (username == null){
-            throw new NullPointerException("Username is null");
+        if (username == null || username.isEmpty()){
+            throw new IllegalArgumentException("null or empty username");
+        }
+        if (shipCard == null){
+            throw new IllegalArgumentException("cannot connect null shipCard");
+        }
+        if(!shipCardsALL.contains(shipCard)){
+            throw new IllegalArgumentException("shipCard is not contained in the ship cards list");
         }
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getUsername().equals(username)) {

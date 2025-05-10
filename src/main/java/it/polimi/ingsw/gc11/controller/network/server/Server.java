@@ -76,7 +76,7 @@ public abstract class Server {
     /**
      * Returns a ship card from the specified position on the common area
      */
-    public ShipCard getFreeShipCard(String username, UUID token, int pos){
+    public List<ShipCard> getFreeShipCard(String username, UUID token, int pos){
         return getGameContext(username, token).getFreeShipCard(pos);
     }
 

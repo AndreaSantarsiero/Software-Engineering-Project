@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.controller;
 
 //CLASSE CHE RACCOGLIE TUTTI I METODI CHIAMABILI DALLA RETE
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
-import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
@@ -18,7 +17,7 @@ public interface GameInterface {
 
 
     //Building phase methods
-    ShipCard getFreeShipCard(int pos);
+    List<ShipCard> getFreeShipCard(int pos);
     void placeShipCard(String username, ShipCard shipCard, int x, int y);
     void removeShipCard(String username, int x, int y);
     void reserveShipCard(String username, ShipCard shipCard);

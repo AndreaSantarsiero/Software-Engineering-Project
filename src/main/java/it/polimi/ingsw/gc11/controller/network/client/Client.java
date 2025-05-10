@@ -33,7 +33,7 @@ public abstract class Client {
 
 
 
-    abstract public ShipCard getFreeShipCard(String username, int pos) throws NetworkException;
+    abstract public List<ShipCard> getFreeShipCard(String username, int pos) throws NetworkException;
 
     abstract public void placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException;
 

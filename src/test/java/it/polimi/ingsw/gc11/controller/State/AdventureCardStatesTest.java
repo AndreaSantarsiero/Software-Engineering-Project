@@ -31,9 +31,9 @@ public class AdventureCardStatesTest {
         ShipBoard ship3 = gameContext.getGameModel().getPlayer("player3").getShipBoard();
         new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard7.json", ship3);
 
-        gameContext.endBuilding("player1", 1);
-        gameContext.endBuilding("player2", 2);
-        gameContext.endBuilding("player3", 3);
+//        gameContext.endBuilding("player1");
+//        gameContext.endBuilding("player2");
+//        gameContext.endBuilding("player3");
     }
 
 
