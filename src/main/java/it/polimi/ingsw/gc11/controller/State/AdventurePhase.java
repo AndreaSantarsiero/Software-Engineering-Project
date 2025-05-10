@@ -34,6 +34,8 @@ public class AdventurePhase extends GamePhase {
         return gameModel;
     }
 
+    public AdventureState getCurrentAdvState(){ return advState;}
+
     public AdventureCard getDrawnAdvCard() {
         return drawnAdvCard;
     }
@@ -78,7 +80,7 @@ public class AdventurePhase extends GamePhase {
      *
      */
     public void initAdventureState() {
-        this.advState = drawnAdvCard.getInitialState(this);
+        setAdvState(drawnAdvCard.getInitialState(this));
     }
 
     @Override

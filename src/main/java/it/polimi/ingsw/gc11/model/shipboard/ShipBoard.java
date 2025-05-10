@@ -15,6 +15,7 @@ import java.awt.Point;
  * <p>
  * The board maintains information about ship cards, reserved components, and the last modified position
  */
+
 public abstract class ShipBoard  implements Serializable {
 
     private final ShipCard[][] components;
@@ -55,7 +56,6 @@ public abstract class ShipBoard  implements Serializable {
         this.brownActiveUnit = null;
         this.purpleActiveUnit = null;
     }
-
 
 
     public void addToList(AlienUnit alienUnit, int x, int y) {
