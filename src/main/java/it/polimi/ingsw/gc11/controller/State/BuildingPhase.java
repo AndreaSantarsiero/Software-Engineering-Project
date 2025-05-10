@@ -2,7 +2,10 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -44,12 +47,19 @@ public class BuildingPhase extends GamePhase {
     }
 
     @Override
+    public ArrayList<AdventureCard> observeMiniDeck(GameModel gameModel, String username, int numDeck) {
+        return gameModel.observeMiniDeck(numDeck);
+    }
+
+    @Override
+    public void endBuilding(String username, GameModel gameModel , int pos){
+        gameModel.endBuilding(username, pos);
+    }
+
+    @Override
     public void goToCheckPhase(GameContext context) throws IllegalStateException {
         this.nextPhase(context);
     }
 
-    @Override
-    public void endBuilding(String username, GameModel gameModel ,int pos){
-        gameModel.endBuilding(username, pos);
-    }
+
 }

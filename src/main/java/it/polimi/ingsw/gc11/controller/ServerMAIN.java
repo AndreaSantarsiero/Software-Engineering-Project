@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
+
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -49,6 +51,8 @@ public class ServerMAIN {
             System.out.println("Server started on RMI port: " + RMIPort + ", Socket port: " + SocketPort);
         } catch (NetworkException e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
+        } catch (UsernameAlreadyTakenException e) {
+            throw new RuntimeException(e);
         }
     }
 }

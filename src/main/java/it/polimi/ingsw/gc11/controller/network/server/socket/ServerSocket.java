@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc11.controller.network.server.socket;
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.network.server.Server;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.UUID;
@@ -19,7 +21,7 @@ public class ServerSocket extends Server {
 
 
 
-    public ServerSocket(ServerController serverController, int port) {
+    public ServerSocket(ServerController serverController, int port) throws NetworkException {
         super(serverController);
         try{
             this.serverSocket = new java.net.ServerSocket(port);
@@ -54,7 +56,7 @@ public class ServerSocket extends Server {
      * @param username the player's unique identifier
      * @return the UUID token assigned to the session
      */
-    public UUID registerPlayerSession(String username){
+    public UUID registerPlayerSession(String username) throws UsernameAlreadyTakenException {
         return serverController.registerSocketSession(username);
     }
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
 import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -44,7 +45,7 @@ public abstract class Server {
      * @param flightLevel the difficulty level of the flight board
      * @param numPlayers  the number of players in the match
      */
-    public void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers){
+    public void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers) throws FullLobbyException, UsernameAlreadyTakenException {
         serverController.createMatch(flightLevel, numPlayers, username, token);
     }
 
@@ -55,7 +56,7 @@ public abstract class Server {
      * @param token    the session token associated with the player
      * @param matchId  the identifier of the match to join
      */
-    public void connectPlayerToGame(String username, UUID token, String matchId) throws FullLobbyException, NullPointerException{
+    public void connectPlayerToGame(String username, UUID token, String matchId) throws FullLobbyException, NullPointerException, UsernameAlreadyTakenException {
         serverController.connectPlayerToGame(username, token, matchId);
     }
 

@@ -208,6 +208,8 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("Ship card is null");
         }
 
+        //non manca controllo sulle coordinate x e y?
+
         int i = adaptY(y);
         int j = adaptX(x);
         checkIndexes(j, i);
@@ -227,6 +229,10 @@ public abstract class ShipBoard  implements Serializable {
      * @throws IllegalArgumentException if the card is already null or welded
      */
     public void removeShipCard(int x, int y) {
+//        if (x < 0 || y < 0) {
+//            throw new IllegalArgumentException();
+//        } non manca questo controllo? seguo chiamata GameContext-->GamePhase-->BuildingPhase-->gameModel.removeShipcard
+
         int i = adaptY(y);
         int j = adaptX(x);
         checkIndexes(j, i);

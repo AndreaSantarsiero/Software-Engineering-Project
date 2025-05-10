@@ -2,13 +2,14 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
-import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,33 +20,36 @@ public abstract class GamePhase {
     public abstract String getPhaseName();
 
     //default
-
-    public void connectPlayerToGame(String playerUsername){
+    public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
         throw new FullLobbyException("Cannot connect player to game in the current game phase");
     }
 
-    public void endGame(GameContext context) throws Exception {
-        throw new Exception("Game is already ended.");
-    }
-
-    public List<ShipCard> getFreeShipCard(GameModel gameModel, int pos) throws IllegalStateException {
+    public List<ShipCard> getFreeShipCard(GameModel gameModel, int pos){
         throw new IllegalStateException("Can't get free ship card in the current game phase.");
     }
 
-    public void placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y) throws IllegalStateException{
+    public void placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y){
         throw new IllegalStateException("Can't place a ship card in the current game phase.");
     }
 
-    public void removeShipCard(GameModel gameModel, String username, int x, int y) throws IllegalStateException {
+    public void removeShipCard(GameModel gameModel, String username, int x, int y) {
         throw new IllegalStateException("Can't remove ship card in the current game phase.");
     }
 
-    public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard) throws IllegalStateException{
+    public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard){
         throw new IllegalStateException("Can't reserve ship card in the current game phase.");
     }
 
-    public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y) throws IllegalStateException{
+    public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y) {
         throw new IllegalStateException("Can't use reserved ship card in the current game phase.");
+    }
+
+    public ArrayList<AdventureCard> observeMiniDeck(GameModel gameModel, String username, int numDeck) {
+        throw new IllegalStateException("Can't observe mini deck in the current game phase.");
+    }
+
+    public void endBuilding(String username, GameModel gameModel, int pos) {
+        throw new IllegalStateException("Can't end building in the current game phase.");
     }
 
     public void goToCheckPhase(GameContext context) throws IllegalStateException{
@@ -102,9 +106,5 @@ public abstract class GamePhase {
 
     public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
         throw new IllegalStateException("Can't meteor hit in the current game phase.");
-    }
-
-    public void endBuilding(String username, GameModel gameModel, int pos){
-        throw new IllegalStateException("Can't end building in the current game phase.");
     }
 }

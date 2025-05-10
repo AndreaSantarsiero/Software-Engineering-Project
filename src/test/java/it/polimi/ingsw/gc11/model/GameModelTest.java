@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ class GameModelTest {
     }
 
     @Test
-    void testGetFlightBoard() {
+    void testGetFlightBoard() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.addPlayer("Player1");
         gameModel.setLevel(FlightBoard.Type.TRIAL);
         gameModel.addPlayer("Player2");
@@ -56,7 +57,7 @@ class GameModelTest {
     }
 
     @Test
-    void testAdd5Players(){
+    void testAdd5Players() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.addPlayer("Player1");
         gameModel.addPlayer("Player2");
         gameModel.addPlayer("Player3");
@@ -65,7 +66,7 @@ class GameModelTest {
     }
 
     @Test
-    void testGetPlayers(){
+    void testGetPlayers() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.addPlayer("Player1");
         gameModel.addPlayer("Player2");
         gameModel.addPlayer("Player3");
@@ -78,7 +79,7 @@ class GameModelTest {
     }
 
     @Test
-    void testGetMaxNumPlayers() {
+    void testGetMaxNumPlayers() throws FullLobbyException, UsernameAlreadyTakenException {
         assertEquals(0, gameModel.getPlayers().size());
         gameModel.addPlayer("Player1");
         assertEquals(1, gameModel.getPlayers().size());
@@ -104,7 +105,7 @@ class GameModelTest {
     }
 
     @Test
-    void testAddCoinsToNotFoundPlayer(){
+    void testAddCoinsToNotFoundPlayer() throws FullLobbyException, UsernameAlreadyTakenException {
         assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins("Player1",1));
         gameModel.addPlayer("Player1");
         assertDoesNotThrow(() -> gameModel.addCoins("Player1",1));
@@ -112,7 +113,7 @@ class GameModelTest {
     }
 
     @Test
-    void testAddCoins(){
+    void testAddCoins() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.addPlayer("Player1");
         gameModel.addCoins("Player1",10);
         assertEquals(10, gameModel.getPlayer("Player1").getCoins());
@@ -125,7 +126,7 @@ class GameModelTest {
     }
 
     @Test
-    void testRemoveCoins() {
+    void testRemoveCoins() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.addPlayer("Player1");
         gameModel.addCoins("Player1",10);
         gameModel.addPlayer("Player2");
@@ -138,7 +139,7 @@ class GameModelTest {
     }
 
     @Test
-    void testRemoveCoinsNotFoundPlayer(){
+    void testRemoveCoinsNotFoundPlayer() throws FullLobbyException, UsernameAlreadyTakenException {
         assertThrows(IllegalArgumentException.class, () -> gameModel.removeCoins("player1",1));
         gameModel.addPlayer("Player1");
         assertDoesNotThrow(() -> gameModel.removeCoins("Player1",1));
@@ -157,7 +158,7 @@ class GameModelTest {
     }
 
     @Test
-    void testgetPlayerPosition() {
+    void testgetPlayerPosition() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.addPlayer("Player1");
         gameModel.addPlayer("Player2");
         gameModel.setLevel(FlightBoard.Type.TRIAL);
@@ -182,7 +183,7 @@ class GameModelTest {
     }
 
     @Test
-    void testGetPlayerPositionPlayerNotFound(){
+    void testGetPlayerPositionPlayerNotFound() throws FullLobbyException, UsernameAlreadyTakenException {
         assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerPosition("Player1"));
         gameModel.addPlayer("Player1");
         gameModel.setLevel(FlightBoard.Type.TRIAL);
@@ -191,7 +192,7 @@ class GameModelTest {
     }
 
     @Test
-    void testSetAbort() {
+    void testSetAbort() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.addPlayer("Player1");
         gameModel.addPlayer("Player2");
         assertFalse(gameModel.getPlayer("Player1").isAbort());
@@ -207,7 +208,7 @@ class GameModelTest {
     }
 
     @Test
-    void testSetAbortPlayerNotFound(){
+    void testSetAbortPlayerNotFound() throws FullLobbyException, UsernameAlreadyTakenException {
         assertThrows(IllegalArgumentException.class, () -> gameModel.setAbort("Player1"));
         gameModel.addPlayer("Player1");
         assertDoesNotThrow(() -> gameModel.setAbort("Player1"));
@@ -215,7 +216,7 @@ class GameModelTest {
     }
 
     @Test
-    void getPlayerShipBoard() {
+    void getPlayerShipBoard() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.setLevel(FlightBoard.Type.TRIAL);
         gameModel.addPlayer("Player1");
         assertInstanceOf(Level1ShipBoard.class, gameModel.getPlayerShipBoard("Player1"));
@@ -227,7 +228,7 @@ class GameModelTest {
     }
 
     @Test
-    void getPlayerShipBoardPlayerNotFound(){
+    void getPlayerShipBoardPlayerNotFound() throws FullLobbyException, UsernameAlreadyTakenException {
         assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerShipBoard("Player1"));
         gameModel.addPlayer("Player1");
         gameModel.setLevel(FlightBoard.Type.TRIAL);
@@ -294,7 +295,7 @@ class GameModelTest {
     }
 
     @Test
-    void movePositiveTest() {
+    void movePositiveTest() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.setLevel(FlightBoard.Type.LEVEL2);
 
         gameModel.addPlayer("player1");
@@ -308,7 +309,7 @@ class GameModelTest {
     }
 
     @Test
-    void moveNegativeTest() {
+    void moveNegativeTest() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.setLevel(FlightBoard.Type.LEVEL2);
 
         gameModel.addPlayer("player1");

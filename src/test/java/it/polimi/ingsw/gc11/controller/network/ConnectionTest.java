@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.controller.network;
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import org.junit.jupiter.api.AfterEach;
@@ -24,7 +25,7 @@ public class ConnectionTest {
 
 
     @BeforeEach
-    void setUp() throws InterruptedException {
+    void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException {
         serverController = new ServerController(RMIPort, socketPort);
         Thread.sleep(200);  //waiting for the server to start up
         System.out.println("\nServer started on RMI port: " + RMIPort + ", Socket port: " + socketPort);
@@ -43,7 +44,7 @@ public class ConnectionTest {
 
 
     @Test
-    void testCreateMatch() {
+    void testCreateMatch() throws NetworkException, UsernameAlreadyTakenException {
         VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, "username1", serverIp, RMIPort);
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 4);
         assertEquals(1, playerOne.getAvailableMatches().size(), "Number of available matches doesn't match");
@@ -55,7 +56,7 @@ public class ConnectionTest {
 
 
     @Test
-    void testUsername() {
+    void testUsername() throws NetworkException, UsernameAlreadyTakenException {
         VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, "username", serverIp, RMIPort);
         assertThrows(UsernameAlreadyTakenException.class, () -> new VirtualServer(Utils.ConnectionType.RMI, "username", serverIp, RMIPort), "Username already taken");
         assertThrows(IllegalArgumentException.class, () -> new VirtualServer(Utils.ConnectionType.RMI, "", serverIp, RMIPort), "Username cannot be empty");
@@ -65,7 +66,7 @@ public class ConnectionTest {
 
 
     @Test
-    void testFullLobby() {
+    void testFullLobby() throws NetworkException, UsernameAlreadyTakenException, FullLobbyException {
         VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, "playerOne", serverIp, RMIPort);
         VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, "playerTwo", serverIp, RMIPort);
         VirtualServer playerThree = new VirtualServer(Utils.ConnectionType.RMI, "playerThree", serverIp, RMIPort);

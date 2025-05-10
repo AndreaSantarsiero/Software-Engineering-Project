@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc11.exceptions;
 
-public class NetworkException extends RuntimeException {
+public class NetworkException extends Exception {
     public NetworkException(String message) {
         super(message);
     }

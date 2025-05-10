@@ -109,7 +109,7 @@ public class GameModel {
     /**
     * Player's methods
     */
-    public void addPlayer(String username) throws FullLobbyException, IllegalArgumentException, UsernameAlreadyTakenException {
+    public void addPlayer(String username) throws FullLobbyException, UsernameAlreadyTakenException {
         if (username == null || username.isEmpty()){
             throw new IllegalArgumentException("cannot add player without a username");
         }
@@ -223,7 +223,6 @@ public class GameModel {
         }
         throw new IllegalArgumentException("Player " + username + " not found");
     }
-
 
    /**
     * AdventureDeck's methods

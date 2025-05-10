@@ -17,8 +17,8 @@ public interface ServerInterface extends Remote {
 
     //creating, joining and handling matches
     UUID registerPlayerSession(String username, ClientInterface playerStub) throws RemoteException, UsernameAlreadyTakenException;
-    void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers) throws RemoteException;
-    void connectPlayerToGame(String username, UUID token, String matchId) throws RemoteException, FullLobbyException, NullPointerException;
+    void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers) throws RemoteException, FullLobbyException, UsernameAlreadyTakenException;
+    void connectPlayerToGame(String username, UUID token, String matchId) throws RemoteException, FullLobbyException, NullPointerException, UsernameAlreadyTakenException;
     List<String> getAvailableMatches(String username, UUID token) throws RemoteException;
 
     //Building phase methods

@@ -3,11 +3,12 @@ package it.polimi.ingsw.gc11.view.cli;
 import it.polimi.ingsw.gc11.controller.ServerMAIN;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ import java.util.Scanner;
 
 public class MainCLI {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NetworkException, FullLobbyException {
         VirtualServer virtualServer;
         final Scanner scanner = new Scanner(System.in);
         clearView();
@@ -91,7 +92,7 @@ public class MainCLI {
             try{
                 String username = usernameSetup(scanner);
                 virtualServer = new VirtualServer(connectionType, username, serverIp, serverPort);
-            } catch (UsernameAlreadyTakenException e) {
+            } catch (UsernameAlreadyTakenException | NetworkException e) {
                 System.out.println(e.getMessage());
             }
         }

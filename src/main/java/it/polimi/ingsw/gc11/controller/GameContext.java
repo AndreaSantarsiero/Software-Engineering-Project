@@ -14,21 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 
-
+//Controller of a specific gameModel and multiple gameView
 public class GameContext implements GameInterface {
-    //Controller of a specific gameModel and multiple gameView
-
     private final GameModel gameModel;
     private final String matchID;
     private GamePhase phase;
-
-
 
     public GameContext(FlightBoard.Type flightType, int numPlayers) {
         this.gameModel = new GameModel(numPlayers);
         this.gameModel.setLevel(flightType);
         this.matchID = gameModel.getID();
-        // Initial state
         this.phase = new IdlePhase(this);
     }
 
@@ -50,92 +45,44 @@ public class GameContext implements GameInterface {
         this.phase = phase;
     }
 
-
-
-    public void connectPlayerToGame(String playerUsername) throws FullLobbyException, IllegalArgumentException, UsernameAlreadyTakenException {
-
-        this.phase.connectPlayerToGame(playerUsername);
-
+    public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
+        phase.connectPlayerToGame(playerUsername);
     }
 
-
-    public void endGame() {
-        try{
-            this.phase.endGame(this);
-        }
-        catch (Exception e) {
-            System.out.println("Can't end game in this state");
-        }
+    public List<ShipCard> getFreeShipCard(int pos){
+        return phase.getFreeShipCard(this.gameModel, pos);
     }
 
-
-    public List<ShipCard> getFreeShipCard(int pos) throws IndexOutOfBoundsException {
-        return this.phase.getFreeShipCard(this.gameModel, pos);
+    public void placeShipCard(String username, ShipCard shipCard, int x, int y){
+        gameModel.getPlayerShipBoard(username).addShipCard(shipCard, x, y);
     }
 
-
-    public void placeShipCard(String username, ShipCard shipCard, int x, int y)
-            throws NullPointerException, IllegalArgumentException {
-        if (shipCard == null) {
-            throw new NullPointerException();
-        }
-        if (x < 0 || y < 0) {
-            throw new IllegalArgumentException();
-        }
-        try{
-            this.gameModel.getPlayerShipBoard(username).addShipCard(shipCard, x, y);
-        }
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-        }
+    public void removeShipCard(String username, int x, int y) {
+        phase.removeShipCard(gameModel, username, x, y);
     }
 
-
-    public void removeShipCard(String username, int x, int y) throws IllegalArgumentException {
-        if (x < 0 || y < 0) {
-            throw new IllegalArgumentException();
-        }
-        try {
-            this.phase.removeShipCard(this.gameModel, username, x, y);
-        }
-        catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public void reserveShipCard(String username, ShipCard shipCard) {
+        phase.reserveShipCard(gameModel, username, shipCard);
     }
-
-
-    public void reserveShipCard(String username, ShipCard shipCard) throws NullPointerException {
-        if (shipCard == null) {
-            throw new NullPointerException();
-        }
-        try {
-            this.gameModel.getPlayerShipBoard(username).reserveShipCard(shipCard);
-        }
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
 
     public void useReservedShipCard(String username, ShipCard shipCard, int x, int y){
-        if (shipCard == null) {
-            throw new NullPointerException();
-        }
-        if (x < 0 || y < 0) {
-            throw new IllegalArgumentException();
-        }
-        try {
-            this.gameModel.getPlayerShipBoard(username).useReservedShipCard(shipCard, x, y);
-        }
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-        }
+        phase.useReservedShipCard(gameModel, username, shipCard, x, y);
     }
-
 
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
-        return null;
+        return phase.observeMiniDeck(gameModel, username, numDeck);
     }
+
+    public void endBuilding(String username, int pos){
+        phase.endBuilding(username, gameModel, pos);
+    }
+
+
+
+
+
+
+
 
     public void goToCheckPhase(){
         try {
@@ -216,10 +163,6 @@ public class GameContext implements GameInterface {
             System.out.println(e.getMessage());
         }
 
-    }
-
-    public void endBuilding(String username, int pos) {
-        phase.endBuilding(username, gameModel, pos);
     }
 
 

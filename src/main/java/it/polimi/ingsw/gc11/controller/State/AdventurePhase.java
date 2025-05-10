@@ -72,6 +72,7 @@ public class AdventurePhase extends GamePhase {
         return "ADVENTURE";
     }
 
+
     /**
      * Initializes the adventure state for the current adventure card extracted by the player using the specified game model.
      *

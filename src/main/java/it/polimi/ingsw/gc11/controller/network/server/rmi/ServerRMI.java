@@ -44,7 +44,7 @@ public class ServerRMI extends Server implements ServerInterface {
      * @param username the player's unique identifier
      * @return the UUID token assigned to the session
      */
-    public UUID registerPlayerSession(String username, ClientInterface playerStub){
+    public UUID registerPlayerSession(String username, ClientInterface playerStub) throws UsernameAlreadyTakenException {
         return serverController.registerRMISession(username, playerStub);
     }
 

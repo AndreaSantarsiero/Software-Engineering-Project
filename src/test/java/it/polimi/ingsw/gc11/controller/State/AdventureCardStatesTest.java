@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
@@ -17,7 +19,7 @@ public class AdventureCardStatesTest {
 
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws FullLobbyException, UsernameAlreadyTakenException {
         gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3);
         gameContext.connectPlayerToGame("player1");
         ShipBoard ship1 = gameContext.getGameModel().getPlayer("player1").getShipBoard();

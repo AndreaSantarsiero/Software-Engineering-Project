@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.controller.network.server.*;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.*;
 import it.polimi.ingsw.gc11.controller.network.server.socket.*;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ServerController {
     /**
      * Constructs a new {@code ServerController} with empty session and match registries
      */
-    public ServerController(int RMIPort, int SocketPort) {
+    public ServerController(int RMIPort, int SocketPort) throws NetworkException, UsernameAlreadyTakenException {
         this.playerSessions = new ConcurrentHashMap<>();
         this.availableMatches = new ConcurrentHashMap<>();
         this.serverRMI = new ServerRMI(this, RMIPort);
@@ -144,7 +145,7 @@ public class ServerController {
      *
      * @param flightLevel the difficulty level for the new match
      */
-    public void createMatch(FlightBoard.Type flightLevel, int numPlayers, String username, UUID token) {
+    public void createMatch(FlightBoard.Type flightLevel, int numPlayers, String username, UUID token) throws FullLobbyException, UsernameAlreadyTakenException {
         getPlayerSession(username, token);
         GameContext match = new GameContext(flightLevel, numPlayers);
         availableMatches.put(match.getMatchID(), match);
@@ -164,7 +165,7 @@ public class ServerController {
      * @throws RuntimeException if the match ID is invalid or the session is not found
      * @throws FullLobbyException if the player cannot join this match
      */
-    public void connectPlayerToGame(String username, UUID token, String matchID) throws RuntimeException, FullLobbyException {
+    public void connectPlayerToGame(String username, UUID token, String matchID) throws RuntimeException, FullLobbyException, UsernameAlreadyTakenException {
         ClientSession clientSession = getPlayerSession(username, token);
         GameContext match = availableMatches.get(matchID);
         if (match == null) {

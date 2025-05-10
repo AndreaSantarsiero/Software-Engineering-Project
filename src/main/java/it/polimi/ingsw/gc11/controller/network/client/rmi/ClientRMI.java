@@ -42,10 +42,10 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     @Override
-    public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
+    public void registerSession(String username) throws NetworkException {
         try {
             this.clientSessionToken = stub.registerPlayerSession(username, stubExporter);
-        } catch (RemoteException e) {
+        } catch (RemoteException | UsernameAlreadyTakenException e) {
             throw new NetworkException("RMI CONNECTION ERROR: could not register RMI session");
         }
     }
@@ -54,7 +54,7 @@ public class ClientRMI extends Client implements ClientInterface {
     public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException {
         try {
             stub.createMatch(username, clientSessionToken, flightType, numPlayers);
-        } catch (RemoteException e) {
+        } catch (RemoteException | FullLobbyException | UsernameAlreadyTakenException e) {
             throw new NetworkException("RMI CONNECTION ERROR: could not create match");
         }
     }
@@ -63,7 +63,7 @@ public class ClientRMI extends Client implements ClientInterface {
     public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException {
         try{
             stub.connectPlayerToGame(username, clientSessionToken, matchId);
-        } catch (RemoteException e) {
+        } catch (RemoteException | UsernameAlreadyTakenException e) {
             throw new NetworkException("RMI CONNECTION ERROR: could not connect to game");
         }
     }

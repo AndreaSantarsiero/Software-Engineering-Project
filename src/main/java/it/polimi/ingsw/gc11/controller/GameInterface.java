@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller;
 
 //CLASSE CHE RACCOGLIE TUTTI I METODI CHIAMABILI DALLA RETE
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
@@ -13,8 +14,8 @@ import java.util.Map;
 
 
 public interface GameInterface {
-    void connectPlayerToGame(String playerUsername) throws FullLobbyException, NullPointerException;
-
+    //IdlePhase methods
+    void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException;
 
     //Building phase methods
     List<ShipCard> getFreeShipCard(int pos);

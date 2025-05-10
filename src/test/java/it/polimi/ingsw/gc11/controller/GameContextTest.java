@@ -23,7 +23,7 @@ public class GameContextTest {
 
 
     @Test
-    void testInvalidUsername() {
+    void testInvalidUsername() throws FullLobbyException, UsernameAlreadyTakenException {
         assertThrows(IllegalArgumentException.class, () -> gameContext.connectPlayerToGame(""), "Username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> gameContext.connectPlayerToGame(null), "Username cannot be null");
         gameContext.connectPlayerToGame("username");
@@ -33,7 +33,7 @@ public class GameContextTest {
 
 
     @Test
-    void testAddPlayer() {
+    void testAddPlayer() throws FullLobbyException, UsernameAlreadyTakenException {
         gameContext.connectPlayerToGame("username1");
         gameContext.connectPlayerToGame("username2");
         gameContext.connectPlayerToGame("username3");
@@ -43,7 +43,7 @@ public class GameContextTest {
 
 
     @Test
-    void testGetPhase() {
+    void testGetPhase() throws FullLobbyException, UsernameAlreadyTakenException {
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Match should be in IDLE state");
         gameContext.connectPlayerToGame("username1");
         gameContext.connectPlayerToGame("username2");
