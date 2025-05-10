@@ -36,7 +36,7 @@ public class ClientRMI extends Client implements ClientInterface {
         super(virtualServer);
         Registry registry = LocateRegistry.getRegistry(ip, port);
         this.stub = (ServerInterface) registry.lookup("ServerInterface");
-        this.stubExporter = new ClientStubExporter(this);
+        this.stubExporter = new ClientStubExporter(this);//è il client che esporta il suo stub e lo invia al server, serve per la comunicazione indietro da server a client
     }
 
 
