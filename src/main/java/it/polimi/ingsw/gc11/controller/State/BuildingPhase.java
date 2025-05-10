@@ -44,4 +44,9 @@ public class BuildingPhase extends GamePhase {
     public void goToCheckPhase(GameContext context) throws IllegalStateException {
         this.nextPhase(context);
     }
+
+    @Override
+    public void endBuilding(String username, GameModel gameModel ,int pos){
+        gameModel.endBuilding(username, pos);
+    }
 }

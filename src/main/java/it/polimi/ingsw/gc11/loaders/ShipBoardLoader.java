@@ -19,19 +19,14 @@ public class ShipBoardLoader {
 
     private final ShipCardLoader shipCardLoader;
     private ShipBoard shipBoard;
-    private final ObjectMapper objectMapper;
 
 
 
     public ShipBoardLoader(String resourcePath) {
         shipCardLoader = new ShipCardLoader();
-        objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        try (InputStream inputStream = new FileInputStream(resourcePath);) {
-            if (inputStream == null) {
-                throw new IOException("File JSON not found: " + resourcePath);
-            }
-
+        try (InputStream inputStream = new FileInputStream(resourcePath)) {
             JsonNode rootNode = objectMapper.readTree(inputStream);
             JsonNode shipBoardNode = rootNode.get("shipboard");
 
@@ -47,76 +42,102 @@ public class ShipBoardLoader {
                 default -> throw new IllegalArgumentException("Unknown ship board level: " + level);
             }
 
-            List<JsonNode> componentsNode = objectMapper.convertValue(shipBoardNode.get("components"),
-                    new TypeReference<List<JsonNode>>() {});
-
-            for (JsonNode cardNode : componentsNode) {
-                String id = cardNode.path("id").asText(null);
-                int x = cardNode.path("x").asInt(-1);
-                int y = cardNode.path("y").asInt(-1);
-                int orientation = cardNode.path("orientation").asInt(0);
-
-                if (id == null || x < 0 || y < 0) {
-                    System.err.println("Invalid component data: " + cardNode);
-                    continue;
-                }
-
-                ShipCard shipCard = shipCardLoader.getShipCard(id);
-                if (shipCard != null) {
-                    if(shipBoard.getShipCard(x, y) == null) {
-                        shipBoard.addShipCard(shipCard, x, y);
-                    }
-                    else {
-                        System.err.println("Warning: a ShipCard was already present at this coordinates: (" + x + ", " + y +")");
-                    }
-                }
-                else {
-                    System.err.println("Warning: ShipCard with id '" + id + "' not found in shipCards.json");
-                    continue;
-                }
-
-                switch (orientation) {
-                    case 0 -> shipCard.setOrientation(ShipCard.Orientation.DEG_0);
-                    case 90 -> shipCard.setOrientation(ShipCard.Orientation.DEG_90);
-                    case 180 -> shipCard.setOrientation(ShipCard.Orientation.DEG_180);
-                    case 270 -> shipCard.setOrientation(ShipCard.Orientation.DEG_270);
-                    default -> throw new IllegalArgumentException("Unknown orientation: " + orientation);
-                }
-            }
-
-
-            List<JsonNode> reservedComponentsNode = objectMapper.convertValue(shipBoardNode.get("reservedComponents"),
-                    new TypeReference<List<JsonNode>>() {});
-            if (reservedComponentsNode != null) {
-                if(reservedComponentsNode.size() > 2){
-                    System.err.println("Warning: too many reserved components: " + reservedComponentsNode.size());
-                }
-                else {
-                    for (JsonNode cardNode : reservedComponentsNode) {
-                        String id = cardNode.path("id").asText(null);
-                        if (id == null) {
-                            System.err.println("Invalid component data: " + cardNode);
-                            continue;
-                        }
-
-                        ShipCard shipCard = shipCardLoader.getShipCard(id);
-                        if (shipCard != null) {
-                            shipBoard.reserveShipCard(shipCard);
-                        }
-                        else {
-                            System.err.println("Warning: ShipCard with id '" + id + "' not found in shipCards.json");
-                        }
-                    }
-                }
-            }
+            shipBoardBuilder(objectMapper, shipBoardNode, shipBoard);
         }
         catch (IOException e) {
             System.err.println("Error reading JSON file: " + e.getMessage());
-            e.printStackTrace();
         }
         catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
-            e.printStackTrace();
+        }
+    }
+
+
+
+    public ShipBoardLoader(String resourcePath, ShipBoard shipBoard) {
+        shipCardLoader = new ShipCardLoader();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try (InputStream inputStream = new FileInputStream(resourcePath)) {
+            JsonNode rootNode = objectMapper.readTree(inputStream);
+            JsonNode shipBoardNode = rootNode.get("shipboard");
+
+            if (shipBoardNode == null) {
+                throw new IllegalArgumentException("Missing 'shipboard' node in JSON");
+            }
+
+            shipBoardBuilder(objectMapper, shipBoardNode, shipBoard);
+        }
+        catch (IOException e) {
+            System.err.println("Error reading JSON file: " + e.getMessage());
+        }
+        catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+        }
+    }
+
+
+
+    public void shipBoardBuilder(ObjectMapper objectMapper, JsonNode shipBoardNode, ShipBoard shipBoard) {
+        List<JsonNode> componentsNode = objectMapper.convertValue(shipBoardNode.get("components"), new TypeReference<>() {});
+
+        for (JsonNode cardNode : componentsNode) {
+            String id = cardNode.path("id").asText(null);
+            int x = cardNode.path("x").asInt(-1);
+            int y = cardNode.path("y").asInt(-1);
+            int orientation = cardNode.path("orientation").asInt(0);
+
+            if (id == null || x < 0 || y < 0) {
+                System.err.println("Invalid component data: " + cardNode);
+                continue;
+            }
+
+            ShipCard shipCard = shipCardLoader.getShipCard(id);
+            if (shipCard != null) {
+                if(shipBoard.getShipCard(x, y) == null) {
+                    shipBoard.addShipCard(shipCard, x, y);
+                }
+                else {
+                    System.err.println("Warning: a ShipCard was already present at this coordinates: (" + x + ", " + y +")");
+                }
+            }
+            else {
+                System.err.println("Warning: ShipCard with id '" + id + "' not found in shipCards.json");
+                continue;
+            }
+
+            switch (orientation) {
+                case 0 -> shipCard.setOrientation(ShipCard.Orientation.DEG_0);
+                case 90 -> shipCard.setOrientation(ShipCard.Orientation.DEG_90);
+                case 180 -> shipCard.setOrientation(ShipCard.Orientation.DEG_180);
+                case 270 -> shipCard.setOrientation(ShipCard.Orientation.DEG_270);
+                default -> throw new IllegalArgumentException("Unknown orientation: " + orientation);
+            }
+        }
+
+
+        List<JsonNode> reservedComponentsNode = objectMapper.convertValue(shipBoardNode.get("reservedComponents"), new TypeReference<>() {});
+        if (reservedComponentsNode != null) {
+            if(reservedComponentsNode.size() > 2){
+                System.err.println("Warning: too many reserved components: " + reservedComponentsNode.size());
+            }
+            else {
+                for (JsonNode cardNode : reservedComponentsNode) {
+                    String id = cardNode.path("id").asText(null);
+                    if (id == null) {
+                        System.err.println("Invalid component data: " + cardNode);
+                        continue;
+                    }
+
+                    ShipCard shipCard = shipCardLoader.getShipCard(id);
+                    if (shipCard != null) {
+                        shipBoard.reserveShipCard(shipCard);
+                    }
+                    else {
+                        System.err.println("Warning: ShipCard with id '" + id + "' not found in shipCards.json");
+                    }
+                }
+            }
         }
     }
 

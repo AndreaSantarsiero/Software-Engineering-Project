@@ -108,4 +108,8 @@ public abstract class GamePhase {
     public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
         throw new IllegalStateException("Can't meteor hit in the current game phase.");
     }
+
+    public void endBuilding(String username, GameModel gameModel, int pos){
+        throw new IllegalStateException("Can't end building in the current game phase.");
+    }
 }

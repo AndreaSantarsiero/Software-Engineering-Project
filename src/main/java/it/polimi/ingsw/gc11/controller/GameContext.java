@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
-import it.polimi.ingsw.gc11.exceptions.GameAlreadyStartedException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -147,11 +146,6 @@ public class GameContext implements GameInterface {
         return null;
     }
 
-
-    public void endBuilding(String username, int pos) {
-
-    }
-
     public void goToCheckPhase(){
         try {
             phase.goToCheckPhase(this);
@@ -231,6 +225,10 @@ public class GameContext implements GameInterface {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public void endBuilding(String username, int pos) {
+        phase.endBuilding(username, gameModel, pos);
     }
 
 

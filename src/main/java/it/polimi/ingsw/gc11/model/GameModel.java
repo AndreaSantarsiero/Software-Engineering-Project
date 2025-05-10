@@ -376,4 +376,31 @@ public class GameModel {
         //Ordino arraylist di player in base alla classifica
         this.players.sort(Comparator.comparing(Player::getStanding));
     }
+
+    //pos è l'ordine: primo, secondo...
+    public void endBuilding(String username, int pos){
+        if(username == null || username.isEmpty()){
+            throw new IllegalArgumentException("username is null or empty");
+        }
+
+        Player player = null;
+        for(Player p : players){
+            if(p.getUsername().equals(username)){
+                player = p;
+            }
+        }
+
+        if(player != null){
+            if(players.get(pos) == null){
+                flightBoard.initializePosition(flightBoard.getType(), pos, player);
+            }
+            else{
+                throw new IllegalArgumentException("There is already an other player in this position");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Player " + username + " not found");
+        }
+
+    }
 }
