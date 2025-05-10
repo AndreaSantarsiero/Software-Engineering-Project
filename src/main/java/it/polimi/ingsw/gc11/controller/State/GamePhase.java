@@ -19,11 +19,15 @@ public abstract class GamePhase {
 
     public abstract String getPhaseName();
 
-    //default
+    //These are all Default Implementation
+
+    //IdlePhase
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
         throw new FullLobbyException("Cannot connect player to game in the current game phase");
     }
 
+
+    //BuildingPhase
     public List<ShipCard> getFreeShipCard(GameModel gameModel, int pos){
         throw new IllegalStateException("Can't get free ship card in the current game phase.");
     }
@@ -56,7 +60,9 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't go to check state in the current game phase.");
     }
 
-    public AdventureCard getAdventureCard(String username) throws IllegalStateException{
+
+    //AdventurePhase
+    public AdventureCard getAdventureCard(String username){
         throw new IllegalStateException("Can't get a new Adventure Card in the current game phase.");
     }
 

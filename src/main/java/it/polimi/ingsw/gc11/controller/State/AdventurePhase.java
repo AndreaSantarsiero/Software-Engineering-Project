@@ -82,31 +82,27 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public AdventureCard getAdventureCard(String username) throws IllegalStateException {
-        try {
-            return this.advState.getAdventureCard(username);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+    public AdventureCard getAdventureCard(String username) {
+        return advState.getAdventureCard(username);
     }
 
     @Override
     public void acceptAdventureCard(String username) {
-        try {
-            this.advState.getAdventureCard(username);
+        //this.advState.getAdventureCard(username);//è sbagliato?? uguale al metodo sopra?
+        Player expectedPlayer = gameModel.getPlayers().get(idxCurrentPlayer);
+        if (expectedPlayer.getUsername().equals(username)) {
+            advState.acceptAdventureCard(username);
         }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        else {
+            throw new IllegalArgumentException("It's not your turn to play!");
         }
     }
 
     @Override
     public void declineAdventureCard(String username) {
-        Player expectedPlayer = this.gameModel.getPlayers().get(this.idxCurrentPlayer);
+        Player expectedPlayer = gameModel.getPlayers().get(idxCurrentPlayer);
         if (expectedPlayer.getUsername().equals(username)) {
-            this.advState.declineAdventureCard(username);
+            advState.declineAdventureCard(username);
         }
         else {
             throw new IllegalArgumentException("It's not your turn to play!");

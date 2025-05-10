@@ -27,8 +27,6 @@ public class GameContext implements GameInterface {
         this.phase = new IdlePhase(this);
     }
 
-
-
     public GameModel getGameModel() {
         return gameModel;
     }
@@ -45,10 +43,13 @@ public class GameContext implements GameInterface {
         this.phase = phase;
     }
 
+
+    //IdlePhase
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
         phase.connectPlayerToGame(playerUsername);
     }
 
+    //BuildingPhase
     public List<ShipCard> getFreeShipCard(int pos){
         return phase.getFreeShipCard(this.gameModel, pos);
     }
@@ -77,13 +78,6 @@ public class GameContext implements GameInterface {
         phase.endBuilding(username, gameModel, pos);
     }
 
-
-
-
-
-
-
-
     public void goToCheckPhase(){
         try {
             phase.goToCheckPhase(this);
@@ -97,44 +91,17 @@ public class GameContext implements GameInterface {
     }
 
 
-
+    //AdventurePhase
     public AdventureCard getAdventureCard(String username) {
-        if (username == null) {
-            throw new NullPointerException();
-        }
-        try {
-            return phase.getAdventureCard(username);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        return phase.getAdventureCard(username);
     }
-
 
     public void acceptAdventureCard(String username) {
-        if (username == null) {
-            throw new NullPointerException();
-        }
-        try {
-            phase.acceptAdventureCard(username);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+        phase.acceptAdventureCard(username);
     }
 
-
     public void declineAdventureCard(String username) {
-        if (username == null) {
-            throw new NullPointerException();
-        }
-        try {
-            phase.declineAdventureCard(username);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+        phase.declineAdventureCard(username);
     }
 
 

@@ -26,6 +26,8 @@ public interface GameInterface {
     ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck);
     void endBuilding(String username, int pos);
 
+    //CheckPhase methods
+
 
     //Adventure phase methods
     AdventureCard getAdventureCard(String username);

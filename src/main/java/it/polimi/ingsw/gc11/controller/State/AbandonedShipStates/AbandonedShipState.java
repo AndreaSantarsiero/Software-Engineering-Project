@@ -15,6 +15,9 @@ public class AbandonedShipState extends AdventureState {
 
     @Override
     public void acceptAdventureCard(String username) {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalStateException("Username cannot be null or empty.");
+        }
 
         GameModel gameModel = this.advContext.getGameModel();
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
@@ -40,6 +43,9 @@ public class AbandonedShipState extends AdventureState {
 
     @Override
     public void declineAdventureCard(String username) {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalStateException("Username cannot be null or empty.");
+        }
 
         GameModel gameModel = this.advContext.getGameModel();
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());

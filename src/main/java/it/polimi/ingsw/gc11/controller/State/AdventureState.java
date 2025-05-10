@@ -18,15 +18,15 @@ public abstract class AdventureState{
         this.advContext = advContext;
     }
 
-    public AdventureCard getAdventureCard(String username) throws IllegalStateException {
+    public AdventureCard getAdventureCard(String username) {
         throw new IllegalStateException("Can't get an adventure card in the current adventure state.");
     }
 
-    public void acceptAdventureCard(String username) throws IllegalStateException {
+    public void acceptAdventureCard(String username){
         throw new IllegalStateException("Can't accept an adventure card in the current adventure state.");
     }
 
-    public void declineAdventureCard(String username) throws IllegalStateException {
+    public void declineAdventureCard(String username) {
         throw new IllegalStateException("Can't decline an adventure card in the current adventure state.");
     }
 
