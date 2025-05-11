@@ -78,6 +78,7 @@ public class Menu {
             try {
                 GlobalScreen.removeNativeKeyListener(listener);
                 GlobalScreen.unregisterNativeHook();
+                clearStdin();
             } catch (NativeHookException ignored) {}
         }
     }
@@ -106,7 +107,7 @@ public class Menu {
                     }
                 }
                 else {
-                    char keyChar = NativeKeyEvent.getKeyText(keyCode).charAt(0);
+                    char keyChar = e.getKeyChar();
 
                     if (keyChar >= 32 && keyChar <= 126) {
                         inputBuilder.get().append(keyChar);
@@ -126,13 +127,15 @@ public class Menu {
             while (!isCompleted.get()) {
                 Thread.sleep(50); // avoid busy waiting
             }
-
-            GlobalScreen.removeNativeKeyListener(listener);
-            GlobalScreen.unregisterNativeHook();
-            clearStdin();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                GlobalScreen.removeNativeKeyListener(listener);
+                GlobalScreen.unregisterNativeHook();
+                clearStdin();
+            } catch (NativeHookException ignored) {}
         }
 
         return inputBuilder.get().toString();
@@ -169,8 +172,6 @@ public class Menu {
             while (System.in.available() > 0) {
                 System.in.read();
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
-
 }
