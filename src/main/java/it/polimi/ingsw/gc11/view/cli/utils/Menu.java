@@ -81,7 +81,7 @@ public class Menu {
         System.out.println("Choose an option (↑↓ and press Enter):\n");
         for (int i = 0; i < options.size(); i++) {
             if (i == selected) {
-                System.out.println("  > \u001b[47m" + options.get(i) + "\u001b[0m");
+                System.out.println("  > \u001b[48;5;235m" + options.get(i) + "\u001b[0m");
             } else {
                 System.out.println("    " + options.get(i));
             }
