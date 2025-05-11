@@ -87,7 +87,12 @@ public class AlienUnit extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        AlienUnit alienUnit = (AlienUnit) obj;
+        AlienUnit alienUnit;
+        try {
+            alienUnit = (AlienUnit) obj;
+        } catch (ClassCastException e) {
+            return false;
+        }
         return super.equals(obj) && this.type == alienUnit.getType() && this.presence == alienUnit.isPresent();
     }
 

@@ -217,7 +217,12 @@ public class Storage extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        Storage storage = (Storage) obj;
+        Storage storage;
+        try {
+            storage = (Storage) obj;
+        } catch (ClassCastException e) {
+            return false;
+        }
         return super.equals(obj) && this.type == storage.getType();
     }
 

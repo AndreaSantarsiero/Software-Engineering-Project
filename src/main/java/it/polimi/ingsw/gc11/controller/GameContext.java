@@ -78,13 +78,8 @@ public class GameContext implements GameInterface {
         phase.endBuilding(username, gameModel, pos);
     }
 
-    public void goToCheckPhase(){
-        try {
-            phase.goToCheckPhase(this);
-        }
-        catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-        }
+    public void goToCheckPhase() throws IllegalStateException {
+        phase.goToCheckPhase(this);
     }
 
     public void checkAllShipBoards(){

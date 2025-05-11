@@ -38,7 +38,7 @@ public class BuildingPhase extends GamePhase {
 
     @Override
     public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard){
-        gameModel.getPlayerShipBoard(username).reserveShipCard(shipCard);
+        gameModel.reserveShipCard(username,shipCard);
     }
 
     @Override

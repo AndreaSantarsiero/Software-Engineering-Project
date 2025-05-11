@@ -58,7 +58,12 @@ public class Cannon extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        Cannon cannon = (Cannon) obj;
+        Cannon cannon;
+        try {
+            cannon = (Cannon) obj;
+        } catch (ClassCastException e) {
+            return false;
+        }
         return super.equals(obj) && this.type == cannon.getType();
     }
 

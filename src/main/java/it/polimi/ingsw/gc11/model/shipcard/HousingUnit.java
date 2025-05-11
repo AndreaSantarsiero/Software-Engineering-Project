@@ -155,7 +155,12 @@ public class HousingUnit extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        HousingUnit housingUnit = (HousingUnit) obj;
+        HousingUnit housingUnit;
+        try{
+            housingUnit = (HousingUnit) obj;
+        }catch(ClassCastException e){
+            return false;
+        }
         if(this.alienUnit == null){
             return super.equals(obj) && this.central == housingUnit.isCentral() && this.numMembers == housingUnit.numMembers;
         }

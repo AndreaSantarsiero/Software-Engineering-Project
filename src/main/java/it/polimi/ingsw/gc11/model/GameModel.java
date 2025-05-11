@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc11.loaders.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
+
 import java.util.*;
 
 
@@ -18,7 +18,7 @@ public class GameModel {
     private FlightBoard flightBoard;
     private final List<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
-    private final List<ShipCard> shipCardsALL;
+    private List<ShipCard> freeShipCards;
     private final List<AdventureCard> adventureCardsTrial; //8 cards
     private final List<AdventureCard> adventureCardsLevel1; //12 cards
     private final List<AdventureCard> adventureCardsLevel2; //20 cards
@@ -34,9 +34,10 @@ public class GameModel {
         adventureCardsDecks = new ArrayList<AdventureDeck>();
         definitiveDeck = null;
         ShipCardLoader shipCardLoader = new ShipCardLoader();
-        shipCardsALL = shipCardLoader.getAllShipCards();
+        freeShipCards = shipCardLoader.getAllShipCards();
         //shipCardsALL.removeAll(shipCardLoader.getCentralUnits());
-        Collections.shuffle(shipCardsALL);
+        Collections.shuffle(freeShipCards);
+        freeShipCards = new ArrayList<>(freeShipCards);
         AdventureCardLoader adventureCardLoader = new AdventureCardLoader();
         adventureCardsTrial = adventureCardLoader.getCardsTrial();
         adventureCardsLevel1 = adventureCardLoader.getCardsLevel1();
@@ -260,11 +261,11 @@ public class GameModel {
      */
     //Get shipcard in pos position in the arraylist of all shipcards down on the table
     public ShipCard getFreeShipCard(int pos){
-        if(pos < 0 || pos >= shipCardsALL.size()){
+        if(pos < 0 || pos >= freeShipCards.size()){
             throw new IllegalArgumentException("Invalid position");
         }
-        shipCardsALL.get(pos).discover();
-        return shipCardsALL.get(pos);
+        freeShipCards.get(pos).discover();
+        return freeShipCards.get(pos);
 
 
 
@@ -295,7 +296,19 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public void reserveShipCard(String username, ShipCard shipCard){}
+    public void reserveShipCard(String username, ShipCard shipCard){
+        if(!freeShipCards.contains(shipCard)){
+            throw new IllegalStateException("Invalid ship card");
+        }
+        for(Player player : players){
+            if(player.getUsername().equals(username)){
+                getPlayerShipBoard(username).reserveShipCard(shipCard);
+                freeShipCards.remove(shipCard);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
 
     public void useReservedShipCard(String username, int numReserved){}
 
@@ -309,12 +322,13 @@ public class GameModel {
         if (shipCard == null){
             throw new IllegalArgumentException("cannot connect null shipCard");
         }
-        if(!shipCardsALL.contains(shipCard)){
+        if(!freeShipCards.contains(shipCard)){
             throw new IllegalArgumentException("shipCard is not contained in the ship cards list");
         }
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getUsername().equals(username)) {
                 players.get(i).getShipBoard().addShipCard(shipCard, x, y);
+                freeShipCards.remove(shipCard);
                 return;
             }
         }
