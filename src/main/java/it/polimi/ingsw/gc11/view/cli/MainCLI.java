@@ -27,7 +27,6 @@ public class MainCLI {
 
     public static void main(String[] args) throws NetworkException, FullLobbyException {
         VirtualServer virtualServer;
-        final Scanner scanner = new Scanner(System.in);
         int choice;
 
         try {
@@ -35,7 +34,7 @@ public class MainCLI {
             if (functionKey == null) {
                 Menu.isTerminalInFocus.set(true);
             }
-            virtualServer = setup(scanner);
+            virtualServer = setup();
         } catch (RuntimeException e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");
@@ -60,26 +59,27 @@ public class MainCLI {
                     i++;
                     System.out.println(i + ") " + matchId);
                 }
-                System.out.println("insert game to join: ");
-                choice = scanner.nextInt();
-                scanner.nextLine();
-                try {
-                    virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
-                    System.out.println("joined game");
-
-                    //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
-                    System.out.println("premi invio per richiedere una ship card");
-                    scanner.nextLine();
-                    ShipCardCLI shipCardCLI = new ShipCardCLI();
-                    ShipCard shipCard = virtualServer.getFreeShipCard(4);
-
-                    for (int j = 0; j < 7; j++) {
-                        shipCard.print(shipCardCLI, j);
-                        System.out.println();
-                    }
-                } catch (UsernameAlreadyTakenException | FullLobbyException e) {
-                    System.out.println(e.getMessage());
-                }
+//                Scanner scanner = new Scanner(System.in);
+//                System.out.println("insert game to join: ");
+//                choice = scanner.nextInt();
+//                scanner.nextLine();
+//                try {
+//                    virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
+//                    System.out.println("joined game");
+//
+//                    //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
+//                    System.out.println("premi invio per richiedere una ship card");
+//                    scanner.nextLine();
+//                    ShipCardCLI shipCardCLI = new ShipCardCLI();
+//                    ShipCard shipCard = virtualServer.getFreeShipCard(4);
+//
+//                    for (int j = 0; j < 7; j++) {
+//                        shipCard.print(shipCardCLI, j);
+//                        System.out.println();
+//                    }
+//                } catch (UsernameAlreadyTakenException | FullLobbyException e) {
+//                    System.out.println(e.getMessage());
+//                }
 
             }
             else{
@@ -90,7 +90,7 @@ public class MainCLI {
 
 
 
-    public static VirtualServer setup(Scanner scanner) {
+    public static VirtualServer setup() {
         Utils.ConnectionType connectionType = connectionTypeSetup();
         boolean defaultAddress = false;
 
@@ -122,7 +122,7 @@ public class MainCLI {
         VirtualServer virtualServer = null;
         while (virtualServer == null) {
             try {
-                String username = usernameSetup(scanner);
+                String username = usernameSetup();
                 virtualServer = new VirtualServer(connectionType, username, serverIp, serverPort);
             } catch (UsernameAlreadyTakenException | NetworkException e) {
                 System.out.println(e.getMessage());
@@ -147,13 +147,12 @@ public class MainCLI {
 
 
 
-    public static String usernameSetup(Scanner scanner) {
+    public static String usernameSetup() {
         String username = "";
 
-        while (username == null || username.isEmpty()) {
-            System.out.print("Enter username: ");
-            username = scanner.nextLine();
-            if (username == null || username.isEmpty()) {
+        while (username.trim().isEmpty()) {
+            username = Menu.readLine("Enter username: ");
+            if (username.trim().isEmpty()) {
                 System.out.println("Error: invalid username. Try again");
             }
         }

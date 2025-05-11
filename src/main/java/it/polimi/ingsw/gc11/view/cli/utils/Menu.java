@@ -7,6 +7,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static it.polimi.ingsw.gc11.view.cli.MainCLI.functionKey;
@@ -83,6 +84,62 @@ public class Menu {
 
 
 
+    public static String readLine(String prompt) {
+        System.out.print(prompt);
+
+        AtomicReference<StringBuilder> inputBuilder = new AtomicReference<>(new StringBuilder());
+        AtomicBoolean isCompleted = new AtomicBoolean(false);
+
+        NativeKeyListener listener = new NativeKeyListener() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent e) {
+                int keyCode = e.getKeyCode();
+
+                if (keyCode == NativeKeyEvent.VC_ENTER) {
+                    isCompleted.set(true);
+                    System.out.println();
+                }
+                else if (keyCode == NativeKeyEvent.VC_BACKSPACE) {
+                    if (!inputBuilder.get().isEmpty()) {
+                        inputBuilder.get().deleteCharAt(inputBuilder.get().length() - 1);
+                        System.out.print("\b \b");
+                    }
+                }
+                else {
+                    char keyChar = NativeKeyEvent.getKeyText(keyCode).charAt(0);
+
+                    if (keyChar >= 32 && keyChar <= 126) {
+                        inputBuilder.get().append(keyChar);
+                        System.out.print(keyChar);
+                    }
+                }
+            }
+
+            @Override public void nativeKeyReleased(NativeKeyEvent e) {}
+            @Override public void nativeKeyTyped(NativeKeyEvent e) {}
+        };
+
+        try {
+            GlobalScreen.registerNativeHook();
+            GlobalScreen.addNativeKeyListener(listener);
+
+            while (!isCompleted.get()) {
+                Thread.sleep(50); // avoid busy waiting
+            }
+
+            GlobalScreen.removeNativeKeyListener(listener);
+            GlobalScreen.unregisterNativeHook();
+            clearStdin();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return inputBuilder.get().toString();
+    }
+
+
+
     private static void renderMenu(String title, List<String> options, int selected) {
         clearView();
         if(title != null && !title.isEmpty()) {
@@ -104,4 +161,16 @@ public class Menu {
         System.out.flush();
         System.out.println("***    Galaxy Truckers    ***\n");
     }
+
+
+
+    public static void clearStdin() {
+        try {
+            while (System.in.available() > 0) {
+                System.in.read();
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
 }
