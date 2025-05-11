@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.network.client;
 
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -23,11 +24,11 @@ public abstract class Client {
 
 
 
-    abstract public void registerSession(String username) throws NetworkException;
+    abstract public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException;
 
-    abstract public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException;
+    abstract public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException;
 
-    abstract public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException;
+    abstract public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException;
 
     abstract public List<String> getAvailableMatches(String username) throws NetworkException;
 

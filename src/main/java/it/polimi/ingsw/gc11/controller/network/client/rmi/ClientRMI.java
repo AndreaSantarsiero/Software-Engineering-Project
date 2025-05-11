@@ -42,29 +42,29 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     @Override
-    public void registerSession(String username) throws NetworkException {
+    public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
         try {
             this.clientSessionToken = stub.registerPlayerSession(username, stubExporter);
-        } catch (RemoteException | UsernameAlreadyTakenException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not register RMI session");
+        } catch (RemoteException e) {
+            throw new NetworkException(e.getMessage());
         }
     }
 
     @Override
-    public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException {
+    public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
         try {
             stub.createMatch(username, clientSessionToken, flightType, numPlayers);
-        } catch (RemoteException | FullLobbyException | UsernameAlreadyTakenException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not create match");
+        } catch (RemoteException e) {
+            throw new NetworkException(e.getMessage());
         }
     }
 
     @Override
-    public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, NullPointerException {
+    public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
         try{
             stub.connectPlayerToGame(username, clientSessionToken, matchId);
-        } catch (RemoteException | UsernameAlreadyTakenException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not connect to game");
+        } catch (RemoteException e) {
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             return stub.getAvailableMatches(username, clientSessionToken);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not get available matches");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             return stub.getFreeShipCard(username, clientSessionToken, pos);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not get free card\n" + e.getMessage());
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -93,7 +93,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.placeShipCard(username, clientSessionToken, shipCard, x, y);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not place ship card");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.removeShipCard(username, clientSessionToken, x, y);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not remove ship card");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -111,7 +111,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.reserveShipCard(username, clientSessionToken, shipCard);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not reserve ship card");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -120,7 +120,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.useReservedShipCard(username, clientSessionToken, shipCard, x, y);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not use reserved ship card");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             return stub.observeMiniDeck(username, clientSessionToken, numDeck);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not observe mini deck");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -138,7 +138,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.endBuilding(username, clientSessionToken, pos);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not end building");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -149,7 +149,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             return stub.getAdventureCard(username, clientSessionToken);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not get adventure card");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -158,7 +158,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.acceptAdventureCard(username, clientSessionToken);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not accept");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -167,7 +167,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.declineAdventureCard(username, clientSessionToken);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not decline");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -176,7 +176,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.killMembers(username, clientSessionToken, housingUsage);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not kill members");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -185,7 +185,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.chosenMaterial(username, clientSessionToken, storageMaterials);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not chosen material");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -194,7 +194,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.rewardDecision(username, clientSessionToken, decision);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not reward decision");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -203,7 +203,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.chooseFirePower(username, clientSessionToken, batteries, doubleCannons);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not choose fire power");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -212,7 +212,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.getCoordinate(username, clientSessionToken);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not get coordinate");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -221,7 +221,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.handleShot(username, clientSessionToken, batteries);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not handle shot");
+            throw new NetworkException(e.getMessage());
         }
     }
 
@@ -230,7 +230,7 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             stub.eliminateBatteries(username, clientSessionToken, batteries);
         } catch (RemoteException e) {
-            throw new NetworkException("RMI CONNECTION ERROR: could not eliminate batteries");
+            throw new NetworkException(e.getMessage());
         }
     }
 }

@@ -37,8 +37,14 @@ public class MainCLI {
         System.out.println("your choice: " + options.get(choice));
 
         if (choice == 1) {
-            virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
-            System.out.println("game created");
+            try {
+                virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
+                System.out.println("game created");
+            } catch (UsernameAlreadyTakenException e) {
+                System.out.println(e.getMessage());
+            }
+
+
         }
         else if (choice == 2) {
             int i = 0;
@@ -50,22 +56,27 @@ public class MainCLI {
                 System.out.println("insert game to join: ");
                 choice = scanner.nextInt();
                 scanner.nextLine();
-                virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
-                System.out.println("joined game");
+                try {
+                    virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
+                    System.out.println("joined game");
 
-                //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
-                System.out.println("premi invio per richiedere una ship card");
-                scanner.nextLine();
-                ShipCardCLI shipCardCLI = new ShipCardCLI();
-                List<ShipCard> shipCards = virtualServer.getFreeShipCard(4);
-                System.out.println("Ci sono " + shipCards.size() + " ship cards sul tavolo");
+                    //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
+                    System.out.println("premi invio per richiedere una ship card");
+                    scanner.nextLine();
+                    ShipCardCLI shipCardCLI = new ShipCardCLI();
+                    List<ShipCard> shipCards = virtualServer.getFreeShipCard(4);
+                    System.out.println("Ci sono " + shipCards.size() + " ship cards sul tavolo");
 
-                for (int j = 0; j < 7; j++) {
-                    for (ShipCard shipCard : shipCards) {
-                        shipCard.print(shipCardCLI, j);
+                    for (int j = 0; j < 7; j++) {
+                        for (ShipCard shipCard : shipCards) {
+                            shipCard.print(shipCardCLI, j);
+                        }
+                        System.out.println();
                     }
-                    System.out.println();
+                } catch (UsernameAlreadyTakenException | FullLobbyException e) {
+                    System.out.println(e.getMessage());
                 }
+
             }
             else{
                 System.out.println("No matches available");

@@ -44,7 +44,7 @@ public class ConnectionTest {
 
 
     @Test
-    void testCreateMatch() throws NetworkException, UsernameAlreadyTakenException {
+    void testCreateMatch() throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
         VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, "username1", serverIp, RMIPort);
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 4);
         assertEquals(1, playerOne.getAvailableMatches().size(), "Number of available matches doesn't match");

@@ -39,11 +39,11 @@ public class VirtualServer {
 
 
 
-    public void createMatch(FlightBoard.Type flightType, int numPlayers) throws NetworkException {
+    public void createMatch(FlightBoard.Type flightType, int numPlayers) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
         client.createMatch(username, flightType, numPlayers);
     }
 
-    public void connectToGame(String matchId) throws NetworkException, FullLobbyException, NullPointerException {
+    public void connectToGame(String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
         client.connectToGame(username, matchId);
     }
 
