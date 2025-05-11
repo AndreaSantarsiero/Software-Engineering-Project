@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.CheckAndPenalty1Lv1;
 import it.polimi.ingsw.gc11.model.Shot;
-import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 
 import java.util.ArrayList;
 

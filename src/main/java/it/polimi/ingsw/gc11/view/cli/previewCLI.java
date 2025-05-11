@@ -6,6 +6,11 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.model.adventurecard.StarDust;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.FlightBoardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
+
 import java.util.ArrayList;
 import java.util.List;
 

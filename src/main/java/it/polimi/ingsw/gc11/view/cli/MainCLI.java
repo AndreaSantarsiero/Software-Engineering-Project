@@ -8,9 +8,10 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.view.cli.utils.Menu;
+import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -21,7 +22,7 @@ public class MainCLI {
     public static void main(String[] args) throws NetworkException, FullLobbyException {
         VirtualServer virtualServer;
         final Scanner scanner = new Scanner(System.in);
-        clearView();
+        Menu.clearView();
 
         try {
             virtualServer = setup(scanner, args);
@@ -31,9 +32,9 @@ public class MainCLI {
             return;
         }
 
-        System.out.println("Press 1 to create a new match, 2 to see available matches");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        List<String> options = List.of("create a new match", "join an existing match", "exit");
+        int choice = Menu.interactiveMenu(options);
+        System.out.println("your choice: " + options.get(choice));
 
         if (choice == 1) {
             virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
@@ -199,13 +200,5 @@ public class MainCLI {
         }
 
         return username;
-    }
-
-
-
-    public static void clearView(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        System.out.println("***    Galaxy Truckers    ***\n");
     }
 }

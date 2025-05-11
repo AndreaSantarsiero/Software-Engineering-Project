@@ -5,14 +5,10 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-import it.polimi.ingsw.gc11.view.cli.ShipBoardCLI;
-import it.polimi.ingsw.gc11.view.cli.ShipCardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 

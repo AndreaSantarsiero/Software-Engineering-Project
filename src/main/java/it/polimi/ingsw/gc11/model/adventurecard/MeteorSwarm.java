@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.MeteorSwarmState;
 import it.polimi.ingsw.gc11.model.Meteor;
-import it.polimi.ingsw.gc11.view.cli.AdventureCardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import java.util.ArrayList;
 
 

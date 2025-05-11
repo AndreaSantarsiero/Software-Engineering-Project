@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.view.cli;
+package it.polimi.ingsw.gc11.view.cli.utils;
 
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;

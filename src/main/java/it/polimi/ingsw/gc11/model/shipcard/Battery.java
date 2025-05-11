@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.model.shipcard;
 
 
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-import it.polimi.ingsw.gc11.view.cli.ShipCardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 
 
 

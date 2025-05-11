@@ -8,6 +8,8 @@ module it.polimi.ingsw.gc11 {
     requires org.fusesource.jansi;
     requires java.rmi;
     requires java.desktop;
+    requires java.logging;
+    requires com.github.kwhat.jnativehook;
 
     opens it.polimi.ingsw.gc11 to javafx.fxml;
     exports it.polimi.ingsw.gc11;
