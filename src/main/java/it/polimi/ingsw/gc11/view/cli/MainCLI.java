@@ -18,8 +18,8 @@ import java.util.*;
 
 public class MainCLI {
 
-    public static String ip = null;
-    public static Integer port = null;
+    public static String serverIp = null;
+    public static Integer serverPort = null;
     public static Integer functionKey = null;
     public static final List<Integer> otherFunctionKeys = new ArrayList<>();
 
@@ -29,7 +29,6 @@ public class MainCLI {
         VirtualServer virtualServer;
         final Scanner scanner = new Scanner(System.in);
         int choice;
-        Menu.clearView();
 
         try {
             parseArgs(args);
@@ -43,11 +42,7 @@ public class MainCLI {
             return;
         }
 
-
-        List<String> options = List.of("create a new match", "join an existing match", "exit");
-        choice = Menu.interactiveMenu(options);
-        System.out.println("your choice: " + options.get(choice));
-
+        choice = Menu.interactiveMenu("", List.of("create a new match", "join an existing match", "exit"));
         if (choice == 0) {
             try {
                 virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
@@ -96,26 +91,35 @@ public class MainCLI {
 
 
     public static VirtualServer setup(Scanner scanner) {
-        Utils.ConnectionType connectionType = connectionTypeSetup(scanner);
-        String serverIp;
-        int serverPort;
+        Utils.ConnectionType connectionType = connectionTypeSetup();
+        boolean defaultAddress = false;
 
         try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(input);
-            serverIp = ip != null ? ip : prop.getProperty("serverIp");
-            serverPort = port != null ? port :
-                    (connectionType == Utils.ConnectionType.RMI
-                            ? Integer.parseInt(prop.getProperty("serverRMIPort"))
-                            : Integer.parseInt(prop.getProperty("serverSocketPort")));
+
+            if (serverIp == null) {
+                serverIp = prop.getProperty("serverIp");
+                defaultAddress = true;
+            }
+            if (serverPort == null) {
+                if (connectionType == Utils.ConnectionType.RMI) {
+                    serverPort = Integer.parseInt(prop.getProperty("serverRMIPort"));
+                } else {
+                    serverPort = Integer.parseInt(prop.getProperty("serverSocketPort"));
+                }
+            }
         } catch (Exception e) {
             throw new RuntimeException("error loading config.properties: " + e.getMessage());
         }
 
-        System.out.println("Using address " + serverIp + ":" + serverPort);
+        if (defaultAddress) {
+            System.out.println("Using default address " + serverIp + ":" + serverPort);
+        } else {
+            System.out.println("Using custom address " + serverIp + ":" + serverPort);
+        }
 
         VirtualServer virtualServer = null;
-
         while (virtualServer == null) {
             try {
                 String username = usernameSetup(scanner);
@@ -130,25 +134,10 @@ public class MainCLI {
 
 
 
-    public static Utils.ConnectionType connectionTypeSetup(Scanner scanner) {
-        int choice = 0;
+    public static Utils.ConnectionType connectionTypeSetup() {
+        int choice = Menu.interactiveMenu("Choose networking protocol", List.of("Remote Method Invocation", "Socket"));
 
-        while (choice != 1 && choice != 2) {
-            try {
-                System.out.println("Choose networking protocol: ");
-                System.out.println("1. Remote Method Invocation");
-                System.out.println("2. Socket");
-                choice = scanner.nextInt();
-                scanner.nextLine();
-                if (choice != 1 && choice != 2) {
-                    System.out.println("Error: invalid choice. Try again");
-                }
-            } catch (Exception e) {
-                System.out.println("Error: invalid choice. Try again");
-            }
-        }
-
-        if (choice == 1) {
+        if (choice == 0) {
             return Utils.ConnectionType.RMI;
         }
         else {
@@ -190,11 +179,11 @@ public class MainCLI {
                     throw new RuntimeException("Missing function key after -mc");
                 }
             }
-            else if (ip == null) {
-                ip = args[i];
+            else if (serverIp == null) {
+                serverIp = args[i];
                 if (i + 1 < args.length && args[i + 1].matches("\\d+")) {
                     try {
-                        port = Integer.parseInt(args[i + 1]);
+                        serverPort = Integer.parseInt(args[i + 1]);
                         i++;
                     } catch (NumberFormatException e) {
                         throw new RuntimeException("Invalid port number: " + args[i + 1]);

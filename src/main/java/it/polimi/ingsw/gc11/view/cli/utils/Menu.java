@@ -13,13 +13,14 @@ import static it.polimi.ingsw.gc11.view.cli.MainCLI.functionKey;
 import static it.polimi.ingsw.gc11.view.cli.MainCLI.otherFunctionKeys;
 
 
+
 public class Menu {
 
     public static AtomicBoolean isTerminalInFocus = new AtomicBoolean(false);
 
 
 
-    public static int interactiveMenu(List<String> options) {
+    public static int interactiveMenu(String title, List<String> options) {
         AtomicInteger selected = new AtomicInteger(0);
         AtomicInteger previouslySelected = new AtomicInteger(-1);
         AtomicBoolean confirmed = new AtomicBoolean(false);
@@ -62,7 +63,7 @@ public class Menu {
 
             while (!confirmed.get()) {
                 if (previouslySelected.get() != selected.get()) {
-                    renderMenu(options, selected.get());
+                    renderMenu(title, options, selected.get());
                     previouslySelected.set(selected.get());
                 }
             }
@@ -82,9 +83,11 @@ public class Menu {
 
 
 
-    private static void renderMenu(List<String> options, int selected) {
+    private static void renderMenu(String title, List<String> options, int selected) {
         clearView();
-        System.out.println("Choose an option (↑↓ and press Enter):\n");
+        if(title != null && !title.isEmpty()) {
+            System.out.println(title + " (↑↓ and press Enter):");
+        }
         for (int i = 0; i < options.size(); i++) {
             if (i == selected) {
                 System.out.println("  > \u001b[48;5;235m" + options.get(i) + "\u001b[0m");
