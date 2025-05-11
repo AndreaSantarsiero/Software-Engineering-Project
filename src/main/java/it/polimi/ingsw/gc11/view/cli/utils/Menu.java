@@ -5,19 +5,16 @@ import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import static it.polimi.ingsw.gc11.view.cli.MainCLI.functionKey;
+import static it.polimi.ingsw.gc11.view.cli.MainCLI.otherFunctionKeys;
 
 
 public class Menu {
 
-    public static int FOCUS_TIMEOUT = 200;
-    private static Timer inactivityTimer = new Timer();
     public static AtomicBoolean isTerminalInFocus = new AtomicBoolean(false);
 
 
@@ -30,14 +27,23 @@ public class Menu {
         NativeKeyListener listener = new NativeKeyListener() {
             @Override
             public void nativeKeyPressed(NativeKeyEvent e) {
-                isTerminalInFocus.set(true);
-                resetInactivityTimer();
+                int keyCode = e.getKeyCode();
+
+                if (functionKey != null && keyCode == functionKey) {
+                    isTerminalInFocus.set(true);
+                    return;
+                }
+
+                if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
+                    isTerminalInFocus.set(false);
+                    return;
+                }
 
                 if (!isTerminalInFocus.get()) {
                     return;
                 }
 
-                switch (e.getKeyCode()) {
+                switch (keyCode) {
                     case NativeKeyEvent.VC_UP -> selected.set((selected.get() - 1 + options.size()) % options.size());
                     case NativeKeyEvent.VC_DOWN -> selected.set((selected.get() + 1) % options.size());
                     case NativeKeyEvent.VC_ENTER -> confirmed.set(true);
@@ -55,7 +61,7 @@ public class Menu {
             GlobalScreen.addNativeKeyListener(listener);
 
             while (!confirmed.get()) {
-                if (previouslySelected.get() != selected.get()){
+                if (previouslySelected.get() != selected.get()) {
                     renderMenu(options, selected.get());
                     previouslySelected.set(selected.get());
                 }
@@ -90,24 +96,9 @@ public class Menu {
 
 
 
-    public static void clearView(){
+    public static void clearView() {
         System.out.print("\u001b[H\u001b[2J");
         System.out.flush();
         System.out.println("***    Galaxy Truckers    ***\n");
-    }
-
-
-
-    private static void resetInactivityTimer() {
-        inactivityTimer.cancel();
-        inactivityTimer = new Timer();
-        inactivityTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (isTerminalInFocus.get()) {
-                    isTerminalInFocus.set(false);
-                }
-            }
-        }, FOCUS_TIMEOUT);
     }
 }

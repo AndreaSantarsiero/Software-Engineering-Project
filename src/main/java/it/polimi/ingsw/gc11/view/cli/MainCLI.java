@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli;
 
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import it.polimi.ingsw.gc11.controller.ServerMAIN;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
@@ -17,6 +18,13 @@ import java.util.*;
 
 public class MainCLI {
 
+    public static String ip = null;
+    public static Integer port = null;
+    public static Integer functionKey = null;
+    public static final List<Integer> otherFunctionKeys = new ArrayList<>();
+
+
+
     public static void main(String[] args) throws NetworkException, FullLobbyException {
         VirtualServer virtualServer;
         final Scanner scanner = new Scanner(System.in);
@@ -24,7 +32,11 @@ public class MainCLI {
         Menu.clearView();
 
         try {
-            virtualServer = setup(scanner, args);
+            parseArgs(args);
+            if (functionKey == null) {
+                Menu.isTerminalInFocus.set(true);
+            }
+            virtualServer = setup(scanner);
         } catch (RuntimeException e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");
@@ -83,24 +95,29 @@ public class MainCLI {
 
 
 
-    public static VirtualServer setup(Scanner scanner, String[] args) {
+    public static VirtualServer setup(Scanner scanner) {
         Utils.ConnectionType connectionType = connectionTypeSetup(scanner);
-        String serverIp = ipSetup(args);
-        int serverPort = portSetup(args, connectionType);
+        String serverIp;
+        int serverPort;
 
-        if(args.length == 2){
-            System.out.println("Using custom address " + serverIp + ":" + serverPort);
-
+        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+            serverIp = ip != null ? ip : prop.getProperty("serverIp");
+            serverPort = port != null ? port :
+                    (connectionType == Utils.ConnectionType.RMI
+                            ? Integer.parseInt(prop.getProperty("serverRMIPort"))
+                            : Integer.parseInt(prop.getProperty("serverSocketPort")));
+        } catch (Exception e) {
+            throw new RuntimeException("error loading config.properties: " + e.getMessage());
         }
-        else {
-            System.out.println("Using default address " + serverIp + ":" + serverPort);
-        }
 
+        System.out.println("Using address " + serverIp + ":" + serverPort);
 
         VirtualServer virtualServer = null;
 
         while (virtualServer == null) {
-            try{
+            try {
                 String username = usernameSetup(scanner);
                 virtualServer = new VirtualServer(connectionType, username, serverIp, serverPort);
             } catch (UsernameAlreadyTakenException | NetworkException e) {
@@ -141,61 +158,6 @@ public class MainCLI {
 
 
 
-    public static String ipSetup(String[] args) {
-        String serverIp;
-
-        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
-            Properties prop = new Properties();
-            prop.load(input);
-            serverIp = prop.getProperty("serverIp");
-        }
-        catch (Exception e) {
-            throw new RuntimeException("error loading config.properties: " + e.getMessage());
-        }
-
-        if (args.length == 2) {
-            serverIp = args[0];
-        }
-
-        return serverIp;
-    }
-
-
-
-    public static int portSetup(String[] args, Utils.ConnectionType connectionType) {
-        int serverPort;
-
-        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
-            Properties prop = new Properties();
-            prop.load(input);
-            if (connectionType == Utils.ConnectionType.RMI) {
-                serverPort = Integer.parseInt(prop.getProperty("serverRMIPort"));
-            }
-            else {
-                serverPort = Integer.parseInt(prop.getProperty("serverSocketPort"));
-            }
-        }
-        catch (Exception e) {
-            throw new RuntimeException("error loading config.properties: " + e.getMessage());
-        }
-
-        if (args.length == 2) {
-            try{
-                serverPort = Integer.parseInt(args[1]);
-                if (serverPort <= 0 || serverPort > 65535) {
-                    throw new NumberFormatException("Port number out of range");
-                }
-            }
-            catch (NumberFormatException e){
-                System.out.println("Invalid port number: " + args[1] + ". Using default port: " + serverPort);
-            }
-        }
-
-        return serverPort;
-    }
-
-
-
     public static String usernameSetup(Scanner scanner) {
         String username = "";
 
@@ -208,5 +170,54 @@ public class MainCLI {
         }
 
         return username;
+    }
+
+
+
+    private static void parseArgs(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equalsIgnoreCase("-mc")) {
+                if (i + 1 < args.length) {
+                    String fn = args[i + 1].toUpperCase();
+                    if (fn.matches("F[1-9]|F1[0-2]")) {
+                        functionKey = NativeKeyEvent.VC_F1 + (Integer.parseInt(fn.substring(1)) - 1);
+                        i++;
+                    }
+                    else {
+                        throw new RuntimeException("Invalid function key after -mc: " + fn);
+                    }
+                } else {
+                    throw new RuntimeException("Missing function key after -mc");
+                }
+            }
+            else if (ip == null) {
+                ip = args[i];
+                if (i + 1 < args.length && args[i + 1].matches("\\d+")) {
+                    try {
+                        port = Integer.parseInt(args[i + 1]);
+                        i++;
+                    } catch (NumberFormatException e) {
+                        throw new RuntimeException("Invalid port number: " + args[i + 1]);
+                    }
+                }
+            }
+            else {
+                throw new RuntimeException("Unexpected argument: " + args[i]);
+            }
+        }
+
+        otherFunctionKeysInitializer();
+    }
+
+
+
+    private static void otherFunctionKeysInitializer(){
+        if (functionKey != null) {
+            for (int i = NativeKeyEvent.VC_F1; i <= NativeKeyEvent.VC_F12; i++) {
+                if (i != functionKey) {
+                    otherFunctionKeys.add(i);
+                }
+            }
+        }
     }
 }
