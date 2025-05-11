@@ -1580,4 +1580,44 @@ public abstract class ShipBoard  implements Serializable {
 
         return false;    /* didn't find any ShipCard on the given direction and coordinate => ShipBoard is not affected by the hit */
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        ShipBoard other = (ShipBoard) obj;
+        for(int row = 0; row < components.length; row++) {
+            for(int col = 0; col < components[0].length; col++) {
+                if(this.components[row][col] == null && other.components[row][col] == null) {
+                    continue;
+                }
+                if(this.components[row][col] == null && other.components[row][col] != null ||
+                        this.components[row][col] != null && other.components[row][col] == null) {
+                    return false;
+                }
+                if(!this.components[row][col].equals(other.components[row][col])){
+                    return false;
+                }
+            }
+        }
+
+        for(int i = 0; i < reservedComponents.size(); i++) {
+            if(this.reservedComponents.get(i) == null && other.reservedComponents.get(i) == null) {
+                continue;
+            }
+            if(this.reservedComponents.get(i) == null && other.reservedComponents.get(i) != null ||
+                this.reservedComponents.get(i) != null && other.reservedComponents.get(i) == null) {
+                return false;
+            }
+            if(!this.reservedComponents.get(i).equals(other.reservedComponents.get(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
