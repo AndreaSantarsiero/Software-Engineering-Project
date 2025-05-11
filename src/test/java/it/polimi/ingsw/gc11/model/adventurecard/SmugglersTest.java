@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SmugglersTest {
 
-    private ArrayList<Material> materials;
+    public ArrayList<Material> materials;
 
 
 
@@ -59,7 +59,7 @@ public class SmugglersTest {
 
     @Test
     public void testConstructorWithNegativeLostMaterials() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Smugglers(AdventureCard.Type.TRIAL, 3, 5, -2, materials), "Lost materials cannot be negative");
+        assertThrows(IllegalArgumentException.class, () -> new Smugglers(AdventureCard.Type.TRIAL, 3, 5, -2, materials), "Lost materials cannot be negative");
     }
 
 
