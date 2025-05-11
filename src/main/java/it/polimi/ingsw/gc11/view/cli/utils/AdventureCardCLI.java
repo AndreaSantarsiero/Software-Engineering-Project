@@ -216,7 +216,7 @@ public class AdventureCardCLI {
                     System.out.print("  ");
                 }
             }
-            catch (Exception _){
+            catch (Exception ignored){
                 System.out.print("                    ");
             }
         }

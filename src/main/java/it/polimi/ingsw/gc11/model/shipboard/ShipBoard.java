@@ -345,7 +345,7 @@ public abstract class ShipBoard  implements Serializable {
                         numComponents++;
                     }
                 }
-                catch (Exception _) {
+                catch (Exception ignored) {
 
                 }
             }
@@ -370,7 +370,7 @@ public abstract class ShipBoard  implements Serializable {
                         numComponents++;
                     }
                 }
-                catch (Exception _) {
+                catch (Exception ignored) {
 
                 }
             }
@@ -524,7 +524,7 @@ public abstract class ShipBoard  implements Serializable {
                             }
                         }
                     }
-                    catch (Exception _) {
+                    catch (Exception ignored) {
 
                     }
 
@@ -537,7 +537,7 @@ public abstract class ShipBoard  implements Serializable {
                             }
                         }
                     }
-                    catch (Exception _) {
+                    catch (Exception ignored) {
 
                     }
 
@@ -550,7 +550,7 @@ public abstract class ShipBoard  implements Serializable {
                             }
                         }
                     }
-                    catch (Exception _) {
+                    catch (Exception ignored) {
 
                     }
 
@@ -563,7 +563,7 @@ public abstract class ShipBoard  implements Serializable {
                             }
                         }
                     }
-                    catch (Exception _) {
+                    catch (Exception ignored) {
 
                     }
                 }
@@ -639,7 +639,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x, y-1);   /* inductive step */
                     }
                 }
-                catch (Exception _) {
+                catch (Exception ignored) {
 
                 }
             }
@@ -651,7 +651,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x+1, y);   /* inductive step */
                     }
                 }
-                    catch (Exception _) {
+                    catch (Exception ignored) {
 
                 }
             }
@@ -663,7 +663,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x, y+1);   /* inductive step */
                     }
                 }
-                catch (Exception _) {
+                catch (Exception ignored) {
 
                 }
             }
@@ -675,7 +675,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x-1, y);   /* inductive step */
                     }
                 }
-                catch (Exception _) {
+                catch (Exception ignored) {
 
                 }
             }
@@ -686,7 +686,7 @@ public abstract class ShipBoard  implements Serializable {
 
             return connectedComponents;
         }
-        catch (Exception _) {
+        catch (Exception ignored) {
             return 0;
         }
     }
@@ -719,7 +719,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i-1][j].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception _) {
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -731,7 +731,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i][j+1].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception _) {
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -743,7 +743,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i+1][j].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception _) {
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -755,7 +755,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i][j-1].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception _) {
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -780,7 +780,7 @@ public abstract class ShipBoard  implements Serializable {
                         components[i+1][j].setIllegal(true);
                         status = false;
                     }
-                } catch (Exception _) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -1187,7 +1187,7 @@ public abstract class ShipBoard  implements Serializable {
                             targetMaterial = materialToRemove;
                         }
                     }
-                    catch(IllegalArgumentException _){
+                    catch(IllegalArgumentException ignored){
 
                     }
                 }
@@ -1450,7 +1450,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }
@@ -1468,7 +1468,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }
@@ -1486,7 +1486,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }
@@ -1504,7 +1504,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }
@@ -1530,7 +1530,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }
@@ -1544,7 +1544,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }
@@ -1558,7 +1558,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }
@@ -1572,7 +1572,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception _){
+                catch(Exception ignored){
 
                 }
             }

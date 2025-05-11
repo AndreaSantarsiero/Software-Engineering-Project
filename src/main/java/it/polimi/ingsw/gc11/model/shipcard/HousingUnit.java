@@ -79,7 +79,7 @@ public class HousingUnit extends ShipCard {
         try{
             this.killMembers(1);
         }
-        catch(Exception _){
+        catch(Exception ignored){
 
         }
     }
