@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
 class SlaversTest {
 
     @Test

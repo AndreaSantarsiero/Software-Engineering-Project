@@ -4,16 +4,19 @@ import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
 class PlanetsCardTest {
+
     private Planet planet1;
     private Planet planet2;
     private Planet planet3;
     private ArrayList<Planet> validPlanets;
+
+
 
     @BeforeEach
     void setUp() {
@@ -24,6 +27,8 @@ class PlanetsCardTest {
         validPlanets.add(planet1);
         validPlanets.add(planet2);
     }
+
+
 
     @Test
     void testValidConstructor() {
