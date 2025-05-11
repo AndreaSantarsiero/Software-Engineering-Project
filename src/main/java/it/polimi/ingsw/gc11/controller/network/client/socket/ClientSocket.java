@@ -65,7 +65,7 @@ public class ClientSocket extends Client {
 
 
     @Override
-    public List<ShipCard> getFreeShipCard(String username, int pos) throws NetworkException {
+    public ShipCard getFreeShipCard(String username, int pos) throws NetworkException {
         return null;
     }
 

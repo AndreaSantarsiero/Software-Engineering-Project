@@ -22,7 +22,7 @@ public interface ServerInterface extends Remote {
     List<String> getAvailableMatches(String username, UUID token) throws RemoteException;
 
     //Building phase methods
-    List<ShipCard> getFreeShipCard(String username, UUID token, int pos) throws RemoteException;
+    ShipCard getFreeShipCard(String username, UUID token, int pos) throws RemoteException;
     void placeShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException;
     void removeShipCard(String username, UUID token, int x, int y) throws RemoteException;
     void reserveShipCard(String username, UUID token, ShipCard shipCard) throws RemoteException;

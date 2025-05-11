@@ -28,7 +28,7 @@ public abstract class GamePhase {
 
 
     //BuildingPhase
-    public List<ShipCard> getFreeShipCard(GameModel gameModel, int pos){
+    public ShipCard getFreeShipCard(GameModel gameModel, int pos){
         throw new IllegalStateException("Can't get free ship card in the current game phase.");
     }
 

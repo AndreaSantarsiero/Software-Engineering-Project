@@ -18,7 +18,7 @@ public interface GameInterface {
     void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException;
 
     //Building phase methods
-    List<ShipCard> getFreeShipCard(int pos);
+    ShipCard getFreeShipCard(int pos);
     void placeShipCard(String username, ShipCard shipCard, int x, int y);
     void removeShipCard(String username, int x, int y);
     void reserveShipCard(String username, ShipCard shipCard);

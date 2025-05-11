@@ -64,13 +64,10 @@ public class MainCLI {
                     System.out.println("premi invio per richiedere una ship card");
                     scanner.nextLine();
                     ShipCardCLI shipCardCLI = new ShipCardCLI();
-                    List<ShipCard> shipCards = virtualServer.getFreeShipCard(4);
-                    System.out.println("Ci sono " + shipCards.size() + " ship cards sul tavolo");
+                    ShipCard shipCard = virtualServer.getFreeShipCard(4);
 
                     for (int j = 0; j < 7; j++) {
-                        for (ShipCard shipCard : shipCards) {
-                            shipCard.print(shipCardCLI, j);
-                        }
+                        shipCard.print(shipCardCLI, j);
                         System.out.println();
                     }
                 } catch (UsernameAlreadyTakenException | FullLobbyException e) {

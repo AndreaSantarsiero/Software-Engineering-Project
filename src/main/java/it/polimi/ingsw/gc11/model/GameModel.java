@@ -259,24 +259,28 @@ public class GameModel {
      * ShipCard's and ShipBoard's methods
      */
     //Get shipcard in pos position in the arraylist of all shipcards down on the table
-    public List<ShipCard> getFreeShipCard(int pos){
-        if(pos < 0 || pos >= this.shipCardsALL.size()){
+    public ShipCard getFreeShipCard(int pos){
+        if(pos < 0 || pos >= shipCardsALL.size()){
             throw new IllegalArgumentException("Invalid position");
         }
-        this.shipCardsALL.get(pos).discover();
-        List<ShipCard> shipCards = new ArrayList<>();
-        StructuralModule coveredShipCard = new StructuralModule("covered", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL);
+        shipCardsALL.get(pos).discover();
+        return shipCardsALL.get(pos);
 
-        for(ShipCard shipCard : shipCardsALL){
-            if(!shipCard.isCovered()){
-                shipCards.add(shipCard);
-            }
-            else{
-                shipCards.add(coveredShipCard);
-            }
-        }
 
-        return shipCards;
+
+//        to be moved in another place
+//
+//        List<ShipCard> shipCards = new ArrayList<>();
+//        StructuralModule coveredShipCard = new StructuralModule("covered", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL);
+//
+//        for(ShipCard shipCard : shipCardsALL){
+//            if(!shipCard.isCovered()){
+//                shipCards.add(shipCard);
+//            }
+//            else{
+//                shipCards.add(coveredShipCard);
+//            }
+//        }
     }
 
     public ShipCard getShipCardFromShipBoard(String username, int x, int y){

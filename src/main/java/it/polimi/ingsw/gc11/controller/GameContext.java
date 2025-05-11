@@ -50,7 +50,7 @@ public class GameContext implements GameInterface {
     }
 
     //BuildingPhase
-    public List<ShipCard> getFreeShipCard(int pos){
+    public ShipCard getFreeShipCard(int pos){
         return phase.getFreeShipCard(this.gameModel, pos);
     }
 

@@ -73,14 +73,14 @@ public class GameContextTest {
     void testWhenCoordsNegative() {
         connect3Players();
         assertThrows(IllegalArgumentException.class,
-                () -> gameContext.placeShipCard("alice", gameContext.getFreeShipCard(1).get(0), -1, 0));
+                () -> gameContext.placeShipCard("alice", gameContext.getFreeShipCard(1), -1, 0));
     }
 
     @Test
     void testPlaceShipCard(){
         connect3Players();
-        assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0).get(0), 7, 7));
-        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0).get(0), 3, 3));
+        assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0), 7, 7));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0), 3, 3));
     }
 
     @Test

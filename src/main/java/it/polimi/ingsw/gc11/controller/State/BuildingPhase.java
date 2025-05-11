@@ -22,7 +22,7 @@ public class BuildingPhase extends GamePhase {
     }
 
     @Override
-    public List<ShipCard> getFreeShipCard(GameModel gameModel, int pos){
+    public ShipCard getFreeShipCard(GameModel gameModel, int pos){
         return gameModel.getFreeShipCard(pos);
     }
 
