@@ -17,6 +17,7 @@ public class SmugglersTest {
     @BeforeEach
     public void setUp() {
         materials = new ArrayList<>();
+        assertNotNull(materials, "Materials list not initialized correctly");
         materials.add(new Material(Material.Type.BLUE));
         materials.add(new Material(Material.Type.RED));
     }
