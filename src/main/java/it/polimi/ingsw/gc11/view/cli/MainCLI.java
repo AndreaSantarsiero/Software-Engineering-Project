@@ -10,8 +10,14 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Scanner;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 
 
 
@@ -30,43 +36,91 @@ public class MainCLI {
             return;
         }
 
-        System.out.println("Press 1 to create a new match, 2 to see available matches");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
-        if (choice == 1) {
-            virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
-            System.out.println("game created");
-        }
-        else if (choice == 2) {
-            int i = 0;
-            if(!virtualServer.getAvailableMatches().isEmpty()) {
-                for(String matchId : virtualServer.getAvailableMatches()){
-                    i++;
-                    System.out.println(i + ") " + matchId);
-                }
-                System.out.println("insert game to join: ");
-                choice = scanner.nextInt();
-                scanner.nextLine();
-                virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
-                System.out.println("joined game");
 
-                //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
-                System.out.println("premi invio per richiedere una ship card");
-                scanner.nextLine();
-                ShipCardCLI shipCardCLI = new ShipCardCLI();
-                List<ShipCard> shipCards = virtualServer.getFreeShipCard(4);
-                System.out.println("Ci sono " + shipCards.size() + " ship cards sul tavolo");
 
-                for (int j = 0; j < 7; j++) {
-                    for (ShipCard shipCard : shipCards) {
-                        shipCard.print(shipCardCLI, j);
+        try{
+            Terminal terminal = TerminalBuilder.builder().system(true).build();
+            LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
+
+            List<String> options = List.of("create a new match", "see available matches");
+            int selected = 0;
+
+            while (true) {
+                terminal.puts(InfoCmp.Capability.clear_screen);
+                terminal.flush();
+                terminal.writer().println("Create a new match or join an existing one (use ↑↓ and press Enter):\n");
+
+                for (int i = 0; i < options.size(); i++) {
+                    if (i == selected) {
+                        terminal.writer().println("  > \u001b[47m" + options.get(i) + "\u001b[0m");  // evidenzia
+                    } else {
+                        terminal.writer().println("    " + options.get(i));
                     }
-                    System.out.println();
+                }
+                terminal.flush();
+
+                int ch = terminal.reader().read(); // legge singolo carattere
+
+                if (ch == 27) { // ESC sequence
+                    int next1 = terminal.reader().read();
+                    int next2 = terminal.reader().read();
+                    if (next1 == 91) { // '['
+                        if (next2 == 65) { // 'A' = freccia su
+                            selected = (selected - 1 + options.size()) % options.size();
+                        } else if (next2 == 66) { // 'B' = freccia giù
+                            selected = (selected + 1) % options.size();
+                        }
+                    }
+                } else if (ch == 10 || ch == 13) { // Invio (LF o CR)
+                    break;
                 }
             }
-            else{
-                System.out.println("No matches available");
+
+            terminal.writer().println("\nYour choice: " + options.get(selected));
+            terminal.flush();
+
+
+
+
+
+
+            if (Objects.equals(options.get(selected), options.getFirst())) {
+                virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
+                System.out.println("game created");
             }
+            else if (Objects.equals(options.get(selected), options.get(1))) {
+                int i = 0;
+                if(!virtualServer.getAvailableMatches().isEmpty()) {
+                    for(String matchId : virtualServer.getAvailableMatches()){
+                        i++;
+                        System.out.println(i + ") " + matchId);
+                    }
+                    System.out.println("insert game to join: ");
+                    int choice = scanner.nextInt();
+                    scanner.nextLine();
+                    virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
+                    System.out.println("joined game");
+
+                    //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
+                    System.out.println("premi invio per richiedere una ship card");
+                    scanner.nextLine();
+                    ShipCardCLI shipCardCLI = new ShipCardCLI();
+                    List<ShipCard> shipCards = virtualServer.getFreeShipCard(4);
+                    System.out.println("Ci sono " + shipCards.size() + " ship cards sul tavolo");
+
+                    for (int j = 0; j < 7; j++) {
+                        for (ShipCard shipCard : shipCards) {
+                            shipCard.print(shipCardCLI, j);
+                        }
+                        System.out.println();
+                    }
+                }
+                else{
+                    System.out.println("No matches available");
+                }
+            }
+        } catch (Exception e) {
+
         }
     }
 
