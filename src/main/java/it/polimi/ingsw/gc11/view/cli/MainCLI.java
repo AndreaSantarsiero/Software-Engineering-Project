@@ -22,6 +22,7 @@ public class MainCLI {
     public static void main(String[] args) throws NetworkException, FullLobbyException {
         VirtualServer virtualServer;
         final Scanner scanner = new Scanner(System.in);
+        int choice;
         Menu.clearView();
 
         try {
@@ -32,9 +33,16 @@ public class MainCLI {
             return;
         }
 
-        List<String> options = List.of("create a new match", "join an existing match", "exit");
-        int choice = Menu.interactiveMenu(options);
-        System.out.println("your choice: " + options.get(choice));
+        try {
+            List<String> options = List.of("create a new match", "join an existing match", "exit");
+            choice = Menu.interactiveMenu(options);
+            System.out.println("your choice: " + options.get(choice));
+        } catch (Exception e) {
+            System.out.println("FATAL ERROR: " + e.getMessage());
+            System.out.println("Aborting...");
+            return;
+        }
+
 
         if (choice == 0) {
             try {
