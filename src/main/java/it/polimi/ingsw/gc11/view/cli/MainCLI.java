@@ -36,7 +36,7 @@ public class MainCLI {
         int choice = Menu.interactiveMenu(options);
         System.out.println("your choice: " + options.get(choice));
 
-        if (choice == 1) {
+        if (choice == 0) {
             try {
                 virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
                 System.out.println("game created");
@@ -46,7 +46,7 @@ public class MainCLI {
 
 
         }
-        else if (choice == 2) {
+        else if (choice == 1) {
             int i = 0;
             if(!virtualServer.getAvailableMatches().isEmpty()) {
                 for(String matchId : virtualServer.getAvailableMatches()){

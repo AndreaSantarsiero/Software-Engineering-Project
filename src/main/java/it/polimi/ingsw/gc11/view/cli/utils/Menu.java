@@ -15,9 +15,9 @@ import java.util.logging.Logger;
 public class Menu {
     public static int interactiveMenu(List<String> options) {
         AtomicInteger selected = new AtomicInteger(0);
+        AtomicInteger previouslySelected = new AtomicInteger(-1);
         AtomicBoolean confirmed = new AtomicBoolean(false);
 
-        // Listener dei tasti
         NativeKeyListener listener = new NativeKeyListener() {
             @Override
             public void nativeKeyPressed(NativeKeyEvent e) {
@@ -33,7 +33,6 @@ public class Menu {
         };
 
         try {
-            // Disattiva logging JNativeHook
             Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
             logger.setLevel(Level.OFF);
             GlobalScreen.registerNativeHook();
@@ -41,14 +40,16 @@ public class Menu {
 
             // Loop di rendering
             while (!confirmed.get()) {
-                renderMenu(options, selected.get());
-                Thread.sleep(100); // per ridurre il flickering
+                if (previouslySelected.get() != selected.get()){
+                    renderMenu(options, selected.get());
+                    previouslySelected.set(selected.get());
+                }
             }
 
             return selected.get();
 
-        } catch (NativeHookException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (NativeHookException e) {
+            System.out.println(e.getMessage());
             return -1;
         } finally {
             try {
