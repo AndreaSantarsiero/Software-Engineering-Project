@@ -11,9 +11,7 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.cli.utils.Menu;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
 
 
 
