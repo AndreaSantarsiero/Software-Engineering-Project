@@ -22,4 +22,3 @@ public class ChooseFirePowerAction extends ClientAction {
         ctx.chooseFirePower(getUsername(), batteries, cannons);
     }
 }
-
