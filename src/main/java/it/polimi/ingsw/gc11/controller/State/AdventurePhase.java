@@ -113,12 +113,7 @@ public class AdventurePhase extends GamePhase {
 
     @Override
     public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
-        try {
-            this.advState.killMembers(username, housingUsage);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+        this.advState.killMembers(username, housingUsage);
     }
 
     @Override
