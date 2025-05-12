@@ -34,7 +34,7 @@ public class GameModel {
         adventureCardsDecks = new ArrayList<>();
         definitiveDeck = null;
         ShipCardLoader shipCardLoader = new ShipCardLoader();
-        freeShipCards = shipCardLoader.getAllShipCards();
+        freeShipCards = shipCardLoader.getAvailableShipCards();
         heldShipCards = new HashMap<>();
         Collections.shuffle(freeShipCards);
         freeShipCards = new ArrayList<>(freeShipCards);
