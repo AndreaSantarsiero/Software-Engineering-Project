@@ -27,6 +27,7 @@ public class ServerRMI extends Server implements ServerInterface {
     public ServerRMI(ServerController serverController, int port) throws NetworkException, UsernameAlreadyTakenException {
         super(serverController);
         try {
+            System.setProperty("java.rmi.server.hostname", "192.168.1.25");
             ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, 0);
             registry = LocateRegistry.createRegistry(port);
             registry.bind("ServerInterface", stub);
