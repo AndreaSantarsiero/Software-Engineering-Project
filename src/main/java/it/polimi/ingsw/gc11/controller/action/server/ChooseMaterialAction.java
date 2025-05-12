@@ -8,10 +8,10 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseMaterialStationAction extends ClientAction {
+public class ChooseMaterialAction extends ClientAction {
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
 
-    public ChooseMaterialStationAction(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
+    public ChooseMaterialAction(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
         super(username);
         this.storageMaterials = storageMaterials;
     }
