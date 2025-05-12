@@ -2,8 +2,8 @@ package it.polimi.ingsw.gc11.controller.action.server;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 
-public class AcceptAbandonedShipAction extends ClientAction {
-    public AcceptAbandonedShipAction(String username) {
+public class AcceptAdventureCardAction extends ClientAction {
+    public AcceptAdventureCardAction(String username) {
         super(username);
     }
 
@@ -12,4 +12,6 @@ public class AcceptAbandonedShipAction extends ClientAction {
         ctx.acceptAdventureCard(getUsername());
     }
 }
+
+
 
