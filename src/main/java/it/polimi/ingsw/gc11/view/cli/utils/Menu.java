@@ -5,9 +5,9 @@ import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static it.polimi.ingsw.gc11.view.cli.MainCLI.functionKey;
@@ -85,74 +85,11 @@ public class Menu {
 
 
 
-    public static String readLine(String prompt) {
-        System.out.print(prompt);
-
-        AtomicReference<StringBuilder> inputBuilder = new AtomicReference<>(new StringBuilder());
-        AtomicBoolean isCompleted = new AtomicBoolean(false);
-
-        NativeKeyListener listener = new NativeKeyListener() {
-            @Override
-            public void nativeKeyPressed(NativeKeyEvent e) {
-                int keyCode = e.getKeyCode();
-
-                if (functionKey != null && keyCode == functionKey) {
-                    isTerminalInFocus.set(true);
-                    return;
-                }
-
-                if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
-                    isTerminalInFocus.set(false);
-                    return;
-                }
-
-                if (!isTerminalInFocus.get()) {
-                    return;
-                }
-
-                if (keyCode == NativeKeyEvent.VC_ENTER) {
-                    isCompleted.set(true);
-                    System.out.println();
-                }
-                else if (keyCode == NativeKeyEvent.VC_BACKSPACE) {
-                    if (!inputBuilder.get().isEmpty()) {
-                        inputBuilder.get().deleteCharAt(inputBuilder.get().length() - 1);
-                        System.out.print("\b \b");
-                    }
-                }
-                else {
-                    char keyChar = e.getKeyChar();
-
-                    if (keyChar >= 32 && keyChar <= 126) {
-                        inputBuilder.get().append(keyChar);
-                        System.out.print(keyChar);
-                    }
-                }
-            }
-
-            @Override public void nativeKeyReleased(NativeKeyEvent e) {}
-            @Override public void nativeKeyTyped(NativeKeyEvent e) {}
-        };
-
-        try {
-            GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeKeyListener(listener);
-
-            while (!isCompleted.get()) {
-                Thread.sleep(50); // avoid busy waiting
-            }
+    public static String readLine(String message) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print(message);
+            return scanner.nextLine();
         }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                GlobalScreen.removeNativeKeyListener(listener);
-                GlobalScreen.unregisterNativeHook();
-                clearStdin();
-            } catch (NativeHookException ignored) {}
-        }
-
-        return inputBuilder.get().toString();
     }
 
 
