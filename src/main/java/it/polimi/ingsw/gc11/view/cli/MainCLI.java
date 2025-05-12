@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli;
 
+import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import it.polimi.ingsw.gc11.controller.ServerMAIN;
 import it.polimi.ingsw.gc11.controller.network.Utils;
@@ -30,12 +31,13 @@ public class MainCLI {
         int choice;
 
         try {
+            Menu.initialize();
             parseArgs(args);
             if (functionKey == null) {
                 Menu.isTerminalInFocus.set(true);
             }
             virtualServer = setup();
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | NativeHookException e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");
             return;

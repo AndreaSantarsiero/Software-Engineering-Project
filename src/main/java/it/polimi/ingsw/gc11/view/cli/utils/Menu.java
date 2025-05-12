@@ -22,6 +22,14 @@ public class Menu {
 
 
 
+    public static void initialize() throws NativeHookException {
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+        GlobalScreen.registerNativeHook();
+    }
+
+
+
     public static int interactiveMenu(String title, List<String> options) {
         AtomicInteger selected = new AtomicInteger(0);
         AtomicInteger previouslySelected = new AtomicInteger(-1);
@@ -57,36 +65,26 @@ public class Menu {
             @Override public void nativeKeyTyped(NativeKeyEvent e) {}
         };
 
-        try {
-            Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-            logger.setLevel(Level.OFF);
-            GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeKeyListener(listener);
+        GlobalScreen.addNativeKeyListener(listener);
 
-            while (!confirmed.get()) {
-                if (previouslySelected.get() != selected.get()) {
-                    renderMenu(title, options, selected.get());
-                    previouslySelected.set(selected.get());
-                }
+        while (!confirmed.get()) {
+            if (previouslySelected.get() != selected.get()) {
+                renderMenu(title, options, selected.get());
+                previouslySelected.set(selected.get());
             }
-
-            return selected.get();
-
-        } catch (NativeHookException e) {
-            System.out.println(e.getMessage());
-            return -1;
-        } finally {
-            try {
-                GlobalScreen.removeNativeKeyListener(listener);
-                GlobalScreen.unregisterNativeHook();
-                clearStdin();
-            } catch (NativeHookException ignored) {}
         }
+
+        GlobalScreen.removeNativeKeyListener(listener);
+        //clearStdin();
+        return selected.get();
     }
 
 
 
     public static String readLine(String message) {
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
         System.out.print(message);
         return scanner.nextLine();
     }
