@@ -75,16 +75,13 @@ public class Menu {
         }
 
         GlobalScreen.removeNativeKeyListener(listener);
-        //clearStdin();
+        clearStdin();
         return selected.get();
     }
 
 
 
     public static String readLine(String message) {
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
         System.out.print(message);
         return scanner.nextLine();
     }
