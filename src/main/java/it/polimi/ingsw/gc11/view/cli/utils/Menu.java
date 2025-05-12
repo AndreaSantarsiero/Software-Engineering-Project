@@ -75,7 +75,7 @@ public class Menu {
         }
 
         GlobalScreen.removeNativeKeyListener(listener);
-        clearStdin();
+        //clearStdin();
         return selected.get();
     }
 
@@ -100,40 +100,42 @@ public class Menu {
 
                 if (functionKey != null && keyCode == functionKey) {
                     isTerminalInFocus.set(true);
-                    return;
                 }
-
-                if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
+                else if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
                     isTerminalInFocus.set(false);
-                    return;
                 }
+            }
 
+            @Override
+            public void nativeKeyReleased(NativeKeyEvent e) {}
+
+            @Override
+            public void nativeKeyTyped(NativeKeyEvent e) {
                 if (!isTerminalInFocus.get()) {
                     return;
                 }
 
-                if (keyCode == NativeKeyEvent.VC_ENTER) {
-                    isCompleted.set(true);
-                    System.out.println();
-                }
-                else if (keyCode == NativeKeyEvent.VC_BACKSPACE) {
-                    if (!inputBuilder.get().isEmpty()) {
-                        inputBuilder.get().deleteCharAt(inputBuilder.get().length() - 1);
-                        System.out.print("\b \b");
-                    }
-                }
-                else {
-                    char keyChar = e.getKeyChar();
-
-                    if (keyChar >= 32 && keyChar <= 126) {
-                        inputBuilder.get().append(keyChar);
-                        System.out.print(keyChar);
-                    }
+                char keyChar = e.getKeyChar();
+                switch (keyChar) {
+                    case '\n':
+                    case '\r':
+                        isCompleted.set(true);
+                        System.out.println();
+                        break;
+                    case '\b':
+                        if (!inputBuilder.get().isEmpty()) {
+                            inputBuilder.get().deleteCharAt(inputBuilder.get().length() - 1);
+                            System.out.print("\b \b");
+                        }
+                        break;
+                    default:
+                        if (keyChar >= 32 && keyChar <= 126) {
+                            inputBuilder.get().append(keyChar);
+                            System.out.print(keyChar);
+                        }
+                        break;
                 }
             }
-
-            @Override public void nativeKeyReleased(NativeKeyEvent e) {}
-            @Override public void nativeKeyTyped(NativeKeyEvent e) {}
         };
 
 
@@ -147,7 +149,7 @@ public class Menu {
 
 
         GlobalScreen.removeNativeKeyListener(listener);
-        clearStdin();
+        //clearStdin();
         return inputBuilder.get().toString();
     }
 
