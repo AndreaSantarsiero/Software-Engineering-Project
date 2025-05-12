@@ -427,21 +427,37 @@ public class GameModel {
     public void move(String username, int numDays){
         Player curr = null;
         int tmp;
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                curr = players.get(i);
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                curr = player;
             }
         }
 
+        if(curr == null){
+            throw new IllegalArgumentException("Player " + username + " not found");
+        }
+
         if(numDays  >= 0) {
-            for (int i = curr.getPosition() + 1; i < curr.getPosition() + numDays; i++) {
+            for (int i = curr.getPosition() + 1; i <= curr.getPosition() + numDays; i++) {
                 for (Player p : players) {
-                    if (!p.getUsername().equals(username)) {
-                        if (p.getPosition() % flightBoard.getLength() == i % flightBoard.getLength()) {
+                    if (!p.getUsername().equals(username) && !p.isAbort()) {
+                        if (Math.floorMod(p.getPosition(), flightBoard.getLength()) == Math.floorMod(i, flightBoard.getLength())) {
                             numDays++;
+
+                            if(curr.getPosition() - p.getPosition() >= flightBoard.getLength()){
+                                p.setAbort();
+                                p.setStanding(-1);
+                                return;
+                            }
+
+                            //swap standings
                             tmp = curr.getStanding();
                             curr.setStanding(p.getStanding());
                             p.setStanding(tmp);
+
+                            //swap positions in players
+                            Collections.swap(players, players.indexOf(curr), players.indexOf(p));
+
                         }
                     }
                 }
@@ -450,12 +466,23 @@ public class GameModel {
         else {
             for (int i = curr.getPosition() + 1; i > curr.getPosition() + numDays; i--) {
                 for (Player p : players) {
-                    if (!p.getUsername().equals(username)) {
-                        if (p.getPosition() % flightBoard.getLength() == i % flightBoard.getLength()) {
+                    if (!p.getUsername().equals(username) && !p.isAbort()) {
+                        if (Math.floorMod(p.getPosition(), flightBoard.getLength()) == Math.floorMod(i, flightBoard.getLength())) {
                             numDays--;
+
+                            if(p.getPosition() - curr.getPosition() >= flightBoard.getLength()){
+                                curr.setAbort();
+                                curr.setStanding(-1);
+                                return;
+                            }
+
+                            //swap standings
                             tmp = curr.getStanding();
                             curr.setStanding(p.getStanding());
                             p.setStanding(tmp);
+
+                            //swap positions in players
+                            Collections.swap(players, players.indexOf(curr), players.indexOf(p));
                         }
                     }
                 }
