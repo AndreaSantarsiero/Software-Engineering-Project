@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc11.loaders;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
@@ -144,6 +143,13 @@ public class ShipCardLoader {
 
     public ShipCard getShipCard(String id) {
         return shipCards.stream().filter(card -> card.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public List<ShipCard> getAvailableShipCards() {
+        for (HousingUnit housingUnit : centralUnits) {
+            shipCards.remove(housingUnit);
+        }
+        return shipCards;
     }
 
     public List<HousingUnit> getCentralUnits() {
