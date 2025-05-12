@@ -96,6 +96,20 @@ public class Menu {
             public void nativeKeyPressed(NativeKeyEvent e) {
                 int keyCode = e.getKeyCode();
 
+                if (functionKey != null && keyCode == functionKey) {
+                    isTerminalInFocus.set(true);
+                    return;
+                }
+
+                if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
+                    isTerminalInFocus.set(false);
+                    return;
+                }
+
+                if (!isTerminalInFocus.get()) {
+                    return;
+                }
+
                 if (keyCode == NativeKeyEvent.VC_ENTER) {
                     isCompleted.set(true);
                     System.out.println();
