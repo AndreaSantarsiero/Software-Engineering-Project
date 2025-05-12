@@ -18,6 +18,7 @@ import static it.polimi.ingsw.gc11.view.cli.MainCLI.otherFunctionKeys;
 public class Menu {
 
     public static AtomicBoolean isTerminalInFocus = new AtomicBoolean(false);
+    private static final Scanner scanner = new Scanner(System.in);
 
 
 
@@ -86,10 +87,8 @@ public class Menu {
 
 
     public static String readLine(String message) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print(message);
-            return scanner.nextLine();
-        }
+        System.out.print(message);
+        return scanner.nextLine();
     }
 
 
