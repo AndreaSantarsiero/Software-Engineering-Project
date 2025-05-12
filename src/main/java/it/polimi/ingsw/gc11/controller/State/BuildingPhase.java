@@ -21,8 +21,13 @@ public class BuildingPhase extends GamePhase {
     }
 
     @Override
-    public ShipCard getFreeShipCard(GameModel gameModel, int pos){
-        return gameModel.getFreeShipCard(pos);
+    public ShipCard getFreeShipCard(GameModel gameModel, String username, int pos){
+        return gameModel.getFreeShipCard(username, pos);
+    }
+
+    @Override
+    public void releaseShipCard(GameModel gameModel, String username, ShipCard shipCard) {
+        gameModel.releaseShipCard(username, shipCard);
     }
 
     @Override

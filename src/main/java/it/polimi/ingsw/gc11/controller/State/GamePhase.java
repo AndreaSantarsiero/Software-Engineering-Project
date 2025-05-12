@@ -32,8 +32,12 @@ public abstract class GamePhase {
 
 
     //BuildingPhase
-    public ShipCard getFreeShipCard(GameModel gameModel, int pos){
+    public ShipCard getFreeShipCard(GameModel gameModel, String username, int pos){
         throw new IllegalStateException("Can't get free ship card in the current game phase.");
+    }
+
+    public void releaseShipCard(GameModel gameModel, String username, ShipCard shipCard){
+        throw new IllegalStateException("Can't release held ship card in the current game phase.");
     }
 
     public ShipBoard placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y){

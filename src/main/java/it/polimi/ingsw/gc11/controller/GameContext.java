@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 //Controller of a specific gameModel and multiple gameView
-public class GameContext implements GameInterface {
+public class GameContext {
     private final GameModel gameModel;
     private final String matchID;
     private GamePhase phase;
@@ -55,8 +55,12 @@ public class GameContext implements GameInterface {
 
 
     //BuildingPhase
-    public ShipCard getFreeShipCard(int pos){
-        return phase.getFreeShipCard(this.gameModel, pos);
+    public ShipCard getFreeShipCard(String username, int pos){
+        return phase.getFreeShipCard(this.gameModel, username, pos);
+    }
+
+    public void releaseShipCard(String username, ShipCard shipCard){
+        phase.releaseShipCard(this.gameModel, username, shipCard);
     }
 
     public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y){

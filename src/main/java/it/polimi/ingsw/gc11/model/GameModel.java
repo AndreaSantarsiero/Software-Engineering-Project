@@ -18,6 +18,7 @@ public class GameModel {
     private final List<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
     private List<ShipCard> freeShipCards;
+    private final Map<String, ShipCard> heldShipCards;
     private final List<AdventureCard> adventureCardsTrial; //8 cards
     private final List<AdventureCard> adventureCardsLevel1; //12 cards
     private final List<AdventureCard> adventureCardsLevel2; //20 cards
@@ -26,15 +27,15 @@ public class GameModel {
 
 
     public GameModel(int numPlayers) {
-        id = UUID.randomUUID().toString(); //unique id generation
+        id = UUID.randomUUID().toString();
         players = new  ArrayList<>();
         this.numPlayers = numPlayers;
         flightBoard = null;
-        adventureCardsDecks = new ArrayList<AdventureDeck>();
+        adventureCardsDecks = new ArrayList<>();
         definitiveDeck = null;
         ShipCardLoader shipCardLoader = new ShipCardLoader();
         freeShipCards = shipCardLoader.getAllShipCards();
-        //shipCardsALL.removeAll(shipCardLoader.getCentralUnits());
+        heldShipCards = new HashMap<>();
         Collections.shuffle(freeShipCards);
         freeShipCards = new ArrayList<>(freeShipCards);
         AdventureCardLoader adventureCardLoader = new AdventureCardLoader();
@@ -86,8 +87,8 @@ public class GameModel {
             throw new IllegalArgumentException("Invalid flight type");
 
         //Set appropriate shipboard to all the players
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).setShipBoard(flightType);
+        for (Player player : players) {
+            player.setShipBoard(flightType);
         }
     }
 
@@ -109,10 +110,6 @@ public class GameModel {
 
 
 
-    /**
-    * Player's methods
-    */
-    //DA NON USARE PER AGGIUNGERE NUOVI PLAYER AL MATCH
     private void checkPlayerUsername(String username) {
         if (username == null || username.isEmpty()){
             throw new IllegalArgumentException("Username cannot be null or empty");
@@ -125,17 +122,23 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    private void checkShipCard(ShipCard shipCard) {
+    private void checkHeldShipCard(ShipCard shipCard, String username) {
         if (shipCard == null){
             throw new IllegalArgumentException("Ship card cannot be null");
         }
-        if(!freeShipCards.contains(shipCard)){
-            throw new IllegalArgumentException("Ship card is not contained in the available ship cards list");
+        if(!heldShipCards.containsKey(username)){
+            throw new IllegalArgumentException("Player " + username + " does not hold a ship card in his hands");
+        }
+        if(!heldShipCards.get(username).equals(shipCard)){
+            throw new IllegalArgumentException("Player " + username + " does not hold this ship card in his hands");
         }
     }
 
 
 
+    /**
+     * Player's methods
+     */
     public void addPlayer(String username) throws FullLobbyException, UsernameAlreadyTakenException {
         if (username == null || username.isEmpty()){
             throw new IllegalArgumentException("cannot add player without a username");
@@ -287,30 +290,28 @@ public class GameModel {
      * ShipCard's and ShipBoard's methods
      */
     //Get shipcard in pos position in the arraylist of all shipcards down on the table
-    public ShipCard getFreeShipCard(int pos){
+    public ShipCard getFreeShipCard(String username, int pos){
+        checkPlayerUsername(username);
+        if(heldShipCards.containsKey(username)){
+            throw new IllegalArgumentException("Player " + username + " already hold a ship card in his hands");
+        }
         if(pos < 0 || pos >= freeShipCards.size()){
             throw new IllegalArgumentException("Invalid position");
         }
+
         ShipCard shipCard = freeShipCards.get(pos);
         shipCard.discover();
         freeShipCards.remove(shipCard);
+        heldShipCards.put(username, shipCard);
         return shipCard;
+    }
 
+    public void releaseShipCard(String username, ShipCard shipCard) {
+        checkPlayerUsername(username);
+        checkHeldShipCard(shipCard, username);
 
-
-//        to be moved in another place
-//
-//        List<ShipCard> shipCards = new ArrayList<>();
-//        StructuralModule coveredShipCard = new StructuralModule("covered", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL);
-//
-//        for(ShipCard shipCard : shipCardsALL){
-//            if(!shipCard.isCovered()){
-//                shipCards.add(shipCard);
-//            }
-//            else{
-//                shipCards.add(coveredShipCard);
-//            }
-//        }
+        heldShipCards.remove(username);
+        freeShipCards.add(shipCard);
     }
 
 
@@ -331,11 +332,13 @@ public class GameModel {
 
     public ShipBoard reserveShipCard(String username, ShipCard shipCard){
         checkPlayerUsername(username);
+        checkHeldShipCard(shipCard, username);
 
         for(Player player : players){
             if(player.getUsername().equals(username)){
                 ShipBoard shipBoard = player.getShipBoard();
                 shipBoard.reserveShipCard(shipCard);
+                heldShipCards.remove(username);
                 return shipBoard;
             }
         }
@@ -363,12 +366,13 @@ public class GameModel {
 
     public ShipBoard connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, int x, int y){
         checkPlayerUsername(username);
+        checkHeldShipCard(shipCard, username);
 
         for (Player player : players) {
             if (player.getUsername().equals(username)) {
                 ShipBoard shipBoard = player.getShipBoard();
                 shipBoard.addShipCard(shipCard, x, y);
-                freeShipCards.remove(shipCard);
+                heldShipCards.remove(username);
                 return shipBoard;
             }
         }
@@ -385,7 +389,7 @@ public class GameModel {
             if (player.getUsername().equals(username)) {
                 ShipBoard shipBoard = player.getShipBoard();
                 ShipCard shipCard = shipBoard.removeShipCard(x, y);
-                freeShipCards.add(shipCard);
+                heldShipCards.put(username, shipCard);
                 return shipBoard;
             }
         }
