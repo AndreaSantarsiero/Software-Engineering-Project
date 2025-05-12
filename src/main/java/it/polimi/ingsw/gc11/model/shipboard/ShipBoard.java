@@ -208,8 +208,6 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("Ship card is null");
         }
 
-        //non manca controllo sulle coordinate x e y?
-
         int i = adaptY(y);
         int j = adaptX(x);
         checkIndexes(j, i);
@@ -230,10 +228,6 @@ public abstract class ShipBoard  implements Serializable {
      * @throws IllegalArgumentException if the card is already null or welded
      */
     public ShipCard removeShipCard(int x, int y) {
-//        if (x < 0 || y < 0) {
-//            throw new IllegalArgumentException();
-//        } non manca questo controllo? seguo chiamata GameContext-->GamePhase-->BuildingPhase-->gameModel.removeShipcard
-
         int i = adaptY(y);
         int j = adaptX(x);
         checkIndexes(j, i);
@@ -816,6 +810,12 @@ public abstract class ShipBoard  implements Serializable {
      * @throws IllegalArgumentException if not all conditions are met
      */
     public void connectAlienUnit(AlienUnit alienUnit, HousingUnit housingUnit) {
+        if(!alienUnits.containsKey(alienUnit)){
+            throw new IllegalArgumentException("this alien unit is not present on the ship");
+        }
+        if(!housingUnits.containsKey(housingUnit)){
+            throw new IllegalArgumentException("This housing unit is not present on the ship");
+        }
         if(alienUnit.getType() == AlienUnit.Type.BROWN && brownActiveUnit != null) {
             throw new IllegalArgumentException("This ship has already activate a brown AlienUnit");
         }
@@ -936,6 +936,9 @@ public abstract class ShipBoard  implements Serializable {
             }
             if (numMembers == null) {
                 throw new IllegalArgumentException("Number of members to remove cannot be null");
+            }
+            if (!housingUnits.containsKey(housingUnit)) {
+                throw new IllegalArgumentException("This housing unit is not present on the ship");
             }
             if (housingUnit.isScrap()) {
                 throw new IllegalArgumentException("Scrap housing units cannot be used");
@@ -1080,6 +1083,9 @@ public abstract class ShipBoard  implements Serializable {
             if (numBatteries == null) {
                 throw new IllegalArgumentException("Number of batteries to use cannot be null");
             }
+            if (!batteries.contains(battery)) {
+                throw new IllegalArgumentException("This battery module is not present on the ship");
+            }
             if (battery.isScrap()) {
                 throw new IllegalArgumentException("Scrap batteries cannot be used");
             }
@@ -1140,6 +1146,9 @@ public abstract class ShipBoard  implements Serializable {
 
             if (storage == null) {
                 throw new IllegalArgumentException("Storage unit cannot be null");
+            }
+            if (!storages.contains(storage)) {
+                throw new IllegalArgumentException("This storage is not present on the ship");
             }
             if (materialsPair == null || materialsPair.getKey() == null || materialsPair.getValue() == null) {
                 throw new IllegalArgumentException("Material lists cannot be null for storage: " + storage);
@@ -1288,8 +1297,15 @@ public abstract class ShipBoard  implements Serializable {
     public double getCannonsPower (List<Cannon> doubleCannons) {
         double cannonPower = 0;
 
+        for (Cannon cannon : cannons.keySet()) {
+            cannon.setVisited(false);
+        }
+
         if(doubleCannons != null) {
             for (Cannon cannon : doubleCannons) {
+                if (!cannons.containsKey(cannon)){
+                    throw new IllegalArgumentException("This cannon is not present on the ship");
+                }
                 if (cannon.getType() != Cannon.Type.DOUBLE) {
                     throw new IllegalArgumentException("Cannot activate single cannons with batteries");
                 }
@@ -1299,6 +1315,10 @@ public abstract class ShipBoard  implements Serializable {
                 if (cannon.getType() == Cannon.Type.SINGLE){
                     throw new IllegalArgumentException("Cannot use batteries on a single cannon");
                 }
+                if (cannon.isVisited()) {
+                    throw new IllegalArgumentException("Cannot activate the same cannon two times");
+                }
+                cannon.setVisited(true);
             }
             if(doubleCannons.size() > getTotalAvailableBatteries()){
                 throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");
@@ -1585,41 +1605,40 @@ public abstract class ShipBoard  implements Serializable {
     }
 
 
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
+        if (this == obj) {
+            return true;
+        }
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        ShipBoard other = (ShipBoard) obj;
-        for(int row = 0; row < components.length; row++) {
-            for(int col = 0; col < components[0].length; col++) {
-                if(this.components[row][col] == null && other.components[row][col] == null) {
-                    continue;
-                }
-                if(this.components[row][col] == null && other.components[row][col] != null ||
-                        this.components[row][col] != null && other.components[row][col] == null) {
-                    return false;
-                }
-                if(!this.components[row][col].equals(other.components[row][col])){
-                    return false;
+        ShipBoard shipBoard = (ShipBoard) obj;
+
+        for(int i = 0; i < components.length; i++) {
+            for(int j = 0; j < components[0].length; j++) {
+                if(!(this.components[i][j] == shipBoard.components[i][j])) {
+                    if(this.components[i][j] == null || shipBoard.components[i][j] == null) {
+                        return false;
+                    }
+                    if(!this.components[i][j].equals(shipBoard.components[i][j])) {
+                        return false;
+                    }
                 }
             }
         }
 
-        for(int i = 0; i < reservedComponents.size(); i++) {
-            if(this.reservedComponents.get(i) == null && other.reservedComponents.get(i) == null) {
-                continue;
-            }
-            if(this.reservedComponents.get(i) == null && other.reservedComponents.get(i) != null ||
-                this.reservedComponents.get(i) != null && other.reservedComponents.get(i) == null) {
-                return false;
-            }
-            if(!this.reservedComponents.get(i).equals(other.reservedComponents.get(i))){
+        if(this.reservedComponents.size() != shipBoard.reservedComponents.size()) {
+            return false;
+        }
+        for (ShipCard shipCard : this.reservedComponents){
+            if(!shipBoard.reservedComponents.contains(shipCard)) {
                 return false;
             }
         }
+
         return true;
     }
 
