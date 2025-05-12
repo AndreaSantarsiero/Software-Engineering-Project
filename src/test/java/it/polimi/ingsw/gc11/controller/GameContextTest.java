@@ -1,19 +1,29 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
+import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
+import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
+import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
+import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.Shield;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
+import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,6 +49,20 @@ public class GameContextTest {
     void printShipBoard(ShipBoard shipBoard){
         ShipBoardCLI printer = new ShipBoardCLI(new ShipCardCLI());
         printer.print(shipBoard);
+    }
+
+    void printAdvCard(AdventureCard adventureCard){
+        AdventureCardCLI printer = new AdventureCardCLI();
+        for(int i = 0; i < 15; i++){
+            printer.print(adventureCard, i);
+            System.out.println();
+        }
+    }
+
+    void goToAdvPhase(){
+        connect3Players();
+        gameContext.setPhase(new AdventurePhase(gameContext));
+        gameContext.getGameModel().createDefinitiveDeck();
     }
 
     @BeforeEach
@@ -168,5 +192,168 @@ public class GameContextTest {
         connect3Players();
         assertDoesNotThrow(() -> gameContext.goToCheckPhase());
         assertInstanceOf(CheckPhase.class, gameContext.getPhase());
+    }
+
+    @Test
+    void testSetAdvPhase(){
+        goToAdvPhase();
+        assertInstanceOf(AdventurePhase.class, gameContext.getPhase());
+    }
+
+    @Test
+    void testGetAdvCardInvalid(){
+        assertThrows(IllegalStateException.class, () -> gameContext.getAdventureCard("username1"));
+        goToAdvPhase();
+        assertThrows(IllegalArgumentException.class,() -> gameContext.getAdventureCard("username"));
+        assertThrows(IllegalArgumentException.class,() -> gameContext.getAdventureCard("username2"));
+    }
+
+    @Test
+    void testGetAdvCardValid(){
+        goToAdvPhase();
+        assertInstanceOf(AdventureCard.class, gameContext.getAdventureCard("username1"));
+        AdventurePhase advphase = (AdventurePhase) gameContext.getPhase();
+        advphase.setAdvState(new IdleState(advphase));
+        AdventureCard advCard1 = gameContext.getAdventureCard("username1");
+        advphase.setAdvState(new IdleState(advphase));
+        AdventureCard advCard2 = gameContext.getAdventureCard("username1");
+
+        assertNotEquals(advCard1, advCard2);
+    }
+
+    @Test
+    void testAcceptAdvCard(){
+        AdventureCard advCard;
+        do {
+            goToAdvPhase();
+            advCard = null;
+            AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+            do {
+                advPhase.setAdvState(new IdleState(advPhase));
+                advCard = gameContext.getAdventureCard("username1");
+            } while (!(advCard instanceof AbandonedStation || advCard instanceof AbandonedShip));
+        } while (advCard == null);
+
+        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
+
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.acceptAdventureCard("username1");
+        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
+        assertTrue(((AdventurePhase) gameContext.getPhase()).getCurrentAdvState() instanceof ChooseHousing ||
+                ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState() instanceof ChooseMaterialStation);
+    }
+
+    @Test
+    void testAcceptAdventureCardInvalid() {
+        AdventureCard advCard;
+        do {
+            goToAdvPhase();
+            advCard = null;
+            AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+            do {
+                advPhase.setAdvState(new IdleState(advPhase));
+                advCard = gameContext.getAdventureCard("username1");
+            } while (!(advCard instanceof AbandonedStation || advCard instanceof AbandonedShip));
+        } while (advCard == null);
+        assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("username2"));
+        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("username"));
+    }
+
+    @Test
+    void testDeclineAdvCard(){
+        AdventureCard advCard;
+        do {
+            goToAdvPhase();
+            advCard = null;
+            AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+            do {
+                advPhase.setAdvState(new IdleState(advPhase));
+                advCard = gameContext.getAdventureCard("username1");
+            } while (!(advCard instanceof AbandonedStation || advCard instanceof AbandonedShip));
+        } while (advCard == null);
+
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().addShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().addShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().addShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().addShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+
+        assertThrows(IllegalArgumentException.class, () -> gameContext.declineAdventureCard("username2"));
+        gameContext.declineAdventureCard("username1");
+        gameContext.acceptAdventureCard("username2");
+    }
+
+    @Test
+    void testkillMembers(){
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+        do {
+            goToAdvPhase();
+            advCard = null;
+            advPhase = (AdventurePhase) gameContext.getPhase();
+
+            do {
+                advPhase.setAdvState(new IdleState(advPhase));
+                advCard = gameContext.getAdventureCard("username1");
+            } while (!(advCard instanceof AbandonedShip));
+        } while (advCard == null);
+
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+
+        Map<HousingUnit, Integer> map = new HashMap<>();
+
+        assertEquals(8, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
+
+        assertThrows(IllegalStateException.class, () -> gameContext.killMembers("username1", map));
+
+        gameContext.acceptAdventureCard("username1");
+        assertInstanceOf(ChooseHousing.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
+
+        assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
+
+        map.put((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,7), 2);
+        map.put((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,8), 2);
+        map.put((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(8,7), 2);
+        HousingUnit invalid = new HousingUnit("invalid", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, false);
+        map.put(invalid, 1);
+
+        assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
+
+        map.remove(invalid);
+
+        gameContext.killMembers("username1", map);
+
+        assertEquals(2, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
+        assertInstanceOf(IdleState.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
+
+        gameContext.getGameModel().move("username1", 4);
+
+        do {
+            advCard = null;
+            advPhase = (AdventurePhase) gameContext.getPhase();
+
+            do {
+                advPhase.setAdvState(new IdleState(advPhase));
+                advCard = gameContext.getAdventureCard("username1");
+            } while (!(advCard instanceof AbandonedShip));
+        } while (advCard == null);
+
+        gameContext.acceptAdventureCard("username1");
+
+        assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
     }
 }

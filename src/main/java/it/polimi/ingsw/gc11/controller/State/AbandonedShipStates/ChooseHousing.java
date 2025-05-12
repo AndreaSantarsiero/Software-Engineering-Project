@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
 import java.util.Map;
 
@@ -38,6 +39,10 @@ public class ChooseHousing extends AdventureState {
         int sum = 0;
         for(HousingUnit housingUnit : housingUsage.keySet()){
             sum += housingUsage.get(housingUnit);
+        }
+
+        if(sum < abandonedShip.getLostMembers()){
+            throw new IllegalArgumentException("You don't select enough members");
         }
 
 
