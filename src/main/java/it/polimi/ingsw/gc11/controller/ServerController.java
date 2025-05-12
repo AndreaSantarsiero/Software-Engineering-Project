@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller;
 
+import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.*;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.*;
@@ -195,6 +196,15 @@ public class ServerController {
 
     //cosa facciamo se il player si disconnette?
     //cosa facciamo a fine game?
+
+
+
+    public void sendAction(ClientAction action, UUID token) {
+        GameContext gameContext = getPlayerVirtualClient(action.getUsername(), token).getGameContext();
+        action.execute(gameContext);
+    }
+
+
 
 
 

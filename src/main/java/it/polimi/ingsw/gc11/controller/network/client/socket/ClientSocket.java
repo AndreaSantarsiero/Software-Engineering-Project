@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client.socket;
 
+import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
@@ -65,6 +66,16 @@ public class ClientSocket extends Client {
 
 
 
+    @Override
+    public void sendAction(ClientAction action) throws NetworkException {
+
+    }
+
+
+
+
+
+    //da sostituire con azioni da qui in poi
     @Override
     public ShipCard getFreeShipCard(String username, int pos) throws NetworkException {
         return null;

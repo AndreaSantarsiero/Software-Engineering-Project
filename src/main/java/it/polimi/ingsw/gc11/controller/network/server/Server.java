@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.network.server;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.ServerController;
+import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
 import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
@@ -72,6 +73,14 @@ public abstract class Server {
     public List<String> getAvailableMatches(String username, UUID token) {
         return serverController.getAvailableMatches(username, token);
     }
+
+
+
+    public void sendAction(ClientAction action, UUID token) {
+        serverController.sendAction(action, token);
+    }
+
+
 
 
 

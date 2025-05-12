@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client;
 
+import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -32,6 +33,10 @@ public abstract class Client {
     abstract public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException;
 
     abstract public List<String> getAvailableMatches(String username) throws NetworkException;
+
+
+
+    abstract public void sendAction(ClientAction action) throws NetworkException;
 
 
 

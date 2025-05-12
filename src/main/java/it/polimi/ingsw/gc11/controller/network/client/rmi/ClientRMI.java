@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client.rmi;
 
+import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerInterface;
@@ -80,6 +81,20 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
 
+    @Override
+    public void sendAction(ClientAction action) throws NetworkException {
+        try {
+            stub.sendAction(action, clientSessionToken);
+        } catch (RemoteException e) {
+            throw new NetworkException(e.getMessage());
+        }
+    }
+
+
+
+
+
+    //da sostituire con azioni da qui in poi
     @Override
     public ShipCard getFreeShipCard(String username, int pos) throws NetworkException {
         try {

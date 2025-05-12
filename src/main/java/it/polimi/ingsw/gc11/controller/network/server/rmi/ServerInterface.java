@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.server.rmi;
 
+import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -21,6 +22,10 @@ public interface ServerInterface extends Remote {
     void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers) throws RemoteException, FullLobbyException, UsernameAlreadyTakenException;
     void connectPlayerToGame(String username, UUID token, String matchId) throws RemoteException, FullLobbyException, NullPointerException, UsernameAlreadyTakenException;
     List<String> getAvailableMatches(String username, UUID token) throws RemoteException;
+
+
+    void sendAction(ClientAction action, UUID token) throws RemoteException;
+
 
     //Building phase methods
     ShipCard getFreeShipCard(String username, UUID token, int pos) throws RemoteException;
