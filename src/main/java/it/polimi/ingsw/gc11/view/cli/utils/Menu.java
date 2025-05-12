@@ -5,9 +5,9 @@ import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static it.polimi.ingsw.gc11.view.cli.MainCLI.functionKey;
@@ -18,7 +18,7 @@ import static it.polimi.ingsw.gc11.view.cli.MainCLI.otherFunctionKeys;
 public class Menu {
 
     public static AtomicBoolean isTerminalInFocus = new AtomicBoolean(false);
-    private static final Scanner scanner = new Scanner(System.in);
+    //private static final Scanner scanner = new Scanner(System.in);
 
 
 
@@ -81,9 +81,74 @@ public class Menu {
 
 
 
+//    public static String readLine(String message) {
+//        System.out.print(message);
+//        return scanner.nextLine();
+//    }
+
+
+
     public static String readLine(String message) {
         System.out.print(message);
-        return scanner.nextLine();
+        AtomicReference<StringBuilder> inputBuilder = new AtomicReference<>(new StringBuilder());
+        AtomicBoolean isCompleted = new AtomicBoolean(false);
+
+        NativeKeyListener listener = new NativeKeyListener() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent e) {
+                int keyCode = e.getKeyCode();
+
+                if (functionKey != null && keyCode == functionKey) {
+                    isTerminalInFocus.set(true);
+                    return;
+                }
+
+                if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
+                    isTerminalInFocus.set(false);
+                    return;
+                }
+
+                if (!isTerminalInFocus.get()) {
+                    return;
+                }
+
+                if (keyCode == NativeKeyEvent.VC_ENTER) {
+                    isCompleted.set(true);
+                    System.out.println();
+                }
+                else if (keyCode == NativeKeyEvent.VC_BACKSPACE) {
+                    if (!inputBuilder.get().isEmpty()) {
+                        inputBuilder.get().deleteCharAt(inputBuilder.get().length() - 1);
+                        System.out.print("\b \b");
+                    }
+                }
+                else {
+                    char keyChar = e.getKeyChar();
+
+                    if (keyChar >= 32 && keyChar <= 126) {
+                        inputBuilder.get().append(keyChar);
+                        System.out.print(keyChar);
+                    }
+                }
+            }
+
+            @Override public void nativeKeyReleased(NativeKeyEvent e) {}
+            @Override public void nativeKeyTyped(NativeKeyEvent e) {}
+        };
+
+
+        GlobalScreen.addNativeKeyListener(listener);
+
+        try {
+            while (!isCompleted.get()) {
+                Thread.sleep(50); // avoid busy waiting
+            }
+        } catch (InterruptedException ignored) {}
+
+
+        GlobalScreen.removeNativeKeyListener(listener);
+        clearStdin();
+        return inputBuilder.get().toString();
     }
 
 
