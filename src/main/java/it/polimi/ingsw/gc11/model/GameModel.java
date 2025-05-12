@@ -461,6 +461,7 @@ public class GameModel {
 
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
+                            break;
 
                         }
                     }
@@ -487,6 +488,7 @@ public class GameModel {
 
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
+                            break;
                         }
                     }
                 }
