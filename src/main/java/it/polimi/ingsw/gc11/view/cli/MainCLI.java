@@ -83,7 +83,7 @@ public class MainCLI {
 
 
 
-    public static VirtualServer setup() {
+    public static VirtualServer setup() throws NetworkException {
         Utils.ConnectionType connectionType = connectionTypeSetup();
         boolean defaultAddress = false;
 
@@ -112,11 +112,14 @@ public class MainCLI {
             System.out.println("Using custom address " + serverIp + ":" + serverPort);
         }
 
-        VirtualServer virtualServer = null;
-        while (virtualServer == null) {
+        VirtualServer virtualServer = new VirtualServer(connectionType, serverIp, serverPort);
+        boolean validUsername = false;
+
+        while (!validUsername) {
             try {
                 String username = usernameSetup();
-                virtualServer = new VirtualServer(connectionType, username, serverIp, serverPort);
+                virtualServer.registerSession(username);
+                validUsername = true;
             } catch (UsernameAlreadyTakenException | NetworkException e) {
                 System.out.println(e.getMessage());
             }
