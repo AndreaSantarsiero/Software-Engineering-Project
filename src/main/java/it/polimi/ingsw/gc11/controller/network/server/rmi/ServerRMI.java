@@ -31,7 +31,7 @@ public class ServerRMI extends Server implements ServerInterface {
         try {
             String serverIp = getLocalIP();
             System.setProperty("java.rmi.server.hostname", serverIp);
-            ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, 0);
+            ServerInterface stub = (ServerInterface) UnicastRemoteObject.exportObject(this, port+1);
             registry = LocateRegistry.createRegistry(port);
             registry.bind("ServerInterface", stub);
             System.out.println("RMI server started on " + serverIp + ":" + port);
