@@ -5,9 +5,12 @@ import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static it.polimi.ingsw.gc11.view.cli.MainCLI.functionKey;
@@ -18,7 +21,6 @@ import static it.polimi.ingsw.gc11.view.cli.MainCLI.otherFunctionKeys;
 public class Menu {
 
     public static AtomicBoolean isTerminalInFocus = new AtomicBoolean(false);
-    //private static final Scanner scanner = new Scanner(System.in);
 
 
 
@@ -34,6 +36,8 @@ public class Menu {
         AtomicInteger selected = new AtomicInteger(0);
         AtomicInteger previouslySelected = new AtomicInteger(-1);
         AtomicBoolean confirmed = new AtomicBoolean(false);
+        ReentrantLock lock = new ReentrantLock();
+        Condition change = lock.newCondition();
 
         NativeKeyListener listener = new NativeKeyListener() {
             @Override
@@ -54,10 +58,24 @@ public class Menu {
                     return;
                 }
 
-                switch (keyCode) {
-                    case NativeKeyEvent.VC_UP -> selected.set((selected.get() - 1 + options.size()) % options.size());
-                    case NativeKeyEvent.VC_DOWN -> selected.set((selected.get() + 1) % options.size());
-                    case NativeKeyEvent.VC_ENTER -> confirmed.set(true);
+                lock.lock();
+                try {
+                    switch (keyCode) {
+                        case NativeKeyEvent.VC_UP:
+                            selected.set((selected.get() - 1 + options.size()) % options.size());
+                            change.signal();
+                            break;
+                        case NativeKeyEvent.VC_DOWN:
+                            selected.set((selected.get() + 1) % options.size());
+                            change.signal();
+                            break;
+                        case NativeKeyEvent.VC_ENTER:
+                            confirmed.set(true);
+                            change.signal();
+                            break;
+                    }
+                } finally {
+                    lock.unlock();
                 }
             }
 
@@ -67,31 +85,34 @@ public class Menu {
 
         GlobalScreen.addNativeKeyListener(listener);
 
-        while (!confirmed.get()) {
-            if (previouslySelected.get() != selected.get()) {
-                renderMenu(title, options, selected.get());
-                previouslySelected.set(selected.get());
+        lock.lock();
+        try {
+            renderMenu(title, options, selected.get());
+            previouslySelected.set(selected.get());
+
+            while (!confirmed.get()) {
+                change.await();  // wait for change
+                if (previouslySelected.get() != selected.get()) {
+                    renderMenu(title, options, selected.get());
+                    previouslySelected.set(selected.get());
+                }
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
+            GlobalScreen.removeNativeKeyListener(listener);
         }
 
-        GlobalScreen.removeNativeKeyListener(listener);
-        //clearStdin();
         return selected.get();
     }
-
-
-
-//    public static String readLine(String message) {
-//        System.out.print(message);
-//        return scanner.nextLine();
-//    }
 
 
 
     public static String readLine(String message) {
         System.out.print(message);
         AtomicReference<StringBuilder> inputBuilder = new AtomicReference<>(new StringBuilder());
-        AtomicBoolean isCompleted = new AtomicBoolean(false);
+        CountDownLatch latch = new CountDownLatch(1);
 
         NativeKeyListener listener = new NativeKeyListener() {
             @Override
@@ -119,7 +140,7 @@ public class Menu {
                 switch (keyChar) {
                     case '\n':
                     case '\r':
-                        isCompleted.set(true);
+                        latch.countDown();
                         System.out.println();
                         break;
                     case '\b':
@@ -138,18 +159,15 @@ public class Menu {
             }
         };
 
-
         GlobalScreen.addNativeKeyListener(listener);
 
         try {
-            while (!isCompleted.get()) {
-                Thread.sleep(50); // avoid busy waiting
-            }
-        } catch (InterruptedException ignored) {}
-
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
 
         GlobalScreen.removeNativeKeyListener(listener);
-        //clearStdin();
         return inputBuilder.get().toString();
     }
 
@@ -175,15 +193,5 @@ public class Menu {
         System.out.print("\u001b[H\u001b[2J");
         System.out.flush();
         System.out.println("***    Galaxy Truckers    ***\n");
-    }
-
-
-
-    public static void clearStdin() {
-        try {
-            while (System.in.available() > 0) {
-                System.in.read();
-            }
-        } catch (Exception ignored) {}
     }
 }
