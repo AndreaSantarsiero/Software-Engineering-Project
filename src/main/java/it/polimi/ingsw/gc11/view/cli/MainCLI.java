@@ -43,51 +43,42 @@ public class MainCLI {
             return;
         }
 
-        choice = Menu.interactiveMenu("", List.of("create a new match", "join an existing match", "exit"));
-        if (choice == 0) {
-            try {
-                virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
-                System.out.println("game created");
-            } catch (UsernameAlreadyTakenException e) {
-                System.out.println(e.getMessage());
-            }
-
-
-        }
-        else if (choice == 1) {
-            int i = 0;
-            if(!virtualServer.getAvailableMatches().isEmpty()) {
-                for(String matchId : virtualServer.getAvailableMatches()){
-                    i++;
-                    System.out.println(i + ") " + matchId);
+        do{
+            choice = Menu.interactiveMenu("", List.of("create a new match", "join an existing match", "exit"));
+            if (choice == 0) {
+                try {
+                    virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
+                    System.out.println("game created");
+                } catch (UsernameAlreadyTakenException e) {
+                    System.out.println(e.getMessage());
                 }
-//                Scanner scanner = new Scanner(System.in);
-//                System.out.println("insert game to join: ");
-//                choice = scanner.nextInt();
-//                scanner.nextLine();
-//                try {
-//                    virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice-1));
-//                    System.out.println("joined game");
-//
-//                    //la partita dovrebbe essere iniziata, provo a stampare le ShipCard
-//                    System.out.println("premi invio per richiedere una ship card");
-//                    scanner.nextLine();
-//                    ShipCardCLI shipCardCLI = new ShipCardCLI();
-//                    ShipCard shipCard = virtualServer.getFreeShipCard(4);
-//
-//                    for (int j = 0; j < 7; j++) {
-//                        shipCard.print(shipCardCLI, j);
-//                        System.out.println();
-//                    }
-//                } catch (UsernameAlreadyTakenException | FullLobbyException e) {
-//                    System.out.println(e.getMessage());
-//                }
+            }
+            else if (choice == 1) {
+                if(!virtualServer.getAvailableMatches().isEmpty()) {
+                    choice = Menu.interactiveMenu("insert game to join", virtualServer.getAvailableMatches());
 
+                    try {
+                        virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice));
+                        System.out.println("joined game");
+
+                        //la partita dovrebbe essere iniziata, provo a richiedere e stampare una ShipCard
+                        ShipCardCLI shipCardCLI = new ShipCardCLI();
+                        ShipCard shipCard = virtualServer.getFreeShipCard(4);
+
+                        for (int j = 0; j < 7; j++) {
+                            shipCard.print(shipCardCLI, j);
+                            System.out.println();
+                        }
+                    } catch (UsernameAlreadyTakenException | FullLobbyException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                else{
+                    Menu.readLine("No matches available, press Enter to continue...");
+                    choice = -1;
+                }
             }
-            else{
-                System.out.println("No matches available");
-            }
-        }
+        } while (choice < 0 || choice > 2);
     }
 
 
