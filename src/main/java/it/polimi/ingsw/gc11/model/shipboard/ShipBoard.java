@@ -943,6 +943,11 @@ public abstract class ShipBoard  implements Serializable {
             if (housingUnit.isScrap()) {
                 throw new IllegalArgumentException("Scrap housing units cannot be used");
             }
+        }
+
+        for (Map.Entry<HousingUnit, Integer> entry : housingUsage.entrySet()) {
+            HousingUnit housingUnit = entry.getKey();
+            Integer numMembers = entry.getValue();
 
             housingUnit.killMembers(numMembers);
         }
@@ -1089,6 +1094,11 @@ public abstract class ShipBoard  implements Serializable {
             if (battery.isScrap()) {
                 throw new IllegalArgumentException("Scrap batteries cannot be used");
             }
+        }
+
+        for (Map.Entry<Battery, Integer> entry : batteryUsage.entrySet()) {
+            Battery battery = entry.getKey();
+            Integer numBatteries = entry.getValue();
 
             battery.useBatteries(numBatteries);
         }
@@ -1160,6 +1170,13 @@ public abstract class ShipBoard  implements Serializable {
             if (newMaterials.size() != oldMaterials.size()) {
                 throw new IllegalArgumentException("New and old materials lists do not match in size for storage: " + storage);
             }
+        }
+
+        for (Map.Entry<Storage, SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
+            Storage storage = entry.getKey();
+            SimpleEntry<List<Material>, List<Material>> materialsPair = entry.getValue();
+            List<Material> newMaterials = materialsPair.getKey();
+            List<Material> oldMaterials = materialsPair.getValue();
 
             for (int i = 0; i < newMaterials.size(); i++) {
                 if (oldMaterials.get(i) == null) {
