@@ -69,23 +69,23 @@ public class GameContextTest {
     @Test
     void testGetFreeShipCard(){
         connect3Players();
-        assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard(-1));
-        assertInstanceOf(ShipCard.class, gameContext.getFreeShipCard(0));
-        assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard(99999));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("username1", -1));
+        assertInstanceOf(ShipCard.class, gameContext.getFreeShipCard("username1", 0));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("username1", 99999));
     }
 
     @Test
     void testWhenCoordsNegative() {
         connect3Players();
         assertThrows(IllegalArgumentException.class,
-                () -> gameContext.placeShipCard("alice", gameContext.getFreeShipCard(1), -1, 0));
+                () -> gameContext.placeShipCard("alice", gameContext.getFreeShipCard("alice", 1), -1, 0));
     }
 
     @Test
     void testPlaceShipCard(){
         connect3Players();
-        assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0), 7, 7));
-        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0), 3, 3));
+        assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 7));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 3, 3));
     }
 
     @Test
@@ -106,9 +106,9 @@ public class GameContextTest {
     @Test
     void testRemoveShipCard(){
         connect3Players();
-        gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0), 7, 7);
+        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 7);
         ShipBoard old = SerializationUtils.clone(gameContext.getGameModel().getPlayerShipBoard("username1"));
-        gameContext.placeShipCard("username1", gameContext.getFreeShipCard(0), 7, 8);
+        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 8);
         assertNotEquals(gameContext.getGameModel().getPlayerShipBoard("username1"), old);
         gameContext.removeShipCard("username1", 7, 8);
         assertEquals(gameContext.getGameModel().getPlayerShipBoard("username1"), old);
@@ -116,7 +116,7 @@ public class GameContextTest {
 
     @Test
     void testReserveShipCardInvalid(){
-        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username", gameContext.getFreeShipCard(0)));
+        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username", gameContext.getFreeShipCard("username", 0)));
         assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("id", ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE)));
     }
 
@@ -124,17 +124,17 @@ public class GameContextTest {
     void testReserveShipCard(){
         connect3Players();
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size());
-        gameContext.reserveShipCard("username1", gameContext.getFreeShipCard(0));
+        gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", 0));
         assertEquals(1, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size());
-        gameContext.reserveShipCard("username1", gameContext.getFreeShipCard(0));
+        gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", 0));
         assertEquals(2, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size());
-        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username1", gameContext.getFreeShipCard(0)));
+        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", 0)));
     }
 
     @Test
     void testUseReservedShipCardInvalidArguments() {
         connect3Players();
-        gameContext.reserveShipCard("username1", gameContext.getFreeShipCard(12));
+        gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", 12));
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username", gameContext.getGameModel().getPlayerShipBoard("username").getReservedComponents().getFirst(), 7, 7));
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username1", new StructuralModule("testmodule", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), 7, 7));
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username1", gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().getFirst(), -1, 7));
@@ -145,7 +145,7 @@ public class GameContextTest {
         connect3Players();
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size());
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber());
-        ShipCard shipCard = gameContext.getFreeShipCard(10);
+        ShipCard shipCard = gameContext.getFreeShipCard("username1", 10);
         gameContext.reserveShipCard("username1", shipCard);
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber());
         gameContext.useReservedShipCard("username1", shipCard, 7, 7);

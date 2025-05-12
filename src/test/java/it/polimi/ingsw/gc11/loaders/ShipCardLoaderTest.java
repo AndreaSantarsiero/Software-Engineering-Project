@@ -3,7 +3,9 @@ package it.polimi.ingsw.gc11.loaders;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 
@@ -19,6 +21,15 @@ public class ShipCardLoaderTest {
     }
 
 
+
+    @Test
+    void getCentralUnits() {
+        List<HousingUnit> centralUnits = shipCardLoader.getCentralUnits();
+        assertEquals(4, centralUnits.size());
+        for (HousingUnit housingUnit : centralUnits) {
+            assertTrue(housingUnit.isCentral(), "This list should contain only central housing units");
+        }
+    }
 
     @Test
     void loadBlueCentralUnit() {
