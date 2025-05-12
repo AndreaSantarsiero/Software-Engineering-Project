@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -23,10 +24,10 @@ public interface ServerInterface extends Remote {
 
     //Building phase methods
     ShipCard getFreeShipCard(String username, UUID token, int pos) throws RemoteException;
-    void placeShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException;
-    void removeShipCard(String username, UUID token, int x, int y) throws RemoteException;
-    void reserveShipCard(String username, UUID token, ShipCard shipCard) throws RemoteException;
-    void useReservedShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException;
+    ShipBoard placeShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException;
+    ShipBoard removeShipCard(String username, UUID token, int x, int y) throws RemoteException;
+    ShipBoard reserveShipCard(String username, UUID token, ShipCard shipCard) throws RemoteException;
+    ShipBoard useReservedShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException;
     ArrayList<AdventureCard> observeMiniDeck(String username, UUID token, int numDeck) throws RemoteException;
     void endBuilding(String username, UUID token, int pos) throws RemoteException;
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -70,23 +71,23 @@ public class ClientSocket extends Client {
     }
 
     @Override
-    public void placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
-
+    public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
+        return null;
     }
 
     @Override
-    public void removeShipCard(String username, int x, int y) throws NetworkException {
-
+    public ShipBoard removeShipCard(String username, int x, int y) throws NetworkException {
+        return null;
     }
 
     @Override
-    public void reserveShipCard(String username, ShipCard shipCard) throws NetworkException {
-
+    public ShipBoard reserveShipCard(String username, ShipCard shipCard) throws NetworkException {
+        return null;
     }
 
     @Override
-    public void useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
-
+    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
+        return null;
     }
 
     @Override

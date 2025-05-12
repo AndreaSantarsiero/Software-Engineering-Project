@@ -226,9 +226,10 @@ public abstract class ShipBoard  implements Serializable {
      *
      * @param x The x-coordinate of the card to be removed
      * @param y The y-coordinate of the card to be removed
+     * @return The removed ship card
      * @throws IllegalArgumentException if the card is already null or welded
      */
-    public void removeShipCard(int x, int y) {
+    public ShipCard removeShipCard(int x, int y) {
 //        if (x < 0 || y < 0) {
 //            throw new IllegalArgumentException();
 //        } non manca questo controllo? seguo chiamata GameContext-->GamePhase-->BuildingPhase-->gameModel.removeShipcard
@@ -240,8 +241,10 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("Ship card already null");
         }
         if (j == lastModifiedJ && i == lastModifiedI) {
+            ShipCard shipCard = components[i][j];
             components[i][j].unPlace(this);
             components[i][j] = null;
+            return shipCard;
         }
         else {
             throw new IllegalArgumentException("Ship card already welded");
@@ -296,7 +299,7 @@ public abstract class ShipBoard  implements Serializable {
      * @param x The x-coordinate where the ship card should be placed
      * @param y The y-coordinate where the ship card should be placed
      * @throws IllegalArgumentException if the ship card is null
-     * @throws IllegalStateException if the ship card was not reserved or the reservation list is empty
+     * @throws IllegalArgumentException if the ship card was not reserved or the reservation list is empty
      * @throws IllegalArgumentException if the coordinates are out of bounds
      */
     public void useReservedShipCard(ShipCard shipCard, int x, int y) {
@@ -304,7 +307,7 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("Ship card is null");
         }
         if (reservedComponents.isEmpty()) {
-            throw new IllegalStateException("Ship card not previously reserved");
+            throw new IllegalArgumentException("Ship card not previously reserved");
         }
         if (reservedComponents.contains(shipCard)) {
             int i = adaptY(y);
@@ -314,7 +317,7 @@ public abstract class ShipBoard  implements Serializable {
             components[i][j] = shipCard;
         }
         else {
-            throw new IllegalStateException("Ship card not previously reserved");
+            throw new IllegalArgumentException("Ship card not previously reserved");
         }
     }
 

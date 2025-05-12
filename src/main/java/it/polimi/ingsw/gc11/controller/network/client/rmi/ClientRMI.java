@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -89,36 +90,36 @@ public class ClientRMI extends Client implements ClientInterface {
     }
 
     @Override
-    public void placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
+    public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
         try {
-            stub.placeShipCard(username, clientSessionToken, shipCard, x, y);
+            return stub.placeShipCard(username, clientSessionToken, shipCard, x, y);
         } catch (RemoteException e) {
             throw new NetworkException(e.getMessage());
         }
     }
 
     @Override
-    public void removeShipCard(String username, int x, int y) throws NetworkException {
+    public ShipBoard removeShipCard(String username, int x, int y) throws NetworkException {
         try {
-            stub.removeShipCard(username, clientSessionToken, x, y);
+            return stub.removeShipCard(username, clientSessionToken, x, y);
         } catch (RemoteException e) {
             throw new NetworkException(e.getMessage());
         }
     }
 
     @Override
-    public void reserveShipCard(String username, ShipCard shipCard) throws NetworkException {
+    public ShipBoard reserveShipCard(String username, ShipCard shipCard) throws NetworkException {
         try {
-            stub.reserveShipCard(username, clientSessionToken, shipCard);
+            return stub.reserveShipCard(username, clientSessionToken, shipCard);
         } catch (RemoteException e) {
             throw new NetworkException(e.getMessage());
         }
     }
 
     @Override
-    public void useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
+    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException {
         try {
-            stub.useReservedShipCard(username, clientSessionToken, shipCard, x, y);
+            return stub.useReservedShipCard(username, clientSessionToken, shipCard, x, y);
         } catch (RemoteException e) {
             throw new NetworkException(e.getMessage());
         }

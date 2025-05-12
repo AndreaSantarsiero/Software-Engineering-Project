@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.*;
 
@@ -84,29 +85,29 @@ public abstract class Server {
     /**
      * Places a ship card on the ship board at the given coordinates
      */
-    public void placeShipCard(String username, UUID token, ShipCard shipCard, int x, int y){
-        getGameContext(username, token).placeShipCard(username, shipCard, x, y);
+    public ShipBoard placeShipCard(String username, UUID token, ShipCard shipCard, int x, int y){
+        return getGameContext(username, token).placeShipCard(username, shipCard, x, y);
     }
 
     /**
      * Removes a ship card from the ship board at the specified coordinates
      */
-    public void removeShipCard(String username, UUID token, int x, int y){
-        getGameContext(username, token).removeShipCard(username, x, y);
+    public ShipBoard removeShipCard(String username, UUID token, int x, int y){
+        return getGameContext(username, token).removeShipCard(username, x, y);
     }
 
     /**
      * Reserves a ship card for later use
      */
-    public void reserveShipCard(String username, UUID token, ShipCard shipCard){
-        getGameContext(username, token).reserveShipCard(username, shipCard);
+    public ShipBoard reserveShipCard(String username, UUID token, ShipCard shipCard){
+        return getGameContext(username, token).reserveShipCard(username, shipCard);
     }
 
     /**
      * Uses a previously reserved ship card
      */
-    public void useReservedShipCard(String username, UUID token, ShipCard shipCard, int x, int y){
-        getGameContext(username, token).useReservedShipCard(username, shipCard, x, y);
+    public ShipBoard useReservedShipCard(String username, UUID token, ShipCard shipCard, int x, int y){
+        return getGameContext(username, token).useReservedShipCard(username, shipCard, x, y);
     }
 
     /**

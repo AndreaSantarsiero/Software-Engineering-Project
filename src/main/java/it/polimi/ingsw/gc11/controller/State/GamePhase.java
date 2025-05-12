@@ -7,19 +7,22 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+
+//These are all Default Implementation
 public abstract class GamePhase {
 
     public abstract void nextPhase(GameContext context);
 
     public abstract String getPhaseName();
 
-    //These are all Default Implementation
+
 
     //IdlePhase
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
@@ -27,24 +30,25 @@ public abstract class GamePhase {
     }
 
 
+
     //BuildingPhase
     public ShipCard getFreeShipCard(GameModel gameModel, int pos){
         throw new IllegalStateException("Can't get free ship card in the current game phase.");
     }
 
-    public void placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y){
+    public ShipBoard placeShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y){
         throw new IllegalStateException("Can't place a ship card in the current game phase.");
     }
 
-    public void removeShipCard(GameModel gameModel, String username, int x, int y) {
+    public ShipBoard removeShipCard(GameModel gameModel, String username, int x, int y) {
         throw new IllegalStateException("Can't remove ship card in the current game phase.");
     }
 
-    public void reserveShipCard(GameModel gameModel, String username, ShipCard shipCard){
+    public ShipBoard reserveShipCard(GameModel gameModel, String username, ShipCard shipCard){
         throw new IllegalStateException("Can't reserve ship card in the current game phase.");
     }
 
-    public void useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y) {
+    public ShipBoard useReservedShipCard(GameModel gameModel, String username, ShipCard shipCard, int x, int y) {
         throw new IllegalStateException("Can't use reserved ship card in the current game phase.");
     }
 
@@ -59,6 +63,7 @@ public abstract class GamePhase {
     public void goToCheckPhase(GameContext context) throws IllegalStateException{
         throw new IllegalStateException("Can't go to check state in the current game phase.");
     }
+
 
 
     //AdventurePhase

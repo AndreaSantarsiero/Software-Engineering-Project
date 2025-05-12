@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameModelTest {
@@ -96,7 +98,7 @@ class GameModelTest {
 
     @Test
     void testAddCoinsToNullPlayer() {
-        assertThrows(NullPointerException.class, () -> gameModel.addCoins(null,19));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.addCoins(null,19));
     }
 
     @Test
@@ -149,7 +151,7 @@ class GameModelTest {
 
     @Test
     void testRemoveCoinsNullUsername(){
-        assertThrows(NullPointerException.class, () -> gameModel.removeCoins(null,19));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.removeCoins(null,19));
     }
 
     @Test
@@ -179,7 +181,7 @@ class GameModelTest {
 
     @Test
     void testGetPlayerPositionNullUsername(){
-        assertThrows(NullPointerException.class, () -> gameModel.getPlayerPosition(null));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerPosition(null));
     }
 
     @Test
@@ -204,7 +206,7 @@ class GameModelTest {
 
     @Test
     void testSetAbortNullUsername(){
-        assertThrows(NullPointerException.class, () -> gameModel.setAbort(null));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.setAbort(null));
     }
 
     @Test
@@ -224,7 +226,7 @@ class GameModelTest {
 
     @Test
     void getPlayerShipBoardNullUsername(){
-        assertThrows(NullPointerException.class, () -> gameModel.getPlayerShipBoard(null));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerShipBoard(null));
     }
 
     @Test

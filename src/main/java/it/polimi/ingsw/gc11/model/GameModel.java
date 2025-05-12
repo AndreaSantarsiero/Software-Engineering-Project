@@ -5,7 +5,6 @@ import it.polimi.ingsw.gc11.loaders.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-
 import java.util.*;
 
 
@@ -44,6 +43,7 @@ public class GameModel {
         adventureCardsLevel2 = adventureCardLoader.getCardsLevel2();
         dices = new Dice[2];
     }
+
 
 
     public String getID() {
@@ -107,9 +107,35 @@ public class GameModel {
     }
 
 
+
+
     /**
     * Player's methods
     */
+    //DA NON USARE PER AGGIUNGERE NUOVI PLAYER AL MATCH
+    private void checkPlayerUsername(String username) {
+        if (username == null || username.isEmpty()){
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+        for(Player player : players){
+            if (player.getUsername().equals(username)){
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+    private void checkShipCard(ShipCard shipCard) {
+        if (shipCard == null){
+            throw new IllegalArgumentException("Ship card cannot be null");
+        }
+        if(!freeShipCards.contains(shipCard)){
+            throw new IllegalArgumentException("Ship card is not contained in the available ship cards list");
+        }
+    }
+
+
+
     public void addPlayer(String username) throws FullLobbyException, UsernameAlreadyTakenException {
         if (username == null || username.isEmpty()){
             throw new IllegalArgumentException("cannot add player without a username");
@@ -136,12 +162,15 @@ public class GameModel {
     }
 
     public Player getPlayer(String username)  {
+        checkPlayerUsername(username);
+
         for (Player player : players) {
             if(player.getUsername().equals(username)){
                 return player;
             }
         }
-        throw new IllegalArgumentException("Player not found");
+
+        throw new IllegalArgumentException("Player " + username + " not found");
     }
 
     public List<Player> getPlayers() {return players;}
@@ -150,80 +179,78 @@ public class GameModel {
         return players.getLast();
     }
 
+
+
     public void addCoins(String username, int amount){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
+        checkPlayerUsername(username);
         if(amount < 0) {
             throw new IllegalArgumentException("Invalid negative amount of coins");
         }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                players.get(i).addCoins(amount);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                player.addCoins(amount);
                 return;
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
     public void removeCoins(String username, int amount){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
+        checkPlayerUsername(username);
         if(amount < 0) {
             throw new IllegalArgumentException("Invalid positive amount of coins");
         }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                if(players.get(i).getCoins() >= amount) {
-                    players.get(i).addCoins(amount * -1);
-                }
-                else{
-                    players.get(i).addCoins(players.get(i).getCoins() * -1);
-                }
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                player.removeCoins(amount);
                 return;
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
     public int getPlayerPosition(String username){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                return ((players.get(i).getPosition() % flightBoard.getLength()) +
-                        flightBoard.getLength()) % flightBoard.getLength();
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                return ((player.getPosition() % flightBoard.getLength()) + flightBoard.getLength()) % flightBoard.getLength();
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
     public void setAbort(String username){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                players.get(i).setAbort();
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                player.setAbort();
                 return;
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
     public ShipBoard getPlayerShipBoard(String username) {
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                return players.get(i).getShipBoard();
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                return player.getShipBoard();
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
+
+
 
    /**
     * AdventureDeck's methods
@@ -264,8 +291,10 @@ public class GameModel {
         if(pos < 0 || pos >= freeShipCards.size()){
             throw new IllegalArgumentException("Invalid position");
         }
-        freeShipCards.get(pos).discover();
-        return freeShipCards.get(pos);
+        ShipCard shipCard = freeShipCards.get(pos);
+        shipCard.discover();
+        freeShipCards.remove(shipCard);
+        return shipCard;
 
 
 
@@ -284,93 +313,115 @@ public class GameModel {
 //        }
     }
 
-    public ShipCard getShipCardFromShipBoard(String username, int x, int y){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                return players.get(i).getShipBoard().getShipCard(x,y);
-            }
-        }
-        throw new IllegalArgumentException("Player " + username + " not found");
-    }
 
-    public void reserveShipCard(String username, ShipCard shipCard){
-        if(!freeShipCards.contains(shipCard)){
-            throw new IllegalStateException("Invalid ship card");
-        }
+
+    public ShipCard getShipCardFromShipBoard(String username, int x, int y){
+        checkPlayerUsername(username);
+
         for(Player player : players){
             if(player.getUsername().equals(username)){
-                getPlayerShipBoard(username).reserveShipCard(shipCard);
+                return player.getShipBoard().getShipCard(x,y);
+            }
+        }
+
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+
+
+    public ShipBoard reserveShipCard(String username, ShipCard shipCard){
+        checkPlayerUsername(username);
+
+        for(Player player : players){
+            if(player.getUsername().equals(username)){
+                ShipBoard shipBoard = player.getShipBoard();
+                shipBoard.reserveShipCard(shipCard);
+                return shipBoard;
+            }
+        }
+
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+
+
+    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y){
+        checkPlayerUsername(username);
+
+        for(Player player : players){
+            if(player.getUsername().equals(username)){
+                ShipBoard shipBoard = player.getShipBoard();
+                shipBoard.useReservedShipCard(shipCard, x, y);
+                return shipBoard;
+            }
+        }
+
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+
+
+    public ShipBoard connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, int x, int y){
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                ShipBoard shipBoard = player.getShipBoard();
+                shipBoard.addShipCard(shipCard, x, y);
                 freeShipCards.remove(shipCard);
-                return;
+                return shipBoard;
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public void useReservedShipCard(String username, int numReserved){}
-
-    public void setScrap(String username, ShipCard shipCard){}
 
 
-    public void connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, int x, int y){
-        if (username == null || username.isEmpty()){
-            throw new IllegalArgumentException("null or empty username");
-        }
-        if (shipCard == null){
-            throw new IllegalArgumentException("cannot connect null shipCard");
-        }
-        if(!freeShipCards.contains(shipCard)){
-            throw new IllegalArgumentException("shipCard is not contained in the ship cards list");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                players.get(i).getShipBoard().addShipCard(shipCard, x, y);
-                freeShipCards.remove(shipCard);
-                return;
+    public ShipBoard removeShipCardFromPlayerShipBoard(String username, int x, int y){
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                ShipBoard shipBoard = player.getShipBoard();
+                ShipCard shipCard = shipBoard.removeShipCard(x, y);
+                freeShipCards.add(shipCard);
+                return shipBoard;
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public void removeShipCardFromPlayerShipBoard(String username, int x, int y){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                players.get(i).getShipBoard().removeShipCard(x, y);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Player " + username + " not found");
-    }
+
 
     public boolean checkPlayerShip(String username){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                return players.get(i).getShipBoard().checkShip();
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                return player.getShipBoard().checkShip();
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+
+
     public int getNumExposedConnectors(String username){
-        if (username == null){
-            throw new NullPointerException("Username is null");
-        }
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUsername().equals(username)) {
-                return players.get(i).getShipBoard().getExposedConnectors();
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                return player.getShipBoard().getExposedConnectors();
             }
         }
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
+
+
 
     //VA AGGIUNTO CONTROLLO DEL DOPPIAGGIO
     public void move(String username, int numDays){
@@ -416,30 +467,23 @@ public class GameModel {
         this.players.sort(Comparator.comparing(Player::getStanding));
     }
 
+
+
     //pos è l'ordine: primo, secondo...
     public void endBuilding(String username, int pos){
-        if(username == null || username.isEmpty()){
-            throw new IllegalArgumentException("username is null or empty");
-        }
+        checkPlayerUsername(username);
 
-        Player player = null;
-        for(Player p : players){
-            if(p.getUsername().equals(username)){
-                player = p;
+        for(Player player : players){
+            if(player.getUsername().equals(username)){
+                if(players.get(pos) == null){
+                    flightBoard.initializePosition(flightBoard.getType(), pos, player);
+                }
+                else{
+                    throw new IllegalArgumentException("There is already an other player in this position");
+                }
             }
         }
 
-        if(player != null){
-            if(players.get(pos) == null){
-                flightBoard.initializePosition(flightBoard.getType(), pos, player);
-            }
-            else{
-                throw new IllegalArgumentException("There is already an other player in this position");
-            }
-        }
-        else{
-            throw new IllegalArgumentException("Player " + username + " not found");
-        }
-
+        throw new IllegalArgumentException("Player " + username + " not found");
     }
 }

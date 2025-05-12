@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.*;
 
@@ -36,13 +37,13 @@ public abstract class Client {
 
     abstract public ShipCard getFreeShipCard(String username, int pos) throws NetworkException;
 
-    abstract public void placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException;
+    abstract public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException;
 
-    abstract public void removeShipCard(String username, int x, int y) throws NetworkException;
+    abstract public ShipBoard removeShipCard(String username, int x, int y) throws NetworkException;
 
-    abstract public void reserveShipCard(String username, ShipCard shipCard) throws NetworkException;
+    abstract public ShipBoard reserveShipCard(String username, ShipCard shipCard) throws NetworkException;
 
-    abstract public void useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException;
+    abstract public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException;
 
     abstract public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) throws NetworkException;
 

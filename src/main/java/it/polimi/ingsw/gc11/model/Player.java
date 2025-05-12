@@ -43,7 +43,23 @@ public class Player {
     }
 
     public void addCoins(int delta) {
+        if(delta < 0) {
+            throw new IllegalArgumentException("Delta value cannot be negative");
+        }
+
         this.coins += delta;
+    }
+
+    public void removeCoins(int delta) {
+        if(delta < 0) {
+            throw new IllegalArgumentException("Delta value cannot be negative");
+        }
+
+        if (coins > delta) {
+            coins -= delta;
+        } else {
+            coins = 0;
+        }
     }
 
     public int getPosition() {

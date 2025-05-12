@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -14,17 +15,20 @@ import java.util.Map;
 
 
 public interface GameInterface {
+
     //IdlePhase methods
     void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException;
 
+
     //Building phase methods
     ShipCard getFreeShipCard(int pos);
-    void placeShipCard(String username, ShipCard shipCard, int x, int y);
-    void removeShipCard(String username, int x, int y);
-    void reserveShipCard(String username, ShipCard shipCard);
-    void useReservedShipCard(String username, ShipCard shipCard, int x, int y);
+    ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y);
+    ShipBoard removeShipCard(String username, int x, int y);
+    ShipBoard reserveShipCard(String username, ShipCard shipCard);
+    ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y);
     ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck);
     void endBuilding(String username, int pos);
+
 
     //CheckPhase methods
 

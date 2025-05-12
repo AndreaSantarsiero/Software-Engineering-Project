@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.*;
 
@@ -57,20 +58,20 @@ public class VirtualServer {
         return client.getFreeShipCard(username, pos);
     }
 
-    public void placeShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
-        client.placeShipCard(username, shipCard, x, y);
+    public ShipBoard placeShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
+        return client.placeShipCard(username, shipCard, x, y);
     }
 
-    public void removeShipCard(int x, int y) throws NetworkException{
-        client.removeShipCard(username, x, y);
+    public ShipBoard removeShipCard(int x, int y) throws NetworkException{
+        return client.removeShipCard(username, x, y);
     }
 
-    public void reserveShipCard(ShipCard shipCard) throws NetworkException{
-        client.reserveShipCard(username, shipCard);
+    public ShipBoard reserveShipCard(ShipCard shipCard) throws NetworkException{
+        return client.reserveShipCard(username, shipCard);
     }
 
-    public void useReservedShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
-        client.useReservedShipCard(username, shipCard, x, y);
+    public ShipBoard useReservedShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
+        return client.useReservedShipCard(username, shipCard, x, y);
     }
 
     public ArrayList<AdventureCard> observeMiniDeck(int numDeck) throws NetworkException{
