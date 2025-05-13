@@ -15,20 +15,16 @@ import java.util.List;
 
 public class Menu {
 
-    private static Terminal terminal;
-    private static LineReader lineReader;
-    private static BindingReader bindingReader;
+    private static final Terminal terminal;
+    private static final LineReader lineReader;
+    private static final BindingReader bindingReader;
 
 
 
     static {
         try {
-            terminal = TerminalBuilder.builder()
-                    .system(true)
-                    .build();
-            lineReader = LineReaderBuilder.builder()
-                    .terminal(terminal)
-                    .build();
+            terminal = TerminalBuilder.builder().system(true).jna(true).nativeSignals(true).build();
+            lineReader = LineReaderBuilder.builder().terminal(terminal).build();
             bindingReader = new BindingReader(terminal.reader());
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize JLine", e);
