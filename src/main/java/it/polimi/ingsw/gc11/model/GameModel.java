@@ -532,6 +532,10 @@ public class GameModel {
         this.players.sort(Comparator.comparing(Player::getStanding));
     }
 
+    public int getPositionOnBoard(String username){
+        return Math.floorMod(getPlayer(username).getPosition(), flightBoard.getLength());
+    }
+
 
 
     //pos è l'ordine: primo, secondo...
