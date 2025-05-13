@@ -14,14 +14,15 @@ import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.*;
 
 
+
 public class VirtualServer {
 
     private final Client client;
-    private final String username;
+    private String username;
 
 
 
-    public VirtualServer(Utils.ConnectionType type, String username, String ip, int port) throws NetworkException, UsernameAlreadyTakenException {
+    public VirtualServer(Utils.ConnectionType type, String ip, int port) throws NetworkException {
         try{
             if(type.equals(Utils.ConnectionType.RMI)){
                 this.client = new ClientRMI(this, ip, port);
@@ -33,12 +34,14 @@ public class VirtualServer {
         catch (Exception e){
             throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port + "\n" + e.getMessage());
         }
-
-        client.registerSession(username);
-        this.username = username;
     }
 
 
+
+    public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
+        client.registerSession(username);
+        this.username = username;
+    }
 
     public void createMatch(FlightBoard.Type flightType, int numPlayers) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
         client.createMatch(username, flightType, numPlayers);

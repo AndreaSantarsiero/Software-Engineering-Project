@@ -15,7 +15,7 @@ public class GameModel {
     private final int numPlayers;
     private final List<Player> players;
     private FlightBoard flightBoard;
-    private final List<AdventureDeck> adventureCardsDecks;
+    private List<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
     private List<ShipCard> freeShipCards;
     private final Map<String, ShipCard> heldShipCards;
@@ -90,6 +90,38 @@ public class GameModel {
         for (Player player : players) {
             player.setShipBoard(flightType);
         }
+    }
+
+    public void reloadDeck(){
+        adventureCardsDecks = new ArrayList<>();
+        definitiveDeck = null;
+
+        if (this.flightBoard.getType().equals(FlightBoard.Type.TRIAL)) {
+            this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
+            this.adventureCardsDecks.add(new AdventureDeck(true));
+            for (int i = 0; i < this.adventureCardsTrial.size(); i++) {
+                this.adventureCardsDecks.getFirst().addCard(adventureCardsTrial.get(i));
+            }
+            adventureCardsDecks.getFirst().shuffle();
+        }
+
+        //Level 2 Flight has 4 deck, anyone of them has inside: 2 level2 card, 1 level1 card
+        //Last deck (position 3) is not observable
+        else if (this.flightBoard.getType().equals(FlightBoard.Type.LEVEL2)) {
+            this.flightBoard = new FlightBoard(FlightBoard.Type.LEVEL2);
+            this.adventureCardsDecks.add(new AdventureDeck(true));
+            this.adventureCardsDecks.add(new AdventureDeck(true));
+            this.adventureCardsDecks.add(new AdventureDeck(true));
+            this.adventureCardsDecks.add(new AdventureDeck(false));
+            Collections.shuffle(this.adventureCardsLevel1);
+            Collections.shuffle(this.adventureCardsLevel2);
+            for (int i = 0; i < this.adventureCardsDecks.size(); i++) {
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get(i*2));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel2.get(i*2+1));
+                this.adventureCardsDecks.get(i).addCard(adventureCardsLevel1.get(i));
+            }
+        }
+        createDefinitiveDeck();
     }
 
     public FlightBoard getFlightBoard() {
@@ -461,6 +493,7 @@ public class GameModel {
 
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
+                            break;
 
                         }
                     }
@@ -487,6 +520,7 @@ public class GameModel {
 
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
+                            break;
                         }
                     }
                 }
