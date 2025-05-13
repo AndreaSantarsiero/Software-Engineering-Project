@@ -7,8 +7,8 @@ chcp 65001
 start cmd /k "java -cp target\GC11-1.0-SNAPSHOT-jar-with-dependencies.jar it.polimi.ingsw.gc11.controller.ServerMAIN"
 
 :: Run the second terminal for MainCLI with multiple-client activation key F1
-start cmd /k "java -cp target\GC11-1.0-SNAPSHOT-jar-with-dependencies.jar it.polimi.ingsw.gc11.view.cli.MainCLI -mc f1"
+start cmd /k "java -cp target\GC11-1.0-SNAPSHOT-jar-with-dependencies.jar it.polimi.ingsw.gc11.view.cli.MainCLI"
 
 :: Run the third terminal for MainCLI with multiple-client activation key F2
-start cmd /k "java -cp target\GC11-1.0-SNAPSHOT-jar-with-dependencies.jar it.polimi.ingsw.gc11.view.cli.MainCLI -mc f2"
+start cmd /k "java -cp target\GC11-1.0-SNAPSHOT-jar-with-dependencies.jar it.polimi.ingsw.gc11.view.cli.MainCLI"
 
