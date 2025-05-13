@@ -18,12 +18,6 @@ import java.util.Map;
 //These are all Default Implementation
 public abstract class GamePhase {
 
-    public abstract void nextPhase(GameContext context);
-
-    public abstract String getPhaseName();
-
-
-
     //IdlePhase
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
         throw new FullLobbyException("Cannot connect player to game in the current game phase");

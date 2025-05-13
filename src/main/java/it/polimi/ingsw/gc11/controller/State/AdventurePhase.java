@@ -16,14 +16,16 @@ import java.util.Map;
 
 //Adventure Context
 public class AdventurePhase extends GamePhase {
+    private GameContext gameContext;
     private GameModel gameModel;
     private AdventureState advState;
     private AdventureCard drawnAdvCard;
     private int idxCurrentPlayer;
     private boolean resolvingAdvCard; //Flag is used to know if an advCard is currently being resolved
 
-    public AdventurePhase(GameContext context) {
-        this.gameModel = context.getGameModel();
+    public AdventurePhase(GameContext gameContext) {
+        this.gameContext = gameContext;
+        this.gameModel = gameContext.getGameModel();
         this.advState = new IdleState(this);
         this.drawnAdvCard = null;
         this.idxCurrentPlayer = 0;
@@ -64,16 +66,10 @@ public class AdventurePhase extends GamePhase {
         this.resolvingAdvCard = resolvingAdvCard;
     }
 
-    @Override
-    public void nextPhase(GameContext context) {
-        context.setPhase(new EndgamePhase());
-    }
 
-    @Override
-    public String getPhaseName(){
-        return "ADVENTURE";
+    public void nextPhase() {
+        this.gameContext.setPhase(new EndgamePhase(this.gameContext));
     }
-
 
     /**
      * Initializes the adventure state for the current adventure card extracted by the player using the specified game model.
