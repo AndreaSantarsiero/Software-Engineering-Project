@@ -77,7 +77,7 @@ public class Menu {
     private static void renderMenu(String title, List<String> options, int selected) {
         clearView();
         if (title != null && !title.isEmpty()) {
-            System.out.println(title + " (press W to ↑, A to ↓ and Enter to confirm):");
+            System.out.println(title + " (press W to ↑, S to ↓ and Enter to confirm):");
         }
         for (int i = 0; i < options.size(); i++) {
             if (i == selected) {
