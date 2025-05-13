@@ -3,25 +3,47 @@ package it.polimi.ingsw.gc11.model;
 import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-import it.polimi.ingsw.gc11.model.FlightBoard;
-import java.io.Serializable;
 
 public class Player {
-    private String username;
+    private final String username;
+    private Color color;
     private int coins;
     private int position;
     private boolean abort;
     private ShipBoard shipBoard;
     private int standing;
-    //It will contain client's socket
 
+    public enum Color {
+        RED, GREEN, BLUE, YELLOW;
+    }
 
     public Player(String username) {
         this.username = username;
-        coins = 0;
-        position = -1;
-        abort = false;
-        shipBoard = null;
+        this.color = null;
+        this.coins = 0;
+        this.position = 0;
+        this.abort = false;
+        this.shipBoard = null;
+        this.standing = 0;
+    }
+
+    //Vanno inizializzati quando si mettono le pedine sulla flightBoard
+
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setStanding(int standing) {
+        this.standing = standing;
+    }
+
+    public int getStanding() {
+        return standing;
     }
 
     public String getUsername() {
@@ -76,6 +98,4 @@ public class Player {
     }
 
     public ShipBoard getShipBoard() { return shipBoard; }
-
-
 }
