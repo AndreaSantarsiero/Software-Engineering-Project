@@ -235,6 +235,7 @@ public class GameContextTest {
             try{
                 advCard = gameContext.getAdventureCard("username1");
             }catch(IllegalStateException e){
+                gameContext.getGameModel().reloadDeck();
                 gameContext.setPhase(new AdventurePhase(gameContext));
             }
         } while (!(advCard instanceof AbandonedStation || advCard instanceof AbandonedShip));
@@ -265,6 +266,7 @@ public class GameContextTest {
             try{
                 advCard = gameContext.getAdventureCard("username1");
             }catch(IllegalStateException e){
+                gameContext.getGameModel().reloadDeck();
                 gameContext.setPhase(new AdventurePhase(gameContext));
             }
         } while (!(advCard instanceof AbandonedStation || advCard instanceof AbandonedShip));
@@ -288,6 +290,7 @@ public class GameContextTest {
             try{
                 advCard = gameContext.getAdventureCard("username1");
             }catch(IllegalStateException e){
+                gameContext.getGameModel().reloadDeck();
                 gameContext.setPhase(new AdventurePhase(gameContext));
             }
         } while (!(advCard instanceof AbandonedStation || advCard instanceof AbandonedShip));
@@ -325,6 +328,7 @@ public class GameContextTest {
             try{
                 advCard = gameContext.getAdventureCard("username1");
             }catch(IllegalStateException e){
+                gameContext.getGameModel().reloadDeck();
                 gameContext.setPhase(new AdventurePhase(gameContext));
             }
         } while (!(advCard instanceof AbandonedShip));
@@ -368,6 +372,7 @@ public class GameContextTest {
             try{
                 advCard = gameContext.getAdventureCard("username1");
             }catch(IllegalStateException e){
+                gameContext.getGameModel().reloadDeck();
                 gameContext.setPhase(new AdventurePhase(gameContext));
             }
         } while (!(advCard instanceof AbandonedShip));
