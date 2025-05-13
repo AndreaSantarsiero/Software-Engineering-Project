@@ -92,7 +92,7 @@ public class VirtualServer {
     }
 
     public void endBuilding(int pos) throws NetworkException{
-        EndBuildingAction action = new EndBuildingAction(username, pos);
+        EndBuildingAction action = new EndBuildingAction(username);
         client.sendAction(action);
     }
 
