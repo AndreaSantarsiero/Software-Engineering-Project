@@ -108,8 +108,8 @@ public class ShipBoard7Test {
     @Test
     void testCannonPower() {
         assertEquals(3, shipBoard.getDoubleCannonsNumber(), "Double cannons number not calculated correctly");
-        assertEquals(8.5, shipBoard.getCannonsPower(null), "Cannon power not calculated correctly");
         List<Cannon> doubleCannons = new ArrayList<>();
+        assertEquals(8.5, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly");
         doubleCannons.add((Cannon) shipBoard.getShipCard(10,7));
         assertEquals(10.5, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly when adding a double cannon");
         doubleCannons.add((Cannon) shipBoard.getShipCard(7,8));

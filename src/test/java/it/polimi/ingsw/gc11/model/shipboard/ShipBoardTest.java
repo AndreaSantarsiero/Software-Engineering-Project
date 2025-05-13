@@ -4,6 +4,8 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -98,9 +100,11 @@ public class ShipBoardTest {
     void testRemoveCannons() {
         Cannon cannon = new Cannon("singleCannon", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Cannon.Type.SINGLE);
         shipBoard.addShipCard(cannon, 6, 7);
-        assertEquals(1, shipBoard.getCannonsPower(null), "Cannon power not calculated correctly");
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.getCannonsPower(null), "Double cannons list cannot be null");
+        List<Cannon> doubleCannons = new ArrayList<>();
+        assertEquals(1, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly");
         shipBoard.removeShipCard(6, 7);
-        assertEquals(0, shipBoard.getCannonsPower(null), "Cannon power not calculated correctly after removing a cannon");
+        assertEquals(0, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly after removing a cannon");
     }
 
     @Test
