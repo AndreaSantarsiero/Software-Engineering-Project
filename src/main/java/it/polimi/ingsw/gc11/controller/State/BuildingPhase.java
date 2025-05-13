@@ -10,14 +10,10 @@ import java.util.ArrayList;
 
 
 public class BuildingPhase extends GamePhase {
-    @Override
-    public void nextPhase(GameContext context) {
-        context.setPhase(new CheckPhase()); // Change to Check
-    }
+    private final GameContext gameContext;
 
-    @Override
-    public String getPhaseName(){
-        return "BUILDING";
+    public BuildingPhase(GameContext gameContext) {
+        this.gameContext = gameContext;
     }
 
     @Override
@@ -62,8 +58,6 @@ public class BuildingPhase extends GamePhase {
 
     @Override
     public void goToCheckPhase(GameContext context) throws IllegalStateException {
-        this.nextPhase(context);
+        this.gameContext.setPhase(new CheckPhase(this.gameContext));
     }
-
-
 }

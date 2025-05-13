@@ -27,12 +27,11 @@ class AdventurePhaseTest {
         assertNull(adventurePhase.getDrawnAdvCard());
         assertEquals(0, adventurePhase.getIdxCurrentPlayer());
         assertFalse(adventurePhase.isResolvingAdvCard());
-        assertEquals("ADVENTURE", adventurePhase.getPhaseName());
     }
 
     @Test
     void testNextPhase(){
-        adventurePhase.nextPhase(gc);
+        adventurePhase.nextPhase();
         assertInstanceOf(EndgamePhase.class, gc.getPhase());
     }
 

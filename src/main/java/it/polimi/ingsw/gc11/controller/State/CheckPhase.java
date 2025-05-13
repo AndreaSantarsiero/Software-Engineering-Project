@@ -3,13 +3,13 @@ package it.polimi.ingsw.gc11.controller.State;
 import it.polimi.ingsw.gc11.controller.GameContext;
 
 public class CheckPhase extends GamePhase {
-    @Override
-    public void nextPhase(GameContext context) {
-        context.setPhase(new AdventurePhase(context));
+    private GameContext gameContext;
+
+    public CheckPhase(GameContext gameContext) {
+        this.gameContext = gameContext;
     }
 
-    @Override
-    public String getPhaseName(){
-        return "CHECK";
+    public void nextPhase() {
+        gameContext.setPhase(new AdventurePhase(this.gameContext));
     }
 }

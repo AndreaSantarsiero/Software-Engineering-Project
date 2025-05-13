@@ -140,15 +140,15 @@ public class GameContext {
         phase.useBatteries(username, batteries);
     }
 
-    public void landOn(String username, int numPlanet){
-        phase.landOn(username, numPlanet);
+    public void landOnPlanet(String username, int numPlanet){
+        phase.landOnPlanet(username, numPlanet);
     }
 
     public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
         phase.chooseEnginePower(username, Batteries);
     }
 
-    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
-        phase.meteorHit(username, batteries, cannon);
+    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
+        phase.meteorDefense(username, batteries, cannon);
     }
 }

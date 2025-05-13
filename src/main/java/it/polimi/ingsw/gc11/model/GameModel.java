@@ -28,7 +28,7 @@ public class GameModel {
 
     public GameModel(int numPlayers) {
         id = UUID.randomUUID().toString();
-        players = new  ArrayList<>();
+        players = new  ArrayList<>(0);
         this.numPlayers = numPlayers;
         flightBoard = null;
         adventureCardsDecks = new ArrayList<>();
