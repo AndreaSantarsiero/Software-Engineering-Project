@@ -58,7 +58,7 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't eliminate batteries in the current adventure state.");
     }
 
-    public void landOn(String username, int numPlanet){
+    public void landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current adventure state.");
     }
 
@@ -66,7 +66,7 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't choose engine power in the current adventure state.");
     }
 
-    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
+    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
         throw new IllegalStateException("Can't meteor hit in the current adventure state.");
     }
 }

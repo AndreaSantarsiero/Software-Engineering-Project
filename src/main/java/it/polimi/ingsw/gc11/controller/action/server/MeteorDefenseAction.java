@@ -19,6 +19,6 @@ public class MeteorDefenseAction extends ClientAction {
 
     @Override
     public void execute(GameContext gameContext) {
-        gameContext.meteorHit(getUsername(), batteries, cannon);
+        gameContext.meteorDefense(getUsername(), batteries, cannon);
     }
 }

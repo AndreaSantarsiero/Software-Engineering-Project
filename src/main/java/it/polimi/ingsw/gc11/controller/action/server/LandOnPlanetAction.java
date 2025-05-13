@@ -12,7 +12,7 @@ public class LandOnPlanetAction extends ClientAction {
 
     @Override
     public void execute(GameContext ctx) {
-        ctx.landOn(getUsername(), numPlanet);
+        ctx.landOnPlanet(getUsername(), numPlanet);
     }
 }
 

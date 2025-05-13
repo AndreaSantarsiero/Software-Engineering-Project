@@ -177,9 +177,9 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void landOn(String username, int numPlanet){
+    public void landOnPlanet(String username, int numPlanet){
         try{
-            this.advState.landOn(username, numPlanet);
+            this.advState.landOnPlanet(username, numPlanet);
         }
         catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -196,9 +196,9 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
+    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
         try{
-            this.advState.meteorHit(username, batteries, cannon);
+            this.advState.meteorDefense(username, batteries, cannon);
         }
         catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
