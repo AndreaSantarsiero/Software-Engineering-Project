@@ -37,9 +37,9 @@ public class Menu {
         int selected = 0;
 
         KeyMap<String> keyMap = new KeyMap<>();
-        keyMap.bind("up", "\033[A", key(65));    // Arrow Up
-        keyMap.bind("down", "\033[B", key(66));  // Arrow Down
-        keyMap.bind("enter", "\r", "\n");                  // Enter (Windows/Linux)
+        keyMap.bind("up", "w", "W");       // Up
+        keyMap.bind("down", "s", "S");     // Down
+        keyMap.bind("enter", "\r", "\n");  // Enter (Windows/Linux)
 
         while (true) {
             renderMenu(title, options, selected);
