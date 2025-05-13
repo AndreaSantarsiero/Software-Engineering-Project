@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Meteor;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.MeteorSwarm;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 
@@ -34,7 +35,7 @@ public class HandleMeteor extends AdventureState {
 
     //Assumiamo che i comandi siano memorizzati in una coda
     @Override
-    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon) {
+    public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon) {
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
@@ -117,5 +118,7 @@ public class HandleMeteor extends AdventureState {
 
             this.advContext.setAdvState(new HandleMeteor(advContext, coordinates, iterationsHit, iterationsPlayer));
         }
+
+        return player;
     }
 }

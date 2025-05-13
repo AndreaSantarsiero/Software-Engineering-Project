@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
 
@@ -29,7 +30,7 @@ public class CoordinateState extends AdventureState {
     }
 
     @Override
-    public void getCoordinate(String username){
+    public Hit getCoordinate(String username){
         if(!playersDefeated.get(0).getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to roll dices");
         }
@@ -46,5 +47,6 @@ public class CoordinateState extends AdventureState {
         this.advContext.setAdvState(new HandleHit(advContext, playersDefeated, coordinates, iterationsHit,
                                     0, alreadyPlayed));
 
+        return pirates.getShots().get(iterationsHit);
     }
 }

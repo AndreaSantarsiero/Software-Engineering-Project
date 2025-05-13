@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc11.controller.action.server;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 
 public class RemoveShipCardAction extends ClientAction {
     private int x;
@@ -14,6 +17,13 @@ public class RemoveShipCardAction extends ClientAction {
 
     @Override
     public void execute(GameContext cxt){
-        cxt.removeShipCard(username, x, y);
+        try {
+            ShipBoard shipBoard = cxt.removeShipCard(username, x, y);
+            UpdateShipBoardAction response = new UpdateShipBoardAction(shipBoard);
+            cxt.sendAction(username, response);
+        } catch (Exception e){
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
+            cxt.sendAction(username, exception);
+        }
     }
 }

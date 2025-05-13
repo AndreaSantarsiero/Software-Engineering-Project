@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 
@@ -26,7 +27,7 @@ public class SlaversState extends AdventureState {
 
 
     @Override
-    public void chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
+    public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
 
         int sum = 0;
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
@@ -72,6 +73,7 @@ public class SlaversState extends AdventureState {
             advContext.setAdvState(new LooseState(advContext, player));
         }
 
+        return player;
     }
 
 }

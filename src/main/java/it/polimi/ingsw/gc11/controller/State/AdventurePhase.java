@@ -2,9 +2,11 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
@@ -108,28 +110,18 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
-        this.advState.killMembers(username, housingUsage);
+    public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        return advState.killMembers(username, housingUsage);
     }
 
     @Override
-    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
-        try {
-            this.advState.chooseMaterials(username, storageMaterials);
-        }
-        catch(IllegalStateException | IllegalArgumentException e){
-            System.out.println(e.getMessage());
-        }
+    public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        return advState.chooseMaterials(username, storageMaterials);
     }
 
     @Override
-    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
-        try{
-            this.advState.chooseFirePower(username, batteries, doubleCannons);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public Player chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
+            return advState.chooseFirePower(username, batteries, doubleCannons);
     }
 
     @Override
@@ -143,62 +135,32 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void getCoordinate(String username){
-        try{
-            this.advState.getCoordinate(username);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public Hit getCoordinate(String username){
+        return advState.getCoordinate(username);
     }
 
     @Override
-    public void handleShot(String username, Map<Battery, Integer> batteries){
-        try{
-            this.advState.handleShot(username, batteries);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public Player handleShot(String username, Map<Battery, Integer> batteries){
+        return advState.handleShot(username, batteries);
     }
 
     @Override
-    public void useBatteries(String username, Map<Battery, Integer> batteries){
-        try{
-            this.advState.useBatteries(username, batteries);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public Player useBatteries(String username, Map<Battery, Integer> batteries){
+        return advState.useBatteries(username, batteries);
     }
 
     @Override
     public void landOnPlanet(String username, int numPlanet){
-        try{
-            this.advState.landOnPlanet(username, numPlanet);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+        advState.landOnPlanet(username, numPlanet);
     }
 
-    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
-        try{
-            this.advState.chooseEnginePower(username, Batteries);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){
+        return advState.chooseEnginePower(username, Batteries);
     }
 
     @Override
-    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
-        try{
-            this.advState.meteorDefense(username, batteries, cannon);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
+        return advState.meteorDefense(username, batteries, cannon);
     }
 
 }

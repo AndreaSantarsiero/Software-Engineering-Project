@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 
 import java.util.Map;
@@ -16,7 +17,7 @@ public class Penalty2Lv1 extends AdventureState {
     }
 
     @Override
-    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+    public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
 
         CombatZoneLv1 combatZoneLv1 = (CombatZoneLv1) this.advContext.getDrawnAdvCard();
         int lostMembers = combatZoneLv1.getLostMembers();
@@ -43,6 +44,8 @@ public class Penalty2Lv1 extends AdventureState {
 
         //go to next state
         this.advContext.setAdvState(new Check3Lv1(advContext, 10000, null));
+
+        return player;
     }
 
 
