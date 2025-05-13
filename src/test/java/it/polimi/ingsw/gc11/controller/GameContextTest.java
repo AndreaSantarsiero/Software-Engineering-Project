@@ -345,12 +345,12 @@ public class GameContextTest {
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
 
-        map.put((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,7), 2);
-        map.put((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,8), 2);
-        map.put((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(8,7), 2);
-        map.put((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(8,8), 2);
+        map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,7), 2, Integer::sum);
+        map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,8), 2, Integer::sum);
+        map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(8,7), 2, Integer::sum);
+        map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(8,8), 2, Integer::sum);
         HousingUnit invalid = new HousingUnit("invalid", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, false);
-        map.put(invalid, 1);
+        map.merge(invalid, 1, Integer::sum);
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
 
