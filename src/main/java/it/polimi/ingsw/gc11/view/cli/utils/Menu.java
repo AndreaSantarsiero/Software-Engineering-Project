@@ -1,186 +1,89 @@
 package it.polimi.ingsw.gc11.view.cli.utils;
 
-import com.github.kwhat.jnativehook.GlobalScreen;
-import com.github.kwhat.jnativehook.NativeHookException;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import org.jline.keymap.BindingReader;
+import org.jline.keymap.KeyMap;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.AttributedString;
+import org.jline.utils.AttributedStyle;
+import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static it.polimi.ingsw.gc11.view.cli.MainCLI.functionKey;
-import static it.polimi.ingsw.gc11.view.cli.MainCLI.otherFunctionKeys;
 
 
 
 public class Menu {
 
-    public static AtomicBoolean isTerminalInFocus = new AtomicBoolean(false);
+    private static Terminal terminal;
+    private static LineReader lineReader;
+    private static BindingReader bindingReader;
 
 
 
-    public static void initialize() throws NativeHookException {
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
-        GlobalScreen.registerNativeHook();
+    static {
+        try {
+            terminal = TerminalBuilder.builder()
+                    .system(true)
+                    .build();
+            lineReader = LineReaderBuilder.builder()
+                    .terminal(terminal)
+                    .build();
+            bindingReader = new BindingReader(terminal.reader());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize JLine", e);
+        }
     }
 
 
 
     public static int interactiveMenu(String title, List<String> options) {
-        AtomicInteger selected = new AtomicInteger(0);
-        AtomicInteger previouslySelected = new AtomicInteger(-1);
-        AtomicBoolean confirmed = new AtomicBoolean(false);
-        ReentrantLock lock = new ReentrantLock();
-        Condition change = lock.newCondition();
+        int selected = 0;
 
-        NativeKeyListener listener = new NativeKeyListener() {
-            @Override
-            public void nativeKeyPressed(NativeKeyEvent e) {
-                int keyCode = e.getKeyCode();
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("up", "\033[A");     // Arrow Up
+        keyMap.bind("down", "\033[B");   // Arrow Down
+        keyMap.bind("enter", "\r");      // Enter
 
-                if (functionKey != null && keyCode == functionKey) {
-                    isTerminalInFocus.set(true);
-                    return;
-                }
+        while (true) {
+            renderMenu(title, options, selected);
+            String key = bindingReader.readBinding(keyMap);
 
-                if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
-                    isTerminalInFocus.set(false);
-                    return;
-                }
-
-                if (!isTerminalInFocus.get()) {
-                    return;
-                }
-
-                lock.lock();
-                try {
-                    switch (keyCode) {
-                        case NativeKeyEvent.VC_UP:
-                            selected.set((selected.get() - 1 + options.size()) % options.size());
-                            change.signal();
-                            break;
-                        case NativeKeyEvent.VC_DOWN:
-                            selected.set((selected.get() + 1) % options.size());
-                            change.signal();
-                            break;
-                        case NativeKeyEvent.VC_ENTER:
-                            confirmed.set(true);
-                            change.signal();
-                            break;
-                    }
-                } finally {
-                    lock.unlock();
-                }
+            switch (key) {
+                case "up":
+                    selected = (selected - 1 + options.size()) % options.size();
+                    break;
+                case "down":
+                    selected = (selected + 1) % options.size();
+                    break;
+                case "enter":
+                    return selected;
+                default:
+                    // ignore any other key
             }
-
-            @Override public void nativeKeyReleased(NativeKeyEvent e) {}
-            @Override public void nativeKeyTyped(NativeKeyEvent e) {}
-        };
-
-        GlobalScreen.addNativeKeyListener(listener);
-
-        lock.lock();
-        try {
-            renderMenu(title, options, selected.get());
-            previouslySelected.set(selected.get());
-
-            while (!confirmed.get()) {
-                change.await();  // wait for change
-                if (previouslySelected.get() != selected.get()) {
-                    renderMenu(title, options, selected.get());
-                    previouslySelected.set(selected.get());
-                }
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } finally {
-            lock.unlock();
-            GlobalScreen.removeNativeKeyListener(listener);
         }
-
-        return selected.get();
     }
 
 
 
     public static String readLine(String message) {
-        System.out.print(message);
-        AtomicReference<StringBuilder> inputBuilder = new AtomicReference<>(new StringBuilder());
-        CountDownLatch latch = new CountDownLatch(1);
-
-        NativeKeyListener listener = new NativeKeyListener() {
-            @Override
-            public void nativeKeyPressed(NativeKeyEvent e) {
-                int keyCode = e.getKeyCode();
-
-                if (functionKey != null && keyCode == functionKey) {
-                    isTerminalInFocus.set(true);
-                }
-                else if (functionKey != null && otherFunctionKeys.contains(keyCode)) {
-                    isTerminalInFocus.set(false);
-                }
-            }
-
-            @Override
-            public void nativeKeyReleased(NativeKeyEvent e) {}
-
-            @Override
-            public void nativeKeyTyped(NativeKeyEvent e) {
-                if (!isTerminalInFocus.get()) {
-                    return;
-                }
-
-                char keyChar = e.getKeyChar();
-                switch (keyChar) {
-                    case '\n':
-                    case '\r':
-                        latch.countDown();
-                        System.out.println();
-                        break;
-                    case '\b':
-                        if (!inputBuilder.get().isEmpty()) {
-                            inputBuilder.get().deleteCharAt(inputBuilder.get().length() - 1);
-                            System.out.print("\b \b");
-                        }
-                        break;
-                    default:
-                        if (keyChar >= 32 && keyChar <= 126) {
-                            inputBuilder.get().append(keyChar);
-                            System.out.print(keyChar);
-                        }
-                        break;
-                }
-            }
-        };
-
-        GlobalScreen.addNativeKeyListener(listener);
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        GlobalScreen.removeNativeKeyListener(listener);
-        return inputBuilder.get().toString();
+        return lineReader.readLine(message);
     }
 
 
 
     private static void renderMenu(String title, List<String> options, int selected) {
         clearView();
-        if(title != null && !title.isEmpty()) {
+        if (title != null && !title.isEmpty()) {
             System.out.println(title + " (↑↓ and press Enter):");
         }
         for (int i = 0; i < options.size(); i++) {
             if (i == selected) {
-                System.out.println("  > \u001b[48;5;235m" + options.get(i) + "\u001b[0m");
+                AttributedString highlighted = new AttributedString(
+                        "  > " + options.get(i),
+                        AttributedStyle.DEFAULT.background(235)
+                );
+                System.out.println(highlighted.toAnsi());
             } else {
                 System.out.println("    " + options.get(i));
             }

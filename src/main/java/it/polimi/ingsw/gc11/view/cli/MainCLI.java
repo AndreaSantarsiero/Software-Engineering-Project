@@ -1,7 +1,5 @@
 package it.polimi.ingsw.gc11.view.cli;
 
-import com.github.kwhat.jnativehook.NativeHookException;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import it.polimi.ingsw.gc11.controller.ServerMAIN;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
@@ -9,9 +7,7 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.cli.utils.Menu;
-import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import java.io.InputStream;
 import java.util.*;
 
@@ -21,8 +17,6 @@ public class MainCLI {
 
     public static String serverIp = null;
     public static Integer serverPort = null;
-    public static Integer functionKey = null;
-    public static final List<Integer> otherFunctionKeys = new ArrayList<>();
 
 
 
@@ -31,13 +25,9 @@ public class MainCLI {
         int choice;
 
         try {
-            Menu.initialize();
             parseArgs(args);
-            if (functionKey == null) {
-                Menu.isTerminalInFocus.set(true);
-            }
             virtualServer = setup();
-        } catch (RuntimeException | NativeHookException e) {
+        } catch (RuntimeException e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");
             return;
@@ -150,49 +140,19 @@ public class MainCLI {
 
 
     private static void parseArgs(String[] args) {
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equalsIgnoreCase("-mc")) {
-                if (i + 1 < args.length) {
-                    String fn = args[i + 1].toUpperCase();
-                    if (fn.matches("F[1-9]|F1[0-2]")) {
-                        functionKey = NativeKeyEvent.VC_F1 + (Integer.parseInt(fn.substring(1)) - 1);
-                        i++;
-                    }
-                    else {
-                        throw new RuntimeException("Invalid function key after -mc: " + fn);
-                    }
-                } else {
-                    throw new RuntimeException("Missing function key after -mc");
-                }
-            }
-            else if (serverIp == null) {
-                serverIp = args[i];
-                if (i + 1 < args.length && args[i + 1].matches("\\d+")) {
-                    try {
-                        serverPort = Integer.parseInt(args[i + 1]);
-                        i++;
-                    } catch (NumberFormatException e) {
-                        throw new RuntimeException("Invalid port number: " + args[i + 1]);
-                    }
-                }
-            }
-            else {
-                throw new RuntimeException("Unexpected argument: " + args[i]);
+        if (args.length == 1) {
+            serverIp = args[0];
+        }
+        else if (args.length == 2) {
+            serverIp = args[0];
+            try {
+                serverPort = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Invalid port number: " + args[1]);
             }
         }
-
-        otherFunctionKeysInitializer();
-    }
-
-
-
-    private static void otherFunctionKeysInitializer(){
-        if (functionKey != null) {
-            for (int i = NativeKeyEvent.VC_F1; i <= NativeKeyEvent.VC_F12; i++) {
-                if (i != functionKey) {
-                    otherFunctionKeys.add(i);
-                }
-            }
+        else if (args.length > 2) {
+            throw new RuntimeException("Too many arguments. Usage: java MainCLI [server-ip] [server-port]");
         }
     }
 }

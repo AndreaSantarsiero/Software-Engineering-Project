@@ -9,7 +9,7 @@ module it.polimi.ingsw.gc11 {
     requires java.rmi;
     requires java.desktop;
     requires java.logging;
-    requires com.github.kwhat.jnativehook;
+    requires org.jline;
 
     opens it.polimi.ingsw.gc11 to javafx.fxml;
     exports it.polimi.ingsw.gc11;
