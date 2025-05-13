@@ -2,14 +2,13 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-
 import java.io.InputStream;
 import java.util.Properties;
 
 
 
 public class ServerMAIN {
-    public static void main(String[] args) {
+    public static void run(String[] args) {
 
         int RMIPort, SocketPort, connectionTimeout;
 
