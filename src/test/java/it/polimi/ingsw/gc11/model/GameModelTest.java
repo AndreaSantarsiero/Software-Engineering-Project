@@ -163,33 +163,33 @@ class GameModelTest {
         gameModel.addPlayer("Player1");
         gameModel.addPlayer("Player2");
         gameModel.setLevel(FlightBoard.Type.TRIAL);
-        assertEquals(0, gameModel.getPlayerPosition("Player1"));
+        assertEquals(17, gameModel.getPositionOnBoard("Player1"));
         gameModel.getPlayer("Player1").setPosition(18);
-        assertEquals(0, gameModel.getPlayerPosition("Player1"));
+        assertEquals(0, gameModel.getPositionOnBoard("Player1"));
         gameModel.getPlayer("Player2").setPosition(-18);
-        assertEquals(0, gameModel.getPlayerPosition("Player2"));
+        assertEquals(0, gameModel.getPositionOnBoard("Player2"));
         gameModel.getPlayer("Player1").setPosition(20);
-        assertEquals(2, gameModel.getPlayerPosition("Player1"));
+        assertEquals(2, gameModel.getPositionOnBoard("Player1"));
         gameModel.getPlayer("Player2").setPosition(-20);
-        assertEquals(16, gameModel.getPlayerPosition("Player2"));
+        assertEquals(16, gameModel.getPositionOnBoard("Player2"));
         gameModel.getPlayer("Player1").setPosition(67);
-        assertEquals(13, gameModel.getPlayerPosition("Player1"));
+        assertEquals(13, gameModel.getPositionOnBoard("Player1"));
         gameModel.getPlayer("Player2").setPosition(-67);
-        assertEquals(5, gameModel.getPlayerPosition("Player2"));
+        assertEquals(5, gameModel.getPositionOnBoard("Player2"));
     }
 
     @Test
     void testGetPlayerPositionNullUsername(){
-        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerPosition(null));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPositionOnBoard(null));
     }
 
     @Test
     void testGetPlayerPositionPlayerNotFound() throws FullLobbyException, UsernameAlreadyTakenException {
-        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerPosition("Player1"));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPositionOnBoard("Player1"));
         gameModel.addPlayer("Player1");
         gameModel.setLevel(FlightBoard.Type.TRIAL);
-        assertDoesNotThrow(() -> gameModel.getPlayerPosition("Player1"));
-        assertThrows(IllegalArgumentException.class, () -> gameModel.getPlayerPosition("Player2"));
+        assertDoesNotThrow(() -> gameModel.getPositionOnBoard("Player1"));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.getPositionOnBoard("Player2"));
     }
 
     @Test

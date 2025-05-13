@@ -248,18 +248,6 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public int getPlayerPosition(String username){
-        checkPlayerUsername(username);
-
-        for (Player player : players) {
-            if (player.getUsername().equals(username)) {
-                return ((player.getPosition() % flightBoard.getLength()) + flightBoard.getLength()) % flightBoard.getLength();
-            }
-        }
-
-        throw new IllegalArgumentException("Player " + username + " not found");
-    }
-
     public void setAbort(String username){
         checkPlayerUsername(username);
 
@@ -518,7 +506,16 @@ public class GameModel {
     }
 
     public int getPositionOnBoard(String username){
-        return Math.floorMod(getPlayer(username).getPosition(), flightBoard.getLength());
+        checkPlayerUsername(username);
+
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                return Math.floorMod(getPlayer(username).getPosition(), flightBoard.getLength());
+            }
+        }
+
+        throw new IllegalArgumentException("Player " + username + " not found");
+
     }
 
 
