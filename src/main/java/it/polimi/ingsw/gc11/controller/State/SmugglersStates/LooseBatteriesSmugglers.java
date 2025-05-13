@@ -9,11 +9,11 @@ import java.util.Map;
 
 
 
-public class LoseBatteriesSmugglers extends AdventureState{
+public class LooseBatteriesSmugglers extends AdventureState{
     private Player player;
     private int numBatteries;
 
-    public LoseBatteriesSmugglers(AdventurePhase advContext, Player player, int numBatteries) {
+    public LooseBatteriesSmugglers(AdventurePhase advContext, Player player, int numBatteries) {
         super(advContext);
         this.player = player;
         this.numBatteries = numBatteries;
@@ -36,7 +36,7 @@ public class LoseBatteriesSmugglers extends AdventureState{
             int num = player.getShipBoard().getTotalAvailableBatteries();
 
             if(num > 0){
-                this.advContext.setAdvState(new LoseBatteriesSmugglers(advContext, player, numBatteries));
+                this.advContext.setAdvState(new LooseBatteriesSmugglers(advContext, player, numBatteries));
                 throw new IllegalStateException("You don't have selected any batteries");
             }
             else{
@@ -53,12 +53,12 @@ public class LoseBatteriesSmugglers extends AdventureState{
             }
 
             if(selectedBatteries < numBatteries && availableBatteries >= numBatteries){
-                this.advContext.setAdvState(new LoseBatteriesSmugglers(advContext, player, numBatteries));
+                this.advContext.setAdvState(new LooseBatteriesSmugglers(advContext, player, numBatteries));
                 throw new IllegalStateException("You don't have selected enough batteries");
             }
             else if(selectedBatteries < numBatteries && availableBatteries < numBatteries && selectedBatteries < availableBatteries) {
 
-                this.advContext.setAdvState(new LoseBatteriesSmugglers(advContext, player, numBatteries));
+                this.advContext.setAdvState(new LooseBatteriesSmugglers(advContext, player, numBatteries));
                 throw new IllegalStateException("You don't have selected enough batteries");
             }
             else{

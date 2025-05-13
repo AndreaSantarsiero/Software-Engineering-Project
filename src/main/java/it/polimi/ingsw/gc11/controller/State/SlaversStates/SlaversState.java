@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.controller.State.SlaversStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
@@ -70,7 +69,7 @@ public class SlaversState extends AdventureState {
             advContext.setAdvState(new SlaversState(advContext));
         }
         else {//Go LoseState
-            advContext.setAdvState(new LoseState(advContext, player));
+            advContext.setAdvState(new LooseState(advContext, player));
         }
 
     }

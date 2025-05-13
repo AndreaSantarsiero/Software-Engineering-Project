@@ -10,12 +10,12 @@ import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 
 import java.util.Map;
 
-public class LoseState extends AdventureState {
+public class LooseState extends AdventureState {
     private Player player;
     private GameModel gameModel;
     private Slavers slavers;
 
-    public LoseState(AdventurePhase advContext, Player player) {
+    public LooseState(AdventurePhase advContext, Player player) {
         super(advContext);
         this.player = player;
         this.gameModel = advContext.getGameModel();

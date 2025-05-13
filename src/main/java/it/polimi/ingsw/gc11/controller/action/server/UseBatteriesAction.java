@@ -6,10 +6,10 @@ import java.util.Map;
 
 
 
-public class LoseBatteriesAction extends ClientAction {
+public class UseBatteriesAction extends ClientAction {
     private final Map<Battery, Integer> batteries;
 
-    public LoseBatteriesAction(String username, Map<Battery, Integer> batteries) {
+    public UseBatteriesAction(String username, Map<Battery, Integer> batteries) {
         super(username);
         this.batteries = batteries;
     }

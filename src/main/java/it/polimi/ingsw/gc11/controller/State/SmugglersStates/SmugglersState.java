@@ -72,7 +72,7 @@ public class SmugglersState extends AdventureState {
 
             if(num > 0){
                 this.advContext.setResolvingAdvCard(false);
-                this.advContext.setAdvState(new LoseBatteriesSmugglers(advContext, player, num));
+                this.advContext.setAdvState(new LooseBatteriesSmugglers(advContext, player, num));
             }
             else{
                 this.advContext.setResolvingAdvCard(false);
