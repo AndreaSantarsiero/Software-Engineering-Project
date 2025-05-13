@@ -24,6 +24,7 @@ public class Menu {
     static {
         try {
             terminal = TerminalBuilder.builder().system(true).jna(true).nativeSignals(true).build();
+            terminal.enterRawMode();
             lineReader = LineReaderBuilder.builder().terminal(terminal).build();
             bindingReader = new BindingReader(terminal.reader());
         } catch (IOException e) {
