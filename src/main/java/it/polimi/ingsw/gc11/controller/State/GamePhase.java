@@ -105,7 +105,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't elimine batteries of the adventure card in the current game phase.");
     }
 
-    public void landOn(String username, int numPlanet){
+    public void landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current game phase.");
     }
 
@@ -113,7 +113,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't choose engine power in the current game phase.");
     }
 
-    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){
+    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
         throw new IllegalStateException("Can't meteor hit in the current game phase.");
     }
 }

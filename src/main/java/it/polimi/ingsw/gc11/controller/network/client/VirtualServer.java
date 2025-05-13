@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client;
 
+import it.polimi.ingsw.gc11.controller.action.server.*;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.controller.network.client.socket.ClientSocket;
@@ -8,8 +9,6 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.*;
 
@@ -57,74 +56,111 @@ public class VirtualServer {
 
 
 
-    public ShipCard getFreeShipCard(int pos) throws NetworkException{
-        return client.getFreeShipCard(username, pos);
+    public void getFreeShipCard(int pos) throws NetworkException{
+        GetFreeShipCardAction action = new GetFreeShipCardAction(username, pos);
+        client.sendAction(action);
     }
 
-    public ShipBoard placeShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
-        return client.placeShipCard(username, shipCard, x, y);
+    public void releaseShipCard(ShipCard shipCard) throws NetworkException{
+        ReleaseShipCardAction action = new ReleaseShipCardAction(username, shipCard);
+        client.sendAction(action);
     }
 
-    public ShipBoard removeShipCard(int x, int y) throws NetworkException{
-        return client.removeShipCard(username, x, y);
+    public void placeShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
+        PlaceShipCardAction action = new PlaceShipCardAction(username, x, y, shipCard);
+        client.sendAction(action);
     }
 
-    public ShipBoard reserveShipCard(ShipCard shipCard) throws NetworkException{
-        return client.reserveShipCard(username, shipCard);
+    public void removeShipCard(int x, int y) throws NetworkException{
+        RemoveShipCardAction action = new RemoveShipCardAction(username, x, y);
+        client.sendAction(action);
     }
 
-    public ShipBoard useReservedShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
-        return client.useReservedShipCard(username, shipCard, x, y);
+    public void reserveShipCard(ShipCard shipCard) throws NetworkException{
+        ReserveShipCardAction action = new ReserveShipCardAction(username, shipCard);
+        client.sendAction(action);
     }
 
-    public ArrayList<AdventureCard> observeMiniDeck(int numDeck) throws NetworkException{
-        return client.observeMiniDeck(username, numDeck);
+    public void useReservedShipCard(ShipCard shipCard, int x, int y) throws NetworkException{
+        UseReservedShipCardAction action = new UseReservedShipCardAction(username, shipCard, x, y);
+        client.sendAction(action);
+    }
+
+    public void observeMiniDeck(int numDeck) throws NetworkException{
+        ObserveMiniDeckAction action = new ObserveMiniDeckAction(username, numDeck);
+        client.sendAction(action);
     }
 
     public void endBuilding(int pos) throws NetworkException{
-        client.endBuilding(username, pos);
+        EndBuildingAction action = new EndBuildingAction(username, pos);
+        client.sendAction(action);
     }
 
 
 
-    public AdventureCard getAdventureCard() throws NetworkException{
-        return client.getAdventureCard(username);
+    public void getAdventureCard() throws NetworkException{
+        GetAdventureCardAction action = new GetAdventureCardAction(username);
+        client.sendAction(action);
     }
 
     public void acceptAdventureCard() throws NetworkException{
-        client.acceptAdventureCard(username);
+        AcceptAdventureCardAction action = new AcceptAdventureCardAction(username);
+        client.sendAction(action);
     }
 
     public void declineAdventureCard() throws NetworkException{
-        client.declineAdventureCard(username);
+        DeclineAdventureCardAction action = new DeclineAdventureCardAction(username);
+        client.sendAction(action);
     }
 
     public void killMembers(Map<HousingUnit, Integer> housingUsage) throws NetworkException{
-        client.killMembers(username, housingUsage);
+        KillMembersAction action = new KillMembersAction(username, housingUsage);
+        client.sendAction(action);
     }
 
-    public void chosenMaterial(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) throws NetworkException{
-        client.chosenMaterial(username, storageMaterials);
-    }
-
-    public void rewardDecision(boolean decision) throws NetworkException{
-        client.rewardDecision(username, decision);
+    public void chooseMaterials(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) throws NetworkException{
+        ChooseMaterialsAction action = new ChooseMaterialsAction(username, storageMaterials);
+        client.sendAction(action);
     }
 
     public void chooseFirePower(Map<Battery, Integer> batteries, List<Cannon> doubleCannons) throws NetworkException{
-        client.chooseFirePower(username, batteries, doubleCannons);
+        ChooseFirePowerAction action = new ChooseFirePowerAction(username, batteries, doubleCannons);
+        client.sendAction(action);
+    }
+
+    public void rewardDecision(boolean decision) throws NetworkException{
+        RewardDecisionAction action = new RewardDecisionAction(username, decision);
+        client.sendAction(action);
     }
 
     public void getCoordinate() throws NetworkException{
-        client.getCoordinate(username);
+        GetCoordinateAction action = new GetCoordinateAction(username);
+        client.sendAction(action);
     }
 
     public void handleShot(Map<Battery, Integer> batteries) throws NetworkException{
-        client.handleShot(username, batteries);
+        HandleShotAction action = new HandleShotAction(username, batteries);
+        client.sendAction(action);
     }
 
-    public void eliminateBatteries(Map<Battery, Integer> batteries) throws NetworkException{
-        client.eliminateBatteries(username, batteries);
+    public void useBatteries(Map<Battery, Integer> batteries) throws NetworkException{
+        UseBatteriesAction action = new UseBatteriesAction(username, batteries);
+        client.sendAction(action);
+    }
+
+    public void landOnPlanet(int numPlanet) throws NetworkException{
+        LandOnPlanetAction action = new LandOnPlanetAction(username, numPlanet);
+        client.sendAction(action);
+    }
+
+    public void chooseEnginePower(Map<Battery, Integer> Batteries) throws NetworkException{
+        ChooseEnginePowerAction action = new ChooseEnginePowerAction(username, Batteries);
+        client.sendAction(action);
+    }
+
+    public void meteorDefense(Map<Battery, Integer> batteries, Cannon cannon) throws NetworkException{
+        MeteorDefenseAction action = new MeteorDefenseAction(username, batteries, cannon);
+        client.sendAction(action);
     }
 
 

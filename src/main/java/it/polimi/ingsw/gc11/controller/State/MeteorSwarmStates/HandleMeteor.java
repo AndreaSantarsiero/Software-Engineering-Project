@@ -34,7 +34,7 @@ public class HandleMeteor extends AdventureState {
 
     //Assumiamo che i comandi siano memorizzati in una coda
     @Override
-    public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon) {
+    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon) {
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
@@ -118,5 +118,4 @@ public class HandleMeteor extends AdventureState {
             this.advContext.setAdvState(new HandleMeteor(advContext, coordinates, iterationsHit, iterationsPlayer));
         }
     }
-
 }

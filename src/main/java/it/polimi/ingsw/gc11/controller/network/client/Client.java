@@ -40,43 +40,6 @@ public abstract class Client {
 
 
 
-    abstract public ShipCard getFreeShipCard(String username, int pos) throws NetworkException;
-
-    abstract public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException;
-
-    abstract public ShipBoard removeShipCard(String username, int x, int y) throws NetworkException;
-
-    abstract public ShipBoard reserveShipCard(String username, ShipCard shipCard) throws NetworkException;
-
-    abstract public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y) throws NetworkException;
-
-    abstract public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) throws NetworkException;
-
-    abstract public void endBuilding(String username, int pos) throws NetworkException;
-
-
-
-    abstract public AdventureCard getAdventureCard(String username) throws NetworkException;
-
-    abstract public void acceptAdventureCard(String username) throws NetworkException;
-
-    abstract public void declineAdventureCard(String username) throws NetworkException;
-
-    abstract public void killMembers(String username, Map<HousingUnit, Integer> housingUsage) throws NetworkException;
-
-    abstract public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) throws NetworkException;
-
-    abstract public void rewardDecision(String username, boolean decision) throws NetworkException;
-
-    abstract public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons) throws NetworkException;
-
-    abstract public void getCoordinate(String username) throws NetworkException;
-
-    abstract public void handleShot(String username, Map<Battery, Integer> batteries) throws NetworkException;
-
-    abstract public void eliminateBatteries(String username, Map<Battery, Integer> batteries) throws NetworkException;
-
-
 
     public void notifyException(String message){
         virtualServer.notifyException(message);
