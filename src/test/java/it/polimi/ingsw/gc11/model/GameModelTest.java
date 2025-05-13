@@ -337,10 +337,10 @@ class GameModelTest {
         Player player3 = gameModel.getPlayer("player3");
         Player player4 = gameModel.getPlayer("player4");
 
-        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 1 , player1);
-        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 2 , player2);
-        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 3 , player3);
-        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 4 , player4);
+        gameModel.getFlightBoard().initializePosition(player1, 1);
+        gameModel.getFlightBoard().initializePosition(player2, 2);
+        gameModel.getFlightBoard().initializePosition(player3, 3);
+        gameModel.getFlightBoard().initializePosition(player4, 4);
 
 
         assertEquals(gameModel.getPositionOnBoard("player1"), 6, "Player 1 position on the flight board is correct");

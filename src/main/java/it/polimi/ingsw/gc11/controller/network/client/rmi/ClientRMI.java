@@ -152,7 +152,7 @@ public class ClientRMI extends Client implements ClientInterface {
     @Override
     public void endBuilding(String username, int pos) throws NetworkException {
         try {
-            stub.endBuilding(username, clientSessionToken, pos);
+            stub.endBuilding(username, clientSessionToken);
         } catch (RemoteException e) {
             throw new NetworkException(e.getMessage());
         }

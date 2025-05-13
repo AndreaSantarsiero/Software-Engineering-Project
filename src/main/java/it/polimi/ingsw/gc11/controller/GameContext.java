@@ -83,8 +83,8 @@ public class GameContext {
         return phase.observeMiniDeck(gameModel, username, numDeck);
     }
 
-    public void endBuilding(String username, int pos){
-        phase.endBuilding(username, gameModel, pos);
+    public void endBuilding(String username){
+        phase.endBuilding(username, gameModel);
     }
 
 

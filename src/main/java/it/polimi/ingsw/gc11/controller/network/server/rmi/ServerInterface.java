@@ -34,7 +34,7 @@ public interface ServerInterface extends Remote {
     ShipBoard reserveShipCard(String username, UUID token, ShipCard shipCard) throws RemoteException;
     ShipBoard useReservedShipCard(String username, UUID token, ShipCard shipCard, int x, int y) throws RemoteException;
     ArrayList<AdventureCard> observeMiniDeck(String username, UUID token, int numDeck) throws RemoteException;
-    void endBuilding(String username, UUID token, int pos) throws RemoteException;
+    void endBuilding(String username, UUID token) throws RemoteException;
 
     //Adventure phase methods
     AdventureCard getAdventureCard(String username, UUID token) throws RemoteException;

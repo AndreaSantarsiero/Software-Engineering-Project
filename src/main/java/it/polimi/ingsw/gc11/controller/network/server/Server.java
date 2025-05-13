@@ -129,8 +129,8 @@ public abstract class Server {
     /**
      * Marks the end of the building phase and sets the starting position on the flight board
      */
-    public void endBuilding(String username, UUID token, int pos){
-        getGameContext(username, token).endBuilding(username, pos);
+    public void endBuilding(String username, UUID token){
+        getGameContext(username, token).endBuilding(username);
     }
 
 

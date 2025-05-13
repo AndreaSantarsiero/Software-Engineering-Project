@@ -56,8 +56,8 @@ public class BuildingPhase extends GamePhase {
     }
 
     @Override
-    public void endBuilding(String username, GameModel gameModel , int pos){
-        gameModel.endBuilding(username, pos);
+    public void endBuilding(String username, GameModel gameModel){
+        gameModel.endBuilding(username);
     }
 
     @Override

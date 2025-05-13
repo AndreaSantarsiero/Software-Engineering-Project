@@ -60,7 +60,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't observe mini deck in the current game phase.");
     }
 
-    public void endBuilding(String username, GameModel gameModel, int pos) {
+    public void endBuilding(String username, GameModel gameModel) {
         throw new IllegalStateException("Can't end building in the current game phase.");
     }
 

@@ -311,6 +311,26 @@ public class GameContextTest {
     }
 
     @Test
+    void testEndbuilding(){
+        connect3Players();
+        gameContext.endBuilding("username1");
+        assertThrows(IllegalStateException.class, () -> gameContext.getGameModel().endBuilding("username1"));
+        gameContext.endBuilding("username2");
+        gameContext.endBuilding("username3");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getGameModel().endBuilding("username4"));
+        assertEquals(6, gameContext.getGameModel().getPositionOnBoard("username1"));
+        assertEquals(3, gameContext.getGameModel().getPositionOnBoard("username2"));
+        assertEquals(1, gameContext.getGameModel().getPositionOnBoard("username3"));
+    }
+
+    @Test
+    void testEndbuildingInvalid(){
+        goToAdvPhase();
+        assertInstanceOf(AdventurePhase.class, gameContext.getPhase());
+        assertThrows(IllegalStateException.class, () -> gameContext.endBuilding("username1"));
+    }
+
+    @Test
     void testkillMembers(){
         AdventureCard advCard;
         AdventurePhase advPhase;
@@ -319,9 +339,10 @@ public class GameContextTest {
         advCard = null;
         advPhase = (AdventurePhase) gameContext.getPhase();
 
-        gameContext.getGameModel().getPlayer("username1").setPosition(3);
-        gameContext.getGameModel().getPlayer("username2").setPosition(2);
-        gameContext.getGameModel().getPlayer("username3").setPosition(1);
+        gameContext.getGameModel().endBuilding("username1");
+        gameContext.getGameModel().endBuilding("username2");
+        gameContext.getGameModel().endBuilding("username3");
+
 
         do {
             advPhase.setAdvState(new IdleState(advPhase));
@@ -379,4 +400,10 @@ public class GameContextTest {
 
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
     }
+
+    @Test
+    void testChooseMaterial(){
+
+    }
+
 }

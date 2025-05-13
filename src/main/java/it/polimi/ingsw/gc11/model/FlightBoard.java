@@ -30,8 +30,8 @@ public class FlightBoard {
         return length;
     }
 
-    public void initializePosition(Type type, int pos, Player player) {
-        switch (type) {
+    public void initializePosition(Player player, int pos) {
+        switch (this.type) {
             case TRIAL -> {
                  switch (pos) {
                     case 1 -> player.setPosition(4);

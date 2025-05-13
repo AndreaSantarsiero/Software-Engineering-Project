@@ -482,14 +482,8 @@ public class GameModel {
 
                             if(curr.getPosition() - p.getPosition() >= flightBoard.getLength()){
                                 p.setAbort();
-                                p.setStanding(-1);
                                 return;
                             }
-
-                            //swap standings
-                            tmp = curr.getStanding();
-                            curr.setStanding(p.getStanding());
-                            p.setStanding(tmp);
 
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
@@ -509,14 +503,8 @@ public class GameModel {
 
                             if(p.getPosition() - curr.getPosition() >= flightBoard.getLength()){
                                 curr.setAbort();
-                                curr.setStanding(-1);
                                 return;
                             }
-
-                            //swap standings
-                            tmp = curr.getStanding();
-                            curr.setStanding(p.getStanding());
-                            p.setStanding(tmp);
 
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
@@ -527,9 +515,6 @@ public class GameModel {
             }
         }
         curr.setPosition(curr.getPosition()+numDays);
-
-        //Ordino arraylist di player in base alla classifica
-        this.players.sort(Comparator.comparing(Player::getStanding));
     }
 
     public int getPositionOnBoard(String username){
@@ -539,16 +524,24 @@ public class GameModel {
 
 
     //pos è l'ordine: primo, secondo...
-    public void endBuilding(String username, int pos){
+    public void endBuilding(String username){
+        int pos = 1;
+
         checkPlayerUsername(username);
 
         for(Player player : players){
             if(player.getUsername().equals(username)){
-                if(players.get(pos) == null){
-                    flightBoard.initializePosition(flightBoard.getType(), pos, player);
+                if(player.getPosition() == -1){
+                    for(Player p : players){
+                        if(p.getPosition() != -1){
+                            pos++;
+                        }
+                    }
+                    flightBoard.initializePosition(player, pos);
+                    return;
                 }
                 else{
-                    throw new IllegalArgumentException("There is already an other player in this position");
+                    throw new IllegalStateException("Player " + username + " is already landed");
                 }
             }
         }

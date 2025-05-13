@@ -19,19 +19,9 @@ public class Player {
     public Player(String username) {
         this.username = username;
         coins = 0;
-        position = 0;
+        position = -1;
         abort = false;
         shipBoard = null;
-        standing = 0;
-    }
-
-    //Vanno inizializzati quando si mettono le pedine sulla flightBoard
-    public void setStanding(int standing) {
-        this.standing = standing;
-    }
-
-    public int getStanding() {
-        return standing;
     }
 
     public String getUsername() {
