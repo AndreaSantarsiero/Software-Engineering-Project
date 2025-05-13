@@ -1,7 +1,9 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -18,16 +20,33 @@ import java.util.Map;
 
 //Controller of a specific gameModel and multiple gameView
 public class GameContext {
+
     private final GameModel gameModel;
     private final String matchID;
     private GamePhase phase;
+    private final ServerController serverController;
 
-    public GameContext(FlightBoard.Type flightType, int numPlayers) {
+
+
+    public GameContext(FlightBoard.Type flightType, int numPlayers, ServerController serverController) {
         this.gameModel = new GameModel(numPlayers);
         this.gameModel.setLevel(flightType);
         this.matchID = gameModel.getID();
         this.phase = new IdlePhase(this);
+        this.serverController = serverController;
     }
+
+
+
+    public void sendAction(String username, ServerAction action) {
+        try{
+            serverController.sendAction(username, action);
+        } catch (NetworkException e) {
+            //resend?
+        }
+    }
+
+
 
     public GameModel getGameModel() {
         return gameModel;

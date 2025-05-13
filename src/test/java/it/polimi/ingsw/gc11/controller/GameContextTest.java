@@ -9,10 +9,8 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.Shield;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
@@ -21,10 +19,8 @@ import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -67,7 +63,7 @@ public class GameContextTest {
 
     @BeforeEach
     void setUp() throws InterruptedException {
-        gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3);
+        gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3, null);
     }
 
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client;
 
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.*;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
@@ -165,7 +166,7 @@ public class VirtualServer {
 
 
 
-    public void notifyException(String message){
-        System.out.println("Server exception: " + message);
+    public void receiveAction(ServerAction action){
+        action.execute();
     }
 }

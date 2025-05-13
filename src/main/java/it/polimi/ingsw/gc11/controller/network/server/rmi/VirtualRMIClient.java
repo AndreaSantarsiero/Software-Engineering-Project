@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.server.rmi;
 
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.VirtualClient;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
@@ -20,9 +21,9 @@ public class VirtualRMIClient extends VirtualClient {
 
 
     @Override
-    public void notifyException(String message) throws NetworkException {
+    public void sendAction(ServerAction action) throws NetworkException {
         try {
-            clientStub.notifyException(message);
+            clientStub.sendAction(action);
         } catch (RemoteException e) {
             throw new NetworkException(e.getMessage());
         }

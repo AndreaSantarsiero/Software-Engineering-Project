@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.network.server;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 
 
@@ -22,5 +23,5 @@ public abstract class VirtualClient {
 
 
 
-    public abstract void notifyException(String message) throws NetworkException;
+    public abstract void sendAction(ServerAction action) throws NetworkException;
 }

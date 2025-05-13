@@ -1,11 +1,9 @@
 package it.polimi.ingsw.gc11.controller.action.client;
 
-import it.polimi.ingsw.gc11.controller.action.Action;
+import java.io.Serializable;
 
 
 
-public abstract class ServerAction implements Action {
-
-
-
+public abstract class ServerAction implements Serializable {
+    public abstract void execute();
 }

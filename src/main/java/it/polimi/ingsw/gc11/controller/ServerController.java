@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller;
 
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.*;
@@ -148,7 +149,7 @@ public class ServerController {
      */
     public void createMatch(FlightBoard.Type flightLevel, int numPlayers, String username, UUID token) throws FullLobbyException, UsernameAlreadyTakenException {
         getPlayerSession(username, token);
-        GameContext match = new GameContext(flightLevel, numPlayers);
+        GameContext match = new GameContext(flightLevel, numPlayers, this);
         availableMatches.put(match.getMatchID(), match);
         connectPlayerToGame(username, token, match.getMatchID());
     }
@@ -199,12 +200,14 @@ public class ServerController {
 
 
 
-    public void sendAction(ClientAction action, UUID token) {
+    public void receiveAction(ClientAction action, UUID token) {
         GameContext gameContext = getPlayerVirtualClient(action.getUsername(), token).getGameContext();
         action.execute(gameContext);
     }
 
-
+    public void sendAction(String username, ServerAction action) throws NetworkException {
+        playerSessions.get(username).getVirtualClient().sendAction(action);
+    }
 
 
 

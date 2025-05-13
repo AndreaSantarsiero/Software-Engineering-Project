@@ -20,7 +20,7 @@ public class AdventureCardStatesTest {
 
     @BeforeEach
     public void setUp() throws FullLobbyException, UsernameAlreadyTakenException {
-        gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3);
+        gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3, null);
         gameContext.connectPlayerToGame("player1");
         ShipBoard ship1 = gameContext.getGameModel().getPlayer("player1").getShipBoard();
         new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard4.json", ship1);

@@ -16,7 +16,7 @@ class AdventurePhaseTest {
 
     @BeforeEach
     void setUp() {
-        gc = new GameContext(FlightBoard.Type.LEVEL2, 3);
+        gc = new GameContext(FlightBoard.Type.LEVEL2, 3, null);
         adventurePhase = new AdventurePhase(gc);
     }
 
