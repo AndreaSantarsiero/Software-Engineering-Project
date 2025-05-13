@@ -43,19 +43,26 @@ public class Menu {
 
         while (true) {
             renderMenu(title, options, selected);
-            String key = bindingReader.readBinding(keyMap);
+            try {
+                int key = System.in.read();
 
-            switch (key) {
-                case "up":
-                    selected = (selected - 1 + options.size()) % options.size();
-                    break;
-                case "down":
-                    selected = (selected + 1) % options.size();
-                    break;
-                case "enter":
-                    return selected;
-                default:
-                    // ignore any other key
+                switch (key) {
+                    case 'w':
+                    case 'W':
+                        selected = (selected - 1 + options.size()) % options.size();
+                        break;
+                    case 's':
+                    case 'S':
+                        selected = (selected + 1) % options.size();
+                        break;
+                    case '\r':
+                    case '\n':
+                        return selected;
+                    default:
+                        break;
+                }
+            } catch (IOException e) {
+                System.out.println("Input error: " + e.getMessage());
             }
         }
     }
