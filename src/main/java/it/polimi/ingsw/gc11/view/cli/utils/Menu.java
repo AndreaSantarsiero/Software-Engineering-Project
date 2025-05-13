@@ -38,9 +38,9 @@ public class Menu {
         int selected = 0;
 
         KeyMap<String> keyMap = new KeyMap<>();
-        keyMap.bind("up", "w", "W");       // Up
-        keyMap.bind("down", "s", "S");     // Down
-        keyMap.bind("enter", "\r", "\n");  // Enter (Windows/Linux)
+        keyMap.bind("up", "\033[A", "w", "W");      // Up
+        keyMap.bind("down", "\033[B", "s", "S");    // Down
+        keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
 
         while (true) {
             renderMenu(title, options, selected);
@@ -72,7 +72,7 @@ public class Menu {
     private static void renderMenu(String title, List<String> options, int selected) {
         clearView();
         if (title != null && !title.isEmpty()) {
-            System.out.println(title + " (press W to ↑, S to ↓ and Enter to confirm):");
+            System.out.println(title + " (Use W/S or ↑/↓ to navigate, Enter to select):");
         }
         for (int i = 0; i < options.size(); i++) {
             if (i == selected) {
@@ -94,4 +94,15 @@ public class Menu {
         System.out.flush();
         System.out.println("***    Galaxy Truckers    ***\n");
     }
+
+
+
+
+
+//    KeyMap<String> keyMap = new KeyMap<>();
+//    keyMap.bind("up", "\033[A", "w", "W");
+//    keyMap.bind("down", "\033[B", "s", "S");
+//    keyMap.bind("left", "\033[D", "a", "A");
+//    keyMap.bind("right", "\033[C", "d", "D");
+//    keyMap.bind("enter", "\r", "\n");
 }
