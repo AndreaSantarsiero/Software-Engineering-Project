@@ -1314,43 +1314,46 @@ public abstract class ShipBoard  implements Serializable {
     public double getCannonsPower (List<Cannon> doubleCannons) {
         double cannonPower = 0;
 
+        if(doubleCannons == null) {
+            throw new IllegalArgumentException("Double cannons list cannot be null");
+        }
+
         for (Cannon cannon : cannons.keySet()) {
             cannon.setVisited(false);
         }
 
-        if(doubleCannons != null) {
-            for (Cannon cannon : doubleCannons) {
-                if (!cannons.containsKey(cannon)){
-                    throw new IllegalArgumentException("This cannon is not present on the ship");
-                }
-                if (cannon.getType() != Cannon.Type.DOUBLE) {
-                    throw new IllegalArgumentException("Cannot activate single cannons with batteries");
-                }
-                if (cannon.isScrap()) {
-                    throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");
-                }
-                if (cannon.getType() == Cannon.Type.SINGLE){
-                    throw new IllegalArgumentException("Cannot use batteries on a single cannon");
-                }
-                if (cannon.isVisited()) {
-                    throw new IllegalArgumentException("Cannot activate the same cannon two times");
-                }
-                cannon.setVisited(true);
-            }
-            if(doubleCannons.size() > getTotalAvailableBatteries()){
-                throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");
-            }
-            if(doubleCannons.size() > getDoubleCannonsNumber()){
-                throw new IllegalArgumentException("Double cannons number cannot be greater than the number of double cannons on this ship");
-            }
 
-            for(Cannon cannon : doubleCannons){
-                if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
-                    cannonPower += 2;
-                }
-                else{
-                    cannonPower++;
-                }
+        for (Cannon cannon : doubleCannons) {
+            if (!cannons.containsKey(cannon)){
+                throw new IllegalArgumentException("This cannon is not present on the ship");
+            }
+            if (cannon.getType() != Cannon.Type.DOUBLE) {
+                throw new IllegalArgumentException("Cannot activate single cannons with batteries");
+            }
+            if (cannon.isScrap()) {
+                throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");
+            }
+            if (cannon.getType() == Cannon.Type.SINGLE){
+                throw new IllegalArgumentException("Cannot use batteries on a single cannon");
+            }
+            if (cannon.isVisited()) {
+                throw new IllegalArgumentException("Cannot activate the same cannon two times");
+            }
+            cannon.setVisited(true);
+        }
+        if(doubleCannons.size() > getTotalAvailableBatteries()){
+            throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");
+        }
+        if(doubleCannons.size() > getDoubleCannonsNumber()){
+            throw new IllegalArgumentException("Double cannons number cannot be greater than the number of double cannons on this ship");
+        }
+
+        for(Cannon cannon : doubleCannons){
+            if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
+                cannonPower += 2;
+            }
+            else{
+                cannonPower++;
             }
         }
 
