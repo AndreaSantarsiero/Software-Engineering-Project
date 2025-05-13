@@ -202,7 +202,7 @@ public class ServerController {
 
     public void receiveAction(ClientAction action, UUID token) {
         GameContext gameContext = getPlayerVirtualClient(action.getUsername(), token).getGameContext();
-        action.execute(gameContext);
+        gameContext.addClientAction(action);
     }
 
     public void sendAction(String username, ServerAction action) throws NetworkException {

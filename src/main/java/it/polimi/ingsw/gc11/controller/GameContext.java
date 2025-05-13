@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -11,11 +13,8 @@ import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
+import java.util.*;
 
 
 //Controller of a specific gameModel and multiple gameView
@@ -25,6 +24,7 @@ public class GameContext {
     private final String matchID;
     private GamePhase phase;
     private final ServerController serverController;
+    private final Queue<ClientAction> clientActions;
 
 
 
@@ -34,6 +34,7 @@ public class GameContext {
         this.matchID = gameModel.getID();
         this.phase = new IdlePhase(this);
         this.serverController = serverController;
+        this.clientActions = new LinkedList<>();
     }
 
 
@@ -44,6 +45,12 @@ public class GameContext {
         } catch (NetworkException e) {
             //resend?
         }
+    }
+
+
+
+    public void addClientAction(ClientAction clientAction) {
+        clientActions.add(clientAction);
     }
 
 
