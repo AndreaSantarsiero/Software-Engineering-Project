@@ -20,14 +20,14 @@ public class MainCLI {
 
 
 
-    public static void main(String[] args) throws NetworkException, FullLobbyException {
+    public static void run(String[] args) {
         VirtualServer virtualServer;
         int choice;
 
         try {
             parseArgs(args);
             virtualServer = setup();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");
             return;
@@ -39,24 +39,24 @@ public class MainCLI {
                 try {
                     virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
                     System.out.println("game created");
-                } catch (UsernameAlreadyTakenException e) {
+                } catch (UsernameAlreadyTakenException | FullLobbyException | NetworkException e) {
                     System.out.println(e.getMessage());
+                    choice = -1;
                 }
             }
             else if (choice == 1) {
-                if(!virtualServer.getAvailableMatches().isEmpty()) {
-                    choice = Menu.interactiveMenu("insert game to join", virtualServer.getAvailableMatches());
-
-                    try {
+                try {
+                    if(!virtualServer.getAvailableMatches().isEmpty()) {
+                        choice = Menu.interactiveMenu("insert game to join", virtualServer.getAvailableMatches());
                         virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice));
                         System.out.println("joined game");
-                    } catch (UsernameAlreadyTakenException | FullLobbyException e) {
-                        System.out.println(e.getMessage());
                     }
-                }
-                else{
-                    Menu.readLine("No matches available, press Enter to continue...");
-                    choice = -1;
+                    else{
+                        Menu.readLine("No matches available, press Enter to continue...");
+                        choice = -1;
+                    }
+                } catch (UsernameAlreadyTakenException | FullLobbyException | NetworkException e) {
+                    System.out.println(e.getMessage());
                 }
             }
         } while (choice < 0 || choice > 2);
@@ -140,19 +140,38 @@ public class MainCLI {
 
 
     private static void parseArgs(String[] args) {
-        if (args.length == 1) {
-            serverIp = args[0];
-        }
-        else if (args.length == 2) {
-            serverIp = args[0];
-            try {
-                serverPort = Integer.parseInt(args[1]);
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Invalid port number: " + args[1]);
+        boolean cliMode = false;
+
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+
+            if (arg.equals("-cli")) {
+                if (cliMode) {
+                    throw new RuntimeException("Invalid argument order: -cli can only appear once.");
+                }
+                cliMode = true;
+            }
+            else if (serverIp == null) {
+                serverIp = arg;
+            }
+            else if (serverPort == null) {
+                if (!args[i - 1].equals(serverIp)) {
+                    throw new RuntimeException("Invalid argument order: port should come after IP.");
+                }
+                try {
+                    serverPort = Integer.parseInt(arg);
+                } catch (NumberFormatException e) {
+                    throw new RuntimeException("Invalid port number: " + arg);
+                }
+            }
+            else {
+                throw new RuntimeException("Too many arguments. Usage: java GalaxyTrucker [-cli] [server-ip] [server-port]");
             }
         }
-        else if (args.length > 2) {
-            throw new RuntimeException("Too many arguments. Usage: java MainCLI [server-ip] [server-port]");
+
+        if (!cliMode) {
+            throw new RuntimeException("Missing required flag: -cli");
         }
     }
+
 }

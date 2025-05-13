@@ -1,9 +1,11 @@
-package it.polimi.ingsw.gc11;
+package it.polimi.ingsw.gc11.view.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+
+
+public class GUIController {
     @FXML
     private Label welcomeText;
 
