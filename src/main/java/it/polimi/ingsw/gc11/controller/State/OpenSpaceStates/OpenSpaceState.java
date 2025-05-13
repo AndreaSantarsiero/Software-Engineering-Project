@@ -3,12 +3,12 @@ package it.polimi.ingsw.gc11.controller.State.OpenSpaceStates;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
-import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.PlanetsState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
-
 import java.util.Map;
+
+
 
 public class OpenSpaceState extends AdventureState {
     private GameModel gameModel;
@@ -19,7 +19,7 @@ public class OpenSpaceState extends AdventureState {
     }
 
     @Override
-    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
 
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
         int usedBatteries = 0;
@@ -59,7 +59,5 @@ public class OpenSpaceState extends AdventureState {
         else{
             this.advContext.setAdvState(new OpenSpaceState(this.advContext));
         }
-
-
     }
 }

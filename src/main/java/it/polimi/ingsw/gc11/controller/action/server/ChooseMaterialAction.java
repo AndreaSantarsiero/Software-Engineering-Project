@@ -3,10 +3,11 @@ package it.polimi.ingsw.gc11.controller.action.server;
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
-
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 public class ChooseMaterialAction extends ClientAction {
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
@@ -18,7 +19,7 @@ public class ChooseMaterialAction extends ClientAction {
 
     @Override
     public void execute(GameContext ctx) {
-        ctx.chosenMaterial(getUsername(), storageMaterials);
+        ctx.chooseMaterials(getUsername(), storageMaterials);
     }
 }
 

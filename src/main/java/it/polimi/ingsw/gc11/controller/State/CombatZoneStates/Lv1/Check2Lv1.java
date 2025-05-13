@@ -5,8 +5,9 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
-
 import java.util.Map;
+
+
 
 public class Check2Lv1 extends AdventureState {
     GameModel gameModel;
@@ -21,7 +22,7 @@ public class Check2Lv1 extends AdventureState {
     }
 
     @Override
-    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
 
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
         int usedBatteries = 0;

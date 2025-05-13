@@ -34,7 +34,7 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't kill members in the current adventure state.");
     }
 
-    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         throw new IllegalStateException("Can't choose material in the current adventure state.");
     }
 
@@ -54,7 +54,7 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't handle shot in the current adventure state.");
     }
 
-    public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
+    public void useBatteries(String username, Map<Battery, Integer> batteries){
         throw new IllegalStateException("Can't eliminate batteries in the current adventure state.");
     }
 
@@ -62,7 +62,7 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't land on a planet in the current adventure state.");
     }
 
-    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
         throw new IllegalStateException("Can't choose engine power in the current adventure state.");
     }
 

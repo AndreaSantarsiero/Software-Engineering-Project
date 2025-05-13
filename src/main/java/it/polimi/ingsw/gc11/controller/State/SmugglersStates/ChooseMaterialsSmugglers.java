@@ -8,11 +8,12 @@ import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Smugglers;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+
 
 public class ChooseMaterialsSmugglers extends AdventureState {
 
@@ -28,7 +29,7 @@ public class ChooseMaterialsSmugglers extends AdventureState {
     }
 
     @Override
-    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }

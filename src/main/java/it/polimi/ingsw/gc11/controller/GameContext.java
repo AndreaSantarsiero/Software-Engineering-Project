@@ -87,6 +87,9 @@ public class GameContext {
         phase.endBuilding(username, gameModel, pos);
     }
 
+
+
+    //da mettere private?
     public void goToCheckPhase() throws IllegalStateException {
         phase.goToCheckPhase(this);
     }
@@ -113,8 +116,8 @@ public class GameContext {
         phase.killMembers(username, housingUsage);
     }
 
-    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
-        phase.chosenMaterial(username, storageMaterials);
+    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        phase.chooseMaterials(username, storageMaterials);
     }
 
     public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
@@ -133,16 +136,16 @@ public class GameContext {
         phase.handleShot(username, batteries);
     }
 
-    public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
-        phase.eliminateBatteries(username, batteries);
+    public void useBatteries(String username, Map<Battery, Integer> batteries){
+        phase.useBatteries(username, batteries);
     }
 
     public void landOn(String username, int numPlanet){
         phase.landOn(username, numPlanet);
     }
 
-    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
-        phase.chosenEnginePower(username, Batteries);
+    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
+        phase.chooseEnginePower(username, Batteries);
     }
 
     public void meteorHit(String username, Map<Battery, Integer> batteries, Cannon cannon){

@@ -167,7 +167,7 @@ public abstract class Server {
      * Allows the player to choose materials from storage units
      */
     public void chosenMaterial(String username, UUID token, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
-        getGameContext(username, token).chosenMaterial(username, storageMaterials);
+        getGameContext(username, token).chooseMaterials(username, storageMaterials);
     }
 
     /**
@@ -202,7 +202,7 @@ public abstract class Server {
      * Removes batteries used by the player
      */
     public void eliminateBatteries(String username, UUID token, Map<Battery, Integer> batteries){
-        getGameContext(username, token).eliminateBatteries(username, batteries);
+        getGameContext(username, token).useBatteries(username, batteries);
     }
 
 

@@ -87,7 +87,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't kill members of an adventure card in the current game phase.");
     }
 
-    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         throw new IllegalStateException("Can't choose materials of an adventure card in the current game phase.");
     }
 
@@ -107,7 +107,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't handle shot of the adventure card in the current game phase.");
     }
 
-    public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
+    public void useBatteries(String username, Map<Battery, Integer> batteries){
         throw new IllegalStateException("Can't elimine batteries of the adventure card in the current game phase.");
     }
 
@@ -115,7 +115,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't land on a planet in the current game phase.");
     }
 
-    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
         throw new IllegalStateException("Can't choose engine power in the current game phase.");
     }
 

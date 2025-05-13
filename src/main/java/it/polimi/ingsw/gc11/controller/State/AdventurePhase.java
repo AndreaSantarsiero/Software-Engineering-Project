@@ -117,9 +117,9 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void chosenMaterial(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         try {
-            this.advState.chosenMaterial(username, storageMaterials);
+            this.advState.chooseMaterials(username, storageMaterials);
         }
         catch(IllegalStateException | IllegalArgumentException e){
             System.out.println(e.getMessage());
@@ -167,9 +167,9 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void eliminateBatteries(String username, Map<Battery, Integer> batteries){
+    public void useBatteries(String username, Map<Battery, Integer> batteries){
         try{
-            this.advState.eliminateBatteries(username, batteries);
+            this.advState.useBatteries(username, batteries);
         }
         catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -186,9 +186,9 @@ public class AdventurePhase extends GamePhase {
         }
     }
 
-    public void chosenEnginePower(String username, Map<Battery, Integer> Batteries){
+    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
         try{
-            this.advState.chosenEnginePower(username, Batteries);
+            this.advState.chooseEnginePower(username, Batteries);
         }
         catch (IllegalStateException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
