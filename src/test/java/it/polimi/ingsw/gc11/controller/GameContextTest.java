@@ -57,6 +57,9 @@ public class GameContextTest {
 
     void goToAdvPhase(){
         connect3Players();
+        gameContext.endBuilding("username1");
+        gameContext.endBuilding("username2");
+        gameContext.endBuilding("username3");
         gameContext.setPhase(new AdventurePhase(gameContext));
         gameContext.getGameModel().createDefinitiveDeck();
     }
@@ -335,11 +338,6 @@ public class GameContextTest {
         advCard = null;
         advPhase = (AdventurePhase) gameContext.getPhase();
 
-        gameContext.getGameModel().endBuilding("username1");
-        gameContext.getGameModel().endBuilding("username2");
-        gameContext.getGameModel().endBuilding("username3");
-
-
         do {
             advPhase.setAdvState(new IdleState(advPhase));
             try{
@@ -399,6 +397,11 @@ public class GameContextTest {
 
     @Test
     void testChooseMaterial(){
+
+    }
+
+    @Test
+    void testChooseFirePower(){
 
     }
 

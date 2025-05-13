@@ -21,7 +21,7 @@ public class Player {
         this.username = username;
         this.color = null;
         this.coins = 0;
-        this.position = 0;
+        this.position = -1;
         this.abort = false;
         this.shipBoard = null;
         this.standing = 0;
