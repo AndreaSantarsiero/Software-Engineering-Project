@@ -11,4 +11,3 @@ start cmd /k "java -cp target\GC11-1.0-SNAPSHOT-jar-with-dependencies.jar it.pol
 
 :: Run the third terminal for MainCLI with multiple-client activation key F2
 start cmd /k "java -cp target\GC11-1.0-SNAPSHOT-jar-with-dependencies.jar it.polimi.ingsw.gc11.view.cli.MainCLI"
-
