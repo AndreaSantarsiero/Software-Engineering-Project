@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
@@ -25,7 +26,7 @@ public class ChooseHousing extends AdventureState {
 
 
     @Override
-    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+    public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
@@ -52,5 +53,7 @@ public class ChooseHousing extends AdventureState {
 
         //go to next state
         this.advContext.setAdvState(new IdleState(advContext));
+
+        return player;
     }
 }

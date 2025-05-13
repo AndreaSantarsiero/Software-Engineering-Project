@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class LandedPlanet extends AdventureState {
     }
 
     @Override
-    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
@@ -59,5 +60,7 @@ public class LandedPlanet extends AdventureState {
         else {
             this.advContext.setAdvState(new PlanetsState(this.advContext, this.numVisited));
         }
+
+        return player;
     }
 }

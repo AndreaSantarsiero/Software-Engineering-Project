@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class LooseBatteriesSmugglers extends AdventureState{
     }
 
     @Override
-    public void useBatteries(String username, Map<Battery, Integer> batteries) {
+    public Player useBatteries(String username, Map<Battery, Integer> batteries) {
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
@@ -74,5 +75,7 @@ public class LooseBatteriesSmugglers extends AdventureState{
                 }
             }
         }
+
+        return player;
     }
 }

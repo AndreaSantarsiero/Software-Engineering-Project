@@ -4,7 +4,9 @@ import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
@@ -77,15 +79,15 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't decline an adventure card in the current game phase.");
     }
 
-    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+    public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
         throw new IllegalStateException("Can't kill members of an adventure card in the current game phase.");
     }
 
-    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+    public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         throw new IllegalStateException("Can't choose materials of an adventure card in the current game phase.");
     }
 
-    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
+    public Player chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
         throw new IllegalStateException("Can't choose fire powers of an adventure card in the current game phase.");
     }
 
@@ -93,15 +95,15 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't make the reward decision of the adventure card in the current game phase.");
     }
 
-    public void getCoordinate(String username){
+    public Hit getCoordinate(String username){
         throw new IllegalStateException("Can't get a coordinate of the adventure card in the current game phase.");
     }
 
-    public void handleShot(String username, Map<Battery, Integer> batteries){
+    public Player handleShot(String username, Map<Battery, Integer> batteries){
         throw new IllegalStateException("Can't handle shot of the adventure card in the current game phase.");
     }
 
-    public void useBatteries(String username, Map<Battery, Integer> batteries){
+    public Player useBatteries(String username, Map<Battery, Integer> batteries){
         throw new IllegalStateException("Can't elimine batteries of the adventure card in the current game phase.");
     }
 
@@ -109,11 +111,11 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't land on a planet in the current game phase.");
     }
 
-    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
+    public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){
         throw new IllegalStateException("Can't choose engine power in the current game phase.");
     }
 
-    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
+    public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
         throw new IllegalStateException("Can't meteor hit in the current game phase.");
     }
 }

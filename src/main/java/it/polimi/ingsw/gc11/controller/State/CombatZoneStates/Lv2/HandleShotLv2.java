@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.Map;
@@ -26,7 +27,7 @@ public class HandleShotLv2 extends AdventureState {
 
 
     @Override
-    public void handleShot(String username, Map<Battery, Integer> batteries) {
+    public Player handleShot(String username, Map<Battery, Integer> batteries) {
 
         Player player = this.advContext.getGameModel().getPlayer(username);
 
@@ -69,6 +70,8 @@ public class HandleShotLv2 extends AdventureState {
 
         //nextstate
         this.advContext.setAdvState(new Penalty3Lv2(advContext, player, iterationsHit));
+
+        return player;
     }
 
 }

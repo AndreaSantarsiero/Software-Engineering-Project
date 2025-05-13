@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class HandleHit extends AdventureState {
 
     //Assumiamo che i comandi siano memorizzati in una coda
     @Override
-    public void handleShot(String username, Map<Battery, Integer> batteries) {
+    public Player handleShot(String username, Map<Battery, Integer> batteries) {
         Player player = this.advContext.getGameModel().getPlayer(username);
 
         //Checko che il player sia stato effettivamente sconfitto
@@ -94,6 +95,7 @@ public class HandleHit extends AdventureState {
             this.advContext.setAdvState(new HandleHit(advContext, playersDefeated, coordinates, iterationsHit, iterationsPlayers, alreadyPlayed));
         }
 
+        return player;
     }
 
 }

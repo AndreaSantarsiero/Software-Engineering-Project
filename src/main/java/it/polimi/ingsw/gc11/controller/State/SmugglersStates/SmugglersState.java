@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Smugglers;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 
@@ -25,7 +26,7 @@ public class SmugglersState extends AdventureState {
     }
 
     @Override
-    public void chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
+    public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
         int sum = 0;
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
@@ -88,5 +89,6 @@ public class SmugglersState extends AdventureState {
             }
         }
 
+        return player;
     }
 }

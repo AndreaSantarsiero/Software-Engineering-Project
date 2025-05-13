@@ -17,8 +17,8 @@ public class ReleaseShipCardAction extends ClientAction{
     public void execute(GameContext context){
         try{
             context.releaseShipCard(username, shipCard);
-            NotifySuccessAction notifySuccessAction = new NotifySuccessAction();
-            context.sendAction(username, notifySuccessAction);
+            NotifySuccessAction response = new NotifySuccessAction();
+            context.sendAction(username, response);
         }catch(Exception e){
             NotifyExceptionAction exceptionAction = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exceptionAction);

@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.MeteorSwarm;
 
@@ -19,7 +20,7 @@ public class MeteorSwarmState extends AdventureState {
     }
 
     @Override
-    public void getCoordinate(String username){
+    public Hit getCoordinate(String username){
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
@@ -44,6 +45,7 @@ public class MeteorSwarmState extends AdventureState {
             this.advContext.setAdvState(new HandleMeteor(advContext, coordinates, iterationsHit, 0));
         }
 
+        return meteorSwarm.getMeteors().get(iterationsHit);
     }
 
 }

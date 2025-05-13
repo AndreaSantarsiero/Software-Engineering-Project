@@ -7,9 +7,7 @@ import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.GameModel;
-import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
@@ -125,7 +123,7 @@ public class GameContext {
 
 
 
-    //AdventurePhase
+    //AdventurePhase, devono ritornare Player
     public AdventureCard getAdventureCard(String username) {
         return phase.getAdventureCard(username);
     }
@@ -138,43 +136,44 @@ public class GameContext {
         phase.declineAdventureCard(username);
     }
 
-    public void killMembers(String username, Map<HousingUnit, Integer> housingUsage){
-        phase.killMembers(username, housingUsage);
+    public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        return phase.killMembers(username, housingUsage);
     }
 
-    public void chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
-        phase.chooseMaterials(username, storageMaterials);
+    public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        return phase.chooseMaterials(username, storageMaterials);
     }
 
-    public void chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
-        phase.chooseFirePower(username, batteries, doubleCannons);
+    public Player chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
+        return phase.chooseFirePower(username, batteries, doubleCannons);
     }
 
+    //Manca nel command pattern server --> client, cosa ritorno? Player?
     public void rewardDecision(String username, boolean decision){
         phase.rewardDecision(username, decision);
     }
 
-    public void getCoordinate(String username){
-        phase.getCoordinate(username);
+    public Hit getCoordinate(String username){
+        return phase.getCoordinate(username);
     }
 
-    public void handleShot(String username, Map<Battery, Integer> batteries){
-        phase.handleShot(username, batteries);
+    public Player handleShot(String username, Map<Battery, Integer> batteries){
+        return phase.handleShot(username, batteries);
     }
 
-    public void useBatteries(String username, Map<Battery, Integer> batteries){
-        phase.useBatteries(username, batteries);
+    public Player useBatteries(String username, Map<Battery, Integer> batteries){
+        return phase.useBatteries(username, batteries);
     }
 
     public void landOnPlanet(String username, int numPlanet){
         phase.landOnPlanet(username, numPlanet);
     }
 
-    public void chooseEnginePower(String username, Map<Battery, Integer> Batteries){
-        phase.chooseEnginePower(username, Batteries);
+    public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){
+        return phase.chooseEnginePower(username, Batteries);
     }
 
-    public void meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
-        phase.meteorDefense(username, batteries, cannon);
+    public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
+        return phase.meteorDefense(username, batteries, cannon);
     }
 }
