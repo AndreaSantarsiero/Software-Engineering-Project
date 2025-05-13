@@ -60,15 +60,6 @@ public class MainCLI {
                     try {
                         virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice));
                         System.out.println("joined game");
-
-                        //la partita dovrebbe essere iniziata, provo a richiedere e stampare una ShipCard
-                        ShipCardCLI shipCardCLI = new ShipCardCLI();
-                        ShipCard shipCard = virtualServer.getFreeShipCard(4);
-
-                        for (int j = 0; j < 7; j++) {
-                            shipCard.print(shipCardCLI, j);
-                            System.out.println();
-                        }
                     } catch (UsernameAlreadyTakenException | FullLobbyException e) {
                         System.out.println(e.getMessage());
                     }
