@@ -29,6 +29,14 @@ public class PiratesState extends AdventureState {
         this.playerFirePower = 0;
     }
 
+    public PiratesState(AdventurePhase advContext, List<Player> playersDefeated) {
+        super(advContext);
+        this.gameModel = this.advContext.getGameModel();
+        this.pirates = (Pirates) this.advContext.getDrawnAdvCard();
+        this.playersDefeated = playersDefeated;
+        this.playerFirePower = 0;
+    }
+
 
     @Override
     public void chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
@@ -37,6 +45,10 @@ public class PiratesState extends AdventureState {
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
+        }
+
+        if(playersDefeated.contains(player)){
+            throw new IllegalArgumentException("You already fight with pirate");
         }
 
         //Imposto che il giorcatore sta effettivamente giocando la carta
@@ -69,7 +81,7 @@ public class PiratesState extends AdventureState {
         } else if (playerFirePower == pirates.getFirePower()) {
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
-            advContext.setAdvState(new PiratesState(advContext));
+            advContext.setAdvState(new PiratesState(advContext, playersDefeated));
         }
         else {
             this.playersDefeated.add(player);
@@ -79,7 +91,7 @@ public class PiratesState extends AdventureState {
                 advContext.setAdvState(new CoordinateState(advContext, this.playersDefeated, 0));
             }
             else{
-                advContext.setAdvState(new PiratesState(advContext));
+                advContext.setAdvState(new PiratesState(advContext, playersDefeated));
             }
         }
     }
