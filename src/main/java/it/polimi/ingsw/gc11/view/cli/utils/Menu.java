@@ -62,12 +62,6 @@ public class Menu {
 
 
 
-    private static String key(int finalChar) {
-        return "\033[" + (char) finalChar;
-    }
-
-
-
     public static String readLine(String message) {
         return lineReader.readLine(message);
     }
