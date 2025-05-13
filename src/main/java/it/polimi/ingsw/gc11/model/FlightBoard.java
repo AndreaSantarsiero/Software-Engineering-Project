@@ -39,7 +39,8 @@ public class FlightBoard {
                     case 3 -> player.setPosition(1);
                     case 4 -> player.setPosition(0);
                     default -> throw new IllegalArgumentException("The position you are trying to set is illegal");
-                };
+                }
+                return;
             }
             case LEVEL2 -> {
                 switch (pos) {
@@ -48,7 +49,8 @@ public class FlightBoard {
                     case 3 -> player.setPosition(1);
                     case 4 -> player.setPosition(0);
                     default -> throw new IllegalArgumentException("The position you are trying to set is illegal");
-                };
+                }
+                return;
             }
         }
         throw new IllegalArgumentException("The fligthBoard you are trying to access is illegal");

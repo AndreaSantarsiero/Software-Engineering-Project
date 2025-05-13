@@ -322,4 +322,40 @@ class GameModelTest {
         gameModel.move("player1", -20);
         assertEquals(gameModel.getPlayer("player1").getPosition(), -11);
     }
+
+    @Test
+    void moveGeneralTesting() throws FullLobbyException, UsernameAlreadyTakenException {
+        gameModel.setLevel(FlightBoard.Type.LEVEL2);
+
+        gameModel.addPlayer("player1");
+        gameModel.addPlayer("player2");
+        gameModel.addPlayer("player3");
+        gameModel.addPlayer("player4");
+
+        Player player1 = gameModel.getPlayer("player1");
+        Player player2 = gameModel.getPlayer("player2");
+        Player player3 = gameModel.getPlayer("player3");
+        Player player4 = gameModel.getPlayer("player4");
+
+        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 1 , player1);
+        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 2 , player2);
+        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 3 , player3);
+        gameModel.getFlightBoard().initializePosition(FlightBoard.Type.LEVEL2, 4 , player4);
+
+
+        assertEquals(gameModel.getPlayer("player1").getPosition(), 6, "Player 1 position on the flight board is correct");
+        assertEquals(gameModel.getPlayer("player2").getPosition(), 3, "Player 2 position on the flight board is correct");
+        assertEquals(gameModel.getPlayer("player3").getPosition(), 1, "Player 3 position on the flight board is correct");
+        assertEquals(gameModel.getPlayer("player4").getPosition(), 0, "Player 4 position on the flight board is correct");
+
+        gameModel.move("player1", 5);
+        gameModel.move("player2", 10);
+        gameModel.move("player3", 20);
+        gameModel.move("player4", -10);
+
+        assertEquals(11, gameModel.getPlayer("player1").getPosition(), "Player 1 position on the flight board after movement is correct");
+        assertEquals(14, gameModel.getPlayer("player2").getPosition(), "Player 2 position on the flight board after move is correct");
+        assertEquals(23, gameModel.getPlayer("player3").getPosition(), "Player 3 position on the flight board after move is correct");
+        assertEquals(12, gameModel.getPlayer("player4").getPosition(), "Player 4 position on the flight board after move is correct");
+    }
 }
