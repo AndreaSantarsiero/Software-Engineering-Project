@@ -47,6 +47,9 @@ public class CoordinateState extends AdventureState {
         this.advContext.setAdvState(new HandleHit(advContext, playersDefeated, coordinates, iterationsHit,
                                     0, alreadyPlayed));
 
-        return pirates.getShots().get(iterationsHit);
+        Hit hit = pirates.getShots().get(iterationsHit);
+        hit.setCoord(coordinates);
+
+        return hit;
     }
 }

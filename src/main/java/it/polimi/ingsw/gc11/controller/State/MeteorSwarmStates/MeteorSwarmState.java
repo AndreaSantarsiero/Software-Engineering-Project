@@ -45,7 +45,10 @@ public class MeteorSwarmState extends AdventureState {
             this.advContext.setAdvState(new HandleMeteor(advContext, coordinates, iterationsHit, 0));
         }
 
-        return meteorSwarm.getMeteors().get(iterationsHit);
+        Hit hit = meteorSwarm.getMeteors().get(iterationsHit);
+        hit.setCoord(coordinates);
+
+        return hit;
     }
 
 }

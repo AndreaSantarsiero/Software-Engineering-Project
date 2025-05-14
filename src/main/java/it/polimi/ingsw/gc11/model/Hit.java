@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model;
 
 
 public abstract class Hit {
+    private int coord;
 
     public enum Type {
         BIG, SMALL
@@ -19,6 +20,7 @@ public abstract class Hit {
     public Hit(Type type, Direction direction) {
         this.type = type;
         this.direction = direction;
+        this.coord = -1;
     }
 
 
@@ -27,6 +29,13 @@ public abstract class Hit {
         return type;
     }
 
+    public int getCoord() {
+        return coord;
+    }
+
+    public void setCoord(int coord) {
+        this.coord = coord;
+    }
 
     public Direction getDirection() {
         return direction;
