@@ -63,6 +63,7 @@ public class MainCLI {
                     System.out.println(e.getMessage());
                 }
             }
+            System.exit(0);
         } while (choice < 0 || choice > 2);
     }
 

@@ -41,6 +41,9 @@ public class Penalty3Lv1 extends AdventureState {
         //NextState
         this.advContext.setAdvState(new HandleShotLv1(advContext, playerDefeated, coordinate, iterationsHit));
 
-        return combatZoneLv1.getShots().get(iterationsHit);
+        Hit hit = combatZoneLv1.getShots().get(iterationsHit);
+        hit.setCoord(coordinate);
+
+        return hit;
     }
 }

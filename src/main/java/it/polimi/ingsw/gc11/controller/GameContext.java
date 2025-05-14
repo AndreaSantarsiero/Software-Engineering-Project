@@ -13,6 +13,8 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 //Controller of a specific gameModel and multiple gameView
@@ -22,7 +24,8 @@ public class GameContext {
     private final String matchID;
     private GamePhase phase;
     private final ServerController serverController;
-    private final Queue<ClientAction> clientActions;
+    // Coda dei comandi ricevuti dai client
+    private final BlockingQueue<ClientAction> clientActions;
 
 
 
@@ -32,7 +35,30 @@ public class GameContext {
         this.matchID = gameModel.getID();
         this.phase = new IdlePhase(this);
         this.serverController = serverController;
-        this.clientActions = new LinkedList<>();
+        this.clientActions = new LinkedBlockingQueue<>();
+
+        startCommandListener();
+    }
+
+    /**
+     * Thread che consuma i comandi uno alla volta.
+     * Parte una volta sola nel costruttore.
+     */
+    private void startCommandListener() {
+        Thread listener = new Thread(() -> {
+            while (true) {
+                try {
+                    ClientAction action = clientActions.take(); // blocca se la coda è vuota
+                    action.execute(this); // esegue il comando nel contesto del gioco
+                } catch (Exception e) {
+                    System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
+                    e.printStackTrace();
+                }
+            }
+        }, "CommandExecutor-" + matchID);
+
+        listener.setDaemon(true); // si chiude con il programma
+        listener.start();
     }
 
 
@@ -149,8 +175,8 @@ public class GameContext {
     }
 
     //Manca nel command pattern server --> client, cosa ritorno? Player?
-    public void rewardDecision(String username, boolean decision){
-        phase.rewardDecision(username, decision);
+    public Player rewardDecision(String username, boolean decision){
+        return phase.rewardDecision(username, decision);
     }
 
     public Hit getCoordinate(String username){
@@ -165,8 +191,8 @@ public class GameContext {
         return phase.useBatteries(username, batteries);
     }
 
-    public void landOnPlanet(String username, int numPlanet){
-        phase.landOnPlanet(username, numPlanet);
+    public Player landOnPlanet(String username, int numPlanet){
+        return phase.landOnPlanet(username, numPlanet);
     }
 
     public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){

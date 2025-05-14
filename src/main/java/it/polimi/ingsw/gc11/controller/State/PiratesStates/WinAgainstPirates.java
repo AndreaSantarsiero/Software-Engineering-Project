@@ -25,7 +25,7 @@ public class WinAgainstPirates extends AdventureState {
     }
 
     @Override
-    public void rewardDecision(String username, boolean decision){
+    public Player rewardDecision(String username, boolean decision){
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
@@ -43,6 +43,8 @@ public class WinAgainstPirates extends AdventureState {
         else {
             this.advContext.setAdvState(new CoordinateState(advContext, this.playersDefeated, 0));
         }
+
+        return player;
     }
 
 }

@@ -10,14 +10,14 @@ public class DeclineAdventureCardAction extends ClientAction {
     }
 
     @Override
-    public void execute(GameContext ctx) {
+    public void execute(GameContext context) {
         try {
-            ctx.declineAdventureCard(getUsername());
+            context.declineAdventureCard(getUsername());
             NotifySuccessAction response = new NotifySuccessAction();
-            ctx.sendAction(username, response);
+            context.sendAction(username, response);
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
-            ctx.sendAction(username, exception);
+            context.sendAction(username, exception);
         }
     }
 }

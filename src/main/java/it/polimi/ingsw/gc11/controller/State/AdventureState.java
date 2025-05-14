@@ -45,7 +45,7 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't choose fire power in the current adventure state.");
     }
 
-    public void rewardDecision(String username, boolean decision){
+    public Player rewardDecision(String username, boolean decision){
         throw new IllegalStateException("Can't make the reward decision in the current adventure state.");
     }
 
@@ -61,7 +61,7 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't eliminate batteries in the current adventure state.");
     }
 
-    public void landOnPlanet(String username, int numPlanet){
+    public Player landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current adventure state.");
     }
 
