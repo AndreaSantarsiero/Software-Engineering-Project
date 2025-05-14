@@ -43,7 +43,7 @@ public class SlaversState extends AdventureState {
         this.advContext.setResolvingAdvCard(true);
 
         if(Batteries == null || doubleCannons == null){
-            sum = 0;
+            throw new NullPointerException();
         }
         else{
             for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){

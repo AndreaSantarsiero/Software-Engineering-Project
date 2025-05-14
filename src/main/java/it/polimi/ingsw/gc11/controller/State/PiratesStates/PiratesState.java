@@ -52,15 +52,16 @@ public class PiratesState extends AdventureState {
             throw new IllegalArgumentException("You already fight with pirate");
         }
 
+        if(Batteries == null || doubleCannons == null){
+            throw new NullPointerException();
+        }
+
         //Imposto che il giorcatore sta effettivamente giocando la carta
         if(this.advContext.isResolvingAdvCard() == true){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);
 
-        if(Batteries == null || doubleCannons == null){
-            throw new NullPointerException();
-        }
 
         int sum = 0;
         for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){
@@ -68,13 +69,13 @@ public class PiratesState extends AdventureState {
         }
 
         //Potrebbe essere <= al posto che !=
-        if(sum != doubleCannons.size()){
+        if(sum < doubleCannons.size()){
             throw new IllegalArgumentException("Batteries and Double Cannons do not match");
         }
 
+        playerFirePower = player.getShipBoard().getCannonsPower(doubleCannons);
         player.getShipBoard().useBatteries(Batteries);
 
-        playerFirePower = player.getShipBoard().getCannonsPower(doubleCannons);
 
         if(playerFirePower > pirates.getFirePower()){
             //VictoryState

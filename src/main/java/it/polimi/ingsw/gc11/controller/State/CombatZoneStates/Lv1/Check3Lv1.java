@@ -30,6 +30,10 @@ public class Check3Lv1 extends AdventureState {
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
         CombatZoneLv1 combatZoneLv1 = (CombatZoneLv1) this.advContext.getDrawnAdvCard();
 
+        if(Batteries == null || doubleCannons == null){
+            throw new NullPointerException();
+        }
+
         if (!player.getUsername().equals(username)) {
             throw new IllegalArgumentException("It's not your turn to play");
         }
