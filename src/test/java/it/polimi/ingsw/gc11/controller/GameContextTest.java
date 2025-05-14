@@ -304,7 +304,7 @@ public class GameContextTest {
         gameContext.getGameModel().getPlayer("username2").getShipBoard().addShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
         gameContext.getGameModel().getPlayer("username2").getShipBoard().addShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
 
-        assertThrows(IllegalArgumentException.class, () -> gameContext.declineAdventureCard("username2"));
+        assertThrows(IllegalStateException.class, () -> gameContext.declineAdventureCard("username2"));
         gameContext.declineAdventureCard("username1");
         gameContext.acceptAdventureCard("username2");
     }
