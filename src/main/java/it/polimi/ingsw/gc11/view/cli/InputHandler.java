@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.view.cli.utils;
+package it.polimi.ingsw.gc11.view.cli;
 
 import org.jline.keymap.BindingReader;
 import org.jline.keymap.KeyMap;
@@ -13,7 +13,7 @@ import java.util.List;
 
 
 
-public class Menu {
+public class InputHandler {
 
     private static final Terminal terminal;
     private static final LineReader lineReader;

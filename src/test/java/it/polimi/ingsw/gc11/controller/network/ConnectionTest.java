@@ -45,12 +45,12 @@ public class ConnectionTest {
 
     @Test
     void testCreateMatch() throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
-        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         playerOne.registerSession("username1");
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 4);
         assertEquals(1, playerOne.getAvailableMatches().size(), "Number of available matches doesn't match");
 
-        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         playerTwo.registerSession("username2");
         playerTwo.createMatch(FlightBoard.Type.TRIAL, 2);
         assertEquals(2, playerOne.getAvailableMatches().size(), "Number of available matches doesn't match");
@@ -60,9 +60,9 @@ public class ConnectionTest {
 
     @Test
     void testUsername() throws NetworkException, UsernameAlreadyTakenException {
-        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         playerOne.registerSession("username");
-        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         assertThrows(UsernameAlreadyTakenException.class, () -> playerTwo.registerSession("username"), "Username already taken");
         assertThrows(IllegalArgumentException.class, () -> playerTwo.registerSession(""), "Username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> playerTwo.registerSession(null), "Username cannot be null");
@@ -72,13 +72,13 @@ public class ConnectionTest {
 
     @Test
     void testFullLobby() throws NetworkException, UsernameAlreadyTakenException, FullLobbyException {
-        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         playerOne.registerSession("playerOne");
-        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         playerTwo.registerSession("playerTwo");
-        VirtualServer playerThree = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerThree = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         playerThree.registerSession("playerThree");
-        VirtualServer playerFour = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        VirtualServer playerFour = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
         playerFour.registerSession("playerFour");
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);

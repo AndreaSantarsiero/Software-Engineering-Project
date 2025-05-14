@@ -1,8 +1,11 @@
 package it.polimi.ingsw.gc11.controller.action.client;
 
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.view.*;
 
 import java.util.List;
+
+
 
 public class SendMiniDeckAction extends ServerAction{
     private final List<AdventureCard> miniDeck;
@@ -15,8 +18,19 @@ public class SendMiniDeckAction extends ServerAction{
         return miniDeck;
     }
 
-    @Override
-    public void execute() {
 
-    }
+    @Override
+    public void loadData(JoiningPhaseData joiningPhaseData) {}
+
+    @Override
+    public void loadData(BuildingPhaseData buildingPhaseData) {}
+
+    @Override
+    public void loadData(CheckPhaseData checkPhaseData) {}
+
+    @Override
+    public void loadData(AdventurePhaseData adventurePhaseData) {}
+
+    @Override
+    public void loadData(EndPhaseData endPhaseData) {}
 }

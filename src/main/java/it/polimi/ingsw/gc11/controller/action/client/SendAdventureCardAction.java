@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.controller.action.client;
 
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.view.*;
+
 
 public class SendAdventureCardAction extends ServerAction{
     private  final AdventureCard adventureCard;
@@ -13,9 +15,20 @@ public class SendAdventureCardAction extends ServerAction{
         return adventureCard;
     }
 
-    @Override
-    public void execute() {
 
-    }
+    @Override
+    public void loadData(JoiningPhaseData joiningPhaseData) {}
+
+    @Override
+    public void loadData(BuildingPhaseData buildingPhaseData) {}
+
+    @Override
+    public void loadData(CheckPhaseData checkPhaseData) {}
+
+    @Override
+    public void loadData(AdventurePhaseData adventurePhaseData) {}
+
+    @Override
+    public void loadData(EndPhaseData endPhaseData) {}
 
 }

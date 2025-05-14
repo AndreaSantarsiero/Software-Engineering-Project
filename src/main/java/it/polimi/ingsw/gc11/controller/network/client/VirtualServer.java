@@ -11,6 +11,7 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+import it.polimi.ingsw.gc11.view.PlayerContext;
 import java.util.*;
 
 
@@ -18,11 +19,12 @@ import java.util.*;
 public class VirtualServer {
 
     private final Client client;
+    private final PlayerContext playerContext;
     private String username;
 
 
 
-    public VirtualServer(Utils.ConnectionType type, String ip, int port) throws NetworkException {
+    public VirtualServer(Utils.ConnectionType type, String ip, int port, PlayerContext playerContext) throws NetworkException {
         try{
             if(type.equals(Utils.ConnectionType.RMI)){
                 this.client = new ClientRMI(this, ip, port);
@@ -34,6 +36,7 @@ public class VirtualServer {
         catch (Exception e){
             throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port + "\n" + e.getMessage());
         }
+        this.playerContext = playerContext;
     }
 
 
@@ -167,6 +170,6 @@ public class VirtualServer {
 
 
     public void receiveAction(ServerAction action){
-        action.execute();
+        action.execute(playerContext);
     }
 }

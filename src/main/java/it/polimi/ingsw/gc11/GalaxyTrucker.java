@@ -23,7 +23,8 @@ public class GalaxyTrucker {
         }
 
         if (useCLI) {
-            MainCLI.run(args);
+            MainCLI mainCLI = new MainCLI();
+            mainCLI.run(args);
         }
         else if (startServer) {
             ServerMAIN.run(args);

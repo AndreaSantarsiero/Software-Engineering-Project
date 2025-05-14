@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.controller.action.client;
 
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.view.*;
+
 
 public class SendFreeShipCardAction extends ServerAction{
     private final ShipCard shipCard;
@@ -13,7 +15,19 @@ public class SendFreeShipCardAction extends ServerAction{
     }
 
     @Override
-    public void execute() {
+    public void loadData(JoiningPhaseData joiningPhaseData) {}
 
+    @Override
+    public void loadData(BuildingPhaseData buildingPhaseData) {
+        buildingPhaseData.setHeldShipCard(shipCard);
     }
+
+    @Override
+    public void loadData(CheckPhaseData checkPhaseData) {}
+
+    @Override
+    public void loadData(AdventurePhaseData adventurePhaseData) {}
+
+    @Override
+    public void loadData(EndPhaseData endPhaseData) {}
 }
