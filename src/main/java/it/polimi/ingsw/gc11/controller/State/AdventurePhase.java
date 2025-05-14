@@ -105,7 +105,7 @@ public class AdventurePhase extends GamePhase {
             advState.declineAdventureCard(username);
         }
         else {
-            throw new IllegalArgumentException("It's not your turn to play!");
+            throw new IllegalStateException("It's not your turn to play!");
         }
     }
 
