@@ -91,7 +91,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't choose fire powers of an adventure card in the current game phase.");
     }
 
-    public void rewardDecision(String username, boolean decision){
+    public Player rewardDecision(String username, boolean decision){
         throw new IllegalStateException("Can't make the reward decision of the adventure card in the current game phase.");
     }
 
@@ -107,7 +107,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't elimine batteries of the adventure card in the current game phase.");
     }
 
-    public void landOnPlanet(String username, int numPlanet){
+    public Player landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current game phase.");
     }
 

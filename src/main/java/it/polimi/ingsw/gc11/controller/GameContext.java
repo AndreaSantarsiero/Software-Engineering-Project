@@ -149,8 +149,8 @@ public class GameContext {
     }
 
     //Manca nel command pattern server --> client, cosa ritorno? Player?
-    public void rewardDecision(String username, boolean decision){
-        phase.rewardDecision(username, decision);
+    public Player rewardDecision(String username, boolean decision){
+        return phase.rewardDecision(username, decision);
     }
 
     public Hit getCoordinate(String username){
@@ -165,8 +165,8 @@ public class GameContext {
         return phase.useBatteries(username, batteries);
     }
 
-    public void landOnPlanet(String username, int numPlanet){
-        phase.landOnPlanet(username, numPlanet);
+    public Player landOnPlanet(String username, int numPlanet){
+        return phase.landOnPlanet(username, numPlanet);
     }
 
     public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){

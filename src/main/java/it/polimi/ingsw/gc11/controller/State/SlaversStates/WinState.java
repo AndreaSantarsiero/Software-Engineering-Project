@@ -20,7 +20,7 @@ public class  WinState extends AdventureState {
     }
 
     @Override
-    public void rewardDecision(String username, boolean decision){
+    public Player rewardDecision(String username, boolean decision){
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
@@ -34,6 +34,8 @@ public class  WinState extends AdventureState {
         this.advContext.setResolvingAdvCard(false);
         //La carta è finita torno in IDLE
         this.advContext.setAdvState(new IdleState(advContext));
+
+        return player;
     }
 
 }

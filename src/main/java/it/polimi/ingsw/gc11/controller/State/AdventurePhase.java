@@ -125,13 +125,8 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void rewardDecision(String username, boolean decision){
-        try{
-            this.advState.rewardDecision(username, decision);
-        }
-        catch (IllegalStateException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public Player rewardDecision(String username, boolean decision){
+        return advState.rewardDecision(username, decision);
     }
 
     @Override
@@ -150,8 +145,8 @@ public class AdventurePhase extends GamePhase {
     }
 
     @Override
-    public void landOnPlanet(String username, int numPlanet){
-        advState.landOnPlanet(username, numPlanet);
+    public Player landOnPlanet(String username, int numPlanet){
+        return advState.landOnPlanet(username, numPlanet);
     }
 
     public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){
