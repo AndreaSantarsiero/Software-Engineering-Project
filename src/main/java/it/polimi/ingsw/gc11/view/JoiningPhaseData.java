@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
 import java.util.List;
 
 
@@ -11,9 +10,7 @@ public class JoiningPhaseData extends GamePhaseData {
     private List<String> availableMatches;
 
 
-    public JoiningPhaseData() {
-        cliTemplate = new JoiningTemplate();
-    }
+    public JoiningPhaseData() {}
 
 
     public List<String> getAvailableMatches() {
@@ -22,7 +19,6 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setAvailableMatches(List<String> availableMatches) {
         this.availableMatches = availableMatches;
-        cliTemplate.render();
     }
 
 

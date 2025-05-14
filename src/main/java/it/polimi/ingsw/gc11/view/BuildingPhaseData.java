@@ -3,21 +3,18 @@ package it.polimi.ingsw.gc11.view;
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-import it.polimi.ingsw.gc11.view.cli.templates.BuildingTemplate;
 import java.util.Map;
 
 
 
 public class BuildingPhaseData extends GamePhaseData {
 
-    private ShipBoard shipBoard;
-    private Map<String, ShipBoard> enemiesShipBoard;
-    private ShipCard heldShipCard;
+    private ShipBoard shipBoard;    //la mia nave mentre la monto
+    private Map<String, ShipBoard> enemiesShipBoard;    //associo username altri player alla loro nave
+    private ShipCard heldShipCard;  //la shipcard che tengo in mano
 
 
-    public BuildingPhaseData() {
-        cliTemplate = new BuildingTemplate();
-    }
+    public BuildingPhaseData() {}
 
 
     public ShipBoard getShipBoard() {
@@ -26,7 +23,6 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
-        cliTemplate.render();
     }
 
     public Map<String, ShipBoard> getEnemiesShipBoard() {
@@ -35,7 +31,6 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setEnemiesShipBoard(Map<String, ShipBoard> enemiesShipBoard) {
         this.enemiesShipBoard = enemiesShipBoard;
-        cliTemplate.render();
     }
 
     public ShipCard getHeldShipCard() {
@@ -44,7 +39,6 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setHeldShipCard(ShipCard heldShipCard) {
         this.heldShipCard = heldShipCard;
-        cliTemplate.render();
     }
 
 

@@ -12,6 +12,8 @@ public class SetBuildingPhaseAction extends ServerAction {
     @Override public void loadData(AdventurePhaseData adventurePhaseData) {}
     @Override public void loadData(EndPhaseData endPhaseData) {}
 
+    //non serve scrivere nessun dato
+
 
     @Override
     public void execute(PlayerContext playerContext) {

@@ -30,4 +30,6 @@ public class SendFreeShipCardAction extends ServerAction{
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}
+
+    //le altre quattro loadData non ha senso che facciano qualcosa perchè questa azione viene inviata solamente durante la building phase
 }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.view.cli.templates.EndTemplate;
 
 
 
@@ -11,9 +10,7 @@ public class EndPhaseData extends GamePhaseData {
     private Player player;
 
 
-    public EndPhaseData() {
-        cliTemplate = new EndTemplate();
-    }
+    public EndPhaseData() {}
 
 
     public Player getPlayer() {
@@ -22,7 +19,6 @@ public class EndPhaseData extends GamePhaseData {
 
     public void setPlayer(Player player) {
         this.player = player;
-        cliTemplate.render();
     }
 
 

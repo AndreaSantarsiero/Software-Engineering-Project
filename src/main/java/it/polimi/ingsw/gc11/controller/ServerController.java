@@ -195,8 +195,8 @@ public class ServerController {
 
 
 
-    //cosa facciamo se il player si disconnette?
-    //cosa facciamo a fine game?
+    //cosa facciamo se il player si disconnette? invalidare il token, freeze, riconnect ecc
+    //cosa facciamo a fine game? bisogna levare username e token dalla mappa credo
 
 
 
