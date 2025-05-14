@@ -21,7 +21,7 @@ public class RewardDecisionAction extends ClientAction {
             //Invio il cambiamento della posizione sulla flightboard del player che ha giocato la carta a tutti i player
             for(Player p : context.getGameModel().getPlayers()) {
                 if(!p.isAbort()){
-                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player);
+                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, context.getGameModel().getPositionOnBoard(p.getUsername()));
                     context.sendAction(p.getUsername(), response);
                 }
             }

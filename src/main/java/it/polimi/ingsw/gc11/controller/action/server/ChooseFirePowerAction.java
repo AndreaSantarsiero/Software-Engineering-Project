@@ -33,7 +33,7 @@ public class ChooseFirePowerAction extends ClientAction {
                     context.sendAction(username, response);
                 }
                 else if(!p.isAbort()){
-                    UpdatePlayerProfileAction response1 = new UpdatePlayerProfileAction(player);
+                    UpdatePlayerProfileAction response1 = new UpdatePlayerProfileAction(player, context.getGameModel().getPositionOnBoard(p.getUsername()));
                     context.sendAction(p.getUsername(), response1);
 
                     UpdateEnemyShipBoardAction response2 = new UpdateEnemyShipBoardAction(player.getShipBoard(), player.getUsername());
