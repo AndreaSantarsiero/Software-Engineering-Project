@@ -106,12 +106,16 @@ public class GameContextTest {
         gameContext.connectPlayerToGame("username1");
 
         assertThrows(IllegalStateException.class, () -> gameContext.getFreeShipCard("username1", 0), "you can call getFreeShipCard() only in Building Phase.");
-        assertThrows(IllegalStateException.class, () -> gameContext.releaseShipCard("username", new StructuralModule("1",
+        assertThrows(IllegalStateException.class, () -> gameContext.releaseShipCard("username1", new StructuralModule("1",
                 ShipCard.Connector.SINGLE,
                 ShipCard.Connector.SINGLE,
                 ShipCard.Connector.SINGLE,
                 ShipCard.Connector.SINGLE)), "you can call releaseShipCard() only in Building Phase.");
-
+        assertThrows(IllegalStateException.class, () -> gameContext.placeShipCard("username1", new StructuralModule("1",
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE), 7, 7),  "you can call placeShipCard() only in Building Phase.");
     }
 
     @Test
@@ -159,8 +163,15 @@ public class GameContextTest {
     @Test
     void testPlaceShipCardInvalid() {
         connect3Players();
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard(null, null, 7, 7), "username cannot be null");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("", null, 7, 7), "username cannot be empty");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("invalidUsername", null, 7, 7), "username should be valid");
+
+        ShipCard shipCard = gameContext.getFreeShipCard("username2", 0);
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", shipCard, 7, 7), "this player don't have any shipCard in hand");
         assertThrows(IllegalArgumentException.class,
                 () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 1), -1, 0), "Coordinates should be valid");
+
     }
 
     @Test
