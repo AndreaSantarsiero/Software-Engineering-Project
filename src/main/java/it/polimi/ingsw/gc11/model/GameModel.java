@@ -328,7 +328,13 @@ public class GameModel {
         return definitiveDeck;
     }
 
-    public AdventureCard getTopAdventureCard(){ return this.definitiveDeck.getTopCard();}
+    public AdventureCard getTopAdventureCard(){
+        return this.definitiveDeck.getTopCard();
+    }
+
+    public Boolean isDefinitiveDeckEmpty(){
+        return this.definitiveDeck.isEmpty();
+    }
 
 
 

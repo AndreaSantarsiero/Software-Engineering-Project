@@ -45,4 +45,8 @@ public class AdventureDeck {
     }
 
     public int getSize(){ return cards.size();}
+
+    public boolean isEmpty(){
+        return cards.isEmpty();
+    }
 }

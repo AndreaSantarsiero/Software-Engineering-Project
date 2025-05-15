@@ -11,6 +11,10 @@ public class IdleState extends AdventureState{
         this.advContext.setIdxCurrentPlayer(0);
         this.advContext.setResolvingAdvCard(false);
         this.advContext.setDrawnAdvCard(null);
+
+        if(advContext.getGameModel().isDefinitiveDeckEmpty()){
+            this.advContext.nextPhase();
+        }
     }
 
     @Override
