@@ -26,7 +26,9 @@ public class SendAdventureCardAction extends ServerAction{
     public void loadData(CheckPhaseData checkPhaseData) {}
 
     @Override
-    public void loadData(AdventurePhaseData adventurePhaseData) {}
+    public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.setAdventureCard(adventureCard);
+    }
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}
