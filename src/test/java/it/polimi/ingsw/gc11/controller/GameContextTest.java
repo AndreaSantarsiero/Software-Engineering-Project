@@ -32,8 +32,11 @@ public class GameContextTest {
     void connect3Players(){
         try {
             gameContext.connectPlayerToGame("username1");
+            gameContext.chooseColor("username1", "blue");
             gameContext.connectPlayerToGame("username2");
+            gameContext.chooseColor("username2", "red");
             gameContext.connectPlayerToGame("username3");
+            gameContext.chooseColor("username3", "yellow");
         } catch (UsernameAlreadyTakenException e) {
             throw new RuntimeException(e);
         } catch (FullLobbyException e) {
@@ -90,13 +93,31 @@ public class GameContextTest {
     }
 
     @Test
+    void testChooseColor() throws FullLobbyException, UsernameAlreadyTakenException {
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor(null, "blue"),  "username cannot be null");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username1", "blue"), "player not in lobby");
+
+        gameContext.connectPlayerToGame("username1");
+        assertThrows(NullPointerException.class, () -> gameContext.chooseColor("username1", null), "color cannot be null");
+        assertThrows(NullPointerException.class, () -> gameContext.chooseColor("username1", "black"), "color do not exist");
+        gameContext.chooseColor("username1", "blue");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username1", "red"), "you cannot change color");
+        gameContext.connectPlayerToGame("username2");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username2", "blue"),  "color already choosen");
+        gameContext.chooseColor("username2", "red");
+    }
+
+    @Test
     void testCorrectPhaseAfterConnections() throws FullLobbyException, UsernameAlreadyTakenException {
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Phase should be IdlePhase before the lobby fills up.");
         gameContext.connectPlayerToGame("username1");
+        gameContext.chooseColor("username1", "blue");
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Phase should be IdlePhase before the lobby fills up.");
         gameContext.connectPlayerToGame("username2");
+        gameContext.chooseColor("username2", "red");
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Phase should be IdlePhase before the lobby fills up.");
         gameContext.connectPlayerToGame("username3");
+        gameContext.chooseColor("username3", "yellow");
         assertInstanceOf(BuildingPhase.class, gameContext.getPhase(), "Phase should be BuildingPhase after the lobby fills up.");
 
     }
@@ -116,6 +137,7 @@ public class GameContextTest {
                 ShipCard.Connector.SINGLE,
                 ShipCard.Connector.SINGLE,
                 ShipCard.Connector.SINGLE), 7, 7),  "you can call placeShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.removeShipCard("username1" ,7, 7), "you can call removeShipCard() only in Building Phase.");
     }
 
     @Test
@@ -190,10 +212,16 @@ public class GameContextTest {
 
     @Test
     void testRemoveShipCardInvalid(){
-        assertThrows(IllegalStateException.class, () -> gameContext.removeShipCard("username", 7, 7));
-        assertThrows(IllegalStateException.class, () -> gameContext.removeShipCard("username1", -1, 7));
-        assertThrows(IllegalStateException.class, () -> gameContext.removeShipCard("username1", 7, 7));
+        connect3Players();
 
+        assertInstanceOf(BuildingPhase.class, gameContext.getPhase());
+
+        assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard(null, 7, 7),  "username cannot be null");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("", 7,7), "username cannot be empty");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("invalidUsername", 7,7), "username should be valid");
+
+        assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("username1", -1, 7), "coordinates should be valid");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("username1", 7, 7), "do not exixts eny shipCard in this position");
     }
 
     @Test
