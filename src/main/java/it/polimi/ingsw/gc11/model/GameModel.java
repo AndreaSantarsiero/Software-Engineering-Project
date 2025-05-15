@@ -166,6 +166,12 @@ public class GameModel {
         }
     }
 
+    private ShipCard getHeldShipCard(String username){
+        if(!heldShipCards.containsKey(username)){
+            throw new IllegalArgumentException("Player " + username + " does not hold a ship card in his hands");
+        }
+        return heldShipCards.get(username);
+    }
 
 
     /**
