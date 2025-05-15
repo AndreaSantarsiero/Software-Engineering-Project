@@ -60,11 +60,14 @@ public class GameContextTest {
 
     void goToAdvPhase(){
         connect3Players();
+        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 8, 8);
+        gameContext.placeShipCard("username2", gameContext.getFreeShipCard("username2", 0), 8, 8);
+        gameContext.placeShipCard("username3", gameContext.getFreeShipCard("username3", 0), 8, 8);
+        gameContext.getGameModel().createDefinitiveDeck();
         gameContext.endBuilding("username1");
         gameContext.endBuilding("username2");
         gameContext.endBuilding("username3");
         gameContext.setPhase(new AdventurePhase(gameContext));
-        gameContext.getGameModel().createDefinitiveDeck();
     }
 
     @BeforeEach
@@ -411,9 +414,14 @@ public class GameContextTest {
     @Test
     void testEndbuilding(){
         connect3Players();
+        gameContext.getGameModel().createDefinitiveDeck();
+        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 8, 8);
         gameContext.endBuilding("username1");
+
         assertThrows(IllegalStateException.class, () -> gameContext.getGameModel().endBuilding("username1"));
+        gameContext.placeShipCard("username2", gameContext.getFreeShipCard("username2", 0), 8, 8);
         gameContext.endBuilding("username2");
+        gameContext.placeShipCard("username3", gameContext.getFreeShipCard("username3", 0), 8, 8);
         gameContext.endBuilding("username3");
         assertThrows(IllegalArgumentException.class, () -> gameContext.getGameModel().endBuilding("username4"));
         assertEquals(6, gameContext.getGameModel().getPositionOnBoard("username1"));
