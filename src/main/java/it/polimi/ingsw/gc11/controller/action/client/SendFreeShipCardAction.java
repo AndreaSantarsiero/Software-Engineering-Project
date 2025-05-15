@@ -3,7 +3,7 @@ package it.polimi.ingsw.gc11.controller.action.client;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.*;
 
-
+//Devo implementare suo listener in tutte quante le PhaseData
 public class SendFreeShipCardAction extends ServerAction{
     private final ShipCard shipCard;
     public SendFreeShipCardAction(ShipCard shipCard) {

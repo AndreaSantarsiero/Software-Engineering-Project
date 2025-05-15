@@ -23,7 +23,9 @@ public class SendMiniDeckAction extends ServerAction{
     public void loadData(JoiningPhaseData joiningPhaseData) {}
 
     @Override
-    public void loadData(BuildingPhaseData buildingPhaseData) {}
+    public void loadData(BuildingPhaseData buildingPhaseData) {
+        buildingPhaseData.setMiniDeck(miniDeck);
+    }
 
     @Override
     public void loadData(CheckPhaseData checkPhaseData) {}
