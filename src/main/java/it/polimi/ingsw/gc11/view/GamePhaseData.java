@@ -8,7 +8,7 @@ public abstract class GamePhaseData {
 
     private int choice;
     private String textInput;
-    private String serverMessage;
+    private String serverMessage;//è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
 
 
     public GamePhaseData() {}

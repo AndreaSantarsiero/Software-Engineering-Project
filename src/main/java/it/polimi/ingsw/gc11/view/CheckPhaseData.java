@@ -10,7 +10,6 @@ public class CheckPhaseData extends GamePhaseData {
 
     private ShipBoard shipBoard;
     private Map<String, ShipBoard> enemiesShipBoard;
-    private String message; //è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
 
 
     public CheckPhaseData() {}
@@ -30,14 +29,6 @@ public class CheckPhaseData extends GamePhaseData {
 
     public void setEnemiesShipBoard(Map<String, ShipBoard> enemiesShipBoard) {
         this.enemiesShipBoard = enemiesShipBoard;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @Override

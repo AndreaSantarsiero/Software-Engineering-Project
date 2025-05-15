@@ -6,7 +6,6 @@ import java.util.List;
 
 
 public class JoiningPhaseData extends GamePhaseData {
-    private String message; //è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
     private List<String> availableMatches;
 
 
@@ -19,14 +18,6 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setAvailableMatches(List<String> availableMatches) {
         this.availableMatches = availableMatches;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @Override

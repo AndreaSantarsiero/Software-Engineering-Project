@@ -10,7 +10,6 @@ import java.util.List;
 public class AdventurePhaseData extends GamePhaseData {
     private AdventureCard adventureCard; //carta correntemente in esecuzione, quella pescata dal player
     private Player player;
-    private String message; //è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
 
     public AdventurePhaseData() {}
 
@@ -23,20 +22,12 @@ public class AdventurePhaseData extends GamePhaseData {
         return adventureCard;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
     public void setPlayer(Player player) {
         this.player = player;
     }
 
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
 
