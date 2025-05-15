@@ -102,6 +102,19 @@ public class GameContextTest {
     }
 
     @Test
+    void testInvalidState() throws FullLobbyException, UsernameAlreadyTakenException {
+        gameContext.connectPlayerToGame("username1");
+
+        assertThrows(IllegalStateException.class, () -> gameContext.getFreeShipCard("username1", 0), "you can call getFreeShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.releaseShipCard("username", new StructuralModule("1",
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE)), "you can call releaseShipCard() only in Building Phase.");
+
+    }
+
+    @Test
     void testNullGetFreeShipcard(){
         connect3Players();
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard(null, 0), "username cannot be null");
@@ -109,7 +122,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testGetFreeShipCard(){
+    void testGetFreeShipCard() {
         connect3Players();
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("username1", -1), "pos should not be negative");
         ShipCard shipCard = assertInstanceOf(ShipCard.class, gameContext.getFreeShipCard("username1", 0), "getFreeShipCard should be return a ShipCard");
@@ -120,7 +133,31 @@ public class GameContextTest {
     }
 
     @Test
-    void testWhenCoordsNegative() {
+    void testRelaseShipCardIllegalArgument(){
+        connect3Players();
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard(null, null), "username cannot be null");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("", null), "username cannot be empty");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("invalidUsername", null), "username should be valid");
+    }
+
+    @Test
+    void testRelaseShipCards(){
+        connect3Players();
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "this player don't have any shipCard in hand");
+        ShipCard shipCard = gameContext.getFreeShipCard("username1", 0);
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "shipCard cannot be null");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", new Shield("1",
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE)), "shipCard should be match");
+        gameContext.releaseShipCard("username1", shipCard);
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", shipCard), "shipCard already released");
+
+    }
+
+    @Test
+    void testPlaceShipCardInvalid() {
         connect3Players();
         assertThrows(IllegalArgumentException.class,
                 () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 1), -1, 0), "Coordinates should be valid");
