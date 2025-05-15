@@ -102,6 +102,9 @@ public class GameContext {
         phase.connectPlayerToGame(playerUsername);
     }
 
+    public void chooseColor(String username, String chosenColor) {
+        phase.chooseColor(username, chosenColor);
+    }
 
 
     //BuildingPhase

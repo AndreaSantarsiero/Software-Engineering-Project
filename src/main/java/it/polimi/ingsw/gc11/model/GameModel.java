@@ -14,6 +14,7 @@ public class GameModel {
     private final String id;
     private final int numPlayers;
     private final List<Player> players;
+    private final Map<String, Boolean> availableColors;
     private FlightBoard flightBoard;
     private List<AdventureDeck> adventureCardsDecks;
     private AdventureDeck definitiveDeck;
@@ -30,6 +31,11 @@ public class GameModel {
         id = UUID.randomUUID().toString();
         players = new  ArrayList<>(0);
         this.numPlayers = numPlayers;
+        this.availableColors = new HashMap<>();
+        availableColors.put("red", Boolean.TRUE);
+        availableColors.put("blue", Boolean.TRUE);
+        availableColors.put("green", Boolean.TRUE);
+        availableColors.put("yellow", Boolean.TRUE);
         flightBoard = null;
         adventureCardsDecks = new ArrayList<>();
         definitiveDeck = null;
@@ -218,6 +224,16 @@ public class GameModel {
 
     public Player getLastPlayer() {
         return players.getLast();
+    }
+
+    public void setPlayerColor(String username, String color) {
+        Player player = this.getPlayer(username);
+        Boolean isAvailable = this.availableColors.get(color);
+        if (!isAvailable || isAvailable == null){
+            throw new IllegalArgumentException(color.toUpperCase() + " is not available");
+        }
+        this.availableColors.put(color, Boolean.FALSE);
+        player.setColor(color);
     }
 
 

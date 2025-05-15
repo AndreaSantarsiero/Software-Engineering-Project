@@ -27,15 +27,18 @@ public class Player {
         this.standing = 0;
     }
 
-    //Vanno inizializzati quando si mettono le pedine sulla flightBoard
 
-
-    public Color getColor() {
-        return color;
+    public String getColor() {
+        return color.toString().toLowerCase();
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(String color) {
+        switch (color) {
+            case "red" -> this.color = Color.RED;
+            case "green" -> this.color = Color.GREEN;
+            case "blue" -> this.color = Color.BLUE;
+            case "yellow" -> this.color = Color.YELLOW;
+        }
     }
 
     public void setStanding(int standing) {
