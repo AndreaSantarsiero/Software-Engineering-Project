@@ -168,7 +168,7 @@ public class GameContextTest {
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("invalidUsername", null, 7, 7), "username should be valid");
 
         ShipCard shipCard = gameContext.getFreeShipCard("username2", 0);
-        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", shipCard, 7, 7), "username should be valid");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", shipCard, 7, 7), "this player don't have any shipCard in hand");
         assertThrows(IllegalArgumentException.class,
                 () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 1), -1, 0), "Coordinates should be valid");
 
