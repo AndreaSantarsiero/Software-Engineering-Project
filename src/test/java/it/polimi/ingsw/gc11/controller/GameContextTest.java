@@ -200,7 +200,8 @@ public class GameContextTest {
     void testPlaceShipCard(){
         connect3Players();
         assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 7));
-        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 3, 3));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 3, 3), "coordinates should be valid");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 7), "slot already used");
     }
 
     @Test
