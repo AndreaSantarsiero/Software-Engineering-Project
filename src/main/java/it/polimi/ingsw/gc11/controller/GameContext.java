@@ -102,6 +102,7 @@ public class GameContext {
         phase.connectPlayerToGame(playerUsername);
     }
 
+    //Finire la catena di invocazione per la rete
     public void chooseColor(String username, String chosenColor) {
         phase.chooseColor(username, chosenColor);
     }
