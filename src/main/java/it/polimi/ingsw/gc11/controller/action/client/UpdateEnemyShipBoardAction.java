@@ -32,7 +32,9 @@ public class UpdateEnemyShipBoardAction extends ServerAction{
     public void loadData(CheckPhaseData checkPhaseData) {}
 
     @Override
-    public void loadData(AdventurePhaseData adventurePhaseData) {}
+    public void loadData(AdventurePhaseData adventurePhaseData) {
+
+    }
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}

@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ public class BuildingPhaseData extends GamePhaseData {
     private List<AdventureCard> miniDeck;
 
 
-    public BuildingPhaseData() {}
+    public BuildingPhaseData() {
+        this.enemiesShipBoard = new HashMap<>();
+    }
 
 
     public ShipBoard getShipBoard() {
@@ -33,8 +36,8 @@ public class BuildingPhaseData extends GamePhaseData {
         return enemiesShipBoard;
     }
 
-    public void setEnemiesShipBoard(Map<String, ShipBoard> enemiesShipBoard) {
-        this.enemiesShipBoard = enemiesShipBoard;
+    public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
+        this.enemiesShipBoard.put(username, shipBoard);
     }
 
     public ShipCard getHeldShipCard() {
