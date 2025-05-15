@@ -143,11 +143,7 @@ public class GameContext {
 
 
 
-    //da mettere private?
-    public void goToCheckPhase() throws IllegalStateException {
-        phase.goToCheckPhase(this);
-    }
-
+    //CheckPhase
     public void checkAllShipBoards(){
     }
 
