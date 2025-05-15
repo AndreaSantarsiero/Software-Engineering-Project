@@ -8,12 +8,13 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.util.ArrayList;
 
 
-
 public class BuildingPhase extends GamePhase {
     private final GameContext gameContext;
+    private int numPlayersFinished;
 
     public BuildingPhase(GameContext gameContext) {
         this.gameContext = gameContext;
+        this.numPlayersFinished = 0;
     }
 
     @Override
@@ -54,10 +55,9 @@ public class BuildingPhase extends GamePhase {
     @Override
     public void endBuilding(String username, GameModel gameModel){
         gameModel.endBuilding(username);
-    }
-
-    @Override
-    public void goToCheckPhase(GameContext context) throws IllegalStateException {
-        this.gameContext.setPhase(new CheckPhase(this.gameContext));
+        this.numPlayersFinished++;
+        if (this.numPlayersFinished == gameModel.getPlayers().size()) {
+            this.gameContext.setPhase(new CheckPhase(this.gameContext));
+        }
     }
 }

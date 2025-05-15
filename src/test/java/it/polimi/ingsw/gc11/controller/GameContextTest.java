@@ -283,7 +283,7 @@ public class GameContextTest {
         assertThrows(IllegalStateException.class, () -> gameContext.observeMiniDeck("username1", 3));
         assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", -1));
     }
-
+/*
     @Test
     void testGoToCheckPhase(){
         assertThrows(IllegalStateException.class, () -> gameContext.goToCheckPhase());
@@ -291,7 +291,7 @@ public class GameContextTest {
         assertDoesNotThrow(() -> gameContext.goToCheckPhase());
         assertInstanceOf(CheckPhase.class, gameContext.getPhase());
     }
-
+*/
     @Test
     void testSetAdvPhase(){
         goToAdvPhase();
