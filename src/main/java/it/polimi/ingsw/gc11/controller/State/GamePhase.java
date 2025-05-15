@@ -22,10 +22,12 @@ public abstract class GamePhase {
 
     //IdlePhase
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
-        throw new FullLobbyException("Cannot connect player to game in the current game phase");
+        throw new FullLobbyException("Cannot connect player to game in the current game phase.");
     }
 
-
+    public void chooseColor(String username, String chosenColor) {
+        throw new IllegalStateException("Can't choose player's color in the current game phase." );
+    }
 
     //BuildingPhase
     public ShipCard getFreeShipCard(GameModel gameModel, String username, int pos){
