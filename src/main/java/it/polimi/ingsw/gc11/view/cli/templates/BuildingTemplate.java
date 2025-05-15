@@ -13,7 +13,6 @@ public class BuildingTemplate extends BuildingPhaseData implements CLITemplate {
     private BuildingPhaseData buildingPhaseData;
 
 
-
     @Override
     public void render() {
         //stampo il template con i dati aggiornati

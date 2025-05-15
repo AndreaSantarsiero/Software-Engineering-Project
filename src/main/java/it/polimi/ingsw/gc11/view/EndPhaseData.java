@@ -6,12 +6,19 @@ import it.polimi.ingsw.gc11.model.Player;
 
 
 public class EndPhaseData extends GamePhaseData {
-
+    private String message; //è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
     private Player player;
 
 
     public EndPhaseData() {}
 
+    public String getMessage(String message) {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public Player getPlayer() {
         return player;

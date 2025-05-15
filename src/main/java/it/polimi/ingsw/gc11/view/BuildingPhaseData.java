@@ -12,6 +12,7 @@ public class BuildingPhaseData extends GamePhaseData {
     private ShipBoard shipBoard;    //la mia nave mentre la monto
     private Map<String, ShipBoard> enemiesShipBoard;    //associo username altri player alla loro nave
     private ShipCard heldShipCard;  //la shipcard che tengo in mano
+    private String message; //è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
 
 
     public BuildingPhaseData() {}
@@ -39,6 +40,14 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setHeldShipCard(ShipCard heldShipCard) {
         this.heldShipCard = heldShipCard;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 
