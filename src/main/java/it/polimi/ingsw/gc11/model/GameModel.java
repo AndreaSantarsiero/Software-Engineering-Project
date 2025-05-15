@@ -228,6 +228,10 @@ public class GameModel {
 
     public void setPlayerColor(String username, String color) {
         Player player = this.getPlayer(username);
+        //Player has already chosen a color
+        if (player.getColor() != null) {
+            throw new IllegalArgumentException("You have already chosen a color");
+        }
         Boolean isAvailable = this.availableColors.get(color);
         if (!isAvailable || isAvailable == null){
             throw new IllegalArgumentException(color.toUpperCase() + " is not available");
