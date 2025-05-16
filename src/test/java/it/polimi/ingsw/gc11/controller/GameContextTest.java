@@ -716,6 +716,59 @@ public class GameContextTest {
     }
 
     @Test
+    void testChooseFirePowerInvalidArgumentsSlavers() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        advCard = null;
+        advPhase = (AdventurePhase) gameContext.getPhase();
+
+        do {
+            advPhase.setAdvState(new IdleState(advPhase));
+            try{
+                advCard = gameContext.getAdventureCard("username1");
+            }catch(IllegalStateException e){
+                gameContext.getGameModel().reloadDeck();
+                gameContext.setPhase(new AdventurePhase(gameContext));
+            }
+        } while (!(advCard instanceof Slavers));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.addShipCard(battery, 7, 7);
+        board.addShipCard(cannon, 7, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+        List<Cannon> doubles = new ArrayList<>();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseFirePower("username1", usage, null));
+
+
+        Battery fake = new Battery("fake",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Map<Battery, Integer> wrongUsage = new HashMap<>();
+        wrongUsage.put(fake, 1);
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+    }
+
+    @Test
     void testChooseFirePowerValid() {
         AdventureCard advCard;
         AdventurePhase advPhase;

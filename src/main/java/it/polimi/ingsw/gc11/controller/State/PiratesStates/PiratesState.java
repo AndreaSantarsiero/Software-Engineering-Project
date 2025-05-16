@@ -70,6 +70,7 @@ public class PiratesState extends AdventureState {
 
         //Potrebbe essere <= al posto che !=
         if(sum < doubleCannons.size()){
+            this.advContext.setResolvingAdvCard(false);
             throw new IllegalArgumentException("Batteries and Double Cannons do not match");
         }
 

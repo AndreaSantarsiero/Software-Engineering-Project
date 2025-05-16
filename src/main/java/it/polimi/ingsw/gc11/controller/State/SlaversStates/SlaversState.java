@@ -43,6 +43,7 @@ public class SlaversState extends AdventureState {
         this.advContext.setResolvingAdvCard(true);
 
         if(Batteries == null || doubleCannons == null){
+            this.advContext.setResolvingAdvCard(false);
             throw new NullPointerException();
         }
         else{
@@ -51,6 +52,7 @@ public class SlaversState extends AdventureState {
             }
 
             if(sum != doubleCannons.size()){
+                this.advContext.setResolvingAdvCard(false);
                 throw new IllegalArgumentException("Batteries and Double Cannons do not match");
             }
 

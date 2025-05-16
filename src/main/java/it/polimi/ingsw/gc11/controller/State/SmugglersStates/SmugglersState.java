@@ -49,6 +49,7 @@ public class SmugglersState extends AdventureState {
             sum += entry.getValue();
         }
         if(sum != doubleCannons.size()){
+            this.advContext.setResolvingAdvCard(false);
             throw new IllegalArgumentException("Batteries and Double Cannons do not match");
         }
 
