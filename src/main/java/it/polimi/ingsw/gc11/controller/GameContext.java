@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc11.controller;
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
-import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -108,37 +107,37 @@ public class GameContext {
     }
 
 
-    //BuildingPhase
+    //BuildingPhaseLv2
     public ShipCard getFreeShipCard(String username, int pos){
-        return phase.getFreeShipCard(this.gameModel, username, pos);
+        return phase.getFreeShipCard(username, pos);
     }
 
     public void releaseShipCard(String username, ShipCard shipCard){
-        phase.releaseShipCard(this.gameModel, username, shipCard);
+        phase.releaseShipCard(username, shipCard);
     }
 
     public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y){
-        return phase.placeShipCard(gameModel, username, shipCard, x, y);
+        return phase.placeShipCard(username, shipCard, x, y);
     }
 
     public ShipBoard removeShipCard(String username, int x, int y) {
-        return phase.removeShipCard(gameModel, username, x, y);
+        return phase.removeShipCard(username, x, y);
     }
 
     public ShipBoard reserveShipCard(String username, ShipCard shipCard) {
-        return phase.reserveShipCard(gameModel, username, shipCard);
+        return phase.reserveShipCard(username, shipCard);
     }
 
     public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y){
-        return phase.useReservedShipCard(gameModel, username, shipCard, x, y);
+        return phase.useReservedShipCard(username, shipCard, x, y);
     }
 
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
-        return phase.observeMiniDeck(gameModel, username, numDeck);
+        return phase.observeMiniDeck(username, numDeck);
     }
 
     public void endBuilding(String username){
-        phase.endBuilding(username, gameModel);
+        phase.endBuilding(username);
     }
 
 

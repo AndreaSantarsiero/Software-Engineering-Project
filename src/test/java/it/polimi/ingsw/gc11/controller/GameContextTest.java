@@ -126,7 +126,7 @@ public class GameContextTest {
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Phase should be IdlePhase before the lobby fills up.");
         gameContext.connectPlayerToGame("username3");
         gameContext.chooseColor("username3", "yellow");
-        assertInstanceOf(BuildingPhase.class, gameContext.getPhase(), "Phase should be BuildingPhase after the lobby fills up.");
+        assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Phase should be BuildingPhaseLv2 after the lobby fills up.");
 
     }
 
@@ -216,14 +216,14 @@ public class GameContextTest {
     void testGetPhase() throws FullLobbyException, UsernameAlreadyTakenException {
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Match should be in IDLE state");
         connect3Players();
-        assertInstanceOf(BuildingPhase.class, gameContext.getPhase(), "Match should be in building state");
+        assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Match should be in building state");
     }
 
     @Test
     void testRemoveShipCardInvalid(){
         connect3Players();
 
-        assertInstanceOf(BuildingPhase.class, gameContext.getPhase());
+        assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase());
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard(null, 7, 7),  "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("", 7,7), "username cannot be empty");

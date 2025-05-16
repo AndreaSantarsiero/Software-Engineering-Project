@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.controller.State;
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 
@@ -36,7 +37,12 @@ public class IdlePhase extends GamePhase {
 
         this.numReadyPlayers++;
         if (isFullLobby && (numReadyPlayers == gameModel.getMaxNumPlayers())) {
-            this.gameContext.setPhase(new BuildingPhase(this.gameContext));
+            if (gameModel.getFlightBoard().getType().equals(FlightBoard.Type.LEVEL2)){
+                this.gameContext.setPhase(new BuildingPhaseLv2(this.gameContext));
+            }
+            else if (gameModel.getFlightBoard().getType().equals(FlightBoard.Type.TRIAL)){
+                this.gameContext.setPhase(new BuildingPhaseTrial(this.gameContext));
+            }
         }
     }
 
