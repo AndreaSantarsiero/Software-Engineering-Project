@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.SetCheckPhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -64,6 +65,13 @@ public class BuildingPhaseTrial extends GamePhase{
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
             this.gameContext.setPhase(new CheckPhase(this.gameContext));
+
+            //Chiedo approval di santa:
+//            SetCheckPhaseAction send = new SetCheckPhaseAction();
+//            for (Player p : gameModel.getPlayers()) {
+//                gameContext.sendAction(p.getUsername(), send);
+//            }
+
         }
     }
 

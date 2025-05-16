@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.SetEndGameAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
@@ -71,6 +72,12 @@ public class AdventurePhase extends GamePhase {
 
     public void nextPhase() {
         this.gameContext.setPhase(new EndgamePhase(this.gameContext));
+        //Chiedo approval di santa:
+//        SetEndGameAction send = new SetEndGameAction();
+//        for (Player p : gameModel.getPlayers()) {
+//            gameContext.sendAction(p.getUsername(), send);
+//        }
+
     }
 
     /**

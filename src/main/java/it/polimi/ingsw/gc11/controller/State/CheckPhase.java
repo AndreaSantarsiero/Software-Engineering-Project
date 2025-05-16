@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.controller.action.client.SetAdventurePhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import java.util.ArrayList;
@@ -26,6 +28,13 @@ public class CheckPhase extends GamePhase {
 
         if (this.badShipPlayers.isEmpty()) {
             gameContext.setPhase(new AdventurePhase(this.gameContext));
+
+            //Chiedo approval di santa:
+//            SetAdventurePhaseAction send = new SetAdventurePhaseAction();
+//            for (Player p : gameModel.getPlayers()) {
+//                gameContext.sendAction(p.getUsername(), send);
+//            }
+
         }
     }
 

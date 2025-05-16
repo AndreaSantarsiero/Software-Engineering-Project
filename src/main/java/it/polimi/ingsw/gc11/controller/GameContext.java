@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.controller.action.client.SetJoiningPhaseAction;
 import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
@@ -33,6 +34,13 @@ public class GameContext {
         this.gameModel.setLevel(flightType);
         this.matchID = gameModel.getID();
         this.phase = new IdlePhase(this);
+
+        //Chiedo approval di santa:
+//        SetJoiningPhaseAction send = new SetJoiningPhaseAction();
+//        for (Player p : gameModel.getPlayers()) {
+//            this.sendAction(p.getUsername(), send);
+//        }
+
         this.serverController = serverController;
         this.clientActions = new LinkedBlockingQueue<>();
 
