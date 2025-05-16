@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
@@ -17,7 +18,8 @@ public class BuildingPhaseData extends GamePhaseData {
     private Map<String, ShipBoard> enemiesShipBoard;    //associo username altri player alla loro nave
     private ShipCard heldShipCard;  //la shipcard che tengo in mano
     private List<AdventureCard> miniDeck;
-
+    private List<Player> players; //list of enemies players
+    private Player currentPlayer;
 
     public BuildingPhaseData() {
         this.enemiesShipBoard = new HashMap<>();
@@ -54,6 +56,22 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
+    }
+
+    public void setEnemiesPlayer(Player player) {
+        for (Player p : players) {
+            if(p.getUsername().equals(player.getUsername())){
+                p = player;
+            }
+        }
+    }
+
+    public Player getMyPlayer(){
+        return currentPlayer;
+    }
+
+    public void setMyPlayer(Player player){
+        this.currentPlayer = player;
     }
 
     @Override

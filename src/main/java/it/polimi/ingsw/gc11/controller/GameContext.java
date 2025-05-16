@@ -102,8 +102,8 @@ public class GameContext {
     }
 
     //Finire la catena di invocazione per la rete
-    public void chooseColor(String username, String chosenColor) {
-        phase.chooseColor(username, chosenColor);
+    public String chooseColor(String username, String chosenColor) {
+        return phase.chooseColor(username, chosenColor);
     }
 
 

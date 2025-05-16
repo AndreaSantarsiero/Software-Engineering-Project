@@ -7,7 +7,7 @@ import java.util.List;
 
 public class JoiningPhaseData extends GamePhaseData {
     private List<String> availableMatches;
-
+    private String playerColor;
 
     public JoiningPhaseData() {}
 
@@ -18,6 +18,14 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setAvailableMatches(List<String> availableMatches) {
         this.availableMatches = availableMatches;
+    }
+
+    public String getPlayerColor() {
+        return playerColor;
+    }
+
+    public void setPlayerColor(String playerColor) {
+        this.playerColor = playerColor;
     }
 
     @Override

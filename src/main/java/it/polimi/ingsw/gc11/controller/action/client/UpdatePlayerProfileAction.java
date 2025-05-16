@@ -22,13 +22,17 @@ public class UpdatePlayerProfileAction extends ServerAction{
     public void loadData(JoiningPhaseData joiningPhaseData) {}
 
     @Override
-    public void loadData(BuildingPhaseData buildingPhaseData) {}
+    public void loadData(BuildingPhaseData buildingPhaseData) {
+        buildingPhaseData.setEnemiesPlayer(player);
+    }
 
     @Override
     public void loadData(CheckPhaseData checkPhaseData) {}
 
     @Override
-    public void loadData(AdventurePhaseData adventurePhaseData) {}
+    public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.setEnemiesPlayer(player, positionOnFlightBoard);
+    }
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}

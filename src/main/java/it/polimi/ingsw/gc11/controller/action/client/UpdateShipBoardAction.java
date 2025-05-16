@@ -20,13 +20,17 @@ public class UpdateShipBoardAction extends ServerAction{
     public void loadData(JoiningPhaseData joiningPhaseData) {}
 
     @Override
-    public void loadData(BuildingPhaseData buildingPhaseData) {}
+    public void loadData(BuildingPhaseData buildingPhaseData) {
+        buildingPhaseData.setShipBoard(shipBoard);
+    }
 
     @Override
     public void loadData(CheckPhaseData checkPhaseData) {}
 
     @Override
-    public void loadData(AdventurePhaseData adventurePhaseData) {}
+    public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.setMyShipBoard(shipBoard);
+    }
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}
