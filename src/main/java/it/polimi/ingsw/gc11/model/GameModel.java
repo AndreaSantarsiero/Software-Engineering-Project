@@ -172,13 +172,33 @@ public class GameModel {
         }
     }
 
-    private ShipCard getHeldShipCard(String username){
+    public ShipCard getHeldShipCard(String username){
         if(!heldShipCards.containsKey(username)){
             throw new IllegalArgumentException("Player " + username + " does not hold a ship card in his hands");
         }
         return heldShipCards.get(username);
     }
 
+    //per i test
+    public void setHeldShipCard(ShipCard shipCard, String username){
+        checkPlayerUsername(username);
+        if(shipCard == null){
+            throw new IllegalArgumentException("Ship card cannot be null");
+        }
+        if(!heldShipCards.containsKey(username)){
+            heldShipCards.put(username, shipCard);
+            return;
+        }
+        throw new IllegalArgumentException("Player " + username + " already hold a ship card in his hands");
+    }
+
+//    //per i test
+//    public void removeHeldShipCard(String username){
+//        if(!heldShipCards.containsKey(username)){
+//            throw new IllegalArgumentException("Player " + username + " does not hold a ship card in his hands");
+//        }
+//        heldShipCards.remove(username);
+//    }
 
     /**
      * Player's methods

@@ -34,26 +34,26 @@ public class SmugglersState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        if(Batteries == null || doubleCannons == null){
+            throw new NullPointerException("Batteries and DoubleCannons cannot be null");
+        }
+
         //Imposto che il giorcatore sta effettivamente giocando la carta
         if(this.advContext.isResolvingAdvCard() == true){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);
 
-        if(Batteries == null || doubleCannons == null){
-            sum = 0;
-        }
-        else{
-            for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){
-                sum += entry.getValue();
-            }
 
-            if(sum != doubleCannons.size()){
-                throw new IllegalArgumentException("Batteries and Double Cannons do not match");
-            }
-
-            player.getShipBoard().useBatteries(Batteries);
+        for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){
+            sum += entry.getValue();
         }
+        if(sum != doubleCannons.size()){
+            throw new IllegalArgumentException("Batteries and Double Cannons do not match");
+        }
+
+        player.getShipBoard().useBatteries(Batteries);
+
 
         playerFirePower = player.getShipBoard().getCannonsPower(doubleCannons);
 
