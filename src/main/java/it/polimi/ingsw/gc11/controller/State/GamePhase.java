@@ -67,6 +67,18 @@ public abstract class GamePhase {
 
 
 
+    //CheckPhase
+    public boolean repairShip(String username, ArrayList<Integer> cardsToEliminateX,
+                              ArrayList<Integer> cardsToEliminateY) {
+        throw new IllegalStateException("Can't repair your ship in the current game phase.");
+    }
+
+    public void changePosition(String username, int pos){
+        throw new IllegalStateException("Can't change your position in the current game phase.");
+    }
+
+
+
 
     //AdventurePhase
     public AdventureCard getAdventureCard(String username){

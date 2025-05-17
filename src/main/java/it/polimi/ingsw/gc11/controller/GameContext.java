@@ -156,7 +156,15 @@ public class GameContext {
 
 
     //CheckPhase
-    public void checkAllShipBoards(){
+
+    //Da implementare a livello di rete
+    public boolean repairShip(String username, ArrayList<Integer> cardsToEliminateX,
+                              ArrayList<Integer> cardsToEliminateY) {
+        return phase.repairShip(username, cardsToEliminateX, cardsToEliminateY);
+    }
+    //Da implementare a livello di rete
+    public void changePosition(String username, int pos){
+        phase.changePosition(username, pos);
     }
 
 

@@ -246,6 +246,27 @@ public abstract class ShipBoard  implements Serializable {
     }
 
     /**
+     * Removes a ship card from the specified position on the board
+     * <p>
+     * This method is intended to be used only during the CheckPhase
+     *
+     * @param x The x-coordinate of the card to be removed
+     * @param y The y-coordinate of the card to be removed
+     * @throws IllegalArgumentException if the card is already null
+     */
+    public void destroyShipCard(int x, int y) {
+        int i = adaptY(y);
+        int j = adaptX(x);
+        checkIndexes(j, i);
+        if (components[i][j] == null) {
+            throw new IllegalArgumentException("Ship card already null");
+        }
+        ShipCard shipCard = components[i][j];
+        components[i][j].unPlace(this);
+        components[i][j] = null;
+    }
+
+    /**
      * Retrieves the ship card at the specified position
      *
      * @param x The x-coordinate of the card to retrieve

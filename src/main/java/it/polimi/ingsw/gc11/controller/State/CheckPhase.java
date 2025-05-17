@@ -1,33 +1,36 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.client.SetAdventurePhaseAction;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckPhase extends GamePhase {
     private final GameContext gameContext;
+    private final GameModel gameModel;
     private List<Player> badShipPlayers;
-    private int numShipsCorrected;
 
     public CheckPhase(GameContext gameContext) {
         this.gameContext = gameContext;
+        this.gameModel = gameContext.getGameModel();
         this.badShipPlayers = new ArrayList<>();
-        this.numShipsCorrected = 0;
 
-        GameModel gameModel = gameContext.getGameModel();
         List<Player> players = gameModel.getPlayers();
         for (Player player : players) {
+            //Player's shipboard is illegal
             if(!player.getShipBoard().checkShip()){
+                player.setPosition(-1); //Player is removed from the ranking (position)
                 this.badShipPlayers.add(player);
             }
         }
 
+        //All the players have a correct shipboard
         if (this.badShipPlayers.isEmpty()) {
-            gameContext.setPhase(new AdventurePhase(this.gameContext));
+            this.gameContext.setPhase(new AdventurePhase(this.gameContext));
 
             //Chiedo approval di santa:
 //            SetAdventurePhaseAction send = new SetAdventurePhaseAction();
@@ -38,10 +41,49 @@ public class CheckPhase extends GamePhase {
         }
     }
 
-    //Immagino che al player vengano proposte diverse scelte per riparare la nave, lui ne sceglie una alla volta fino a
-    //che non sistema la nave
-    public void repairShip(String username, int choice){
+    @Override
+    public boolean repairShip(String username, ArrayList<Integer> cardsToEliminateX,
+                           ArrayList<Integer> cardsToEliminateY) {
 
+        Player player = this.gameModel.getPlayer(username);
+        if (!badShipPlayers.contains(player)) {
+            throw new IllegalStateException("You don't have to repair your ship.");
+        }
+
+        for (int i = 0; i < cardsToEliminateX.size(); i++) {
+            if (this.gameModel.getFlightBoard().getType().equals(FlightBoard.Type.LEVEL2)) {
+                player.getShipBoard()
+                        .getShipCard(cardsToEliminateX.get(i), cardsToEliminateY.get(i))
+                        .destroy();
+            }
+            player.getShipBoard()
+                    .destroyShipCard(cardsToEliminateX.get(i), cardsToEliminateY.get(i));
+        }
+
+        if (player.getShipBoard().checkShip()){
+            this.badShipPlayers.remove(player);
+            this.gameModel.endBuilding(username);//Player position is set to the first available
+            if (this.badShipPlayers.isEmpty()) {
+                this.gameContext.setPhase(new AdventurePhase(this.gameContext));
+            }
+            //Avvisa il player che ora la sua shipboard è stata riparata
+            return true;
+        }
+        else{
+            //Avvisa il player che la sua shipBoard è ancora da riparare
+            return false;
+        }
+    }
+
+    @Override
+    public void changePosition(String username, int pos){
+
+        Player player = this.gameModel.getPlayer(username);
+        if (badShipPlayers.contains(player)) {
+            throw new IllegalStateException("You can't change your position because you have to repair your ship.");
+        }
+
+        this.gameModel.endBuilding(username, pos);
     }
 
 }

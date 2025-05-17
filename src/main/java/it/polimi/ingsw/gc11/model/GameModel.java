@@ -576,7 +576,7 @@ public class GameModel {
     public void endBuilding(String username, int pos){
         checkPlayerUsername(username);
         if(getFlightBoard().getType() != FlightBoard.Type.LEVEL2){
-            throw new IllegalStateException("you can't call this mathod in level 2");
+            throw new IllegalStateException("You can call this method only in level 2.");
         }
 
         if(pos < 1 || pos > getPlayers().size()){

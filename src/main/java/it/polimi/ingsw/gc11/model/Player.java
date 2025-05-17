@@ -8,7 +8,7 @@ public class Player {
     private final String username;
     private Color color;
     private int coins;
-    private int position;
+    private int position; //Player's ranking on the shipboard
     private boolean abort;
     private ShipBoard shipBoard;
     private int standing;
