@@ -83,7 +83,7 @@ public class BuildingPhaseLv2 extends GamePhase {
     }
 
     @Override
-    public void endBuilding(String username){
+    public void endBuilding(String username, int pos){
 
         for(Player player : playersFinished){
             if (player.getUsername().equals(username)){
@@ -91,7 +91,7 @@ public class BuildingPhaseLv2 extends GamePhase {
             }
         }
 
-        gameModel.endBuilding(username);
+        gameModel.endBuilding(username, pos);
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
             this.gameContext.setPhase(new CheckPhase(this.gameContext));

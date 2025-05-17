@@ -148,6 +148,11 @@ public class GameContext {
         phase.endBuilding(username);
     }
 
+    //Da implementare a livello di rete
+    public void endBuilding(String username, int pos){
+        phase.endBuilding(username, pos);
+    }
+
 
 
     //CheckPhase
