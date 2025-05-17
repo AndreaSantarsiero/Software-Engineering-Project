@@ -800,7 +800,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testChooseFirePowerValid() {
+    void testChooseFirePowerValidPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
 
@@ -814,6 +814,74 @@ public class GameContextTest {
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PiratesState(advPhase));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(doubleCannon, 8, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+        List<Cannon> doubles = new ArrayList<>();
+        doubles.add(doubleCannon);
+
+        Player p = assertDoesNotThrow(() -> gameContext.chooseFirePower("username1", usage, doubles));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testChooseFirePowerValidSmuglers() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Material> materials = new ArrayList<>();
+        materials.add(new Material(Material.Type.RED));
+        materials.add(new Material(Material.Type.YELLOW));
+        materials.add(new Material(Material.Type.YELLOW));
+
+        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new SmugglersState(advPhase));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(doubleCannon, 8, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+        List<Cannon> doubles = new ArrayList<>();
+        doubles.add(doubleCannon);
+
+        Player p = assertDoesNotThrow(() -> gameContext.chooseFirePower("username1", usage, doubles));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testChooseFirePowerValidSlavers() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+
+        advCard = new Slavers(AdventureCard.Type.LEVEL2,2,7,4,8);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new SlaversState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("batOK",

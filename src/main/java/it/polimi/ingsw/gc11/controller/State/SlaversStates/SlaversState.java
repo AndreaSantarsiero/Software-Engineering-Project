@@ -51,15 +51,15 @@ public class SlaversState extends AdventureState {
                 sum += entry.getValue();
             }
 
-            if(sum != doubleCannons.size()){
+            if(sum < doubleCannons.size()){
                 this.advContext.setResolvingAdvCard(false);
                 throw new IllegalArgumentException("Batteries and Double Cannons do not match");
             }
 
-            player.getShipBoard().useBatteries(Batteries);
         }
 
         playerFirePower = player.getShipBoard().getCannonsPower(doubleCannons);
+        player.getShipBoard().useBatteries(Batteries);
 
         if(playerFirePower > slavers.getFirePower()){
             //VictoryState

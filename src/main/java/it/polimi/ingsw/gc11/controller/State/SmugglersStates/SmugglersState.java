@@ -48,15 +48,15 @@ public class SmugglersState extends AdventureState {
         for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){
             sum += entry.getValue();
         }
-        if(sum != doubleCannons.size()){
+        if(sum < doubleCannons.size()){
             this.advContext.setResolvingAdvCard(false);
             throw new IllegalArgumentException("Batteries and Double Cannons do not match");
         }
 
+        playerFirePower = player.getShipBoard().getCannonsPower(doubleCannons);
         player.getShipBoard().useBatteries(Batteries);
 
 
-        playerFirePower = player.getShipBoard().getCannonsPower(doubleCannons);
 
         if(playerFirePower > smugglers.getFirePower()){
             //VictoryState
