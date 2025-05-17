@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,10 @@ public class AdventurePhaseData extends GamePhaseData {
     private Map<String, ShipBoard> enemiesShipBoard;  //associo username altri player alla loro nave
     private Map<Player, Integer> players; //list of enemies players
 
-    public AdventurePhaseData() {}
+    public AdventurePhaseData() {
+        this.enemiesShipBoard = new HashMap<>();
+        this.players          = new HashMap<>();
+    }
 
 
     public Player getPlayer() {

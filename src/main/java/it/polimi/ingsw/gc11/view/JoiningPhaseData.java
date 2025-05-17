@@ -1,6 +1,8 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,7 +11,9 @@ public class JoiningPhaseData extends GamePhaseData {
     private List<String> availableMatches;
     private String playerColor;
 
-    public JoiningPhaseData() {}
+    public JoiningPhaseData() {
+        availableMatches = new ArrayList<>();
+    }
 
 
     public List<String> getAvailableMatches() {

@@ -2,6 +2,8 @@ package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -12,7 +14,9 @@ public class CheckPhaseData extends GamePhaseData {
     private Map<String, ShipBoard> enemiesShipBoard;
 
 
-    public CheckPhaseData() {}
+    public CheckPhaseData() {
+        enemiesShipBoard = new HashMap<>();
+    }
 
 
     public ShipBoard getShipBoard() {
