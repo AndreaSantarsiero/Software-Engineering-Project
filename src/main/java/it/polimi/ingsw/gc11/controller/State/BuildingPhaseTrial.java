@@ -56,11 +56,19 @@ public class BuildingPhaseTrial extends GamePhase{
 
     @Override
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
+        //Aggiungere: controllare se ha posizionato almeno una shipcard
         return gameModel.observeMiniDeck(numDeck);
     }
 
     @Override
     public void endBuilding(String username){
+
+        for(Player player : playersFinished){
+            if (player.getUsername().equals(username)){
+                throw new IllegalStateException("You have already ended building.");
+            }
+        }
+
         gameModel.endBuilding(username);
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {

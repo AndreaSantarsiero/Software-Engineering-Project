@@ -18,24 +18,32 @@ public class BuildingPhaseLv2 extends GamePhase {
     private final GameModel gameModel;
     private List<Player> playersFinished;
 
+    private final Timer timer;
+    private int maxNumTimer;
     private Boolean timerFinished;
+    private int curNumTimer;
 
     public BuildingPhaseLv2(GameContext gameContext) {
         this.gameContext = gameContext;
         this.gameModel = gameContext.getGameModel();
         this.playersFinished = new ArrayList<>(0);
 
+        this.timer = new Timer();
+        this.maxNumTimer = 3; //Number of timers in Lv2 ship board
+        this.timerFinished = false;
+        this.curNumTimer = 0;
+
         //First Timer
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
+        TimerTask firstTimer = new TimerTask() {
             @Override
             public void run() {
-
+                timerFinished = true;
+                curNumTimer++;
                 timer.cancel(); // stop the timer after the task
             }
         };
         // Schedule the task to run after 60 seconds (60000 milliseconds)
-        timer.schedule(task, 60000);
+        this.timer.schedule(firstTimer, 60000);
     }
 
     @Override
@@ -70,11 +78,19 @@ public class BuildingPhaseLv2 extends GamePhase {
 
     @Override
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
+        //Aggiungere: controllare se ha posizionato almeno una shipcard
         return gameModel.observeMiniDeck(numDeck);
     }
 
     @Override
     public void endBuilding(String username){
+
+        for(Player player : playersFinished){
+            if (player.getUsername().equals(username)){
+                throw new IllegalStateException("You have already ended building.");
+            }
+        }
+
         gameModel.endBuilding(username);
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
@@ -90,5 +106,46 @@ public class BuildingPhaseLv2 extends GamePhase {
 
 
     public void startTimer(String username){
+
+        //Timer is still running
+        if (!timerFinished){
+            throw new IllegalStateException("Timer has already been started.");
+        }
+
+        //Only the last timer is missing
+        if(curNumTimer == maxNumTimer-1){
+            //Player has already ended building
+            if (this.gameModel.getPlayer(username).getPosition() != -1){
+                //Third and last Timer
+                TimerTask lastTimer = new TimerTask() {
+                    @Override
+                    public void run() {
+                        timerFinished = true;
+                        curNumTimer++;
+                        //The last timer has finished therefore the game evolves to next phase
+                        gameContext.setPhase(new CheckPhase(gameContext));
+                        timer.cancel(); // stop the timer after the task
+                    }
+                };
+                // Schedule the task to run after 60 seconds (60000 milliseconds)
+                this.timer.schedule(lastTimer, 60000);
+            }
+            else {
+                throw new IllegalStateException("You must end building to activate the last timer.");
+            }
+        }
+        else {
+            //Second Timer
+            TimerTask secondTimer = new TimerTask() {
+                @Override
+                public void run() {
+                    timerFinished = true;
+                    curNumTimer++;
+                    timer.cancel(); // stop the timer after the task
+                }
+            };
+            // Schedule the task to run after 60 seconds (60000 milliseconds)
+            this.timer.schedule(secondTimer, 60000);
+        }
     }
 }
