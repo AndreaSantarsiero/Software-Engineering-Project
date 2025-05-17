@@ -570,13 +570,28 @@ public class GameModel {
 
     }
 
+    public void endBuilding(String username, int pos){
+        checkPlayerUsername(username);
+        if(getFlightBoard().getType() != FlightBoard.Type.LEVEL2){
+            throw new IllegalStateException("you can't call this mathod in level 2");
+        }
+
+        if(pos < 1 || pos > getPlayers().size()){
+            throw new IllegalArgumentException("pos must be between 1 and "+getPlayers().size());
+        }
+
+        flightBoard.initializePosition(getPlayer(username), pos);
+    }
 
 
-    //pos è l'ordine: primo, secondo...
     public void endBuilding(String username){
+
         int pos = 1;
 
         checkPlayerUsername(username);
+        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
+            throw new IllegalStateException("you can't call this mathod in trial level");
+        }
 
         for(Player player : players){
             if(player.getUsername().equals(username)){
