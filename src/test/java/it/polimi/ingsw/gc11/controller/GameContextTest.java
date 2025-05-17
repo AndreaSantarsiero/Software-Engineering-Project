@@ -1,12 +1,18 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
+import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.AbandonedShipState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
+import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedStationState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
+import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
+import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
+import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
@@ -333,18 +339,10 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
+        advCard = new AbandonedStation(AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedStation));
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
 
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
 
@@ -364,18 +362,10 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
+        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedShip));
+        advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
 
@@ -395,18 +385,10 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
+        advCard = new AbandonedStation(AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedStation));
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("username2"));
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
@@ -419,18 +401,10 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
+        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedShip));
+        advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("username2"));
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
@@ -443,18 +417,10 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
+        advCard = new AbandonedStation(AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedStation));
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
@@ -477,18 +443,10 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
+        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedShip));
+        advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
@@ -536,18 +494,10 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
+        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedShip));
+        advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
@@ -583,15 +533,9 @@ public class GameContextTest {
 
         gameContext.getGameModel().move("username1", 10);
 
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof AbandonedShip));
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
     }
@@ -615,18 +559,15 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
-        advPhase = (AdventurePhase) gameContext.getPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
 
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof Pirates));
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new PiratesState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1",
@@ -668,18 +609,15 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
-        advPhase = (AdventurePhase) gameContext.getPhase();
+        ArrayList<Material> materials = new ArrayList<>();
+        materials.add(new Material(Material.Type.RED));
+        materials.add(new Material(Material.Type.YELLOW));
+        materials.add(new Material(Material.Type.YELLOW));
 
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof Smugglers));
+        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new SmugglersState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1",
@@ -721,18 +659,111 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
-        advPhase = (AdventurePhase) gameContext.getPhase();
 
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof Slavers));
+        advCard = new Slavers(AdventureCard.Type.LEVEL2,2,7,4,8);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new SlaversState(advPhase));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.addShipCard(battery, 7, 7);
+        board.addShipCard(cannon, 7, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+        List<Cannon> doubles = new ArrayList<>();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseFirePower("username1", usage, null));
+
+
+        Battery fake = new Battery("fake",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Map<Battery, Integer> wrongUsage = new HashMap<>();
+        wrongUsage.put(fake, 1);
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+    }
+
+    @Test
+    void testChooseFirePowerInvalidArgumentsCombactZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check3Lv1(advPhase,1, gameContext.getGameModel().getPlayer("username1")));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.addShipCard(battery, 7, 7);
+        board.addShipCard(cannon, 7, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+        List<Cannon> doubles = new ArrayList<>();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseFirePower("username1", usage, null));
+
+
+        Battery fake = new Battery("fake",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Map<Battery, Integer> wrongUsage = new HashMap<>();
+        wrongUsage.put(fake, 1);
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+    }
+
+    @Test
+    void testChooseFirePowerInvalidArgumentsCombactZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check1Lv2(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1",
@@ -774,18 +805,15 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = null;
-        advPhase = (AdventurePhase) gameContext.getPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
 
-        do {
-            advPhase.setAdvState(new IdleState(advPhase));
-            try{
-                advCard = gameContext.getAdventureCard("username1");
-            }catch(IllegalStateException e){
-                gameContext.getGameModel().reloadDeck();
-                gameContext.setPhase(new AdventurePhase(gameContext));
-            }
-        } while (!(advCard instanceof Pirates));
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new PiratesState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("batOK",
