@@ -903,4 +903,76 @@ public class GameContextTest {
         assertEquals("username1", p.getUsername());
     }
 
+    @Test
+    void testChooseFirePowerValidCombatZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check3Lv1(advPhase,1, gameContext.getGameModel().getPlayer("username1")));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(doubleCannon, 8, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+        List<Cannon> doubles = new ArrayList<>();
+        doubles.add(doubleCannon);
+
+        Player p = assertDoesNotThrow(() -> gameContext.chooseFirePower("username1", usage, doubles));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testChooseFirePowerValidCombatZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check1Lv2(advPhase));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(doubleCannon, 8, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+        List<Cannon> doubles = new ArrayList<>();
+        doubles.add(doubleCannon);
+
+        Player p = assertDoesNotThrow(() -> gameContext.chooseFirePower("username1", usage, doubles));
+        assertEquals("username1", p.getUsername());
+    }
+
 }

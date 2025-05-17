@@ -43,13 +43,13 @@ public class Check3Lv1 extends AdventureState {
             sum += entry.getValue();
         }
 
-        if (sum != doubleCannons.size()) {
+        if (sum < doubleCannons.size()) {
             throw new IllegalArgumentException("Batteries and Double Cannons do not match");
         }
 
+        double firePower = player.getShipBoard().getCannonsPower(doubleCannons);
         player.getShipBoard().useBatteries(Batteries);
 
-        double firePower = player.getShipBoard().getCannonsPower(doubleCannons);
 
         if (firePower < this.minFirePower) {
             this.minFirePower = firePower;
