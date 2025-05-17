@@ -7,8 +7,6 @@ import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 
 //estendiamo per ereditare esattamete gli stessi attributi? è una buona idea, ma funzion nella GUI?
 public class BuildingTemplate extends BuildingPhaseData implements CLITemplate {
-
-
     private ShipBoard shipBoard;
     private BuildingPhaseData buildingPhaseData;
 

@@ -31,8 +31,8 @@ public class CheckPhaseData extends GamePhaseData {
         return enemiesShipBoard;
     }
 
-    public void setEnemiesShipBoard(Map<String, ShipBoard> enemiesShipBoard) {
-        this.enemiesShipBoard = enemiesShipBoard;
+    public void setEnemiesShipBoard(String username, ShipBoard enemiesShipBoard) {
+        this.enemiesShipBoard.put(username, shipBoard);
     }
 
     @Override

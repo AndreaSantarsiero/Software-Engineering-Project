@@ -31,7 +31,9 @@ public class UpdateEnemyShipBoardAction extends ServerAction{
     }
 
     @Override
-    public void loadData(CheckPhaseData checkPhaseData) {}
+    public void loadData(CheckPhaseData checkPhaseData) {
+        checkPhaseData.setEnemiesShipBoard(username, shipBoard);
+    }
 
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
