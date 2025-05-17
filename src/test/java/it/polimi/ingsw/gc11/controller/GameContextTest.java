@@ -9,7 +9,9 @@ import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
+import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
+import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.*;
@@ -139,7 +141,9 @@ public class GameContextTest {
     @Test
     void testInvalidState() throws FullLobbyException, UsernameAlreadyTakenException {
         gameContext.connectPlayerToGame("username1");
+        gameContext.chooseColor("username1", "blue");
 
+        //IDLE PHASE
         assertThrows(IllegalStateException.class, () -> gameContext.getFreeShipCard("username1", 0), "you can call getFreeShipCard() only in Building Phase.");
         assertThrows(IllegalStateException.class, () -> gameContext.releaseShipCard("username1", new StructuralModule("1",
                 ShipCard.Connector.SINGLE,
@@ -152,6 +156,19 @@ public class GameContextTest {
                 ShipCard.Connector.SINGLE,
                 ShipCard.Connector.SINGLE), 7, 7),  "you can call placeShipCard() only in Building Phase.");
         assertThrows(IllegalStateException.class, () -> gameContext.removeShipCard("username1" ,7, 7), "you can call removeShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("1",
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE)), "you can call reserveShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.useReservedShipCard("username1", new StructuralModule("1",
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE,
+                ShipCard.Connector.SINGLE), 8,8), "you can call useReserveShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.observeMiniDeck("username1", 1), "you can call observeMiniDeck() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.endBuilding("username1"),"you can call endBuilding() only in Building Phase.");
+
     }
 
     @Test
@@ -975,4 +992,117 @@ public class GameContextTest {
         assertEquals("username1", p.getUsername());
     }
 
+
+    @Test
+    void testRewardDecisionInvalidArgumentsSlavers() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.rewardDecision("", true));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.rewardDecision(null, false));
+    }
+
+    @Test
+    void testRewardDecisionValidSlaversAccept() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.rewardDecision("username1", true));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testRewardDecisionValidSlaversDecline() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.rewardDecision("username1", false));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testRewardDecisionInvalidArgumentsSmugglers() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Material> materials = new ArrayList<>();
+        materials.add(new Material(Material.Type.RED));
+        materials.add(new Material(Material.Type.YELLOW));
+        materials.add(new Material(Material.Type.YELLOW));
+
+        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.rewardDecision("", true));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.rewardDecision(null, false));
+    }
+
+    @Test
+    void testRewardDecisionValidSmugglersAccept() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Material> materials = new ArrayList<>();
+        materials.add(new Material(Material.Type.RED));
+        materials.add(new Material(Material.Type.YELLOW));
+        materials.add(new Material(Material.Type.YELLOW));
+
+        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.rewardDecision("username1", true));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testRewardDecisionValidSmugglersDecline() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Material> materials = new ArrayList<>();
+        materials.add(new Material(Material.Type.RED));
+        materials.add(new Material(Material.Type.YELLOW));
+        materials.add(new Material(Material.Type.YELLOW));
+
+        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.rewardDecision("username1", false));
+        assertEquals("username1", p.getUsername());
+    }
 }
