@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMateri
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
+import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
@@ -1100,6 +1101,70 @@ public class GameContextTest {
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.rewardDecision("username1", false));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testRewardDecisionInvalidArgumentsPirates() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.rewardDecision("", true));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.rewardDecision(null, false));
+    }
+
+    @Test
+    void testRewardDecisionValidPiratesAccept() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.rewardDecision("username1", true));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testRewardDecisionValidPiratesDecline() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
 
         Player p = assertDoesNotThrow(() ->
                 gameContext.rewardDecision("username1", false));
