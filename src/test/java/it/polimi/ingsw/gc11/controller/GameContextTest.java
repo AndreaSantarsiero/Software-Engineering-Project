@@ -6,7 +6,10 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedStationState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Penalty3Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Penalty3Lv2;
+import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.MeteorSwarmState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.CoordinateState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
@@ -1213,6 +1216,135 @@ public class GameContextTest {
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new CoordinateState(advPhase,players,0));
+
+        Hit hit = assertDoesNotThrow(() ->
+                gameContext.getCoordinate("username1"));
+        assertNotNull(hit);
+    }
+
+    @Test
+    void testGetCoordinateInvalidArgumentsMeteors() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Meteor> meteors = new ArrayList<>();
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
+        meteors.add(new Meteor(Hit.Type.BIG, Hit.Direction.LEFT));
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
+
+        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new MeteorSwarmState(advPhase,0));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(null));
+    }
+
+    @Test
+    void testGetCoordinateValidMeteors() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Meteor> meteors = new ArrayList<>();
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
+        meteors.add(new Meteor(Hit.Type.BIG, Hit.Direction.LEFT));
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
+
+        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new MeteorSwarmState(advPhase,0));
+
+        Hit hit = assertDoesNotThrow(() ->
+                gameContext.getCoordinate("username1"));
+        assertNotNull(hit);
+    }
+
+    @Test
+    void testGetCoordinateInvalidArgumentscombatZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Penalty3Lv1(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(null));
+    }
+
+    @Test
+    void testGetCoordinateValidCombatZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Penalty3Lv1(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
+
+        Hit hit = assertDoesNotThrow(() ->
+                gameContext.getCoordinate("username1"));
+        assertNotNull(hit);
+    }
+
+    @Test
+    void testGetCoordinateInvalidArgumentscombatZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Penalty3Lv2(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(null));
+    }
+
+    @Test
+    void testGetCoordinateValidCombatZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Penalty3Lv2(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
 
         Hit hit = assertDoesNotThrow(() ->
                 gameContext.getCoordinate("username1"));
