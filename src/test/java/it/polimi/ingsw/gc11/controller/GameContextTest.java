@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedSta
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
+import it.polimi.ingsw.gc11.controller.State.PiratesStates.CoordinateState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
@@ -78,9 +79,9 @@ public class GameContextTest {
         gameContext.placeShipCard("username3", shipCard, 6, 6);
 
         gameContext.getGameModel().createDefinitiveDeck();
-        gameContext.endBuilding("username1");
-        gameContext.endBuilding("username2");
-        gameContext.endBuilding("username3");
+        gameContext.endBuilding("username1",1);
+        gameContext.endBuilding("username2",2);
+        gameContext.endBuilding("username3",3);
         gameContext.setPhase(new AdventurePhase(gameContext));
     }
 
@@ -484,13 +485,13 @@ public class GameContextTest {
         connect3Players();
         gameContext.getGameModel().createDefinitiveDeck();
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 8, 8);
-        gameContext.endBuilding("username1");
+        gameContext.endBuilding("username1",1);
 
         assertThrows(IllegalStateException.class, () -> gameContext.getGameModel().endBuilding("username1"),"you cannot end building more than once");
         gameContext.placeShipCard("username2", gameContext.getFreeShipCard("username2", 0), 8, 8);
-        gameContext.endBuilding("username2");
+        gameContext.endBuilding("username2",2);
         gameContext.placeShipCard("username3", gameContext.getFreeShipCard("username3", 0), 8, 8);
-        gameContext.endBuilding("username3");
+        gameContext.endBuilding("username3",3);
         assertThrows(IllegalArgumentException.class, () -> gameContext.getGameModel().endBuilding("username4"),"username should be valid");
         assertEquals(6, gameContext.getGameModel().getPositionOnBoard("username1"), "check the right position");
         assertEquals(3, gameContext.getGameModel().getPositionOnBoard("username2"), "check the right position");
@@ -1167,5 +1168,54 @@ public class GameContextTest {
         Player p = assertDoesNotThrow(() ->
                 gameContext.rewardDecision("username1", false));
         assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testGetCoordinateInvalidArgumentsPirates() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(gameContext.getGameModel().getPlayer("username1"));
+
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new CoordinateState(advPhase,players,0));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getCoordinate(null));
+    }
+
+    @Test
+    void testGetCoordinateValidPirates() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(gameContext.getGameModel().getPlayer("username1"));
+
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new CoordinateState(advPhase,players,0));
+
+        Hit hit = assertDoesNotThrow(() ->
+                gameContext.getCoordinate("username1"));
+        assertNotNull(hit);
     }
 }

@@ -49,6 +49,9 @@ public class GameModel {
         adventureCardsLevel1 = adventureCardLoader.getCardsLevel1();
         adventureCardsLevel2 = adventureCardLoader.getCardsLevel2();
         dices = new Dice[2];
+        dices[0] = new Dice();
+        dices[1] = new Dice();
+
     }
 
 
