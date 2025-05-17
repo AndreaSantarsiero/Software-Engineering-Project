@@ -577,9 +577,35 @@ public class GameModel {
         }
 
         if(pos < 1 || pos > getPlayers().size()){
-            throw new IllegalArgumentException("pos must be between 1 and "+getPlayers().size());
+            throw new IllegalArgumentException("pos must be between 1 and " + getPlayers().size());
         }
 
+        for(Player player : players){
+            switch (pos) {
+                case 1:
+                    if(player.getPosition()==6){
+                        throw new IllegalArgumentException("position " + pos + " is already occupied");
+                    }
+                    break;
+                case 2:
+                    if(player.getPosition()==3){
+                        throw new IllegalArgumentException("position " + pos + " is already occupied");
+                    }
+                    break;
+                case 3:
+                    if(player.getPosition()==1){
+                        throw new IllegalArgumentException("position " + pos + " is already occupied");
+                    }
+                    break;
+                case 4:
+                    if(player.getPosition()==0){
+                        throw new IllegalArgumentException("position " + pos + " is already occupied");
+                    }
+                    break;
+            }
+        }
+
+        Collections.swap(players, players.indexOf(getPlayer(username)), pos-1);
         flightBoard.initializePosition(getPlayer(username), pos);
     }
 
@@ -589,9 +615,9 @@ public class GameModel {
         int pos = 1;
 
         checkPlayerUsername(username);
-        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
-            throw new IllegalStateException("you can't call this mathod in trial level");
-        }
+//        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
+//            throw new IllegalStateException("you can't call this mathod in trial level");
+//        }
 
         for(Player player : players){
             if(player.getUsername().equals(username)){
@@ -601,6 +627,7 @@ public class GameModel {
                             pos++;
                         }
                     }
+                    Collections.swap(players, players.indexOf(player), pos-1);
                     flightBoard.initializePosition(player, pos);
                     return;
                 }
