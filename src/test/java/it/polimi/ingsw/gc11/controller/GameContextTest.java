@@ -1436,6 +1436,7 @@ public class GameContextTest {
         advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new HandleShotLv1(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();
@@ -1465,6 +1466,7 @@ public class GameContextTest {
         advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new HandleShotLv1(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();
@@ -1493,6 +1495,7 @@ public class GameContextTest {
         advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new HandleShotLv2(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();
@@ -1524,6 +1527,7 @@ public class GameContextTest {
         advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new HandleShotLv2(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();

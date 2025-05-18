@@ -23,6 +23,7 @@ public class HandleShotLv2 extends AdventureState {
         this.player = player;
         this.coordinate = coordinate;
         this.iterationsHit = iterationsHit;
+        this.combatZoneLv2 = (CombatZoneLv2) advContext.getDrawnAdvCard();
     }
 
 
@@ -33,13 +34,17 @@ public class HandleShotLv2 extends AdventureState {
 
         Shot shot = combatZoneLv2.getShots().get(iterationsHit);
 
+        if(batteries == null){
+            throw new IllegalArgumentException("batteries null");
+        }
+
         if(shot.getType() == Hit.Type.SMALL){
             //Direction it's not protected
             if(!player.getShipBoard().isBeingProtected(shot.getDirection())){
                 player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinate);
             }
             else{
-                if(batteries == null){
+                if(batteries.isEmpty()){
                     player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinate);
                 }
                 else{

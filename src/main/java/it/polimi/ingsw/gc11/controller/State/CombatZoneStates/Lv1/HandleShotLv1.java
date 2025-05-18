@@ -24,6 +24,7 @@ public class HandleShotLv1 extends AdventureState {
         this.player = player;
         this.coordinate = coordinate;
         this.iterationsHit = iterationsHit;
+        this.combatZoneLv1 = (CombatZoneLv1) advContext.getDrawnAdvCard();
     }
 
 

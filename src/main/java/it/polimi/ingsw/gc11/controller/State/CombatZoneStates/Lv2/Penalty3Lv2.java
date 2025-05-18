@@ -40,7 +40,7 @@ public class Penalty3Lv2 extends AdventureState {
         //La coordinata calcolata va poi inviata a tutti i client
 
         //NextState
-        this.advContext.setAdvState(new HandleShotLv1(advContext, playerDefeated, coordinate, iterationsHit));
+        this.advContext.setAdvState(new HandleShotLv2(advContext, playerDefeated, coordinate, iterationsHit));
 
         Hit hit = combatZoneLv2.getShots().get(iterationsHit);
         hit.setCoord(coordinate);
