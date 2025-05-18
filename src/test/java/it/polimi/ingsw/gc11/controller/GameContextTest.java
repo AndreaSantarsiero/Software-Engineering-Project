@@ -16,6 +16,7 @@ import it.polimi.ingsw.gc11.controller.State.PiratesStates.CoordinateState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.HandleHit;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
+import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.PlanetsState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.LooseBatteriesSmugglers;
@@ -1618,5 +1619,54 @@ public class GameContextTest {
                 gameContext.useBatteries("username1", usage));
         assertEquals("username1", p.getUsername());
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getTotalAvailableBatteries());
+    }
+
+    @Test
+    void testLandOnPlanetInvalidArguments() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+
+        ArrayList<Planet> planets = new ArrayList<>();
+        planets.add(new Planet(1,2,3,0));
+        planets.add(new Planet(0,0,1,4));
+
+        advCard = new PlanetsCard(AdventureCard.Type.LEVEL2, 1, planets);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new PlanetsState(advPhase, 0));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.landOnPlanet("", 0));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.landOnPlanet(null, 0));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.landOnPlanet("username1", -1));
+    }
+
+    @Test
+    void testLandOnPlanetValid() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+
+        ArrayList<Planet> planets = new ArrayList<>();
+        planets.add(new Planet(1,2,3,0));
+        planets.add(new Planet(0,0,1,4));
+
+        advCard = new PlanetsCard(AdventureCard.Type.LEVEL2, 1, planets);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new PlanetsState(advPhase, 0));
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.landOnPlanet("username1", 0));
+        assertEquals("username1", p.getUsername());
+        advPhase.setAdvState(new PlanetsState(advPhase, 0));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.landOnPlanet("username2", 0));
     }
 }

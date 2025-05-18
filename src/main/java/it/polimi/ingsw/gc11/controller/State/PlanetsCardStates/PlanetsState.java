@@ -30,7 +30,7 @@ public class PlanetsState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
-        if(!planetsCard.getFreePlanets().contains(numPlanet)){
+        if(!planetsCard.getFreePlanets().contains(planetsCard.getPlanet(numPlanet))){
             throw new IllegalArgumentException("The planet you've chosen has been already occupied.");
         }
 
