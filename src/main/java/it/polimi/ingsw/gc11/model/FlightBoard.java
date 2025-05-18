@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
 
+import java.util.ArrayList;
 
 public class FlightBoard {
 
@@ -10,14 +11,30 @@ public class FlightBoard {
 
     private Type type;
     private int length;
+    private ArrayList<Integer> finishOrderRewards;
+    private int bestLookingReward;
+
 
 
     public FlightBoard(Type type) {
         this.type = type;
         if (type.equals(Type.TRIAL)) {
-            length = 18;
-        } else if (type.equals(Type.LEVEL2)) {
-            length = 24;
+            this.length = 18;
+            this.bestLookingReward = 2;
+            this.finishOrderRewards = new ArrayList<>(4);
+            this.finishOrderRewards.add(4);
+            this.finishOrderRewards.add(3);
+            this.finishOrderRewards.add(2);
+            this.finishOrderRewards.add(1);
+        }
+        else if (type.equals(Type.LEVEL2)) {
+            this.length = 24;
+            this.bestLookingReward = 4;
+            this.finishOrderRewards = new ArrayList<>(4);
+            this.finishOrderRewards.add(8);
+            this.finishOrderRewards.add(6);
+            this.finishOrderRewards.add(4);
+            this.finishOrderRewards.add(2);
         }
     }
 
@@ -28,6 +45,14 @@ public class FlightBoard {
 
     public int getLength() {
         return length;
+    }
+
+    public ArrayList<Integer> getFinishOrderRewards() {
+        return finishOrderRewards;
+    }
+
+    public int getBestLookingReward() {
+        return bestLookingReward;
     }
 
     public void initializePosition(Player player, int pos) {

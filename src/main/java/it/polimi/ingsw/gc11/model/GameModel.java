@@ -13,7 +13,7 @@ public class GameModel {
 
     private final String id;
     private final int numPlayers;
-    private final List<Player> players;
+    private final ArrayList<Player> players;
     private final Map<String, Boolean> availableColors;
     private FlightBoard flightBoard;
     private List<AdventureDeck> adventureCardsDecks;
@@ -243,7 +243,7 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public List<Player> getPlayers() {return players;}
+    public ArrayList<Player> getPlayers() {return players;}
 
     public Player getLastPlayer() {
         return players.getLast();
