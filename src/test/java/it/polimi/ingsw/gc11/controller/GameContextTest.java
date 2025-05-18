@@ -54,9 +54,7 @@ public class GameContextTest {
             gameContext.chooseColor("username2", "red");
             gameContext.connectPlayerToGame("username3");
             gameContext.chooseColor("username3", "yellow");
-        } catch (UsernameAlreadyTakenException e) {
-            throw new RuntimeException(e);
-        } catch (FullLobbyException e) {
+        } catch (UsernameAlreadyTakenException | FullLobbyException e) {
             throw new RuntimeException(e);
         }
 
@@ -378,7 +376,7 @@ public class GameContextTest {
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
         gameContext.acceptAdventureCard("username1");
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card again");
-        assertTrue(((AdventurePhase) gameContext.getPhase()).getCurrentAdvState() instanceof ChooseMaterialStation, "check correct state");
+        assertInstanceOf(ChooseMaterialStation.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(), "check correct state");
     }
 
     @Test
@@ -400,7 +398,7 @@ public class GameContextTest {
         gameContext.getGameModel().getPlayer("username1").getShipBoard().addShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
         gameContext.acceptAdventureCard("username1");
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card again");
-        assertTrue(((AdventurePhase) gameContext.getPhase()).getCurrentAdvState() instanceof ChooseHousing, "check correct state");
+        assertInstanceOf(ChooseHousing.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(), "check correct state");
     }
 
     @Test
