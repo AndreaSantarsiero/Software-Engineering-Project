@@ -618,9 +618,9 @@ public class GameModel {
         int pos = 1;
 
         checkPlayerUsername(username);
-//        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
-//            throw new IllegalStateException("you can't call this mathod in trial level");
-//        }
+        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
+            throw new IllegalStateException("you can't call this mathod in trial level");
+        }
 
         for(Player player : players){
             if(player.getUsername().equals(username)){

@@ -6,11 +6,14 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedStationState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.HandleShotLv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Penalty3Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.HandleShotLv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Penalty3Lv2;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.MeteorSwarmState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.CoordinateState;
+import it.polimi.ingsw.gc11.controller.State.PiratesStates.HandleHit;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
@@ -1349,5 +1352,188 @@ public class GameContextTest {
         Hit hit = assertDoesNotThrow(() ->
                 gameContext.getCoordinate("username1"));
         assertNotNull(hit);
+    }
+
+    @Test
+    void testHandleShotInvalidArgumentsPirates() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(gameContext.getGameModel().getPlayer("username1"));
+
+        ArrayList<Boolean> played =  new ArrayList<>();
+        played.add(false);
+
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleHit(advPhase,players,7,0, 0,played));
+
+        Map<Battery, Integer> batteries = new HashMap<>();
+        batteries.put(new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE), 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot("", batteries));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot(null, batteries));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot("username1", null));
+    }
+
+    @Test
+    void testHandleShotValidPirates() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
+
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(gameContext.getGameModel().getPlayer("username1"));
+
+        ArrayList<Boolean> played =  new ArrayList<>();
+        played.add(false);
+
+        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleHit(advPhase,players,7,0, 0,played));
+
+        Map<Battery, Integer> batteries = new HashMap<>();
+        batteries.put(new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE), 1);
+
+        Object outcome = assertDoesNotThrow(() ->
+                gameContext.handleShot("username1", batteries));
+        assertNotNull(outcome);
+    }
+
+    @Test
+    void testHandleShotInvalidArgumentsCombatZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleShotLv1(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
+
+        Map<Battery, Integer> batteries = new HashMap<>();
+        batteries.put(new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE), 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot("", batteries));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot(null, batteries));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot("username1", null));
+    }
+
+    @Test
+    void testHandleShotValidCombatZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleShotLv1(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
+
+        Map<Battery, Integer> batteries = new HashMap<>();
+        batteries.put(new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE), 1);
+
+        Object outcome = assertDoesNotThrow(() ->
+                gameContext.handleShot("username1", batteries));
+        assertNotNull(outcome);
+    }
+
+    @Test
+    void testHandleShotInvalidArgumentsCombatZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleShotLv2(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
+
+        Map<Battery, Integer> batteries = new HashMap<>();
+        batteries.put(new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE), 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot("", batteries));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot(null, batteries));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.handleShot("username1", null));
+    }
+
+    @Test
+    void testHandleShotValidCombatZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleShotLv2(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
+
+        Map<Battery, Integer> batteries = new HashMap<>();
+        batteries.put(new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE), 1);
+
+        Object outcome = assertDoesNotThrow(() ->
+                gameContext.handleShot("username1", batteries));
+        assertNotNull(outcome);
     }
 }

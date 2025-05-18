@@ -34,13 +34,17 @@ public class HandleShotLv1 extends AdventureState {
 
         Shot shot = combatZoneLv1.getShots().get(iterationsHit);
 
+        if(batteries == null){
+            throw new IllegalArgumentException("batteries is null");
+        }
+
         if(shot.getType() == Hit.Type.SMALL){
             //Direction it's not protected
             if(!player.getShipBoard().isBeingProtected(shot.getDirection())){
                 player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinate);
             }
             else{
-                if(batteries == null){
+                if(batteries.isEmpty()){
                     player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinate);
                 }
                 else{

@@ -45,6 +45,10 @@ public class HandleHit extends AdventureState {
         //Controllo non si sia già difeso
         int index = playersDefeated.indexOf(player);
 
+        if(batteries == null){
+            throw new IllegalArgumentException("Batteries cannot be null");
+        }
+
         if(alreadyPlayed.get(index)){
             throw new IllegalArgumentException("You have already defended this shot");
         }
@@ -57,7 +61,7 @@ public class HandleHit extends AdventureState {
                 player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
             }
             else{
-                if(batteries == null){
+                if(batteries.isEmpty()){
                     player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
                 }
                 else{
