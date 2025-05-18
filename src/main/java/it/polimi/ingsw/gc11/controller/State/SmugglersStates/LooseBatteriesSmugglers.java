@@ -26,13 +26,17 @@ public class LooseBatteriesSmugglers extends AdventureState{
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        if(batteries == null){
+            throw new IllegalArgumentException("Batteries can't be null");
+        }
+
         //Imposto che il giorcatore sta effettivamente giocando la carta
         if(this.advContext.isResolvingAdvCard() == true){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);
 
-        if(batteries == null){
+        if(batteries.isEmpty()){
             //Controllo che effettivamente il giocatore non abbia più batterie altrimenti gliele richiedo
             int num = player.getShipBoard().getTotalAvailableBatteries();
 

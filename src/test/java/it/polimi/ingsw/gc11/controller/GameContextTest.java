@@ -18,6 +18,7 @@ import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
+import it.polimi.ingsw.gc11.controller.State.SmugglersStates.LooseBatteriesSmugglers;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
@@ -1539,5 +1540,85 @@ public class GameContextTest {
         Object outcome = assertDoesNotThrow(() ->
                 gameContext.handleShot("username1", batteries));
         assertNotNull(outcome);
+    }
+
+
+    @Test
+    void testUseBatteriesInvalidArgumentsSmugglers() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Material> materials = new ArrayList<>();
+        materials.add(new Material(Material.Type.RED));
+        materials.add(new Material(Material.Type.YELLOW));
+        materials.add(new Material(Material.Type.YELLOW));
+
+        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new LooseBatteriesSmugglers(advPhase,gameContext.getGameModel().getPlayer("username1"),2));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        board.addShipCard(battery, 7, 7);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.useBatteries("wrongUser", usage));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.useBatteries("username1", null));
+
+        Battery fake = new Battery("fake",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Map<Battery, Integer> wrongUsage = new HashMap<>();
+        wrongUsage.put(fake, 2);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.useBatteries("username1", wrongUsage));
+
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.useBatteries("username1", usage));
+    }
+
+    @Test
+    void testUseBatteriesValidSmugglers() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Material> materials = new ArrayList<>();
+        materials.add(new Material(Material.Type.RED));
+        materials.add(new Material(Material.Type.YELLOW));
+        materials.add(new Material(Material.Type.YELLOW));
+
+        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new LooseBatteriesSmugglers(advPhase,gameContext.getGameModel().getPlayer("username1"),1));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+
+        assertEquals(2, gameContext.getGameModel().getPlayerShipBoard("username1").getTotalAvailableBatteries());
+        Player p = assertDoesNotThrow(() ->
+                gameContext.useBatteries("username1", usage));
+        assertEquals("username1", p.getUsername());
+        assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getTotalAvailableBatteries());
     }
 }
