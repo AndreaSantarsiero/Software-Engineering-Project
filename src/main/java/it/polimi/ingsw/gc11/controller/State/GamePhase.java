@@ -68,7 +68,7 @@ public abstract class GamePhase {
 
 
     //CheckPhase
-    public boolean repairShip(String username, ArrayList<Integer> cardsToEliminateX,
+    public ShipBoard repairShip(String username, ArrayList<Integer> cardsToEliminateX,
                               ArrayList<Integer> cardsToEliminateY) {
         throw new IllegalStateException("Can't repair your ship in the current game phase.");
     }

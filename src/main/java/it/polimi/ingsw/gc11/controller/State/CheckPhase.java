@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +42,8 @@ public class CheckPhase extends GamePhase {
     }
 
     @Override
-    public boolean repairShip(String username, ArrayList<Integer> cardsToEliminateX,
-                           ArrayList<Integer> cardsToEliminateY) {
+    public ShipBoard repairShip(String username, ArrayList<Integer> cardsToEliminateX,
+                                ArrayList<Integer> cardsToEliminateY) {
 
         Player player = this.gameModel.getPlayer(username);
         if (!badShipPlayers.contains(player)) {
@@ -67,11 +67,11 @@ public class CheckPhase extends GamePhase {
                 this.gameContext.setPhase(new AdventurePhase(this.gameContext));
             }
             //Avvisa il player che ora la sua shipboard è stata riparata
-            return true;
+            return player.getShipBoard();
         }
         else{
             //Avvisa il player che la sua shipBoard è ancora da riparare
-            return false;
+            throw new IllegalStateException("Your shipboard wasn't repaired correctly.");
         }
     }
 

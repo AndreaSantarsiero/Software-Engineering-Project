@@ -25,7 +25,9 @@ public class UpdateShipBoardAction extends ServerAction{
     }
 
     @Override
-    public void loadData(CheckPhaseData checkPhaseData) {}
+    public void loadData(CheckPhaseData checkPhaseData) {
+        checkPhaseData.setShipBoard(shipBoard);
+    }
 
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
