@@ -4,14 +4,20 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.*;
 
 
+
 public class UpdateEnemyShipBoardAction extends ServerAction{
+
     private final ShipBoard shipBoard;
     private final String username;
+
+
 
     public UpdateEnemyShipBoardAction(ShipBoard shipBoard, String username) {
         this.shipBoard = shipBoard;
         this.username = username;
     }
+
+
 
     public ShipBoard getShipBoard() {
         return shipBoard;

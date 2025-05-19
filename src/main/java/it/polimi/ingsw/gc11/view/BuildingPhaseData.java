@@ -5,7 +5,6 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +21,14 @@ public class BuildingPhaseData extends GamePhaseData {
     private List<Player> players; //list of enemies players
     private Player currentPlayer;
 
+
+
     public BuildingPhaseData() {
         this.enemiesShipBoard = new HashMap<>();
         this.miniDeck         = new ArrayList<>();
         this.players          = new ArrayList<>();
     }
+
 
 
     public ShipBoard getShipBoard() {

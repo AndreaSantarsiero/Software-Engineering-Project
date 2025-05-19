@@ -2,32 +2,37 @@ package it.polimi.ingsw.gc11.controller.action.client;
 
 import it.polimi.ingsw.gc11.view.*;
 
+
+
 public class UpdatePlayerColorAction extends ServerAction {
-    String colorChoosen;
+
+    String chosenColor;
+
+
 
     public UpdatePlayerColorAction(String color) {
-        this.colorChoosen = color;
+        this.chosenColor = color;
     }
 
-    public String getColorChoosen() {
-        return colorChoosen;
+
+
+    public String getChosenColor() {
+        return chosenColor;
     }
 
     @Override
     public void loadData(JoiningPhaseData joiningPhaseData) {
-        joiningPhaseData.setPlayerColor(colorChoosen);
+        joiningPhaseData.setPlayerColor(chosenColor);
     }
 
     @Override
-    public void loadData(BuildingPhaseData buildingPhaseData) {
-    }
+    public void loadData(BuildingPhaseData buildingPhaseData) {}
 
     @Override
     public void loadData(CheckPhaseData checkPhaseData) {}
 
     @Override
-    public void loadData(AdventurePhaseData adventurePhaseData) {
-    }
+    public void loadData(AdventurePhaseData adventurePhaseData) {}
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}
