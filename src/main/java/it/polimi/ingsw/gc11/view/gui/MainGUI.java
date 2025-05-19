@@ -9,11 +9,17 @@ import java.io.IOException;
 
 
 public class MainGUI extends Application {
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/FirstPage.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
+        stage.setTitle("Galaxy Trucker");
+
         stage.setScene(scene);
         stage.show();
     }
