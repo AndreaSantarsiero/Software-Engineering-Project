@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.client.SetJoiningPhaseAction;
 import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
@@ -11,10 +10,10 @@ import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 
 
 //Controller of a specific gameModel and multiple gameView
@@ -47,9 +46,12 @@ public class GameContext {
         startCommandListener();
     }
 
+
+
     /**
-     * Thread che consuma i comandi uno alla volta.
-     * Parte una volta sola nel costruttore.
+     * Starts a dedicated thread that processes `ClientAction` commands one at a time, in sequential order.
+     * </p>
+     * This thread is started only once, within the constructor, and keeps running for the entire lifetime of the program.
      */
     private void startCommandListener() {
         Thread listener = new Thread(() -> {
