@@ -36,4 +36,5 @@ public class JoiningPhaseData extends GamePhaseData {
     public void handle(ServerAction action) {
         action.loadData(this);
     }
+
 }
