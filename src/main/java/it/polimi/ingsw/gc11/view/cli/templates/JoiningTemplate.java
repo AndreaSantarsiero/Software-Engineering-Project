@@ -49,20 +49,20 @@ public class JoiningTemplate extends CLITemplate {
         System.out.println("\n\n");
 
         if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
-            inputHandler.interactiveMenu(data, connectionTypes);
+            inputHandler.interactiveMenu(data, connectionTypes, data.getConnectionTypeMenu());
         }
         else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
             inputHandler.readLine(data);
         }
         else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN){
             renderMenu("", gameOptions, data.getCreateOrJoinMenu());
-            inputHandler.interactiveMenu(data, gameOptions);
+            inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
 
             System.out.println("\n\n");
             if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
                 List<String> availableMatches = data.getAvailableMatches();
                 renderMenu("", availableMatches, data.getExistingGameMenu());
-                inputHandler.interactiveMenu(data, availableMatches);
+                inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
             }
         }
     }

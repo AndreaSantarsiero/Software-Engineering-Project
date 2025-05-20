@@ -21,9 +21,9 @@ public class JoiningPhaseData extends GamePhaseData {
     //modified by user with input
     private JoiningState state;
     private String username;
-    private int connectionTypeMenu = -1;
-    private int createOrJoinMenu = -1;
-    private int existingGameMenu = -1;
+    private int connectionTypeMenu = 0;
+    private int createOrJoinMenu = 0;
+    private int existingGameMenu = 0;
 
 
 

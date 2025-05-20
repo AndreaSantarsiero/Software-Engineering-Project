@@ -32,8 +32,8 @@ public class InputHandler {
 
 
 
-    public void interactiveMenu(GamePhaseData data, List<String> options) {
-        int selected = 0;
+    public void interactiveMenu(GamePhaseData data, List<String> options, int previouslySelected) {
+        int selected = previouslySelected;
 
         KeyMap<String> keyMap = new KeyMap<>();
         keyMap.bind("up", "\033[A", "w", "W");      // Up
