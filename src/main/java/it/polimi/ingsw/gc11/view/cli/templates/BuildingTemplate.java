@@ -9,7 +9,7 @@ public class BuildingTemplate extends CLITemplate {
 
     public BuildingTemplate(BuildingPhaseData buildingPhaseData) {
         this.buildingPhaseData = buildingPhaseData;
-        buildingPhaseData.addListener(this);
+        buildingPhaseData.setListener(this);
     }
 
 

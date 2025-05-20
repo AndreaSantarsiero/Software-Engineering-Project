@@ -4,33 +4,19 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.view.cli.templates.CLITemplate;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 abstract class Observable {
-    List<CLITemplate> listeners = new CopyOnWriteArrayList<>();
+    private Template listener;
 
-    public void addListener(CLITemplate listener) {
-        listeners.add(listener);
-    }
-
-    public void removeAllListener() {
-        listeners.clear();
-    }
-
-    public void removeListener(CLITemplate listener) {
-        listeners.remove(listener);
+    public void setListener(CLITemplate listener) {
+        this.listener = listener;
     }
 
     protected void notifyListeners(AdventureCard card) {
-        for (CLITemplate listener : listeners) {
-            listener.update(card); //Per non avvisare tutti i listener dovrei fare un visitor?
-        }
+        listener.update(card); //Per non avvisare tutti i listener dovrei fare un visitor?
+
     }
 
     protected void notifyListeners(Hit hit) {
-        for (CLITemplate listener : listeners) {
-            listener.update(hit);
-        }
+        listener.update(hit);
     }
 }
