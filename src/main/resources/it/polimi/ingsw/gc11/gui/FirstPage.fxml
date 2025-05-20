@@ -5,26 +5,29 @@
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.GUIController">
+
+<StackPane fx:id="root" prefHeight="150.0" prefWidth="200.0"
+           xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="it.polimi.ingsw.gc11.view.gui.GUIController">
    <children>
-      <ImageView layoutY="-150.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bg"
+                 preserveRatio="true"
+                 pickOnBounds="true">
          <image>
-            <Image url="@GalaxyTruckerBackGround.png" />
+            <Image url="@GalaxyTruckerBackGround.png"/>
          </image>
       </ImageView>
-      <Button contentDisplay="BOTTOM" layoutX="749.0" layoutY="927.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="413.0" style="-fx-background-color: yellow;" text="PLAY" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="56.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <effect>
-            <InnerShadow />
-         </effect>
+
+      <Button text="PLAY" mnemonicParsing="false" translateY="300"
+              prefHeight="82" prefWidth="413"
+              style="-fx-background-color: yellow;">
+         <font><Font name="System Bold" size="56"/></font>
+         <effect><InnerShadow/></effect>
       </Button>
    </children>
-</AnchorPane>
+</StackPane>
+
