@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 
 
 
-public abstract class GamePhaseData {
+public abstract class GamePhaseData extends Observable {
 
     private String serverMessage;//è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
 

@@ -42,6 +42,9 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
+
+        //Avviso tutti i template del cambiamento
+        this.notifyListeners(adventureCard);
     }
 
     public Hit getHit() {
