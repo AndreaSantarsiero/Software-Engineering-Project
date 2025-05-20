@@ -22,9 +22,7 @@ public class UpdatePlayerProfileAction extends ServerAction{
     public void loadData(JoiningPhaseData joiningPhaseData) {}
 
     @Override
-    public void loadData(BuildingPhaseData buildingPhaseData) {
-        buildingPhaseData.setEnemiesPlayer(player);
-    }
+    public void loadData(BuildingPhaseData buildingPhaseData) {}
 
     @Override
     public void loadData(CheckPhaseData checkPhaseData) {}

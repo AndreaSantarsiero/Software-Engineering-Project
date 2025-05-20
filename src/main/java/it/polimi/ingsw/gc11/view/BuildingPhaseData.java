@@ -18,15 +18,11 @@ public class BuildingPhaseData extends GamePhaseData {
     private Map<String, ShipBoard> enemiesShipBoard;    //associo username altri player alla loro nave
     private ShipCard heldShipCard;  //la shipcard che tengo in mano
     private List<AdventureCard> miniDeck;
-    private List<Player> players; //list of enemies players
-    private Player currentPlayer;
-
 
 
     public BuildingPhaseData() {
         this.enemiesShipBoard = new HashMap<>();
         this.miniDeck         = new ArrayList<>();
-        this.players          = new ArrayList<>();
     }
 
 
@@ -37,14 +33,13 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
+        this.notifyListeners(shipBoard);
     }
 
-    public Map<String, ShipBoard> getEnemiesShipBoard() {
-        return enemiesShipBoard;
-    }
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
+        this.notifyListeners(username, shipBoard);
     }
 
     public ShipCard getHeldShipCard() {
@@ -53,6 +48,7 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setHeldShipCard(ShipCard heldShipCard) {
         this.heldShipCard = heldShipCard;
+        this.notifyListeners(heldShipCard);
     }
 
     public List<AdventureCard> getMiniDeck() {
@@ -61,22 +57,7 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
-    }
-
-    public void setEnemiesPlayer(Player player) {
-        for (Player p : players) {
-            if(p.getUsername().equals(player.getUsername())){
-                p = player;
-            }
-        }
-    }
-
-    public Player getMyPlayer(){
-        return currentPlayer;
-    }
-
-    public void setMyPlayer(Player player){
-        this.currentPlayer = player;
+        this.notifyListeners(miniDeck);
     }
 
     @Override
