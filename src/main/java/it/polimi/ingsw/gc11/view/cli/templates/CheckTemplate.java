@@ -7,7 +7,7 @@ public class CheckTemplate extends CLITemplate {
 
     public CheckTemplate(CheckPhaseData checkPhaseData) {
         this.checkPhaseData = checkPhaseData;
-        checkPhaseData.addListener(this);
+        checkPhaseData.setListener(this);
     }
 
     @Override

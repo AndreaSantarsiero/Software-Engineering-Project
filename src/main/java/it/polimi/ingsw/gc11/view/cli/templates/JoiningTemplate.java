@@ -7,7 +7,7 @@ public class JoiningTemplate extends CLITemplate {
 
     public JoiningTemplate(JoiningPhaseData joiningPhaseData) {
         this.joiningPhaseData = joiningPhaseData;
-        joiningPhaseData.addListener(this);
+        joiningPhaseData.setListener(this);
     }
 
     @Override

@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gc11.view;
 
-
-import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
-
 public class PlayerContext {
 
     private GamePhaseData currentPhase;
@@ -20,7 +17,6 @@ public class PlayerContext {
     }
 
     public void setBuildingPhase() {
-        currentPhase.removeAllListener();
         this.currentPhase = new BuildingPhaseData();
     }
 

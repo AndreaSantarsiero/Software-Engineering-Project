@@ -21,7 +21,7 @@ public class AdventureTemplate extends CLITemplate {
     public AdventureTemplate(AdventurePhaseData adventurePhaseData) {
         enemiesShipBoard = new HashMap<>();
         players          = new HashMap<>();
-        adventurePhaseData.addListener(this); //Funziona?? Chi crea i template? si può passare AdventurePhaseData?? mi sa di no
+        adventurePhaseData.setListener(this); //Funziona?? Chi crea i template? si può passare AdventurePhaseData?? mi sa di no
     }
 
     @Override

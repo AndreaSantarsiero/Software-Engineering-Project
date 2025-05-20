@@ -7,7 +7,7 @@ public class EndTemplate extends CLITemplate {
 
     public EndTemplate(EndPhaseData endPhaseData) {
         this.endPhaseData = endPhaseData;
-        endPhaseData.addListener(this);
+        endPhaseData.setListener(this);
     }
 
     @Override
