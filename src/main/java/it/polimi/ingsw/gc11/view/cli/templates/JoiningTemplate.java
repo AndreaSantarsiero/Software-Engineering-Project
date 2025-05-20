@@ -44,17 +44,17 @@ public class JoiningTemplate extends CLITemplate {
 
 
         renderMenu("Choose networking protocol (Use W/S or ↑/↓ to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
-        System.out.println("\n\n");
-        System.out.println("Insert username: ");
-        System.out.println("\n\n");
 
         if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
             inputHandler.interactiveMenu(data, connectionTypes, data.getConnectionTypeMenu());
         }
         else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
+            System.out.println("\n\n");
+            System.out.println("Insert username: ");
             inputHandler.readLine(data);
         }
         else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN){
+            System.out.println("\n\n");
             renderMenu("", gameOptions, data.getCreateOrJoinMenu());
             inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
 
