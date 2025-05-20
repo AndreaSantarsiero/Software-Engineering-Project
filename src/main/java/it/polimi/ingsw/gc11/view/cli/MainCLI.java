@@ -31,11 +31,12 @@ public class MainCLI {
         data.setListener(new JoiningTemplate());
         InputHandler inputHandler = new InputHandler();
         Thread inputThread = new Thread(inputHandler);
-        inputThread.start();
-        data.notifyListener();
 
         try {
             parseArgs(args);
+            inputThread.start();
+            data.notifyListener();
+            inputThread.join();
         } catch (Exception e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");
