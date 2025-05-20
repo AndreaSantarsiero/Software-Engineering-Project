@@ -45,24 +45,25 @@ public class JoiningTemplate extends CLITemplate {
 
         renderMenu("Choose networking protocol (Use W/S or ↑/↓ to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
 
-        if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
-            inputHandler.interactiveMenu(data, connectionTypes, data.getConnectionTypeMenu());
-        }
-        else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
+        if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_USERNAME.ordinal()) {
             System.out.println("\n\n");
-            inputHandler.readLine(data, "Insert username: ");
-        }
-        else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN){
-            System.out.println("\n\n");
-            renderMenu("", gameOptions, data.getCreateOrJoinMenu());
-            inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
-
-            System.out.println("\n\n");
-            if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
-                List<String> availableMatches = data.getAvailableMatches();
-                renderMenu("", availableMatches, data.getExistingGameMenu());
-                inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
+            if(data.getUsername() != null){
+                System.out.println("Username: " + data.getUsername());
             }
+            else {
+                inputHandler.readLine(data, "Insert username: ");
+            }
+        }
+
+        if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CREATE_OR_JOIN.ordinal()) {
+            System.out.println("\n\n");
+            renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
+        }
+
+        if (data.getState().ordinal() == JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
+            List<String> availableMatches = data.getAvailableMatches();
+            System.out.println("\n\n");
+            renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
         }
     }
 
