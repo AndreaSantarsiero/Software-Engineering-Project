@@ -18,8 +18,6 @@ public class JoiningTemplate extends CLITemplate {
 
     public JoiningTemplate() {
         inputHandler = new InputHandler();
-        Thread inputThread = new Thread(inputHandler);
-        inputThread.start();
     }
 
 

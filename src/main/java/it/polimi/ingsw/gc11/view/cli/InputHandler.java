@@ -12,15 +12,14 @@ import java.util.List;
 
 
 
-public class InputHandler implements Runnable {
+public class InputHandler {
 
     private LineReader lineReader;
     private BindingReader bindingReader;
 
 
 
-    @Override
-    public void run() {
+    public InputHandler() {
         try {
             Terminal terminal = TerminalBuilder.builder().system(true).jna(true).nativeSignals(true).build();
             terminal.enterRawMode();
