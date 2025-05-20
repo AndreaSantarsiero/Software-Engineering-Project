@@ -53,6 +53,8 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setHit(Hit hit) {
         this.hit = hit;
+
+        this.notifyListeners(hit);
     }
 
     public Map<String, ShipBoard> getEnemiesShipBoard() {
