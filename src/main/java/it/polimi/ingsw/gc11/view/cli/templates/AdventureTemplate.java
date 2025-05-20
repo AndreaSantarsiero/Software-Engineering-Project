@@ -29,27 +29,19 @@ public class AdventureTemplate extends CLITemplate {
         //To implement
     }
 
-    //manipola i dati ricevuti in ingresso e li disegna
-    @Override
-    public void update(AdventureCard adventureCard) {
-        if(!adventureCard.equals(this.adventureCard)) {
-            this.adventureCard = adventureCard;
-            render();
-        }
-    }
-
     @Override
     public void update(Player player){
-        if(!player.equals(this.player)) {
+        if(!player.equals(this.player)){
             this.player = player;
             render();
         }
     }
 
+    //manipola i dati ricevuti in ingresso e li disegna
     @Override
-    public void update(ShipBoard shipBoard){
-        if(!shipBoard.equals(this.myShipBoard)) {
-            this.myShipBoard = shipBoard;
+    public void update(AdventureCard adventureCard) {
+        if(!adventureCard.equals(this.adventureCard)) {
+            this.adventureCard = adventureCard;
             render();
         }
     }
@@ -78,4 +70,11 @@ public class AdventureTemplate extends CLITemplate {
         }
     }
 
+    @Override
+    public void update(ShipBoard shipBoard){
+        if(!shipBoard.equals(this.myShipBoard)) {
+            this.myShipBoard = shipBoard;
+            render();
+        }
+    }
 }

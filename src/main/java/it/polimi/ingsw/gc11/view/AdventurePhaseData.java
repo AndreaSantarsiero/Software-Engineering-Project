@@ -32,18 +32,18 @@ public class AdventurePhaseData extends GamePhaseData {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+        this.notifyListeners(player);
+    }
+
+
     public AdventureCard getAdventureCard() {
         return adventureCard;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
-
-        //Avviso tutti i template del cambiamento
         this.notifyListeners(adventureCard);
     }
 
@@ -56,16 +56,14 @@ public class AdventurePhaseData extends GamePhaseData {
         this.notifyListeners(hit);
     }
 
-    public Map<String, ShipBoard> getEnemiesShipBoard() {
-        return enemiesShipBoard;
-    }
-
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
+        this.notifyListeners(username, shipBoard);
     }
 
     public void setEnemiesPlayer(Player player, int position) {
         this.players.put(player, position);
+        this.notifyListeners(player, position);
     }
 
     public Map<Player, Integer> getPlayers() {
@@ -74,6 +72,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setMyShipBoard(ShipBoard myShipBoard) {
         this.myShipBoard = myShipBoard;
+        this.notifyListeners(myShipBoard);
     }
 
     public ShipBoard getMyShipBoard() {
