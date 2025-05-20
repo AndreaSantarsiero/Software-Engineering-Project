@@ -28,13 +28,28 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
 
+    @Override
+    public void notifyListener() {
+        listener.update(this);
+    }
+
+
+
+    @Override
+    public void setMenuChoice(int choice){}
+
+    @Override
+    public void confirmMenuChoice(){}
+
+
+
     public Player getPlayer() {
         return player;
     }
 
     public void setPlayer(Player player) {
         this.player = player;
-        this.notifyListeners(player);
+        this.notifyListener();
     }
 
 
@@ -44,7 +59,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
-        this.notifyListeners(adventureCard);
+        this.notifyListener();
     }
 
     public Hit getHit() {
@@ -53,17 +68,17 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setHit(Hit hit) {
         this.hit = hit;
-        this.notifyListeners(hit);
+        this.notifyListener();
     }
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
-        this.notifyListeners(username, shipBoard);
+        this.notifyListener();
     }
 
     public void setEnemiesPlayer(Player player, int position) {
         this.players.put(player, position);
-        this.notifyListeners(player, position);
+        this.notifyListener();
     }
 
     public Map<Player, Integer> getPlayers() {
@@ -72,7 +87,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setMyShipBoard(ShipBoard myShipBoard) {
         this.myShipBoard = myShipBoard;
-        this.notifyListeners(myShipBoard);
+        this.notifyListener();
     }
 
     public ShipBoard getMyShipBoard() {

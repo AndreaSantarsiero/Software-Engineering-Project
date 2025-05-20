@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
@@ -27,19 +26,34 @@ public class BuildingPhaseData extends GamePhaseData {
 
 
 
+    @Override
+    public void notifyListener() {
+        listener.update(this);
+    }
+
+
+
+    @Override
+    public void setMenuChoice(int choice){}
+
+    @Override
+    public void confirmMenuChoice(){}
+
+
+
     public ShipBoard getShipBoard() {
         return shipBoard;
     }
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
-        this.notifyListeners(shipBoard);
+        this.notifyListener();
     }
 
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
-        this.notifyListeners(username, shipBoard);
+        this.notifyListener();
     }
 
     public ShipCard getHeldShipCard() {
@@ -48,7 +62,7 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setHeldShipCard(ShipCard heldShipCard) {
         this.heldShipCard = heldShipCard;
-        this.notifyListeners(heldShipCard);
+        this.notifyListener();
     }
 
     public List<AdventureCard> getMiniDeck() {
@@ -57,7 +71,7 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
-        this.notifyListeners(miniDeck);
+        this.notifyListener();
     }
 
     @Override

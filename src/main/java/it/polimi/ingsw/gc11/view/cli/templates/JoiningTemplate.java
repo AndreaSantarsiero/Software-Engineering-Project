@@ -1,16 +1,74 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
-import it.polimi.ingsw.gc11.view.JoiningPhaseData;
+import it.polimi.ingsw.gc11.view.*;
+import org.jline.utils.AttributedString;
+import org.jline.utils.AttributedStyle;
+import java.util.List;
+
+
 
 public class JoiningTemplate extends CLITemplate {
-    private JoiningPhaseData joiningPhaseData;
 
-    public JoiningTemplate(JoiningPhaseData joiningPhaseData) {
-        this.joiningPhaseData = joiningPhaseData;
-        joiningPhaseData.setListener(this);
-    }
+    private static final List<String> connectionTypes = List.of("Remote Method Invocation", "Socket");
+    private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
+
+
+
+    public JoiningTemplate() {}
+
+
 
     @Override
-    public void render() {}
+    public void update (JoiningPhaseData joiningPhaseData) {
+        render(joiningPhaseData);
+    }
 
+
+
+    public void render(JoiningPhaseData data) {
+        clearView();
+        System.out.println("\n\n");
+        System.out.println(" _______  _______  _        _______                     _________ _______           _______  _        _______  _______ ");
+        System.out.println("(  ____ \\(  ___  )( \\      (  ___  )|\\     /||\\     /|  \\__   __/(  ____ )|\\     /|(  ____ \\| \\    /\\(  ____ \\(  ____ )");
+        System.out.println("| (    \\/| (   ) || (      | (   ) |( \\   / )( \\   / )     ) (   | (    )|| )   ( || (    \\/|  \\  / /| (    \\/| (    )|");
+        System.out.println("| |      | (___) || |      | (___) | \\ (_) /  \\ (_) /      | |   | (____)|| |   | || |      |  (_/ / | (__    | (____)|");
+        System.out.println("| | ____ |  ___  || |      |  ___  |  ) _ (    \\   /       | |   |     __)| |   | || |      |   _ (  |  __)   |     __)");
+        System.out.println("| | \\_  )| (   ) || |      | (   ) | / ( ) \\    ) (        | |   | (\\ (   | |   | || |      |  ( \\ \\ | (      | (\\ (   ");
+        System.out.println("| (___) || )   ( || (____/\\| )   ( |( /   \\ )   | |        | |   | ) \\ \\__| (___) || (____/\\|  /  \\ \\| (____/\\| ) \\ \\__");
+        System.out.println("(_______)|/     \\|(_______/|/     \\||/     \\|   \\_/        )_(   |/   \\__/(_______)(_______/|_/    \\/(_______/|/   \\__/");
+        System.out.println("\n\n");
+
+        if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION || data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
+            renderMenu("Choose networking protocol (Use W/S or ↑/↓ to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
+            System.out.println("\n\n");
+            System.out.println("Insert username: ");
+        }
+        else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN){
+            renderMenu("", gameOptions, data.getCreateOrJoinMenu());
+            System.out.println("\n\n");
+        }
+        else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
+            renderMenu("", data.getAvailableMatches(), data.getExistingGameMenu());
+        }
+    }
+
+
+
+    private void renderMenu(String title, List<String> options, int selected) {
+        clearView();
+        if (title != null && !title.isEmpty()) {
+            System.out.println(title);
+        }
+        for (int i = 0; i < options.size(); i++) {
+            if (i == selected) {
+                AttributedString highlighted = new AttributedString(
+                        "  > " + options.get(i),
+                        AttributedStyle.DEFAULT.background(235)
+                );
+                System.out.println(highlighted.toAnsi());
+            } else {
+                System.out.println("    " + options.get(i));
+            }
+        }
+    }
 }

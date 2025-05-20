@@ -5,7 +5,9 @@ public class PlayerContext {
     private GamePhaseData currentPhase;
 
 
-    public PlayerContext() {}
+    public PlayerContext() {
+        currentPhase = new JoiningPhaseData();
+    }
 
 
     public GamePhaseData getCurrentPhase() {

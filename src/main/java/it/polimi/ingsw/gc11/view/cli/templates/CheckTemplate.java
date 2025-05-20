@@ -2,16 +2,24 @@ package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 
+
+
 public class CheckTemplate extends CLITemplate {
-    private CheckPhaseData checkPhaseData;
 
     public CheckTemplate(CheckPhaseData checkPhaseData) {
-        this.checkPhaseData = checkPhaseData;
         checkPhaseData.setListener(this);
     }
 
-    @Override
-    public void render() {
 
+
+    @Override
+    public void update (CheckPhaseData checkPhaseData) {
+        render(checkPhaseData);
+    }
+
+
+
+    public void render(CheckPhaseData data) {
+        //stampo il template con i dati aggiornati
     }
 }
