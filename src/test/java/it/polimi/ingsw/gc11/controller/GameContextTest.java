@@ -5,13 +5,16 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.AbandonedShipSt
 import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedStationState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check2Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.HandleShotLv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Penalty3Lv1;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check2Lv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.HandleShotLv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Penalty3Lv2;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.MeteorSwarmState;
+import it.polimi.ingsw.gc11.controller.State.OpenSpaceStates.OpenSpaceState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.CoordinateState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.HandleHit;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
@@ -1668,5 +1671,228 @@ public class GameContextTest {
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
         assertThrows(IllegalArgumentException.class,
                 () -> gameContext.landOnPlanet("username2", 0));
+    }
+
+    @Test
+    void testChooseEnginePowerInvalidArgumentsCombatZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
+        shots.add(new Shot(Hit.Type.BIG,   Hit.Direction.BOTTOM));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 2, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check2Lv1(advPhase, 1,
+                gameContext.getGameModel().getPlayer("username1")));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Engine engine = new Engine("eng1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE,
+                Engine.Type.DOUBLE);
+
+        board.addShipCard(battery, 7, 7);
+        board.addShipCard(engine, 7, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseEnginePower("wrongUser", usage));
+
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseEnginePower("username1", null));
+
+        Battery fake = new Battery("fake",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Map<Battery, Integer> wrongUsage = new HashMap<>();
+        wrongUsage.put(fake, 1);
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseEnginePower("username1", wrongUsage));
+    }
+
+    @Test
+    void testChooseEnginePowerInvalidArgumentsCombatZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
+        shots.add(new Shot(Hit.Type.BIG,   Hit.Direction.TOP));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2, 4, 3, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check2Lv2(advPhase, 1,
+                gameContext.getGameModel().getPlayer("username1")));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Engine engine = new Engine("eng1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE,
+                Engine.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(engine, 8, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseEnginePower("wrongUser", usage));
+        assertThrows(NullPointerException.class,
+                () -> gameContext.chooseEnginePower("username1", null));
+    }
+
+    @Test
+    void testChooseEnginePowerValidCombatZone1() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.BIG, Hit.Direction.RIGHT));
+
+        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 1, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check2Lv1(advPhase, 1,
+                gameContext.getGameModel().getPlayer("username1")));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Engine doubleEngine = new Engine("engDouble",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE,
+                Engine.Type.DOUBLE);
+
+        board.addShipCard(battery, 7, 7);
+        board.addShipCard(doubleEngine, 7, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.chooseEnginePower("username1", usage));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testChooseEnginePowerValidCombatZone2() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
+
+        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2, 4, 2, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new Check2Lv2(advPhase, 1,
+                gameContext.getGameModel().getPlayer("username1")));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Engine doubleEngine = new Engine("engDouble",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE,
+                Engine.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(doubleEngine, 8, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.chooseEnginePower("username1", usage));
+        assertEquals("username1", p.getUsername());
+    }
+
+    @Test
+    void testChooseEnginePowerInvalidArgumentsOpenSpace() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+
+        advCard = new OpenSpace(AdventureCard.Type.LEVEL2);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new OpenSpaceState(advPhase));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Engine engine = new Engine("eng1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE,
+                Engine.Type.DOUBLE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(engine, 8, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseEnginePower("wrongUser", usage));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseEnginePower("username1", null));
+    }
+
+    @Test
+    void testChooseEnginePowerValidOpenSpace() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+
+        advCard = new OpenSpace(AdventureCard.Type.LEVEL2);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new OpenSpaceState(advPhase));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Engine doubleEngine = new Engine("engDouble",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE,
+                Engine.Type.DOUBLE);
+
+        board.addShipCard(battery, 7, 7);
+        board.addShipCard(doubleEngine, 7, 8);
+
+        Map<Battery, Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.chooseEnginePower("username1", usage));
+        assertEquals("username1", p.getUsername());
+        assertEquals(8, gameContext.getGameModel().getPositionOnBoard("username1"));
     }
 }

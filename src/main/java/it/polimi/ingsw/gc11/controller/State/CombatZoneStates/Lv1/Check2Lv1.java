@@ -36,10 +36,8 @@ public class Check2Lv1 extends AdventureState {
             usedBatteries += entry.getValue();
         }
 
-        player.getShipBoard().useBatteries(Batteries);
-
-
         int enginePower = player.getShipBoard().getEnginesPower(usedBatteries);
+        player.getShipBoard().useBatteries(Batteries);
 
         if (enginePower < this.minEnginePower){
             this.minEnginePower = enginePower;

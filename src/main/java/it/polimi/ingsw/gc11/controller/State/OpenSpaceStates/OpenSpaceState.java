@@ -29,13 +29,17 @@ public class OpenSpaceState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        if(Batteries == null){
+            throw new IllegalArgumentException("batteries is null");
+        }
+
         //Imposto che il giorcatore sta effettivamente giocando la carta
         if(this.advContext.isResolvingAdvCard() == true){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);
 
-        if(Batteries == null){
+        if(Batteries.isEmpty()){
             usedBatteries = 0;
         }
         else{
@@ -43,10 +47,10 @@ public class OpenSpaceState extends AdventureState {
                 usedBatteries += entry.getValue();
             }
 
-            player.getShipBoard().useBatteries(Batteries);
         }
 
         int enginePower = player.getShipBoard().getEnginesPower(usedBatteries);
+        player.getShipBoard().useBatteries(Batteries);
 
         this.gameModel.move(username, enginePower);
 

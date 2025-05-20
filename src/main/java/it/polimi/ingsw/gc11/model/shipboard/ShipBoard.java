@@ -1284,9 +1284,6 @@ public abstract class ShipBoard  implements Serializable {
         if (numBatteries < 0) {
             throw new IllegalArgumentException("numBatteries can't be negative");
         }
-        if(numBatteries > getDoubleEnginesNumber()){
-            throw new IllegalArgumentException("numBatteries can't be greater than the number of double engines");
-        }
         if(numBatteries > getTotalAvailableBatteries()){
             throw new IllegalArgumentException("numBatteries can't be greater than the number of available batteries");
         }
@@ -1298,10 +1295,17 @@ public abstract class ShipBoard  implements Serializable {
             }
         }
 
-        enginePower += 2*numBatteries;
+        if(numBatteries > getDoubleEnginesNumber()){
+            enginePower += 2*getDoubleEnginesNumber();
+        }else{
+            enginePower += 2*numBatteries;
+        }
+
+
         if(enginePower > 0){
             enginePower += 2*getBrownAliens();
         }
+
 
         return enginePower;
     }
