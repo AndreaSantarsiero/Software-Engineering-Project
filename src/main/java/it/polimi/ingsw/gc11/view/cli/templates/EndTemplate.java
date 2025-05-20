@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc11.view.EndPhaseData;
 public class EndTemplate extends CLITemplate {
     private EndPhaseData endPhaseData;
 
-    private EndTemplate(EndPhaseData endPhaseData) {
+    public EndTemplate(EndPhaseData endPhaseData) {
         this.endPhaseData = endPhaseData;
         endPhaseData.addListener(this);
     }

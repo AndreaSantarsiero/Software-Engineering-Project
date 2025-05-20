@@ -18,7 +18,7 @@ public class AdventureTemplate extends CLITemplate {
     private Map<String, ShipBoard> enemiesShipBoard;  //associo username altri player alla loro nave
     private Map<Player, Integer> players; //list of enemies players
 
-    private AdventureTemplate(AdventurePhaseData adventurePhaseData) {
+    public AdventureTemplate(AdventurePhaseData adventurePhaseData) {
         enemiesShipBoard = new HashMap<>();
         players          = new HashMap<>();
         adventurePhaseData.addListener(this); //Funziona?? Chi crea i template? si può passare AdventurePhaseData?? mi sa di no

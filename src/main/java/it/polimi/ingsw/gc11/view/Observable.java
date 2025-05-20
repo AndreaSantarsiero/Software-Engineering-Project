@@ -4,14 +4,18 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.view.cli.templates.CLITemplate;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 abstract class Observable {
-    List<CLITemplate> listeners = new ArrayList<>();
+    List<CLITemplate> listeners = new CopyOnWriteArrayList<>();
 
     public void addListener(CLITemplate listener) {
         listeners.add(listener);
+    }
+
+    public void removeAllListener() {
+        listeners.clear();
     }
 
     public void removeListener(CLITemplate listener) {
