@@ -55,7 +55,6 @@ public class JoiningTemplate extends CLITemplate {
 
 
     private void renderMenu(String title, List<String> options, int selected) {
-        clearView();
         if (title != null && !title.isEmpty()) {
             System.out.println(title);
         }
