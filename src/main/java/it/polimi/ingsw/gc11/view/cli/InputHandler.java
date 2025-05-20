@@ -63,8 +63,8 @@ public class InputHandler {
 
 
 
-    public void readLine(GamePhaseData data) {
-        data.setStringInput(lineReader.readLine());
+    public void readLine(GamePhaseData data, String message) {
+        data.setStringInput(lineReader.readLine(message));
     }
 
 

@@ -50,8 +50,7 @@ public class JoiningTemplate extends CLITemplate {
         }
         else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
             System.out.println("\n\n");
-            System.out.println("Insert username: ");
-            inputHandler.readLine(data);
+            inputHandler.readLine(data, "Insert username: ");
         }
         else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN){
             System.out.println("\n\n");
