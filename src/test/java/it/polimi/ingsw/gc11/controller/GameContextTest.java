@@ -13,6 +13,7 @@ import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check2Lv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.HandleShotLv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Penalty3Lv2;
+import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.HandleMeteor;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.MeteorSwarmState;
 import it.polimi.ingsw.gc11.controller.State.OpenSpaceStates.OpenSpaceState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.CoordinateState;
@@ -1894,5 +1895,94 @@ public class GameContextTest {
                 gameContext.chooseEnginePower("username1", usage));
         assertEquals("username1", p.getUsername());
         assertEquals(8, gameContext.getGameModel().getPositionOnBoard("username1"));
+    }
+
+
+    @Test
+    void testMeteorDefenseInvalidArgumentsMeteorSwarm() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Meteor> meteors = new ArrayList<>();
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
+        meteors.add(new Meteor(Hit.Type.BIG,   Hit.Direction.LEFT));
+        meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
+
+        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleMeteor(advPhase,8,0,0));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("bat1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        Shield shield = new Shield("shi1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE);
+        board.addShipCard(battery, 7, 7);
+        board.addShipCard(cannon, 7, 8);
+        board.addShipCard(shield, 8, 7);
+
+        Map<Battery,Integer> usage = new HashMap<>();
+        usage.put(battery, 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.meteorDefense("wrongUser", usage, cannon));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.meteorDefense("username1", null, cannon));
+
+        Battery fake = new Battery("fake",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Map<Battery,Integer> wrongUsage = new HashMap<>();
+        wrongUsage.put(fake, 1);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.meteorDefense("username1", wrongUsage, cannon));
+    }
+
+    @Test
+    void testMeteorDefenseValidMeteorSwarm() {
+        AdventureCard advCard;
+        AdventurePhase advPhase;
+
+        goToAdvPhase();
+        ArrayList<Meteor> meteors = new ArrayList<>();
+        meteors.add(new Meteor(Hit.Type.BIG, Hit.Direction.TOP));
+
+        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
+        advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new HandleMeteor(advPhase,8,0,0));
+
+        ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
+        Battery battery = new Battery("batOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
+                Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("canOK",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        Shield shield = new Shield("shi1",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE, ShipCard.Connector.NONE);
+        board.addShipCard(battery, 8, 7);
+        board.addShipCard(cannon, 8, 8);
+        board.addShipCard(shield, 7, 7);
+
+        Map<Battery,Integer> usage = new HashMap<>();
+        usage.put(battery, 2);
+
+        Player p = assertDoesNotThrow(() ->
+                gameContext.meteorDefense("username1", usage, cannon));
+        assertEquals("username1", p.getUsername());
     }
 }

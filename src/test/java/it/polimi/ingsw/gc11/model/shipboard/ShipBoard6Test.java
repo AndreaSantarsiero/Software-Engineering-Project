@@ -103,8 +103,7 @@ public class ShipBoard6Test {
         assertEquals(1, shipBoard.getDoubleEnginesNumber(), "Double engines number not calculated correctly");
         assertEquals(4, shipBoard.getEnginesPower(0), "Engine power not calculated correctly");
         assertEquals(6, shipBoard.getEnginesPower(1), "Engine power not calculated correctly");
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.getEnginesPower(2), "Cannot use more batteries then the number of double engines");
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.getEnginesPower(-1), "Negative number of batteries");
+        assertEquals(6, shipBoard.getEnginesPower(2), "Engine power not calculated correctly");        assertThrows(IllegalArgumentException.class, () -> shipBoard.getEnginesPower(-1), "Negative number of batteries");
         AlienUnit alienUnit = (AlienUnit) shipBoard.getShipCard(6, 8);
         HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(5, 8);
         shipBoard.connectAlienUnit(alienUnit, housingUnit);

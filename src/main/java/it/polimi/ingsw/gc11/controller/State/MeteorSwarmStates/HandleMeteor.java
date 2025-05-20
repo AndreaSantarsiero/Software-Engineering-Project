@@ -42,6 +42,10 @@ public class HandleMeteor extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        if(batteries == null){
+            throw new IllegalArgumentException("batteries is null");
+        }
+
         if(iterationsHit >= meteorSwarm.getMeteors().size()){
             throw new IndexOutOfBoundsException();
         }
@@ -54,7 +58,7 @@ public class HandleMeteor extends AdventureState {
                 player.getShipBoard().destroyHitComponent(meteor.getDirection(), coordinates);
             } else if (player.getShipBoard().hasAnExposedConnector(meteor.getDirection(), coordinates) && player.getShipBoard().isBeingProtected(meteor.getDirection())){
                 //Player protetto ma con connettore esposto, verifico abbia attivato lo scudo con delle batterie
-                if(batteries == null){
+                if(batteries.isEmpty()){
                     player.getShipBoard().destroyHitComponent(meteor.getDirection(), coordinates);
                 }
                 else{
@@ -83,10 +87,9 @@ public class HandleMeteor extends AdventureState {
                     //Player select a cannon to protect him against the big meteor
                     if(cannon.getType() == Cannon.Type.DOUBLE){
                         //Use batteries
-                        if(batteries == null){
-                            throw new NullPointerException("You don't have selected any batteries");
+                        if(!batteries.isEmpty()){
+                            player.getShipBoard().useBatteries(batteries);
                         }
-                        player.getShipBoard().useBatteries(batteries);
                     }
                 }
                 else{

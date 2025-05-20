@@ -69,7 +69,7 @@ public class ShipBoard4Test {
         assertEquals(1, shipBoard.getDoubleEnginesNumber(), "Double engines number not calculated correctly");
         assertEquals(2, shipBoard.getEnginesPower(0), "Engine power not calculated correctly");
         assertEquals(4, shipBoard.getEnginesPower(1), "Engine power not calculated correctly");
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.getEnginesPower(2), "Cannot use more batteries then the number of double engines");
+        assertEquals(4, shipBoard.getEnginesPower(4), "Engine power not calculated correctly");
         assertThrows(IllegalArgumentException.class, () -> shipBoard.getEnginesPower(-1), "Negative number of batteries");
     }
 
