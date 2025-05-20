@@ -65,12 +65,21 @@ public class JoiningPhaseData extends GamePhaseData {
 
     private void updateState() {
         switch (state) {
-            case CHOOSE_CONNECTION: state = JoiningState.CHOOSE_USERNAME;
-            case CHOOSE_USERNAME: state = JoiningState.CHOOSE_GAME;
-            case CHOOSE_GAME: state = JoiningState.CREATE_OR_JOIN;
+            case CHOOSE_CONNECTION:
+                state = JoiningState.CHOOSE_USERNAME;
+                break;
+            case CHOOSE_USERNAME:
+                state = JoiningState.CREATE_OR_JOIN;
+                break;
+            case CREATE_OR_JOIN:
+                state = JoiningState.CHOOSE_GAME;
+                break;
+            default:
+                break;
         }
         notifyListener();
     }
+
 
     @Override
     public void setMenuChoice(int choice){
