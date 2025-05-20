@@ -37,6 +37,8 @@ public abstract class GamePhaseData {
 
     public abstract void confirmMenuChoice();
 
+    public abstract void setStringInput(String input);
+
 
 
     public abstract void handle(ServerAction action);

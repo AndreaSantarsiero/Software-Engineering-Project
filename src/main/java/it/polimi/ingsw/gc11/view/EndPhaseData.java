@@ -32,6 +32,9 @@ public class EndPhaseData extends GamePhaseData {
     @Override
     public void confirmMenuChoice(){}
 
+    @Override
+    public void setStringInput(String input) {}
+
 
 
     public Player getPlayer() {

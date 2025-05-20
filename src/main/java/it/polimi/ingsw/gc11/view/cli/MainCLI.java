@@ -1,19 +1,8 @@
 package it.polimi.ingsw.gc11.view.cli;
 
-import it.polimi.ingsw.gc11.controller.ServerMAIN;
-import it.polimi.ingsw.gc11.controller.network.Utils;
-import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
-import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
-import it.polimi.ingsw.gc11.view.cli.templates.CLITemplate;
 import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
-
-import java.io.InputStream;
-import java.util.*;
 
 
 
@@ -29,14 +18,10 @@ public class MainCLI {
         PlayerContext context = new PlayerContext();
         GamePhaseData data = context.getCurrentPhase();
         data.setListener(new JoiningTemplate());
-        InputHandler inputHandler = new InputHandler();
-        Thread inputThread = new Thread(inputHandler);
 
         try {
             parseArgs(args);
-            inputThread.start();
             data.notifyListener();
-            inputThread.join();
         } catch (Exception e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");

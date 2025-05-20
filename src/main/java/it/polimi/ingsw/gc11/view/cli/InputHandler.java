@@ -64,8 +64,8 @@ public class InputHandler implements Runnable {
 
 
 
-    public String readLine(String message) {
-        return lineReader.readLine(message);
+    public void readLine(GamePhaseData data) {
+        data.setStringInput(lineReader.readLine());
     }
 
 

@@ -90,6 +90,11 @@ public class JoiningPhaseData extends GamePhaseData {
         updateState();
     }
 
+    @Override
+    public void setStringInput(String input) {
+        setUsername(input);
+    }
+
 
 
     public String getUsername() {
