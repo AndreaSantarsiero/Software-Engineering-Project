@@ -12,12 +12,12 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="rmiButton" layoutX="208.0" layoutY="266.0" mnemonicParsing="false" text="RMI">
+      <Button fx:id="rmiButton" layoutX="208.0" layoutY="266.0" mnemonicParsing="false" onAction="#onRMIButtonClick" text="RMI">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button fx:id="socketButton" layoutX="567.0" layoutY="267.0" mnemonicParsing="false" text="Socket">
+      <Button fx:id="socketButton" layoutX="567.0" layoutY="267.0" mnemonicParsing="false" onAction="#onSOCKETButtonClick" text="Socket">
          <font>
             <Font size="24.0" />
          </font>

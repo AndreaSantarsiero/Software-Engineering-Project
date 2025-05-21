@@ -15,11 +15,15 @@ public class SelectNetworkController {
     @FXML
     protected void onRMIButtonClick(ActionEvent event) {
         System.out.println("RMI selected");
+
+
     }
 
     @FXML
     protected void onSOCKETButtonClick(ActionEvent event) {
         System.out.println("SOCKET selected");
+
+
     }
 
 

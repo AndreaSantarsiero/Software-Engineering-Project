@@ -12,6 +12,7 @@ import java.io.IOException;
 
 
 public class SplashScreenController {
+
     @FXML
     Button playButton;
 
@@ -28,6 +29,5 @@ public class SplashScreenController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
