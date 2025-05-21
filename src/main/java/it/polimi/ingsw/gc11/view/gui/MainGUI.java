@@ -16,8 +16,8 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/FirstPage.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Galaxy Trucker");
 
         stage.setScene(scene);

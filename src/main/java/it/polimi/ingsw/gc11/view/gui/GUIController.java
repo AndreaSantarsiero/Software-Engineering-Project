@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 
 
 public class GUIController {
+
+
     @FXML
     private Label welcomeText;
 
