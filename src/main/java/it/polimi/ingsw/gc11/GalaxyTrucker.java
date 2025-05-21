@@ -16,7 +16,7 @@ public class GalaxyTrucker {
                 useCLI = true;
                 break;
             }
-            if (arg.equalsIgnoreCase("-server")) {
+            if (arg.equalsIgnoreCase("-s")) {
                 startServer = true;
                 break;
             }

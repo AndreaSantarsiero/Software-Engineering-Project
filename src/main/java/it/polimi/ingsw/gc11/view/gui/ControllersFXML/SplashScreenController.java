@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
+import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,15 +20,18 @@ public class SplashScreenController {
     @FXML
     protected void onPlayButtonClick(ActionEvent event) {
         System.out.println("onPlayButtonClick");
+        Scene scene = playButton.getScene();
+        ViewModel viewModel = (ViewModel) scene.getUserData();
+        Stage stage = (Stage) scene.getWindow();
 
-        Stage stage = (Stage) playButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
         try {
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load());
+            newScene.setUserData(viewModel);
+            stage.setScene(newScene);
             stage.show();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't load Splash Screen.");
         }
     }
 }

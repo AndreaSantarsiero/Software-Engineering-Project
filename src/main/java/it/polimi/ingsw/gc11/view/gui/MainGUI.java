@@ -1,8 +1,5 @@
 package it.polimi.ingsw.gc11.view.gui;
 
-import it.polimi.ingsw.gc11.view.GamePhaseData;
-import it.polimi.ingsw.gc11.view.PlayerContext;
-import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,18 +14,17 @@ public class MainGUI extends Application {
         launch(args);
     }
 
+    private ViewModel viewModel;
+
     @Override
     public void start(Stage stage) throws IOException {
+        this.viewModel = new ViewModel();
 
-        PlayerContext context = new PlayerContext();
-        GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new JoiningTemplate());
-
-        data.notifyListener();
+        stage.setTitle("Galaxy Trucker");
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Galaxy Trucker");
+        scene.setUserData(this.viewModel);
 
         stage.setScene(scene);
         stage.show();
