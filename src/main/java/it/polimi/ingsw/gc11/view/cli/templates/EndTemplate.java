@@ -2,14 +2,24 @@ package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.EndPhaseData;
 
+
+
 public class EndTemplate extends CLITemplate {
-    private EndPhaseData endPhaseData;
 
     public EndTemplate(EndPhaseData endPhaseData) {
-        this.endPhaseData = endPhaseData;
         endPhaseData.setListener(this);
     }
 
+
+
     @Override
-    public void render() {}
+    public void update (EndPhaseData endPhaseData) {
+        render(endPhaseData);
+    }
+
+
+
+    public void render(EndPhaseData data) {
+        //stampo il template con i dati aggiornati
+    }
 }

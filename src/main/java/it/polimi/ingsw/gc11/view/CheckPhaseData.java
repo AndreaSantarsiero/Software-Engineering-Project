@@ -20,6 +20,24 @@ public class CheckPhaseData extends GamePhaseData {
 
 
 
+    @Override
+    public void notifyListener() {
+        listener.update(this);
+    }
+
+
+
+    @Override
+    public void setMenuChoice(int choice){}
+
+    @Override
+    public void confirmMenuChoice(){}
+
+    @Override
+    public void setStringInput(String input) {}
+
+
+
     public ShipBoard getShipBoard() {
         return shipBoard;
     }

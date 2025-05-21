@@ -1,16 +1,8 @@
 package it.polimi.ingsw.gc11.view.cli;
 
-import it.polimi.ingsw.gc11.controller.ServerMAIN;
-import it.polimi.ingsw.gc11.controller.network.Utils;
-import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
-import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
-import it.polimi.ingsw.gc11.view.cli.templates.CLITemplate;
-import java.io.InputStream;
-import java.util.*;
+import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
 
 
 
@@ -18,129 +10,99 @@ public class MainCLI {
 
     private String serverIp;
     private Integer serverPort;
-    private CLITemplate template;  //dove stampo i dati (setto il template in base alla fase di gioco)
-    private PlayerContext playerContext;  //dove leggo i dati da stampare
-
 
 
 
     public void run(String[] args) {
-        VirtualServer virtualServer;
-        int choice;
+
+        PlayerContext context = new PlayerContext();
+        GamePhaseData data = context.getCurrentPhase();
+        data.setListener(new JoiningTemplate());
 
         try {
             parseArgs(args);
-            virtualServer = setup();
+            data.notifyListener();
         } catch (Exception e) {
             System.out.println("FATAL ERROR: " + e.getMessage());
             System.out.println("Aborting...");
-            return;
-        }
-
-        do{
-            choice = InputHandler.interactiveMenu("", List.of("create a new match", "join an existing match", "exit"));
-            if (choice == 0) {
-                try {
-                    virtualServer.createMatch(FlightBoard.Type.LEVEL2, 2);
-                    System.out.println("game created");
-                } catch (UsernameAlreadyTakenException | FullLobbyException | NetworkException e) {
-                    System.out.println(e.getMessage());
-                    choice = -1;
-                }
-            }
-            else if (choice == 1) {
-                try {
-                    if(!virtualServer.getAvailableMatches().isEmpty()) {
-                        choice = InputHandler.interactiveMenu("insert game to join", virtualServer.getAvailableMatches());
-                        virtualServer.connectToGame(virtualServer.getAvailableMatches().get(choice));
-                        System.out.println("joined game");
-                    }
-                    else{
-                        InputHandler.readLine("No matches available, press Enter to continue...");
-                        choice = -1;
-                    }
-                } catch (UsernameAlreadyTakenException | FullLobbyException | NetworkException e) {
-                    System.out.println(e.getMessage());
-                }
-            }
             System.exit(0);
-        } while (choice < 0 || choice > 2);
-    }
-
-
-
-    public VirtualServer setup() throws NetworkException {
-        Utils.ConnectionType connectionType = connectionTypeSetup();
-        boolean defaultAddress = false;
-
-        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
-            Properties prop = new Properties();
-            prop.load(input);
-
-            if (serverIp == null) {
-                serverIp = prop.getProperty("serverIp");
-                defaultAddress = true;
-            }
-            if (serverPort == null) {
-                if (connectionType == Utils.ConnectionType.RMI) {
-                    serverPort = Integer.parseInt(prop.getProperty("serverRMIPort"));
-                } else {
-                    serverPort = Integer.parseInt(prop.getProperty("serverSocketPort"));
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("error loading config.properties: " + e.getMessage());
-        }
-
-        if (defaultAddress) {
-            System.out.println("Using default address " + serverIp + ":" + serverPort);
-        } else {
-            System.out.println("Using custom address " + serverIp + ":" + serverPort);
-        }
-
-        VirtualServer virtualServer = new VirtualServer(connectionType, serverIp, serverPort, playerContext);
-        boolean validUsername = false;
-
-        while (!validUsername) {
-            try {
-                String username = usernameSetup();
-                virtualServer.registerSession(username);
-                validUsername = true;
-            } catch (UsernameAlreadyTakenException | NetworkException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        return virtualServer;
-    }
-
-
-
-    public Utils.ConnectionType connectionTypeSetup() {
-        int choice = it.polimi.ingsw.gc11.view.cli.InputHandler.interactiveMenu("Choose networking protocol", List.of("Remote Method Invocation", "Socket"));
-
-        if (choice == 0) {
-            return Utils.ConnectionType.RMI;
-        }
-        else {
-            return Utils.ConnectionType.SOCKET;
         }
     }
 
 
 
-    public String usernameSetup() {
-        String username = "";
-
-        while (username.trim().isEmpty()) {
-            username = it.polimi.ingsw.gc11.view.cli.InputHandler.readLine("Enter username: ");
-            if (username.trim().isEmpty()) {
-                System.out.println("Error: invalid username. Try again");
-            }
-        }
-
-        return username;
-    }
+//    public VirtualServer setup() throws NetworkException {
+//        Utils.ConnectionType connectionType = connectionTypeSetup();
+//        boolean defaultAddress = false;
+//
+//        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
+//            Properties prop = new Properties();
+//            prop.load(input);
+//
+//            if (serverIp == null) {
+//                serverIp = prop.getProperty("serverIp");
+//                defaultAddress = true;
+//            }
+//            if (serverPort == null) {
+//                if (connectionType == Utils.ConnectionType.RMI) {
+//                    serverPort = Integer.parseInt(prop.getProperty("serverRMIPort"));
+//                } else {
+//                    serverPort = Integer.parseInt(prop.getProperty("serverSocketPort"));
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException("error loading config.properties: " + e.getMessage());
+//        }
+//
+//        if (defaultAddress) {
+//            System.out.println("Using default address " + serverIp + ":" + serverPort);
+//        } else {
+//            System.out.println("Using custom address " + serverIp + ":" + serverPort);
+//        }
+//
+//        VirtualServer virtualServer = new VirtualServer(connectionType, serverIp, serverPort, playerContext);
+//        boolean validUsername = false;
+//
+//        while (!validUsername) {
+//            try {
+//                String username = usernameSetup();
+//                virtualServer.registerSession(username);
+//                validUsername = true;
+//            } catch (UsernameAlreadyTakenException | NetworkException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//
+//        return virtualServer;
+//    }
+//
+//
+//
+//    public Utils.ConnectionType connectionTypeSetup() {
+//        int choice = it.polimi.ingsw.gc11.view.cli.InputHandler.interactiveMenu("Choose networking protocol", List.of("Remote Method Invocation", "Socket"));
+//
+//        if (choice == 0) {
+//            return Utils.ConnectionType.RMI;
+//        }
+//        else {
+//            return Utils.ConnectionType.SOCKET;
+//        }
+//    }
+//
+//
+//
+//    public String usernameSetup() {
+//        String username = "";
+//
+//        while (username.trim().isEmpty()) {
+//            username = it.polimi.ingsw.gc11.view.cli.InputHandler.readLine("Enter username: ");
+//            if (username.trim().isEmpty()) {
+//                System.out.println("Error: invalid username. Try again");
+//            }
+//        }
+//
+//        return username;
+//    }
 
 
 
