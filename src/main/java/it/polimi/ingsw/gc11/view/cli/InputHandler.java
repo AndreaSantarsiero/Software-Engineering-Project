@@ -63,6 +63,49 @@ public class InputHandler {
 
 
 
+    public void interactiveNumberSelector(GamePhaseData data, int minValue, int maxValue) {
+        int selected = minValue;
+        int range = maxValue - minValue + 1;
+
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("up", "\033[A", "w", "W", "+");     // Increment by 1
+        keyMap.bind("down", "\033[B", "s", "S", "-");   // Decrement by 1
+        keyMap.bind("right", "\033[C", "d", "D");       // Increment by 10
+        keyMap.bind("left", "\033[D", "a", "A");        // Decrement by 10
+        keyMap.bind("enter", "\r", "\n");               // Enter
+
+        while (true) {
+            String key = bindingReader.readBinding(keyMap);
+
+            switch (key) {
+                case "up":
+                    selected = (selected + 1 > maxValue) ? minValue : selected + 1;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "down":
+                    selected = (selected - 1 < minValue) ? maxValue : selected - 1;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "right":
+                    selected = ((selected - minValue + 10) % range) + minValue;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "left":
+                    selected = ((selected - minValue - 10 + range) % range) + minValue;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "enter":
+                    data.confirmIntegerChoice();
+                    return;
+                default:
+                    // Ignore unknown keys
+            }
+        }
+    }
+
+
+
+
     public void readLine(GamePhaseData data, String message) {
         data.setStringInput(lineReader.readLine(message));
     }

@@ -9,7 +9,7 @@ import java.util.List;
 public class JoiningPhaseData extends GamePhaseData {
 
     public enum JoiningState {
-        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_GAME, GAME_SETUP, WAITING
+        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_NUM_PLAYERS, CHOOSE_GAME, GAME_SETUP, WAITING
     }
 
 
@@ -23,6 +23,7 @@ public class JoiningPhaseData extends GamePhaseData {
     private String username;
     private int connectionTypeMenu = 0;
     private int createOrJoinMenu = 0;
+    private int numPlayers;
     private int existingGameMenu = 0;
 
 
@@ -72,6 +73,9 @@ public class JoiningPhaseData extends GamePhaseData {
                 state = JoiningState.CHOOSE_GAME;
             }
         }
+        else if(state == JoiningState.CHOOSE_NUM_PLAYERS){
+            state = JoiningState.GAME_SETUP;
+        }
         else if (state.ordinal() < JoiningState.values().length - 1) {
             state = JoiningState.values()[state.ordinal() + 1];
         }
@@ -108,6 +112,16 @@ public class JoiningPhaseData extends GamePhaseData {
         updateState();
     }
 
+    @Override
+    public void setIntegerChoice(int choice) {
+        setNumPlayers(choice);
+    }
+
+    @Override
+    public void confirmIntegerChoice() {
+        updateState();
+    }
+
 
 
     public String getUsername() {
@@ -134,6 +148,14 @@ public class JoiningPhaseData extends GamePhaseData {
     public void setCreateOrJoinMenu(int createOrJoinMenu) {
         this.createOrJoinMenu = createOrJoinMenu;
         notifyListener();
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
     }
 
     public int getExistingGameMenu() {

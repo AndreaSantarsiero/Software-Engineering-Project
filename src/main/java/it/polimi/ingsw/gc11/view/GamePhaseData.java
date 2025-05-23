@@ -39,6 +39,10 @@ public abstract class GamePhaseData {
 
     public abstract void setStringInput(String input);
 
+    public abstract void setIntegerChoice(int choice);
+
+    public abstract void confirmIntegerChoice();
+
 
 
     public abstract void handle(ServerAction action);

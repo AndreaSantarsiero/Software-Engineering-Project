@@ -1,7 +1,9 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
@@ -16,7 +18,8 @@ public class JoiningTemplate extends CLITemplate {
     private static final List<String> connectionTypes = List.of("Remote Method Invocation", "Socket");
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
     private final InputHandler inputHandler;
-    private boolean invalidUsername = false;
+    private String serverMessage;
+    private boolean usernameApproved = false;
 
 
 
@@ -51,22 +54,32 @@ public class JoiningTemplate extends CLITemplate {
         renderMenu("Choose networking protocol (Use W/S or ↑/↓ to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
 
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_USERNAME.ordinal()) {
-            if(data.getUsername() != null) {
-                if (!invalidUsername) {
-                    System.out.println("Insert username: " + data.getUsername());
-                } else {
-                    System.out.print(data.getUsername() + " username already taken. Try again: ");
-                }
+            if(usernameApproved) {
+                System.out.println("Chosen username: " + data.getUsername());
             }
             else {
-                System.out.print("Insert username: ");
+                if(serverMessage == null || serverMessage.isEmpty()) {
+                    System.out.print("Insert username: ");
+                }
+                else {
+                    System.out.print(serverMessage + " Try again: ");
+                    serverMessage = "";
+                }
             }
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CREATE_OR_JOIN.ordinal()) {
             System.out.println("\n\n");
+            if(serverMessage != null && !serverMessage.isEmpty()) {
+                System.out.println(serverMessage);
+                serverMessage = "";
+            }
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
         }
-        if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
+        if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()) {
+            System.out.println("\n\n");
+            renderIntegerChoice("Insert number of players", data.getNumPlayers());
+        }
+        if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
             List<String> availableMatches = data.getAvailableMatches();
             System.out.println("\n\n");
             renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
@@ -86,17 +99,39 @@ public class JoiningTemplate extends CLITemplate {
             else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
                 try{
                     mainCLI.getVirtualServer().registerSession(data.getUsername());
-                } catch (UsernameAlreadyTakenException e){
+                    usernameApproved = true;
+                } catch (UsernameAlreadyTakenException | IllegalArgumentException e) {
                     data.setState(JoiningPhaseData.JoiningState.CHOOSE_USERNAME);
-                    invalidUsername = true;
+                    serverMessage = e.getMessage();
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
                 inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
             }
+            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
+                inputHandler.interactiveNumberSelector(data, 2, 4);
+            }
             else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
                 List<String> availableMatches = data.getAvailableMatches();
                 inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
+                try{
+                    if(data.getCreateOrJoinMenu() == 0){
+                        mainCLI.getVirtualServer().createMatch(FlightBoard.Type.LEVEL2, data.getNumPlayers());
+                    }
+                    else {
+                        mainCLI.getVirtualServer().connectToGame(data.getAvailableMatches().get(data.getExistingGameMenu()));
+                    }
+                }
+                catch (FullLobbyException e) {
+                    data.setState(JoiningPhaseData.JoiningState.CREATE_OR_JOIN);
+                    serverMessage = e.getMessage();
+                }
+                catch (UsernameAlreadyTakenException | IllegalArgumentException e) {
+                    data.setState(JoiningPhaseData.JoiningState.CHOOSE_USERNAME);
+                    serverMessage = e.getMessage();
+                }
             }
             else{
                 inputHandler.interactiveMenu(data, List.of(""), 0); //waiting to start
@@ -125,4 +160,13 @@ public class JoiningTemplate extends CLITemplate {
             }
         }
     }
+
+
+
+    private void renderIntegerChoice(String label, int value) {
+        String line = label + ": " + value;
+        AttributedString highlighted = new AttributedString(line, AttributedStyle.DEFAULT.background(235));
+        System.out.print(highlighted.toAnsi());
+    }
+
 }
