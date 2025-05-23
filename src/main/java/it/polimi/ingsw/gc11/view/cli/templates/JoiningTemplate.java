@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -156,7 +157,7 @@ public class JoiningTemplate extends CLITemplate {
             else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
                 try{
                     if(data.getCreateOrJoinMenu() == 0){
-                        mainCLI.getVirtualServer().createMatch(FlightBoard.Type.LEVEL2, data.getNumPlayers());
+                        mainCLI.getVirtualServer().createMatch(flightLevelSetup(data.getGameLevel()), data.getNumPlayers());
                     }
                     else {
                         mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(data.getExistingGameMenu()));
@@ -208,4 +209,14 @@ public class JoiningTemplate extends CLITemplate {
         System.out.print(highlighted.toAnsi());
     }
 
+
+
+    public FlightBoard.Type flightLevelSetup(int choice) {
+        if (choice == 0) {
+            return FlightBoard.Type.TRIAL;
+        }
+        else {
+            return FlightBoard.Type.LEVEL2;
+        }
+    }
 }
