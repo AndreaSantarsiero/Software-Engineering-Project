@@ -198,6 +198,13 @@ public class ServerController {
     //cosa facciamo se il player si disconnette? invalidare il token, freeze, riconnect ecc
     //cosa facciamo a fine game? bisogna levare username e token dalla mappa credo
 
+    //possiamo mettere un timeout nella sessione di ogni utente, ogni volta che arriva il ping
+    //resetto il timeout, e quando scade chiamo metodo freeze che invalida il token della sessione
+    //e avvisa il GameContext che il player si è disconnesso (serve metodo)
+    //poi servirà metodo unFreeze connection che rigenera un nuovo token e riavvisa il GameContext
+    //(simile a registerSession, ma l'username deve essere già presente)
+    //volendo, per avvisare il client della disconnessione, rispondiamo ad ogni ping con un pong ecc...
+
 
 
     public void receiveAction(ClientAction action, UUID token) {

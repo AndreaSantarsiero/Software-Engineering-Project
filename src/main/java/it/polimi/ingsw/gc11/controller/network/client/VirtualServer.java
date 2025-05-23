@@ -58,6 +58,8 @@ public class VirtualServer {
         return client.getAvailableMatches(username);
     }
 
+    //aggiungo metodo ping con lo stesso fotmat di createMatch ecc
+
 
 
     public void getFreeShipCard(int pos) throws NetworkException{
