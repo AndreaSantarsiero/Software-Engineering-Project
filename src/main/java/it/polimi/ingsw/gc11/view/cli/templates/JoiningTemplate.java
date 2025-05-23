@@ -92,6 +92,7 @@ public class JoiningTemplate extends CLITemplate {
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
                 mainCLI.virtualServerSetup(data.getConnectionTypeMenu());
+                data.updateState();
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
                 inputHandler.readLine(data, "");
@@ -100,6 +101,7 @@ public class JoiningTemplate extends CLITemplate {
                 try{
                     mainCLI.getVirtualServer().registerSession(data.getUsername());
                     usernameApproved = true;
+                    data.updateState();
                 } catch (UsernameAlreadyTakenException | IllegalArgumentException e) {
                     data.setState(JoiningPhaseData.JoiningState.CHOOSE_USERNAME);
                     serverMessage = e.getMessage();
@@ -123,6 +125,7 @@ public class JoiningTemplate extends CLITemplate {
                     else {
                         mainCLI.getVirtualServer().connectToGame(data.getAvailableMatches().get(data.getExistingGameMenu()));
                     }
+                    data.updateState();
                 }
                 catch (FullLobbyException e) {
                     data.setState(JoiningPhaseData.JoiningState.CREATE_OR_JOIN);

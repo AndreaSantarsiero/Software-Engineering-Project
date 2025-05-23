@@ -64,7 +64,7 @@ public class JoiningPhaseData extends GamePhaseData {
         return state;
     }
 
-    private void updateState() {
+    public void updateState() {
         if(state == JoiningState.CREATE_OR_JOIN) {
             if(createOrJoinMenu == 0) {
                 state = JoiningState.GAME_SETUP;
