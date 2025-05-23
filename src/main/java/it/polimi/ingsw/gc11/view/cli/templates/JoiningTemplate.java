@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
@@ -14,6 +16,7 @@ public class JoiningTemplate extends CLITemplate {
     private static final List<String> connectionTypes = List.of("Remote Method Invocation", "Socket");
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
     private final InputHandler inputHandler;
+    private boolean invalidUsername = false;
 
 
 
@@ -48,8 +51,15 @@ public class JoiningTemplate extends CLITemplate {
         renderMenu("Choose networking protocol (Use W/S or ↑/↓ to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
 
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_USERNAME.ordinal()) {
-            if(data.getUsername() != null){
-                System.out.println("Insert username: " + data.getUsername());
+            if(data.getUsername() != null) {
+                if (!invalidUsername) {
+                    System.out.println("Insert username: " + data.getUsername());
+                } else {
+                    System.out.print(data.getUsername() + " username already taken. Try again: ");
+                }
+            }
+            else {
+                System.out.print("Insert username: ");
             }
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CREATE_OR_JOIN.ordinal()) {
@@ -63,29 +73,38 @@ public class JoiningTemplate extends CLITemplate {
         }
 
 
-        if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
-            inputHandler.interactiveMenu(data, connectionTypes, data.getConnectionTypeMenu());
-        }
-        else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
-            try{
-                mainCLI.virtualServerSetup(data.getConnectionTypeMenu());
-            } catch (Exception e) {
-                e.printStackTrace();
+        try{
+            if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
+                inputHandler.interactiveMenu(data, connectionTypes, data.getConnectionTypeMenu());
             }
+            else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
+                mainCLI.virtualServerSetup(data.getConnectionTypeMenu());
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
+                inputHandler.readLine(data, "");
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
+                try{
+                    mainCLI.getVirtualServer().registerSession(data.getUsername());
+                } catch (UsernameAlreadyTakenException e){
+                    data.setState(JoiningPhaseData.JoiningState.CHOOSE_USERNAME);
+                    invalidUsername = true;
+                }
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
+                inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
+            }
+            else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
+                List<String> availableMatches = data.getAvailableMatches();
+                inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
+            }
+            else{
+                inputHandler.interactiveMenu(data, List.of(""), 0); //waiting to start
+            }
+        } catch (NetworkException e) {
+            System.out.println("Connection error: " + e.getMessage());
         }
-        else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
-            inputHandler.readLine(data, "Insert username: ");
-        }
-        else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
-            inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
-        }
-        else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
-            List<String> availableMatches = data.getAvailableMatches();
-            inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
-        }
-        else{
-            inputHandler.interactiveMenu(data, List.of(""), 0); //waiting to start
-        }
+
     }
 
 

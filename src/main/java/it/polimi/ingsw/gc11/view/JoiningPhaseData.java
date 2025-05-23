@@ -78,6 +78,11 @@ public class JoiningPhaseData extends GamePhaseData {
         notifyListener();
     }
 
+    public void setState(JoiningState state) {
+        this.state = state;
+        notifyListener();
+    }
+
 
     @Override
     public void setMenuChoice(int choice){

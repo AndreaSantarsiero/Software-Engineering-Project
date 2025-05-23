@@ -70,6 +70,10 @@ public class MainCLI {
         virtualServer = new VirtualServer(connectionType, serverIp, serverPort, context);
     }
 
+    public VirtualServer getVirtualServer() {
+        return virtualServer;
+    }
+
 
 
     public Utils.ConnectionType connectionTypeSetup(int choice) {
