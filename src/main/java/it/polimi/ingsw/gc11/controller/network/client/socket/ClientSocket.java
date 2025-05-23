@@ -60,7 +60,7 @@ public class ClientSocket extends Client {
     }
 
     @Override
-    public List<String> getAvailableMatches(String username) throws NetworkException {
+    public Map<String, List<String>> getAvailableMatches(String username) throws NetworkException {
         return null;
     }
 

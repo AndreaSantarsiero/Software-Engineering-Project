@@ -1,8 +1,9 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -15,7 +16,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
 
     //modified by server with actions
-    private List<String> availableMatches;
+    private Map<String, List<String>> availableMatches;
     private String playerColor;
 
     //modified by user with input
@@ -29,7 +30,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
 
     public JoiningPhaseData() {
-        availableMatches = new ArrayList<>();
+        availableMatches = new HashMap<>();
         this.state = JoiningState.CHOOSE_CONNECTION;
     }
 
@@ -42,11 +43,11 @@ public class JoiningPhaseData extends GamePhaseData {
 
 
 
-    public List<String> getAvailableMatches() {
+    public Map<String, List<String>> getAvailableMatches() {
         return availableMatches;
     }
 
-    public void setAvailableMatches(List<String> availableMatches) {
+    public void setAvailableMatches(Map<String, List<String>> availableMatches) {
         this.availableMatches = availableMatches;
     }
 

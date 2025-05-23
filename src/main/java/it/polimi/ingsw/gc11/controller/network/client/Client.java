@@ -29,7 +29,7 @@ public abstract class Client {
 
     abstract public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException;
 
-    abstract public List<String> getAvailableMatches(String username) throws NetworkException;
+    abstract public Map<String, List<String>> getAvailableMatches(String username) throws NetworkException;
 
 
 

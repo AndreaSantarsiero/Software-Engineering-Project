@@ -63,10 +63,10 @@ public abstract class Server {
      *
      * @param username the player's username
      * @param token    the session token associated with the player
-     * @return a list of match IDs representing the currently available matches
+     * @return a map where each key is a match ID and the corresponding value is a list of player usernames
      * @throws RuntimeException if the session is invalid
      */
-    public List<String> getAvailableMatches(String username, UUID token) {
+    public Map<String, List<String>> getAvailableMatches(String username, UUID token) {
         return serverController.getAvailableMatches(username, token);
     }
 

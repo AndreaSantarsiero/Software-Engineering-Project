@@ -5,10 +5,6 @@ import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -21,7 +17,7 @@ public interface ServerInterface extends Remote {
     UUID registerPlayerSession(String username, ClientInterface playerStub) throws RemoteException, UsernameAlreadyTakenException;
     void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers) throws RemoteException, FullLobbyException, UsernameAlreadyTakenException;
     void connectPlayerToGame(String username, UUID token, String matchId) throws RemoteException, FullLobbyException, NullPointerException, UsernameAlreadyTakenException;
-    List<String> getAvailableMatches(String username, UUID token) throws RemoteException;
+    Map<String, List<String>> getAvailableMatches(String username, UUID token) throws RemoteException;
 
 
     void sendAction(ClientAction action, UUID token) throws RemoteException;

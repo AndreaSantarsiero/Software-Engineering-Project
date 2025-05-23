@@ -9,7 +9,9 @@ import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -81,7 +83,19 @@ public class JoiningTemplate extends CLITemplate {
             renderIntegerChoice("Insert number of players", data.getNumPlayers());
         }
         if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
-            List<String> availableMatches = data.getAvailableMatches();
+            try{
+                data.setAvailableMatches(mainCLI.getVirtualServer().getAvailableMatches());
+            } catch (NetworkException e) {
+                System.out.println("Connection error: " + e.getMessage());
+            }
+
+            List<String> availableMatches = new ArrayList<>();
+            for (Map.Entry<String, List<String>> entry : data.getAvailableMatches().entrySet()) {
+                List<String> usernames = entry.getValue();
+                String matchName = String.join(", ", usernames);
+                availableMatches.add(matchName);
+            }
+
             System.out.println("\n\n");
             renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
         }
@@ -115,7 +129,7 @@ public class JoiningTemplate extends CLITemplate {
                 inputHandler.interactiveNumberSelector(data, 2, 4, data.getNumPlayers());
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
-                List<String> availableMatches = data.getAvailableMatches();
+                List<String> availableMatches = new ArrayList<>(data.getAvailableMatches().keySet());
                 inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
@@ -124,7 +138,7 @@ public class JoiningTemplate extends CLITemplate {
                         mainCLI.getVirtualServer().createMatch(FlightBoard.Type.LEVEL2, data.getNumPlayers());
                     }
                     else {
-                        mainCLI.getVirtualServer().connectToGame(data.getAvailableMatches().get(data.getExistingGameMenu()));
+                        mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(data.getExistingGameMenu()));
                     }
                     data.updateState();
                 }

@@ -10,11 +10,10 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import it.polimi.ingsw.gc11.model.Player;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 
 
@@ -180,17 +179,30 @@ public class ServerController {
 
 
     /**
-     * Retrieves a list of available match identifiers that the player can join
+     * Retrieves a map of available matches that the player can join
+     * </p>
+     * Each entry in the map represents a match, where the key is the match ID (gameId) and the value is a list of usernames of the players currently connected to that match.
      *
      * @param username the player's username
      * @param token    the session token associated with the player
-     * @return a list of match IDs representing the currently available matches
+     * @return a map where each key is a match ID and the corresponding value is a list of player usernames
      * @throws RuntimeException if the session is invalid
      */
-    public List<String> getAvailableMatches(String username, UUID token){
-        getPlayerSession(username, token);
 
-        return new ArrayList<>(availableMatches.keySet());
+    public Map<String, List<String>> getAvailableMatches(String username, UUID token) {
+        getPlayerSession(username, token);
+        Map<String, List<String>> result = new HashMap<>();
+
+        for (Map.Entry<String, GameContext> entry : availableMatches.entrySet()) {
+            String gameId = entry.getKey();
+            GameContext match = entry.getValue();
+            List<String> usernames = match.getGameModel().getPlayers().stream()
+                    .map(Player::getUsername)
+                    .collect(Collectors.toList());
+            result.put(gameId, usernames);
+        }
+
+        return result;
     }
 
 

@@ -54,7 +54,7 @@ public class VirtualServer {
         client.connectToGame(username, matchId);
     }
 
-    public List<String> getAvailableMatches() throws NetworkException {
+    public Map<String, List<String>> getAvailableMatches() throws NetworkException {
         return client.getAvailableMatches(username);
     }
 

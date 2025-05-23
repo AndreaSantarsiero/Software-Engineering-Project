@@ -71,7 +71,7 @@ public class ClientRMI extends Client implements ClientInterface {
     }
 
     @Override
-    public List<String> getAvailableMatches(String username) throws NetworkException {
+    public Map<String, List<String>> getAvailableMatches(String username) throws NetworkException {
         try {
             return stub.getAvailableMatches(username, clientSessionToken);
         } catch (RemoteException e) {

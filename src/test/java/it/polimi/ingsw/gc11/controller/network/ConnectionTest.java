@@ -82,7 +82,7 @@ public class ConnectionTest {
         playerFour.registerSession("playerFour");
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
-        String matchId = playerTwo.getAvailableMatches().getFirst();
+        String matchId = playerTwo.getAvailableMatches().keySet().iterator().next();
         playerTwo.connectToGame(matchId);
         playerThree.connectToGame(matchId);
         assertEquals(1, playerOne.getAvailableMatches().size(), "Number of available matches doesn't match");
