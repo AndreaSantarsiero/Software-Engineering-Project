@@ -63,8 +63,8 @@ public class InputHandler {
 
 
 
-    public void interactiveNumberSelector(GamePhaseData data, int minValue, int maxValue) {
-        int selected = minValue;
+    public void interactiveNumberSelector(GamePhaseData data, int minValue, int maxValue, int previouslySelected) {
+        int selected = previouslySelected;
         int range = maxValue - minValue + 1;
 
         KeyMap<String> keyMap = new KeyMap<>();

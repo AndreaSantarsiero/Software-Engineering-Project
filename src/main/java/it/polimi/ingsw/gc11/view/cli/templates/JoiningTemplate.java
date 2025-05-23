@@ -75,8 +75,9 @@ public class JoiningTemplate extends CLITemplate {
             }
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
         }
-        if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()) {
+        if (data.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()) {
             System.out.println("\n\n");
+            data.setNumPlayers(2);
             renderIntegerChoice("Insert number of players", data.getNumPlayers());
         }
         if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
@@ -111,7 +112,7 @@ public class JoiningTemplate extends CLITemplate {
                 inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
-                inputHandler.interactiveNumberSelector(data, 2, 4);
+                inputHandler.interactiveNumberSelector(data, 2, 4, data.getNumPlayers());
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
                 List<String> availableMatches = data.getAvailableMatches();
