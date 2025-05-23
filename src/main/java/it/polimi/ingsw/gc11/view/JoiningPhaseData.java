@@ -157,6 +157,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
+        notifyListener();
     }
 
     public int getExistingGameMenu() {

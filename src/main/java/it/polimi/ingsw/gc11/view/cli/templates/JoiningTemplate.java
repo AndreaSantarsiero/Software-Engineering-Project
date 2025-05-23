@@ -22,6 +22,7 @@ public class JoiningTemplate extends CLITemplate {
     private final InputHandler inputHandler;
     private String serverMessage;
     private boolean usernameApproved = false;
+    private boolean noAvailableMatches = false;
 
 
 
@@ -97,7 +98,14 @@ public class JoiningTemplate extends CLITemplate {
             }
 
             System.out.println("\n\n");
-            renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
+
+            if(availableMatches.isEmpty()) {
+                noAvailableMatches = true;
+                System.out.println("No available matches found, press enter to continue...");
+            }
+            else {
+                renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
+            }
         }
 
 
@@ -129,8 +137,13 @@ public class JoiningTemplate extends CLITemplate {
                 inputHandler.interactiveNumberSelector(data, 2, 4, data.getNumPlayers());
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
-                List<String> availableMatches = new ArrayList<>(data.getAvailableMatches().keySet());
-                inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
+                if(noAvailableMatches){
+                    data.setState(JoiningPhaseData.JoiningState.CREATE_OR_JOIN);
+                }
+                else{
+                    List<String> availableMatches = new ArrayList<>(data.getAvailableMatches().keySet());
+                    inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
+                }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
                 try{
