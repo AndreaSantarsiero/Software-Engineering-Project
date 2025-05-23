@@ -24,7 +24,7 @@
          </font>
       </Button>
       <Button fx:id="nextButton" layoutX="397.0" layoutY="515.0" mnemonicParsing="false" text="next" visible="false" />
-      <Label fx:id="label2" layoutX="349.0" layoutY="480.0" prefHeight="0.0" prefWidth="0.0" style="-fx-background-color: white;" textAlignment="CENTER">
+      <Label fx:id="label2" layoutX="349.0" layoutY="480.0" prefHeight="0.0" prefWidth="0.0" style="-fx-background-color: white;">
          <font>
             <Font size="24.0" />
          </font>

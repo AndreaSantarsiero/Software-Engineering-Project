@@ -34,6 +34,7 @@ public class SelectNetworkController {
 
         try {
             viewModel.setRMIVirtualServer();
+            label2.setVisible(true);
             label2.setText("RMI protocol selected");
             System.out.println("RMI selected");
 
@@ -67,6 +68,7 @@ public class SelectNetworkController {
 
         try {
             viewModel.setRMIVirtualServer();
+            label2.setVisible(true);
             label2.setText("SOCKET protocol selected");
             System.out.println("SOCKET selected");
 
