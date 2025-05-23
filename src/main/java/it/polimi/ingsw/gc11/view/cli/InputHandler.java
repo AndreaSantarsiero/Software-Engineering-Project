@@ -70,8 +70,8 @@ public class InputHandler {
         KeyMap<String> keyMap = new KeyMap<>();
         keyMap.bind("up", "\033[A", "w", "W", "+");     // Increment by 1
         keyMap.bind("down", "\033[B", "s", "S", "-");   // Decrement by 1
-        keyMap.bind("right", "\033[C", "d", "D");       // Increment by 10
-        keyMap.bind("left", "\033[D", "a", "A");        // Decrement by 10
+        keyMap.bind("right", "\033[C", "d", "D");       // Increment by 3
+        keyMap.bind("left", "\033[D", "a", "A");        // Decrement by 3
         keyMap.bind("enter", "\r", "\n");               // Enter
 
         while (true) {
@@ -87,11 +87,11 @@ public class InputHandler {
                     data.setIntegerChoice(selected);
                     break;
                 case "right":
-                    selected = ((selected - minValue + 10) % range) + minValue;
+                    selected = ((selected - minValue + 3) % range) + minValue;
                     data.setIntegerChoice(selected);
                     break;
                 case "left":
-                    selected = ((selected - minValue - 10 + range) % range) + minValue;
+                    selected = ((selected - minValue - 3 + range) % range) + minValue;
                     data.setIntegerChoice(selected);
                     break;
                 case "enter":
