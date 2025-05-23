@@ -10,7 +10,7 @@ import java.util.Map;
 public class JoiningPhaseData extends GamePhaseData {
 
     public enum JoiningState {
-        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_NUM_PLAYERS, CHOOSE_GAME, GAME_SETUP, WAITING
+        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_LEVEL, CHOOSE_NUM_PLAYERS, CHOOSE_GAME, GAME_SETUP, WAITING
     }
 
 
@@ -24,6 +24,7 @@ public class JoiningPhaseData extends GamePhaseData {
     private String username;
     private int connectionTypeMenu = 0;
     private int createOrJoinMenu = 0;
+    private int gameLevel = 0;
     private int numPlayers;
     private int existingGameMenu = 0;
 
@@ -68,7 +69,7 @@ public class JoiningPhaseData extends GamePhaseData {
     public void updateState() {
         if(state == JoiningState.CREATE_OR_JOIN) {
             if(createOrJoinMenu == 0) {
-                state = JoiningState.GAME_SETUP;
+                state = JoiningState.CHOOSE_LEVEL;
             }
             else {
                 state = JoiningState.CHOOSE_GAME;
@@ -96,6 +97,9 @@ public class JoiningPhaseData extends GamePhaseData {
         }
         else if(state == JoiningState.CREATE_OR_JOIN) {
             setCreateOrJoinMenu(choice);
+        }
+        else if(state == JoiningState.CHOOSE_LEVEL){
+            setGameLevel(choice);
         }
         else if(state == JoiningState.CHOOSE_GAME){
             setExistingGameMenu(choice);
@@ -148,6 +152,15 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setCreateOrJoinMenu(int createOrJoinMenu) {
         this.createOrJoinMenu = createOrJoinMenu;
+        notifyListener();
+    }
+
+    public int getGameLevel(){
+        return gameLevel;
+    }
+
+    public void setGameLevel(int gameLevel) {
+        this.gameLevel = gameLevel;
         notifyListener();
     }
 

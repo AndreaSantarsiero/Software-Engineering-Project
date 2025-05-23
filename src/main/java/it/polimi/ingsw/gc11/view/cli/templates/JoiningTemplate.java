@@ -19,6 +19,7 @@ public class JoiningTemplate extends CLITemplate {
 
     private static final List<String> connectionTypes = List.of("Remote Method Invocation", "Socket");
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
+    private static final List<String> gameLevels = List.of("Trial", "Level II");
     private final InputHandler inputHandler;
     private String serverMessage;
     private boolean usernameApproved = false;
@@ -78,10 +79,14 @@ public class JoiningTemplate extends CLITemplate {
             }
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
         }
-        if (data.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()) {
-            System.out.println("\n\n");
-            data.setNumPlayers(2);
-            renderIntegerChoice("Insert number of players", data.getNumPlayers());
+        if (data.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_LEVEL.ordinal()) {
+            renderMenu("Choose match difficulty", gameLevels, data.getGameLevel());
+
+            if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()){
+                System.out.println("\n\n");
+                data.setNumPlayers(2);
+                renderIntegerChoice("Insert number of players", data.getNumPlayers());
+            }
         }
         if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
             try{
@@ -132,6 +137,9 @@ public class JoiningTemplate extends CLITemplate {
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
                 inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_LEVEL) {
+                inputHandler.interactiveMenu(data, gameLevels, data.getGameLevel());
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
                 inputHandler.interactiveNumberSelector(data, 2, 4, data.getNumPlayers());
