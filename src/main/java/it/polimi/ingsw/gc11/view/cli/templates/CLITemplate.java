@@ -1,10 +1,21 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.*;
+import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 
 
 public abstract class CLITemplate extends Template {
+
+    protected final MainCLI mainCLI;
+
+
+
+    public CLITemplate(MainCLI mainCLI) {
+        this.mainCLI = mainCLI;
+    }
+
+
 
     @Override
     public void update (JoiningPhaseData joiningPhaseData) {}

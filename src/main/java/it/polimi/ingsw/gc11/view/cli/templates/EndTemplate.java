@@ -1,12 +1,14 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.EndPhaseData;
+import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 
 
 public class EndTemplate extends CLITemplate {
 
-    public EndTemplate(EndPhaseData endPhaseData) {
+    public EndTemplate(MainCLI mainCLI, EndPhaseData endPhaseData) {
+        super(mainCLI);
         endPhaseData.setListener(this);
     }
 

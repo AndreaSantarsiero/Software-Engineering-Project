@@ -1,8 +1,14 @@
 package it.polimi.ingsw.gc11.view.cli;
 
+import it.polimi.ingsw.gc11.controller.ServerMAIN;
+import it.polimi.ingsw.gc11.controller.network.Utils;
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
+import java.io.InputStream;
+import java.util.Properties;
 
 
 
@@ -10,14 +16,15 @@ public class MainCLI {
 
     private String serverIp;
     private Integer serverPort;
+    private VirtualServer virtualServer;
+    private PlayerContext context;
 
 
 
     public void run(String[] args) {
-
-        PlayerContext context = new PlayerContext();
+        context = new PlayerContext();
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new JoiningTemplate());
+        data.setListener(new JoiningTemplate(this));
 
         try {
             parseArgs(args);
@@ -31,66 +38,51 @@ public class MainCLI {
 
 
 
-//    public VirtualServer setup() throws NetworkException {
-//        Utils.ConnectionType connectionType = connectionTypeSetup();
-//        boolean defaultAddress = false;
-//
-//        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
-//            Properties prop = new Properties();
-//            prop.load(input);
-//
-//            if (serverIp == null) {
-//                serverIp = prop.getProperty("serverIp");
-//                defaultAddress = true;
-//            }
-//            if (serverPort == null) {
-//                if (connectionType == Utils.ConnectionType.RMI) {
-//                    serverPort = Integer.parseInt(prop.getProperty("serverRMIPort"));
-//                } else {
-//                    serverPort = Integer.parseInt(prop.getProperty("serverSocketPort"));
-//                }
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException("error loading config.properties: " + e.getMessage());
-//        }
-//
-//        if (defaultAddress) {
-//            System.out.println("Using default address " + serverIp + ":" + serverPort);
-//        } else {
-//            System.out.println("Using custom address " + serverIp + ":" + serverPort);
-//        }
-//
-//        VirtualServer virtualServer = new VirtualServer(connectionType, serverIp, serverPort, playerContext);
-//        boolean validUsername = false;
-//
-//        while (!validUsername) {
-//            try {
-//                String username = usernameSetup();
-//                virtualServer.registerSession(username);
-//                validUsername = true;
-//            } catch (UsernameAlreadyTakenException | NetworkException e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//
-//        return virtualServer;
-//    }
-//
-//
-//
-//    public Utils.ConnectionType connectionTypeSetup() {
-//        int choice = it.polimi.ingsw.gc11.view.cli.InputHandler.interactiveMenu("Choose networking protocol", List.of("Remote Method Invocation", "Socket"));
-//
-//        if (choice == 0) {
-//            return Utils.ConnectionType.RMI;
-//        }
-//        else {
-//            return Utils.ConnectionType.SOCKET;
-//        }
-//    }
-//
-//
-//
+    public void virtualServerSetup(int connectionChoice) throws NetworkException {
+        Utils.ConnectionType connectionType = connectionTypeSetup(connectionChoice);
+        boolean defaultAddress = false;
+
+        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
+            Properties prop = new Properties();
+            prop.load(input);
+
+            if (serverIp == null) {
+                serverIp = prop.getProperty("serverIp");
+                defaultAddress = true;
+            }
+            if (serverPort == null) {
+                if (connectionType == Utils.ConnectionType.RMI) {
+                    serverPort = Integer.parseInt(prop.getProperty("serverRMIPort"));
+                } else {
+                    serverPort = Integer.parseInt(prop.getProperty("serverSocketPort"));
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("error loading config.properties: " + e.getMessage());
+        }
+
+        if (defaultAddress) {
+            System.out.println("Using default address " + serverIp + ":" + serverPort);
+        } else {
+            System.out.println("Using custom address " + serverIp + ":" + serverPort);
+        }
+
+        virtualServer = new VirtualServer(connectionType, serverIp, serverPort, context);
+    }
+
+
+
+    public Utils.ConnectionType connectionTypeSetup(int choice) {
+        if (choice == 0) {
+            return Utils.ConnectionType.RMI;
+        }
+        else {
+            return Utils.ConnectionType.SOCKET;
+        }
+    }
+
+
+
 //    public String usernameSetup() {
 //        String username = "";
 //

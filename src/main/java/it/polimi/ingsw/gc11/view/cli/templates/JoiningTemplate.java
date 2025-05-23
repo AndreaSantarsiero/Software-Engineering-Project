@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.cli.InputHandler;
+import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
 import java.util.List;
@@ -16,7 +17,8 @@ public class JoiningTemplate extends CLITemplate {
 
 
 
-    public JoiningTemplate() {
+    public JoiningTemplate(MainCLI mainCLI) {
+        super(mainCLI);
         inputHandler = new InputHandler();
     }
 
@@ -63,6 +65,13 @@ public class JoiningTemplate extends CLITemplate {
 
         if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
             inputHandler.interactiveMenu(data, connectionTypes, data.getConnectionTypeMenu());
+        }
+        else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
+            try{
+                mainCLI.virtualServerSetup(data.getConnectionTypeMenu());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
             inputHandler.readLine(data, "Insert username: ");

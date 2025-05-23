@@ -9,7 +9,7 @@ import java.util.List;
 public class JoiningPhaseData extends GamePhaseData {
 
     public enum JoiningState {
-        CHOOSE_CONNECTION, CHOOSE_USERNAME, CREATE_OR_JOIN, CHOOSE_GAME, WAITING
+        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_GAME, GAME_SETUP, WAITING
     }
 
 
@@ -64,21 +64,16 @@ public class JoiningPhaseData extends GamePhaseData {
     }
 
     private void updateState() {
-        switch (state) {
-            case CHOOSE_CONNECTION:
-                state = JoiningState.CHOOSE_USERNAME;
-                break;
-            case CHOOSE_USERNAME:
-                state = JoiningState.CREATE_OR_JOIN;
-                break;
-            case CREATE_OR_JOIN:
+        if(state == JoiningState.CREATE_OR_JOIN) {
+            if(createOrJoinMenu == 0) {
+                state = JoiningState.GAME_SETUP;
+            }
+            else {
                 state = JoiningState.CHOOSE_GAME;
-                break;
-            case CHOOSE_GAME:
-                state = JoiningState.WAITING;
-                break;
-            default:
-                break;
+            }
+        }
+        else if (state.ordinal() < JoiningState.values().length - 1) {
+            state = JoiningState.values()[state.ordinal() + 1];
         }
         notifyListener();
     }

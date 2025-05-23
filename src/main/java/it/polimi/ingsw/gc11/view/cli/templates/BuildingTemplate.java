@@ -1,12 +1,14 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
+import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 
 
 public class BuildingTemplate extends CLITemplate {
 
-     public BuildingTemplate(BuildingPhaseData buildingPhaseData) {
+     public BuildingTemplate(MainCLI mainCLI, BuildingPhaseData buildingPhaseData) {
+        super(mainCLI);
         buildingPhaseData.setListener(this);
     }
 
