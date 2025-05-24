@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<!-- Scene divisa in due parti: sinistra con plancia nave, destra con selezione tessere scrollabile -->
+<SplitPane fx:id="splitPane"
+           orientation="HORIZONTAL"
+           dividerPositions="0.79"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingController">
+    <items>
+        <!-- Parte sinistra: plancia nave -->
+        <StackPane fx:id="boardPane" minWidth="0" minHeight="0">
+            <children>
+                <!-- Immagine di sfondo con sagoma degli slot -->
+                <ImageView fx:id="boardBackground" preserveRatio="true">
+                    <image>
+                        <Image url="@../boards/ShipBoard1.jpg"/>
+                    </image>
+                </ImageView>
+
+                <!-- Griglia trasparente allineata agli slot -->
+                <GridPane fx:id="slotGrid" alignment="CENTER">
+                    <!-- 6×6: adattare colonne/righe secondo necessità -->
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="10"/>
+                        <ColumnConstraints percentWidth="10"/>
+                        <ColumnConstraints percentWidth="10" />
+                        <ColumnConstraints percentWidth="10" />
+                        <ColumnConstraints percentWidth="10" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="10" />
+                        <RowConstraints percentHeight="10" />
+                        <RowConstraints percentHeight="10" />
+                        <RowConstraints percentHeight="10" />
+                        <RowConstraints percentHeight="10" />
+                    </rowConstraints>
+                </GridPane>
+            </children>
+        </StackPane>
+
+        <!-- Parte destra: selezione tessere scrollabile -->
+        <AnchorPane fx:id="cardPane" minWidth="0" minHeight="0"
+                    style="-fx-background-image: url('GalaxyBackground.png'); -fx-background-size: cover;">
+                <!-- Area scrollabile con tessere -->
+            <children>
+                <ScrollPane fx:id="tileScroll"
+                            AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                            fitToWidth="true" fitToHeight="true"
+                            hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                            pannable="true" style="-fx-background-color: transparent;">
+                    <content>
+                        <TilePane fx:id="cardTile" prefColumns="2" hgap="10" vgap="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        </TilePane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </items>
+</SplitPane>
