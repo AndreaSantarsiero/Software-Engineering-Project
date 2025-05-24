@@ -12,7 +12,7 @@
    <children>
       <HBox alignment="CENTER">
          <children>
-            <Label style="-fx-background-color: white;" text="Insert an username">
+            <Label styleClass="Text" text="INSERT USERNAME">
                <font>
                   <Font size="48.0" />
                </font>
@@ -21,7 +21,7 @@
       </HBox>
       <HBox alignment="CENTER">
          <children>
-            <TextField fx:id="usernameText" alignment="CENTER" prefHeight="102.0" prefWidth="531.0" promptText="Username">
+            <TextField fx:id="usernameText" alignment="CENTER" prefHeight="102.0" prefWidth="531.0" promptText="Username" style="-fx-text-fill: black;" styleClass="Text">
                <font>
                   <Font size="48.0" />
                </font>
@@ -39,7 +39,7 @@
       </HBox>
       <HBox fx:id="status" alignment="CENTER" visible="false">
          <children>
-            <Label fx:id="label2" prefHeight="44.0" prefWidth="773.0" style="-fx-background-color: white;">
+            <Label fx:id="label2" prefHeight="44.0" prefWidth="773.0" styleClass="Text">
                <font>
                   <Font size="36.0" />
                </font>

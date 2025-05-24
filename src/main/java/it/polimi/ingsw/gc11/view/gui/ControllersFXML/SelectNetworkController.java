@@ -29,8 +29,11 @@ public class SelectNetworkController {
     protected void onRMIButtonClick(ActionEvent event) {
 
         Scene scene = rmiButton.getScene();
-        ViewModel viewModel = (ViewModel) scene.getUserData();
         Stage stage = (Stage) scene.getWindow();
+        ViewModel viewModel = (ViewModel) stage.getUserData();
+
+        rmiButton.setDisable(true);
+        socketButton.setDisable(true);
 
         try {
             viewModel.setRMIVirtualServer();
@@ -40,7 +43,6 @@ public class SelectNetworkController {
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Login.fxml"));
             Scene newScene = new Scene(fxmlLoader.load());
-            newScene.setUserData(viewModel);
 
             Task<Void> sleeper = new Task<Void>(){
                 @Override
@@ -52,7 +54,11 @@ public class SelectNetworkController {
                     return null;
                 }
             };
-            sleeper.setOnSucceeded(e -> {stage.setScene(newScene);stage.show();});
+            sleeper.setOnSucceeded(e -> {
+                stage.setScene(newScene);
+                stage.show();
+            }
+            );
             new Thread(sleeper).start();
         } catch (NetworkException | IOException e) {
             throw new RuntimeException(e);
@@ -63,8 +69,11 @@ public class SelectNetworkController {
     protected void onSOCKETButtonClick(ActionEvent event) {
 
         Scene scene = socketButton.getScene();
-        ViewModel viewModel = (ViewModel) scene.getUserData();
         Stage stage = (Stage) scene.getWindow();
+        ViewModel viewModel = (ViewModel) stage.getUserData();
+
+        rmiButton.setDisable(true);
+        socketButton.setDisable(true);
 
         try {
             viewModel.setRMIVirtualServer();
@@ -74,7 +83,6 @@ public class SelectNetworkController {
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Login.fxml"));
             Scene newScene = new Scene(fxmlLoader.load());
-            newScene.setUserData(viewModel);
 
             Task<Void> sleeper = new Task<Void>(){
                 @Override

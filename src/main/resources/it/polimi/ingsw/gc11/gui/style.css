@@ -1,3 +1,7 @@
+
+/* Importing Luckiest Guy font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
 .SplashPage{
     -fx-background-image: url("GalaxyTruckerBackGround.png");
     -fx-background-repeat: stretch;
@@ -8,6 +12,7 @@
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
+
 
 .Menu{
     -fx-background-color: #000435;
@@ -20,3 +25,13 @@
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
+
+
+.Text{
+    -fx-font-family: 'Luckiest Guy', cursive;
+    -fx-font-size: 4rem;
+    -fx-text-fill: #FFD700; /* Bright yellow */
+    -fx-effect: dropshadow(gaussian, black, 4, 0.3, 2, 2);
+    -fx-padding: 10px;
+}
+

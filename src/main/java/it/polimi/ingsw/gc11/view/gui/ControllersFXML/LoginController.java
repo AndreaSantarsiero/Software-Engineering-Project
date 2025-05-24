@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -35,8 +36,8 @@ public class LoginController {
     protected void onEnterButtonClick(ActionEvent event) {
 
         Scene scene = enterButton.getScene();
-        ViewModel viewModel = (ViewModel) scene.getUserData();
         Stage stage = (Stage) scene.getWindow();
+        ViewModel viewModel = (ViewModel) stage.getUserData();
         String username = usernameText.getText();
         VirtualServer virtualServer = viewModel.getVirtualServer();
 
@@ -46,22 +47,37 @@ public class LoginController {
             enterButton.setVisible(false);
 
             status.setVisible(true);
-            label2.setText("You are logged in as: " + username);
+            label2.setText("You are logged in as:   " + username);
             label2.setStyle("-fx-text-fill: green;" + label2.getStyle());
-            System.out.println("You are logged in as: " + username);
+            System.out.println("You are logged in as:   " + username);
 
             match.setVisible(true);
         }
         catch (Exception e) {
             label2.setText("Error");
             label2.setStyle("-fx-text-fill: red;" + label2.getStyle());
-            System.out.println(e.getMessage());
+            System.out.println("Error:  " + e.getMessage());
         }
 
     }
 
+
     @FXML
     protected void onCreateMatchClick(ActionEvent event){
+
+        Scene scene = create.getScene();
+        Stage stage = (Stage) scene.getWindow();
+        ViewModel viewModel = (ViewModel) stage.getUserData();
+
+        try {
+            System.out.println(viewModel.getMyself().getUsername() + ": clicked on create a new match");
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateMatch.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load());
+            stage.setScene(newScene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -69,4 +85,5 @@ public class LoginController {
     protected void onJoinMatchClick(ActionEvent event){
 
     }
+
 }

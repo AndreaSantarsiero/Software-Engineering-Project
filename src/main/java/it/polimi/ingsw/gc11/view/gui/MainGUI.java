@@ -24,7 +24,7 @@ public class MainGUI extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        scene.setUserData(this.viewModel);
+        stage.setUserData(this.viewModel);
 
         stage.setScene(scene);
         stage.show();

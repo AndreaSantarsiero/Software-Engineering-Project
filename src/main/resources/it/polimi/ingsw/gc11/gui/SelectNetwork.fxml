@@ -11,9 +11,9 @@
    <children>
       <HBox alignment="TOP_CENTER">
          <children>
-            <Label alignment="CENTER" style="-fx-background-color: white;" text="Select a Network Protocol">
+            <Label alignment="CENTER" styleClass="Text" text="SELECT NETWORK PROTOCOL">
                <font>
-                  <Font size="36.0" />
+                  <Font size="48.0" />
                </font>
             </Label>
          </children>
@@ -37,7 +37,7 @@
       </HBox>
       <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="494.0">
          <children>
-            <Label fx:id="label2" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="35.0" prefWidth="361.0" style="-fx-background-color: white;" visible="false">
+            <Label fx:id="label2" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="35.0" prefWidth="361.0" styleClass="Text" visible="false">
                <font>
                   <Font size="24.0" />
                </font>
