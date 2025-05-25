@@ -26,9 +26,6 @@
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
 
-.
-
-
 .Text{
     -fx-font-family: 'Luckiest Guy', cursive;
     -fx-font-size: 4rem;

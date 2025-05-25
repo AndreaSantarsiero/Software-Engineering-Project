@@ -24,17 +24,14 @@ public class MainGUI extends Application {
         stage.setTitle("Galaxy Trucker");
 
         FXMLLoader loader = new FXMLLoader(
-                MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml")
+                MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml")
         );
         Parent root = loader.load();
         Scene scene = new Scene(root, 1024, 768);
         stage.setUserData(this.viewModel);
 
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();
-
-        BuildingController ctrl = loader.getController();
-        ctrl.getSplitPane().setDividerPositions(0.79);
     }
 }
