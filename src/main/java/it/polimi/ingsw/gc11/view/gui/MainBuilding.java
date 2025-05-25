@@ -33,8 +33,5 @@ public class MainBuilding extends Application {
         stage.setFullScreen(true);
         stage.setScene(scene);
         stage.show();
-
-        BuildingController ctrl = loader.getController();
-        ctrl.getSplitPane().setDividerPositions(0.79);
     }
 }
