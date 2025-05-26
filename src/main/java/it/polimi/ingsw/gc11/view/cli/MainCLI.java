@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
-import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
+import it.polimi.ingsw.gc11.view.cli.templates.*;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -87,21 +87,6 @@ public class MainCLI {
 
 
 
-//    public String usernameSetup() {
-//        String username = "";
-//
-//        while (username.trim().isEmpty()) {
-//            username = it.polimi.ingsw.gc11.view.cli.InputHandler.readLine("Enter username: ");
-//            if (username.trim().isEmpty()) {
-//                System.out.println("Error: invalid username. Try again");
-//            }
-//        }
-//
-//        return username;
-//    }
-
-
-
     private void parseArgs(String[] args) {
         boolean cliMode = false;
 
@@ -137,4 +122,30 @@ public class MainCLI {
         }
     }
 
+
+
+    public void changeTemplate(JoiningTemplate joiningTemplate) {
+        GamePhaseData data = context.getCurrentPhase();
+        data.setListener(new BuildingTemplate(this));
+    }
+
+    public void changeTemplate(BuildingTemplate buildingTemplate) {
+        GamePhaseData data = context.getCurrentPhase();
+        data.setListener(new CheckTemplate(this));
+    }
+
+    public void changeTemplate(CheckTemplate checkTemplate) {
+        GamePhaseData data = context.getCurrentPhase();
+        data.setListener(new AdventureTemplate(this));
+    }
+
+    public void changeTemplate(AdventureTemplate adventureTemplate) {
+        GamePhaseData data = context.getCurrentPhase();
+        data.setListener(new EndTemplate(this));
+    }
+
+    public void changeTemplate(EndTemplate endTemplate) {
+        GamePhaseData data = context.getCurrentPhase();
+        data.setListener(new JoiningTemplate(this));
+    }
 }

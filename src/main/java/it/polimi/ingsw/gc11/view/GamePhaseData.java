@@ -15,6 +15,10 @@ public abstract class GamePhaseData {
 
 
 
+    public Template getListener() {
+        return listener;
+    }
+
     public void setListener(Template listener) {
         this.listener = listener;
     }

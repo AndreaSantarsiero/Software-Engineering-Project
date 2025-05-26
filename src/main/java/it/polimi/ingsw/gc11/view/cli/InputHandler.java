@@ -14,8 +14,8 @@ import java.util.List;
 
 public class InputHandler {
 
-    private LineReader lineReader;
-    private BindingReader bindingReader;
+    private final LineReader lineReader;
+    private final BindingReader bindingReader;
 
 
 

@@ -7,9 +7,8 @@ import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 public class CheckTemplate extends CLITemplate {
 
-    public CheckTemplate(MainCLI mainCLI, CheckPhaseData checkPhaseData) {
+    public CheckTemplate(MainCLI mainCLI) {
         super(mainCLI);
-        checkPhaseData.setListener(this);
     }
 
 
@@ -19,9 +18,15 @@ public class CheckTemplate extends CLITemplate {
         render(checkPhaseData);
     }
 
+    @Override
+    public void change(){
+        mainCLI.changeTemplate(this);
+    }
+
 
 
     public void render(CheckPhaseData data) {
-        //stampo il template con i dati aggiornati
+        clearView();
+        System.out.println("\n\nBuilding Phase");
     }
 }

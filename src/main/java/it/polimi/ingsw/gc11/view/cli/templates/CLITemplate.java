@@ -32,6 +32,8 @@ public abstract class CLITemplate extends Template {
     @Override
     public void update (EndPhaseData endPhaseData) {}
 
+    public abstract void change();
+
 
 
     public void clearView() {

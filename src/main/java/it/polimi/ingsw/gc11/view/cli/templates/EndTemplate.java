@@ -7,9 +7,8 @@ import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 public class EndTemplate extends CLITemplate {
 
-    public EndTemplate(MainCLI mainCLI, EndPhaseData endPhaseData) {
+    public EndTemplate(MainCLI mainCLI) {
         super(mainCLI);
-        endPhaseData.setListener(this);
     }
 
 
@@ -19,9 +18,15 @@ public class EndTemplate extends CLITemplate {
         render(endPhaseData);
     }
 
+    @Override
+    public void change(){
+        mainCLI.changeTemplate(this);
+    }
+
 
 
     public void render(EndPhaseData data) {
-        //stampo il template con i dati aggiornati
+        clearView();
+        System.out.println("\n\nBuilding Phase");
     }
 }

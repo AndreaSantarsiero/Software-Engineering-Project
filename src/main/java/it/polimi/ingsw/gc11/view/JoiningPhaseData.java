@@ -25,7 +25,7 @@ public class JoiningPhaseData extends GamePhaseData {
     private int connectionTypeMenu = 0;
     private int createOrJoinMenu = 0;
     private int gameLevel = 0;
-    private int numPlayers;
+    private int numPlayers = 2;
     private int existingGameMenu = 0;
 
 
@@ -119,7 +119,9 @@ public class JoiningPhaseData extends GamePhaseData {
 
     @Override
     public void setIntegerChoice(int choice) {
-        setNumPlayers(choice);
+        if(state == JoiningState.CHOOSE_NUM_PLAYERS){
+            setNumPlayers(choice);
+        }
     }
 
     @Override

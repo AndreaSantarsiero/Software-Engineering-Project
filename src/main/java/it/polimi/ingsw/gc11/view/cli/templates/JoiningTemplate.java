@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
-import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -38,6 +37,11 @@ public class JoiningTemplate extends CLITemplate {
     @Override
     public void update (JoiningPhaseData joiningPhaseData) {
         render(joiningPhaseData);
+    }
+
+    @Override
+    public void change(){
+        mainCLI.changeTemplate(this);
     }
 
 
@@ -81,12 +85,10 @@ public class JoiningTemplate extends CLITemplate {
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
         }
         if (data.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_LEVEL.ordinal()) {
-            renderMenu("Choose match difficulty", gameLevels, data.getGameLevel());
+            renderMenu("- Choose match difficulty", gameLevels, data.getGameLevel());
 
             if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()){
-                System.out.println("\n\n");
-                data.setNumPlayers(2);
-                renderIntegerChoice("Insert number of players", data.getNumPlayers());
+                renderIntegerChoice("\n- Insert number of players", data.getNumPlayers());
             }
         }
         if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
@@ -112,6 +114,9 @@ public class JoiningTemplate extends CLITemplate {
             else {
                 renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
             }
+        }
+        if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.WAITING.ordinal()) {
+            System.out.println("\n\nWaiting for the match to start...");
         }
 
 
@@ -173,13 +178,9 @@ public class JoiningTemplate extends CLITemplate {
                     serverMessage = e.getMessage();
                 }
             }
-            else{
-                inputHandler.interactiveMenu(data, List.of(""), 0); //waiting to start
-            }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
         }
-
     }
 
 
