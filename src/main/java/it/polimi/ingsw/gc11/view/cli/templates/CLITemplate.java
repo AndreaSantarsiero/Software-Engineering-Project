@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.*;
+import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 
@@ -8,11 +9,23 @@ import it.polimi.ingsw.gc11.view.cli.MainCLI;
 public abstract class CLITemplate extends Template {
 
     protected final MainCLI mainCLI;
+    protected InputHandler inputHandler;
 
 
 
-    public CLITemplate(MainCLI mainCLI) {
+    public CLITemplate(MainCLI mainCLI, InputHandler inputHandler) {
         this.mainCLI = mainCLI;
+        this.inputHandler = inputHandler;
+    }
+
+
+
+    public InputHandler getInputHandler() {
+        return inputHandler;
+    }
+
+    public void setInputHandler(InputHandler inputHandler) {
+        this.inputHandler = inputHandler;
     }
 
 

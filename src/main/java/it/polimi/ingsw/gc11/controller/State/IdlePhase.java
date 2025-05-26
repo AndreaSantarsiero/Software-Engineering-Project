@@ -11,10 +11,13 @@ import it.polimi.ingsw.gc11.model.Player;
 
 
 public class IdlePhase extends GamePhase {
+
     private final GameContext gameContext;
     private final GameModel gameModel;
     private boolean isFullLobby;
     private int numReadyPlayers;
+
+
 
     public IdlePhase(GameContext gameContext) {
         this.gameContext = gameContext;
@@ -22,6 +25,8 @@ public class IdlePhase extends GamePhase {
         this.numReadyPlayers = 0;
         this.isFullLobby = false;
     }
+
+
 
     @Override
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
@@ -31,6 +36,8 @@ public class IdlePhase extends GamePhase {
             this.isFullLobby = true;
         }
     }
+
+
 
     @Override
     public String chooseColor(String username, String chosenColor) {
@@ -47,8 +54,9 @@ public class IdlePhase extends GamePhase {
                 this.gameContext.setPhase(new BuildingPhaseTrial(this.gameContext));
             }
 
-            SetBuildingPhaseAction send = new SetBuildingPhaseAction();
+
             for (Player p : gameModel.getPlayers()) {
+                SetBuildingPhaseAction send = new SetBuildingPhaseAction(p.getShipBoard());
                 gameContext.sendAction(p.getUsername(), send);
             }
         }

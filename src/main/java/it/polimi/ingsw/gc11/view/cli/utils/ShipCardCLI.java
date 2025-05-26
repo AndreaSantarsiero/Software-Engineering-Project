@@ -164,7 +164,17 @@ public class ShipCardCLI {
      * @param housingUnit the HousingUnit instance
      */
     public void setColor(HousingUnit housingUnit) {
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+        if(housingUnit.isCentral()){
+            switch (housingUnit.getId()){
+                case "BlueCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+                case "GreenCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
+                case "RedCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED));
+                case "YellowCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
+            }
+        }
+        else{
+            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+        }
     }
 
 

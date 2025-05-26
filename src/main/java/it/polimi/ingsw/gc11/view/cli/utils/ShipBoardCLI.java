@@ -56,6 +56,9 @@ public class ShipBoardCLI {
                         if(shipCard != null) {
                             shipCard.print(shipCardCLI, i);
                         }
+                        else if (shipBoard.validateIndexes(x, y)) {
+                            shipCardCLI.printEmptyShipCard(i);
+                        }
                         else{
                             printInvalidSquare();
                         }

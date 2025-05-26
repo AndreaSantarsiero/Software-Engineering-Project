@@ -152,8 +152,19 @@ public class ShipCardLoader {
         return shipCards;
     }
 
-    public List<HousingUnit> getCentralUnits() {
-        return centralUnits;
+    public Map<String, HousingUnit> getCentralUnits() {
+        Map<String, HousingUnit> centralUnitMap = new HashMap<>();
+
+        for (HousingUnit centralUnit : centralUnits) {
+            switch (centralUnit.getId()){
+                case "BlueCentralUnit" -> centralUnitMap.put("blue", centralUnit);
+                case "GreenCentralUnit" -> centralUnitMap.put("green", centralUnit);
+                case "RedCentralUnit" -> centralUnitMap.put("red", centralUnit);
+                case "YellowCentralUnit" -> centralUnitMap.put("yellow", centralUnit);
+            }
+        }
+
+        return centralUnitMap;
     }
 }
 
