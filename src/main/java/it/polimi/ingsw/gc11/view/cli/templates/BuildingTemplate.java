@@ -39,5 +39,6 @@ public class BuildingTemplate extends CLITemplate {
         clearView();
         System.out.println("\n\nBuilding Phase");
         shipBoardCLI.print(data.getShipBoard());
+        Thread.dumpStack();
     }
 }
