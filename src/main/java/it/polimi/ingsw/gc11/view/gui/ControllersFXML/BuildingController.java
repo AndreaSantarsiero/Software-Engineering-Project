@@ -89,7 +89,7 @@ public class BuildingController implements Initializable {
                         double pw = slotGrid.getColumnConstraints().get(c).getPercentWidth() / 100.0;
                         double ph = slotGrid.getRowConstraints().get(r).getPercentHeight() / 100.0;
 
-                        // scala alla dimensione di cella
+
                         iv.fitWidthProperty().bind(
                                 slotGrid.widthProperty()
                                         .multiply(pw)
@@ -101,11 +101,9 @@ public class BuildingController implements Initializable {
                                         .subtract(slotGrid.getVgap())
                         );
 
-                        // allinea al centro
                         GridPane.setHalignment(iv, HPos.CENTER);
                         GridPane.setValignment(iv, VPos.CENTER);
 
-                        // inserisci in [col=c, row=r]
                         slotGrid.add(iv, c, r);
                     }
                 }
