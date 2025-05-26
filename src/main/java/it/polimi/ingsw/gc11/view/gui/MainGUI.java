@@ -1,13 +1,11 @@
 package it.polimi.ingsw.gc11.view.gui;
 
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.net.URL;
 
 
 public class MainGUI extends Application {
@@ -27,7 +25,7 @@ public class MainGUI extends Application {
                 MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml")
         );
         Parent root = loader.load();
-        Scene scene = new Scene(root, 1024, 768);
+        Scene scene = new Scene(root, 860, 640);
         stage.setUserData(this.viewModel);
 
         //stage.setFullScreen(true);
