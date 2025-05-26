@@ -178,9 +178,6 @@ public class JoiningTemplate extends CLITemplate {
                     serverMessage = e.getMessage();
                 }
             }
-//            else{
-//                inputHandler.interactiveMenu(data, List.of(""), 0); //waiting to start
-//            }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
         }

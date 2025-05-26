@@ -27,6 +27,9 @@ public class IdlePhase extends GamePhase {
 
         if (gameModel.getPlayers().size() == gameModel.getMaxNumPlayers()){
             this.isFullLobby = true;
+            for (Player player : gameModel.getPlayers()) {
+                gameContext.sendAction(player.getUsername(), new SetBuildingPhaseAction());
+            }
         }
     }
 
