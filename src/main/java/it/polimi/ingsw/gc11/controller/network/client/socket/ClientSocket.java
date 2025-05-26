@@ -66,7 +66,7 @@ public class ClientSocket extends Client {
     }
 
     @Override
-    public List<Player> getPlayers(String username, UUID token, String matchID){
+    public List<Player> getPlayers(String username){
         return null;
     }
 

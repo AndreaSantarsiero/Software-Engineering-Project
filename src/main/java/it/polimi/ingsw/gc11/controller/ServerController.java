@@ -206,8 +206,9 @@ public class ServerController {
     }
 
 
-    public List<Player> getPlayers(String username, UUID token, String matchID){
-        getPlayerSession(username, token);
+    public List<Player> getPlayers(String username, UUID token){
+        //Get matchId of the gameContext paired with the username provided
+        String matchID = getPlayerSession(username, token).getVirtualClient().getGameContext().getMatchID();
         GameContext match = availableMatches.get(matchID);
 
         if (match == null) {

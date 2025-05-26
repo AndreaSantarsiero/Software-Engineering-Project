@@ -8,9 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -60,19 +60,26 @@ public class CreateMatchController implements Initializable {
         int selectedNumberOfPlayers = Integer.parseInt(numberOfPlayers.getValue());
 
         try {
-            System.out.println(viewModel.getMyself().getUsername() + ": created a new match of type " +
-                    selectedFlightTypeString  + "with " + selectedNumberOfPlayers + " players");
             virtualServer.createMatch(selectedFlightType, selectedNumberOfPlayers);
+
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load());
+            Parent root = fxmlLoader.load();
+            Scene newScene = new Scene(root);
             stage.setScene(newScene);
+            LobbyController controller = fxmlLoader.getController();
+            controller.setStage((Stage) newScene.getWindow());
             stage.show();
+            controller.initialize();
+
+            System.out.println(viewModel.getMyself().getUsername() + ": created a new match of type " +
+                    selectedFlightTypeString  + " with " + selectedNumberOfPlayers + " players");
         }
         catch (Exception e) {
             label.setVisible(true );
             label.setText(e.getMessage());
             label.setStyle("-fx-text-fill: red;" + label.getStyle());
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

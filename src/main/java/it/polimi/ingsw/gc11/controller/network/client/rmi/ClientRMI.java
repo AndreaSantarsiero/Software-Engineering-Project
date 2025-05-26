@@ -78,9 +78,9 @@ public class ClientRMI extends Client implements ClientInterface {
     }
 
     @Override
-    public List<Player> getPlayers(String username, UUID token, String matchID) throws NetworkException{
+    public List<Player> getPlayers(String username) throws NetworkException{
         try{
-            return stub.getPlayers(username, token, matchID);
+            return stub.getPlayers(username, clientSessionToken);
         }
         catch (RemoteException e){
             throw new NetworkException(e.getMessage());

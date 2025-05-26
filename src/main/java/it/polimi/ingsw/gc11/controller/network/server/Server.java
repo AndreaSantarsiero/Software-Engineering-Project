@@ -72,8 +72,8 @@ public abstract class Server {
         return serverController.getAvailableMatches(username, token);
     }
 
-    public List<Player> getPlayers(String username, UUID token, String matchID){
-        return serverController.getPlayers(username, token, matchID);
+    public List<Player> getPlayers(String username, UUID token){
+        return serverController.getPlayers(username, token);
     }
 
 

@@ -20,7 +20,7 @@ public interface ServerInterface extends Remote {
     void createMatch(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers) throws RemoteException, FullLobbyException, UsernameAlreadyTakenException;
     void connectPlayerToGame(String username, UUID token, String matchId) throws RemoteException, FullLobbyException, NullPointerException, UsernameAlreadyTakenException;
     Map<String, List<String>> getAvailableMatches(String username, UUID token) throws RemoteException;
-    List<Player> getPlayers(String username, UUID token, String matchID) throws RemoteException;
+    List<Player> getPlayers(String username, UUID token) throws RemoteException;
 
 
     void sendAction(ClientAction action, UUID token) throws RemoteException;

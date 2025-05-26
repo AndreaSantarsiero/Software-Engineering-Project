@@ -59,8 +59,8 @@ public class VirtualServer {
         return client.getAvailableMatches(username);
     }
 
-    public List<Player> getPlayers(String username, UUID token, String matchID) throws NetworkException {
-        return client.getPlayers(username, token, matchID);
+    public List<Player> getPlayers() throws NetworkException {
+        return client.getPlayers(username);
     }
 
     public void chooseColor(String chosenColor) throws NetworkException {
