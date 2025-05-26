@@ -21,7 +21,7 @@
                 </ImageView>
 
                 <!-- Griglia trasparente allineata agli slot -->
-                <GridPane fx:id="slotGrid" alignment="CENTER">
+                <GridPane fx:id="slotGrid" alignment="CENTER" vgap="5" hgap="5" >
                     <columnConstraints>
                         <ColumnConstraints percentWidth="10"/>
                         <ColumnConstraints percentWidth="10"/>
