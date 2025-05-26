@@ -65,7 +65,7 @@ public class JoiningTemplate extends CLITemplate {
         System.out.println("\n\n");
 
 
-        renderMenu("Choose networking protocol (Use W/S or ↑/↓ to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
+        renderMenu("Choose networking protocol (Use W/S to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
 
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_USERNAME.ordinal()) {
             if(usernameApproved) {
