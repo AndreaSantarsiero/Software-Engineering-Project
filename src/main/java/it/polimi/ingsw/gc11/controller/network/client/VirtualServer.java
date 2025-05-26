@@ -10,6 +10,7 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.PlayerContext;
 import java.util.*;
@@ -56,6 +57,10 @@ public class VirtualServer {
 
     public Map<String, List<String>> getAvailableMatches() throws NetworkException {
         return client.getAvailableMatches(username);
+    }
+
+    public List<Player> getPlayers(String username, UUID token, String matchID) throws NetworkException {
+        return client.getPlayers(username, token, matchID);
     }
 
     public void chooseColor(String chosenColor) throws NetworkException {

@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
@@ -61,6 +62,11 @@ public class ClientSocket extends Client {
 
     @Override
     public Map<String, List<String>> getAvailableMatches(String username) throws NetworkException {
+        return null;
+    }
+
+    @Override
+    public List<Player> getPlayers(String username, UUID token, String matchID){
         return null;
     }
 

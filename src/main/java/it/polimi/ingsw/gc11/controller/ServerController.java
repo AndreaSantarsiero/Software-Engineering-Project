@@ -206,6 +206,18 @@ public class ServerController {
     }
 
 
+    public List<Player> getPlayers(String username, UUID token, String matchID){
+        getPlayerSession(username, token);
+        GameContext match = availableMatches.get(matchID);
+
+        if (match == null) {
+            throw new IllegalArgumentException("No matches found for matchID " + matchID);
+        }
+
+        return match.getGameModel().getPlayers();
+    }
+
+
 
     //cosa facciamo se il player si disconnette? invalidare il token, freeze, riconnect ecc
     //cosa facciamo a fine game? bisogna levare username e token dalla mappa credo
