@@ -16,11 +16,14 @@ public class AdventureTemplate extends CLITemplate {
 
     @Override
     public void update (AdventurePhaseData adventurePhaseData) {
-        render(adventurePhaseData);
+        if (active) {
+            render(adventurePhaseData);
+        }
     }
 
     @Override
     public void change(){
+        active = false;
         mainCLI.changeTemplate(this);
     }
 

@@ -11,11 +11,16 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +32,7 @@ public class BuildingController implements Initializable {
     @FXML private StackPane boardPane;
     @FXML private AnchorPane cardPane;
     @FXML private ImageView boardBackground;
+    @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
 
@@ -36,8 +42,8 @@ public class BuildingController implements Initializable {
 
         root.widthProperty().addListener((o,oldW,newW) -> {
             double w = newW.doubleValue();
-            boardPane.setPrefWidth(w * 0.79);
-            cardPane.setPrefWidth(w * 0.21);
+            boardPane.setPrefWidth(w * 0.8);
+            cardPane.setPrefWidth(w * 0.2);
         });
         HBox.setHgrow(boardPane, Priority.ALWAYS);
         HBox.setHgrow(cardPane, Priority.ALWAYS);
@@ -47,14 +53,14 @@ public class BuildingController implements Initializable {
 
         slotGrid.prefWidthProperty().bind(boardPane.widthProperty());
         slotGrid.prefHeightProperty().bind(boardPane.heightProperty());
-        double hgap = slotGrid.getHgap();
-        double vgap = slotGrid.getVgap();
+        double gridHgap = slotGrid.getHgap();
+        double gridVgap = slotGrid.getVgap();
 
-        int cols = slotGrid.getColumnCount();
-        int rows = slotGrid.getRowCount();
+        int cols = slotGrid.getColumnConstraints().size();
+        int rows = slotGrid.getRowConstraints().size();
 
         slotGrid.widthProperty().addListener((obs, oldW, newW) -> {
-            double cellW = (newW.doubleValue() - (cols - 1)*hgap) / cols;
+            double cellW = (newW.doubleValue() - (cols - 1)*gridHgap) / cols;
             slotGrid.getChildren().stream()
                     .filter(n -> n instanceof ImageView)
                     .map(n -> (ImageView)n)
@@ -62,7 +68,7 @@ public class BuildingController implements Initializable {
         });
 
         slotGrid.heightProperty().addListener((obs, oldH, newH) -> {
-            double cellH = (newH.doubleValue() - (rows - 1)*vgap) / rows;
+            double cellH = (newH.doubleValue() - (rows - 1)*gridVgap) / rows;
             slotGrid.getChildren().stream()
                     .filter(n -> n instanceof ImageView)
                     .map(n -> (ImageView)n)
@@ -73,40 +79,51 @@ public class BuildingController implements Initializable {
         ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         ShipBoard shipBoard = loader.getShipBoard();
 
+
+        DoubleBinding cellSize = Bindings.createDoubleBinding(() -> {
+            double w = boardPane.getWidth()  - (cols - 1) * gridHgap;
+            double h = boardPane.getHeight() - (rows - 1) * gridVgap;
+            return Math.min(w / cols, h / rows);
+        }, slotGrid.widthProperty(), slotGrid.heightProperty());
+
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
                 if(shipBoard.validateIndexes(c,r)){
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
-                    ImageView iv;
+                    Image img;
                     if(shipCard != null) {
 
-                        iv = new ImageView(
-                                new Image(getClass()
+                        img = new Image(getClass()
                                         .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipCard.getId() + ".jpg")
                                         .toExternalForm()
+                        );
+
+                        BackgroundImage bgImg = new BackgroundImage(
+                                img,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.CENTER,
+                                new BackgroundSize(
+                                        100, 100,
+                                        true, true,
+                                        false, true
                                 )
                         );
-                        iv.setPreserveRatio(true);
 
-                        double pw = slotGrid.getColumnConstraints().get(c).getPercentWidth() / 100.0;
-                        double ph = slotGrid.getRowConstraints().get(r).getPercentHeight() / 100.0;
+                        Button btn = new Button();
+                        btn.setBackground(new Background(bgImg));
+                        btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                        final int x = c;
+                        final int y = r;
+                        btn.setOnAction(event -> onShipBoardSelected(x, y));
 
 
-                        iv.fitWidthProperty().bind(
-                                slotGrid.widthProperty()
-                                        .multiply(pw)
-                                        .subtract(slotGrid.getHgap())
-                        );
-                        iv.fitHeightProperty().bind(
-                                slotGrid.heightProperty()
-                                        .multiply(ph)
-                                        .subtract(slotGrid.getVgap())
-                        );
+                        btn.prefWidthProperty().bind(cellSize);
+                        btn.prefHeightProperty().bind(cellSize);
+                        GridPane.setHgrow(btn, Priority.ALWAYS);
+                        GridPane.setVgrow(btn, Priority.ALWAYS);
 
-                        GridPane.setHalignment(iv, HPos.CENTER);
-                        GridPane.setValignment(iv, VPos.CENTER);
-
-                        slotGrid.add(iv, c, r);
+                        slotGrid.add(btn, c, r);
                     }
                 }
             }
@@ -115,6 +132,20 @@ public class BuildingController implements Initializable {
         ShipCardLoader shipCardLoader = new ShipCardLoader();
         List<ShipCard> shipCards = shipCardLoader.getAllShipCards();
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
+
+        cardTile.setPrefColumns(2);
+        double hgap = cardTile.getHgap();
+
+        ChangeListener<Bounds> cl = (obs,oldB,newB) -> {
+            double availW = newB.getWidth();
+            int tileCols = cardTile.getPrefColumns();
+            double totalHGap = (tileCols - 1)*hgap;
+            double cellW = (availW - totalHGap - 25)/tileCols;
+            cardTile.setPrefTileWidth(cellW);
+            cardTile.setPrefTileHeight(cellW);
+        };
+
+        tileScroll.viewportBoundsProperty().addListener(cl);
 
         for (int i = 0; i < shipCards.size(); i++) {
             ShipCard shipCard = shipCards.get(i);
@@ -128,23 +159,29 @@ public class BuildingController implements Initializable {
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundPosition.CENTER,
                     new BackgroundSize(
-                            150, 150,
-                            false, false,
-                            false, false
+                            100, 100,
+                            true, true,
+                            false, true
                     )
             );
 
             Button btn = new Button();
             btn.setBackground(new Background(bgImg));
-            btn.setPrefSize(150, 150);
+            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            btn.prefWidthProperty().bind(cardTile.prefTileWidthProperty());
+            btn.prefHeightProperty().bind(cardTile.prefTileHeightProperty());
             final int index = i;
             btn.setOnAction(event -> onShipCardSelected(index));
 
             cardTile.getChildren().add(btn);
         }
+
     }
 
     private void onShipCardSelected(int index) {
         System.out.println("ShipCard selezionata indice: " + index);
+    }
+    private void onShipBoardSelected(int x, int y) {
+        System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
     }
 }

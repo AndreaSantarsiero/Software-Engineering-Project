@@ -7,8 +7,6 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
-import org.jline.utils.AttributedString;
-import org.jline.utils.AttributedStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,6 @@ public class JoiningTemplate extends CLITemplate {
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
     private static final List<String> gameLevels = List.of("Trial", "Level II");
     private static final List<String> colorOptions = List.of("blue", "green", "red", "yellow");
-    private String serverMessage;
     private boolean usernameApproved = false;
     private boolean noAvailableMatches = false;
 
@@ -41,11 +38,14 @@ public class JoiningTemplate extends CLITemplate {
 
     @Override
     public void update (JoiningPhaseData joiningPhaseData) {
-        render(joiningPhaseData);
+        if (active) {
+            render(joiningPhaseData);
+        }
     }
 
     @Override
     public void change(){
+        active = false;
         mainCLI.changeTemplate(this);
     }
 
@@ -201,33 +201,6 @@ public class JoiningTemplate extends CLITemplate {
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
         }
-    }
-
-
-
-    private void renderMenu(String title, List<String> options, int selected) {
-        if (title != null && !title.isEmpty()) {
-            System.out.println(title);
-        }
-        for (int i = 0; i < options.size(); i++) {
-            if (i == selected) {
-                AttributedString highlighted = new AttributedString(
-                        "  > " + options.get(i),
-                        AttributedStyle.DEFAULT.background(235)
-                );
-                System.out.println(highlighted.toAnsi());
-            } else {
-                System.out.println("    " + options.get(i));
-            }
-        }
-    }
-
-
-
-    private void renderIntegerChoice(String label, int value) {
-        String line = label + ": " + value;
-        AttributedString highlighted = new AttributedString(line, AttributedStyle.DEFAULT.background(235));
-        System.out.print(highlighted.toAnsi());
     }
 
 

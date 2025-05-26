@@ -16,11 +16,14 @@ public class CheckTemplate extends CLITemplate {
 
     @Override
     public void update (CheckPhaseData checkPhaseData) {
-        render(checkPhaseData);
+        if (active) {
+            render(checkPhaseData);
+        }
     }
 
     @Override
     public void change(){
+        active = false;
         mainCLI.changeTemplate(this);
     }
 

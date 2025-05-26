@@ -13,10 +13,18 @@ import java.util.Map;
 
 public class BuildingPhaseData extends GamePhaseData {
 
+    public enum BuildingState {
+        CHOOSE_MAIN_MENU, CHOOSE_FREE_SHIPCARD, CHOOSE_COORDINATES
+    }
+
+
+
+    private BuildingState state;
     private ShipBoard shipBoard;    //la mia nave mentre la monto
     private Map<String, ShipBoard> enemiesShipBoard;    //associo username altri player alla loro nave
     private ShipCard heldShipCard;  //la shipcard che tengo in mano
     private List<AdventureCard> miniDeck;
+    private int mainMenu;
 
 
     public BuildingPhaseData() {
@@ -33,11 +41,33 @@ public class BuildingPhaseData extends GamePhaseData {
 
 
 
-    @Override
-    public void setMenuChoice(int choice){}
+    public BuildingState getState() {
+        return state;
+    }
+
+    public void updateState() {
+        if (state.ordinal() < BuildingState.values().length - 1) {
+            state = BuildingState.values()[state.ordinal() + 1];
+        }
+        notifyListener();
+    }
+
+    public void setState(BuildingState state) {
+        this.state = state;
+        notifyListener();
+    }
+
+
 
     @Override
-    public void confirmMenuChoice(){}
+    public void setMenuChoice(int choice){
+        setMainMenu(choice);
+    }
+
+    @Override
+    public void confirmMenuChoice(){
+        updateState();
+    }
 
     @Override
     public void setStringInput(String input) {}
@@ -56,13 +86,13 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
-        this.notifyListener();
+        notifyListener();
     }
 
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
-        this.notifyListener();
+        notifyListener();
     }
 
     public ShipCard getHeldShipCard() {
@@ -71,7 +101,7 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setHeldShipCard(ShipCard heldShipCard) {
         this.heldShipCard = heldShipCard;
-        this.notifyListener();
+        notifyListener();
     }
 
     public List<AdventureCard> getMiniDeck() {
@@ -80,7 +110,16 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
-        this.notifyListener();
+        notifyListener();
+    }
+
+    public int getMainMenu() {
+        return mainMenu;
+    }
+
+    public void setMainMenu(int mainMenu) {
+        this.mainMenu = mainMenu;
+        notifyListener();
     }
 
     @Override
