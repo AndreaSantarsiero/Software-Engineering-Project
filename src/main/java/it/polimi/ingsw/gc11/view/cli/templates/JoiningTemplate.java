@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
-import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -179,7 +178,6 @@ public class JoiningTemplate extends CLITemplate {
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
         }
-
     }
 
 
