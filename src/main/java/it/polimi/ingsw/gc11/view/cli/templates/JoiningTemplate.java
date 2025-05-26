@@ -21,7 +21,6 @@ public class JoiningTemplate extends CLITemplate {
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
     private static final List<String> gameLevels = List.of("Trial", "Level II");
     private static final List<String> colorOptions = List.of("blue", "green", "red", "yellow");
-    private final InputHandler inputHandler;
     private String serverMessage;
     private boolean usernameApproved = false;
     private boolean noAvailableMatches = false;
@@ -29,8 +28,13 @@ public class JoiningTemplate extends CLITemplate {
 
 
     public JoiningTemplate(MainCLI mainCLI) {
-        super(mainCLI);
-        inputHandler = new InputHandler();
+        super(mainCLI, new InputHandler());
+    }
+
+
+
+    public JoiningTemplate(MainCLI mainCLI, InputHandler inputHandler) {
+        super(mainCLI, inputHandler);
     }
 
 

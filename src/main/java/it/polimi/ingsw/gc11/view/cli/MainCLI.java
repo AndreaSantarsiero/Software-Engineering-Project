@@ -126,26 +126,26 @@ public class MainCLI {
 
     public void changeTemplate(JoiningTemplate joiningTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new BuildingTemplate(this));
+        data.setListener(new BuildingTemplate(this, joiningTemplate.getInputHandler()));
     }
 
     public void changeTemplate(BuildingTemplate buildingTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new CheckTemplate(this));
+        data.setListener(new CheckTemplate(this, buildingTemplate.getInputHandler()));
     }
 
     public void changeTemplate(CheckTemplate checkTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new AdventureTemplate(this));
+        data.setListener(new AdventureTemplate(this, checkTemplate.getInputHandler()));
     }
 
     public void changeTemplate(AdventureTemplate adventureTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new EndTemplate(this));
+        data.setListener(new EndTemplate(this, adventureTemplate.getInputHandler()));
     }
 
     public void changeTemplate(EndTemplate endTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new JoiningTemplate(this));
+        data.setListener(new JoiningTemplate(this, endTemplate.getInputHandler()));
     }
 }
