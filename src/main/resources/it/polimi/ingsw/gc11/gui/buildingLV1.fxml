@@ -52,7 +52,7 @@
                             hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
                             pannable="true" style="-fx-background-color: transparent;">
                     <content>
-                        <TilePane fx:id="cardTile" prefColumns="2" hgap="10" vgap="10">
+                        <TilePane fx:id="cardTile" prefColumns="2" hgap="5" vgap="5">
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
