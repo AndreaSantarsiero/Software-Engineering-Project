@@ -192,6 +192,7 @@ public class JoiningTemplate extends CLITemplate {
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
                 mainCLI.getVirtualServer().chooseColor(colorOptions.get(data.getChosenColorMenu()));
+                data.updateState();
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());

@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.exceptions.*;
 import it.polimi.ingsw.gc11.loaders.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class GameModel {
     private AdventureDeck definitiveDeck;
     private List<ShipCard> freeShipCards;
     private final Map<String, ShipCard> heldShipCards;
+    private final Map<String, HousingUnit> centralUnits;
     private final List<AdventureCard> adventureCardsTrial; //8 cards
     private final List<AdventureCard> adventureCardsLevel1; //12 cards
     private final List<AdventureCard> adventureCardsLevel2; //20 cards
@@ -42,6 +44,7 @@ public class GameModel {
         ShipCardLoader shipCardLoader = new ShipCardLoader();
         freeShipCards = shipCardLoader.getAvailableShipCards();
         heldShipCards = new HashMap<>();
+        centralUnits = shipCardLoader.getCentralUnits();
         Collections.shuffle(freeShipCards);
         freeShipCards = new ArrayList<>(freeShipCards);
         AdventureCardLoader adventureCardLoader = new AdventureCardLoader();
@@ -262,7 +265,7 @@ public class GameModel {
             throw new IllegalArgumentException(color.toUpperCase() + " is not available");
         }
         this.availableColors.put(color, Boolean.FALSE);
-        player.setColor(color);
+        player.setColor(color, centralUnits);
     }
 
 

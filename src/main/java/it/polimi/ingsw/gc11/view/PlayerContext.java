@@ -19,7 +19,6 @@ public class PlayerContext {
     }
 
     public void setBuildingPhase() {
-        System.out.println("IL SERVER VUOLE STARTARE IL MATCH!!!");
         Template listener = currentPhase.getListener();
         this.currentPhase = new BuildingPhaseData();
         if (listener != null) {

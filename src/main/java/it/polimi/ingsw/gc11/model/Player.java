@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc11.model;
 import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import java.util.Map;
 
 
 
@@ -37,12 +39,24 @@ public class Player {
         return color.toString().toLowerCase();
     }
 
-    public void setColor(String color) {
+    public void setColor(String color, Map<String, HousingUnit> centralUnits) {
         switch (color) {
-            case "red" -> this.color = Color.RED;
-            case "green" -> this.color = Color.GREEN;
-            case "blue" -> this.color = Color.BLUE;
-            case "yellow" -> this.color = Color.YELLOW;
+            case "red" -> {
+                this.color = Color.RED;
+                shipBoard.setCentralUnit(centralUnits.get(color));
+            }
+            case "green" -> {
+                this.color = Color.GREEN;
+                shipBoard.setCentralUnit(centralUnits.get(color));
+            }
+            case "blue" -> {
+                this.color = Color.BLUE;
+                shipBoard.setCentralUnit(centralUnits.get(color));
+            }
+            case "yellow" -> {
+                this.color = Color.YELLOW;
+                shipBoard.setCentralUnit(centralUnits.get(color));
+            }
         }
     }
 

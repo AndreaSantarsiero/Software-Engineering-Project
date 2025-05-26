@@ -47,8 +47,9 @@ public class IdlePhase extends GamePhase {
                 this.gameContext.setPhase(new BuildingPhaseTrial(this.gameContext));
             }
 
-            SetBuildingPhaseAction send = new SetBuildingPhaseAction();
+
             for (Player p : gameModel.getPlayers()) {
+                SetBuildingPhaseAction send = new SetBuildingPhaseAction(p.getShipBoard());
                 gameContext.sendAction(p.getUsername(), send);
             }
         }

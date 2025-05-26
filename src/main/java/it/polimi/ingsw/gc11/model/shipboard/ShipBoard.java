@@ -281,6 +281,28 @@ public abstract class ShipBoard  implements Serializable {
         return components[i][j];
     }
 
+    /**
+     * Sets the central {@link HousingUnit} on the board at the designated central position
+     * <p>
+     * This method validates that the provided {@code HousingUnit} is not {@code null} and is
+     * marked as a central unit before placing it at the center of the board grid (typically at (7,7),
+     * adjusted by {@code adaptX} and {@code adaptY}).
+     *
+     * @param centralUnit the {@code HousingUnit} to be placed at the center of the board
+     * @throws IllegalArgumentException if {@code centralUnit} is {@code null} or not marked as central
+     */
+    public void setCentralUnit(HousingUnit centralUnit) {
+        if (centralUnit == null) {
+            throw new IllegalArgumentException("Central unit cannot be null");
+        }
+        if (!centralUnit.isCentral()){
+            throw new IllegalArgumentException("Housing unit is not a central unit");
+        }
+        int i = adaptY(7);
+        int j = adaptX(7);
+        components[i][j] = centralUnit;
+    }
+
 
 
     /**
