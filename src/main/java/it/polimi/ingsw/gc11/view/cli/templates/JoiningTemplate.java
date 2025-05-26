@@ -84,7 +84,6 @@ public class JoiningTemplate extends CLITemplate {
 
             if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()){
                 System.out.println("\n\n");
-                data.setNumPlayers(2);
                 renderIntegerChoice("Insert number of players", data.getNumPlayers());
             }
         }

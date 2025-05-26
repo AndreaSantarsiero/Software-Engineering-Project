@@ -25,7 +25,7 @@ public class JoiningPhaseData extends GamePhaseData {
     private int connectionTypeMenu = 0;
     private int createOrJoinMenu = 0;
     private int gameLevel = 0;
-    private int numPlayers;
+    private int numPlayers = 2;
     private int existingGameMenu = 0;
 
 
