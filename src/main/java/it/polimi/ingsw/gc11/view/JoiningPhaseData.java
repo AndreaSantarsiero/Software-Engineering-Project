@@ -119,7 +119,9 @@ public class JoiningPhaseData extends GamePhaseData {
 
     @Override
     public void setIntegerChoice(int choice) {
-        setNumPlayers(choice);
+        if(state == JoiningState.CHOOSE_NUM_PLAYERS){
+            setNumPlayers(choice);
+        }
     }
 
     @Override
@@ -170,7 +172,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
-        //notifyListener();
+        notifyListener();
     }
 
     public int getExistingGameMenu() {
