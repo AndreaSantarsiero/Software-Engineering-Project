@@ -21,6 +21,7 @@ public abstract class GamePhaseData {
 
     public void setListener(Template listener) {
         this.listener = listener;
+        notifyListener();
     }
 
     public abstract void notifyListener();
