@@ -6,12 +6,10 @@
 <?import javafx.geometry.*?>
 
 <!-- Scene divisa in due parti: sinistra con plancia nave, destra con selezione tessere scrollabile -->
-<SplitPane fx:id="splitPane"
-           orientation="HORIZONTAL"
-           dividerPositions="0.79"
+<HBox fx:id="root"
+           spacing="0"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingController">
-    <items>
         <!-- Parte sinistra: plancia nave -->
         <StackPane fx:id="boardPane" minWidth="0" minHeight="0">
             <children>
@@ -24,7 +22,6 @@
 
                 <!-- Griglia trasparente allineata agli slot -->
                 <GridPane fx:id="slotGrid" alignment="CENTER">
-                    <!-- 6×6: adattare colonne/righe secondo necessità -->
                     <columnConstraints>
                         <ColumnConstraints percentWidth="10"/>
                         <ColumnConstraints percentWidth="10"/>
@@ -64,5 +61,4 @@
                 </ScrollPane>
             </children>
         </AnchorPane>
-    </items>
-</SplitPane>
+</HBox>

@@ -23,8 +23,9 @@ import javafx.scene.layout.*;
 
 public class BuildingController implements Initializable {
 
-    @FXML private SplitPane splitPane;
+    @FXML private HBox root;
     @FXML private StackPane boardPane;
+    @FXML private AnchorPane cardPane;
     @FXML private ImageView boardBackground;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
@@ -32,6 +33,14 @@ public class BuildingController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        root.widthProperty().addListener((o,oldW,newW) -> {
+            double w = newW.doubleValue();
+            boardPane.setPrefWidth(w * 0.79);
+            cardPane.setPrefWidth(w * 0.21);
+        });
+        HBox.setHgrow(boardPane, Priority.ALWAYS);
+        HBox.setHgrow(cardPane, Priority.ALWAYS);
 
         boardBackground.fitWidthProperty().bind(boardPane.widthProperty());
         boardBackground.fitHeightProperty().bind(boardPane.heightProperty());
@@ -43,13 +52,6 @@ public class BuildingController implements Initializable {
 
         int cols = slotGrid.getColumnCount();
         int rows = slotGrid.getRowCount();
-
-        splitPane.getItems().forEach(node -> {
-            if (node instanceof Region) {
-                ((Region)node).setMinWidth(0);
-                ((Region)node).setMinHeight(0);
-            }
-        });
 
         slotGrid.widthProperty().addListener((obs, oldW, newW) -> {
             double cellW = (newW.doubleValue() - (cols - 1)*hgap) / cols;
@@ -140,13 +142,7 @@ public class BuildingController implements Initializable {
 
             cardTile.getChildren().add(btn);
         }
-
-
-        Platform.runLater(() -> splitPane.setDividerPositions(0.79));
-
     }
-
-    public SplitPane getSplitPane() { return splitPane; }
 
     private void onShipCardSelected(int index) {
         System.out.println("ShipCard selezionata indice: " + index);
