@@ -8,10 +8,8 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-import it.polimi.ingsw.gc11.model.shipcard.*;
+import it.polimi.ingsw.gc11.model.Player;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -75,6 +73,16 @@ public class ClientRMI extends Client implements ClientInterface {
         try {
             return stub.getAvailableMatches(username, clientSessionToken);
         } catch (RemoteException e) {
+            throw new NetworkException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Player> getPlayers(String username, UUID token, String matchID) throws NetworkException{
+        try{
+            return stub.getPlayers(username, token, matchID);
+        }
+        catch (RemoteException e){
             throw new NetworkException(e.getMessage());
         }
     }

@@ -8,6 +8,8 @@ import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.model.Player;
+
 import java.util.*;
 
 
@@ -70,6 +72,9 @@ public abstract class Server {
         return serverController.getAvailableMatches(username, token);
     }
 
+    public List<Player> getPlayers(String username, UUID token, String matchID){
+        return serverController.getPlayers(username, token, matchID);
+    }
 
 
     public void sendAction(ClientAction action, UUID token) {
