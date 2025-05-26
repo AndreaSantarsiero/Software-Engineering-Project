@@ -31,7 +31,7 @@ public class GameModel {
         id = UUID.randomUUID().toString();
         players = new  ArrayList<>(0);
         this.numPlayers = numPlayers;
-        this.availableColors = new HashMap<>();
+        availableColors = new HashMap<>();
         availableColors.put("red", Boolean.TRUE);
         availableColors.put("blue", Boolean.TRUE);
         availableColors.put("green", Boolean.TRUE);
@@ -249,6 +249,8 @@ public class GameModel {
         return players.getLast();
     }
 
+
+
     public void setPlayerColor(String username, String color) {
         Player player = this.getPlayer(username);
         //Player has already chosen a color
@@ -256,7 +258,7 @@ public class GameModel {
             throw new IllegalArgumentException("You have already chosen a color");
         }
         Boolean isAvailable = this.availableColors.get(color);
-        if (!isAvailable || isAvailable == null){
+        if (!isAvailable){
             throw new IllegalArgumentException(color.toUpperCase() + " is not available");
         }
         this.availableColors.put(color, Boolean.FALSE);

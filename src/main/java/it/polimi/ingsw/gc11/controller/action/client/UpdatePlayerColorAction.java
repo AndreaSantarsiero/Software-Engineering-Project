@@ -21,9 +21,7 @@ public class UpdatePlayerColorAction extends ServerAction {
     }
 
     @Override
-    public void loadData(JoiningPhaseData joiningPhaseData) {
-        joiningPhaseData.setPlayerColor(chosenColor);
-    }
+    public void loadData(JoiningPhaseData joiningPhaseData) {}
 
     @Override
     public void loadData(BuildingPhaseData buildingPhaseData) {}

@@ -10,14 +10,13 @@ import java.util.Map;
 public class JoiningPhaseData extends GamePhaseData {
 
     public enum JoiningState {
-        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_LEVEL, CHOOSE_NUM_PLAYERS, CHOOSE_GAME, GAME_SETUP, WAITING
+        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_LEVEL, CHOOSE_NUM_PLAYERS, CHOOSE_GAME, GAME_SETUP, CHOOSE_COLOR, COLOR_SETUP, WAITING
     }
 
 
 
     //modified by server with actions
     private Map<String, List<String>> availableMatches;
-    private String playerColor;
 
     //modified by user with input
     private JoiningState state;
@@ -27,6 +26,7 @@ public class JoiningPhaseData extends GamePhaseData {
     private int gameLevel = 0;
     private int numPlayers = 2;
     private int existingGameMenu = 0;
+    private int chosenColorMenu = 0;
 
 
 
@@ -50,14 +50,6 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setAvailableMatches(Map<String, List<String>> availableMatches) {
         this.availableMatches = availableMatches;
-    }
-
-    public String getPlayerColor() {
-        return playerColor;
-    }
-
-    public void setPlayerColor(String playerColor) {
-        this.playerColor = playerColor;
     }
 
 
@@ -103,6 +95,9 @@ public class JoiningPhaseData extends GamePhaseData {
         }
         else if(state == JoiningState.CHOOSE_GAME){
             setExistingGameMenu(choice);
+        }
+        else if(state == JoiningState.CHOOSE_COLOR){
+            setChosenColorMenu(choice);
         }
     }
 
@@ -181,6 +176,15 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setExistingGameMenu(int existingGameMenu) {
         this.existingGameMenu = existingGameMenu;
+        notifyListener();
+    }
+
+    public int getChosenColorMenu() {
+        return chosenColorMenu;
+    }
+
+    public void setChosenColorMenu(int chosenColorMenu) {
+        this.chosenColorMenu = chosenColorMenu;
         notifyListener();
     }
 

@@ -20,6 +20,7 @@ public class JoiningTemplate extends CLITemplate {
     private static final List<String> connectionTypes = List.of("Remote Method Invocation", "Socket");
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
     private static final List<String> gameLevels = List.of("Trial", "Level II");
+    private static final List<String> colorOptions = List.of("blue", "green", "red", "yellow");
     private final InputHandler inputHandler;
     private String serverMessage;
     private boolean usernameApproved = false;
@@ -115,6 +116,14 @@ public class JoiningTemplate extends CLITemplate {
                 renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
             }
         }
+        if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_COLOR.ordinal()) {
+            System.out.println("\n\n");
+            if(serverMessage != null && !serverMessage.isEmpty()) {
+                System.out.println(serverMessage);
+                serverMessage = "";
+            }
+            renderMenu("Choose your color", colorOptions, data.getChosenColorMenu());
+        }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.WAITING.ordinal()) {
             System.out.println("\n\nWaiting for the match to start...");
         }
@@ -177,6 +186,12 @@ public class JoiningTemplate extends CLITemplate {
                     data.setState(JoiningPhaseData.JoiningState.CHOOSE_USERNAME);
                     serverMessage = e.getMessage();
                 }
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
+                inputHandler.interactiveMenu(data, colorOptions, data.getChosenColorMenu());
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
+                mainCLI.getVirtualServer().chooseColor(colorOptions.get(data.getChosenColorMenu()));
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());

@@ -58,6 +58,11 @@ public class VirtualServer {
         return client.getAvailableMatches(username);
     }
 
+    public void chooseColor(String chosenColor) throws NetworkException {
+        ChooseColorAction action = new ChooseColorAction(username, chosenColor);
+        client.sendAction(action);
+    }
+
     //aggiungo metodo ping con lo stesso fotmat di createMatch ecc
 
 
