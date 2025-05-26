@@ -8,6 +8,8 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 
+
+
 public class IdlePhase extends GamePhase {
     private final GameContext gameContext;
     private final GameModel gameModel;
@@ -27,9 +29,6 @@ public class IdlePhase extends GamePhase {
 
         if (gameModel.getPlayers().size() == gameModel.getMaxNumPlayers()){
             this.isFullLobby = true;
-            for (Player player : gameModel.getPlayers()) {
-                gameContext.sendAction(player.getUsername(), new SetBuildingPhaseAction());
-            }
         }
     }
 
@@ -38,26 +37,19 @@ public class IdlePhase extends GamePhase {
         Player player = this.gameModel.getPlayer(username);
         String color = chosenColor.toLowerCase();
         this.gameModel.setPlayerColor(username, color);
-
         this.numReadyPlayers++;
+
         if (isFullLobby && (numReadyPlayers == gameModel.getMaxNumPlayers())) {
             if (gameModel.getFlightBoard().getType().equals(FlightBoard.Type.LEVEL2)){
                 this.gameContext.setPhase(new BuildingPhaseLv2(this.gameContext));
-
-                //Chiedo approval di santa:
-//                SetBuildingPhaseAction send = new SetBuildingPhaseAction();
-//                for (Player p : gameModel.getPlayers()) {
-//                    gameContext.sendAction(p.getUsername(), send);
-//                }
-
             }
             else if (gameModel.getFlightBoard().getType().equals(FlightBoard.Type.TRIAL)){
                 this.gameContext.setPhase(new BuildingPhaseTrial(this.gameContext));
-                //Chiedo approval di santa:
-//                SetBuildingPhaseAction send = new SetBuildingPhaseAction();
-//                for (Player p : gameModel.getPlayers()) {
-//                    gameContext.sendAction(p.getUsername(), send);
-//                }
+            }
+
+            SetBuildingPhaseAction send = new SetBuildingPhaseAction();
+            for (Player p : gameModel.getPlayers()) {
+                gameContext.sendAction(p.getUsername(), send);
             }
         }
 
