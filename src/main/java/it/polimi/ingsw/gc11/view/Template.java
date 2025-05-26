@@ -8,4 +8,6 @@ public abstract class Template {
     public abstract void update(CheckPhaseData checkPhaseData);
     public abstract void update(AdventurePhaseData adventurePhaseData);
     public abstract void update(EndPhaseData endPhaseData);
+
+    public abstract void change();
 }

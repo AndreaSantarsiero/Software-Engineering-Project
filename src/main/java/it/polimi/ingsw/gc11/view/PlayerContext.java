@@ -19,7 +19,11 @@ public class PlayerContext {
     }
 
     public void setBuildingPhase() {
+        Template listener = currentPhase.getListener();
         this.currentPhase = new BuildingPhaseData();
+        if (listener != null) {
+            listener.change();
+        }
     }
 
     public void setCheckPhase() {

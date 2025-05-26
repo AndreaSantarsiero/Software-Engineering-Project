@@ -39,6 +39,11 @@ public class JoiningTemplate extends CLITemplate {
         render(joiningPhaseData);
     }
 
+    @Override
+    public void change(){
+        mainCLI.changeTemplate(this);
+    }
+
 
 
     public void render(JoiningPhaseData data) {
@@ -80,11 +85,10 @@ public class JoiningTemplate extends CLITemplate {
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
         }
         if (data.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_LEVEL.ordinal()) {
-            renderMenu("Choose match difficulty", gameLevels, data.getGameLevel());
+            renderMenu("- Choose match difficulty", gameLevels, data.getGameLevel());
 
             if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()){
-                System.out.println("\n\n");
-                renderIntegerChoice("Insert number of players", data.getNumPlayers());
+                renderIntegerChoice("\n- Insert number of players", data.getNumPlayers());
             }
         }
         if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
@@ -110,6 +114,9 @@ public class JoiningTemplate extends CLITemplate {
             else {
                 renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
             }
+        }
+        if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.WAITING.ordinal()) {
+            System.out.println("\n\nWaiting for the match to start...");
         }
 
 

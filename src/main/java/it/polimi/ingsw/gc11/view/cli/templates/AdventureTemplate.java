@@ -7,9 +7,8 @@ import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 public class AdventureTemplate extends CLITemplate {
 
-    public AdventureTemplate(MainCLI mainCLI, AdventurePhaseData adventurePhaseData) {
+    public AdventureTemplate(MainCLI mainCLI) {
         super(mainCLI);
-        adventurePhaseData.setListener(this);
     }
 
 
@@ -19,9 +18,15 @@ public class AdventureTemplate extends CLITemplate {
         render(adventurePhaseData);
     }
 
+    @Override
+    public void change(){
+        mainCLI.changeTemplate(this);
+    }
+
 
 
     public void render(AdventurePhaseData data) {
-        //stampo il template con i dati aggiornati
+        clearView();
+        System.out.println("\n\nBuilding Phase");
     }
 }
