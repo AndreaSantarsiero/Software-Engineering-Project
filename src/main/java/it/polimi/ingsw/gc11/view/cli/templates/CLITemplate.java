@@ -13,6 +13,7 @@ public abstract class CLITemplate extends Template {
 
     protected final MainCLI mainCLI;
     protected InputHandler inputHandler;
+    protected boolean active = true;
     protected String serverMessage;
 
 

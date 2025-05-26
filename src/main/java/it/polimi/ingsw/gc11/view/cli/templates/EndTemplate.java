@@ -16,11 +16,14 @@ public class EndTemplate extends CLITemplate {
 
     @Override
     public void update (EndPhaseData endPhaseData) {
-        render(endPhaseData);
+        if (active) {
+            render(endPhaseData);
+        }
     }
 
     @Override
     public void change(){
+        active = false;
         mainCLI.changeTemplate(this);
     }
 

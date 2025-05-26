@@ -27,11 +27,14 @@ public class BuildingTemplate extends CLITemplate {
 
     @Override
     public void update (BuildingPhaseData buildingPhaseData) {
-        render(buildingPhaseData);
+        if (active) {
+            render(buildingPhaseData);
+        }
     }
 
     @Override
     public void change(){
+        active = false;
         mainCLI.changeTemplate(this);
     }
 

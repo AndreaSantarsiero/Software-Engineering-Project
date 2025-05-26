@@ -38,11 +38,14 @@ public class JoiningTemplate extends CLITemplate {
 
     @Override
     public void update (JoiningPhaseData joiningPhaseData) {
-        render(joiningPhaseData);
+        if (active) {
+            render(joiningPhaseData);
+        }
     }
 
     @Override
     public void change(){
+        active = false;
         mainCLI.changeTemplate(this);
     }
 
