@@ -15,13 +15,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 
 public class BuildingController implements Initializable {
 
@@ -116,21 +114,43 @@ public class BuildingController implements Initializable {
 
         ShipCardLoader shipCardLoader = new ShipCardLoader();
         List<ShipCard> shipCards = shipCardLoader.getAllShipCards();
-
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
-        for(ShipCard shipCard : shipCards){
+
+        for (int i = 0; i < shipCards.size(); i++) {
+            ShipCard shipCard = shipCards.get(i);
             Image img = new Image(
                     getClass().getResource(basePath + shipCard.getId() + ".jpg").toExternalForm()
             );
-            ImageView iv = new ImageView(img);
-            iv.setFitWidth(150);
-            iv.setPreserveRatio(true);
-            cardTile.getChildren().add(iv);
+
+            BackgroundImage bgImg = new BackgroundImage(
+                    img,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.CENTER,
+                    new BackgroundSize(
+                            150, 150,
+                            false, false,
+                            false, false
+                    )
+            );
+
+            Button btn = new Button();
+            btn.setBackground(new Background(bgImg));
+            btn.setPrefSize(150, 150);
+            final int index = i;
+            btn.setOnAction(event -> onShipCardSelected(index));
+
+            cardTile.getChildren().add(btn);
         }
+
 
         Platform.runLater(() -> splitPane.setDividerPositions(0.79));
 
     }
 
     public SplitPane getSplitPane() { return splitPane; }
+
+    private void onShipCardSelected(int index) {
+        System.out.println("ShipCard selezionata indice: " + index);
+    }
 }
