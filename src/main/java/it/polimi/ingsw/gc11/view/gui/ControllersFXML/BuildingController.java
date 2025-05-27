@@ -33,6 +33,7 @@ public class BuildingController implements Initializable {
     @FXML private StackPane boardPane;
     @FXML private AnchorPane cardPane;
     @FXML private ImageView boardImg;
+    @FXML private GridPane reservedSlots;
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
@@ -40,6 +41,9 @@ public class BuildingController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
+        ShipBoard shipBoard = loader.getShipBoard();
 
         double GAP_RATIO = 0.265;
 
@@ -64,6 +68,8 @@ public class BuildingController implements Initializable {
                         Math.min(boardPane.getWidth(), boardPane.getHeight() * ((double) 937 /679)),
                 boardPane.widthProperty(), boardPane.heightProperty());
 
+        boardImg.fitWidthProperty().bind(side);
+        boardImg.fitHeightProperty().bind(side);
 
         slotGrid.translateXProperty().bind(side.divide(slotGrid.getColumnCount() + 0.79));
         slotGrid.translateYProperty().bind(side.divide(slotGrid.getColumnCount() + 0.08));
@@ -87,11 +93,95 @@ public class BuildingController implements Initializable {
 
         DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
 
-        boardImg.fitWidthProperty().bind(side);
-        boardImg.fitHeightProperty().bind(side);
+        reservedSlots.hgapProperty().bind(gap.divide(7));
+        reservedSlots.vgapProperty().bind(gap.divide(7));
 
-        ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
-        ShipBoard shipBoard = loader.getShipBoard();
+        reservedSlots.translateXProperty().bind(boardPane.widthProperty().subtract(boardImg.fitWidthProperty()).divide(2).add(boardImg.fitWidthProperty().divide(1.4)));
+        reservedSlots.translateYProperty().bind(boardPane.heightProperty().subtract(boardImg.fitHeightProperty()).divide(2).add(boardImg.fitHeightProperty().divide(6.17)));
+
+        reservedSlots.toFront();
+
+        for(int i = 0; i < 2; i++){
+            Image img;
+
+            Button btn = new Button();
+            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            int finalI = i;
+            btn.setOnAction(event -> onReservedShipCardSelected(finalI));
+            btn.minWidthProperty().bind(cellSize);
+            btn.minHeightProperty().bind(cellSize);
+            btn.prefWidthProperty().bind(cellSize);
+            btn.prefHeightProperty().bind(cellSize);
+            btn.maxWidthProperty().bind(cellSize);
+            btn.maxHeightProperty().bind(cellSize);
+
+            Rectangle clip = new Rectangle();
+            clip.widthProperty().bind(btn.widthProperty());
+            clip.heightProperty().bind(btn.heightProperty());
+            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
+            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+            btn.setClip(clip);
+
+            ColorAdjust darken  = new ColorAdjust();
+            darken.setBrightness(-0.2);
+
+            DropShadow rim = new DropShadow();
+            rim.setColor(Color.web("#ffffffAA"));
+            rim.setRadius(10);
+            rim.setSpread(0.5);
+
+            btn.setOnMouseEntered(e -> {
+                Effect combined = new Blend(
+                        BlendMode.SRC_OVER,
+                        rim,
+                        new Blend(
+                                BlendMode.SRC_OVER,
+                                null,
+                                darken
+                        )
+                );
+                btn.setEffect(combined);
+                btn.setScaleX(1.05);
+                btn.setScaleY(1.05);
+            });
+
+            btn.setOnMouseExited(e -> {
+                btn.setEffect(null);
+                btn.setScaleX(1.0);
+                btn.setScaleY(1.0);
+            });
+
+            if(i < shipBoard.getReservedComponents().size()) {
+
+                img = new Image(getClass()
+                        .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
+                        .toExternalForm()
+                );
+
+                BackgroundImage bgImg = new BackgroundImage(
+                        img,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(
+                                100, 100,
+                                true, true,
+                                true, false
+                        )
+                );
+
+                btn.setBackground(new Background(bgImg));
+                GridPane.setHgrow(btn, Priority.ALWAYS);
+                GridPane.setVgrow(btn, Priority.ALWAYS);
+
+                reservedSlots.add(btn, i,0);
+            }
+            else {
+                btn.setOpacity(0);
+                reservedSlots.add(btn, i,0);
+            }
+        }
+
 
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
@@ -273,5 +363,8 @@ public class BuildingController implements Initializable {
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
+    }
+    private void onReservedShipCardSelected(int index) {
+        System.out.println("Reserved ShipCard selezionata indice: " + index);
     }
 }

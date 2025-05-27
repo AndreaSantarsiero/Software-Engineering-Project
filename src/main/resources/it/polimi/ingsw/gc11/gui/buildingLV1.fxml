@@ -16,6 +16,7 @@
                 <!-- Immagine di sfondo con sagoma degli slot -->
                 <ImageView  fx:id="boardImg" preserveRatio="true"/>
 
+                <GridPane fx:id="reservedSlots"/>
                 <!-- Griglia trasparente allineata agli slot -->
                 <GridPane   fx:id="slotGrid" >
                     <columnConstraints>
