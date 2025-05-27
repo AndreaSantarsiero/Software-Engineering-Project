@@ -37,7 +37,7 @@ public class ServerSocket extends Server {
             try {
                 while (!serverSocket.isClosed()) {
                     Socket clientSocket = serverSocket.accept();
-                    //new Thread(new ClientHandler(clientSocket, serverController)).start();
+                    new Thread(new VirtualSocketClient(clientSocket, serverController)).start();
                 }
             } catch (IOException e) {
                 if (!serverSocket.isClosed()) {
@@ -45,18 +45,6 @@ public class ServerSocket extends Server {
                 }
             }
         }).start();
-    }
-
-
-
-    /**
-     * Registers a new Socket-based player session
-     *
-     * @param username the player's unique identifier
-     * @return the UUID token assigned to the session
-     */
-    public UUID registerPlayerSession(String username) throws UsernameAlreadyTakenException {
-        return serverController.registerSocketSession(username);
     }
 
 
