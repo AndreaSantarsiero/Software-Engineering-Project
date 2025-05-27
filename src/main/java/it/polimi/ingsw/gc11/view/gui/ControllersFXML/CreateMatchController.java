@@ -63,13 +63,14 @@ public class CreateMatchController implements Initializable {
             virtualServer.createMatch(selectedFlightType, selectedNumberOfPlayers);
 
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene newScene = new Scene(root);
+            Scene newScene = new Scene(fxmlLoader.load());
             stage.setScene(newScene);
-            LobbyController controller = fxmlLoader.getController();
-            controller.setStage((Stage) newScene.getWindow());
             stage.show();
-            controller.initialize();
+
+            LobbyController controller = fxmlLoader.getController();
+            controller.setVirtualServer(virtualServer);
+
+            controller.init();
 
             System.out.println(viewModel.getMyself().getUsername() + ": created a new match of type " +
                     selectedFlightTypeString  + " with " + selectedNumberOfPlayers + " players");

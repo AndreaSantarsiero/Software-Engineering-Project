@@ -4,11 +4,13 @@ import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+
+import java.io.Serializable;
 import java.util.Map;
 
 
 
-public class Player {
+public class Player implements Serializable {
     private final String username;
     private Color color;
     private int coins;
@@ -17,7 +19,7 @@ public class Player {
     private ShipBoard shipBoard;
     private int standing;
 
-    public enum Color {
+    public enum Color implements Serializable{
         RED, GREEN, BLUE, YELLOW;
     }
 

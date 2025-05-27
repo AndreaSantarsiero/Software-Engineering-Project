@@ -33,7 +33,7 @@ public abstract class Client {
 
     abstract public Map<String, List<String>> getAvailableMatches(String username) throws NetworkException;
 
-    abstract public List<Player> getPlayers(String username) throws NetworkException;
+    abstract public Map<String, String> getPlayers(String username) throws NetworkException;
 
 
 
