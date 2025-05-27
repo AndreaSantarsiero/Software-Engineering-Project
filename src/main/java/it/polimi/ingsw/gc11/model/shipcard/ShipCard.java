@@ -16,7 +16,7 @@ public abstract class ShipCard implements Serializable {
     /**
      * Defines the possible types of connectors for a ShipCard
      */
-    public enum Connector {
+    public enum Connector implements Serializable {
         NONE, SINGLE, DOUBLE, UNIVERSAL
     }
 
@@ -24,7 +24,7 @@ public abstract class ShipCard implements Serializable {
      * Defines the possible orientations for a ShipCard.
      * Rotations are in a clockwise direction
      */
-    public enum Orientation {
+    public enum Orientation implements Serializable {
         DEG_0, DEG_90, DEG_180, DEG_270
     }
 

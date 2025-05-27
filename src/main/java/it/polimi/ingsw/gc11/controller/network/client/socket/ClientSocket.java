@@ -66,7 +66,7 @@ public class ClientSocket extends Client {
     }
 
     @Override
-    public List<Player> getPlayers(String username){
+    public Map<String, String> getPlayers(String username){
         return null;
     }
 

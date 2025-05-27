@@ -59,7 +59,7 @@ public class VirtualServer {
         return client.getAvailableMatches(username);
     }
 
-    public List<Player> getPlayers() throws NetworkException {
+    public Map<String, String> getPlayers() throws NetworkException {
         return client.getPlayers(username);
     }
 

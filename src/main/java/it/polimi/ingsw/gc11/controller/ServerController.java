@@ -206,7 +206,7 @@ public class ServerController {
     }
 
 
-    public List<Player> getPlayers(String username, UUID token){
+    public Map<String, String> getPlayers(String username, UUID token){
         //Get matchId of the gameContext paired with the username provided
         String matchID = getPlayerSession(username, token).getVirtualClient().getGameContext().getMatchID();
         GameContext match = availableMatches.get(matchID);
@@ -215,7 +215,15 @@ public class ServerController {
             throw new IllegalArgumentException("No matches found for matchID " + matchID);
         }
 
-        return match.getGameModel().getPlayers();
+        Map<String, String> player_color = new HashMap<>();
+
+        for (Player player : match.getGameModel().getPlayers()) {
+            String playerUsername = player.getUsername();
+            String playerColor = player.getColor();
+            player_color.put(playerUsername, playerColor);
+        }
+
+        return player_color;
     }
 
 

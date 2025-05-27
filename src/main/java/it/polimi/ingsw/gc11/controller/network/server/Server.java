@@ -72,7 +72,7 @@ public abstract class Server {
         return serverController.getAvailableMatches(username, token);
     }
 
-    public List<Player> getPlayers(String username, UUID token){
+    public Map<String, String> getPlayers(String username, UUID token){
         return serverController.getPlayers(username, token);
     }
 
