@@ -1,15 +1,18 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.controller.ServerMAIN;
-import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
+import it.polimi.ingsw.gc11.view.cli.input.InputHandler;
+import it.polimi.ingsw.gc11.view.cli.input.InputRequest;
 import it.polimi.ingsw.gc11.view.cli.templates.*;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 
@@ -19,6 +22,7 @@ public class MainCLI {
     private Integer serverPort;
     private VirtualServer virtualServer;
     private PlayerContext context;
+    private final BlockingQueue<InputRequest> inputQueue = new LinkedBlockingQueue<>();
 
 
 
@@ -26,7 +30,7 @@ public class MainCLI {
         context = new PlayerContext();
         GamePhaseData data = context.getCurrentPhase();
         InputHandler inputHandler = new InputHandler(context);
-        data.setListener(new JoiningTemplate(this, inputHandler));
+        data.setListener(new JoiningTemplate(this));
 
         try {
             parseArgs(args);
@@ -41,22 +45,31 @@ public class MainCLI {
     }
 
 
-    private void startInputHandler() {
-        Thread listener = new Thread(() -> {
-            //DA FARE
-//            while (true) {
-//                try {
-//                    ClientGameAction action = clientGameActions.take(); // blocca se la coda è vuota
-//                    action.execute(this); // esegue il comando nel contesto del gioco
-//                } catch (Exception e) {
-//                    System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
-//                    e.printStackTrace();
-//                }
-//            }
-        }, "CommandExecutor-");
 
-        listener.setDaemon(true); // si chiude con il programma
-        listener.start();
+    private void startInputHandler() {
+        Thread inputThread = new Thread(() -> {
+            InputHandler inputHandler = new InputHandler(context);
+
+            while (true) {
+                try {
+                    InputRequest request = inputQueue.take();
+                    request.execute(inputHandler);
+                }
+                catch (Exception e) {
+                    System.err.println("[InputHandlerThread] Errore durante la gestione input:");
+                    e.printStackTrace();
+                }
+            }
+        }, "InputHandlerThread");
+
+        inputThread.setDaemon(true);
+        inputThread.start();
+    }
+
+
+
+    public void addInputRequest(InputRequest request) {
+        inputQueue.add(request);
     }
 
 
@@ -153,26 +166,26 @@ public class MainCLI {
 
     public void changeTemplate(JoiningTemplate joiningTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new BuildingTemplate(this, joiningTemplate.getInputHandler()));
+        data.setListener(new BuildingTemplate(this));
     }
 
     public void changeTemplate(BuildingTemplate buildingTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new CheckTemplate(this, buildingTemplate.getInputHandler()));
+        data.setListener(new CheckTemplate(this));
     }
 
     public void changeTemplate(CheckTemplate checkTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new AdventureTemplate(this, checkTemplate.getInputHandler()));
+        data.setListener(new AdventureTemplate(this));
     }
 
     public void changeTemplate(AdventureTemplate adventureTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new EndTemplate(this, adventureTemplate.getInputHandler()));
+        data.setListener(new EndTemplate(this));
     }
 
     public void changeTemplate(EndTemplate endTemplate) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new JoiningTemplate(this, endTemplate.getInputHandler()));
+        data.setListener(new JoiningTemplate(this));
     }
 }

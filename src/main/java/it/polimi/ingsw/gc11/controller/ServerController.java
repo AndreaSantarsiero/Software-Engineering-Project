@@ -32,8 +32,6 @@ public class ServerController {
     private final Map<String, GameContext> availableMatches;
     private final ServerRMI serverRMI;
     private final ServerSocket serverSocket;
-
-    // Coda dei comandi ricevuti dai client
     private final BlockingQueue<ClientControllerAction> clientControllerActions;
 
     /**

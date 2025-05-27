@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.*;
-import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
@@ -12,25 +11,13 @@ import java.util.List;
 public abstract class CLITemplate extends Template {
 
     protected final MainCLI mainCLI;
-    protected InputHandler inputHandler;
     protected boolean active = true;
     protected String serverMessage;
 
 
 
-    public CLITemplate(MainCLI mainCLI, InputHandler inputHandler) {
+    public CLITemplate(MainCLI mainCLI) {
         this.mainCLI = mainCLI;
-        this.inputHandler = inputHandler;
-    }
-
-
-
-    public InputHandler getInputHandler() {
-        return inputHandler;
-    }
-
-    public void setInputHandler(InputHandler inputHandler) {
-        this.inputHandler = inputHandler;
     }
 
 
