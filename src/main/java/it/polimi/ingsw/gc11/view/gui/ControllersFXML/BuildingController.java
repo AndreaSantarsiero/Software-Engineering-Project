@@ -20,9 +20,11 @@ import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class BuildingController implements Initializable {
@@ -115,6 +117,35 @@ public class BuildingController implements Initializable {
                     clip.arcHeightProperty().bind(cellSide.multiply(0.055));
                     btn.setClip(clip);
 
+                    ColorAdjust darken  = new ColorAdjust();
+                    darken.setBrightness(-0.2);
+
+                    DropShadow rim = new DropShadow();
+                    rim.setColor(Color.web("#ffffffAA"));
+                    rim.setRadius(10);
+                    rim.setSpread(0.5);
+
+                    btn.setOnMouseEntered(e -> {
+                        Effect combined = new Blend(
+                                BlendMode.SRC_OVER,
+                                rim,
+                                new Blend(
+                                        BlendMode.SRC_OVER,
+                                        null,
+                                        darken
+                                )
+                        );
+                        btn.setEffect(combined);
+                        btn.setScaleX(1.05);
+                        btn.setScaleY(1.05);
+                    });
+
+                    btn.setOnMouseExited(e -> {
+                        btn.setEffect(null);
+                        btn.setScaleX(1.0);
+                        btn.setScaleY(1.0);
+                    });
+
                     if(shipCard != null) {
 
                         img = new Image(getClass()
@@ -199,6 +230,35 @@ public class BuildingController implements Initializable {
             clip.arcWidthProperty().bind(cellSide.multiply(0.055));
             clip.arcHeightProperty().bind(cellSide.multiply(0.055));
             btn.setClip(clip);
+
+            ColorAdjust darken  = new ColorAdjust();
+            darken.setBrightness(-0.2);
+
+            DropShadow rim = new DropShadow();
+            rim.setColor(Color.web("#ffffffAA"));
+            rim.setRadius(10);
+            rim.setSpread(0.5);
+
+            btn.setOnMouseEntered(e -> {
+                Effect combined = new Blend(
+                        BlendMode.SRC_OVER,
+                        rim,
+                        new Blend(
+                                BlendMode.SRC_OVER,
+                                null,
+                                darken
+                        )
+                );
+                btn.setEffect(combined);
+                btn.setScaleX(1.05);
+                btn.setScaleY(1.05);
+            });
+            
+            btn.setOnMouseExited(e -> {
+                btn.setEffect(null);
+                btn.setScaleX(1.0);
+                btn.setScaleY(1.0);
+            });
 
             final int index = i;
             btn.setOnAction(event -> onShipCardSelected(index));
