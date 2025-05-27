@@ -13,8 +13,8 @@ public class RegisterRMISessionAction extends ClientControllerAction {
     private final ClientInterface playerStub;
 
 
-    public RegisterRMISessionAction(String username, UUID token, ClientInterface playerStub) {
-        super(username, token);
+    public RegisterRMISessionAction(String username, ClientInterface playerStub) {
+        super(username, null);
         this.playerStub = playerStub;
     }
 
