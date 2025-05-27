@@ -24,12 +24,6 @@ public class JoiningTemplate extends CLITemplate {
 
 
 
-    public JoiningTemplate(MainCLI mainCLI) {
-        super(mainCLI, new InputHandler(mainCLI.getContext()));
-    }
-
-
-
     public JoiningTemplate(MainCLI mainCLI, InputHandler inputHandler) {
         super(mainCLI, inputHandler);
     }

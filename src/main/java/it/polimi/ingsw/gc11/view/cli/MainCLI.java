@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.controller.ServerMAIN;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
@@ -24,7 +25,8 @@ public class MainCLI {
     public void run(String[] args) {
         context = new PlayerContext();
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new JoiningTemplate(this));
+        InputHandler inputHandler = new InputHandler(context);
+        data.setListener(new JoiningTemplate(this, inputHandler));
 
         try {
             parseArgs(args);
@@ -34,6 +36,27 @@ public class MainCLI {
             System.out.println("Aborting...");
             System.exit(0);
         }
+
+        startInputHandler();
+    }
+
+
+    private void startInputHandler() {
+        Thread listener = new Thread(() -> {
+            //DA FARE
+//            while (true) {
+//                try {
+//                    ClientGameAction action = clientGameActions.take(); // blocca se la coda è vuota
+//                    action.execute(this); // esegue il comando nel contesto del gioco
+//                } catch (Exception e) {
+//                    System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
+//                    e.printStackTrace();
+//                }
+//            }
+        }, "CommandExecutor-");
+
+        listener.setDaemon(true); // si chiude con il programma
+        listener.start();
     }
 
 
