@@ -74,6 +74,10 @@ public class MainCLI {
         return virtualServer;
     }
 
+    public PlayerContext getContext() {
+        return context;
+    }
+
 
 
     public Utils.ConnectionType connectionTypeSetup(int choice) {
