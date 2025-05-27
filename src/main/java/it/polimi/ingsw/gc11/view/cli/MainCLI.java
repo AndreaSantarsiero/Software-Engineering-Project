@@ -23,6 +23,7 @@ public class MainCLI {
     private VirtualServer virtualServer;
     private PlayerContext context;
     private final BlockingQueue<InputRequest> inputQueue = new LinkedBlockingQueue<>();
+    private final Object shutdownMonitor = new Object();
 
 
 
@@ -31,6 +32,7 @@ public class MainCLI {
         GamePhaseData data = context.getCurrentPhase();
         InputHandler inputHandler = new InputHandler(context);
         data.setListener(new JoiningTemplate(this));
+        startInputHandler();
 
         try {
             parseArgs(args);
@@ -41,8 +43,24 @@ public class MainCLI {
             System.exit(0);
         }
 
-        startInputHandler();
+        synchronized (shutdownMonitor) {
+            while (context.isAlive()) {
+                try {
+                    shutdownMonitor.wait();
+                } catch (InterruptedException ignored) {}
+            }
+        }
+        System.out.println("Game ended. Exiting...");
     }
+
+
+
+    public void shutdown() {
+        synchronized (shutdownMonitor) {
+            shutdownMonitor.notify();
+        }
+    }
+
 
 
 
