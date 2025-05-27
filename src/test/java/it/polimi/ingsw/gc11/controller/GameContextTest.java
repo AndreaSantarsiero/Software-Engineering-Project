@@ -26,16 +26,24 @@ import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.LooseBatteriesSmugglers;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
+import it.polimi.ingsw.gc11.controller.network.Utils;
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+import it.polimi.ingsw.gc11.view.GamePhaseData;
+import it.polimi.ingsw.gc11.view.PlayerContext;
+import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.apache.commons.lang3.SerializationUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,6 +58,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameContextTest {
 
     GameContext gameContext;
+    ServerController serverController;
+    String serverIp = "127.0.0.1";
+    static int RMIPort = 1105;
+    static int socketPort = 1240;
+
+    class DummyPlayerContext extends PlayerContext {
+        @Override public void setBuildingPhase() {}
+        @Override public GamePhaseData getCurrentPhase() { return null; }
+    }
 
     void connect3Players(){
         try {
@@ -96,11 +113,36 @@ public class GameContextTest {
     }
 
     @BeforeEach
-    void setUp() throws InterruptedException {
-        gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3, null);
+    void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException, FullLobbyException {
+        serverController = new ServerController(RMIPort, socketPort);
+        Thread.sleep(200);
+
+
+        PlayerContext ctx = new DummyPlayerContext();
+        VirtualServer playerOne   = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, ctx);
+        playerOne.registerSession("username1");
+        VirtualServer playerTwo   = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, ctx);
+        playerTwo.registerSession("username2");
+        VirtualServer playerThree = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, ctx);
+        playerThree.registerSession("username3");
+
+        playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
+        String matchId = playerTwo.getAvailableMatches().keySet().iterator().next();
+        playerTwo.connectToGame(matchId);
+        playerThree.connectToGame(matchId);
+
+        gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3, serverController);
     }
 
-
+    @AfterEach
+    void tearDown() throws InterruptedException {
+        RMIPort++;
+        socketPort++;
+        if (serverController != null) {
+            serverController.shutdown();
+            Thread.sleep(200);
+        }
+    }
 
     @Test
     void testInvalidUsername() throws FullLobbyException, UsernameAlreadyTakenException {
@@ -147,7 +189,6 @@ public class GameContextTest {
         gameContext.connectPlayerToGame("username3");
         gameContext.chooseColor("username3", "yellow");
         assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Phase should be BuildingPhaseLv2 after the lobby fills up.");
-
     }
 
     @Test

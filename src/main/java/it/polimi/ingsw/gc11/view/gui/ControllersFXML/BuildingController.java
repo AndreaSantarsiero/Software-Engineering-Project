@@ -16,9 +16,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
+import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -31,7 +29,7 @@ public class BuildingController implements Initializable {
     @FXML private HBox root;
     @FXML private StackPane boardPane;
     @FXML private AnchorPane cardPane;
-    @FXML private ImageView boardBackground;
+    @FXML private ImageView boardImg;
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
@@ -39,6 +37,8 @@ public class BuildingController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        double GAP_RATIO = 0.25;
 
         root.widthProperty().addListener((o,oldW,newW) -> {
             double w = newW.doubleValue();
@@ -48,49 +48,68 @@ public class BuildingController implements Initializable {
         HBox.setHgrow(boardPane, Priority.ALWAYS);
         HBox.setHgrow(cardPane, Priority.ALWAYS);
 
-        boardBackground.fitWidthProperty().bind(boardPane.widthProperty());
-        boardBackground.fitHeightProperty().bind(boardPane.heightProperty());
+        boardImg.setImage(new Image(getClass()
+                .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard1.jpg")
+                .toExternalForm()));
+        boardImg.setPreserveRatio(true);
 
-        slotGrid.prefWidthProperty().bind(boardPane.widthProperty());
-        slotGrid.prefHeightProperty().bind(boardPane.heightProperty());
+        DoubleBinding side = Bindings.createDoubleBinding(() ->
+                        Math.min(boardPane.getWidth(), boardPane.getHeight()),
+                boardPane.widthProperty(), boardPane.heightProperty());
+
+
+        slotGrid.translateXProperty().bind(side.divide(slotGrid.getColumnCount() + 0.68));
+        slotGrid.translateYProperty().bind(side.divide(slotGrid.getColumnCount() + 0.08));
+
+        StackPane.setAlignment(slotGrid, Pos.CENTER);
+
+        slotGrid.prefWidthProperty().bind(side);
+        slotGrid.prefHeightProperty().bind(side);
+        slotGrid.minWidthProperty().bind(side);
+        slotGrid.minHeightProperty().bind(side);
+        slotGrid.maxWidthProperty().bind(side);
+        slotGrid.maxHeightProperty().bind(side);
+
+        DoubleBinding gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
+        slotGrid.hgapProperty().bind(gap);
+        slotGrid.vgapProperty().bind(gap);
+
+// lato cella = (boardSide − gap·(COLS−1)) / COLS
+        DoubleBinding cellSide = Bindings.createDoubleBinding(() ->
+                        (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
+                side, gap);
+
+        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 3);
+
+        boardImg.fitWidthProperty().bind(side);
+        boardImg.fitHeightProperty().bind(side);
+
         double gridHgap = slotGrid.getHgap();
         double gridVgap = slotGrid.getVgap();
 
         int cols = slotGrid.getColumnConstraints().size();
         int rows = slotGrid.getRowConstraints().size();
 
-        slotGrid.widthProperty().addListener((obs, oldW, newW) -> {
-            double cellW = (newW.doubleValue() - (cols - 1)*gridHgap) / cols;
-            slotGrid.getChildren().stream()
-                    .filter(n -> n instanceof ImageView)
-                    .map(n -> (ImageView)n)
-                    .forEach(iv -> iv.setFitWidth(cellW));
-        });
-
-        slotGrid.heightProperty().addListener((obs, oldH, newH) -> {
-            double cellH = (newH.doubleValue() - (rows - 1)*gridVgap) / rows;
-            slotGrid.getChildren().stream()
-                    .filter(n -> n instanceof ImageView)
-                    .map(n -> (ImageView)n)
-                    .forEach(iv -> iv.setFitHeight(cellH));
-        });
-
-
         ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         ShipBoard shipBoard = loader.getShipBoard();
-
-
-        DoubleBinding cellSize = Bindings.createDoubleBinding(() -> {
-            double w = boardPane.getWidth()  - (cols - 1) * gridHgap;
-            double h = boardPane.getHeight() - (rows - 1) * gridVgap;
-            return Math.min(w / cols, h / rows);
-        }, slotGrid.widthProperty(), slotGrid.heightProperty());
 
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
                 if(shipBoard.validateIndexes(c,r)){
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;
+
+                    Button btn = new Button();
+                    btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                    final int x = c;
+                    final int y = r;
+                    btn.setOnAction(event -> onShipBoardSelected(x, y));
+                    btn.minWidthProperty().bind(cellSize);
+                    btn.minHeightProperty().bind(cellSize);
+                    btn.prefWidthProperty().bind(cellSize);
+                    btn.prefHeightProperty().bind(cellSize);
+                    btn.maxWidthProperty().bind(cellSize);
+
                     if(shipCard != null) {
 
                         img = new Image(getClass()
@@ -106,23 +125,19 @@ public class BuildingController implements Initializable {
                                 new BackgroundSize(
                                         100, 100,
                                         true, true,
-                                        false, true
+                                        true, false
                                 )
                         );
 
-                        Button btn = new Button();
                         btn.setBackground(new Background(bgImg));
-                        btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                        final int x = c;
-                        final int y = r;
-                        btn.setOnAction(event -> onShipBoardSelected(x, y));
 
-
-                        btn.prefWidthProperty().bind(cellSize);
-                        btn.prefHeightProperty().bind(cellSize);
                         GridPane.setHgrow(btn, Priority.ALWAYS);
                         GridPane.setVgrow(btn, Priority.ALWAYS);
 
+                        slotGrid.add(btn, c, r);
+                    }
+                    else{
+                        btn.setOpacity(0);
                         slotGrid.add(btn, c, r);
                     }
                 }
@@ -161,7 +176,7 @@ public class BuildingController implements Initializable {
                     new BackgroundSize(
                             100, 100,
                             true, true,
-                            false, true
+                            true, false
                     )
             );
 

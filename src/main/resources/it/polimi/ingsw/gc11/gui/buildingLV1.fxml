@@ -14,14 +14,10 @@
         <StackPane fx:id="boardPane" minWidth="0" minHeight="0">
             <children>
                 <!-- Immagine di sfondo con sagoma degli slot -->
-                <ImageView fx:id="boardBackground" preserveRatio="true">
-                    <image>
-                        <Image url="@../boards/ShipBoard1.jpg"/>
-                    </image>
-                </ImageView>
+                <ImageView  fx:id="boardImg" preserveRatio="true"/>
 
                 <!-- Griglia trasparente allineata agli slot -->
-                <GridPane fx:id="slotGrid" alignment="CENTER" vgap="5" hgap="5" >
+                <GridPane   fx:id="slotGrid" >
                     <columnConstraints>
                         <ColumnConstraints percentWidth="10"/>
                         <ColumnConstraints percentWidth="10"/>
