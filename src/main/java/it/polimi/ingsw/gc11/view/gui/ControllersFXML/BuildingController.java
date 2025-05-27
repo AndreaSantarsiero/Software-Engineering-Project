@@ -23,6 +23,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 
 public class BuildingController implements Initializable {
 
@@ -38,11 +39,15 @@ public class BuildingController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        double GAP_RATIO = 0.25;
+        double GAP_RATIO = 0.265;
 
         root.widthProperty().addListener((o,oldW,newW) -> {
             double w = newW.doubleValue();
-            boardPane.setPrefWidth(w * 0.8);
+            boardPane.minWidth(w * 0.8);
+            boardPane.maxWidth(w * 0.8);
+            boardPane.prefWidth(w * 0.8);
+            cardPane.setMaxWidth(w * 0.2);
+            cardPane.setMinWidth(w * 0.2);
             cardPane.setPrefWidth(w * 0.2);
         });
         HBox.setHgrow(boardPane, Priority.ALWAYS);
@@ -54,11 +59,11 @@ public class BuildingController implements Initializable {
         boardImg.setPreserveRatio(true);
 
         DoubleBinding side = Bindings.createDoubleBinding(() ->
-                        Math.min(boardPane.getWidth(), boardPane.getHeight()),
+                        Math.min(boardPane.getWidth(), boardPane.getHeight() * ((double) 937 /679)),
                 boardPane.widthProperty(), boardPane.heightProperty());
 
 
-        slotGrid.translateXProperty().bind(side.divide(slotGrid.getColumnCount() + 0.68));
+        slotGrid.translateXProperty().bind(side.divide(slotGrid.getColumnCount() + 0.79));
         slotGrid.translateYProperty().bind(side.divide(slotGrid.getColumnCount() + 0.08));
 
         StackPane.setAlignment(slotGrid, Pos.CENTER);
@@ -74,21 +79,14 @@ public class BuildingController implements Initializable {
         slotGrid.hgapProperty().bind(gap);
         slotGrid.vgapProperty().bind(gap);
 
-// lato cella = (boardSide − gap·(COLS−1)) / COLS
         DoubleBinding cellSide = Bindings.createDoubleBinding(() ->
                         (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
                 side, gap);
 
-        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 3);
+        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
 
         boardImg.fitWidthProperty().bind(side);
         boardImg.fitHeightProperty().bind(side);
-
-        double gridHgap = slotGrid.getHgap();
-        double gridVgap = slotGrid.getVgap();
-
-        int cols = slotGrid.getColumnConstraints().size();
-        int rows = slotGrid.getRowConstraints().size();
 
         ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         ShipBoard shipBoard = loader.getShipBoard();
@@ -109,6 +107,13 @@ public class BuildingController implements Initializable {
                     btn.prefWidthProperty().bind(cellSize);
                     btn.prefHeightProperty().bind(cellSize);
                     btn.maxWidthProperty().bind(cellSize);
+
+                    Rectangle clip = new Rectangle();
+                    clip.widthProperty().bind(btn.widthProperty());
+                    clip.heightProperty().bind(btn.heightProperty());
+                    clip.arcWidthProperty().bind(cellSide.multiply(0.055));
+                    clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+                    btn.setClip(clip);
 
                     if(shipCard != null) {
 
@@ -143,6 +148,8 @@ public class BuildingController implements Initializable {
                 }
             }
         }
+
+
 
         ShipCardLoader shipCardLoader = new ShipCardLoader();
         List<ShipCard> shipCards = shipCardLoader.getAllShipCards();
@@ -185,6 +192,14 @@ public class BuildingController implements Initializable {
             btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             btn.prefWidthProperty().bind(cardTile.prefTileWidthProperty());
             btn.prefHeightProperty().bind(cardTile.prefTileHeightProperty());
+
+            Rectangle clip = new Rectangle();
+            clip.widthProperty().bind(btn.widthProperty());
+            clip.heightProperty().bind(btn.heightProperty());
+            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
+            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+            btn.setClip(clip);
+
             final int index = i;
             btn.setOnAction(event -> onShipCardSelected(index));
 
