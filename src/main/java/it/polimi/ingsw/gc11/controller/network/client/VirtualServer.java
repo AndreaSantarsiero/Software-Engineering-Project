@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.network.client;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.*;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.ClientControllerAction;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.controller.network.client.socket.ClientSocket;
@@ -13,7 +14,8 @@ import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.PlayerContext;
 import java.util.*;
-
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class VirtualServer {
@@ -22,9 +24,12 @@ public class VirtualServer {
     private final PlayerContext playerContext;
     private String username;
 
+    private final BlockingQueue<ServerAction> serverActions;
 
 
     public VirtualServer(Utils.ConnectionType type, String ip, int port, PlayerContext playerContext) throws NetworkException {
+        serverActions = new LinkedBlockingQueue<>();
+
         try{
             if(type.equals(Utils.ConnectionType.RMI)){
                 this.client = new ClientRMI(this, ip, port);
@@ -36,9 +41,32 @@ public class VirtualServer {
         catch (Exception e){
             throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port + "\n" + e.getMessage());
         }
+
         this.playerContext = playerContext;
+        startCommandListener();
     }
 
+    private void startCommandListener() {
+        Thread listener = new Thread(() -> {
+            while (true) {
+                try {
+                    ServerAction action = serverActions.take(); // blocca se la coda è vuota
+                    action.execute(this.playerContext); // esegue il comando nel contesto del gioco
+                } catch (Exception e) {
+                    System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
+                    e.printStackTrace();
+                }
+            }
+        }, "ClientCommandExecutor-");
+
+        listener.setDaemon(true); // si chiude con il programma
+        listener.start();
+    }
+
+
+    public void addServerAction(ServerAction serverAction) {
+        serverActions.add(serverAction);
+    }
 
 
     public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
@@ -181,6 +209,6 @@ public class VirtualServer {
 
 
     public void receiveAction(ServerAction action){
-        action.execute(playerContext);
+        serverActions.add(action);
     }
 }

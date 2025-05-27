@@ -1,15 +1,14 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
-import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 
 
 
 public class CheckTemplate extends CLITemplate {
 
-    public CheckTemplate(MainCLI mainCLI, InputHandler inputHandler) {
-        super(mainCLI, inputHandler);
+    public CheckTemplate(MainCLI mainCLI) {
+        super(mainCLI);
     }
 
 

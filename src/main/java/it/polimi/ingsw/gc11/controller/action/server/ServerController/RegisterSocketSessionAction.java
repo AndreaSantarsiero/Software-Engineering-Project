@@ -16,11 +16,11 @@ public class RegisterSocketSessionAction extends ClientControllerAction {
 
     @Override
     public void execute(ServerController serverController) throws NetworkException {
-        try {
-            UUID token = serverController.registerSocketSession(username);
-            //rispondi con il token
-        } catch (UsernameAlreadyTakenException e) {
-
-        }
+//        try {
+//            //UUID token = serverController.registerSocketSession(username);
+//            //rispondi con il token
+//        } catch (UsernameAlreadyTakenException e) {
+//
+//        }
     }
 }

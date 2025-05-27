@@ -5,8 +5,10 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.*;
-import it.polimi.ingsw.gc11.view.cli.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.input.IntegerInput;
+import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
+import it.polimi.ingsw.gc11.view.cli.input.StringInput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +27,7 @@ public class JoiningTemplate extends CLITemplate {
 
 
     public JoiningTemplate(MainCLI mainCLI) {
-        super(mainCLI, new InputHandler(mainCLI.getContext()));
-    }
-
-
-
-    public JoiningTemplate(MainCLI mainCLI, InputHandler inputHandler) {
-        super(mainCLI, inputHandler);
+        super(mainCLI);
     }
 
 
@@ -135,14 +131,14 @@ public class JoiningTemplate extends CLITemplate {
 
         try{
             if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
-                inputHandler.interactiveMenu(data, connectionTypes, data.getConnectionTypeMenu());
+                mainCLI.addInputRequest(new MenuInput(data, connectionTypes.size(), data.getConnectionTypeMenu()));
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
                 mainCLI.virtualServerSetup(data.getConnectionTypeMenu());
                 data.updateState();
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
-                inputHandler.readLine(data, "");
+                mainCLI.addInputRequest(new StringInput(data));
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
                 try{
@@ -155,13 +151,13 @@ public class JoiningTemplate extends CLITemplate {
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
-                inputHandler.interactiveMenu(data, gameOptions, data.getCreateOrJoinMenu());
+                mainCLI.addInputRequest(new MenuInput(data, gameOptions.size(), data.getCreateOrJoinMenu()));
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_LEVEL) {
-                inputHandler.interactiveMenu(data, gameLevels, data.getGameLevel());
+                mainCLI.addInputRequest(new MenuInput(data, gameLevels.size(), data.getGameLevel()));
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
-                inputHandler.interactiveNumberSelector(data, 2, 4, data.getNumPlayers());
+                mainCLI.addInputRequest(new IntegerInput(data, 2, 4, data.getNumPlayers()));
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
                 if(noAvailableMatches){
@@ -169,7 +165,7 @@ public class JoiningTemplate extends CLITemplate {
                 }
                 else{
                     List<String> availableMatches = new ArrayList<>(data.getAvailableMatches().keySet());
-                    inputHandler.interactiveMenu(data, availableMatches, data.getExistingGameMenu());
+                    mainCLI.addInputRequest(new MenuInput(data, availableMatches.size(), data.getExistingGameMenu()));
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
@@ -192,7 +188,7 @@ public class JoiningTemplate extends CLITemplate {
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
-                inputHandler.interactiveMenu(data, colorOptions, data.getChosenColorMenu());
+                mainCLI.addInputRequest(new MenuInput(data, colorOptions.size(), data.getChosenColorMenu()));
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
                 mainCLI.getVirtualServer().chooseColor(colorOptions.get(data.getChosenColorMenu()));

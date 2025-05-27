@@ -1,10 +1,13 @@
 package it.polimi.ingsw.gc11.view;
 
+import it.polimi.ingsw.gc11.view.cli.MainCLI;
+
 
 
 public class PlayerContext {
 
     private GamePhaseData currentPhase;
+    private boolean alive = true;
 
 
     public PlayerContext() {
@@ -14,6 +17,15 @@ public class PlayerContext {
 
     public GamePhaseData getCurrentPhase() {
         return currentPhase;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void kill(MainCLI mainCLI) {
+        this.alive = false;
+        mainCLI.shutdown();
     }
 
     public void setJoiningPhase() {

@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.ClientControllerAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.*;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.*;
@@ -12,7 +13,9 @@ import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Player;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 
@@ -29,20 +32,43 @@ public class ServerController {
     private final Map<String, GameContext> availableMatches;
     private final ServerRMI serverRMI;
     private final ServerSocket serverSocket;
-
-
+    private final BlockingQueue<ClientControllerAction> clientControllerActions;
 
     /**
      * Constructs a new {@code ServerController} with empty session and match registries
      */
     public ServerController(int RMIPort, int SocketPort) throws NetworkException, UsernameAlreadyTakenException {
+        clientControllerActions = new LinkedBlockingQueue<>();
         this.playerSessions = new ConcurrentHashMap<>();
         this.availableMatches = new ConcurrentHashMap<>();
         this.serverRMI = new ServerRMI(this, RMIPort);
         this.serverSocket = new ServerSocket(this, SocketPort);
+
+        startCommandListener();
     }
 
 
+    private void startCommandListener() {
+        Thread listener = new Thread(() -> {
+            while (true) {
+                try {
+                    ClientControllerAction action = clientControllerActions.take(); // blocca se la coda è vuota
+                    action.execute(this); // esegue il comando nel contesto del gioco
+                } catch (Exception e) {
+                    System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
+                    e.printStackTrace();
+                }
+            }
+        }, "ServerControllerCommandExecutor-");
+
+        listener.setDaemon(true); // si chiude con il programma
+        listener.start();
+    }
+
+
+    public void addClientControllerAction(ClientControllerAction clientControllerAction) {
+        clientControllerActions.add(clientControllerAction);
+    }
 
     /**
      * Retrieves the {@link ClientSession} associated with a given username and token
@@ -123,7 +149,7 @@ public class ServerController {
      * @throws UsernameAlreadyTakenException if a session already exists for the username
      * @throws IllegalArgumentException if the username is null or empty
      */
-    public UUID registerSocketSession(String username) throws UsernameAlreadyTakenException, IllegalArgumentException {
+    public UUID registerSocketSession(String username, VirtualSocketClient socketClient) throws UsernameAlreadyTakenException, IllegalArgumentException {
         if (playerSessions.containsKey(username)) {
             throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
         }
@@ -131,7 +157,7 @@ public class ServerController {
             throw new IllegalArgumentException("Username is null or empty");
         }
 
-        ClientSession clientSession = new ClientSession(username, new VirtualSocketClient());
+        ClientSession clientSession = new ClientSession(username, socketClient);
         playerSessions.put(username, clientSession);
         return clientSession.getToken();
     }

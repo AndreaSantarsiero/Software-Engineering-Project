@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.view.cli;
+package it.polimi.ingsw.gc11.view.cli.input;
 
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
@@ -9,7 +9,6 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import java.io.IOException;
-import java.util.List;
 
 
 
@@ -35,8 +34,8 @@ public class InputHandler {
 
 
 
-    public void interactiveMenu(GamePhaseData data, List<String> options, int previouslySelected) {
-        if (context.getCurrentPhase().equals(data)){
+    public void interactiveMenu(GamePhaseData data, int size, int previouslySelected) {
+        if (context.getCurrentPhase().equals(data)) {
             int selected = previouslySelected;
 
             KeyMap<String> keyMap = new KeyMap<>();
@@ -49,11 +48,11 @@ public class InputHandler {
 
                 switch (key) {
                     case "up":
-                        selected = (selected - 1 + options.size()) % options.size();
+                        selected = (selected - 1 + size) % size;
                         data.setMenuChoice(selected);
                         break;
                     case "down":
-                        selected = (selected + 1) % options.size();
+                        selected = (selected + 1) % size;
                         data.setMenuChoice(selected);
                         break;
                     case "enter":
@@ -113,9 +112,9 @@ public class InputHandler {
 
 
 
-    public void readLine(GamePhaseData data, String message) {
+    public void readLine(GamePhaseData data) {
         if (context.getCurrentPhase().equals(data)) {
-            data.setStringInput(lineReader.readLine(message));
+            data.setStringInput(lineReader.readLine());
         }
     }
 
