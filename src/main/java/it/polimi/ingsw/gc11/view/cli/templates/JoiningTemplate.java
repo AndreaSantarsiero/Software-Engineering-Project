@@ -38,7 +38,7 @@ public class JoiningTemplate extends CLITemplate {
 
     @Override
     public void update (JoiningPhaseData joiningPhaseData) {
-        if (active) {
+        if (active && joiningPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
             render(joiningPhaseData);
         }
     }

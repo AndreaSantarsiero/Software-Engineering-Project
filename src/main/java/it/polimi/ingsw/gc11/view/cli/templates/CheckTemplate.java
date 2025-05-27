@@ -16,7 +16,7 @@ public class CheckTemplate extends CLITemplate {
 
     @Override
     public void update (CheckPhaseData checkPhaseData) {
-        if (active) {
+        if (active && checkPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
             render(checkPhaseData);
         }
     }

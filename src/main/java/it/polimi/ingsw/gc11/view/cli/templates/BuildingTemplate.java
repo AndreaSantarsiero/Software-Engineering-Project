@@ -27,7 +27,7 @@ public class BuildingTemplate extends CLITemplate {
 
     @Override
     public void update (BuildingPhaseData buildingPhaseData) {
-        if (active) {
+        if (active && buildingPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
             render(buildingPhaseData);
         }
     }

@@ -16,7 +16,7 @@ public class AdventureTemplate extends CLITemplate {
 
     @Override
     public void update (AdventurePhaseData adventurePhaseData) {
-        if (active) {
+        if (active && adventurePhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
             render(adventurePhaseData);
         }
     }

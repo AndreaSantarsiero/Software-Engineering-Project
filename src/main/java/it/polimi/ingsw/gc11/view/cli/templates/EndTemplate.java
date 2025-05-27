@@ -16,7 +16,7 @@ public class EndTemplate extends CLITemplate {
 
     @Override
     public void update (EndPhaseData endPhaseData) {
-        if (active) {
+        if (active && endPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
             render(endPhaseData);
         }
     }
