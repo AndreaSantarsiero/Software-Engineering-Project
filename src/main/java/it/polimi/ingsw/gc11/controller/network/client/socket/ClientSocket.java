@@ -1,17 +1,13 @@
 package it.polimi.ingsw.gc11.controller.network.client.socket;
 
-import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-import it.polimi.ingsw.gc11.model.shipcard.*;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -73,7 +69,7 @@ public class ClientSocket extends Client {
 
 
     @Override
-    public void sendAction(ClientAction action) throws NetworkException {
+    public void sendAction(ClientGameAction action) throws NetworkException {
 
     }
 }

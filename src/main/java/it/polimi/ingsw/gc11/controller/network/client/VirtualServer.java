@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc11.controller.network.client;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.server.*;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.*;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.controller.network.client.socket.ClientSocket;
@@ -10,7 +10,6 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
-import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.PlayerContext;
 import java.util.*;

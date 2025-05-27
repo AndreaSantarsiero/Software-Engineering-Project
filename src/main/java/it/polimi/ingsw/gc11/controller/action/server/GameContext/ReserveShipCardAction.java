@@ -1,27 +1,23 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
-import java.util.ArrayList;
+public class ReserveShipCardAction extends ClientGameAction {
+    private ShipCard shipCard;
 
-public class RepairShipBoardAction extends ClientAction {
-    private boolean repaired;
-    private ArrayList<Integer> cardToEliminateX;
-    private ArrayList<Integer> cardToEliminateY;
-
-    private RepairShipBoardAction(String username, boolean repaired, ArrayList<Integer> cardToEliminateX, ArrayList<Integer> cardToEliminateY) {
+    public ReserveShipCardAction(String username, ShipCard shipCard) {
         super(username);
-        this.cardToEliminateX = cardToEliminateX;
-        this.cardToEliminateY = cardToEliminateY;
+        this.shipCard = shipCard;
     }
 
     @Override
     public void execute(GameContext context) {
         try {
-            ShipBoard shipBoard = context.repairShip(username, cardToEliminateX, cardToEliminateY);
+            ShipBoard shipBoard = context.reserveShipCard(username, shipCard);
             UpdateShipBoardAction response = new UpdateShipBoardAction(shipBoard);
             context.sendAction(username, response);
         } catch (Exception e){

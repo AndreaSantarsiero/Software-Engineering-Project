@@ -1,31 +1,31 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
-import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateEnemyShipBoardAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
-import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
-import java.util.AbstractMap;
-import java.util.List;
+import it.polimi.ingsw.gc11.model.shipcard.Battery;
+import it.polimi.ingsw.gc11.model.shipcard.Cannon;
+
 import java.util.Map;
 
+public class MeteorDefenseAction extends ClientGameAction {
 
+    private final Map<Battery, Integer> batteries;
+    private final Cannon cannon;
 
-public class ChooseMaterialsAction extends ClientAction {
-    private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
-
-    public ChooseMaterialsAction(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
+    public MeteorDefenseAction(String username, Map<Battery, Integer> batteries, Cannon cannon) {
         super(username);
-        this.storageMaterials = storageMaterials;
+        this.batteries = batteries;
+        this.cannon = cannon;
     }
 
     @Override
     public void execute(GameContext context) {
         try {
-            Player player = context.chooseMaterials(username, storageMaterials);
+            Player player = context.meteorDefense(getUsername(), batteries, cannon);
 
             for(Player p : context.getGameModel().getPlayers()) {
                 if(player.getUsername().equals(p.getUsername())) {
@@ -40,10 +40,10 @@ public class ChooseMaterialsAction extends ClientAction {
                     context.sendAction(p.getUsername(), response2);
                 }
             }
+
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
         }
     }
 }
-

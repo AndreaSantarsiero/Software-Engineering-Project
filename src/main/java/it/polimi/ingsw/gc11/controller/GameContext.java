@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -24,7 +24,7 @@ public class GameContext {
     private GamePhase phase;
     private final ServerController serverController;
     // Coda dei comandi ricevuti dai client
-    private final BlockingQueue<ClientAction> clientActions;
+    private final BlockingQueue<ClientGameAction> clientGameActions;
 
 
 
@@ -41,7 +41,7 @@ public class GameContext {
 //        }
 
         this.serverController = serverController;
-        this.clientActions = new LinkedBlockingQueue<>();
+        this.clientGameActions = new LinkedBlockingQueue<>();
 
         startCommandListener();
     }
@@ -57,7 +57,7 @@ public class GameContext {
         Thread listener = new Thread(() -> {
             while (true) {
                 try {
-                    ClientAction action = clientActions.take(); // blocca se la coda è vuota
+                    ClientGameAction action = clientGameActions.take(); // blocca se la coda è vuota
                     action.execute(this); // esegue il comando nel contesto del gioco
                 } catch (Exception e) {
                     System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
@@ -82,8 +82,8 @@ public class GameContext {
 
 
 
-    public void addClientAction(ClientAction clientAction) {
-        clientActions.add(clientAction);
+    public void addClientAction(ClientGameAction clientGameAction) {
+        clientGameActions.add(clientGameAction);
     }
 
 

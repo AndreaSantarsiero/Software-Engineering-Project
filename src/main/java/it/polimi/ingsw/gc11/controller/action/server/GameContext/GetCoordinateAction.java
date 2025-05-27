@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.controller.action.client.SendHitAction;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 
-public class GetCoordinateAction extends ClientAction {
+public class GetCoordinateAction extends ClientGameAction {
     public GetCoordinateAction(String username) {
         super(username);
     }

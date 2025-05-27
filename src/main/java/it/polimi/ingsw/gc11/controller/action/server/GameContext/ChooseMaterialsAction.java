@@ -1,31 +1,31 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateEnemyShipBoardAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseFirePowerAction extends ClientAction {
-    private final Map<Battery, Integer> batteries;
-    private final List<Cannon> cannons;
 
-    public ChooseFirePowerAction(String username, Map<Battery, Integer> batteries, List<Cannon> cannons) {
+
+public class ChooseMaterialsAction extends ClientGameAction {
+    private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
+
+    public ChooseMaterialsAction(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
         super(username);
-        this.batteries = batteries;
-        this.cannons = cannons;
+        this.storageMaterials = storageMaterials;
     }
 
     @Override
     public void execute(GameContext context) {
         try {
-            Player player = context.chooseFirePower(username, batteries, cannons);
+            Player player = context.chooseMaterials(username, storageMaterials);
 
             for(Player p : context.getGameModel().getPlayers()) {
                 if(player.getUsername().equals(p.getUsername())) {
@@ -46,3 +46,4 @@ public class ChooseFirePowerAction extends ClientAction {
         }
     }
 }
+

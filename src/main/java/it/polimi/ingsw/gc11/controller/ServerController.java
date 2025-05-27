@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.controller.network.server.*;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.*;
@@ -240,7 +240,7 @@ public class ServerController {
 
 
 
-    public void receiveAction(ClientAction action, UUID token) {
+    public void receiveAction(ClientGameAction action, UUID token) {
         GameContext gameContext = getPlayerVirtualClient(action.getUsername(), token).getGameContext();
         gameContext.addClientAction(action);
     }

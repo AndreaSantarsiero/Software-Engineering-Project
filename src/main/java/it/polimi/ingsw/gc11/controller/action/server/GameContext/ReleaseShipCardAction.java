@@ -1,11 +1,11 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
-public class ReleaseShipCardAction extends ClientAction{
+public class ReleaseShipCardAction extends ClientGameAction {
     private ShipCard shipCard;
 
     public ReleaseShipCardAction(String username, ShipCard shipCard) {

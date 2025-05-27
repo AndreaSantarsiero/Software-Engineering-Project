@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
@@ -7,13 +7,14 @@ import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
-
 import java.util.Map;
 
-public class HandleShotAction extends ClientAction {
+
+
+public class ChooseEnginePowerAction extends ClientGameAction {
     private final Map<Battery, Integer> batteries;
 
-    public HandleShotAction(String username, Map<Battery, Integer> batteries) {
+    public ChooseEnginePowerAction(String username, Map<Battery, Integer> batteries) {
         super(username);
         this.batteries = batteries;
     }
@@ -21,7 +22,7 @@ public class HandleShotAction extends ClientAction {
     @Override
     public void execute(GameContext context) {
         try {
-            Player player = context.handleShot(getUsername(), batteries);
+            Player player = context.chooseEnginePower(getUsername(), batteries);
 
             for(Player p : context.getGameModel().getPlayers()) {
                 if(player.getUsername().equals(p.getUsername())) {
@@ -36,6 +37,7 @@ public class HandleShotAction extends ClientAction {
                     context.sendAction(p.getUsername(), response2);
                 }
             }
+
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);

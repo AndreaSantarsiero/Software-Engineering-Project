@@ -2,13 +2,12 @@ package it.polimi.ingsw.gc11.controller.network.server;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.ServerController;
-import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerRMI;
 import it.polimi.ingsw.gc11.controller.network.server.socket.ServerSocket;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Player;
 
 import java.util.*;
 
@@ -77,7 +76,7 @@ public abstract class Server {
     }
 
 
-    public void sendAction(ClientAction action, UUID token) {
+    public void sendAction(ClientGameAction action, UUID token) {
         serverController.receiveAction(action, token);
     }
 

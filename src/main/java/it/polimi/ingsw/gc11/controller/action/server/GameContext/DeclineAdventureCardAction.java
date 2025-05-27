@@ -1,10 +1,10 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
 
-public class DeclineAdventureCardAction extends ClientAction {
+public class DeclineAdventureCardAction extends ClientGameAction {
     public DeclineAdventureCardAction(String username) {
         super(username);
     }

@@ -1,29 +1,32 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
-public class RemoveShipCardAction extends ClientAction {
+public class UseReservedShipCardAction extends ClientGameAction {
+    private ShipCard shipCard;
     private int x;
     private int y;
 
-    public RemoveShipCardAction(String username, int x, int y) {
+    public UseReservedShipCardAction(String username, ShipCard shipCard, int x, int y) {
         super(username);
+        this.shipCard = shipCard;
         this.x = x;
         this.y = y;
     }
 
     @Override
-    public void execute(GameContext cxt){
+    public void execute(GameContext context) {
         try {
-            ShipBoard shipBoard = cxt.removeShipCard(username, x, y);
+            ShipBoard shipBoard = context.useReservedShipCard(username, shipCard, x, y);
             UpdateShipBoardAction response = new UpdateShipBoardAction(shipBoard);
-            cxt.sendAction(username, response);
+            context.sendAction(username, response);
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
-            cxt.sendAction(username, exception);
+            context.sendAction(username, exception);
         }
     }
 }

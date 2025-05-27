@@ -1,11 +1,10 @@
 package it.polimi.ingsw.gc11.controller.network.server.rmi;
 
-import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Player;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -23,5 +22,5 @@ public interface ServerInterface extends Remote {
     Map<String, String> getPlayers(String username, UUID token) throws RemoteException;
 
 
-    void sendAction(ClientAction action, UUID token) throws RemoteException;
+    void sendAction(ClientGameAction action, UUID token) throws RemoteException;
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client.rmi;
 
-import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.controller.network.server.rmi.ServerInterface;
@@ -8,8 +8,6 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Player;
-
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -90,7 +88,7 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     @Override
-    public void sendAction(ClientAction action) throws NetworkException {
+    public void sendAction(ClientGameAction action) throws NetworkException {
         try {
             stub.sendAction(action, clientSessionToken);
         } catch (RemoteException e) {

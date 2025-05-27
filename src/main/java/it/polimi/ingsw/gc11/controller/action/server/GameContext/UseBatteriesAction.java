@@ -1,27 +1,30 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.action.client.*;
+import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdateEnemyShipBoardAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-
+import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import java.util.Map;
 
-public class KillMembersAction extends ClientAction {
-    private final Map<HousingUnit, Integer> housingUsage;
 
-    public KillMembersAction(String username, Map<HousingUnit, Integer> housingUsage) {
+
+public class UseBatteriesAction extends ClientGameAction {
+    private final Map<Battery, Integer> batteries;
+
+    public UseBatteriesAction(String username, Map<Battery, Integer> batteries) {
         super(username);
-        this.housingUsage = housingUsage;
+        this.batteries = batteries;
     }
 
     @Override
     public void execute(GameContext context) {
         try {
-            Player player = context.killMembers(getUsername(), housingUsage);
+            Player player = context.useBatteries(username, batteries);
 
             for(Player p : context.getGameModel().getPlayers()) {
-                //Il player che riceve è lo stesso che ha mandato la richiesta
                 if(player.getUsername().equals(p.getUsername())) {
                     UpdateShipBoardAction response = new UpdateShipBoardAction(player.getShipBoard());
                     context.sendAction(username, response);
@@ -34,10 +37,12 @@ public class KillMembersAction extends ClientAction {
                     context.sendAction(p.getUsername(), response2);
                 }
             }
+
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
         }
+
     }
 }
 

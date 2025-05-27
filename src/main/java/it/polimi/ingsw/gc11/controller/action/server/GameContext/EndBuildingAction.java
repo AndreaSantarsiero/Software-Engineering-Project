@@ -1,23 +1,21 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
-import it.polimi.ingsw.gc11.controller.action.client.SendFreeShipCardAction;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
 
-public class GetFreeShipCardAction extends ClientAction {
+public class EndBuildingAction extends ClientGameAction {
     private int pos;
 
-    public GetFreeShipCardAction(String username, int pos) {
+    public EndBuildingAction(String username) {
         super(username);
-        this.pos = pos;
     }
 
     @Override
     public void execute(GameContext context) {
         try {
-            ShipCard shipCard = context.getFreeShipCard(username, pos);
-            SendFreeShipCardAction response = new SendFreeShipCardAction(shipCard);
+            context.endBuilding(username);
+            NotifySuccessAction response = new NotifySuccessAction();
             context.sendAction(username, response);
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());

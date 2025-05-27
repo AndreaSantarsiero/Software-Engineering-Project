@@ -1,11 +1,11 @@
-package it.polimi.ingsw.gc11.controller.action.server;
+package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.model.Player;
 
-public class RewardDecisionAction extends ClientAction {
+public class RewardDecisionAction extends ClientGameAction {
     private final boolean decision;
 
     public RewardDecisionAction(String username, boolean decision) {

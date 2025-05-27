@@ -1,12 +1,11 @@
 package it.polimi.ingsw.gc11.controller.network.client;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.server.ClientAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.Player;
 
 import java.util.*;
 
@@ -37,7 +36,7 @@ public abstract class Client {
 
 
 
-    abstract public void sendAction(ClientAction action) throws NetworkException;
+    abstract public void sendAction(ClientGameAction action) throws NetworkException;
 
     public void sendAction(ServerAction action){
         virtualServer.receiveAction(action);
