@@ -38,7 +38,6 @@ public class SetBuildingPhaseAction extends ServerAction {
 
     @Override
     public void execute(PlayerContext playerContext) {
-        System.out.println("SetBuildingPhaseAction CAME FROM SERVER");
         playerContext.setBuildingPhase();
         playerContext.getCurrentPhase().handle(this);
     }
