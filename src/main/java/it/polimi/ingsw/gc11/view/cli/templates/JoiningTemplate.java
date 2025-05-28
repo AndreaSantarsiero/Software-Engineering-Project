@@ -84,7 +84,6 @@ public class JoiningTemplate extends CLITemplate {
                 data.resetServerMessage();
             }
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
-            Thread.dumpStack();
         }
         if (data.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_LEVEL.ordinal()) {
             renderMenu("- Choose match difficulty", gameLevels, data.getGameLevel());
