@@ -12,7 +12,6 @@ public abstract class CLITemplate extends Template {
 
     protected final MainCLI mainCLI;
     protected boolean active = true;
-    protected String serverMessage;
 
 
 

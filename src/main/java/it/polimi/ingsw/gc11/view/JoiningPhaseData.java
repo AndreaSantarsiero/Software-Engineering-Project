@@ -161,6 +161,21 @@ public class JoiningPhaseData extends GamePhaseData {
         updateState();
     }
 
+    @Override
+    public void setServerMessage(String serverMessage) {
+        this.serverMessage = serverMessage;
+        previousState = state;
+        if(state == JoiningState.USERNAME_SETUP){
+            state = JoiningState.CHOOSE_USERNAME;
+        }
+        else if(state == JoiningState.GAME_SETUP){
+            state = JoiningState.CREATE_OR_JOIN;
+        }
+        else if(state == JoiningState.COLOR_SETUP){
+            state = JoiningState.CHOOSE_COLOR;
+        }
+    }
+
 
 
     public String getUsername() {

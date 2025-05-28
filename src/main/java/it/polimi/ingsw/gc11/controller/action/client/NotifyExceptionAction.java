@@ -2,13 +2,17 @@ package it.polimi.ingsw.gc11.controller.action.client;
 
 import it.polimi.ingsw.gc11.view.*;
 
-//Devo implementare suo listener in tutte quante le PhaseData
+
+
 public class NotifyExceptionAction extends ServerAction {
+
     private final String message;
+
 
     public NotifyExceptionAction(String message) {
         this.message = message;
     }
+
 
     public String getMessage() {
         return message;

@@ -7,7 +7,7 @@ import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 public abstract class GamePhaseData {
 
     protected Template listener;
-    private String serverMessage;
+    protected String serverMessage;
 
 
 
@@ -33,6 +33,10 @@ public abstract class GamePhaseData {
 
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
+    }
+
+    public void resetServerMessage() {
+        serverMessage = "";
     }
 
 

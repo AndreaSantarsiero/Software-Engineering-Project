@@ -1,8 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
-import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
@@ -68,20 +66,22 @@ public class JoiningTemplate extends CLITemplate {
                 System.out.println("Chosen username: " + data.getUsername());
             }
             else {
+                String serverMessage = data.getServerMessage();
                 if(serverMessage == null || serverMessage.isEmpty()) {
                     System.out.print("Insert username: ");
                 }
                 else {
                     System.out.print(serverMessage + " Try again: ");
-                    serverMessage = "";
+                    data.resetServerMessage();
                 }
             }
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CREATE_OR_JOIN.ordinal()) {
             System.out.println("\n\n");
+            String serverMessage = data.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage);
-                serverMessage = "";
+                data.resetServerMessage();
             }
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
         }
@@ -118,9 +118,10 @@ public class JoiningTemplate extends CLITemplate {
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_COLOR.ordinal()) {
             System.out.println("\n\n");
+            String serverMessage = data.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage);
-                serverMessage = "";
+                data.resetServerMessage();
             }
             renderMenu("Choose your color", colorOptions, data.getChosenColorMenu());
         }
