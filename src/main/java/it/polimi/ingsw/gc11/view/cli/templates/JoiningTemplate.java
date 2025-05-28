@@ -93,12 +93,6 @@ public class JoiningTemplate extends CLITemplate {
             }
         }
         if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
-            try{
-                mainCLI.getVirtualServer().getAvailableMatches();
-            } catch (NetworkException e) {
-                System.out.println("Connection error: " + e.getMessage());
-            }
-
             List<String> availableMatches = new ArrayList<>();
             for (Map.Entry<String, List<String>> entry : data.getAvailableMatches().entrySet()) {
                 List<String> usernames = entry.getValue();
@@ -158,6 +152,7 @@ public class JoiningTemplate extends CLITemplate {
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
+                mainCLI.getVirtualServer().getAvailableMatches();
                 mainCLI.addInputRequest(new MenuInput(data, gameOptions.size(), data.getCreateOrJoinMenu()));
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_LEVEL) {
