@@ -35,11 +35,7 @@ import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-import it.polimi.ingsw.gc11.view.GamePhaseData;
-import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.PlayerContext;
-import it.polimi.ingsw.gc11.view.cli.MainCLI;
-import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
+import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
@@ -47,7 +43,6 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,25 +55,31 @@ public class GameContextTest {
 
     GameContext gameContext;
     ServerController serverController;
+    PlayerContext playerOneContext;
+    PlayerContext playerTwoContext;
+    PlayerContext playerThreeContext;
+
     String serverIp = "127.0.0.1";
     static int RMIPort = 1105;
     static int socketPort = 1240;
 
 
 
-    void connect3Players(){
-        try {
-            gameContext.connectPlayerToGame("username1");
-            gameContext.chooseColor("username1", "blue");
-            gameContext.connectPlayerToGame("username2");
-            gameContext.chooseColor("username2", "red");
-            gameContext.connectPlayerToGame("username3");
-            gameContext.chooseColor("username3", "yellow");
-        } catch (UsernameAlreadyTakenException | FullLobbyException e) {
-            throw new RuntimeException(e);
-        }
+    private class DumbTemplate extends Template {
+        @Override public void update (JoiningPhaseData joiningPhaseData) {}
+        @Override public void update (BuildingPhaseData buildingPhaseData) {}
+        @Override public void update (CheckPhaseData checkPhaseData) {}
+        @Override public void update (AdventurePhaseData adventurePhaseData) {}
+        @Override public void update (EndPhaseData endPhaseData) {}
 
+        @Override public void change(){
+//            playerOneContext.getCurrentPhase().setListener(new DumbTemplate());
+//            playerTwoContext.getCurrentPhase().setListener(new DumbTemplate());
+//            playerThreeContext.getCurrentPhase().setListener(new DumbTemplate());
+        }
     }
+
+
 
     void printShipBoard(ShipBoard shipBoard){
         ShipBoardCLI printer = new ShipBoardCLI(new ShipCardCLI());
@@ -94,7 +95,6 @@ public class GameContextTest {
     }
 
     void goToAdvPhase(){
-        connect3Players();
         StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE);
         gameContext.getGameModel().setHeldShipCard(shipCard, "username1");
         gameContext.placeShipCard("username1", shipCard, 6, 6);
@@ -113,36 +113,43 @@ public class GameContextTest {
     @BeforeEach
     void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException, FullLobbyException {
         serverController = new ServerController(RMIPort, socketPort);
-        Thread.sleep(200);
+        Thread.sleep(100);  //waiting for the server to start up
 
 
-        PlayerContext playerOneContext = new PlayerContext();
+        playerOneContext = new PlayerContext();
         VirtualServer playerOne   = new VirtualServer(playerOneContext);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
         dataOne.setVirtualServer(playerOne);
+        dataOne.setListener(new DumbTemplate());
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
 
-        PlayerContext playerTwoContext = new PlayerContext();
+        playerTwoContext = new PlayerContext();
         VirtualServer playerTwo   = new VirtualServer(playerTwoContext);
         JoiningPhaseData dataTwo = (JoiningPhaseData) playerTwoContext.getCurrentPhase();
         dataTwo.setVirtualServer(playerTwo);
+        dataTwo.setListener(new DumbTemplate());
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("username2");
 
-        PlayerContext playerThreeContext = new PlayerContext();
+        playerThreeContext = new PlayerContext();
         VirtualServer playerThree = new VirtualServer(playerThreeContext);
         JoiningPhaseData dataThree = (JoiningPhaseData) playerThreeContext.getCurrentPhase();
         dataThree.setVirtualServer(playerThree);
+        dataThree.setListener(new DumbTemplate());
         playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerThree.registerSession("username3");
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
-        String matchId = serverController.getAvailableMatches("username2", playerTwo.getSessionToken()).keySet().iterator().next();
-        playerTwo.connectToGame(matchId);
-        playerThree.connectToGame(matchId);
+        Thread.sleep(100);  //waiting for the server to create the match
 
-        gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3, serverController);
+        gameContext = serverController.getPlayerVirtualClient("username1", playerOne.getSessionToken()).getGameContext();
+        playerTwo.connectToGame(gameContext.getMatchID());
+        playerThree.connectToGame(gameContext.getMatchID());
+
+        playerOne.chooseColor("blue");
+        playerTwo.chooseColor("red");
+        playerThree.chooseColor("yellow");
     }
 
     @AfterEach
@@ -151,7 +158,7 @@ public class GameContextTest {
         socketPort++;
         if (serverController != null) {
             serverController.shutdown();
-            Thread.sleep(200);
+            Thread.sleep(100);  //waiting for the server to shut down
         }
     }
 
@@ -237,14 +244,12 @@ public class GameContextTest {
 
     @Test
     void testNullGetFreeShipcard(){
-        connect3Players();
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard(null, 0), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("invalidUsername", 0), "username should be valid");
     }
 
     @Test
     void testGetFreeShipCard() {
-        connect3Players();
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("username1", -1), "pos should not be negative");
         ShipCard shipCard = assertInstanceOf(ShipCard.class, gameContext.getFreeShipCard("username1", 0), "getFreeShipCard should be return a ShipCard");
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("username1", 0), "player cannot have more than one shipCard in hand");
@@ -255,7 +260,6 @@ public class GameContextTest {
 
     @Test
     void testRelaseShipCardIllegalArgument(){
-        connect3Players();
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard(null, null), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("", null), "username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("invalidUsername", null), "username should be valid");
@@ -263,7 +267,6 @@ public class GameContextTest {
 
     @Test
     void testRelaseShipCards(){
-        connect3Players();
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "this player don't have any shipCard in hand");
         ShipCard shipCard = gameContext.getFreeShipCard("username1", 0);
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "shipCard cannot be null");
@@ -279,7 +282,6 @@ public class GameContextTest {
 
     @Test
     void testPlaceShipCardInvalid() {
-        connect3Players();
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard(null, null, 7, 7), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("", null, 7, 7), "username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("invalidUsername", null, 7, 7), "username should be valid");
@@ -293,23 +295,19 @@ public class GameContextTest {
 
     @Test
     void testPlaceShipCard(){
-        connect3Players();
         assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 7));
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 3, 3), "coordinates should be valid");
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 7), "slot already used");
     }
 
     @Test
-    void testGetPhase() throws FullLobbyException, UsernameAlreadyTakenException {
+    void testGetPhase() {
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Match should be in IDLE state");
-        connect3Players();
         assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Match should be in building state");
     }
 
     @Test
     void testRemoveShipCardInvalid(){
-        connect3Players();
-
         assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase());
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard(null, 7, 7),  "username cannot be null");
@@ -322,7 +320,6 @@ public class GameContextTest {
 
     @Test
     void testRemoveShipCard(){
-        connect3Players();
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 7);
         ShipBoard old = SerializationUtils.clone(gameContext.getGameModel().getPlayerShipBoard("username1"));
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 7, 8);
@@ -339,7 +336,6 @@ public class GameContextTest {
 
     @Test
     void testReserveShipCard(){
-        connect3Players();
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should be empty");
         gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", 0));
         assertEquals(1, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should one");
@@ -350,7 +346,6 @@ public class GameContextTest {
 
     @Test
     void testUseReservedShipCardInvalidArguments() {
-        connect3Players();
         gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", 12));
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username", gameContext.getGameModel().getPlayerShipBoard("username").getReservedComponents().getFirst(), 7, 7),"username cannot be illegal");
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username1", new StructuralModule("testmodule", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), 7, 7),"you cannot use this component if you didn't reserve it befoe");
@@ -359,7 +354,6 @@ public class GameContextTest {
 
     @Test
     void testUseReservedShipCard(){
-        connect3Players();
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should be empty");
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should be zero");
         ShipCard shipCard = gameContext.getFreeShipCard("username1", 10);
@@ -373,7 +367,6 @@ public class GameContextTest {
 
     @Test
     void testObserveMiniDeck(){
-        connect3Players();
         assertEquals(3, gameContext.observeMiniDeck("username1", 0).size(),"deck size should be 3");
         assertThrows(IllegalStateException.class, () -> gameContext.observeMiniDeck("username1", 3),"you can't observe this deck");
         assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", -1),"deck's number should be valid");
@@ -544,7 +537,6 @@ public class GameContextTest {
 
     @Test
     void testEndbuilding(){
-        connect3Players();
         gameContext.getGameModel().createDefinitiveDeck();
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", 0), 8, 8);
         gameContext.endBuilding("username1",1);
@@ -626,7 +618,6 @@ public class GameContextTest {
 
     @Test
     void testChooseFirePowerInvalidState() {
-        connect3Players();
         assertThrows(IllegalStateException.class,
                 () -> gameContext.chooseFirePower("username1",
                         new HashMap<>(), new ArrayList<>()));
