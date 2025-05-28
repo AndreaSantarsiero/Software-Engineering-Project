@@ -70,6 +70,11 @@ public class ServerController {
         clientControllerActions.add(clientControllerAction);
     }
 
+    public List<String> getUsernameList(){
+        return new ArrayList<>(playerSessions.keySet());
+    }
+
+
     /**
      * Retrieves the {@link ClientSession} associated with a given username and token
      *
@@ -172,12 +177,11 @@ public class ServerController {
      *
      * @param flightLevel the difficulty level for the new match
      */
-    public Map<String, GameContext> createMatch(FlightBoard.Type flightLevel, int numPlayers, String username, UUID token) throws FullLobbyException, UsernameAlreadyTakenException {
+    public void createMatch(FlightBoard.Type flightLevel, int numPlayers, String username, UUID token) throws FullLobbyException, UsernameAlreadyTakenException {
         getPlayerSession(username, token);
         GameContext match = new GameContext(flightLevel, numPlayers, this);
         availableMatches.put(match.getMatchID(), match);
         connectPlayerToGame(username, token, match.getMatchID());
-        return availableMatches;
     }
 
 
@@ -193,7 +197,7 @@ public class ServerController {
      * @throws RuntimeException if the match ID is invalid or the session is not found
      * @throws FullLobbyException if the player cannot join this match
      */
-    public Map<String, GameContext> connectPlayerToGame(String username, UUID token, String matchID) throws RuntimeException, FullLobbyException, UsernameAlreadyTakenException {
+    public void connectPlayerToGame(String username, UUID token, String matchID) throws RuntimeException, FullLobbyException, UsernameAlreadyTakenException {
         ClientSession clientSession = getPlayerSession(username, token);
         GameContext match = availableMatches.get(matchID);
         if (match == null) {
@@ -202,7 +206,6 @@ public class ServerController {
 
         match.connectPlayerToGame(username);
         clientSession.getVirtualClient().setGameContext(match);
-        return availableMatches;
     }
 
 
