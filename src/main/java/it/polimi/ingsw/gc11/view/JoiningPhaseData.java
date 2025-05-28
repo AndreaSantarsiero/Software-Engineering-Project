@@ -92,6 +92,8 @@ public class JoiningPhaseData extends GamePhaseData {
 
     @Override
     public void setMenuChoice(int choice){
+        previousState = state;
+
         if(state == JoiningState.CHOOSE_CONNECTION){
             setConnectionTypeMenu(choice);
         }
@@ -122,6 +124,8 @@ public class JoiningPhaseData extends GamePhaseData {
 
     @Override
     public void setIntegerChoice(int choice) {
+        previousState = state;
+
         if(state == JoiningState.CHOOSE_NUM_PLAYERS){
             setNumPlayers(choice);
         }
