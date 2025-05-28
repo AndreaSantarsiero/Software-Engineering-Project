@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.action.server.ServerController;
 
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
+import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
 import it.polimi.ingsw.gc11.controller.action.client.SendAvailableMatchesAction;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.util.List;
@@ -22,6 +23,9 @@ public class GetAvailableMatches extends ClientControllerAction {
             Map<String, List<String>> availableMatches = serverController.getAvailableMatches(username, token);
             SendAvailableMatchesAction response = new SendAvailableMatchesAction(availableMatches);
             serverController.sendAction(username, response);
+
+            NotifySuccessAction success = new NotifySuccessAction();
+            serverController.sendAction(username, success);
         }
         catch (Exception e) {
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
