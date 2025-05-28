@@ -65,9 +65,9 @@ public class MainCLI {
 
 
     private void startInputHandler() {
-        Thread inputThread = new Thread(() -> {
-            InputHandler inputHandler = new InputHandler(context);
+        InputHandler inputHandler = new InputHandler(context);
 
+        Thread inputThread = new Thread(() -> {
             while (true) {
                 try {
                     InputRequest request = inputQueue.take();
