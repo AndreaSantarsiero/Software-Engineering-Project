@@ -36,7 +36,8 @@ public class ViewModel {
     }
 
     public void setRMIVirtualServer() throws NetworkException {
-        this.virtualServer = new VirtualServer(Utils.ConnectionType.RMI, "127.0.0.1", 1099, new PlayerContext());
+        this.virtualServer = new VirtualServer(new PlayerContext());
+        virtualServer.initializeConnection(Utils.ConnectionType.RMI, "127.0.0.1", 1099);    //bisogna leggerli da src/main/resources/config.properties i dati
     }
 
     public void setSOCKETVirtualServer() throws NetworkException {

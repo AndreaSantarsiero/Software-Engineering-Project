@@ -42,11 +42,13 @@ public class ConnectionTest {
 
     @Test
     void testCreateMatch() throws NetworkException {
-        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerOne = new VirtualServer(null);
+        playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 4);
 
-        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerTwo = new VirtualServer(null);
+        playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("username2");
         playerTwo.createMatch(FlightBoard.Type.TRIAL, 2);
     }
@@ -55,9 +57,11 @@ public class ConnectionTest {
 
     @Test
     void testUsername() throws NetworkException {
-        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerOne = new VirtualServer(null);
+        playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username");
-        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerTwo = new VirtualServer(null);
+        playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         assertThrows(UsernameAlreadyTakenException.class, () -> playerTwo.registerSession("username"), "Username already taken");
         assertThrows(IllegalArgumentException.class, () -> playerTwo.registerSession(""), "Username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> playerTwo.registerSession(null), "Username cannot be null");
@@ -67,13 +71,17 @@ public class ConnectionTest {
 
     @Test
     void testFullLobby() throws NetworkException {
-        VirtualServer playerOne = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerOne = new VirtualServer(null);
+        playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("playerOne");
-        VirtualServer playerTwo = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerTwo = new VirtualServer(null);
+        playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("playerTwo");
-        VirtualServer playerThree = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerThree = new VirtualServer(null);
+        playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerThree.registerSession("playerThree");
-        VirtualServer playerFour = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, null);
+        VirtualServer playerFour = new VirtualServer(null);
+        playerFour.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerFour.registerSession("playerFour");
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);

@@ -119,12 +119,17 @@ public class GameContextTest {
 
 
         PlayerContext ctx = new DummyPlayerContext();
-        VirtualServer playerOne   = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, ctx);
+        VirtualServer playerOne   = new VirtualServer(ctx);
+        playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
-        VirtualServer playerTwo   = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, ctx);
+
+        VirtualServer playerTwo   = new VirtualServer(ctx);
         playerTwo.registerSession("username2");
-        VirtualServer playerThree = new VirtualServer(Utils.ConnectionType.RMI, serverIp, RMIPort, ctx);
+        playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
+
+        VirtualServer playerThree = new VirtualServer(ctx);
         playerThree.registerSession("username3");
+        playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
 //        String matchId = playerTwo.getAvailableMatches().keySet().iterator().next();  //ora il server risponde con le action
