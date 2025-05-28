@@ -66,6 +66,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setAvailableMatches(Map<String, List<String>> availableMatches) {
         this.availableMatches = availableMatches;
+        previousState = state;
         notifyListener();
     }
 
@@ -75,6 +76,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setPlayersColor(Map<String, String> playersColor) {
         this.playersColor = playersColor;
+        previousState = state;
         notifyListener();
     }
 
