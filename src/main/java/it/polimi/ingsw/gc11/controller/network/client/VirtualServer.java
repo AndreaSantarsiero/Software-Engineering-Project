@@ -74,6 +74,10 @@ public class VirtualServer {
         client.setClientSessionToken(token);
     }
 
+    public UUID getSessionToken() {
+        return client.getClientSessionToken();
+    }
+
 
 
     public void registerSession(String username) throws NetworkException {

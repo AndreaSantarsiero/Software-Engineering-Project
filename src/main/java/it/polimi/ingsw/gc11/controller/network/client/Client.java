@@ -25,6 +25,10 @@ public abstract class Client {
         this.clientSessionToken = clientSessionToken;
     }
 
+    public UUID getClientSessionToken() {
+        return clientSessionToken;
+    }
+
 
 
     //from client to server

@@ -36,6 +36,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
+import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.templates.JoiningTemplate;
@@ -63,10 +64,7 @@ public class GameContextTest {
     static int RMIPort = 1105;
     static int socketPort = 1240;
 
-    class DummyPlayerContext extends PlayerContext {
-        @Override public void setBuildingPhase() {}
-        @Override public GamePhaseData getCurrentPhase() { return null; }
-    }
+
 
     void connect3Players(){
         try {
@@ -118,23 +116,31 @@ public class GameContextTest {
         Thread.sleep(200);
 
 
-        PlayerContext ctx = new DummyPlayerContext();
-        VirtualServer playerOne   = new VirtualServer(ctx);
+        PlayerContext playerOneContext = new PlayerContext();
+        VirtualServer playerOne   = new VirtualServer(playerOneContext);
+        JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
+        dataOne.setVirtualServer(playerOne);
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
 
-        VirtualServer playerTwo   = new VirtualServer(ctx);
-        playerTwo.registerSession("username2");
+        PlayerContext playerTwoContext = new PlayerContext();
+        VirtualServer playerTwo   = new VirtualServer(playerTwoContext);
+        JoiningPhaseData dataTwo = (JoiningPhaseData) playerTwoContext.getCurrentPhase();
+        dataTwo.setVirtualServer(playerTwo);
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        playerTwo.registerSession("username2");
 
-        VirtualServer playerThree = new VirtualServer(ctx);
-        playerThree.registerSession("username3");
+        PlayerContext playerThreeContext = new PlayerContext();
+        VirtualServer playerThree = new VirtualServer(playerThreeContext);
+        JoiningPhaseData dataThree = (JoiningPhaseData) playerThreeContext.getCurrentPhase();
+        dataThree.setVirtualServer(playerThree);
         playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
+        playerThree.registerSession("username3");
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
-//        String matchId = playerTwo.getAvailableMatches().keySet().iterator().next();  //ora il server risponde con le action
-//        playerTwo.connectToGame(matchId);
-//        playerThree.connectToGame(matchId);
+        String matchId = serverController.getAvailableMatches("username2", playerTwo.getSessionToken()).keySet().iterator().next();
+        playerTwo.connectToGame(matchId);
+        playerThree.connectToGame(matchId);
 
         gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3, serverController);
     }
