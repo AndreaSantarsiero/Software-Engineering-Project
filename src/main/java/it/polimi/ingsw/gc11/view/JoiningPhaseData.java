@@ -20,6 +20,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     //modified by user with input
     private JoiningState state;
+    private JoiningState previousState;
     private String username;
     private int connectionTypeMenu = 0;
     private int createOrJoinMenu = 0;
@@ -59,6 +60,8 @@ public class JoiningPhaseData extends GamePhaseData {
     }
 
     public void updateState() {
+        previousState = state;
+
         if(state == JoiningState.CREATE_OR_JOIN) {
             if(createOrJoinMenu == 0) {
                 state = JoiningState.CHOOSE_LEVEL;
@@ -77,8 +80,13 @@ public class JoiningPhaseData extends GamePhaseData {
     }
 
     public void setState(JoiningState state) {
+        previousState = this.state;
         this.state = state;
         notifyListener();
+    }
+
+    public boolean isStateNew() {
+        return !state.equals(previousState);
     }
 
 

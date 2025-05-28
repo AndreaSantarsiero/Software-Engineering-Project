@@ -129,6 +129,14 @@ public class JoiningTemplate extends CLITemplate {
         }
 
 
+        if(data.isStateNew()){
+            addInputRequest(data);
+        }
+    }
+
+
+
+    public void addInputRequest(JoiningPhaseData data) {
         try{
             if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
                 mainCLI.addInputRequest(new MenuInput(data, connectionTypes.size(), data.getConnectionTypeMenu()));
