@@ -22,29 +22,31 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class VirtualServer {
 
-    private final Client client;
+    private Client client;
     private final PlayerContext playerContext;
     private String username;
     private final BlockingQueue<ServerAction> serverActions;
 
 
 
-    public VirtualServer(Utils.ConnectionType type, String ip, int port, PlayerContext playerContext) throws NetworkException {
+    public VirtualServer(PlayerContext playerContext) {
+        this.playerContext = playerContext;
+        serverActions = new LinkedBlockingQueue<>();
+        startCommandListener();
+    }
+
+    public void initializeConnection(Utils.ConnectionType type, String ip, int port) throws NetworkException {
         try{
             if(type.equals(Utils.ConnectionType.RMI)){
-                this.client = new ClientRMI(this, ip, port);
+                client = new ClientRMI(this, ip, port);
             }
             else{
-                this.client = new ClientSocket(this, ip, port);
+                client = new ClientSocket(this, ip, port);
             }
         }
         catch (Exception e){
             throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port + "\n" + e.getMessage());
         }
-
-        this.playerContext = playerContext;
-        serverActions = new LinkedBlockingQueue<>();
-        startCommandListener();
     }
 
 

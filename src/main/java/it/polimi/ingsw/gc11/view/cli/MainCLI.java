@@ -121,8 +121,9 @@ public class MainCLI {
             System.out.println("Using custom address " + serverIp + ":" + serverPort);
         }
 
-        virtualServer = new VirtualServer(connectionType, serverIp, serverPort, context);
+        virtualServer = new VirtualServer(context);
         joiningPhaseData.setVirtualServer(virtualServer);
+        virtualServer.initializeConnection(connectionType, serverIp, serverPort);
     }
 
     public VirtualServer getVirtualServer() {
