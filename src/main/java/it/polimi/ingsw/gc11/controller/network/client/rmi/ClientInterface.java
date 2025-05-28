@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 
 
 
-//E' lo stub che esporta il client per il server
 public interface ClientInterface extends Remote {
     void sendAction(ServerAction action) throws RemoteException;
 }

@@ -2,11 +2,8 @@ package it.polimi.ingsw.gc11.controller.network.client;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
-import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.ClientControllerAction;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
-
 import java.util.*;
 
 
@@ -24,20 +21,16 @@ public abstract class Client {
 
 
 
-    abstract public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException;
+    //from client to server
+    public abstract void registerSession(String username) throws NetworkException;
 
-    abstract public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException;
+    public abstract void sendAction(ClientControllerAction action) throws NetworkException;
 
-    abstract public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException;
-
-    abstract public Map<String, List<String>> getAvailableMatches(String username) throws NetworkException;
-
-    abstract public Map<String, String> getPlayers(String username) throws NetworkException;
+    public abstract void sendAction(ClientGameAction action) throws NetworkException;
 
 
 
-    abstract public void sendAction(ClientGameAction action) throws NetworkException;
-
+    //from server to client
     public void sendAction(ServerAction action){
         virtualServer.receiveAction(action);
     }

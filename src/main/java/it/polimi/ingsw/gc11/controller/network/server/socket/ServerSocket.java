@@ -3,10 +3,8 @@ package it.polimi.ingsw.gc11.controller.network.server.socket;
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.network.server.Server;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.UUID;
 
 
 

@@ -149,7 +149,7 @@ public class ServerController {
      * @throws UsernameAlreadyTakenException if a session already exists for the username
      * @throws IllegalArgumentException if the username is null or empty
      */
-    public UUID registerSocketSession(String username, VirtualSocketClient socketClient) throws UsernameAlreadyTakenException, IllegalArgumentException {
+    public UUID registerSocketSession(String username, VirtualSocketClient virtualSocketClient) throws UsernameAlreadyTakenException, IllegalArgumentException {
         if (playerSessions.containsKey(username)) {
             throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
         }
@@ -157,7 +157,7 @@ public class ServerController {
             throw new IllegalArgumentException("Username is null or empty");
         }
 
-        ClientSession clientSession = new ClientSession(username, socketClient);
+        ClientSession clientSession = new ClientSession(username, virtualSocketClient);
         playerSessions.put(username, clientSession);
         return clientSession.getToken();
     }

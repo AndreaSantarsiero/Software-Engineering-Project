@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import java.util.UUID;
 
 
 
@@ -16,8 +15,8 @@ public class CreateMatchAction extends ClientControllerAction {
     private final int numPlayers;
 
 
-    public CreateMatchAction(String username, UUID token, FlightBoard.Type flightLevel, int numPlayers) {
-        super(username, token);
+    public CreateMatchAction(String username, FlightBoard.Type flightLevel, int numPlayers) {
+        super(username);
         this.flightLevel = flightLevel;
         this.numPlayers = numPlayers;
     }

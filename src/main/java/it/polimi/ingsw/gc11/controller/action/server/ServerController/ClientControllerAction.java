@@ -10,12 +10,11 @@ import java.util.UUID;
 public abstract class ClientControllerAction implements Serializable {
 
     protected final String username;
-    protected final UUID token;
+    protected  UUID token;
 
 
-    public ClientControllerAction(String username, UUID token) {
+    public ClientControllerAction(String username) {
         this.username = username;
-        this.token = token;
     }
 
 
@@ -25,6 +24,10 @@ public abstract class ClientControllerAction implements Serializable {
 
     public UUID getToken() {
         return token;
+    }
+
+    public void setToken(UUID token) {
+        this.token = token;
     }
 
 

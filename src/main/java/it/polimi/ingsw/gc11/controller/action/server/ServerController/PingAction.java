@@ -2,20 +2,18 @@ package it.polimi.ingsw.gc11.controller.action.server.ServerController;
 
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import java.util.Map;
 
 
 
-public class GetPlayersAction extends ClientControllerAction {
+public class PingAction extends ClientControllerAction {
 
-    public GetPlayersAction(String username) {
+    public PingAction(String username) {
         super(username);
     }
 
 
     @Override
     public void execute(ServerController serverController) throws NetworkException {
-        Map<String, String> players = serverController.getPlayers(username, token);
-        //invio risposta con il parametro
+
     }
 }

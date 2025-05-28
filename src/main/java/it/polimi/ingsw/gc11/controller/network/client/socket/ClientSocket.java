@@ -1,18 +1,16 @@
 package it.polimi.ingsw.gc11.controller.network.client.socket;
 
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.ClientControllerAction;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.RegisterSocketSessionAction;
 import it.polimi.ingsw.gc11.controller.network.client.Client;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
+import it.polimi.ingsw.gc11.controller.network.server.socket.ClientGameMessage;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.*;
 
 
 
@@ -33,6 +31,14 @@ public class ClientSocket extends Client {
 
 
 
+    @Override
+    public void registerSession(String username) throws NetworkException {
+        RegisterSocketSessionAction action = new RegisterSocketSessionAction(username);
+        sendAction(action);
+    }
+
+
+
     public void close() throws IOException {
         inputStream.close();
         outputStream.close();
@@ -42,34 +48,28 @@ public class ClientSocket extends Client {
 
 
     @Override
-    public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
-
+    public void sendAction(ClientControllerAction action) throws NetworkException {
+        action.setToken(clientSessionToken);
+        try {
+            synchronized (outputStream) {
+                outputStream.writeObject(action);
+                outputStream.flush();
+            }
+        } catch (IOException e) {
+            throw new NetworkException(e.getMessage());
+        }
     }
-
-    @Override
-    public void createMatch(String username, FlightBoard.Type flightType, int numPlayers) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
-
-    }
-
-    @Override
-    public void connectToGame(String username, String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
-
-    }
-
-    @Override
-    public Map<String, List<String>> getAvailableMatches(String username) throws NetworkException {
-        return null;
-    }
-
-    @Override
-    public Map<String, String> getPlayers(String username){
-        return null;
-    }
-
-
 
     @Override
     public void sendAction(ClientGameAction action) throws NetworkException {
-
+        ClientGameMessage message = new ClientGameMessage(clientSessionToken, action);
+        try {
+            synchronized (outputStream) {
+                outputStream.writeObject(message);
+                outputStream.flush();
+            }
+        } catch (IOException e) {
+            throw new NetworkException(e.getMessage());
+        }
     }
 }

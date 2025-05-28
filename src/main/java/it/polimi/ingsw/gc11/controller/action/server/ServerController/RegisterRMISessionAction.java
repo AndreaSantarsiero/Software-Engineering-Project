@@ -14,7 +14,7 @@ public class RegisterRMISessionAction extends ClientControllerAction {
 
 
     public RegisterRMISessionAction(String username, ClientInterface playerStub) {
-        super(username, null);
+        super(username);
         this.playerStub = playerStub;
     }
 

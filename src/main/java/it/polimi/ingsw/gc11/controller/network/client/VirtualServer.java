@@ -2,13 +2,14 @@ package it.polimi.ingsw.gc11.controller.network.client;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.*;
-import it.polimi.ingsw.gc11.controller.action.server.ServerController.ClientControllerAction;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.ConnectToGameAction;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.CreateMatchAction;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.GetAvailableMatches;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.GetPlayersAction;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.controller.network.client.socket.ClientSocket;
-import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
@@ -18,18 +19,17 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
+
 public class VirtualServer {
 
     private final Client client;
     private final PlayerContext playerContext;
     private String username;
-
     private final BlockingQueue<ServerAction> serverActions;
 
 
-    public VirtualServer(Utils.ConnectionType type, String ip, int port, PlayerContext playerContext) throws NetworkException {
-        serverActions = new LinkedBlockingQueue<>();
 
+    public VirtualServer(Utils.ConnectionType type, String ip, int port, PlayerContext playerContext) throws NetworkException {
         try{
             if(type.equals(Utils.ConnectionType.RMI)){
                 this.client = new ClientRMI(this, ip, port);
@@ -43,59 +43,64 @@ public class VirtualServer {
         }
 
         this.playerContext = playerContext;
+        serverActions = new LinkedBlockingQueue<>();
         startCommandListener();
     }
+
+
 
     private void startCommandListener() {
         Thread listener = new Thread(() -> {
             while (true) {
                 try {
-                    ServerAction action = serverActions.take(); // blocca se la coda è vuota
-                    action.execute(this.playerContext); // esegue il comando nel contesto del gioco
-                } catch (Exception e) {
-                    System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
-                    e.printStackTrace();
-                }
+                    ServerAction action = serverActions.take();
+                    action.execute(this.playerContext);
+                } catch (InterruptedException ignored) {}
             }
         }, "ClientCommandExecutor-");
 
-        listener.setDaemon(true); // si chiude con il programma
+        listener.setDaemon(true);
         listener.start();
     }
-
 
     public void addServerAction(ServerAction serverAction) {
         serverActions.add(serverAction);
     }
 
-
-    public void registerSession(String username) throws NetworkException, UsernameAlreadyTakenException {
-        client.registerSession(username);
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void createMatch(FlightBoard.Type flightType, int numPlayers) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
-        client.createMatch(username, flightType, numPlayers);
+
+
+    public void registerSession(String username) throws NetworkException {
+        client.registerSession(username);
     }
 
-    public void connectToGame(String matchId) throws NetworkException, FullLobbyException, UsernameAlreadyTakenException {
-        client.connectToGame(username, matchId);
+    public void createMatch(FlightBoard.Type flightType, int numPlayers) throws NetworkException {
+        CreateMatchAction action = new CreateMatchAction(username, flightType, numPlayers);
+        client.sendAction(action);
     }
 
-    public Map<String, List<String>> getAvailableMatches() throws NetworkException {
-        return client.getAvailableMatches(username);
+    public void connectToGame(String matchId) throws NetworkException {
+        ConnectToGameAction action = new ConnectToGameAction(username, matchId);
+        client.sendAction(action);
     }
 
-    public Map<String, String> getPlayers() throws NetworkException {
-        return client.getPlayers(username);
+    public void getAvailableMatches() throws NetworkException {
+        GetAvailableMatches action = new GetAvailableMatches(username);
+        client.sendAction(action);
+    }
+
+    public void getPlayers() throws NetworkException {
+        GetPlayersAction action = new GetPlayersAction(username);
+        client.sendAction(action);
     }
 
     public void chooseColor(String chosenColor) throws NetworkException {
         ChooseColorAction action = new ChooseColorAction(username, chosenColor);
         client.sendAction(action);
     }
-
-    //aggiungo metodo ping con lo stesso fotmat di createMatch ecc
 
 
 

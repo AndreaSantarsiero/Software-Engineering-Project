@@ -4,14 +4,13 @@ import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 
 
 public class GetAvailableMatches extends ClientControllerAction {
 
-    public GetAvailableMatches(String username, UUID token) {
-        super(username, token);
+    public GetAvailableMatches(String username) {
+        super(username);
     }
 
 
