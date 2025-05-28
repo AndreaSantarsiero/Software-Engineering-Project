@@ -55,6 +55,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setSessionData(String username, UUID token) {
         virtualServer.setSessionData(username, token);
+        updateState();
     }
 
 
@@ -65,6 +66,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setAvailableMatches(Map<String, List<String>> availableMatches) {
         this.availableMatches = availableMatches;
+        notifyListener();
     }
 
     public Map<String, String> getPlayersColor() {
@@ -73,6 +75,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setPlayersColor(Map<String, String> playersColor) {
         this.playersColor = playersColor;
+        notifyListener();
     }
 
 
