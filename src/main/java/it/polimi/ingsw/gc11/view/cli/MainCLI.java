@@ -70,7 +70,7 @@ public class MainCLI {
                 try {
                     InputRequest request = inputQueue.take();
                     request.execute(inputHandler);
-                    System.out.println("[InputHandlerThread] Request: " + request + " executed.");
+                    System.out.println("[InputHandlerThread] Request: " + request + " executed. " + inputQueue.size() + " requests left");
                 }
                 catch (Exception e) {
                     System.err.println("[InputHandlerThread] Error during input setup: " + e.getMessage());
