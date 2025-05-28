@@ -143,7 +143,6 @@ public class JoiningTemplate extends CLITemplate {
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
                 mainCLI.virtualServerSetup(data, data.getConnectionTypeMenu());
-                data.updateState();
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
                 mainCLI.addInputRequest(new StringInput(data));
@@ -152,7 +151,6 @@ public class JoiningTemplate extends CLITemplate {
                 try{
                     mainCLI.getVirtualServer().registerSession(data.getUsername());
                     usernameApproved = true;
-                    data.updateState();
                 } catch (NetworkException e) {
                     System.out.println("Connection error: " + e.getMessage());
                 }
@@ -183,7 +181,6 @@ public class JoiningTemplate extends CLITemplate {
                     else {
                         mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(data.getExistingGameMenu()));
                     }
-                    data.updateState();
                 }
                 catch (NetworkException e) {
                     System.out.println("Connection error: " + e.getMessage());
@@ -194,7 +191,6 @@ public class JoiningTemplate extends CLITemplate {
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
                 mainCLI.getVirtualServer().chooseColor(colorOptions.get(data.getChosenColorMenu()));
-                data.updateState();
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());

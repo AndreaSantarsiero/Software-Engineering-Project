@@ -8,7 +8,9 @@ public class NotifySuccessAction extends ServerAction {
 
 
     @Override
-    public void loadData(JoiningPhaseData joiningPhaseData) {}
+    public void loadData(JoiningPhaseData joiningPhaseData) {
+        joiningPhaseData.updateState();
+    }
 
     @Override
     public void loadData(BuildingPhaseData buildingPhaseData) {}
