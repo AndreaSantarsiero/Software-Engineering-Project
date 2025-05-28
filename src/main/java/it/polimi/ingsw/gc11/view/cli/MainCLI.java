@@ -72,10 +72,10 @@ public class MainCLI {
                 try {
                     InputRequest request = inputQueue.take();
                     request.execute(inputHandler);
+                    System.out.println("[InputHandlerThread] Request: " + request + " executed.");
                 }
                 catch (Exception e) {
-                    System.err.println("[InputHandlerThread] Errore durante la gestione input:");
-                    e.printStackTrace();
+                    System.err.println("[InputHandlerThread] Error during input setup: " + e.getMessage());
                 }
             }
         }, "InputHandlerThread");
