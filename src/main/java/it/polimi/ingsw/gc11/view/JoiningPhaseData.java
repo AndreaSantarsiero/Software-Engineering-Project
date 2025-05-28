@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 
@@ -20,6 +22,7 @@ public class JoiningPhaseData extends GamePhaseData {
     private Map<String, String> playersColor;
 
     //modified by user with input
+    private VirtualServer virtualServer;
     private JoiningState state;
     private JoiningState previousState;
     private String username;
@@ -42,6 +45,16 @@ public class JoiningPhaseData extends GamePhaseData {
     @Override
     public void notifyListener() {
         listener.update(this);
+    }
+
+
+
+    public void setVirtualServer(VirtualServer virtualServer) {
+        this.virtualServer = virtualServer;
+    }
+
+    public void setSessionData(String username, UUID token) {
+        virtualServer.setSessionData(username, token);
     }
 
 

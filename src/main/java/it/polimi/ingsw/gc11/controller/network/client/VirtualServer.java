@@ -67,8 +67,9 @@ public class VirtualServer {
         serverActions.add(serverAction);
     }
 
-    public void setUsername(String username) {
+    public void setSessionData(String username, UUID token) {
         this.username = username;
+        client.setClientSessionToken(token);
     }
 
 

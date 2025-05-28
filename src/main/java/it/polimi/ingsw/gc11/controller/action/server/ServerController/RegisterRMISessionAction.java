@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.controller.action.server.ServerController;
 
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
-import it.polimi.ingsw.gc11.controller.action.client.SendUUIDTokenAction;
+import it.polimi.ingsw.gc11.controller.action.client.SendSessionDataAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.util.UUID;
@@ -24,7 +24,7 @@ public class RegisterRMISessionAction extends ClientControllerAction {
     public void execute(ServerController serverController) throws NetworkException {
         try {
             UUID token = serverController.registerRMISession(username, playerStub);
-            SendUUIDTokenAction response = new SendUUIDTokenAction(token);
+            SendSessionDataAction response = new SendSessionDataAction(username, token);
             serverController.sendAction(username, response);
         } catch (Exception e) {
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());

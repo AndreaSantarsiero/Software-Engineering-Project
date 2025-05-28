@@ -7,7 +7,7 @@ import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 public abstract class GamePhaseData {
 
     protected Template listener;
-    private String serverMessage;//è la stringa che mi raccoglie il messaggio di eccezione lanciato dal server
+    private String serverMessage;
 
 
 

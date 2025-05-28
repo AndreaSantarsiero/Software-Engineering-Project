@@ -94,7 +94,7 @@ public class JoiningTemplate extends CLITemplate {
         }
         if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
             try{
-                data.setAvailableMatches(mainCLI.getVirtualServer().getAvailableMatches());
+                mainCLI.getVirtualServer().getAvailableMatches();
             } catch (NetworkException e) {
                 System.out.println("Connection error: " + e.getMessage());
             }
@@ -142,7 +142,7 @@ public class JoiningTemplate extends CLITemplate {
                 mainCLI.addInputRequest(new MenuInput(data, connectionTypes.size(), data.getConnectionTypeMenu()));
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
-                mainCLI.virtualServerSetup(data.getConnectionTypeMenu());
+                mainCLI.virtualServerSetup(data, data.getConnectionTypeMenu());
                 data.updateState();
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
@@ -153,9 +153,8 @@ public class JoiningTemplate extends CLITemplate {
                     mainCLI.getVirtualServer().registerSession(data.getUsername());
                     usernameApproved = true;
                     data.updateState();
-                } catch (UsernameAlreadyTakenException | IllegalArgumentException e) {
-                    data.setState(JoiningPhaseData.JoiningState.CHOOSE_USERNAME);
-                    serverMessage = e.getMessage();
+                } catch (NetworkException e) {
+                    System.out.println("Connection error: " + e.getMessage());
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
@@ -186,13 +185,8 @@ public class JoiningTemplate extends CLITemplate {
                     }
                     data.updateState();
                 }
-                catch (FullLobbyException e) {
-                    data.setState(JoiningPhaseData.JoiningState.CREATE_OR_JOIN);
-                    serverMessage = e.getMessage();
-                }
-                catch (UsernameAlreadyTakenException | IllegalArgumentException e) {
-                    data.setState(JoiningPhaseData.JoiningState.CHOOSE_USERNAME);
-                    serverMessage = e.getMessage();
+                catch (NetworkException e) {
+                    System.out.println("Connection error: " + e.getMessage());
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {

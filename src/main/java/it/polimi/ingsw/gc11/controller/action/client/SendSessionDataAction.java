@@ -5,18 +5,22 @@ import java.util.UUID;
 
 
 
-public class SendUUIDTokenAction extends ServerAction {
+public class SendSessionDataAction extends ServerAction {
 
+    private final String username;
     private final UUID token;
 
 
-    public SendUUIDTokenAction(UUID token) {
+    public SendSessionDataAction(String username, UUID token) {
+        this.username = username;
         this.token = token;
     }
 
 
     @Override
-    public void loadData(JoiningPhaseData joiningPhaseData) {}
+    public void loadData(JoiningPhaseData joiningPhaseData) {
+        joiningPhaseData.setSessionData(username, token);
+    }
 
     @Override
     public void loadData(BuildingPhaseData buildingPhaseData) {}

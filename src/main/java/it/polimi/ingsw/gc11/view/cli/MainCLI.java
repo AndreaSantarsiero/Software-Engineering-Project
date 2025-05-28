@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
+import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.cli.input.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.input.InputRequest;
@@ -91,7 +92,7 @@ public class MainCLI {
 
 
 
-    public void virtualServerSetup(int connectionChoice) throws NetworkException {
+    public void virtualServerSetup(JoiningPhaseData joiningPhaseData, int connectionChoice) throws NetworkException {
         Utils.ConnectionType connectionType = connectionTypeSetup(connectionChoice);
         boolean defaultAddress = false;
 
@@ -121,6 +122,7 @@ public class MainCLI {
         }
 
         virtualServer = new VirtualServer(connectionType, serverIp, serverPort, context);
+        joiningPhaseData.setVirtualServer(virtualServer);
     }
 
     public VirtualServer getVirtualServer() {

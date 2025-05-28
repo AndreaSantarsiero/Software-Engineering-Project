@@ -21,6 +21,12 @@ public abstract class Client {
 
 
 
+    public void setClientSessionToken(UUID clientSessionToken) {
+        this.clientSessionToken = clientSessionToken;
+    }
+
+
+
     //from client to server
     public abstract void registerSession(String username) throws NetworkException;
 

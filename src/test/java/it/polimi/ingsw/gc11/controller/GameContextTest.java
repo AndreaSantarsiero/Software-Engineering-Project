@@ -127,9 +127,9 @@ public class GameContextTest {
         playerThree.registerSession("username3");
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
-        String matchId = playerTwo.getAvailableMatches().keySet().iterator().next();
-        playerTwo.connectToGame(matchId);
-        playerThree.connectToGame(matchId);
+//        String matchId = playerTwo.getAvailableMatches().keySet().iterator().next();  //ora il server risponde con le action
+//        playerTwo.connectToGame(matchId);
+//        playerThree.connectToGame(matchId);
 
         gameContext = new GameContext(FlightBoard.Type.LEVEL2, 3, serverController);
     }

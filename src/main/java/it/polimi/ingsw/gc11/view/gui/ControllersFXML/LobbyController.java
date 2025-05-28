@@ -33,32 +33,32 @@ public class LobbyController {
 //        ViewModel viewModel = (ViewModel) this.stage.getUserData();
 //        VirtualServer virtualServer = viewModel.getVirtualServer();
 
-        try {
+//        try {
 
             playerColumn = new TableColumn<>("Username");
             colorColumn = new TableColumn<>("Color");
 
-            Map<String, String> map = virtualServer.getPlayersColor();  //usare JoiningPhaseData
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                playerColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));
-                colorColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getValue()));
-            }
-            //ObservableList<Player> players = (ObservableList<Player>) virtualServer.getPlayers();
-            //playersTable.setItems(players);
-
-            //playerColumn = new TableColumn<>("Username");
-            //playerColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-
-            //colorColumn = new TableColumn<>("Color");
-            //colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
-
-            playersTable.getColumns().add(playerColumn);
-            playersTable.getColumns().add(colorColumn);
-
-        } catch (NetworkException e) {
-            //label.setText ...
-            throw new RuntimeException(e);
-        }
+//            Map<String, String> map = virtualServer.getPlayersColor();  //usare JoiningPhaseData
+//            for (Map.Entry<String, String> entry : map.entrySet()) {
+//                playerColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));
+//                colorColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getValue()));
+//            }
+//            //ObservableList<Player> players = (ObservableList<Player>) virtualServer.getPlayers();
+//            //playersTable.setItems(players);
+//
+//            //playerColumn = new TableColumn<>("Username");
+//            //playerColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+//
+//            //colorColumn = new TableColumn<>("Color");
+//            //colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
+//
+//            playersTable.getColumns().add(playerColumn);
+//            playersTable.getColumns().add(colorColumn);
+//
+//        } catch (NetworkException e) {
+//            //label.setText ...
+//            throw new RuntimeException(e);
+//        }
 
     }
 
