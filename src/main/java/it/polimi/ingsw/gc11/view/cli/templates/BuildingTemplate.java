@@ -18,8 +18,8 @@ public class BuildingTemplate extends CLITemplate {
 
     public BuildingTemplate(MainCLI mainCLI) {
         super(mainCLI);
-         shipCardCLI = new ShipCardCLI();
-         shipBoardCLI = new ShipBoardCLI(shipCardCLI);
+        shipCardCLI = new ShipCardCLI();
+        shipBoardCLI = new ShipBoardCLI(shipCardCLI);
     }
 
 
