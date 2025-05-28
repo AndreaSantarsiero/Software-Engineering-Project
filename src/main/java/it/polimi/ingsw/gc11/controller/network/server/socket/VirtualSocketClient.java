@@ -44,7 +44,9 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
         try {
             out.writeObject(action);
             out.flush();
+            System.out.println("[SOCKET] Sending socket session action went good...");
         } catch (IOException e) {
+            System.out.println("[SOCKET] Sending socket session action went bad...");
             throw new NetworkException(e.getMessage());
         }
     }
