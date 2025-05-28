@@ -230,6 +230,10 @@ public class GameModel {
         players.add(newPlayer);
     }
 
+    public boolean isFullLobby() {
+        return players.size() == numPlayers;
+    }
+
     public int getMaxNumPlayers() {
         return this.numPlayers;
     }

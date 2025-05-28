@@ -1,9 +1,15 @@
 package it.polimi.ingsw.gc11.controller.action.server.ServerController;
 
+import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
+import it.polimi.ingsw.gc11.controller.action.client.SendAvailableMatchesAction;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.Player;
+import java.util.List;
+import java.util.Map;
+import static java.util.Map.*;
 
 
 
@@ -21,7 +27,17 @@ public class ConnectToGameAction extends ClientControllerAction {
     @Override
     public void execute(ServerController serverController) throws NetworkException {
         try {
-            serverController.connectPlayerToGame(username, token, matchId);
+            Map<String, GameContext> availableMatches = serverController.connectPlayerToGame(username, token, matchId);
+            Map<String, List<String>> matchesUpdate = serverController.getAvailableMatches(username, token);
+
+            for(Entry<String, GameContext> entry : availableMatches.entrySet()){
+                GameContext match = entry.getValue();
+                for(Player player : match.getGameModel().getPlayers()){
+                    SendAvailableMatchesAction action = new SendAvailableMatchesAction(matchesUpdate);
+                    serverController.sendAction(player.getUsername(), action);
+                }
+            }
+
             NotifySuccessAction response = new NotifySuccessAction();
             serverController.sendAction(username, response);
         }

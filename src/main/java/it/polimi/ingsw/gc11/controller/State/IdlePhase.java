@@ -40,7 +40,7 @@ public class IdlePhase extends GamePhase {
 
 
     @Override
-    public String chooseColor(String username, String chosenColor) {
+    public void chooseColor(String username, String chosenColor) {
         Player player = this.gameModel.getPlayer(username);
         String color = chosenColor.toLowerCase();
         this.gameModel.setPlayerColor(username, color);
@@ -60,8 +60,6 @@ public class IdlePhase extends GamePhase {
                 gameContext.sendAction(p.getUsername(), send);
             }
         }
-
-        return player.getColor();
     }
 
 }

@@ -23,7 +23,7 @@ public abstract class GamePhase {
         throw new FullLobbyException("Cannot connect player to game in the current game phase.");
     }
 
-    public String chooseColor(String username, String chosenColor) {
+    public void chooseColor(String username, String chosenColor) {
         throw new IllegalStateException("Can't choose player's color in the current game phase." );
     }
 

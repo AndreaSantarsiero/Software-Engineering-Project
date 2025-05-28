@@ -33,13 +33,6 @@ public class GameContext {
         this.gameModel.setLevel(flightType);
         this.matchID = gameModel.getID();
         this.phase = new IdlePhase(this);
-
-        //Chiedo approval di santa:
-//        SetJoiningPhaseAction send = new SetJoiningPhaseAction();
-//        for (Player p : gameModel.getPlayers()) {
-//            this.sendAction(p.getUsername(), send);
-//        }
-
         this.serverController = serverController;
         this.clientGameActions = new LinkedBlockingQueue<>();
 
