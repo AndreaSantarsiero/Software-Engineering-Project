@@ -143,6 +143,7 @@ public class JoiningTemplate extends CLITemplate {
             }
             else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
                 mainCLI.virtualServerSetup(data, data.getConnectionTypeMenu());
+                data.updateState();
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
                 mainCLI.addInputRequest(new StringInput(data));
