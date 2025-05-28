@@ -1,9 +1,10 @@
 package it.polimi.ingsw.gc11.controller.action.server.ServerController;
 
 import it.polimi.ingsw.gc11.controller.ServerController;
+import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
+import it.polimi.ingsw.gc11.controller.action.client.SendUUIDTokenAction;
 import it.polimi.ingsw.gc11.controller.network.server.socket.VirtualSocketClient;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import java.util.UUID;
 
 
@@ -27,9 +28,12 @@ public class RegisterSocketSessionAction extends ClientControllerAction {
     public void execute(ServerController serverController) throws NetworkException {
         try {
             UUID token = serverController.registerSocketSession(username, virtualSocketClient);
+            SendUUIDTokenAction response = new SendUUIDTokenAction(token);
+            serverController.sendAction(username, response);
         }
-        catch (UsernameAlreadyTakenException e) {
-
+        catch (Exception e) {
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
+            serverController.sendAction(username, exception);
         }
     }
 }

@@ -17,6 +17,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     //modified by server with actions
     private Map<String, List<String>> availableMatches;
+    private Map<String, String> playersColor;
 
     //modified by user with input
     private JoiningState state;
@@ -51,6 +52,14 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setAvailableMatches(Map<String, List<String>> availableMatches) {
         this.availableMatches = availableMatches;
+    }
+
+    public Map<String, String> getPlayersColor() {
+        return playersColor;
+    }
+
+    public void setPlayersColor(Map<String, String> playersColor) {
+        this.playersColor = playersColor;
     }
 
 

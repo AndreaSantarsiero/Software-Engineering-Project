@@ -111,9 +111,20 @@ public class GameContext {
         phase.connectPlayerToGame(playerUsername);
     }
 
-    //Finire la catena di invocazione per la rete
-    public String chooseColor(String username, String chosenColor) {
-        return phase.chooseColor(username, chosenColor);
+    public void chooseColor(String username, String chosenColor) {
+        phase.chooseColor(username, chosenColor);
+    }
+
+    public Map<String, String> getPlayersColor (){
+        Map<String, String> player_color = new HashMap<>();
+
+        for (Player player : gameModel.getPlayers()) {
+            String playerUsername = player.getUsername();
+            String playerColor = player.getColor();
+            player_color.put(playerUsername, playerColor);
+        }
+
+        return player_color;
     }
 
 

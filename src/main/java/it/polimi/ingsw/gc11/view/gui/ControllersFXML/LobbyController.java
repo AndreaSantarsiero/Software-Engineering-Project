@@ -3,8 +3,6 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.view.gui.ViewModel;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -40,7 +38,7 @@ public class LobbyController {
             playerColumn = new TableColumn<>("Username");
             colorColumn = new TableColumn<>("Color");
 
-            Map<String, String> map = virtualServer.getPlayers();
+            Map<String, String> map = virtualServer.getPlayersColor();  //usare JoiningPhaseData
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 playerColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));
                 colorColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getValue()));

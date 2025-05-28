@@ -1,24 +1,19 @@
 package it.polimi.ingsw.gc11.controller.action.client;
 
 import it.polimi.ingsw.gc11.view.*;
+import java.util.UUID;
 
 
 
-public class UpdatePlayerColorAction extends ServerAction {
+public class SendUUIDTokenAction extends ServerAction {
 
-    String chosenColor;
+    private final UUID token;
 
 
-
-    public UpdatePlayerColorAction(String color) {
-        this.chosenColor = color;
+    public SendUUIDTokenAction(UUID token) {
+        this.token = token;
     }
 
-
-
-    public String getChosenColor() {
-        return chosenColor;
-    }
 
     @Override
     public void loadData(JoiningPhaseData joiningPhaseData) {}
@@ -34,4 +29,5 @@ public class UpdatePlayerColorAction extends ServerAction {
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}
+
 }

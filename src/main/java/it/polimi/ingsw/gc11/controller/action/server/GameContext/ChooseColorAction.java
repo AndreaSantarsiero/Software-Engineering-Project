@@ -2,7 +2,9 @@ package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
-import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerColorAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayersColorAction;
+import it.polimi.ingsw.gc11.model.Player;
+import java.util.Map;
 
 
 
@@ -18,15 +20,19 @@ public class ChooseColorAction extends ClientGameAction {
 
 
     @Override
-    public void execute(GameContext gameContext) {
+    public void execute(GameContext context) {
         try{
-            String chosenColor = gameContext.chooseColor(username, playerColor);
-            UpdatePlayerColorAction updatePlayerColorAction = new UpdatePlayerColorAction(chosenColor);
-            gameContext.sendAction(username, updatePlayerColorAction);
+            context.chooseColor(username, playerColor);
+            Map<String, String> playersColor = context.getPlayersColor();
+            UpdatePlayersColorAction response = new UpdatePlayersColorAction(playersColor);
+
+            for (Player player : context.getGameModel().getPlayers()) {
+                context.sendAction(player.getUsername(), response);
+            }
         }
         catch (Exception e){
             NotifyExceptionAction notifyExceptionAction = new NotifyExceptionAction(e.getMessage());
-            gameContext.sendAction(username, notifyExceptionAction);
+            context.sendAction(username, notifyExceptionAction);
         }
     }
 }

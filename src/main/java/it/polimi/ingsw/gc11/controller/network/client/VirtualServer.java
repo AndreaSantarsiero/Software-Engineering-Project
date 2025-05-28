@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc11.controller.action.server.GameContext.*;
 import it.polimi.ingsw.gc11.controller.action.server.ServerController.ConnectToGameAction;
 import it.polimi.ingsw.gc11.controller.action.server.ServerController.CreateMatchAction;
 import it.polimi.ingsw.gc11.controller.action.server.ServerController.GetAvailableMatches;
-import it.polimi.ingsw.gc11.controller.action.server.ServerController.GetPlayersAction;
+import it.polimi.ingsw.gc11.controller.action.server.GameContext.GetPlayersColorAction;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.controller.network.client.socket.ClientSocket;
@@ -92,8 +92,8 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
-    public void getPlayers() throws NetworkException {
-        GetPlayersAction action = new GetPlayersAction(username);
+    public void getPlayersColor() throws NetworkException {
+        GetPlayersColorAction action = new GetPlayersColorAction(username);
         client.sendAction(action);
     }
 

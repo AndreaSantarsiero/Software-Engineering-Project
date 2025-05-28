@@ -5,13 +5,18 @@ import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.SendFreeShipCardAction;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
+
+
 public class GetFreeShipCardAction extends ClientGameAction {
+
     private int pos;
+
 
     public GetFreeShipCardAction(String username, int pos) {
         super(username);
         this.pos = pos;
     }
+
 
     @Override
     public void execute(GameContext context) {

@@ -232,27 +232,6 @@ public class ServerController {
     }
 
 
-    public Map<String, String> getPlayers(String username, UUID token){
-        //Get matchId of the gameContext paired with the username provided
-        String matchID = getPlayerSession(username, token).getVirtualClient().getGameContext().getMatchID();
-        GameContext match = availableMatches.get(matchID);
-
-        if (match == null) {
-            throw new IllegalArgumentException("No matches found for matchID " + matchID);
-        }
-
-        Map<String, String> player_color = new HashMap<>();
-
-        for (Player player : match.getGameModel().getPlayers()) {
-            String playerUsername = player.getUsername();
-            String playerColor = player.getColor();
-            player_color.put(playerUsername, playerColor);
-        }
-
-        return player_color;
-    }
-
-
 
     //cosa facciamo se il player si disconnette? invalidare il token, freeze, riconnect ecc
     //cosa facciamo a fine game? bisogna levare username e token dalla mappa credo
