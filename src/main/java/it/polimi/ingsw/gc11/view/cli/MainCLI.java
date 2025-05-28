@@ -88,6 +88,7 @@ public class MainCLI {
 
     public void addInputRequest(InputRequest request) {
         inputQueue.add(request);
+        System.out.println("[InputHandlerThread] Added request: " + request);
     }
 
 
