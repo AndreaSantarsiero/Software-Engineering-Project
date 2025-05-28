@@ -36,6 +36,7 @@ public class ServerSocket extends Server {
                 while (!serverSocket.isClosed()) {
                     Socket clientSocket = serverSocket.accept();
                     new Thread(new VirtualSocketClient(clientSocket, serverController)).start();
+                    System.out.println("[SOCKET] Accepted connection from " + clientSocket.getRemoteSocketAddress());
                 }
             } catch (IOException e) {
                 if (!serverSocket.isClosed()) {
