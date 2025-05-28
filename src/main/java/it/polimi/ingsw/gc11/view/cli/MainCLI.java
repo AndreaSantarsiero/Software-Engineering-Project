@@ -32,7 +32,7 @@ public class MainCLI {
         GamePhaseData data = context.getCurrentPhase();
         InputHandler inputHandler = new InputHandler(context);
         data.setListener(new JoiningTemplate(this));
-        startInputHandler();
+        startInputHandler(inputHandler);
 
         try {
             parseArgs(args);
@@ -64,9 +64,7 @@ public class MainCLI {
 
 
 
-    private void startInputHandler() {
-        InputHandler inputHandler = new InputHandler(context);
-
+    private void startInputHandler(InputHandler inputHandler) {
         Thread inputThread = new Thread(() -> {
             while (true) {
                 try {
