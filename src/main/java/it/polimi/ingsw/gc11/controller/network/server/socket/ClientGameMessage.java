@@ -1,11 +1,12 @@
 package it.polimi.ingsw.gc11.controller.network.server.socket;
 
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
+import java.io.Serializable;
 import java.util.UUID;
 
 
 
-public class ClientGameMessage {
+public class ClientGameMessage implements Serializable {
 
     private final UUID token;
     private final ClientGameAction clientGameAction;
