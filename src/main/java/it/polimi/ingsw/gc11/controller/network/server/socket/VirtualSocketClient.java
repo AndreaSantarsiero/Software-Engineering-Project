@@ -58,6 +58,7 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
         try (socket) {
             while (true) {
                 Object message = in.readObject();
+                System.out.println("[SOCKET] New message: " + message.getClass());
 
                 if(message instanceof RegisterSocketSessionAction registerAction) {
                     registerAction.setVirtualSocketClient(this);
