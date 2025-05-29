@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.network.client.socket;
 
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.action.server.ServerController.ClientControllerAction;
 import it.polimi.ingsw.gc11.controller.action.server.ServerController.RegisterSocketSessionAction;
@@ -27,7 +28,33 @@ public class ClientSocket extends Client {
         this.socket = new Socket(ip, port);
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
         this.inputStream = new ObjectInputStream(socket.getInputStream());
+
+        startCommandListener();
     }
+
+    private void startCommandListener() {
+        Thread listenerThread = new Thread(() -> {
+            try {
+                while (!socket.isClosed()) {
+                    Object input = inputStream.readObject();
+
+                    if (input instanceof ServerAction action) {
+                        sendAction(action);
+                    }
+                    else {
+                        System.err.println("Unknown message type: " + input.getClass());
+                    }
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                if (!socket.isClosed()) {
+                    System.err.println("Error in socket connection: " + e.getMessage());
+                }
+            }
+        });
+        listenerThread.setDaemon(true);
+        listenerThread.start();
+    }
+
 
 
 
