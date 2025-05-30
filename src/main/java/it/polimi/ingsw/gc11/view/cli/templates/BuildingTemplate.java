@@ -91,14 +91,14 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                             else {
-                                shipBoardCLI.printReservedCards(shipBoard, i+2);
+                                shipBoardCLI.printReservedCards(shipBoard, i-5);
                                 System.out.print("   |");
                             }
                         }
                     }
                 }
 
-                else if (y == 1 && i != 5){
+                else if (y == 1){
                     if(i < 5){
                         for (int x = 0; x < shipBoard.getWidth(); x++) {
                             if(x < (shipBoard.getWidth() - 2)){
@@ -109,6 +109,15 @@ public class BuildingTemplate extends CLITemplate {
                                 System.out.print("   |");
                             }
                         }
+                    }
+                    else if (i == 5){
+                        System.out.print("   ");
+                        for (int x = 0; x < shipBoard.getWidth(); x++) {
+                            if(x < shipBoard.getWidth()){
+                                shipBoardCLI.printInvalidSquare();
+                            }
+                        }
+                        System.out.print("      |");
                     }
                     else if (i == 6){
                         shipBoardCLI.printHorizontalCoordinates(shipBoard);

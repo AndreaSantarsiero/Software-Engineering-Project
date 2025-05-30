@@ -35,76 +35,130 @@ public class InputHandler {
 
 
     public void interactiveMenu(GamePhaseData data, int size, int previouslySelected) {
-        if (context.getCurrentPhase().equals(data)) {
-            int selected = previouslySelected;
+        if (!context.getCurrentPhase().equals(data)){
+            return;
+        }
+        int selected = previouslySelected;
 
-            KeyMap<String> keyMap = new KeyMap<>();
-            keyMap.bind("up", "\033[A", "w", "W");      // Up
-            keyMap.bind("down", "\033[B", "s", "S");    // Down
-            keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("up", "\033[A", "w", "W");      // Up
+        keyMap.bind("down", "\033[B", "s", "S");    // Down
+        keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
 
-            while (true) {
-                String key = bindingReader.readBinding(keyMap);
+        while (true) {
+            String key = bindingReader.readBinding(keyMap);
 
-                switch (key) {
-                    case "up":
-                        selected = (selected - 1 + size) % size;
-                        data.setMenuChoice(selected);
-                        break;
-                    case "down":
-                        selected = (selected + 1) % size;
-                        data.setMenuChoice(selected);
-                        break;
-                    case "enter":
-                        data.confirmMenuChoice();
-                        return;
-                    default:
-                        // ignore any other key
-                }
+            switch (key) {
+                case "up":
+                    selected = (selected - 1 + size) % size;
+                    data.setMenuChoice(selected);
+                    break;
+                case "down":
+                    selected = (selected + 1) % size;
+                    data.setMenuChoice(selected);
+                    break;
+                case "enter":
+                    data.confirmMenuChoice();
+                    return;
+                default:
+                    // ignore any other key
             }
         }
     }
 
 
 
+    public void interactiveGridMenu(GamePhaseData data, int size, int previouslySelected, int cols) {
+        if (!context.getCurrentPhase().equals(data)){
+            return;
+        }
+        int selected = previouslySelected;
+        int rows = (int) Math.ceil((double) size / cols);
+
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("up", "\033[A", "w", "W");      // Up
+        keyMap.bind("down", "\033[B", "s", "S");    // Down
+        keyMap.bind("left", "\033[D", "a", "A");    // Left
+        keyMap.bind("right", "\033[C", "d", "D");   // Right
+        keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
+
+        while (true) {
+            String key = bindingReader.readBinding(keyMap);
+            int i = selected / cols;
+            int j = selected % cols;
+
+            switch (key) {
+                case "up":
+                    i = (i - 1 + rows) % rows;
+                    break;
+                case "down":
+                    i = (i + 1) % rows;
+                    break;
+                case "left":
+                    j = (j - 1 + cols) % cols;
+                    break;
+                case "right":
+                    j = (j + 1) % cols;
+                    break;
+                case "enter":
+                    data.confirmMenuChoice();
+                    return;
+                default:
+                    // ignore any other key
+            }
+
+            selected = i * cols + j;
+
+            // in case the last row contains less elements
+            if (selected >= size) {
+                selected = (i - 1) * cols + j;
+            }
+
+            data.setMenuChoice(selected);
+        }
+    }
+
+
+
     public void interactiveNumberSelector(GamePhaseData data, int minValue, int maxValue, int previouslySelected) {
-        if (context.getCurrentPhase().equals(data)) {
-            int selected = previouslySelected;
-            int range = maxValue - minValue + 1;
+        if (!context.getCurrentPhase().equals(data)){
+            return;
+        }
+        int selected = previouslySelected;
+        int range = maxValue - minValue + 1;
 
-            KeyMap<String> keyMap = new KeyMap<>();
-            keyMap.bind("up", "\033[A", "w", "W", "+");     // Increment by 1
-            keyMap.bind("down", "\033[B", "s", "S", "-");   // Decrement by 1
-            keyMap.bind("right", "\033[C", "d", "D");       // Increment by 3
-            keyMap.bind("left", "\033[D", "a", "A");        // Decrement by 3
-            keyMap.bind("enter", "\r", "\n");               // Enter
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("up", "\033[A", "w", "W", "+");     // Increment by 1
+        keyMap.bind("down", "\033[B", "s", "S", "-");   // Decrement by 1
+        keyMap.bind("right", "\033[C", "d", "D");       // Increment by 3
+        keyMap.bind("left", "\033[D", "a", "A");        // Decrement by 3
+        keyMap.bind("enter", "\r", "\n");               // Enter
 
-            while (true) {
-                String key = bindingReader.readBinding(keyMap);
+        while (true) {
+            String key = bindingReader.readBinding(keyMap);
 
-                switch (key) {
-                    case "up":
-                        selected = (selected + 1 > maxValue) ? minValue : selected + 1;
-                        data.setIntegerChoice(selected);
-                        break;
-                    case "down":
-                        selected = (selected - 1 < minValue) ? maxValue : selected - 1;
-                        data.setIntegerChoice(selected);
-                        break;
-                    case "right":
-                        selected = ((selected - minValue + 3) % range) + minValue;
-                        data.setIntegerChoice(selected);
-                        break;
-                    case "left":
-                        selected = ((selected - minValue - 3 + range) % range) + minValue;
-                        data.setIntegerChoice(selected);
-                        break;
-                    case "enter":
-                        data.confirmIntegerChoice();
-                        return;
-                    default:
-                        // Ignore unknown keys
-                }
+            switch (key) {
+                case "up":
+                    selected = (selected + 1 > maxValue) ? minValue : selected + 1;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "down":
+                    selected = (selected - 1 < minValue) ? maxValue : selected - 1;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "right":
+                    selected = ((selected - minValue + 3) % range) + minValue;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "left":
+                    selected = ((selected - minValue - 3 + range) % range) + minValue;
+                    data.setIntegerChoice(selected);
+                    break;
+                case "enter":
+                    data.confirmIntegerChoice();
+                    return;
+                default:
+                    // Ignore unknown keys
             }
         }
     }
