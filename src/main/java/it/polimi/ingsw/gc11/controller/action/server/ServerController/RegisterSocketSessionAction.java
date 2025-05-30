@@ -27,16 +27,13 @@ public class RegisterSocketSessionAction extends ClientControllerAction {
     @Override
     public void execute(ServerController serverController) throws NetworkException {
         try {
-            System.out.println("[SOCKET] Creating socket session on server...");
             UUID token = serverController.registerSocketSession(username, virtualSocketClient);
             SendSessionDataAction response = new SendSessionDataAction(username, token);
             serverController.sendAction(username, response);
-            System.out.println("[SOCKET] Sending socket session response...");
         }
         catch (Exception e) {
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
-            serverController.sendAction(username, exception);
-            System.out.println("[SOCKET] Sending socket session exception...");
+            serverController.sendUnregisteredAction(virtualSocketClient, exception);
         }
     }
 }

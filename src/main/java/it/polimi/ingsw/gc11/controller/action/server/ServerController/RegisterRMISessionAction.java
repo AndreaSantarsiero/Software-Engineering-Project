@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.ServerController;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.SendSessionDataAction;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
+import it.polimi.ingsw.gc11.controller.network.server.rmi.VirtualRMIClient;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class RegisterRMISessionAction extends ClientControllerAction {
             serverController.sendAction(username, response);
         } catch (Exception e) {
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
-            serverController.sendAction(username, exception);
+            serverController.sendUnregisteredAction(new VirtualRMIClient(playerStub), exception);
         }
     }
 }

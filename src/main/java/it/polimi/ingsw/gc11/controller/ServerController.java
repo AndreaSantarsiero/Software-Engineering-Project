@@ -264,6 +264,10 @@ public class ServerController {
         playerSessions.get(username).getVirtualClient().sendAction(action);
     }
 
+    public void sendUnregisteredAction(VirtualClient virtualClient, ServerAction action) throws NetworkException {
+        virtualClient.sendAction(action);
+    }
+
 
 
     public void shutdown() {
