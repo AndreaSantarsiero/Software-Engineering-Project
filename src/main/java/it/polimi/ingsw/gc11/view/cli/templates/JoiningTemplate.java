@@ -71,7 +71,7 @@ public class JoiningTemplate extends CLITemplate {
                     System.out.print("Insert username: ");
                 }
                 else {
-                    System.out.print(serverMessage + " Try again: ");
+                    System.out.print(serverMessage + ". Try again: ");
                     data.resetServerMessage();
                 }
             }

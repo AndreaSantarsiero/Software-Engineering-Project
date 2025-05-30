@@ -221,16 +221,13 @@ public class ServerController {
      */
 
     public Map<String, List<String>> getAvailableMatches(String username, UUID token) {
-        getPlayerSession(username, token);
+        VirtualClient player = getPlayerVirtualClient(username, token);
         Map<String, List<String>> result = new HashMap<>();
 
         for (Map.Entry<String, GameContext> entry : availableMatches.entrySet()) {
             String gameId = entry.getKey();
             GameContext match = entry.getValue();
-            if(match.getGameModel().isFullLobby()){
-                availableMatches.remove(match.getMatchID());
-            }
-            else{
+            if(!match.getGameModel().isFullLobby() || match.equals(player.getGameContext())) {
                 List<String> usernames = match.getGameModel().getPlayers().stream()
                         .map(Player::getUsername)
                         .collect(Collectors.toList());
