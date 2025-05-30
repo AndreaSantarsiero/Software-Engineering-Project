@@ -66,20 +66,18 @@ public abstract class CLITemplate extends Template {
 
 
 
-    protected void renderMultiLevelMenu(List<List<String>> options, int selected) {
-        for (int i = 0; i < options.size(); i++) {
-            for (int j = 0; j < options.get(i).size(); j++) {
-                if (i == selected) {
-                    AttributedString highlighted = new AttributedString(
-                            "    " + options.get(i).get(j),
-                            AttributedStyle.DEFAULT.background(235)
-                    );
-                    System.out.println(highlighted.toAnsi());
-                } else {
-                    System.out.println("    " + options.get(i).get(j));
-                }
-            }
+    protected int renderMultiLevelMenu(List<List<String>> options, int i, int j, int selected) {
+        if (i == selected) {
+            AttributedString highlighted = new AttributedString(
+                    "    " + options.get(i).get(j),
+                    AttributedStyle.DEFAULT.background(235)
+            );
+            System.out.print(highlighted.toAnsi());
+        } else {
+            System.out.print("    " + options.get(i).get(j));
         }
+
+        return (options.get(i).get(j).length() + 4);
     }
 
 
