@@ -144,14 +144,10 @@ public class JoiningTemplate extends CLITemplate {
                 mainCLI.addInputRequest(new StringInput(data));
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
-                try{
-                    mainCLI.getVirtualServer().registerSession(data.getUsername());
-                    usernameApproved = true;
-                } catch (NetworkException e) {
-                    System.out.println("Connection error: " + e.getMessage());
-                }
+                mainCLI.getVirtualServer().registerSession(data.getUsername());
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
+                usernameApproved = true;
                 mainCLI.getVirtualServer().getAvailableMatches();
                 mainCLI.addInputRequest(new MenuInput(data, gameOptions.size(), data.getCreateOrJoinMenu()));
             }
@@ -171,16 +167,11 @@ public class JoiningTemplate extends CLITemplate {
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
-                try{
-                    if(data.getCreateOrJoinMenu() == 0){
-                        mainCLI.getVirtualServer().createMatch(flightLevelSetup(data.getGameLevel()), data.getNumPlayers());
-                    }
-                    else {
-                        mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(data.getExistingGameMenu()));
-                    }
+                if(data.getCreateOrJoinMenu() == 0){
+                    mainCLI.getVirtualServer().createMatch(flightLevelSetup(data.getGameLevel()), data.getNumPlayers());
                 }
-                catch (NetworkException e) {
-                    System.out.println("Connection error: " + e.getMessage());
+                else {
+                    mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(data.getExistingGameMenu()));
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
