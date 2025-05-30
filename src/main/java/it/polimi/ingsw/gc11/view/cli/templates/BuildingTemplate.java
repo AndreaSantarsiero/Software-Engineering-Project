@@ -87,9 +87,6 @@ public class BuildingTemplate extends CLITemplate {
                         System.out.print("      ");
                     }
                     else {
-                        for (int x = 0; x < shipBoard.getWidth() - 2; x++) {
-                            shipBoardCLI.printInvalidSquare();
-                        }
                         shipBoardCLI.printReservedCards(shipBoard, i-5);
                         System.out.print("   ");
                     }
@@ -97,9 +94,6 @@ public class BuildingTemplate extends CLITemplate {
 
                 else if (y == 1){
                     if(i < 5){
-                        for (int x = 0; x < shipBoard.getWidth() - 2; x++) {
-                            shipBoardCLI.printInvalidSquare();
-                        }
                         shipBoardCLI.printReservedCards(shipBoard, i+2);
                         System.out.print("   ");
                     }
