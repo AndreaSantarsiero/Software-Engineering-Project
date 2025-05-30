@@ -15,6 +15,7 @@ public class BuildingTemplate extends CLITemplate {
 
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
+    private static final int colCount = 14;
     private static final List<List<String>> mainMenu = List.of(
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
@@ -27,7 +28,8 @@ public class BuildingTemplate extends CLITemplate {
                     "└─┘└─┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  ─┴┘└─┘└─┘┴ ┴└─┘")
     );
     //"Take a free Ship Card", "See adventure card decks", "See enemies ships"
-    private static final int colCount = 14;
+    //https://manytools.org/hacker-tools/ascii-banner/
+    //style Calvin S
 
 
 
@@ -152,7 +154,7 @@ public class BuildingTemplate extends CLITemplate {
                     if(menuIndex < mainMenu.size()*mainMenu.getFirst().size()) {
                         int spacesUsed = renderMultiLevelMenu(mainMenu, menuIndex/mainMenu.size(), menuIndex%mainMenu.size(), data.getMainMenu());
                         int singleSpacesLeft = 15 - ((spacesUsed - 3) % 15);
-                        int invalidCardsLeft = shipBoard.getLength() - (spacesUsed - 3)/15 + 1;
+                        int invalidCardsLeft = shipBoard.getWidth() - (spacesUsed - 3)/15 + 1;
                         for (int x = 0; x < singleSpacesLeft; x++) {
                             System.out.print(" ");
                         }
