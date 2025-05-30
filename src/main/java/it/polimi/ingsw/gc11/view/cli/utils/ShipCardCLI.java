@@ -246,15 +246,20 @@ public class ShipCardCLI {
      * @param alienUnit the AlienUnit instance
      */
     public void draw(AlienUnit alienUnit, int i) {
-        setColor(alienUnit);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(alienUnit.getLeftConnector(), i));
-            printAlienUnitCenter(alienUnit, i);
-            System.out.print(rightConnectorToString(alienUnit.getRightConnector(), i) + "│");
+        if(alienUnit.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(alienUnit, i);
+            setColor(alienUnit);
+
+            if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
+                System.out.print("│" + leftConnectorToString(alienUnit.getLeftConnector(), i));
+                printAlienUnitCenter(alienUnit, i);
+                System.out.print(rightConnectorToString(alienUnit.getRightConnector(), i) + "│");
+            }
+            else {
+                printShipCard(alienUnit, i);
+            }
         }
     }
 
@@ -287,15 +292,19 @@ public class ShipCardCLI {
      * @param battery the Battery instance
      */
     public void draw(Battery battery, int i) {
-        setColor(battery);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(battery.getLeftConnector(), i));
-            printBatteryCenter(battery, i);
-            System.out.print(rightConnectorToString(battery.getRightConnector(), i) + "│");
+        if(battery.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(battery, i);
+            setColor(battery);
+
+            if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
+                System.out.print("│" + leftConnectorToString(battery.getLeftConnector(), i));
+                printBatteryCenter(battery, i);
+                System.out.print(rightConnectorToString(battery.getRightConnector(), i) + "│");
+            } else {
+                printShipCard(battery, i);
+            }
         }
     }
 
@@ -333,15 +342,19 @@ public class ShipCardCLI {
      * @param cannon the Cannon instance
      */
     public void draw(Cannon cannon, int i) {
-        setColor(cannon);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(cannon.getLeftConnector(), i));
-            printCannonCenter(cannon, i);
-            System.out.print(rightConnectorToString(cannon.getRightConnector(), i) + "│");
+        if(cannon.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(cannon, i);
+            setColor(cannon);
+
+            if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
+                System.out.print("│" + leftConnectorToString(cannon.getLeftConnector(), i));
+                printCannonCenter(cannon, i);
+                System.out.print(rightConnectorToString(cannon.getRightConnector(), i) + "│");
+            } else {
+                printShipCard(cannon, i);
+            }
         }
     }
 
@@ -404,15 +417,19 @@ public class ShipCardCLI {
      * @param engine the Engine instance
      */
     public void draw(Engine engine, int i) {
-        setColor(engine);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(engine.getLeftConnector(), i));
-            printEngineCenter(engine, i);
-            System.out.print(rightConnectorToString(engine.getRightConnector(), i) + "│");
+        if(engine.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(engine, i);
+            setColor(engine);
+
+            if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
+                System.out.print("│" + leftConnectorToString(engine.getLeftConnector(), i));
+                printEngineCenter(engine, i);
+                System.out.print(rightConnectorToString(engine.getRightConnector(), i) + "│");
+            } else {
+                printShipCard(engine, i);
+            }
         }
     }
 
@@ -475,15 +492,19 @@ public class ShipCardCLI {
      * @param housingUnit the HousingUnit instance
      */
     public void draw(HousingUnit housingUnit, int i) {
-        setColor(housingUnit);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(housingUnit.getLeftConnector(), i));
-            printHousingUnitCenter(housingUnit, i);
-            System.out.print(rightConnectorToString(housingUnit.getRightConnector(), i) + "│");
+        if(housingUnit.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(housingUnit, i);
+            setColor(housingUnit);
+
+            if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
+                System.out.print("│" + leftConnectorToString(housingUnit.getLeftConnector(), i));
+                printHousingUnitCenter(housingUnit, i);
+                System.out.print(rightConnectorToString(housingUnit.getRightConnector(), i) + "│");
+            } else {
+                printShipCard(housingUnit, i);
+            }
         }
     }
 
@@ -523,15 +544,19 @@ public class ShipCardCLI {
      * @param shield the Shield instance
      */
     public void draw(Shield shield, int i) {
-        setColor(shield);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(shield.getLeftConnector(), i));
-            printShieldCenter(shield, i);
-            System.out.print(rightConnectorToString(shield.getRightConnector(), i) + "│");
+        if(shield.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(shield, i);
+            setColor(shield);
+
+            if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
+                System.out.print("│" + leftConnectorToString(shield.getLeftConnector(), i));
+                printShieldCenter(shield, i);
+                System.out.print(rightConnectorToString(shield.getRightConnector(), i) + "│");
+            } else {
+                printShipCard(shield, i);
+            }
         }
     }
 
@@ -602,15 +627,19 @@ public class ShipCardCLI {
      * @param storage the Storage instance
      */
     public void draw(Storage storage, int i) {
-        setColor(storage);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(storage.getLeftConnector(), i));
-            printStorageCenter(storage, i);
-            System.out.print(rightConnectorToString(storage.getRightConnector(), i) + "│");
+        if(storage.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(storage, i);
+            setColor(storage);
+
+            if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
+                System.out.print("│" + leftConnectorToString(storage.getLeftConnector(), i));
+                printStorageCenter(storage, i);
+                System.out.print(rightConnectorToString(storage.getRightConnector(), i) + "│");
+            } else {
+                printShipCard(storage, i);
+            }
         }
     }
 
@@ -670,15 +699,19 @@ public class ShipCardCLI {
      * @param structuralModule the StructuralModule instance
      */
     public void draw(StructuralModule structuralModule, int i) {
-        setColor(structuralModule);
-
-        if (i >= (cardLength/2 - 1) && i <= (cardLength/2 + 1)){
-            System.out.print("│" + leftConnectorToString(structuralModule.getLeftConnector(), i));
-            printStructuralModuleCenter(structuralModule, i);
-            System.out.print(rightConnectorToString(structuralModule.getRightConnector(), i) + "│");
+        if(structuralModule.isCovered()){
+            printCovered(i);
         }
         else {
-            printShipCard(structuralModule, i);
+            setColor(structuralModule);
+
+            if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
+                System.out.print("│" + leftConnectorToString(structuralModule.getLeftConnector(), i));
+                printStructuralModuleCenter(structuralModule, i);
+                System.out.print(rightConnectorToString(structuralModule.getRightConnector(), i) + "│");
+            } else {
+                printShipCard(structuralModule, i);
+            }
         }
     }
 

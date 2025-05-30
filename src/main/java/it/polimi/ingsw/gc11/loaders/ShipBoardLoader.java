@@ -94,6 +94,7 @@ public class ShipBoardLoader {
 
             ShipCard shipCard = shipCardLoader.getShipCard(id);
             if (shipCard != null) {
+                shipCard.discover();
                 if(shipBoard.getShipCard(x, y) == null) {
                     shipBoard.addShipCard(shipCard, x, y);
                 }

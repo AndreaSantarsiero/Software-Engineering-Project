@@ -15,7 +15,7 @@ public class BuildingTemplate extends CLITemplate {
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
     private static final List<String> mainMenu = List.of("Take a free Ship Card", "See adventure card decks", "See enemies ships");
-    private static final int colCount = 10;
+    private static final int rowCount = 10;
 
 
 
@@ -49,7 +49,7 @@ public class BuildingTemplate extends CLITemplate {
         List<ShipCard> freeShipCards = data.getFreeShipCards();
 
 
-        for(int y = 0; y < colCount; y++){
+        for(int y = 0; y < rowCount; y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
 
                 //printing user shipBoard (reserved components)
@@ -145,8 +145,8 @@ public class BuildingTemplate extends CLITemplate {
 
 
                 //printing free ship cards
-                for(int x = 0; x < freeShipCards.size()/ colCount; x++){
-                    ShipCard shipCard = freeShipCards.get(x* colCount);
+                for(int x = 0; x < freeShipCards.size()/ rowCount; x++){
+                    ShipCard shipCard = freeShipCards.get(x* rowCount);
                     shipCard.print(shipCardCLI, i);
                 }
 
