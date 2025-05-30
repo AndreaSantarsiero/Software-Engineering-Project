@@ -154,7 +154,7 @@ public class BuildingTemplate extends CLITemplate {
                     if(menuIndex < mainMenu.size()*mainMenu.getFirst().size()) {
                         int spacesUsed = renderMultiLevelMenu(mainMenu, menuIndex/mainMenu.size(), menuIndex%mainMenu.size(), data.getMainMenu());
                         int singleSpacesLeft = 15 - ((spacesUsed - 3) % 15);
-                        int invalidCardsLeft = shipBoard.getWidth() - (spacesUsed - 3)/15 + 1;
+                        int invalidCardsLeft = shipBoard.getWidth() - (spacesUsed - 3)/15 - 1;
                         for (int x = 0; x < singleSpacesLeft; x++) {
                             System.out.print(" ");
                         }
