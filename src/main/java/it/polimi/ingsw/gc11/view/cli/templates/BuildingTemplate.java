@@ -93,7 +93,7 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing user shipBoard (main board)
                 else if (y < shipBoard.getLength() + 2){
-                    shipBoardCLI.print(shipBoard, y, i);
+                    shipBoardCLI.print(shipBoard, y-2, i);
                     System.out.print("   |");
                 }
                 else if (y == shipBoard.getLength() + 2 && i == 0){
