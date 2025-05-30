@@ -15,7 +15,7 @@ public class BuildingTemplate extends CLITemplate {
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
     private static final List<String> mainMenu = List.of("Take a free Ship Card", "See adventure card decks", "See enemies ships");
-    private static final int rowCount = 10;
+    private static final int colCount = 10;
 
 
 
@@ -49,11 +49,20 @@ public class BuildingTemplate extends CLITemplate {
         List<ShipCard> freeShipCards = data.getFreeShipCards();
 
 
-        for(int y = 0; y < rowCount; y++){
+        for(int y = 0; y < colCount; y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
 
                 //printing user shipBoard (reserved components)
-                if(y == 0 && i > 2){
+                if(y == 0){
+                    if(i <= 2) {
+                        System.out.print("   ");
+                        for (int x = 0; x < shipBoard.getWidth(); x++) {
+                            if(x < shipBoard.getWidth()){
+                                shipBoardCLI.printInvalidSquare();
+                            }
+                        }
+                        System.out.print("      |");
+                    }
                     if(i == 3){
                         for (int x = 0; x < shipBoard.getWidth(); x++) {
                             if(x < (shipBoard.getWidth() - 2)){
@@ -77,14 +86,29 @@ public class BuildingTemplate extends CLITemplate {
                         System.out.print("      |");
                     }
                     else {
-                        shipBoardCLI.printReservedCards(shipBoard, i - 5);
-                        System.out.print("   |");
+                        for (int x = 0; x < shipBoard.getWidth(); x++) {
+                            if(x < (shipBoard.getWidth() - 2)){
+                                shipBoardCLI.printInvalidSquare();
+                            }
+                            else {
+                                shipBoardCLI.printReservedCards(shipBoard, i+2);
+                                System.out.print("   |");
+                            }
+                        }
                     }
                 }
+
                 else if (y == 1 && i != 5){
                     if(i < 5){
-                        shipBoardCLI.printReservedCards(shipBoard, i+2);
-                        System.out.print("   |");
+                        for (int x = 0; x < shipBoard.getWidth(); x++) {
+                            if(x < (shipBoard.getWidth() - 2)){
+                                shipBoardCLI.printInvalidSquare();
+                            }
+                            else {
+                                shipBoardCLI.printReservedCards(shipBoard, i+2);
+                                System.out.print("   |");
+                            }
+                        }
                     }
                     else if (i == 6){
                         shipBoardCLI.printHorizontalCoordinates(shipBoard);
@@ -112,8 +136,8 @@ public class BuildingTemplate extends CLITemplate {
 
 
                 //printing free ship cards
-                for(int x = 0; x < freeShipCards.size()/rowCount; x++){
-                    ShipCard shipCard = freeShipCards.get(x*rowCount);
+                for(int x = 0; x < freeShipCards.size()/ colCount; x++){
+                    ShipCard shipCard = freeShipCards.get(x* colCount);
                     shipCard.print(shipCardCLI, i);
                 }
 
