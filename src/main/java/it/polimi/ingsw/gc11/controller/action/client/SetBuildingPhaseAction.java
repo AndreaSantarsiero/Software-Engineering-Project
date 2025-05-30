@@ -8,11 +8,13 @@ import it.polimi.ingsw.gc11.view.*;
 public class SetBuildingPhaseAction extends ServerAction {
 
     private final ShipBoard shipBoard;
+    private final int freeShipCardsCount;
 
 
 
-    public SetBuildingPhaseAction(ShipBoard shipBoard) {
+    public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount) {
         this.shipBoard = shipBoard;
+        this.freeShipCardsCount = freeShipCardsCount;
     }
 
 
@@ -25,6 +27,7 @@ public class SetBuildingPhaseAction extends ServerAction {
     @Override public void loadData(JoiningPhaseData joiningPhaseData) {}
 
     @Override public void loadData(BuildingPhaseData buildingPhaseData) {
+        buildingPhaseData.initializeFreeShipCards(freeShipCardsCount);
         buildingPhaseData.setShipBoard(shipBoard);
     }
 

@@ -390,6 +390,10 @@ public class GameModel {
         return shipCard;
     }
 
+    public int getFreeShipCardsCount() {
+        return freeShipCards.size();
+    }
+
     public void releaseShipCard(String username, ShipCard shipCard) {
         checkPlayerUsername(username);
         checkHeldShipCard(shipCard, username);

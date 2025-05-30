@@ -87,11 +87,16 @@ public class ShipBoardCLI {
             }
             else if(x == (shipBoard.getWidth() - 1)){
                 for (ShipCard shipCard : reservedCards) {
-                    if (shipCard != null) {
-                        shipCard.print(shipCardCLI, i);
+                    if (i < ShipCardCLI.cardLength){
+                        if (shipCard != null) {
+                            shipCard.print(shipCardCLI, i);
+                        }
+                        else {
+                            shipCardCLI.printEmptyShipCard(i);
+                        }
                     }
                     else {
-                        shipCardCLI.printEmptyShipCard(i);
+                        printInvalidSquare();
                     }
                 }
             }
@@ -127,7 +132,7 @@ public class ShipBoardCLI {
             }
         }
 
-        System.out.print("   ");
+        System.out.print("      |");
     }
 
 

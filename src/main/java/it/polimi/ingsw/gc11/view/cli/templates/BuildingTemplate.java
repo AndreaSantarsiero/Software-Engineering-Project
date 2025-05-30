@@ -46,16 +46,16 @@ public class BuildingTemplate extends CLITemplate {
         ShipBoard shipBoard = data.getShipBoard();
 
 
-
+        //printing user shipBoard (reserved components)
         for (int x = 0; x < shipBoard.getWidth(); x++) {
             if(x < (shipBoard.getWidth() - 2)){
                 shipBoardCLI.printInvalidSquare();
             }
             else if(x == (shipBoard.getWidth() - 1)){
-                System.out.println("    Reserved components:");
+                System.out.println("    Reserved components:               |");
             }
         }
-        System.out.print("   |");
+        System.out.print("   ");
         for (int x = 0; x < shipBoard.getWidth(); x++) {
             if(x < (shipBoard.getWidth() - 2)){
                 shipBoardCLI.printInvalidSquare();
@@ -64,23 +64,24 @@ public class BuildingTemplate extends CLITemplate {
                 System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
             }
         }
-        for (int i = 0; i < ShipCardCLI.cardLength; i++) {
+        System.out.println("      |");
+        for (int i = 0; i < ShipCardCLI.cardLength + 1; i++) {
             shipBoardCLI.printReservedCards(shipBoard, i);
-            System.out.println();
+            System.out.println("   |");
         }
-        System.out.println();
+
+        //printing user shipBoard (main board)
         shipBoardCLI.printHorizontalCoordinates(shipBoard);
         System.out.println();
         for (int y = 0; y < shipBoard.getLength(); y++) {
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
                 shipBoardCLI.print(shipBoard, y, i);
-                System.out.println();
+                System.out.println("   |");
             }
         }
         shipBoardCLI.printHorizontalCoordinates(shipBoard);
-        System.out.println();
 
-        renderMenu("Select an option (Use W/S to navigate, Enter to select): ", mainMenu, data.getMainMenu());
+        renderMenu("\nSelect an option (Use W/S to navigate, Enter to select): ", mainMenu, data.getMainMenu());
         mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
     }
 }

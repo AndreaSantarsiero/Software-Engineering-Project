@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,16 +21,17 @@ public class BuildingPhaseData extends GamePhaseData {
 
 
     private BuildingState state;
-    private ShipBoard shipBoard;    //la mia nave mentre la monto
-    private Map<String, ShipBoard> enemiesShipBoard;    //associo username altri player alla loro nave
-    private ShipCard heldShipCard;  //la shipcard che tengo in mano
+    private ShipBoard shipBoard;
+    private Map<String, ShipBoard> enemiesShipBoard;
+    private List<ShipCard> freeShipCards;
+    private ShipCard heldShipCard;
     private List<AdventureCard> miniDeck;
     private int mainMenu;
 
 
     public BuildingPhaseData() {
-        this.enemiesShipBoard = new HashMap<>();
-        this.miniDeck         = new ArrayList<>();
+        enemiesShipBoard = new HashMap<>();
+        freeShipCards = new ArrayList<>();
     }
 
 
@@ -78,6 +80,13 @@ public class BuildingPhaseData extends GamePhaseData {
     @Override
     public void confirmIntegerChoice() {}
 
+
+
+    public void initializeFreeShipCards(int freeShipCardsCount) {
+        for (int i = 0; i < freeShipCardsCount; i++) {
+            freeShipCards.add(new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE));
+        }
+    }
 
 
     public ShipBoard getShipBoard() {
