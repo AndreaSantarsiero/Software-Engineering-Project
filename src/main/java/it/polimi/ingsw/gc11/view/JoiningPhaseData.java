@@ -176,6 +176,7 @@ public class JoiningPhaseData extends GamePhaseData {
         else if(state == JoiningState.COLOR_SETUP){
             state = JoiningState.CHOOSE_COLOR;
         }
+        notifyListener();
     }
 
 
