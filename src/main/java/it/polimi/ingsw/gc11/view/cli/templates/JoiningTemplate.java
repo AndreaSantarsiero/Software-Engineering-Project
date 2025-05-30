@@ -21,6 +21,7 @@ public class JoiningTemplate extends CLITemplate {
     private static final List<String> colorOptions = List.of("blue", "green", "red", "yellow");
     private boolean usernameApproved = false;
     private boolean noAvailableMatches = false;
+    private boolean gameApproved = false;
 
 
 
@@ -78,10 +79,12 @@ public class JoiningTemplate extends CLITemplate {
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CREATE_OR_JOIN.ordinal()) {
             System.out.println("\n\n");
-            String serverMessage = data.getServerMessage();
-            if(serverMessage != null && !serverMessage.isEmpty()) {
-                System.out.println(serverMessage);
-                data.resetServerMessage();
+            if(!gameApproved){
+                String serverMessage = data.getServerMessage();
+                if(serverMessage != null && !serverMessage.isEmpty()) {
+                    System.out.println(serverMessage);
+                    data.resetServerMessage();
+                }
             }
             renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
         }
@@ -175,6 +178,7 @@ public class JoiningTemplate extends CLITemplate {
                 }
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
+                gameApproved = true;
                 mainCLI.addInputRequest(new MenuInput(data, colorOptions.size(), data.getChosenColorMenu()));
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
