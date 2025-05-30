@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
@@ -45,6 +46,7 @@ public class BuildingTemplate extends CLITemplate {
         clearView();
         System.out.println("\n\nBuilding Phase");
         ShipBoard shipBoard = data.getShipBoard();
+        List<ShipCard> freeShipCards = data.getFreeShipCards();
 
 
         for(int y = 0; y < rowCount; y++){
@@ -72,28 +74,27 @@ public class BuildingTemplate extends CLITemplate {
                                 System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
                             }
                         }
-                        System.out.println("      |");
+                        System.out.print("      |");
                     }
                     else {
-                        shipBoardCLI.printReservedCards(shipBoard, i-5);
-                        System.out.println("   |");
+                        shipBoardCLI.printReservedCards(shipBoard, i - 5);
+                        System.out.print("   |");
                     }
                 }
                 else if (y == 1 && i != 5){
                     if(i < 5){
                         shipBoardCLI.printReservedCards(shipBoard, i+2);
-                        System.out.println("   |");
+                        System.out.print("   |");
                     }
                     else if (i == 6){
                         shipBoardCLI.printHorizontalCoordinates(shipBoard);
-                        System.out.println();
                     }
                 }
 
                 //printing user shipBoard (main board)
                 else if (y < shipBoard.getLength() + 2){
                     shipBoardCLI.print(shipBoard, y, i);
-                    System.out.println("   |");
+                    System.out.print("   |");
                 }
                 else if (y == shipBoard.getLength() + 2 && i == 0){
                     shipBoardCLI.printHorizontalCoordinates(shipBoard);
@@ -106,8 +107,17 @@ public class BuildingTemplate extends CLITemplate {
                             shipBoardCLI.printInvalidSquare();
                         }
                     }
-                    System.out.println("      |");
+                    System.out.print("      |");
                 }
+
+
+                //printing free ship cards
+                for(int x = 0; x < freeShipCards.size()/rowCount; x++){
+                    ShipCard shipCard = freeShipCards.get(x*rowCount);
+                    shipCard.print(shipCardCLI, i);
+                }
+
+                System.out.println();
             }
         }
 

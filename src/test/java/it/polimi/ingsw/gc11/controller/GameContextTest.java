@@ -82,12 +82,12 @@ public class GameContextTest {
 
 
     void printShipBoard(ShipBoard shipBoard){
-        ShipBoardCLI shipBoardCLI = new ShipBoardCLI(new ShipCardCLI());
+        ShipBoardCLI printer = new ShipBoardCLI(new ShipCardCLI());
 
         //printing user shipBoard (reserved components)
         for (int x = 0; x < shipBoard.getWidth(); x++) {
             if(x < (shipBoard.getWidth() - 2)){
-                shipBoardCLI.printInvalidSquare();
+                printer.printInvalidSquare();
             }
             else if(x == (shipBoard.getWidth() - 1)){
                 System.out.println("    Reserved components:               ");
@@ -96,7 +96,7 @@ public class GameContextTest {
         System.out.print("   ");
         for (int x = 0; x < shipBoard.getWidth(); x++) {
             if(x < (shipBoard.getWidth() - 2)){
-                shipBoardCLI.printInvalidSquare();
+                printer.printInvalidSquare();
             }
             else {
                 System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
@@ -104,20 +104,20 @@ public class GameContextTest {
         }
         System.out.println("      ");
         for (int i = 0; i < ShipCardCLI.cardLength + 1; i++) {
-            shipBoardCLI.printReservedCards(shipBoard, i);
+            printer.printReservedCards(shipBoard, i);
             System.out.println("   ");
         }
 
         //printing user shipBoard (main board)
-        shipBoardCLI.printHorizontalCoordinates(shipBoard);
+        printer.printHorizontalCoordinates(shipBoard);
         System.out.println();
         for (int y = 0; y < shipBoard.getLength(); y++) {
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-                shipBoardCLI.print(shipBoard, y, i);
+                printer.print(shipBoard, y, i);
                 System.out.println("   ");
             }
         }
-        shipBoardCLI.printHorizontalCoordinates(shipBoard);
+        printer.printHorizontalCoordinates(shipBoard);
     }
 
     void printAdvCard(AdventureCard adventureCard){

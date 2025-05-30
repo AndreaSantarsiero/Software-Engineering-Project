@@ -88,6 +88,15 @@ public class BuildingPhaseData extends GamePhaseData {
         }
     }
 
+    public List<ShipCard> getFreeShipCards(){
+        return freeShipCards;
+    }
+
+    public void setFreeShipCards(List<ShipCard> freeShipCards) {
+        this.freeShipCards = freeShipCards;
+        notifyListener();
+    }
+
 
     public ShipBoard getShipBoard() {
         return shipBoard;
