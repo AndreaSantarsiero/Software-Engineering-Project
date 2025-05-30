@@ -14,6 +14,7 @@ public class BuildingTemplate extends CLITemplate {
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
     private static final List<String> mainMenu = List.of("Take a free Ship Card", "See adventure card decks", "See enemies ships");
+    private static final int rowCount = 10;
 
 
 
@@ -46,40 +47,70 @@ public class BuildingTemplate extends CLITemplate {
         ShipBoard shipBoard = data.getShipBoard();
 
 
-        //printing user shipBoard (reserved components)
-        for (int x = 0; x < shipBoard.getWidth(); x++) {
-            if(x < (shipBoard.getWidth() - 2)){
-                shipBoardCLI.printInvalidSquare();
+        for(int y = 0; y < rowCount; y++){
+            for (int i = 0; i < ShipCardCLI.cardLength; i++) {
+
+                //printing user shipBoard (reserved components)
+                if(y == 0 && i > 2){
+                    if(i == 3){
+                        for (int x = 0; x < shipBoard.getWidth(); x++) {
+                            if(x < (shipBoard.getWidth() - 2)){
+                                shipBoardCLI.printInvalidSquare();
+                            }
+                            else if(x == (shipBoard.getWidth() - 1)){
+                                System.out.println("    Reserved components:               |");
+                            }
+                        }
+                    }
+                    if(i == 4){
+                        System.out.print("   ");
+                        for (int x = 0; x < shipBoard.getWidth(); x++) {
+                            if(x < (shipBoard.getWidth() - 2)){
+                                shipBoardCLI.printInvalidSquare();
+                            }
+                            else {
+                                System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
+                            }
+                        }
+                        System.out.println("      |");
+                    }
+                    else {
+                        shipBoardCLI.printReservedCards(shipBoard, i-5);
+                        System.out.println("   |");
+                    }
+                }
+                else if (y == 1 && i != 5){
+                    if(i < 5){
+                        shipBoardCLI.printReservedCards(shipBoard, i+2);
+                        System.out.println("   |");
+                    }
+                    else if (i == 6){
+                        shipBoardCLI.printHorizontalCoordinates(shipBoard);
+                        System.out.println();
+                    }
+                }
+
+                //printing user shipBoard (main board)
+                else if (y < shipBoard.getLength() + 2){
+                    shipBoardCLI.print(shipBoard, y, i);
+                    System.out.println("   |");
+                }
+                else if (y == shipBoard.getLength() + 2 && i == 0){
+                    shipBoardCLI.printHorizontalCoordinates(shipBoard);
+                    System.out.println();
+                }
+                else {
+                    System.out.print("   ");
+                    for (int x = 0; x < shipBoard.getWidth(); x++) {
+                        if(x < shipBoard.getWidth()){
+                            shipBoardCLI.printInvalidSquare();
+                        }
+                    }
+                    System.out.println("      |");
+                }
             }
-            else if(x == (shipBoard.getWidth() - 1)){
-                System.out.println("    Reserved components:               |");
-            }
-        }
-        System.out.print("   ");
-        for (int x = 0; x < shipBoard.getWidth(); x++) {
-            if(x < (shipBoard.getWidth() - 2)){
-                shipBoardCLI.printInvalidSquare();
-            }
-            else {
-                System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
-            }
-        }
-        System.out.println("      |");
-        for (int i = 0; i < ShipCardCLI.cardLength + 1; i++) {
-            shipBoardCLI.printReservedCards(shipBoard, i);
-            System.out.println("   |");
         }
 
-        //printing user shipBoard (main board)
-        shipBoardCLI.printHorizontalCoordinates(shipBoard);
-        System.out.println();
-        for (int y = 0; y < shipBoard.getLength(); y++) {
-            for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-                shipBoardCLI.print(shipBoard, y, i);
-                System.out.println("   |");
-            }
-        }
-        shipBoardCLI.printHorizontalCoordinates(shipBoard);
 
         renderMenu("\nSelect an option (Use W/S to navigate, Enter to select): ", mainMenu, data.getMainMenu());
         mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
