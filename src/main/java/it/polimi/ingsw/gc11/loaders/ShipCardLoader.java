@@ -156,6 +156,7 @@ public class ShipCardLoader {
         Map<String, HousingUnit> centralUnitMap = new HashMap<>();
 
         for (HousingUnit centralUnit : centralUnits) {
+            centralUnit.discover();
             switch (centralUnit.getId()){
                 case "BlueCentralUnit" -> centralUnitMap.put("blue", centralUnit);
                 case "GreenCentralUnit" -> centralUnitMap.put("green", centralUnit);

@@ -69,7 +69,7 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                             else if(x == (shipBoard.getWidth() - 1)){
-                                System.out.println("    Reserved components:               |");
+                                System.out.print("    Reserved components:               |");
                             }
                         }
                     }
