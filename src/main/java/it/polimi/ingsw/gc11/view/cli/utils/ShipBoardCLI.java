@@ -34,7 +34,7 @@ public class ShipBoardCLI {
      *
      * @param shipBoard the ShipBoard to print
      */
-    public void print(ShipBoard shipBoard) {
+    public void print(ShipBoard shipBoard, int y, int i) {
 //        System.out.println(Ansi.ansi()
 //                .bg(Ansi.Color.BLUE)
 //                .fg(Ansi.Color.BLUE)
@@ -42,38 +42,27 @@ public class ShipBoardCLI {
 //                .reset());
 
 
-        printReservedCards(shipBoard);
-        System.out.println();
-        printHorizontalCoordinates(shipBoard);
+        printVerticalCoordinates(shipBoard, y, i);
 
-        for (int y = 0; y < shipBoard.getLength(); y++) {
-            for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-                printVerticalCoordinates(shipBoard, y, i);
-
-                for (int x = 0; x < shipBoard.getWidth(); x++) {
-                    if (shipBoard.validateIndexes(x, y)) {
-                        ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-                        if(shipCard != null) {
-                            shipCard.print(shipCardCLI, i);
-                        }
-                        else if (shipBoard.validateIndexes(x, y)) {
-                            shipCardCLI.printEmptyShipCard(i);
-                        }
-                        else{
-                            printInvalidSquare();
-                        }
-                    }
-                    else {
-                        printInvalidSquare();
-                    }
+        for (int x = 0; x < shipBoard.getWidth(); x++) {
+            if (shipBoard.validateIndexes(x, y)) {
+                ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+                if(shipCard != null) {
+                    shipCard.print(shipCardCLI, i);
                 }
-
-                printVerticalCoordinates(shipBoard, y, i);
-                System.out.println();
+                else if (shipBoard.validateIndexes(x, y)) {
+                    shipCardCLI.printEmptyShipCard(i);
+                }
+                else{
+                    printInvalidSquare();
+                }
+            }
+            else {
+                printInvalidSquare();
             }
         }
 
-        printHorizontalCoordinates(shipBoard);
+        printVerticalCoordinates(shipBoard, y, i);
     }
 
 
@@ -83,18 +72,11 @@ public class ShipBoardCLI {
      *
      * @param shipBoard the ShipBoard containing the reserved cards
      */
-    public void printReservedCards(ShipBoard shipBoard) {
+    public void printReservedCards(ShipBoard shipBoard, int i) {
         List<ShipCard> reservedCards = shipBoard.getReservedComponents();
-        while (reservedCards.size() < 2) {
-            reservedCards.add(null);
-        }
-
-        for (int x = 0; x < shipBoard.getWidth(); x++) {
-            if(x < (shipBoard.getWidth() - 2)){
-                printInvalidSquare();
-            }
-            else if(x == (shipBoard.getWidth() - 1)){
-                System.out.println("    Reserved components:");
+        if (i == 0){
+            while (reservedCards.size() < 2) {
+                reservedCards.add(null);
             }
         }
 
@@ -103,31 +85,18 @@ public class ShipBoardCLI {
             if(x < (shipBoard.getWidth() - 2)){
                 printInvalidSquare();
             }
-            else {
-                System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
-            }
-        }
-        System.out.println();
-
-        for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-            System.out.print("   ");
-            for (int x = 0; x < shipBoard.getWidth(); x++) {
-                if(x < (shipBoard.getWidth() - 2)){
-                    printInvalidSquare();
-                }
-                else if(x == (shipBoard.getWidth() - 1)){
-                    for (ShipCard shipCard : reservedCards) {
-                        if (shipCard != null) {
-                            shipCard.print(shipCardCLI, i);
-                        }
-                        else {
-                            shipCardCLI.printEmptyShipCard(i);
-                        }
+            else if(x == (shipBoard.getWidth() - 1)){
+                for (ShipCard shipCard : reservedCards) {
+                    if (shipCard != null) {
+                        shipCard.print(shipCardCLI, i);
+                    }
+                    else {
+                        shipCardCLI.printEmptyShipCard(i);
                     }
                 }
             }
-            System.out.println("   ");
         }
+        System.out.print("   ");
     }
 
 
@@ -158,7 +127,7 @@ public class ShipBoardCLI {
             }
         }
 
-        System.out.println("   ");
+        System.out.print("   ");
     }
 
 
