@@ -132,7 +132,7 @@ public class ShipBoardCLI {
             }
         }
 
-        System.out.print("      ");
+        System.out.print("   ");
     }
 
 

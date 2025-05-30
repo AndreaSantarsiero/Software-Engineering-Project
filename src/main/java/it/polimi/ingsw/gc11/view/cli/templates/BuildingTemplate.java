@@ -15,7 +15,18 @@ public class BuildingTemplate extends CLITemplate {
 
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
-    private static final List<String> mainMenu = List.of("Take a free Ship Card", "See adventure card decks", "See enemies ships");
+    private static final List<List<String>> mainMenu = List.of(
+            List.of("╔═╗╔═╗╔═╗  ╔═╗╔╦╗╦  ╦╔═╗╔╗╔╔╦╗╦ ╦╦═╗╔═╗  ╔╦╗╔═╗╔═╗╦╔═╔═╗",
+                    "╚═╗║╣ ║╣   ╠═╣ ║║╚╗╔╝║╣ ║║║ ║ ║ ║╠╦╝║╣    ║║║╣ ║  ╠╩╗╚═╗",
+                    "╚═╝╚═╝╚═╝  ╩ ╩═╩╝ ╚╝ ╚═╝╝╚╝ ╩ ╚═╝╩╚═╚═╝  ═╩╝╚═╝╚═╝╩ ╩╚═╝"),
+            List.of("╔═╗╔═╗╔═╗  ╔═╗╔╗╔╔═╗╔╦╗╦╔═╗╔═╗  ╔═╗╦ ╦╦╔═╗",
+                    "╚═╗║╣ ║╣   ║╣ ║║║║╣ ║║║║║╣ ╚═╗  ╚═╗╠═╣║╠═╝",
+                    "╚═╝╚═╝╚═╝  ╚═╝╝╚╝╚═╝╩ ╩╩╚═╝╚═╝  ╚═╝╩ ╩╩╩  "),
+            List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
+                    " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
+                    " ┴ ┴ ┴┴ ┴└─┘  └  ┴└─└─┘└─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘")
+    );
+    //"Take a free Ship Card", "See adventure card decks", "See enemies ships"
     private static final int colCount = 14;
 
 
@@ -62,7 +73,7 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        System.out.print("      ");
+                        System.out.print("         ");
                     }
                     else if(i == 3){
                         for (int x = 0; x < shipBoard.getWidth(); x++) {
@@ -70,7 +81,7 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                             else if(x == (shipBoard.getWidth() - 1)){
-                                System.out.print("    Reserved components:               ");
+                                System.out.print("    Reserved components:                  ");
                             }
                         }
                     }
@@ -84,18 +95,18 @@ public class BuildingTemplate extends CLITemplate {
                                 System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
                             }
                         }
-                        System.out.print("      ");
+                        System.out.print("         ");
                     }
                     else {
                         shipBoardCLI.printReservedCards(shipBoard, i-5);
-                        System.out.print("   ");
+                        System.out.print("      ");
                     }
                 }
 
                 else if (y == 1){
                     if(i < 5){
                         shipBoardCLI.printReservedCards(shipBoard, i+2);
-                        System.out.print("   ");
+                        System.out.print("      ");
                     }
                     else if (i == 5){
                         System.out.print("   ");
@@ -104,10 +115,11 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        System.out.print("      ");
+                        System.out.print("         ");
                     }
                     else if (i == 6){
                         shipBoardCLI.printHorizontalCoordinates(shipBoard);
+                        System.out.print("      ");
                     }
                 }
 
@@ -118,6 +130,7 @@ public class BuildingTemplate extends CLITemplate {
                 }
                 else if (y == shipBoard.getLength() + 2 && i == 0){
                     shipBoardCLI.printHorizontalCoordinates(shipBoard);
+                    System.out.print("      ");
                 }
                 else {
                     System.out.print("   ");
@@ -126,7 +139,7 @@ public class BuildingTemplate extends CLITemplate {
                             shipBoardCLI.printInvalidSquare();
                         }
                     }
-                    System.out.print("      ");
+                    System.out.print("         ");
                 }
 
 
@@ -144,7 +157,7 @@ public class BuildingTemplate extends CLITemplate {
         }
 
 
-        renderMenu("\nSelect an option (Use W/S to navigate, Enter to select): ", mainMenu, data.getMainMenu());
+        renderMultiLevelMenu(mainMenu, data.getMainMenu());
         mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
     }
 }
