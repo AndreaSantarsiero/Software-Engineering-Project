@@ -63,7 +63,7 @@ public class BuildingTemplate extends CLITemplate {
                         }
                         System.out.print("      |");
                     }
-                    if(i == 3){
+                    else if(i == 3){
                         for (int x = 0; x < shipBoard.getWidth(); x++) {
                             if(x < (shipBoard.getWidth() - 2)){
                                 shipBoardCLI.printInvalidSquare();
@@ -73,7 +73,7 @@ public class BuildingTemplate extends CLITemplate {
                             }
                         }
                     }
-                    if(i == 4){
+                    else if(i == 4){
                         System.out.print("   ");
                         for (int x = 0; x < shipBoard.getWidth(); x++) {
                             if(x < (shipBoard.getWidth() - 2)){
@@ -131,7 +131,6 @@ public class BuildingTemplate extends CLITemplate {
                 }
                 else if (y == shipBoard.getLength() + 2 && i == 0){
                     shipBoardCLI.printHorizontalCoordinates(shipBoard);
-                    System.out.println();
                 }
                 else {
                     System.out.print("   ");
