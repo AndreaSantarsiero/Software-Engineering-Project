@@ -136,15 +136,23 @@ public class BuildingTemplate extends CLITemplate {
                         shipBoardCLI.printHorizontalCoordinates(shipBoard);
                         System.out.print("      ");
                     }
+                    else {
+                        System.out.print("   ");
+                        for (int x = 0; x < shipBoard.getWidth(); x++) {
+                            if(x < shipBoard.getWidth()){
+                                shipBoardCLI.printInvalidSquare();
+                            }
+                        }
+                        System.out.print("         ");
+                    }
                 }
 
                 //printing menu
                 else {
                     if(menuIndex < mainMenu.size()*mainMenu.getFirst().size()) {
-                        System.out.print("   ");
                         int spacesUsed = renderMultiLevelMenu(mainMenu, menuIndex/mainMenu.size(), menuIndex%mainMenu.size(), data.getMainMenu());
-                        int singleSpacesLeft = (spacesUsed - 3)/15;
-                        int invalidCardsLeft = shipBoard.getLength() - (spacesUsed - 3)/15;
+                        int singleSpacesLeft = 15 - ((spacesUsed - 3) % 15);
+                        int invalidCardsLeft = shipBoard.getLength() - (spacesUsed - 3)/15 + 1;
                         for (int x = 0; x < singleSpacesLeft; x++) {
                             System.out.print(" ");
                         }

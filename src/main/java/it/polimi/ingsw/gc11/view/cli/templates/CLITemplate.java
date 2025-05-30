@@ -69,15 +69,15 @@ public abstract class CLITemplate extends Template {
     protected int renderMultiLevelMenu(List<List<String>> options, int i, int j, int selected) {
         if (i == selected) {
             AttributedString highlighted = new AttributedString(
-                    "    " + options.get(i).get(j),
+                    "   " + options.get(i).get(j) + "   ",
                     AttributedStyle.DEFAULT.background(235)
             );
             System.out.print(highlighted.toAnsi());
         } else {
-            System.out.print("    " + options.get(i).get(j));
+            System.out.print("   " + options.get(i).get(j) + "   ");
         }
 
-        return (options.get(i).get(j).length() + 4);
+        return (options.get(i).get(j).length() + 6);
     }
 
 
