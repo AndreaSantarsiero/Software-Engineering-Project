@@ -29,7 +29,7 @@ public class previewCLI {
                 shipBoardCLI.printInvalidSquare();
             }
             else if(x == (shipBoard.getWidth() - 1)){
-                System.out.println("    Reserved components:               |");
+                System.out.println("    Reserved components:               ");
             }
         }
         System.out.print("   ");
@@ -41,10 +41,10 @@ public class previewCLI {
                 System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
             }
         }
-        System.out.println("      |");
+        System.out.println("      ");
         for (int i = 0; i < ShipCardCLI.cardLength + 1; i++) {
             shipBoardCLI.printReservedCards(shipBoard, i);
-            System.out.println("   |");
+            System.out.println("   ");
         }
 
         //printing user shipBoard (main board)
@@ -53,7 +53,7 @@ public class previewCLI {
         for (int y = 0; y < shipBoard.getLength(); y++) {
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
                 shipBoardCLI.print(shipBoard, y, i);
-                System.out.println("   |");
+                System.out.println("   ");
             }
         }
         shipBoardCLI.printHorizontalCoordinates(shipBoard);
