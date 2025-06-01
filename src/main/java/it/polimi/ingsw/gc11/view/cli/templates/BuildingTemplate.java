@@ -228,6 +228,7 @@ public class BuildingTemplate extends CLITemplate {
 
                 System.out.println();
             }
+            System.out.println("ShipCardIndex: " + data.getShipCardIndex());
         }
 
 
