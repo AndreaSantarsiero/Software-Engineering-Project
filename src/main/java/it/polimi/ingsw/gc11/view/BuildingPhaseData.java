@@ -15,18 +15,30 @@ import java.util.Map;
 public class BuildingPhaseData extends GamePhaseData {
 
     public enum BuildingState {
-        CHOOSE_MAIN_MENU, CHOOSE_FREE_SHIPCARD, CHOOSE_COORDINATES
+        CHOOSE_MAIN_MENU,
+        CHOOSE_FREE_SHIPCARD, WAIT_SHIPCARD, CHOOSE_SHIPCARD_MENU, PLACE_SHIPCARD, RESERVE_SHIPCARD, RELEASE_SHIPCARD, SHIPCARD_SETUP,
+        WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
+        CHOOSE_ADVENTURE_DECK, WAIT_ADVENTURE_DECK, SHOW_ADVENTURE_DECK,
+        RESET_TIMER,
+        END_BUILDING,
+        WAITING
     }
 
 
 
     private BuildingState state;
+    private BuildingState previousState;
     private ShipBoard shipBoard;
     private Map<String, ShipBoard> enemiesShipBoard;
     private List<ShipCard> freeShipCards;
     private ShipCard heldShipCard;
     private List<AdventureCard> miniDeck;
     private int mainMenu;
+    private int shipCardMenu;
+    private int shipCardIndex;
+    private int adventureCardMenu;
+    private int adventureCardIndex;
+
 
 
     public BuildingPhaseData() {
@@ -48,21 +60,50 @@ public class BuildingPhaseData extends GamePhaseData {
     }
 
     public void updateState() {
-        if (state.ordinal() < BuildingState.values().length - 1) {
+        previousState = state;
+        if(state == BuildingState.CHOOSE_MAIN_MENU){
+            switch (mainMenu) {
+                case 0 -> state = BuildingState.CHOOSE_FREE_SHIPCARD;
+                case 1 -> state = BuildingState.WAIT_ENEMIES_SHIP;
+                case 2 -> state = BuildingState.CHOOSE_ADVENTURE_DECK;
+                case 3 -> state = BuildingState.RESET_TIMER;
+                case 4 -> state = BuildingState.END_BUILDING;
+            }
+        }
+        else if(state == BuildingState.CHOOSE_SHIPCARD_MENU){
+            switch (shipCardMenu) {
+                case 0 -> state = BuildingState.PLACE_SHIPCARD;
+                case 1 -> state = BuildingState.RESERVE_SHIPCARD;
+                case 2 -> state = BuildingState.RELEASE_SHIPCARD;
+            }
+        }
+        else if(state == BuildingState.PLACE_SHIPCARD || state == BuildingState.RESERVE_SHIPCARD){
+            state = BuildingState.SHIPCARD_SETUP;
+        }
+        else if(state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.SHOW_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
+            state = BuildingState.CHOOSE_MAIN_MENU;
+        }
+        else if (state.ordinal() < BuildingState.values().length - 1) {
             state = BuildingState.values()[state.ordinal() + 1];
         }
         notifyListener();
     }
 
     public void setState(BuildingState state) {
+        previousState = state;
         this.state = state;
         notifyListener();
+    }
+
+    public boolean isStateNew() {
+        return !state.equals(previousState);
     }
 
 
 
     @Override
     public void setMenuChoice(int choice){
+        previousState = state;
         setMainMenu(choice);
     }
 
@@ -72,13 +113,19 @@ public class BuildingPhaseData extends GamePhaseData {
     }
 
     @Override
-    public void setStringInput(String input) {}
+    public void setStringInput(String input) {
+        updateState();
+    }
 
     @Override
-    public void setIntegerChoice(int choice) {}
+    public void setIntegerChoice(int choice) {
+        previousState = state;
+    }
 
     @Override
-    public void confirmIntegerChoice() {}
+    public void confirmIntegerChoice() {
+        updateState();
+    }
 
 
 
@@ -93,6 +140,7 @@ public class BuildingPhaseData extends GamePhaseData {
     }
 
     public void setFreeShipCards(List<ShipCard> freeShipCards) {
+        previousState = state;
         this.freeShipCards = freeShipCards;
         notifyListener();
     }
@@ -109,6 +157,7 @@ public class BuildingPhaseData extends GamePhaseData {
 
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
+        previousState = state;
         this.enemiesShipBoard.put(username, shipBoard);
         notifyListener();
     }
@@ -118,6 +167,7 @@ public class BuildingPhaseData extends GamePhaseData {
     }
 
     public void setHeldShipCard(ShipCard heldShipCard) {
+        previousState = state;
         this.heldShipCard = heldShipCard;
         notifyListener();
     }
@@ -127,9 +177,12 @@ public class BuildingPhaseData extends GamePhaseData {
     }
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
+        previousState = state;
         this.miniDeck = miniDeck;
         notifyListener();
     }
+
+
 
     public int getMainMenu() {
         return mainMenu;
@@ -137,6 +190,42 @@ public class BuildingPhaseData extends GamePhaseData {
 
     public void setMainMenu(int mainMenu) {
         this.mainMenu = mainMenu;
+        notifyListener();
+    }
+
+    public int getShipCardMenu() {
+        return shipCardMenu;
+    }
+
+    public void setShipCardMenu(int shipCardMenu) {
+        this.shipCardMenu = shipCardMenu;
+        notifyListener();
+    }
+
+    public int getShipCardIndex() {
+        return shipCardIndex;
+    }
+
+    public void setShipCardIndex(int shipCardIndex) {
+        this.shipCardIndex = shipCardIndex;
+        notifyListener();
+    }
+
+    public int getAdventureCardMenu() {
+        return adventureCardMenu;
+    }
+
+    public void setAdventureCardMenu(int adventureCardMenu) {
+        this.adventureCardMenu = adventureCardMenu;
+        notifyListener();
+    }
+
+    public int getAdventureCardIndex() {
+        return adventureCardIndex;
+    }
+
+    public void setAdventureCardIndex(int adventureCardIndex) {
+        this.adventureCardIndex = adventureCardIndex;
         notifyListener();
     }
 

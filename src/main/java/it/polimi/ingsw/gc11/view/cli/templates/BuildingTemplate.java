@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
@@ -25,11 +26,42 @@ public class BuildingTemplate extends CLITemplate {
                     "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
             List.of("┌─┐┌─┐┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌┬┐┌─┐┌─┐┬┌─┌─┐",
                     "└─┐├┤ ├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤    ││├┤ │  ├┴┐└─┐",
-                    "└─┘└─┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  ─┴┘└─┘└─┘┴ ┴└─┘")
+                    "└─┘└─┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  ─┴┘└─┘└─┘┴ ┴└─┘"),
+            List.of("┬─┐┌─┐┌─┐┌─┐┌┬┐  ┌┬┐┬┌┬┐┌─┐┬─┐",
+                    "├┬┘├┤ └─┐├┤  │    │ ││││├┤ ├┬┘",
+                    "┴└─└─┘└─┘└─┘ ┴    ┴ ┴┴ ┴└─┘┴└─"),
+            List.of("┌─┐┌┐┌┌┬┐  ┌┐ ┬ ┬┬┬  ┌┬┐┬┌┐┌┌─┐",
+                    "├┤ │││ ││  ├┴┐│ │││   │││││││ ┬",
+                    "└─┘┘└┘─┴┘  └─┘└─┘┴┴─┘─┴┘┴┘└┘└─┘")
     );
     //"Take a free Ship Card", "See adventure card decks", "See enemies ships"
     //https://manytools.org/hacker-tools/ascii-banner/
     //style Calvin S
+    private static final List<List<String>> freeShipCardMenu = List.of(
+            List.of("┌─┐┬  ┌─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
+                    "├─┘│  ├─┤│  ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
+                    "┴  ┴─┘┴ ┴└─┘└─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
+            List.of("┬─┐┌─┐┌─┐┌─┐┬─┐┬  ┬┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
+                    "├┬┘├┤ └─┐├┤ ├┬┘└┐┌┘├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
+                    "┴└─└─┘└─┘└─┘┴└─ └┘ └─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
+            List.of("┬─┐┌─┐┬  ┌─┐┌─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
+                    "├┬┘├┤ │  ├┤ ├─┤└─┐├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
+                    "┴└─└─┘┴─┘└─┘┴ ┴└─┘└─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘")
+    );
+    private static final List<List<String>> adventureDecksMenu = List.of(
+            List.of("┌─┐┬┬─┐┌─┐┌┬┐",
+                    "├┤ │├┬┘└─┐ │ ",
+                    "└  ┴┴└─└─┘ ┴ "),
+            List.of("┌─┐┌─┐┌─┐┌─┐┌┐┌┌┬┐",
+                    "└─┐├┤ │  │ ││││ ││",
+                    "└─┘└─┘└─┘└─┘┘└┘─┴┘"),
+            List.of("┌┬┐┬ ┬┬┬─┐┌┬┐",
+                    " │ ├─┤│├┬┘ ││",
+                    " ┴ ┴ ┴┴┴└──┴┘")
+    );
+    private static final List<String> pressEnterToContinue = List.of("┌─┐┬─┐┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌┬┐┌─┐┬─┐  ┌┬┐┌─┐  ┌─┐┌─┐┌┐┌┌┬┐┬┌┐┌┬ ┬┌─┐         ",
+                                                                     "├─┘├┬┘├┤ └─┐└─┐  ├┤ │││ │ ├┤ ├┬┘   │ │ │  │  │ ││││ │ │││││ │├┤          ",
+                                                                     "┴  ┴└─└─┘└─┘└─┘  └─┘┘└┘ ┴ └─┘┴└─   ┴ └─┘  └─┘└─┘┘└┘ ┴ ┴┘└┘└─┘└─┘  o  o  o");
 
 
 
@@ -190,6 +222,65 @@ public class BuildingTemplate extends CLITemplate {
             }
         }
 
-        mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
+
+
+        if(data.isStateNew()){
+            addInputRequest(data);
+        }
+    }
+
+
+    public void addInputRequest(BuildingPhaseData data) {
+        try{
+            if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
+                mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
+            }
+            else if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
+                //scelgo shipcard tra quelle disponibili
+            }
+            else if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
+                mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
+                mainCLI.addInputRequest(new MenuInput(data, freeShipCardMenu.size(), data.getShipCardMenu()));
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
+                //scelgo dove metterla
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
+                //scelgo dove riservarla
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
+                mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
+                if(data.getShipCardMenu() == 0){
+                    //invio richiesta placeShipCard
+                }
+                else if(data.getShipCardMenu() == 1){
+                    //invio richiesta reserveShipCard
+                }
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
+                //manca azione per richiederle
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP){
+                //aspetto invio utente
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
+                mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardIndex());
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
+                //aspetto invio utente
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
+                //invio richiesta reset timer
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING){
+                //invio richiesta end building
+            }
+        } catch (NetworkException e) {
+            System.out.println("Connection error: " + e.getMessage());
+        }
     }
 }

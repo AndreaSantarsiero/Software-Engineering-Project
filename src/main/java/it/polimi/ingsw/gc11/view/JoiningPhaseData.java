@@ -12,7 +12,11 @@ import java.util.UUID;
 public class JoiningPhaseData extends GamePhaseData {
 
     public enum JoiningState {
-        CHOOSE_CONNECTION, CONNECTION_SETUP, CHOOSE_USERNAME, USERNAME_SETUP, CREATE_OR_JOIN, CHOOSE_LEVEL, CHOOSE_NUM_PLAYERS, CHOOSE_GAME, GAME_SETUP, CHOOSE_COLOR, COLOR_SETUP, WAITING
+        CHOOSE_CONNECTION, CONNECTION_SETUP,
+        CHOOSE_USERNAME, USERNAME_SETUP,
+        CREATE_OR_JOIN, CHOOSE_LEVEL, CHOOSE_NUM_PLAYERS, CHOOSE_GAME, GAME_SETUP,
+        CHOOSE_COLOR, COLOR_SETUP,
+        WAITING
     }
 
 
@@ -60,28 +64,6 @@ public class JoiningPhaseData extends GamePhaseData {
 
 
 
-    public Map<String, List<String>> getAvailableMatches() {
-        return availableMatches;
-    }
-
-    public void setAvailableMatches(Map<String, List<String>> availableMatches) {
-        this.availableMatches = availableMatches;
-        previousState = state;
-        notifyListener();
-    }
-
-    public Map<String, String> getPlayersColor() {
-        return playersColor;
-    }
-
-    public void setPlayersColor(Map<String, String> playersColor) {
-        this.playersColor = playersColor;
-        previousState = state;
-        notifyListener();
-    }
-
-
-
     public JoiningState getState() {
         return state;
     }
@@ -114,6 +96,28 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public boolean isStateNew() {
         return !state.equals(previousState);
+    }
+
+
+
+    public Map<String, List<String>> getAvailableMatches() {
+        return availableMatches;
+    }
+
+    public void setAvailableMatches(Map<String, List<String>> availableMatches) {
+        this.availableMatches = availableMatches;
+        previousState = state;
+        notifyListener();
+    }
+
+    public Map<String, String> getPlayersColor() {
+        return playersColor;
+    }
+
+    public void setPlayersColor(Map<String, String> playersColor) {
+        this.playersColor = playersColor;
+        previousState = state;
+        notifyListener();
     }
 
 
