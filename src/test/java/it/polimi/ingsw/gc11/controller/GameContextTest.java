@@ -110,6 +110,8 @@ public class GameContextTest {
         }
     }
 
+
+
     void goToAdvPhase(){
         StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE);
         gameContext.getGameModel().setHeldShipCard(shipCard, "username1");

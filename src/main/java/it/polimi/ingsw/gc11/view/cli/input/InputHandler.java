@@ -68,7 +68,7 @@ public class InputHandler {
 
 
 
-    public void interactiveGridMenu(GamePhaseData data, int size, int previouslySelected, int cols) {
+    public void interactiveGridMenu(GamePhaseData data, int size, int cols, int previouslySelected) {
         if (!context.getCurrentPhase().equals(data)){
             return;
         }
@@ -101,7 +101,7 @@ public class InputHandler {
                     j = (j + 1) % cols;
                     break;
                 case "enter":
-                    data.confirmMenuChoice();
+                    data.confirmIntegerChoice();
                     return;
                 default:
                     // ignore any other key
@@ -114,7 +114,7 @@ public class InputHandler {
                 selected = (i - 1) * cols + j;
             }
 
-            data.setMenuChoice(selected);
+            data.setIntegerChoice(selected);
         }
     }
 

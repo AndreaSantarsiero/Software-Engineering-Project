@@ -120,6 +120,7 @@ public class BuildingPhaseData extends GamePhaseData {
     @Override
     public void setIntegerChoice(int choice) {
         previousState = state;
+        setShipCardIndex(choice);
     }
 
     @Override

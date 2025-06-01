@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.input.ListIndexInput;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
@@ -214,7 +215,14 @@ public class BuildingTemplate extends CLITemplate {
                     int index = y * colCount + x;
                     if(index < freeShipCards.size()){
                         ShipCard shipCard = freeShipCards.get(y * colCount + x);
-                        shipCard.print(shipCardCLI, i);
+                        if(index == data.getShipCardIndex()){
+                            System.out.print("\033[48;5;235m");
+                            shipCard.print(shipCardCLI, i);
+                            System.out.print("\033[0m");
+                        }
+                        else {
+                            shipCard.print(shipCardCLI, i);
+                        }
                     }
                 }
 
@@ -236,7 +244,7 @@ public class BuildingTemplate extends CLITemplate {
                 mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
             }
             else if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
-                //scelgo shipcard tra quelle disponibili
+                mainCLI.addInputRequest(new ListIndexInput(data, data.getFreeShipCards().size(), colCount, data.getShipCardIndex()));
             }
             else if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
                 mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
