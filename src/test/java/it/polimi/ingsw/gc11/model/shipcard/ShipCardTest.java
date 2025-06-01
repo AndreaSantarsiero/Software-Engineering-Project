@@ -18,20 +18,11 @@ class ShipCardTest {
             super(id, top, right, bottom, left);
         }
 
-        @Override
-        public void place(ShipBoard shipBoard, int x, int y){
+        @Override public void place(ShipBoard shipBoard, int x, int y){}
 
-        }
+        @Override public void unPlace(ShipBoard shipBoard){}
 
-        @Override
-        public void unPlace(ShipBoard shipBoard){
-
-        }
-
-        @Override
-        public void print(ShipCardCLI shipCardCLI, int i){
-
-        }
+        @Override public void print(ShipCardCLI shipCardCLI, int i, boolean selected){}
     }
 
     @BeforeEach
