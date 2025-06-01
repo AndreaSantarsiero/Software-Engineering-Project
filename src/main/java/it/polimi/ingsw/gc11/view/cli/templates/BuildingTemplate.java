@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc11.view.cli.input.ListIndexInput;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
+import org.fusesource.jansi.Ansi;
 import java.util.List;
 
 
@@ -219,7 +220,7 @@ public class BuildingTemplate extends CLITemplate {
                     }
                 }
 
-                System.out.println();
+                System.out.println(Ansi.ansi().reset());
             }
         }
         System.out.println("ShipCardIndex: " + data.getShipCardIndex());

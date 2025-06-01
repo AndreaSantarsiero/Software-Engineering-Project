@@ -51,6 +51,7 @@ public class ShipBoardCLI {
                     shipCard.print(shipCardCLI, i, false);
                 }
                 else if (shipBoard.validateIndexes(x, y)) {
+                    System.out.print(Ansi.ansi().reset());
                     shipCardCLI.printEmptyShipCard(i);
                 }
                 else{
@@ -92,6 +93,7 @@ public class ShipBoardCLI {
                             shipCard.print(shipCardCLI, i, false);
                         }
                         else {
+                            System.out.print(Ansi.ansi().reset());
                             shipCardCLI.printEmptyShipCard(i);
                         }
                     }
@@ -110,7 +112,7 @@ public class ShipBoardCLI {
      * Prints a blank space representing an invalid square on the ship board
      */
     public void printInvalidSquare(){
-        System.out.print("               ");
+        System.out.print(Ansi.ansi().reset() + "               ");
     }
 
 
