@@ -41,7 +41,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public JoiningPhaseData() {
         availableMatches = new HashMap<>();
-        this.state = JoiningState.CHOOSE_CONNECTION;
+        state = JoiningState.CHOOSE_CONNECTION;
     }
 
 

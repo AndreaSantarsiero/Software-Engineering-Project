@@ -44,6 +44,7 @@ public class BuildingPhaseData extends GamePhaseData {
     public BuildingPhaseData() {
         enemiesShipBoard = new HashMap<>();
         freeShipCards = new ArrayList<>();
+        state = BuildingState.CHOOSE_MAIN_MENU;
     }
 
 
