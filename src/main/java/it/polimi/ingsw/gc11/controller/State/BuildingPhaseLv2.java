@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.action.client.SetCheckPhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -13,7 +12,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
+
 public class BuildingPhaseLv2 extends GamePhase {
+
     private final GameContext gameContext;
     private final GameModel gameModel;
     private List<Player> playersFinished;
@@ -22,6 +23,8 @@ public class BuildingPhaseLv2 extends GamePhase {
     private int maxNumTimer;
     private Boolean timerFinished;
     private int curNumTimer;
+
+
 
     public BuildingPhaseLv2(GameContext gameContext) {
         this.gameContext = gameContext;
@@ -45,6 +48,8 @@ public class BuildingPhaseLv2 extends GamePhase {
         // Schedule the task to run after 60 seconds (60000 milliseconds)
         this.timer.schedule(firstTimer, 60000);
     }
+
+
 
     @Override
     public ShipCard getFreeShipCard(String username, int pos){
@@ -147,5 +152,12 @@ public class BuildingPhaseLv2 extends GamePhase {
             // Schedule the task to run after 60 seconds (60000 milliseconds)
             this.timer.schedule(secondTimer, 60000);
         }
+    }
+
+
+
+    @Override
+    public String getPhaseName(){
+        return "Level2BuildingPhase";
     }
 }

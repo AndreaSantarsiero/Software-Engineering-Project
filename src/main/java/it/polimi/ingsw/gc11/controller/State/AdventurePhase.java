@@ -1,30 +1,32 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.action.client.SetEndGameAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
-
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 //Adventure Context
 public class AdventurePhase extends GamePhase {
+
     private GameContext gameContext;
     private GameModel gameModel;
     private AdventureState advState;
     private AdventureCard drawnAdvCard;
     private int idxCurrentPlayer;
     private boolean resolvingAdvCard; //Flag is used to know if an advCard is currently being resolved
+
+
 
     public AdventurePhase(GameContext gameContext) {
         this.gameContext = gameContext;
@@ -34,6 +36,8 @@ public class AdventurePhase extends GamePhase {
         this.idxCurrentPlayer = 0;
         this.resolvingAdvCard = false;
     }
+
+
 
     public GameModel getGameModel() {
         return gameModel;
@@ -165,4 +169,10 @@ public class AdventurePhase extends GamePhase {
         return advState.meteorDefense(username, batteries, cannon);
     }
 
+
+
+    @Override
+    public String getPhaseName(){
+        return "AdventurePhase";
+    }
 }

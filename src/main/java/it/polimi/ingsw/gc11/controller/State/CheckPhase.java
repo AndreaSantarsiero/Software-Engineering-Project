@@ -5,14 +5,18 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class CheckPhase extends GamePhase {
+
     private final GameContext gameContext;
     private final GameModel gameModel;
     private List<Player> badShipPlayers;
+
+
 
     public CheckPhase(GameContext gameContext) {
         this.gameContext = gameContext;
@@ -40,6 +44,8 @@ public class CheckPhase extends GamePhase {
 
         }
     }
+
+
 
     @Override
     public ShipBoard repairShip(String username, ArrayList<Integer> cardsToEliminateX,
@@ -86,4 +92,10 @@ public class CheckPhase extends GamePhase {
         this.gameModel.endBuilding(username, pos);
     }
 
+
+
+    @Override
+    public String getPhaseName(){
+        return "CheckPhase";
+    }
 }

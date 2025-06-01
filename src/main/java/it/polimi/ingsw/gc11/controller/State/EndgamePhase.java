@@ -3,11 +3,15 @@ package it.polimi.ingsw.gc11.controller.State;
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
-
 import java.util.ArrayList;
 
+
+
 public class EndgamePhase extends GamePhase {
+
     GameContext gameContext;
+
+
 
     public EndgamePhase(GameContext gameContext) {
         this.gameContext = gameContext;
@@ -46,5 +50,12 @@ public class EndgamePhase extends GamePhase {
             int numScrap = player.getShipBoard().getScrapedCardsNumber();
             player.removeCoins(numScrap);
         }
+    }
+
+
+
+    @Override
+    public String getPhaseName(){
+        return "EndGamePhase";
     }
 }

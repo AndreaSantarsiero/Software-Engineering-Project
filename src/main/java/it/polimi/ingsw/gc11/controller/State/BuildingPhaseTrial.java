@@ -1,17 +1,15 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.action.client.SetCheckPhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+
 
 public class BuildingPhaseTrial extends GamePhase{
     private final GameContext gameContext;
@@ -83,5 +81,11 @@ public class BuildingPhaseTrial extends GamePhase{
         }
     }
 
+
+
+    @Override
+    public String getPhaseName(){
+        return "TrialBuildingPhase";
+    }
 }
 

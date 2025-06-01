@@ -26,6 +26,7 @@ import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.LooseBatteriesSmugglers;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
+import it.polimi.ingsw.gc11.controller.dumbClient.DumbPlayerContext;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
@@ -55,29 +56,10 @@ public class GameContextTest {
 
     GameContext gameContext;
     ServerController serverController;
-    PlayerContext playerOneContext;
-    PlayerContext playerTwoContext;
-    PlayerContext playerThreeContext;
 
     String serverIp = "127.0.0.1";
     static int RMIPort = 1105;
     static int socketPort = 1240;
-
-
-
-    private class DumbTemplate extends Template {
-        @Override public void update (JoiningPhaseData joiningPhaseData) {}
-        @Override public void update (BuildingPhaseData buildingPhaseData) {}
-        @Override public void update (CheckPhaseData checkPhaseData) {}
-        @Override public void update (AdventurePhaseData adventurePhaseData) {}
-        @Override public void update (EndPhaseData endPhaseData) {}
-
-        @Override public void change(){
-//            playerOneContext.getCurrentPhase().setListener(new DumbTemplate());
-//            playerTwoContext.getCurrentPhase().setListener(new DumbTemplate());
-//            playerThreeContext.getCurrentPhase().setListener(new DumbTemplate());
-        }
-    }
 
 
 
@@ -147,43 +129,42 @@ public class GameContextTest {
     @BeforeEach
     void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException, FullLobbyException {
         serverController = new ServerController(RMIPort, socketPort);
-        Thread.sleep(100);  //waiting for the server to start up
+        Thread.sleep(20);  //waiting for the server to start up
 
 
-        playerOneContext = new PlayerContext();
-        VirtualServer playerOne   = new VirtualServer(playerOneContext);
+        DumbPlayerContext playerOneContext = new DumbPlayerContext();
+        VirtualServer playerOne = new VirtualServer(playerOneContext);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
         dataOne.setVirtualServer(playerOne);
-        dataOne.setListener(new DumbTemplate());
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
 
-        playerTwoContext = new PlayerContext();
-        VirtualServer playerTwo   = new VirtualServer(playerTwoContext);
+        DumbPlayerContext playerTwoContext = new DumbPlayerContext();
+        VirtualServer playerTwo = new VirtualServer(playerTwoContext);
         JoiningPhaseData dataTwo = (JoiningPhaseData) playerTwoContext.getCurrentPhase();
         dataTwo.setVirtualServer(playerTwo);
-        dataTwo.setListener(new DumbTemplate());
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("username2");
 
-        playerThreeContext = new PlayerContext();
+        DumbPlayerContext playerThreeContext = new DumbPlayerContext();
         VirtualServer playerThree = new VirtualServer(playerThreeContext);
         JoiningPhaseData dataThree = (JoiningPhaseData) playerThreeContext.getCurrentPhase();
         dataThree.setVirtualServer(playerThree);
-        dataThree.setListener(new DumbTemplate());
         playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerThree.registerSession("username3");
 
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
-        Thread.sleep(100);  //waiting for the server to create the match
+        Thread.sleep(20);  //waiting for the server to create the match
 
         gameContext = serverController.getPlayerVirtualClient("username1", playerOne.getSessionToken()).getGameContext();
         playerTwo.connectToGame(gameContext.getMatchID());
         playerThree.connectToGame(gameContext.getMatchID());
+        Thread.sleep(20);  //waiting for the players to connect the game
 
         playerOne.chooseColor("blue");
         playerTwo.chooseColor("red");
         playerThree.chooseColor("yellow");
+        Thread.sleep(20);  //waiting for the players to choose the color
     }
 
     @AfterEach
@@ -192,7 +173,7 @@ public class GameContextTest {
         socketPort++;
         if (serverController != null) {
             serverController.shutdown();
-            Thread.sleep(100);  //waiting for the server to shut down
+            Thread.sleep(20);  //waiting for the server to shut down
         }
     }
 

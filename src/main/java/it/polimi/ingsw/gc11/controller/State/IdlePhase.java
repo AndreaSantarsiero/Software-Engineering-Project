@@ -61,4 +61,10 @@ public class IdlePhase extends GamePhase {
         }
     }
 
+
+
+    @Override
+    public String getPhaseName(){
+        return "IdlePhase";
+    }
 }
