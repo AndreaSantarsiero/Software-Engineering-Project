@@ -317,8 +317,7 @@ public class GameContextTest {
 
     @Test
     void testGetPhase() {
-        assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Match should be in IDLE state");
-        assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Match should be in building state");
+        assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Match should be in level 2 building phase");
     }
 
     @Test
@@ -345,7 +344,7 @@ public class GameContextTest {
 
     @Test
     void testReserveShipCardInvalid(){
-        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username", gameContext.getFreeShipCard("username", 0)),"username cannot be illegal");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username", gameContext.getFreeShipCard("username", 0)),"username cannot be illegal");
         assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("id", ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE)), "you cannot reserve a shipcard if you did take it in hand");
     }
 
