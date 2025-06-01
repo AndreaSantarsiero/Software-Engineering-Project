@@ -215,21 +215,14 @@ public class BuildingTemplate extends CLITemplate {
                     int index = y * colCount + x;
                     if(index < freeShipCards.size()){
                         ShipCard shipCard = freeShipCards.get(y * colCount + x);
-                        if(index == data.getShipCardIndex()){
-                            System.out.print("\033[48;5;235m");
-                            shipCard.print(shipCardCLI, i);
-                            System.out.print("\033[0m");
-                        }
-                        else {
-                            shipCard.print(shipCardCLI, i);
-                        }
+                        shipCard.print(shipCardCLI, i, index == data.getShipCardIndex());
                     }
                 }
 
                 System.out.println();
             }
-            System.out.println("ShipCardIndex: " + data.getShipCardIndex());
         }
+        System.out.println("ShipCardIndex: " + data.getShipCardIndex());
 
 
 

@@ -124,10 +124,10 @@ public class ShipCardCLI {
      */
     public void setColor(AlienUnit alienUnit) {
         if (alienUnit.getType().equals(AlienUnit.Type.BROWN)) {
-            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
+            System.out.print(Ansi.ansi().fg(Ansi.Color.YELLOW));
         }
         else if (alienUnit.getType().equals(AlienUnit.Type.PURPLE)) {
-            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
+            System.out.print(Ansi.ansi().fg(Ansi.Color.MAGENTA));
         }
     }
 
@@ -137,7 +137,7 @@ public class ShipCardCLI {
      * @param battery the Battery instance
      */
     public void setColor(Battery battery) {
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
+        System.out.print(Ansi.ansi().fg(Ansi.Color.GREEN));
     }
 
 
@@ -146,7 +146,7 @@ public class ShipCardCLI {
      * @param cannon the Cannon instance
      */
     public void setColor(Cannon cannon) {
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.MAGENTA));
+        System.out.print(Ansi.ansi().fg(Ansi.Color.MAGENTA));
     }
 
 
@@ -155,7 +155,7 @@ public class ShipCardCLI {
      * @param engine the Engine instance
      */
     public void setColor(Engine engine) {
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
+        System.out.print(Ansi.ansi().fg(Ansi.Color.YELLOW));
     }
 
 
@@ -166,14 +166,14 @@ public class ShipCardCLI {
     public void setColor(HousingUnit housingUnit) {
         if(housingUnit.isCentral()){
             switch (housingUnit.getId()){
-                case "BlueCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
-                case "GreenCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
-                case "RedCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED));
-                case "YellowCentralUnit" -> System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW));
+                case "BlueCentralUnit" -> System.out.print(Ansi.ansi().fg(Ansi.Color.BLUE));
+                case "GreenCentralUnit" -> System.out.print(Ansi.ansi().fg(Ansi.Color.GREEN));
+                case "RedCentralUnit" -> System.out.print(Ansi.ansi().fg(Ansi.Color.RED));
+                case "YellowCentralUnit" -> System.out.print(Ansi.ansi().fg(Ansi.Color.YELLOW));
             }
         }
         else{
-            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+            System.out.print(Ansi.ansi().fg(Ansi.Color.BLUE));
         }
     }
 
@@ -183,7 +183,7 @@ public class ShipCardCLI {
      * @param shield the Shield instance
      */
     public void setColor(Shield shield) {
-        System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN));
+        System.out.print(Ansi.ansi().fg(Ansi.Color.GREEN));
     }
 
 
@@ -193,10 +193,10 @@ public class ShipCardCLI {
      */
     public void setColor(Storage storage) {
         if (storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.SINGLE_RED)) {
-            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED));
+            System.out.print(Ansi.ansi().fg(Ansi.Color.RED));
         }
         else if (storage.getType().equals(Storage.Type.TRIPLE_BLUE) || storage.getType().equals(Storage.Type.DOUBLE_BLUE)) {
-            System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE));
+            System.out.print(Ansi.ansi().fg(Ansi.Color.BLUE));
         }
     }
 
@@ -205,8 +205,14 @@ public class ShipCardCLI {
      * Sets the printing color for a StructuralModule card
      * @param structuralModule the StructuralModule instance
      */
-    public void setColor(StructuralModule structuralModule) {
+    public void setColor(StructuralModule structuralModule) {}
+
+
+    public void setSelectedBackground(boolean selected) {
         System.out.print(Ansi.ansi().reset());
+        if(selected){
+            System.out.print("\033[48;5;235m");
+        }
     }
 
 
@@ -245,8 +251,10 @@ public class ShipCardCLI {
      * Renders an AlienUnit card based on the current line index
      * @param alienUnit the AlienUnit instance
      */
-    public void draw(AlienUnit alienUnit, int i) {
-        if(alienUnit.isCovered()){
+    public void draw(AlienUnit alienUnit, int i, boolean selected) {
+        setSelectedBackground(selected);
+
+        if(alienUnit.isCovered()) {
             printCovered(i);
         }
         else {
@@ -291,7 +299,9 @@ public class ShipCardCLI {
      * Renders a Battery card based on the current line index
      * @param battery the Battery instance
      */
-    public void draw(Battery battery, int i) {
+    public void draw(Battery battery, int i, boolean selected) {
+        setSelectedBackground(selected);
+
         if(battery.isCovered()){
             printCovered(i);
         }
@@ -341,7 +351,9 @@ public class ShipCardCLI {
      * Renders a Cannon card based on the current line index
      * @param cannon the Cannon instance
      */
-    public void draw(Cannon cannon, int i) {
+    public void draw(Cannon cannon, int i, boolean selected) {
+        setSelectedBackground(selected);
+
         if(cannon.isCovered()){
             printCovered(i);
         }
@@ -416,7 +428,9 @@ public class ShipCardCLI {
      * Renders an Engine card based on the current line index
      * @param engine the Engine instance
      */
-    public void draw(Engine engine, int i) {
+    public void draw(Engine engine, int i, boolean selected) {
+        setSelectedBackground(selected);
+
         if(engine.isCovered()){
             printCovered(i);
         }
@@ -491,7 +505,9 @@ public class ShipCardCLI {
      * Renders a HousingUnit card based on the current line index
      * @param housingUnit the HousingUnit instance
      */
-    public void draw(HousingUnit housingUnit, int i) {
+    public void draw(HousingUnit housingUnit, int i, boolean selected) {
+        setSelectedBackground(selected);
+
         if(housingUnit.isCovered()){
             printCovered(i);
         }
@@ -543,7 +559,9 @@ public class ShipCardCLI {
      * Renders a Shield card based on the current line index
      * @param shield the Shield instance
      */
-    public void draw(Shield shield, int i) {
+    public void draw(Shield shield, int i, boolean selected) {
+        setSelectedBackground(selected);
+
         if(shield.isCovered()){
             printCovered(i);
         }
@@ -626,7 +644,9 @@ public class ShipCardCLI {
      * Renders a Storage card based on the current line index
      * @param storage the Storage instance
      */
-    public void draw(Storage storage, int i) {
+    public void draw(Storage storage, int i, boolean selected) {
+        setSelectedBackground(selected);
+
         if(storage.isCovered()){
             printCovered(i);
         }
@@ -698,7 +718,9 @@ public class ShipCardCLI {
      * Renders a StructuralModule card based on the current line index
      * @param structuralModule the StructuralModule instance
      */
-    public void draw(StructuralModule structuralModule, int i) {
+    public void draw(StructuralModule structuralModule, int i, boolean selected) {
+        setSelectedBackground(selected);
+
         if(structuralModule.isCovered()){
             printCovered(i);
         }
@@ -737,8 +759,6 @@ public class ShipCardCLI {
      * Renders an empty ship card based on the current line index
      */
     public void printEmptyShipCard(int i) {
-        System.out.print(Ansi.ansi().reset());
-
         if (i == 0) {
             System.out.print("┌─────────────┐");
         }
@@ -756,8 +776,6 @@ public class ShipCardCLI {
      * Renders a covered ship card based on the current line index
      */
     public void printCovered(int i) {
-        System.out.print(Ansi.ansi().reset());
-
         if (i == 1 || i == (cardLength - 2)) {
             System.out.print("│ *         * │");
         }

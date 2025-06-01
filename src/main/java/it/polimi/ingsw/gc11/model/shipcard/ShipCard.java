@@ -250,5 +250,5 @@ public abstract class ShipCard implements Serializable {
 
     public abstract void unPlace(ShipBoard shipBoard);
 
-    public abstract void print(ShipCardCLI shipCardCLI, int i);
+    public abstract void print(ShipCardCLI shipCardCLI, int i, boolean selected);
 }

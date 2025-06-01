@@ -48,7 +48,7 @@ public class ShipBoardCLI {
             if (shipBoard.validateIndexes(x, y)) {
                 ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
                 if(shipCard != null) {
-                    shipCard.print(shipCardCLI, i);
+                    shipCard.print(shipCardCLI, i, false);
                 }
                 else if (shipBoard.validateIndexes(x, y)) {
                     shipCardCLI.printEmptyShipCard(i);
@@ -89,7 +89,7 @@ public class ShipBoardCLI {
                 for (ShipCard shipCard : reservedCards) {
                     if (i < ShipCardCLI.cardLength){
                         if (shipCard != null) {
-                            shipCard.print(shipCardCLI, i);
+                            shipCard.print(shipCardCLI, i, false);
                         }
                         else {
                             shipCardCLI.printEmptyShipCard(i);

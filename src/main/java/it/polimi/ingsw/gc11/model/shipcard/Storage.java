@@ -237,7 +237,7 @@ public class Storage extends ShipCard {
     }
 
     @Override
-    public void print(ShipCardCLI shipCardCLI, int i){
-        shipCardCLI.draw(this, i);
+    public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
+        shipCardCLI.draw(this, i, selected);
     }
 }
