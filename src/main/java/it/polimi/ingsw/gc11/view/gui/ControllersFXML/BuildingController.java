@@ -99,6 +99,11 @@ public class BuildingController implements Initializable {
         reservedSlots.translateXProperty().bind(boardPane.widthProperty().subtract(boardImg.fitWidthProperty()).divide(2).add(boardImg.fitWidthProperty().divide(1.4)));
         reservedSlots.translateYProperty().bind(boardPane.heightProperty().subtract(boardImg.fitHeightProperty()).divide(2).add(boardImg.fitHeightProperty().divide(6.17)));
 
+        Rectangle clip2 = new Rectangle();
+        clip2.widthProperty().bind(reservedSlots.widthProperty());
+        clip2.heightProperty().bind(cellSize);
+        reservedSlots.setClip(clip2);
+
         reservedSlots.toFront();
 
         for(int i = 0; i < 2; i++){
@@ -177,7 +182,7 @@ public class BuildingController implements Initializable {
                 reservedSlots.add(btn, i,0);
             }
             else {
-                btn.setOpacity(0);
+                //btn.setOpacity(0);
                 reservedSlots.add(btn, i,0);
             }
         }
