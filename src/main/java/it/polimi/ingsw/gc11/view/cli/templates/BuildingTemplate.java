@@ -190,7 +190,12 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        data.getHeldShipCard().print(shipCardCLI, i-2, false);
+                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
+                            data.getHeldShipCard().print(shipCardCLI, i-2, false);
+                        }
+                        else {
+                            shipCardCLI.printEmptyShipCard(i-2);
+                        }
                         for (int x = 0; x < shipBoard.getWidth()/2; x++) {
                             if(x < shipBoard.getWidth()){
                                 shipBoardCLI.printInvalidSquare();
@@ -207,7 +212,12 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        data.getHeldShipCard().print(shipCardCLI, i+5, false);
+                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
+                            data.getHeldShipCard().print(shipCardCLI, i+5, false);
+                        }
+                        else {
+                            shipCardCLI.printEmptyShipCard(i+5);
+                        }
                         for (int x = 0; x < shipBoard.getWidth()/2; x++) {
                             if(x < shipBoard.getWidth()){
                                 shipBoardCLI.printInvalidSquare();
