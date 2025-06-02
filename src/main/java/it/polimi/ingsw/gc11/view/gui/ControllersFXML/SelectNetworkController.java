@@ -41,6 +41,8 @@ public class SelectNetworkController {
         try {
 
             viewModel.setRMIVirtualServer();
+            JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+            joiningPhaseData.setVirtualServer(viewModel.getVirtualServer());
 
             rmiButton.setDisable(true);
             socketButton.setDisable(true);
