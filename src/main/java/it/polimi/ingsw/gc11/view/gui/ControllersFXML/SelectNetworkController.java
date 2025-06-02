@@ -1,6 +1,10 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
+import it.polimi.ingsw.gc11.controller.network.Utils;
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.view.JoiningPhaseData;
+import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.concurrent.Task;
@@ -12,7 +16,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 public class SelectNetworkController {
 
@@ -32,11 +38,12 @@ public class SelectNetworkController {
         Stage stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) stage.getUserData();
 
-        rmiButton.setDisable(true);
-        socketButton.setDisable(true);
-
         try {
+
             viewModel.setRMIVirtualServer();
+
+            rmiButton.setDisable(true);
+            socketButton.setDisable(true);
             label2.setVisible(true);
             label2.setText("RMI protocol selected");
             System.out.println("RMI selected");
@@ -44,6 +51,7 @@ public class SelectNetworkController {
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Login.fxml"));
             Scene newScene = new Scene(fxmlLoader.load());
 
+            //Delay
             Task<Void> sleeper = new Task<Void>(){
                 @Override
                 protected Void call() throws Exception {
@@ -60,10 +68,13 @@ public class SelectNetworkController {
             }
             );
             new Thread(sleeper).start();
-        } catch (NetworkException | IOException e) {
+
+        }
+        catch (NetworkException | IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     @FXML
     protected void onSOCKETButtonClick(ActionEvent event) {
@@ -72,11 +83,12 @@ public class SelectNetworkController {
         Stage stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) stage.getUserData();
 
-        rmiButton.setDisable(true);
-        socketButton.setDisable(true);
-
         try {
-            viewModel.setRMIVirtualServer();
+
+            viewModel.setSOCKETVirtualServer();
+
+            rmiButton.setDisable(true);
+            socketButton.setDisable(true);
             label2.setVisible(true);
             label2.setText("SOCKET protocol selected");
             System.out.println("SOCKET selected");
@@ -84,22 +96,30 @@ public class SelectNetworkController {
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Login.fxml"));
             Scene newScene = new Scene(fxmlLoader.load());
 
-            Task<Void> sleeper = new Task<Void>(){
+            //Delay
+            Task<Void> sleeper = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    try{
+                    try {
                         Thread.sleep(1000);
+                    } catch (InterruptedException e) {
                     }
-                    catch (InterruptedException e){}
                     return null;
                 }
             };
-            sleeper.setOnSucceeded(e -> {stage.setScene(newScene);stage.show();});
+            sleeper.setOnSucceeded(e -> {
+                        stage.setScene(newScene);
+                        stage.show();
+                    }
+            );
             new Thread(sleeper).start();
-        } catch (NetworkException | IOException e) {
+
+        }
+        catch (NetworkException | IOException e) {
             throw new RuntimeException(e);
         }
 
     }
+
 
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.event.ActionEvent;
@@ -46,8 +47,8 @@ public class CreateMatchController implements Initializable {
 
         Scene scene = enterButton.getScene();
         Stage stage = (Stage) scene.getWindow();
-        ViewModel viewModel = (ViewModel) stage.getUserData();
-        VirtualServer virtualServer = viewModel.getVirtualServer();
+        PlayerContext playerContext = (PlayerContext) stage.getUserData();
+        VirtualServer virtualServer = playerContext.getCurrentPhase().getVirtualServer();
 
         String selectedFlightTypeString = flightType.getValue();
         FlightBoard.Type selectedFlightType = null;

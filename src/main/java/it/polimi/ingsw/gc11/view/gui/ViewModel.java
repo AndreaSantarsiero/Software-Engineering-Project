@@ -4,44 +4,75 @@ import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 
 public class ViewModel {
 
-    Player myself;
-    ArrayList<Player> otherPlayers;
-
+    PlayerContext playerContext;
     VirtualServer virtualServer;
 
     public ViewModel() {
-
+        this.playerContext = new PlayerContext();
     }
 
-    public Player getMyself() {
-        return myself;
-    }
-
-    public ArrayList<Player> getOtherPlayers() {
-        return this.otherPlayers;
+    public PlayerContext getPlayerContext() {
+        return this.playerContext;
     }
 
     public VirtualServer getVirtualServer() {
         return this.virtualServer;
     }
 
-    public void setMyself(String username) {
-        this.myself = new Player(username);
-    }
-
     public void setRMIVirtualServer() throws NetworkException {
+
         this.virtualServer = new VirtualServer(new PlayerContext());
-        virtualServer.initializeConnection(Utils.ConnectionType.RMI, "127.0.0.1", 1099);    //bisogna leggerli da src/main/resources/config.properties i dati
+
+        Properties config = new Properties();
+        try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
+            config.load(fis);
+
+            // Reading client configuration
+            String serverIp = config.getProperty("serverIp");
+            int serverRMIPort = Integer.parseInt(config.getProperty("serverRMIPort"));
+            int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
+
+            this.virtualServer.initializeConnection(Utils.ConnectionType.RMI, serverIp, serverRMIPort);
+            JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
+            joiningPhaseData.setVirtualServer(virtualServer);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void setSOCKETVirtualServer() throws NetworkException {
-        //Socket ancora da configurare
-        //this.virtualServer = new VirtualServer(Utils.ConnectionType.SOCKET, "127.0.0.1", 1234, new PlayerContext());
+
+        this.virtualServer = new VirtualServer(new PlayerContext());
+
+        Properties config = new Properties();
+        try (FileInputStream fis = new FileInputStream("config.txt")) {
+            config.load(fis);
+
+            // Reading client configuration
+            String serverIp = config.getProperty("serverIp");
+            int serverSocketPort = Integer.parseInt(config.getProperty("serverSocketPort"));
+            int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
+
+            virtualServer.initializeConnection(Utils.ConnectionType.SOCKET, serverIp, serverSocketPort);
+            JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
+            joiningPhaseData.setVirtualServer(virtualServer);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
