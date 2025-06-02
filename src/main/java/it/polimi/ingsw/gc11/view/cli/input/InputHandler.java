@@ -111,7 +111,12 @@ public class InputHandler {
 
             // in case the last row contains less elements
             if (selected >= size) {
-                selected = (i - 1) * cols + j;
+                if(selected == size){
+                    selected -= selected % cols;
+                }
+                else {
+                    selected = (i - 1) * cols + j;
+                }
             }
 
             data.setIntegerChoice(selected);
