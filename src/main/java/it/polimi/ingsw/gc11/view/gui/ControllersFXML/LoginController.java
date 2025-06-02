@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.view.GamePhaseData;
+import it.polimi.ingsw.gc11.view.JoiningPhaseData;
+import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.event.ActionEvent;
@@ -43,7 +46,7 @@ public class LoginController {
 
         try {
             virtualServer.registerSession(username);
-            viewModel.setMyself(username);
+
             enterButton.setVisible(false);
 
             status.setVisible(true);
@@ -68,9 +71,10 @@ public class LoginController {
         Scene scene = create.getScene();
         Stage stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) stage.getUserData();
+        JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
         try {
-            System.out.println(viewModel.getMyself().getUsername() + ": clicked on create a new match");
+            System.out.println(joiningPhaseData.getUsername() + ": clicked on create a new match");
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateMatch.fxml"));
             Scene newScene = new Scene(fxmlLoader.load());
             stage.setScene(newScene);
@@ -80,6 +84,7 @@ public class LoginController {
         }
 
     }
+
 
     @FXML
     protected void onJoinMatchClick(ActionEvent event){

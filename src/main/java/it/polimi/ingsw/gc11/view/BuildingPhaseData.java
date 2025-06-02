@@ -12,7 +12,7 @@ import java.util.Map;
 
 
 
-public class BuildingPhaseData extends GamePhaseData {
+public class  BuildingPhaseData extends GamePhaseData {
 
     public enum BuildingState {
         CHOOSE_MAIN_MENU,

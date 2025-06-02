@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui;
 
+import it.polimi.ingsw.gc11.view.PlayerContext;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,19 +15,15 @@ public class MainGUI extends Application {
         launch(args);
     }
 
-    private ViewModel viewModel;
-
     @Override
     public void start(Stage stage) throws IOException {
-        this.viewModel = new ViewModel();
+        ViewModel viewModel = new ViewModel();
         stage.setTitle("Galaxy Trucker");
 
-        FXMLLoader loader = new FXMLLoader(
-                MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml")
-        );
+        FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 860, 640);
-        stage.setUserData(this.viewModel);
+        stage.setUserData(viewModel);
 
         //stage.setFullScreen(true);
         stage.setScene(scene);

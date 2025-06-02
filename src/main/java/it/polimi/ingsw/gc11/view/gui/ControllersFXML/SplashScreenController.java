@@ -19,19 +19,20 @@ public class SplashScreenController {
 
     @FXML
     protected void onPlayButtonClick(ActionEvent event) {
+
         System.out.println("onPlayButtonClick");
         Scene scene = playButton.getScene();
-        ViewModel viewModel = (ViewModel) scene.getUserData();
         Stage stage = (Stage) scene.getWindow();
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
             Scene newScene = new Scene(fxmlLoader.load());
-            newScene.setUserData(viewModel);
             stage.setScene(newScene);
             stage.show();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException("Can't load Splash Screen.");
         }
+
     }
 }
