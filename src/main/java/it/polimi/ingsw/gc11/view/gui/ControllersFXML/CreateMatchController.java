@@ -48,7 +48,7 @@ public class CreateMatchController implements Initializable {
         Scene scene = enterButton.getScene();
         Stage stage = (Stage) scene.getWindow();
         PlayerContext playerContext = (PlayerContext) stage.getUserData();
-        VirtualServer virtualServer = playerContext.getCurrentPhase().getVirtualServer();
+        VirtualServer virtualServer = null; // = playerContext.getCurrentPhase().getVirtualServer(); commented to compile
 
         String selectedFlightTypeString = flightType.getValue();
         FlightBoard.Type selectedFlightType = null;
@@ -73,8 +73,8 @@ public class CreateMatchController implements Initializable {
 
             controller.init();
 
-            System.out.println(viewModel.getMyself().getUsername() + ": created a new match of type " +
-                    selectedFlightTypeString  + " with " + selectedNumberOfPlayers + " players");
+            //System.out.println(viewModel.getMyself().getUsername() + ": created a new match of type " +
+                    //selectedFlightTypeString  + " with " + selectedNumberOfPlayers + " players"); commented to compile
         }
         catch (Exception e) {
             label.setVisible(true );
