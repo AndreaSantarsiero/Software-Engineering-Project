@@ -1,10 +1,8 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
-import it.polimi.ingsw.gc11.controller.network.Utils;
-import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.concurrent.Task;
@@ -15,10 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 public class SelectNetworkController {
 
