@@ -339,33 +339,21 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing menu
                 else {
-
-                    //ship card menu
                     if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() != 0)){
                         printMenu(data, shipBoard, menuIndex, shipCardMenu, data.getShipCardMenu());
                     }
-
-                    //ship card action menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() == 0)){
                         printMenu(data, shipBoard, menuIndex, shipCardActionMenu, data.getShipCardActionMenu());
                     }
-
-                    //ship card orientation menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
                         printMenu(data, shipBoard, menuIndex, shipCardOrientationMenu, data.getShipCardOrientationMenu());
                     }
-
-                    //adventure card menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
                         printMenu(data, shipBoard, menuIndex, adventureDecksMenu, data.getAdventureCardMenu());
                     }
-
-                    //end building menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
                         printMenu(data, shipBoard, menuIndex, endBuildingMenu, data.getEndBuildingMenu());
                     }
-
-                    //main menu
                     else {
                         printMenu(data, shipBoard, menuIndex, mainMenu, data.getMainMenu());
                     }
@@ -390,7 +378,7 @@ public class BuildingTemplate extends CLITemplate {
         //printing error messages
         String serverMessage = data.getServerMessage();
         if(serverMessage != null && !serverMessage.isEmpty()) {
-            System.out.println(serverMessage);
+            System.out.println(Ansi.ansi().fg(Ansi.Color.RED) + serverMessage.toUpperCase() + Ansi.ansi().reset());
             data.resetServerMessage();
         }
 
@@ -417,10 +405,16 @@ public class BuildingTemplate extends CLITemplate {
             mainCLI.addInputRequest(new MenuInput(data, shipCardActionMenu.size(), data.getShipCardActionMenu()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
-            //scelgo dove metterla
+            //scelgo dove metterla sulla shipBoard
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
             mainCLI.addInputRequest(new MenuInput(data, shipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD){
+            //scelgo quale shipCard usare
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE){
+            //scelgo quale rimuovere sulla shipBoard
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
             mainCLI.addInputRequest(new EnterInput(data));

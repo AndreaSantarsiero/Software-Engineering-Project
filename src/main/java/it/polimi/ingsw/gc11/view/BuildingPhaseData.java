@@ -93,7 +93,7 @@ public class  BuildingPhaseData extends GamePhaseData {
                 case 3 -> state = BuildingState.CHOOSE_SHIPCARD_MENU;
             }
         }
-        else if(state == BuildingState.CHOOSE_RESERVED_SHIPCARD || state == BuildingState.REMOVE_SHIPCARD_SETUP) {
+        else if(state == BuildingState.PLACE_SHIPCARD || state == BuildingState.CHOOSE_SHIPCARD_ORIENTATION || state == BuildingState.CHOOSE_RESERVED_SHIPCARD || state == BuildingState.REMOVE_SHIPCARD_SETUP) {
             state = BuildingState.CHOOSE_SHIPCARD_ACTION;
         }
         else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.SHOW_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
@@ -152,6 +152,19 @@ public class  BuildingPhaseData extends GamePhaseData {
     @Override
     public void confirmIntegerChoice() {
         updateState();
+    }
+
+    @Override
+    public void setServerMessage(String serverMessage) {
+        this.serverMessage = serverMessage;
+        previousState = state;
+        if(state == BuildingState.SHIPCARD_SETUP){
+            state = BuildingState.CHOOSE_SHIPCARD_MENU;
+        }
+        else {
+            state = BuildingState.CHOOSE_MAIN_MENU;
+        }
+        notifyListener();
     }
 
 
