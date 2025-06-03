@@ -125,21 +125,14 @@ public class JoiningPhaseData extends GamePhaseData {
     @Override
     public void setMenuChoice(int choice){
         previousState = state;
-
-        if(state == JoiningState.CHOOSE_CONNECTION){
-            setConnectionTypeMenu(choice);
-        }
-        else if(state == JoiningState.CREATE_OR_JOIN) {
-            setCreateOrJoinMenu(choice);
-        }
-        else if(state == JoiningState.CHOOSE_LEVEL){
-            setGameLevel(choice);
-        }
-        else if(state == JoiningState.CHOOSE_GAME){
-            setExistingGameMenu(choice);
-        }
-        else if(state == JoiningState.CHOOSE_COLOR){
-            setChosenColorMenu(choice);
+        switch (state) {
+            case CHOOSE_CONNECTION -> setConnectionTypeMenu(choice);
+            case CREATE_OR_JOIN -> setCreateOrJoinMenu(choice);
+            case CHOOSE_LEVEL -> setGameLevel(choice);
+            case CHOOSE_GAME -> setExistingGameMenu(choice);
+            case CHOOSE_COLOR -> setChosenColorMenu(choice);
+            case null, default -> {
+            }
         }
     }
 

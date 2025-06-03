@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.input.CoordinatesInput;
 import it.polimi.ingsw.gc11.view.cli.input.EnterInput;
 import it.polimi.ingsw.gc11.view.cli.input.ListIndexInput;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
@@ -271,7 +272,7 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing user shipBoard (main board)
                 else if (y < shipBoard.getLength() + 2){
-                    shipBoardCLI.print(shipBoard, y-2, i);
+                    shipBoardCLI.print(shipBoard, y-2, i, data.getSelectedX(), data.getSelectedY());
                     System.out.print("      ");
                 }
 
@@ -405,7 +406,7 @@ public class BuildingTemplate extends CLITemplate {
             mainCLI.addInputRequest(new MenuInput(data, shipCardActionMenu.size(), data.getShipCardActionMenu()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
-            //scelgo dove metterla sulla shipBoard
+            mainCLI.addInputRequest(new CoordinatesInput(data, data.getShipBoard(), data.getSelectedI(), data.getSelectedJ()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
             mainCLI.addInputRequest(new MenuInput(data, shipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
@@ -414,7 +415,7 @@ public class BuildingTemplate extends CLITemplate {
             //scelgo quale shipCard usare
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE){
-            //scelgo quale rimuovere sulla shipBoard
+            mainCLI.addInputRequest(new CoordinatesInput(data, data.getShipBoard(), data.getSelectedI(), data.getSelectedJ()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
             mainCLI.addInputRequest(new EnterInput(data));

@@ -42,6 +42,8 @@ public class  BuildingPhaseData extends GamePhaseData {
     private int shipCardOrientationMenu;
     private int adventureCardMenu;
     private int endBuildingMenu;
+    private int selectedI;
+    private int selectedJ;
 
 
 
@@ -153,6 +155,20 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void confirmIntegerChoice() {
         updateState();
     }
+
+    @Override
+    public void setCoordinatesChoice(int i, int j) {
+        previousState = state;
+        selectedI = i;
+        selectedJ = j;
+        notifyListener();
+    }
+
+    @Override
+    public void confirmCoordinatesChoice(){
+        updateState();
+    }
+
 
     @Override
     public void setServerMessage(String serverMessage) {
@@ -302,6 +318,22 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setEndBuildingMenu(int endBuildingMenu) {
         this.endBuildingMenu = endBuildingMenu;
         notifyListener();
+    }
+
+    public int getSelectedI(){
+        return selectedI;
+    }
+
+    public int getSelectedJ(){
+        return selectedJ;
+    }
+
+    public int getSelectedY(){
+        return selectedI - shipBoard.adaptY(0);
+    }
+
+    public int getSelectedX(){
+        return selectedJ - shipBoard.adaptX(0);
     }
 
 

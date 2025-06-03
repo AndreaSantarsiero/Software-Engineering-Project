@@ -34,7 +34,7 @@ public class ShipBoardCLI {
      *
      * @param shipBoard the ShipBoard to print
      */
-    public void print(ShipBoard shipBoard, int y, int i) {
+    public void print(ShipBoard shipBoard, int y, int i, int selectedX, int selectedY) {
 //        System.out.println(Ansi.ansi()
 //                .bg(Ansi.Color.BLUE)
 //                .fg(Ansi.Color.BLUE)
@@ -48,7 +48,7 @@ public class ShipBoardCLI {
             if (shipBoard.validateIndexes(x, y)) {
                 ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
                 if(shipCard != null) {
-                    shipCard.print(shipCardCLI, i, false);
+                    shipCard.print(shipCardCLI, i, y == selectedY && x == selectedX);
                 }
                 else if (shipBoard.validateIndexes(x, y)) {
                     System.out.print(Ansi.ansi().reset());
@@ -188,7 +188,7 @@ public class ShipBoardCLI {
         System.out.println();
         for (int y = 0; y < shipBoard.getLength(); y++) {
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-                print(shipBoard, y, i);
+                print(shipBoard, y, i, 0, 0);
                 System.out.println("   ");
             }
         }

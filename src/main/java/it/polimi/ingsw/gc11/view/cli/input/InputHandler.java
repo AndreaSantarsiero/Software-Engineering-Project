@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli.input;
 
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
 import org.jline.keymap.BindingReader;
@@ -120,6 +121,63 @@ public class InputHandler {
             }
 
             data.setIntegerChoice(selected);
+        }
+    }
+
+
+
+    public void interactiveMatrixSelector(GamePhaseData data, ShipBoard shipBoard, int previouslySelectedI, int previouslySelectedJ) {
+        if (!context.getCurrentPhase().equals(data)) {
+            return;
+        }
+
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("up", "\033[A", "w", "W");
+        keyMap.bind("down", "\033[B", "s", "S");
+        keyMap.bind("left", "\033[D", "a", "A");
+        keyMap.bind("right", "\033[C", "d", "D");
+        keyMap.bind("enter", "\r", "\n");
+
+        int rows = shipBoard.getLength();
+        int cols = shipBoard.getWidth();
+        int i = previouslySelectedI;
+        int j = previouslySelectedJ;
+
+        while (true) {
+            String key = bindingReader.readBinding(keyMap);
+
+            switch (key) {
+                case "up":
+                    i = (previouslySelectedI - 1 + rows) % rows;
+                    break;
+                case "down":
+                    i = (previouslySelectedI + 1) % rows;
+                    break;
+                case "left":
+                    j = (previouslySelectedJ - 1 + cols) % cols;
+                    break;
+                case "right":
+                    j = (previouslySelectedJ + 1) % cols;
+                    break;
+                case "enter":
+                    data.confirmCoordinatesChoice();
+                    return;
+                default:
+                    // Ignore unknown keys
+            }
+
+            if (i != previouslySelectedI){
+                while(!shipBoard.validateIndexes(i, j)){
+                    i = (i + 1) % rows;
+                }
+            }
+            else if (j != previouslySelectedJ){
+                while(!shipBoard.validateIndexes(i, j)){
+                    j = (j + 1) % cols;
+                }
+            }
+
+            data.setCoordinatesChoice(j, i);
         }
     }
 
