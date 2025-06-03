@@ -159,11 +159,11 @@ public class BuildingTemplate extends CLITemplate {
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
-                    //invio richiesta placeShipCard
+                    mainCLI.getVirtualServer().placeShipCard(data.getHeldShipCard(), data.getSelectedX(), data.getSelectedY());
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.REMOVE_SHIPCARD_SETUP){
-                    //invio richiesta unPlaceShipCard
+                    mainCLI.getVirtualServer().removeShipCard(data.getSelectedX(), data.getSelectedY());
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
