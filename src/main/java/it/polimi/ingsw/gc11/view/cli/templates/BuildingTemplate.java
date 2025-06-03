@@ -61,6 +61,20 @@ public class BuildingTemplate extends CLITemplate {
                     " │ ├─┤│├┬┘ ││",
                     " ┴ ┴ ┴┴┴└──┴┘")
     );
+    private static final List<List<String>> endBuildingMenu = List.of(
+            List.of("┌─┐┬┬─┐┌─┐┌┬┐",
+                    "├┤ │├┬┘└─┐ │ ",
+                    "└  ┴┴└─└─┘ ┴ "),
+            List.of("┌─┐┌─┐┌─┐┌─┐┌┐┌┌┬┐",
+                    "└─┐├┤ │  │ ││││ ││",
+                    "└─┘└─┘└─┘└─┘┘└┘─┴┘"),
+            List.of("┌┬┐┬ ┬┬┬─┐┌┬┐",
+                    " │ ├─┤│├┬┘ ││",
+                    " ┴ ┴ ┴┴┴└──┴┘"),
+            List.of("┌─┐┌─┐┬ ┬┬─┐┌┬┐┬ ┬",
+                    "├┤ │ ││ │├┬┘ │ ├─┤",
+                    "└  └─┘└─┘┴└─ ┴ ┴ ┴")
+    );
     private static final List<String> pressEnterToContinue = List.of("┌─┐┬─┐┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌┬┐┌─┐┬─┐  ┌┬┐┌─┐  ┌─┐┌─┐┌┐┌┌┬┐┬┌┐┌┬ ┬┌─┐         ",
                                                                      "├─┘├┬┘├┤ └─┐└─┐  ├┤ │││ │ ├┤ ├┬┘   │ │ │  │  │ ││││ │ │││││ │├┤          ",
                                                                      "┴  ┴└─└─┘└─┘└─┘  └─┘┘└┘ ┴ └─┘┴└─   ┴ └─┘  └─┘└─┘┘└┘ ┴ ┴┘└┘└─┘└─┘  o  o  o");
@@ -148,13 +162,7 @@ public class BuildingTemplate extends CLITemplate {
                         System.out.print("      ");
                     }
                     else if (i == 5){
-                        System.out.print("   ");
-                        for (int x = 0; x < shipBoard.getWidth(); x++) {
-                            if(x < shipBoard.getWidth()){
-                                shipBoardCLI.printInvalidSquare();
-                            }
-                        }
-                        System.out.print("         ");
+                        printEmptyShipLine(shipBoard);
                     }
                     else if (i == 6){
                         shipBoardCLI.printHorizontalCoordinates(shipBoard);
@@ -175,13 +183,7 @@ public class BuildingTemplate extends CLITemplate {
                         System.out.print("      ");
                     }
                     else if (i == 1){
-                        System.out.print("   ");
-                        for (int x = 0; x < shipBoard.getWidth(); x++) {
-                            if(x < shipBoard.getWidth()){
-                                shipBoardCLI.printInvalidSquare();
-                            }
-                        }
-                        System.out.print("         ");
+                        printEmptyShipLine(shipBoard);
                     }
                     else {
                         System.out.print("   ");
@@ -226,41 +228,51 @@ public class BuildingTemplate extends CLITemplate {
                         System.out.print("         ");
                     }
                     else {
-                        System.out.print("   ");
-                        for (int x = 0; x < shipBoard.getWidth(); x++) {
-                            if(x < shipBoard.getWidth()){
-                                shipBoardCLI.printInvalidSquare();
-                            }
-                        }
-                        System.out.print("         ");
+                        printEmptyShipLine(shipBoard);
                     }
                 }
 
 
                 //printing menu
                 else {
-                    if(menuIndex < mainMenu.size()*mainMenu.getFirst().size()) {
-                        int spacesUsed = renderMultiLevelMenu(mainMenu, menuIndex/mainMenu.getFirst().size(), menuIndex%mainMenu.getFirst().size(), data.getMainMenu());
-                        int singleSpacesLeft = 15 - ((spacesUsed - 3) % 15);
-                        int invalidCardsLeft = shipBoard.getWidth() - (spacesUsed - 3)/15 - 1;
-                        for (int x = 0; x < singleSpacesLeft; x++) {
-                            System.out.print(" ");
-                        }
-                        for (int x = 0; x < invalidCardsLeft; x++) {
-                            shipBoardCLI.printInvalidSquare();
-                        }
-                        System.out.print("         ");
-                        menuIndex++;
 
-                    }
-                    else {
-                        System.out.print("   ");
-                        for (int x = 0; x < shipBoard.getWidth(); x++) {
-                            if(x < shipBoard.getWidth()){
-                                shipBoardCLI.printInvalidSquare();
-                            }
+                    //ship card menu
+                    if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
+                        if(menuIndex < freeShipCardMenu.size()*freeShipCardMenu.getFirst().size()) {
+                            int spacesUsed = renderMultiLevelMenu(freeShipCardMenu, menuIndex/freeShipCardMenu.getFirst().size(), menuIndex%freeShipCardMenu.getFirst().size(), data.getShipCardMenu());
+                            printMenuLeftSpaces(shipBoard, spacesUsed);
+                            menuIndex++;
+
                         }
-                        System.out.print("         ");
+                        else {
+                            printEmptyShipLine(shipBoard);
+                        }
+                    }
+
+                    //adventure card menu
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
+                        if(menuIndex < adventureDecksMenu.size()*adventureDecksMenu.getFirst().size()) {
+                            int spacesUsed = renderMultiLevelMenu(adventureDecksMenu, menuIndex/adventureDecksMenu.getFirst().size(), menuIndex%adventureDecksMenu.getFirst().size(), data.getShipCardMenu());
+                            printMenuLeftSpaces(shipBoard, spacesUsed);
+                            menuIndex++;
+
+                        }
+                        else {
+                            printEmptyShipLine(shipBoard);
+                        }
+                    }
+
+                    //main menu
+                    else {
+                        if(menuIndex < mainMenu.size()*mainMenu.getFirst().size()) {
+                            int spacesUsed = renderMultiLevelMenu(mainMenu, menuIndex/mainMenu.getFirst().size(), menuIndex%mainMenu.getFirst().size(), data.getMainMenu());
+                            printMenuLeftSpaces(shipBoard, spacesUsed);
+                            menuIndex++;
+
+                        }
+                        else {
+                            printEmptyShipLine(shipBoard);
+                        }
                     }
                 }
 
@@ -277,10 +289,18 @@ public class BuildingTemplate extends CLITemplate {
                 System.out.println(Ansi.ansi().reset());
             }
         }
-        System.out.println("ShipCardIndex: " + data.getShipCardIndex());
+
+
+        //printing error messages
+        String serverMessage = data.getServerMessage();
+        if(serverMessage != null && !serverMessage.isEmpty()) {
+            System.out.println(serverMessage);
+            data.resetServerMessage();
+        }
 
 
 
+        //input and commands
         if(data.isStateNew()){
             addInputRequest(data);
         }
@@ -339,5 +359,31 @@ public class BuildingTemplate extends CLITemplate {
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
         }
+    }
+
+
+
+    public void printEmptyShipLine(ShipBoard shipBoard){
+        System.out.print("   ");
+        for (int x = 0; x < shipBoard.getWidth(); x++) {
+            if(x < shipBoard.getWidth()){
+                shipBoardCLI.printInvalidSquare();
+            }
+        }
+        System.out.print("         ");
+    }
+
+
+
+    public void printMenuLeftSpaces(ShipBoard shipBoard, int spacesUsed){
+        int singleSpacesLeft = 15 - ((spacesUsed - 3) % 15);
+        int invalidCardsLeft = shipBoard.getWidth() - (spacesUsed - 3)/15 - 1;
+        for (int x = 0; x < singleSpacesLeft; x++) {
+            System.out.print(" ");
+        }
+        for (int x = 0; x < invalidCardsLeft; x++) {
+            shipBoardCLI.printInvalidSquare();
+        }
+        System.out.print("         ");
     }
 }

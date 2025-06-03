@@ -162,7 +162,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         previousState = state;
         this.enemiesShipBoard.put(username, shipBoard);
-        notifyListener();
+        updateState();
     }
 
     public ShipCard getHeldShipCard() {
@@ -172,7 +172,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setHeldShipCard(ShipCard heldShipCard) {
         previousState = state;
         this.heldShipCard = heldShipCard;
-        notifyListener();
+        updateState();
     }
 
     public List<AdventureCard> getMiniDeck() {
@@ -182,7 +182,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         previousState = state;
         this.miniDeck = miniDeck;
-        notifyListener();
+        updateState();
     }
 
 
