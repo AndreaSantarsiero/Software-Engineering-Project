@@ -51,7 +51,7 @@ public class ShipBoardCLI {
                     shipCard.print(shipCardCLI, i, y == selectedY && x == selectedX);
                 }
                 else if (shipBoard.validateIndexes(x, y)) {
-                    System.out.print(Ansi.ansi().reset());
+                    shipCardCLI.setSelectedBackground(y == selectedY && x == selectedX);
                     shipCardCLI.printEmptyShipCard(i);
                 }
                 else{
