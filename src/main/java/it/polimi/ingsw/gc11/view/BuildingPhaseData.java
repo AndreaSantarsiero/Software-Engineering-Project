@@ -204,7 +204,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setHeldShipCard(ShipCard heldShipCard) {
-        previousState = state;
         this.heldShipCard = heldShipCard;
         updateState();
     }
@@ -215,7 +214,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
-        previousState = state;
         this.miniDeck = miniDeck;
         updateState();
     }

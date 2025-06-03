@@ -143,46 +143,48 @@ public class BuildingTemplate extends CLITemplate {
     public void render(BuildingPhaseData data) {
 
         //if I'm waiting for the server to answer then it's useless to refresh the view
-        try{
-            if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
-                mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
+        if(data.isStateNew()){
+            try{
+                if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
+                    mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
+                    mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
+                    mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
+                    //invio richiesta placeShipCard
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.REMOVE_SHIPCARD_SETUP){
+                    //invio richiesta unPlaceShipCard
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
+                    mainCLI.getVirtualServer().getPlayersShipBoard();
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
+                    mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardMenu());
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
+                    //manca azione per reset timer
+                    return;
+                }
+                else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
+                    mainCLI.getVirtualServer().endBuilding(data.getEndBuildingMenu());
+                    return;
+                }
+            } catch (NetworkException e) {
+                System.out.println("Connection error: " + e.getMessage());
                 return;
             }
-            else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
-                mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
-                return;
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
-                mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
-                return;
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
-                //invio richiesta placeShipCard
-                return;
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.REMOVE_SHIPCARD_SETUP){
-                //invio richiesta unPlaceShipCard
-                return;
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
-                mainCLI.getVirtualServer().getPlayersShipBoard();
-                return;
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
-                mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardMenu());
-                return;
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
-                //manca azione per reset timer
-                return;
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
-                mainCLI.getVirtualServer().endBuilding(data.getEndBuildingMenu());
-                return;
-            }
-        } catch (NetworkException e) {
-            System.out.println("Connection error: " + e.getMessage());
-            return;
         }
 
 
