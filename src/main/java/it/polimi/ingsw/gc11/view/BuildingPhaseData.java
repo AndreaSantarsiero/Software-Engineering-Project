@@ -103,10 +103,7 @@ public class  BuildingPhaseData extends GamePhaseData {
             state = BuildingState.values()[state.ordinal() + 1];
         }
 
-        //if I'm waiting for the server to answer then it's useless to refresh the view
-        if(state != BuildingState.WAIT_SHIPCARD && state != BuildingState.SHIPCARD_SETUP && state != BuildingState.REMOVE_SHIPCARD_SETUP && state != BuildingState.WAIT_ENEMIES_SHIP && state != BuildingState.WAIT_ADVENTURE_DECK && state != BuildingState.END_BUILDING_SETUP){
-            notifyListener();
-        }
+        notifyListener();
     }
 
     public void setState(BuildingState state) {

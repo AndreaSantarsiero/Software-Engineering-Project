@@ -141,6 +141,52 @@ public class BuildingTemplate extends CLITemplate {
 
 
     public void render(BuildingPhaseData data) {
+
+        //if I'm waiting for the server to answer then it's useless to refresh the view
+        try{
+            if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
+                mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
+                mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
+                mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
+                //invio richiesta placeShipCard
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.REMOVE_SHIPCARD_SETUP){
+                //invio richiesta unPlaceShipCard
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
+                mainCLI.getVirtualServer().getPlayersShipBoard();
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
+                mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardMenu());
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
+                //manca azione per reset timer
+                return;
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
+                mainCLI.getVirtualServer().endBuilding(data.getEndBuildingMenu());
+                return;
+            }
+        } catch (NetworkException e) {
+            System.out.println("Connection error: " + e.getMessage());
+            return;
+        }
+
+
+
         clearView();
         System.out.println("╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
                            "╠╩╗║ ║║║   ║║║║║║║ ╦  ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
@@ -356,57 +402,29 @@ public class BuildingTemplate extends CLITemplate {
 
 
     public void addInputRequest(BuildingPhaseData data) {
-        try{
-            if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
-                mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
-            }
-            else if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
-                mainCLI.addInputRequest(new ListIndexInput(data, data.getFreeShipCards().size(), colCount, data.getShipCardIndex()));
-            }
-            else if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
-                mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
-                mainCLI.addInputRequest(new MenuInput(data, shipCardMenu.size(), data.getShipCardMenu()));
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION){
-                mainCLI.addInputRequest(new MenuInput(data, shipCardActionMenu.size(), data.getShipCardActionMenu()));
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
-                //scelgo dove metterla
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
-                mainCLI.addInputRequest(new MenuInput(data, shipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
-                mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
-                mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
-                //invio richiesta placeShipCard
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
-                mainCLI.getVirtualServer().getPlayersShipBoard();
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
-                mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardMenu());
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
-                mainCLI.addInputRequest(new EnterInput(data));
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
-                //manca azione per reset timer
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
-                mainCLI.addInputRequest(new MenuInput(data, endBuildingMenu.size(), data.getEndBuildingMenu()));
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
-                mainCLI.getVirtualServer().endBuilding(data.getEndBuildingMenu());
-            }
-        } catch (NetworkException e) {
-            System.out.println("Connection error: " + e.getMessage());
+        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
+        }
+        else if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
+            mainCLI.addInputRequest(new ListIndexInput(data, data.getFreeShipCards().size(), colCount, data.getShipCardIndex()));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, shipCardMenu.size(), data.getShipCardMenu()));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION){
+            mainCLI.addInputRequest(new MenuInput(data, shipCardActionMenu.size(), data.getShipCardActionMenu()));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
+            //scelgo dove metterla
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
+            mainCLI.addInputRequest(new MenuInput(data, shipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
+            mainCLI.addInputRequest(new EnterInput(data));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
+            mainCLI.addInputRequest(new MenuInput(data, endBuildingMenu.size(), data.getEndBuildingMenu()));
         }
     }
 
