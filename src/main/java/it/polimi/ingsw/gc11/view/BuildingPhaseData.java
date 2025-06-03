@@ -47,7 +47,6 @@ public class  BuildingPhaseData extends GamePhaseData {
         enemiesShipBoard = new HashMap<>();
         freeShipCards = new ArrayList<>();
         state = BuildingState.CHOOSE_MAIN_MENU;
-        heldShipCard = new StructuralModule("test", ShipCard.Connector.DOUBLE, ShipCard.Connector.DOUBLE, ShipCard.Connector.DOUBLE, ShipCard.Connector.DOUBLE);
     }
 
 

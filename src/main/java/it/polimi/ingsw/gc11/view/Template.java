@@ -9,5 +9,5 @@ public abstract class Template {
     public void update(AdventurePhaseData adventurePhaseData){};
     public void update(EndPhaseData endPhaseData){};
 
-    public void change(){};
+    public abstract void change();
 }

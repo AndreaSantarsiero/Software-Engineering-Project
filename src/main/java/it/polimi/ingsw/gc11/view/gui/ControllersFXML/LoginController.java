@@ -124,4 +124,6 @@ public class LoginController extends Template {
         }
     }
 
+    @Override
+    public void change() {}
 }

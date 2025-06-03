@@ -21,21 +21,6 @@ public abstract class CLITemplate extends Template {
 
 
 
-    @Override
-    public void update (JoiningPhaseData joiningPhaseData) {}
-
-    @Override
-    public void update (BuildingPhaseData buildingPhaseData) {}
-
-    @Override
-    public void update (CheckPhaseData checkPhaseData) {}
-
-    @Override
-    public void update (AdventurePhaseData adventurePhaseData) {}
-
-    @Override
-    public void update (EndPhaseData endPhaseData) {}
-
     public abstract void change();
 
 

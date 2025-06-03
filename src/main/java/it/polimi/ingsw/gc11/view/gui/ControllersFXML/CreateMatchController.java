@@ -88,7 +88,8 @@ public class CreateMatchController extends Template implements Initializable {
     }
 
     @Override
-    public void update(JoiningPhaseData joiningPhaseData) {
+    public void update(JoiningPhaseData joiningPhaseData) {}
 
-    }
+    @Override
+    public void change() {}
 }
