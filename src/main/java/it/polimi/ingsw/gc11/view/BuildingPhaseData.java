@@ -35,7 +35,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private List<ShipCard> freeShipCards;
     private ShipCard heldShipCard;
     private List<AdventureCard> miniDeck;
-    private int mainMenu = -1;
+    private int mainMenu;
     private int shipCardMenu;
     private int shipCardIndex;
     private int shipCardActionMenu;
@@ -170,6 +170,11 @@ public class  BuildingPhaseData extends GamePhaseData {
         notifyListener();
     }
 
+
+    public void initializeShipBoard(ShipBoard shipBoard) {
+        this.shipBoard = shipBoard;
+        notifyListener();
+    }
 
     public ShipBoard getShipBoard() {
         return shipBoard;

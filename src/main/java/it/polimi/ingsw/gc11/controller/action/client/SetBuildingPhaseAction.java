@@ -28,7 +28,7 @@ public class SetBuildingPhaseAction extends ServerAction {
 
     @Override public void loadData(BuildingPhaseData buildingPhaseData) {
         buildingPhaseData.initializeFreeShipCards(freeShipCardsCount);
-        buildingPhaseData.setShipBoard(shipBoard);
+        buildingPhaseData.initializeShipBoard(shipBoard);
     }
 
     @Override public void loadData(CheckPhaseData checkPhaseData) {}
