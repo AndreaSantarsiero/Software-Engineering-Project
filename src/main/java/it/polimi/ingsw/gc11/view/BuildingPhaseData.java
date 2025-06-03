@@ -35,7 +35,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private List<ShipCard> freeShipCards;
     private ShipCard heldShipCard;
     private List<AdventureCard> miniDeck;
-    private int mainMenu;
+    private int mainMenu = -1;
     private int shipCardMenu;
     private int shipCardIndex;
     private int shipCardActionMenu;
@@ -177,15 +177,20 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
-        notifyListener();
+        updateState();
     }
 
+
+    public Map<String, ShipBoard> getEnemiesShipBoard() {
+        return enemiesShipBoard;
+    }
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         previousState = state;
         this.enemiesShipBoard.put(username, shipBoard);
         updateState();
     }
+
 
     public ShipCard getHeldShipCard() {
         return heldShipCard;
@@ -196,6 +201,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         this.heldShipCard = heldShipCard;
         updateState();
     }
+
 
     public List<AdventureCard> getMiniDeck() {
         return miniDeck;
