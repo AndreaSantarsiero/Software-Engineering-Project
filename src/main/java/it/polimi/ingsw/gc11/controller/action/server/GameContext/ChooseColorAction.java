@@ -27,12 +27,14 @@ public class ChooseColorAction extends ClientGameAction {
             Map<String, String> playersColor = context.getPlayersColor();
             UpdatePlayersColorAction response = new UpdatePlayersColorAction(playersColor);
 
-            for (Player player : context.getGameModel().getPlayers()) {
-                context.sendAction(player.getUsername(), response);
-            }
+            if(!context.getGameModel().isGameStarted()){
+                for (Player player : context.getGameModel().getPlayers()) {
+                    context.sendAction(player.getUsername(), response);
+                }
 
-            NotifySuccessAction success = new NotifySuccessAction();
-            context.sendAction(username, success);
+                NotifySuccessAction success = new NotifySuccessAction();
+                context.sendAction(username, success);
+            }
         }
         catch (Exception e){
             NotifyExceptionAction notifyExceptionAction = new NotifyExceptionAction(e.getMessage());

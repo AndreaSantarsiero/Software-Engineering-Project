@@ -58,6 +58,7 @@ public class IdlePhase extends GamePhase {
                 SetBuildingPhaseAction send = new SetBuildingPhaseAction(p.getShipBoard(), gameModel.getFreeShipCardsCount());
                 gameContext.sendAction(p.getUsername(), send);
             }
+            this.gameModel.setGameStarted(true);    //to notify last player that is connecting
         }
     }
 

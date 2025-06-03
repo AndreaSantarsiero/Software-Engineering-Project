@@ -26,6 +26,7 @@ public class GameModel {
     private final List<AdventureCard> adventureCardsLevel1; //12 cards
     private final List<AdventureCard> adventureCardsLevel2; //20 cards
     private final Dice[] dices;
+    private boolean gameStarted = false;
 
 
 
@@ -270,6 +271,14 @@ public class GameModel {
         }
         this.availableColors.put(color, Boolean.FALSE);
         player.setColor(color, centralUnits);
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
 
 

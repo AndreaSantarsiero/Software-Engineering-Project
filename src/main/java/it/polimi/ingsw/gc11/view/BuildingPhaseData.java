@@ -86,7 +86,7 @@ public class  BuildingPhaseData extends GamePhaseData {
             }
         }
         else if(state == BuildingState.CHOOSE_SHIPCARD_ACTION){
-            switch (shipCardMenu) {
+            switch (shipCardActionMenu) {
                 case 0 -> state = BuildingState.PLACE_SHIPCARD;
                 case 1 -> state = BuildingState.CHOOSE_SHIPCARD_ORIENTATION;
                 case 2 -> state = BuildingState.SHIPCARD_SETUP;
