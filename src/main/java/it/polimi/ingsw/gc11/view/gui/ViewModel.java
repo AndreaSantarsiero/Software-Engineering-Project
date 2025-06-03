@@ -3,13 +3,10 @@ package it.polimi.ingsw.gc11.view.gui;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
-
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Properties;
 
 
@@ -32,7 +29,7 @@ public class ViewModel {
 
     public void setRMIVirtualServer() throws NetworkException {
 
-        this.virtualServer = new VirtualServer(new PlayerContext());
+        this.virtualServer = new VirtualServer(playerContext);
 
         Properties config = new Properties();
         try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
@@ -55,7 +52,7 @@ public class ViewModel {
 
     public void setSOCKETVirtualServer() throws NetworkException {
 
-        this.virtualServer = new VirtualServer(new PlayerContext());
+        this.virtualServer = new VirtualServer(playerContext);
 
         Properties config = new Properties();
         try (FileInputStream fis = new FileInputStream("config.txt")) {

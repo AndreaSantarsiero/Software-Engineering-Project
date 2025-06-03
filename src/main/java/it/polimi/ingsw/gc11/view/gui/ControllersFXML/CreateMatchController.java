@@ -2,7 +2,9 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
+import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.event.ActionEvent;
@@ -19,22 +21,19 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class CreateMatchController implements Initializable {
+public class CreateMatchController extends Template implements Initializable {
 
     @FXML
     private ComboBox<String> flightType;
-
     @FXML
     private ComboBox<String> numberOfPlayers;
-
     private final String[] flightTypes = {"Trial", "Lv 2"};
     private final String[] numberPlayers = {"2", "3", "4"};
-
     @FXML
     private Button enterButton;
-
     @FXML
     private Label label;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -47,8 +46,10 @@ public class CreateMatchController implements Initializable {
 
         Scene scene = enterButton.getScene();
         Stage stage = (Stage) scene.getWindow();
-        PlayerContext playerContext = (PlayerContext) stage.getUserData();
-        VirtualServer virtualServer = null; // = playerContext.getCurrentPhase().getVirtualServer(); commented to compile
+        ViewModel viewModel = (ViewModel) stage.getScene().getUserData();
+        VirtualServer virtualServer = viewModel.getVirtualServer();
+        JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+
 
         String selectedFlightTypeString = flightType.getValue();
         FlightBoard.Type selectedFlightType = null;
@@ -59,6 +60,7 @@ public class CreateMatchController implements Initializable {
             selectedFlightType = FlightBoard.Type.LEVEL2;
         }
         int selectedNumberOfPlayers = Integer.parseInt(numberOfPlayers.getValue());
+
 
         try {
             virtualServer.createMatch(selectedFlightType, selectedNumberOfPlayers);
@@ -73,8 +75,8 @@ public class CreateMatchController implements Initializable {
 
             controller.init();
 
-            //System.out.println(viewModel.getMyself().getUsername() + ": created a new match of type " +
-                    //selectedFlightTypeString  + " with " + selectedNumberOfPlayers + " players"); commented to compile
+            System.out.println( joiningPhaseData.getUsername() + ": created a new match of type " +
+                    selectedFlightTypeString  + " with " + selectedNumberOfPlayers + " players" );
         }
         catch (Exception e) {
             label.setVisible(true );
@@ -85,4 +87,8 @@ public class CreateMatchController implements Initializable {
         }
     }
 
+    @Override
+    public void update(JoiningPhaseData joiningPhaseData) {
+
+    }
 }
