@@ -166,14 +166,29 @@ public class InputHandler {
                     // Ignore unknown keys
             }
 
+            boolean success = false;
             if (i != previouslySelectedI){
-                while(!shipBoard.validateIndexes(i, j)){
-                    i = (i + 1) % rows;
+                while(success){
+                    try {
+                        success = shipBoard.validateIndexes(i, j);
+                        if (!success) {
+                            i = (i + 1) % rows;
+                        }
+                    } catch (Exception ignored){
+                        i = (i + 1) % rows;
+                    }
                 }
             }
             else if (j != previouslySelectedJ){
-                while(!shipBoard.validateIndexes(i, j)){
-                    j = (j + 1) % cols;
+                while(success){
+                    try {
+                        success = shipBoard.validateIndexes(i, j);
+                        if (!success) {
+                            j = (j + 1) % cols;
+                        }
+                    } catch (Exception ignored){
+                        j = (j + 1) % cols;
+                    }
                 }
             }
 
