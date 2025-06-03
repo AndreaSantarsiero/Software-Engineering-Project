@@ -68,6 +68,7 @@ public class JoiningPhaseData extends GamePhaseData {
         return state;
     }
 
+    @Override
     public void updateState() {
         previousState = state;
 

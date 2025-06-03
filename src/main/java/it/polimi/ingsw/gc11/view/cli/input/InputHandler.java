@@ -180,6 +180,7 @@ public class InputHandler {
     public void pressEnterToContinue(GamePhaseData data) {
         if (context.getCurrentPhase().equals(data)) {
             lineReader.readLine();
+            data.updateState();
         }
     }
 

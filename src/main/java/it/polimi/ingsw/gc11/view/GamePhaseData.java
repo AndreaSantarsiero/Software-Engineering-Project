@@ -51,6 +51,8 @@ public abstract class GamePhaseData {
 
     public abstract void confirmIntegerChoice();
 
+    public void updateState(){}
+
 
 
     public abstract void handle(ServerAction action);

@@ -164,6 +164,10 @@ public class BuildingTemplate extends CLITemplate {
         for(int y = 0; y < (freeShipCards.size()/colCount + 2); y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
 
+                if(y == (freeShipCards.size()/colCount + 1) && i > 3){
+                    continue;
+                }
+
                 //printing user shipBoard (reserved components)
                 if(y == 0){
                     if(i <= 2) {

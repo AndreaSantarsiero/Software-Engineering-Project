@@ -64,6 +64,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         return state;
     }
 
+    @Override
     public void updateState() {
         previousState = state;
         if(state == BuildingState.CHOOSE_MAIN_MENU){
