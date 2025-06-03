@@ -65,41 +65,7 @@ public class GameContextTest {
 
     void printShipBoard(ShipBoard shipBoard){
         ShipBoardCLI printer = new ShipBoardCLI(new ShipCardCLI());
-
-        //printing user shipBoard (reserved components)
-        for (int x = 0; x < shipBoard.getWidth(); x++) {
-            if(x < (shipBoard.getWidth() - 2)){
-                printer.printInvalidSquare();
-            }
-            else if(x == (shipBoard.getWidth() - 1)){
-                System.out.println("    Reserved components:               ");
-            }
-        }
-        System.out.print("   ");
-        for (int x = 0; x < shipBoard.getWidth(); x++) {
-            if(x < (shipBoard.getWidth() - 2)){
-                printer.printInvalidSquare();
-            }
-            else {
-                System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
-            }
-        }
-        System.out.println("      ");
-        for (int i = 0; i < ShipCardCLI.cardLength + 1; i++) {
-            printer.printReservedCards(shipBoard, i);
-            System.out.println("   ");
-        }
-
-        //printing user shipBoard (main board)
-        printer.printHorizontalCoordinates(shipBoard);
-        System.out.println();
-        for (int y = 0; y < shipBoard.getLength(); y++) {
-            for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-                printer.print(shipBoard, y, i);
-                System.out.println("   ");
-            }
-        }
-        printer.printHorizontalCoordinates(shipBoard);
+        printer.printFullShip(shipBoard);
     }
 
     void printAdvCard(AdventureCard adventureCard){

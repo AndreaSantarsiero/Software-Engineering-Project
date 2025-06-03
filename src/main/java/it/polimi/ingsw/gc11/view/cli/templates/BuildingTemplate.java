@@ -5,12 +5,14 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.input.EnterInput;
 import it.polimi.ingsw.gc11.view.cli.input.ListIndexInput;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -148,7 +150,18 @@ public class BuildingTemplate extends CLITemplate {
         int menuIndex = 0;
 
 
-        for(int y = 0; y < (freeShipCards.size()/colCount + 1); y++){
+        if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP){
+            printEnemiesShipBoard(data.getEnemiesShipBoard());
+            for (int i = 0; i < pressEnterToContinue.size(); i++) {
+                System.out.println(pressEnterToContinue.get(i));
+            }
+            mainCLI.addInputRequest(new EnterInput(data));
+            return;
+        }
+
+
+
+        for(int y = 0; y < (freeShipCards.size()/colCount + 2); y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
 
                 //printing user shipBoard (reserved components)
@@ -371,16 +384,13 @@ public class BuildingTemplate extends CLITemplate {
                 //invio richiesta placeShipCard
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
-                //manca azione per richiederle
-            }
-            else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP){
-                //aspetto invio utente
+                mainCLI.getVirtualServer().getPlayersShipBoard();
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
                 mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardMenu());
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
-                //aspetto invio utente
+                mainCLI.addInputRequest(new EnterInput(data));
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
                 //manca azione per reset timer
@@ -431,5 +441,14 @@ public class BuildingTemplate extends CLITemplate {
             shipBoardCLI.printInvalidSquare();
         }
         System.out.print("         ");
+    }
+
+
+
+    public void printEnemiesShipBoard(Map<String, ShipBoard> enemiesShipBoard){
+        for (Map.Entry<String, ShipBoard> entry : enemiesShipBoard.entrySet()) {
+            System.out.println(entry.getKey() + "'S SHIP:");
+            shipBoardCLI.printFullShip(entry.getValue());
+        }
     }
 }

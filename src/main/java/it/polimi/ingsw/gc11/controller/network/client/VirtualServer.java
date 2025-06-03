@@ -141,6 +141,11 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
+    public void getPlayersShipBoard() throws NetworkException{
+        GetEnemiesShipBoard action = new GetEnemiesShipBoard(username);
+        client.sendAction(action);
+    }
+
     public void observeMiniDeck(int numDeck) throws NetworkException{
         ObserveMiniDeckAction action = new ObserveMiniDeckAction(username, numDeck);
         client.sendAction(action);

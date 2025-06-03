@@ -154,4 +154,45 @@ public class ShipBoardCLI {
             System.out.print(Ansi.ansi().reset() + "   ");
         }
     }
+
+
+
+    public void printFullShip(ShipBoard shipBoard){
+
+        //printing reserved components
+        for (int x = 0; x < shipBoard.getWidth(); x++) {
+            if(x < (shipBoard.getWidth() - 2)){
+                printInvalidSquare();
+            }
+            else if(x == (shipBoard.getWidth() - 1)){
+                System.out.println("    Reserved components:               ");
+            }
+        }
+        System.out.print("   ");
+        for (int x = 0; x < shipBoard.getWidth(); x++) {
+            if(x < (shipBoard.getWidth() - 2)){
+                printInvalidSquare();
+            }
+            else {
+                System.out.print("       " + (x + 3 - shipBoard.getWidth()) + "       ");
+            }
+        }
+        System.out.println("      ");
+        for (int i = 0; i < ShipCardCLI.cardLength + 1; i++) {
+            printReservedCards(shipBoard, i);
+            System.out.println("   ");
+        }
+
+        //printing main ship
+        printHorizontalCoordinates(shipBoard);
+        System.out.println();
+        for (int y = 0; y < shipBoard.getLength(); y++) {
+            for (int i = 0; i < ShipCardCLI.cardLength; i++) {
+                print(shipBoard, y, i);
+                System.out.println("   ");
+            }
+        }
+        printHorizontalCoordinates(shipBoard);
+        System.out.println();
+    }
 }

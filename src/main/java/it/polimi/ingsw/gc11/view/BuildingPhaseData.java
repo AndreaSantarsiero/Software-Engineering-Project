@@ -193,7 +193,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         previousState = state;
         this.enemiesShipBoard.put(username, shipBoard);
-        updateState();
+        notifyListener();
     }
 
 

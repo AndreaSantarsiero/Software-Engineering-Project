@@ -109,15 +109,11 @@ public class GameContext {
     }
 
     public Map<String, String> getPlayersColor (){
-        Map<String, String> player_color = new HashMap<>();
-
+        Map<String, String> playersColor = new HashMap<>();
         for (Player player : gameModel.getPlayers()) {
-            String playerUsername = player.getUsername();
-            String playerColor = player.getColor();
-            player_color.put(playerUsername, playerColor);
+            playersColor.put(player.getUsername(), player.getColor());
         }
-
-        return player_color;
+        return playersColor;
     }
 
 
@@ -144,6 +140,14 @@ public class GameContext {
 
     public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y){
         return phase.useReservedShipCard(username, shipCard, x, y);
+    }
+
+    public Map<String, ShipBoard> getPlayersShipBoard() {
+        Map<String, ShipBoard> playersShipBoard = new HashMap<>();
+        for (Player player : gameModel.getPlayers()) {
+            playersShipBoard.put(player.getUsername(), player.getShipBoard());
+        }
+        return playersShipBoard;
     }
 
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
