@@ -23,6 +23,12 @@ public class BuildingTemplate extends CLITemplate {
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
                     " ┴ ┴ ┴┴ ┴└─┘  └  ┴└─└─┘└─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
+            List.of("┬ ┬┌─┐┌─┐  ┬─┐┌─┐┌─┐┌─┐┬─┐┬  ┬┌─┐┌┬┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
+                    "│ │└─┐├┤   ├┬┘├┤ └─┐├┤ ├┬┘└┐┌┘├┤  ││  └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
+                    "└─┘└─┘└─┘  ┴└─└─┘└─┘└─┘┴└─ └┘ └─┘─┴┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
+            List.of("┬─┐┌─┐┌┬┐┌─┐┬  ┬┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
+                    "├┬┘├┤ ││││ │└┐┌┘├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
+                    "┴└─└─┘┴ ┴└─┘ └┘ └─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
             List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
                     "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
                     "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
@@ -39,7 +45,7 @@ public class BuildingTemplate extends CLITemplate {
     //"Take a free Ship Card", "See adventure card decks", "See enemies ships"
     //https://manytools.org/hacker-tools/ascii-banner/
     //style Calvin S
-    private static final List<List<String>> freeShipCardMenu = List.of(
+    private static final List<List<String>> shipCardMenu = List.of(
             List.of("┌─┐┬  ┌─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     "├─┘│  ├─┤│  ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
                     "┴  ┴─┘┴ ┴└─┘└─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
@@ -50,7 +56,7 @@ public class BuildingTemplate extends CLITemplate {
                     "├┬┘├┤ │  ├┤ ├─┤└─┐├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
                     "┴└─└─┘┴─┘└─┘┴ ┴└─┘└─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘")
     );
-    private static final List<List<String>> freeShipCardActionMenu = List.of(
+    private static final List<List<String>> shipCardActionMenu = List.of(
             List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┌─┐┌─┐┬┌┬┐┬┌─┐┌┐┌",
                     "│  ├─┤│ ││ │└─┐├┤   ├─┘│ │└─┐│ │ ││ ││││",
                     "└─┘┴ ┴└─┘└─┘└─┘└─┘  ┴  └─┘└─┘┴ ┴ ┴└─┘┘└┘"),
@@ -64,7 +70,7 @@ public class BuildingTemplate extends CLITemplate {
                     "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
                     "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
     );
-    private static final List<List<String>> freeShipCardOrientationMenu = List.of(
+    private static final List<List<String>> shipCardOrientationMenu = List.of(
             List.of("┌┐┌┌─┐┬─┐┌┬┐┌─┐┬  ",
                     "││││ │├┬┘│││├─┤│  ",
                     "┘└┘└─┘┴└─┴ ┴┴ ┴┴─┘"),
@@ -134,9 +140,9 @@ public class BuildingTemplate extends CLITemplate {
 
     public void render(BuildingPhaseData data) {
         clearView();
-        System.out.println("\n╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
-                             "╠╩╗║ ║║║   ║║║║║║║ ╦  ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
-                             "╚═╝╚═╝╩╩═╝═╩╝╩╝╚╝╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
+        System.out.println("╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
+                           "╠╩╗║ ║║║   ║║║║║║║ ╦  ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
+                           "╚═╝╚═╝╩╩═╝═╩╝╩╝╚╝╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
         ShipBoard shipBoard = data.getShipBoard();
         List<ShipCard> freeShipCards = data.getFreeShipCards();
         int menuIndex = 0;
@@ -271,32 +277,32 @@ public class BuildingTemplate extends CLITemplate {
 
                     //ship card menu
                     if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() != 0)){
-                        printMenu(data, shipBoard, menuIndex, freeShipCardMenu);
+                        printMenu(data, shipBoard, menuIndex, shipCardMenu, data.getShipCardMenu());
                     }
 
                     //ship card action menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() == 0)){
-                        printMenu(data, shipBoard, menuIndex, freeShipCardActionMenu);
+                        printMenu(data, shipBoard, menuIndex, shipCardActionMenu, data.getShipCardActionMenu());
                     }
 
                     //ship card orientation menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
-                        printMenu(data, shipBoard, menuIndex, freeShipCardOrientationMenu);
+                        printMenu(data, shipBoard, menuIndex, shipCardOrientationMenu, data.getShipCardOrientationMenu());
                     }
 
                     //adventure card menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
-                        printMenu(data, shipBoard, menuIndex, adventureDecksMenu);
+                        printMenu(data, shipBoard, menuIndex, adventureDecksMenu, data.getAdventureCardMenu());
                     }
 
                     //end building menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
-                        printMenu(data, shipBoard, menuIndex, endBuildingMenu);
+                        printMenu(data, shipBoard, menuIndex, endBuildingMenu, data.getEndBuildingMenu());
                     }
 
                     //main menu
                     else {
-                        printMenu(data, shipBoard, menuIndex, mainMenu);
+                        printMenu(data, shipBoard, menuIndex, mainMenu, data.getMainMenu());
                     }
                     menuIndex++;
                 }
@@ -344,30 +350,25 @@ public class BuildingTemplate extends CLITemplate {
                 mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
-                mainCLI.addInputRequest(new MenuInput(data, freeShipCardMenu.size(), data.getShipCardMenu()));
+                mainCLI.addInputRequest(new MenuInput(data, shipCardMenu.size(), data.getShipCardMenu()));
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION){
-                mainCLI.addInputRequest(new MenuInput(data, freeShipCardActionMenu.size(), data.getShipCardActionMenu()));
+                mainCLI.addInputRequest(new MenuInput(data, shipCardActionMenu.size(), data.getShipCardActionMenu()));
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
                 //scelgo dove metterla
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
-                mainCLI.addInputRequest(new MenuInput(data, freeShipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
+                mainCLI.addInputRequest(new MenuInput(data, shipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
-                //scelgo dove riservarla
+                mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
                 mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
-                if(data.getShipCardMenu() == 0){
-                    //invio richiesta placeShipCard
-                }
-                else if(data.getShipCardMenu() == 1){
-                    //invio richiesta reserveShipCard
-                }
+                //invio richiesta placeShipCard
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
                 //manca azione per richiederle
@@ -409,9 +410,9 @@ public class BuildingTemplate extends CLITemplate {
 
 
 
-    public void printMenu(BuildingPhaseData data, ShipBoard shipBoard, int menuIndex, List<List<String>> options){
+    public void printMenu(BuildingPhaseData data, ShipBoard shipBoard, int menuIndex, List<List<String>> options, int selected){
         if(menuIndex < options.size()*options.getFirst().size()) {
-            int spacesUsed = renderMultiLevelMenu(options, menuIndex / options.getFirst().size(), menuIndex % options.getFirst().size(), data.getShipCardMenu());
+            int spacesUsed = renderMultiLevelMenu(options, menuIndex / options.getFirst().size(), menuIndex % options.getFirst().size(), selected);
             printMenuLeftSpaces(shipBoard, spacesUsed);
 
         }
