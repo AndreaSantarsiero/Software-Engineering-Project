@@ -50,6 +50,34 @@ public class BuildingTemplate extends CLITemplate {
                     "├┬┘├┤ │  ├┤ ├─┤└─┐├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
                     "┴└─└─┘┴─┘└─┘┴ ┴└─┘└─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘")
     );
+    private static final List<List<String>> freeShipCardActionMenu = List.of(
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┌─┐┌─┐┬┌┬┐┬┌─┐┌┐┌",
+                    "│  ├─┤│ ││ │└─┐├┤   ├─┘│ │└─┐│ │ ││ ││││",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  ┴  └─┘└─┘┴ ┴ ┴└─┘┘└┘"),
+            List.of("┬─┐┌─┐┌┬┐┌─┐┌┬┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
+                    "├┬┘│ │ │ ├─┤ │ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
+                    "┴└─└─┘ ┴ ┴ ┴ ┴ └─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
+            List.of("┌─┐┌─┐┌┐┌┌─┐┬┬─┐┌┬┐",
+                    "│  │ ││││├┤ │├┬┘│││",
+                    "└─┘└─┘┘└┘└  ┴┴└─┴ ┴"),
+            List.of("┌┐ ┌─┐┌─┐┬┌─  ┌┬┐┌─┐  ┌─┐┬─┐┌─┐┬  ┬┬┌─┐┬ ┬┌─┐  ┌┬┐┌─┐┌┐┌┬ ┬",
+                    "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
+                    "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
+    );
+    private static final List<List<String>> freeShipCardOrientationMenu = List.of(
+            List.of("┌┐┌┌─┐┬─┐┌┬┐┌─┐┬  ",
+                    "││││ │├┬┘│││├─┤│  ",
+                    "┘└┘└─┘┴└─┴ ┴┴ ┴┴─┘"),
+            List.of("┬─┐┌─┐┌┬┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ┌┬┐┬ ┬┌─┐  ┬─┐┬┌─┐┬ ┬┌┬┐",
+                    "├┬┘│ │ │ ├─┤ │ ├┤    │ │ │   │ ├─┤├┤   ├┬┘││ ┬├─┤ │ ",
+                    "┴└─└─┘ ┴ ┴ ┴ ┴ └─┘   ┴ └─┘   ┴ ┴ ┴└─┘  ┴└─┴└─┘┴ ┴ ┴ "),
+            List.of("┬─┐┌─┐┌┬┐┌─┐┌┬┐┌─┐  ┬ ┬┌─┐┌─┐┬┌┬┐┌─┐  ┌┬┐┌─┐┬ ┬┌┐┌",
+                    "├┬┘│ │ │ ├─┤ │ ├┤   │ │├─┘└─┐│ ││├┤    │││ │││││││",
+                    "┴└─└─┘ ┴ ┴ ┴ ┴ └─┘  └─┘┴  └─┘┴─┴┘└─┘  ─┴┘└─┘└┴┘┘└┘ "),
+            List.of("┬─┐┌─┐┌┬┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ┌┬┐┬ ┬┌─┐  ┬  ┌─┐┌─┐┌┬┐",
+                    "├┬┘│ │ │ ├─┤ │ ├┤    │ │ │   │ ├─┤├┤   │  ├┤ ├┤  │ ",
+                    "┴└─└─┘ ┴ ┴ ┴ ┴ └─┘   ┴ └─┘   ┴ ┴ ┴└─┘  ┴─┘└─┘└   ┴ ")
+    );
     private static final List<List<String>> adventureDecksMenu = List.of(
             List.of("┌─┐┬┬─┐┌─┐┌┬┐",
                     "├┤ │├┬┘└─┐ │ ",
@@ -192,8 +220,13 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
-                            data.getHeldShipCard().print(shipCardCLI, i-2, false);
+                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
+                            if(data.getHeldShipCard() != null){
+                                data.getHeldShipCard().print(shipCardCLI, i-2, false);
+                            }
+                            else {
+                                shipCardCLI.printEmptyShipCard(i-2);
+                            }
                         }
                         else {
                             shipCardCLI.printEmptyShipCard(i-2);
@@ -237,43 +270,35 @@ public class BuildingTemplate extends CLITemplate {
                 else {
 
                     //ship card menu
-                    if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
-                        if(menuIndex < freeShipCardMenu.size()*freeShipCardMenu.getFirst().size()) {
-                            int spacesUsed = renderMultiLevelMenu(freeShipCardMenu, menuIndex/freeShipCardMenu.getFirst().size(), menuIndex%freeShipCardMenu.getFirst().size(), data.getShipCardMenu());
-                            printMenuLeftSpaces(shipBoard, spacesUsed);
-                            menuIndex++;
+                    if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() != 0)){
+                        printMenu(data, shipBoard, menuIndex, freeShipCardMenu);
+                    }
 
-                        }
-                        else {
-                            printEmptyShipLine(shipBoard);
-                        }
+                    //ship card action menu
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() == 0)){
+                        printMenu(data, shipBoard, menuIndex, freeShipCardActionMenu);
+                    }
+
+                    //ship card orientation menu
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
+                        printMenu(data, shipBoard, menuIndex, freeShipCardOrientationMenu);
                     }
 
                     //adventure card menu
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
-                        if(menuIndex < adventureDecksMenu.size()*adventureDecksMenu.getFirst().size()) {
-                            int spacesUsed = renderMultiLevelMenu(adventureDecksMenu, menuIndex/adventureDecksMenu.getFirst().size(), menuIndex%adventureDecksMenu.getFirst().size(), data.getShipCardMenu());
-                            printMenuLeftSpaces(shipBoard, spacesUsed);
-                            menuIndex++;
+                        printMenu(data, shipBoard, menuIndex, adventureDecksMenu);
+                    }
 
-                        }
-                        else {
-                            printEmptyShipLine(shipBoard);
-                        }
+                    //end building menu
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
+                        printMenu(data, shipBoard, menuIndex, endBuildingMenu);
                     }
 
                     //main menu
                     else {
-                        if(menuIndex < mainMenu.size()*mainMenu.getFirst().size()) {
-                            int spacesUsed = renderMultiLevelMenu(mainMenu, menuIndex/mainMenu.getFirst().size(), menuIndex%mainMenu.getFirst().size(), data.getMainMenu());
-                            printMenuLeftSpaces(shipBoard, spacesUsed);
-                            menuIndex++;
-
-                        }
-                        else {
-                            printEmptyShipLine(shipBoard);
-                        }
+                        printMenu(data, shipBoard, menuIndex, mainMenu);
                     }
+                    menuIndex++;
                 }
 
 
@@ -321,8 +346,14 @@ public class BuildingTemplate extends CLITemplate {
             else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
                 mainCLI.addInputRequest(new MenuInput(data, freeShipCardMenu.size(), data.getShipCardMenu()));
             }
+            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION){
+                mainCLI.addInputRequest(new MenuInput(data, freeShipCardActionMenu.size(), data.getShipCardActionMenu()));
+            }
             else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
                 //scelgo dove metterla
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
+                mainCLI.addInputRequest(new MenuInput(data, freeShipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
                 //scelgo dove riservarla
@@ -345,16 +376,19 @@ public class BuildingTemplate extends CLITemplate {
                 //aspetto invio utente
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
-                mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardIndex());
+                mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardMenu());
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
                 //aspetto invio utente
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
-                //invio richiesta reset timer
+                //manca azione per reset timer
             }
-            else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING){
-                //invio richiesta end building
+            else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
+                mainCLI.addInputRequest(new MenuInput(data, endBuildingMenu.size(), data.getEndBuildingMenu()));
+            }
+            else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
+                mainCLI.getVirtualServer().endBuilding(data.getEndBuildingMenu());
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
@@ -374,6 +408,17 @@ public class BuildingTemplate extends CLITemplate {
     }
 
 
+
+    public void printMenu(BuildingPhaseData data, ShipBoard shipBoard, int menuIndex, List<List<String>> options){
+        if(menuIndex < options.size()*options.getFirst().size()) {
+            int spacesUsed = renderMultiLevelMenu(options, menuIndex / options.getFirst().size(), menuIndex % options.getFirst().size(), data.getShipCardMenu());
+            printMenuLeftSpaces(shipBoard, spacesUsed);
+
+        }
+        else {
+            printEmptyShipLine(shipBoard);
+        }
+    }
 
     public void printMenuLeftSpaces(ShipBoard shipBoard, int spacesUsed){
         int singleSpacesLeft = 15 - ((spacesUsed - 3) % 15);
