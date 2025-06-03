@@ -3,7 +3,9 @@ package it.polimi.ingsw.gc11.controller.action.client;
 import it.polimi.ingsw.gc11.view.*;
 
 
+
 public class NotifySuccessAction extends ServerAction {
+
     public NotifySuccessAction() {}
 
 
@@ -13,7 +15,9 @@ public class NotifySuccessAction extends ServerAction {
     }
 
     @Override
-    public void loadData(BuildingPhaseData buildingPhaseData) {}
+    public void loadData(BuildingPhaseData buildingPhaseData) {
+        buildingPhaseData.updateState();
+    }
 
     @Override
     public void loadData(CheckPhaseData checkPhaseData) {}
