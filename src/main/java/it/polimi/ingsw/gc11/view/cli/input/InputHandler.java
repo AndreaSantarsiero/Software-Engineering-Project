@@ -167,8 +167,8 @@ public class InputHandler {
             }
 
             boolean success = false;
-            if (i != previouslySelectedI){
-                while(success){
+            if (i > previouslySelectedI){
+                while(!success){
                     try {
                         success = shipBoard.validateIndexes(j, i);
                         if (!success) {
@@ -179,8 +179,20 @@ public class InputHandler {
                     }
                 }
             }
-            else if (j != previouslySelectedJ){
-                while(success){
+            else if (i < previouslySelectedI){
+                while(!success){
+                    try {
+                        success = shipBoard.validateIndexes(j, i);
+                        if (!success) {
+                            i = (i - 1 + rows) % rows;
+                        }
+                    } catch (Exception ignored){
+                        i = (i - 1 + rows) % rows;
+                    }
+                }
+            }
+            else if (j > previouslySelectedJ){
+                while(!success){
                     try {
                         success = shipBoard.validateIndexes(j, i);
                         if (!success) {
@@ -188,6 +200,18 @@ public class InputHandler {
                         }
                     } catch (Exception ignored){
                         j = (j + 1) % cols;
+                    }
+                }
+            }
+            else if (j < previouslySelectedJ){
+                while(!success){
+                    try {
+                        success = shipBoard.validateIndexes(j, i);
+                        if (!success) {
+                            j = (j - 1 + cols) % cols;
+                        }
+                    } catch (Exception ignored){
+                        j = (j - 1 + cols) % cols;
                     }
                 }
             }
