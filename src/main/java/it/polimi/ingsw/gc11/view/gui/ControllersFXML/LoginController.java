@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -47,6 +45,9 @@ public class LoginController extends Template {
         String username = usernameText.getText();
         VirtualServer virtualServer = viewModel.getVirtualServer();
 
+        JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        joiningPhaseData.setListener(this);
+
         try {
             virtualServer.registerSession(username);
         }
@@ -82,6 +83,7 @@ public class LoginController extends Template {
         joiningPhaseData.updateState();
         this.update(joiningPhaseData);
     }
+
 
     @Override
     public void update(JoiningPhaseData joiningPhaseData) {
@@ -124,6 +126,4 @@ public class LoginController extends Template {
         }
     }
 
-    @Override
-    public void change() {}
 }

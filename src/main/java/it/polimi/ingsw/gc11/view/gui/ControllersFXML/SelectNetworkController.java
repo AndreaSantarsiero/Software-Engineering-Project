@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
+import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.concurrent.Task;
@@ -15,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class SelectNetworkController {
+public class SelectNetworkController extends Template {
 
     @FXML
     private Button rmiButton;
@@ -38,6 +39,10 @@ public class SelectNetworkController {
             viewModel.setRMIVirtualServer();
             JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
             joiningPhaseData.setVirtualServer(viewModel.getVirtualServer());
+            joiningPhaseData.setListener(this);
+            joiningPhaseData.updateState(); //curr_state =
+            joiningPhaseData.updateState(); //curr_state = CHOOSE_USERNAME
+            joiningPhaseData.updateState(); //curr_state = USERNAME_SETUP
 
             rmiButton.setDisable(true);
             socketButton.setDisable(true);
@@ -83,6 +88,12 @@ public class SelectNetworkController {
         try {
 
             viewModel.setSOCKETVirtualServer();
+            JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+            joiningPhaseData.setVirtualServer(viewModel.getVirtualServer());
+            joiningPhaseData.setListener(this);
+            joiningPhaseData.updateState(); //curr_state =
+            joiningPhaseData.updateState(); //curr_state = CHOOSE_USERNAME
+            joiningPhaseData.updateState(); //curr_state = USERNAME_SETUP
 
             rmiButton.setDisable(true);
             socketButton.setDisable(true);
@@ -117,6 +128,5 @@ public class SelectNetworkController {
         }
 
     }
-
 
 }

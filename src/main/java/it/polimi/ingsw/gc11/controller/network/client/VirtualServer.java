@@ -14,6 +14,8 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.PlayerContext;
+import javafx.concurrent.Task;
+
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -52,6 +54,23 @@ public class VirtualServer {
 
 
     private void startCommandListener() {
+
+//        Task<Void> cmdExecutor = new Task<Void>(){
+//            @Override
+//            protected Void call() throws Exception {
+//                while (true) {
+//                    try {
+//                        ServerAction action = serverActions.take();
+//                        action.execute(playerContext);
+//                    } catch (InterruptedException ignored) {}
+//                }
+//            }
+//        };
+//        Thread thread = new Thread(cmdExecutor);
+//        thread.setDaemon(true);
+//        thread.start();
+
+
         Thread listener = new Thread(() -> {
             while (true) {
                 try {
