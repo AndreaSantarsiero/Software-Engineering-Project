@@ -292,7 +292,7 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
+                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
                             if(data.getHeldShipCard() != null){
                                 data.getHeldShipCard().print(shipCardCLI, i-2, false);
                             }
@@ -319,7 +319,7 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
+                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
                             data.getHeldShipCard().print(shipCardCLI, i+5, false);
                         }
                         else {
