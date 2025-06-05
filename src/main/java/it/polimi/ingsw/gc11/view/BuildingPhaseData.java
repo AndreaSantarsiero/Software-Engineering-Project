@@ -157,10 +157,10 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     @Override
-    public void setCoordinatesChoice(int i, int j) {
+    public void setCoordinatesChoice(int j, int i) {
         previousState = state;
-        selectedI = i;
         selectedJ = j;
+        selectedI = i;
         notifyListener();
     }
 
