@@ -272,7 +272,7 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing user shipBoard (main board)
                 else if (y < shipBoard.getLength() + 2){
-                    shipBoardCLI.print(shipBoard, y-2, i, data.getSelectedX(), data.getSelectedY());
+                    shipBoardCLI.print(shipBoard, y-2, i, data.getSelectedJ(), data.getSelectedI());
                     System.out.print("      ");
                 }
 
