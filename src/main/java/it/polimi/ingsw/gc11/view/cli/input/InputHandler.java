@@ -132,11 +132,11 @@ public class InputHandler {
         }
 
         KeyMap<String> keyMap = new KeyMap<>();
-        keyMap.bind("up", "\033[A", "w", "W");
-        keyMap.bind("down", "\033[B", "s", "S");
-        keyMap.bind("left", "\033[D", "a", "A");
-        keyMap.bind("right", "\033[C", "d", "D");
-        keyMap.bind("enter", "\r", "\n");
+        keyMap.bind("up", "\033[A", "w", "W");      // Up
+        keyMap.bind("down", "\033[B", "s", "S");    // Down
+        keyMap.bind("left", "\033[D", "a", "A");    // Left
+        keyMap.bind("right", "\033[C", "d", "D");   // Right
+        keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
 
         int rows = shipBoard.getLength();
         int cols = shipBoard.getWidth();
@@ -163,14 +163,14 @@ public class InputHandler {
                     data.confirmCoordinatesChoice();
                     return;
                 default:
-                    // Ignore unknown keys
+                    // ignore any other key
             }
 
             boolean success = false;
             if (i != previouslySelectedI){
                 while(success){
                     try {
-                        success = shipBoard.validateIndexes(i, j);
+                        success = shipBoard.validateIndexes(j, i);
                         if (!success) {
                             i = (i + 1) % rows;
                         }
@@ -182,7 +182,7 @@ public class InputHandler {
             else if (j != previouslySelectedJ){
                 while(success){
                     try {
-                        success = shipBoard.validateIndexes(i, j);
+                        success = shipBoard.validateIndexes(j, i);
                         if (!success) {
                             j = (j + 1) % cols;
                         }
