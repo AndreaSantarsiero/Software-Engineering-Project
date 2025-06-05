@@ -41,7 +41,7 @@ public class ShipBoardTest {
 
         shipBoard.reserveShipCard(cannon);
         shipBoard.reserveShipCard(structuralModule);
-        shipBoard.useReservedShipCard(cannon, 6, 7);
+        shipBoard.useReservedShipCard(cannon, ShipCard.Orientation.DEG_0, 6, 7);
         assertEquals(cannon, shipBoard.getShipCard(6, 7), "Reserved ship card was not placed correctly");
         shipBoard.reserveShipCard(battery);
         assertThrows(IllegalStateException.class, () -> shipBoard.reserveShipCard(engine), "Cannot reserve more than two ship cards");

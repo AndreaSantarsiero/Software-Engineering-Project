@@ -126,8 +126,8 @@ public class GameContext {
         phase.releaseShipCard(username, shipCard);
     }
 
-    public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y){
-        return phase.placeShipCard(username, shipCard, x, y);
+    public ShipBoard placeShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
+        return phase.placeShipCard(username, shipCard, orientation, x, y);
     }
 
     public ShipBoard removeShipCard(String username, int x, int y) {
@@ -138,8 +138,8 @@ public class GameContext {
         return phase.reserveShipCard(username, shipCard);
     }
 
-    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y){
-        return phase.useReservedShipCard(username, shipCard, x, y);
+    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
+        return phase.useReservedShipCard(username, shipCard, orientation, x, y);
     }
 
     public Map<String, ShipBoard> getPlayersShipBoard() {
