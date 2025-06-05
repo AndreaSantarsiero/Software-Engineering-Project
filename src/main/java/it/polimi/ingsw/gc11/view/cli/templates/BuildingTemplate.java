@@ -146,7 +146,10 @@ public class BuildingTemplate extends CLITemplate {
         //if I'm waiting for the server to answer then it's useless to refresh the view
         if(data.isStateNew()){
             try{
-                if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
+                if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
+                    data.resetViewData();
+                }
+                else if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
                     mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
                     return;
                 }

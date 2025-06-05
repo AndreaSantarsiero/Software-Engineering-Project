@@ -338,6 +338,21 @@ public class  BuildingPhaseData extends GamePhaseData {
 
 
 
+    public void resetViewData(){
+        selectedI = 0;
+        selectedJ = 0;
+        heldShipCard = null;
+        mainMenu = 0;
+        shipCardMenu = 0;
+        shipCardIndex =0;
+        shipCardActionMenu = 0;
+        shipCardOrientationMenu = 0;
+        adventureCardMenu = 0;
+        endBuildingMenu = 0;
+    }
+
+
+
     @Override
     public void handle(ServerAction action) {
         action.loadData(this);
