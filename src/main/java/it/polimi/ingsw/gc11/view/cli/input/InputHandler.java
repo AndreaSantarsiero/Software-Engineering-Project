@@ -145,19 +145,21 @@ public class InputHandler {
 
         while (true) {
             String key = bindingReader.readBinding(keyMap);
+            int oldI = i;
+            int oldJ = j;
 
             switch (key) {
                 case "up":
-                    i = (previouslySelectedI - 1 + rows) % rows;
+                    i = (i - 1 + rows) % rows;
                     break;
                 case "down":
-                    i = (previouslySelectedI + 1) % rows;
+                    i = (i + 1) % rows;
                     break;
                 case "left":
-                    j = (previouslySelectedJ - 1 + cols) % cols;
+                    j = (j - 1 + cols) % cols;
                     break;
                 case "right":
-                    j = (previouslySelectedJ + 1) % cols;
+                    j = (j + 1) % cols;
                     break;
                 case "enter":
                     data.confirmCoordinatesChoice();
@@ -167,7 +169,7 @@ public class InputHandler {
             }
 
             boolean success = false;
-            if (i > previouslySelectedI){
+            if (i > oldI){
                 while(!success){
                     try {
                         success = shipBoard.validateIndexes(j, i);
@@ -179,7 +181,7 @@ public class InputHandler {
                     }
                 }
             }
-            else if (i < previouslySelectedI){
+            else if (i < oldI){
                 while(!success){
                     try {
                         success = shipBoard.validateIndexes(j, i);
@@ -191,7 +193,7 @@ public class InputHandler {
                     }
                 }
             }
-            else if (j > previouslySelectedJ){
+            else if (j > oldJ){
                 while(!success){
                     try {
                         success = shipBoard.validateIndexes(j, i);
@@ -203,7 +205,7 @@ public class InputHandler {
                     }
                 }
             }
-            else if (j < previouslySelectedJ){
+            else if (j < oldJ){
                 while(!success){
                     try {
                         success = shipBoard.validateIndexes(j, i);
