@@ -371,7 +371,7 @@ public class BuildingTemplate extends CLITemplate {
                     }
                 }
 
-                System.out.println(Ansi.ansi().reset());
+                System.out.println(Ansi.ansi().reset() + "(x, y): (" + data.getSelectedX() + "," + data.getSelectedY() + ")  --  (j, i): (" + data.getSelectedJ() + "," + data.getSelectedI() + ")");
             }
         }
 
