@@ -37,7 +37,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't release held ship card in the current game phase: " + getPhaseName());
     }
 
-    public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y){
+    public ShipBoard placeShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         throw new IllegalStateException("Can't place a ship card in the current game phase: " + getPhaseName());
     }
 
@@ -49,7 +49,7 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't reserve ship card in the current game phase: " + getPhaseName());
     }
 
-    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y) {
+    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y) {
         throw new IllegalStateException("Can't use reserved ship card in the current game phase: " + getPhaseName());
     }
 

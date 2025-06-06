@@ -146,7 +146,10 @@ public class BuildingTemplate extends CLITemplate {
         //if I'm waiting for the server to answer then it's useless to refresh the view
         if(data.isStateNew()){
             try{
-                if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
+                if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
+                    data.resetViewData();
+                }
+                else if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
                     mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
                     return;
                 }
@@ -272,7 +275,7 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing user shipBoard (main board)
                 else if (y < shipBoard.getLength() + 2){
-                    shipBoardCLI.print(shipBoard, y-2, i, data.getSelectedX(), data.getSelectedY());
+                    shipBoardCLI.print(shipBoard, y-2, i, data.getSelectedJ(), data.getSelectedI());
                     System.out.print("      ");
                 }
 
@@ -292,7 +295,7 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
+                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
                             if(data.getHeldShipCard() != null){
                                 data.getHeldShipCard().print(shipCardCLI, i-2, false);
                             }
@@ -319,7 +322,7 @@ public class BuildingTemplate extends CLITemplate {
                                 shipBoardCLI.printInvalidSquare();
                             }
                         }
-                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
+                        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
                             data.getHeldShipCard().print(shipCardCLI, i+5, false);
                         }
                         else {
@@ -374,6 +377,7 @@ public class BuildingTemplate extends CLITemplate {
                 System.out.println(Ansi.ansi().reset());
             }
         }
+        System.out.println("(x, y): (" + data.getSelectedX() + "," + data.getSelectedY() + ")  --  (j, i): (" + data.getSelectedJ() + "," + data.getSelectedI() + ")");
 
 
         //printing error messages

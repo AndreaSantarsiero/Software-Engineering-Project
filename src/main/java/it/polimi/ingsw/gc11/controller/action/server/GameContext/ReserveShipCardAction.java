@@ -17,6 +17,7 @@ public class ReserveShipCardAction extends ClientGameAction {
     @Override
     public void execute(GameContext context) {
         try {
+            shipCard.setOrientation(ShipCard.Orientation.DEG_0);
             ShipBoard shipBoard = context.reserveShipCard(username, shipCard);
             UpdateShipBoardAction response = new UpdateShipBoardAction(shipBoard);
             context.sendAction(username, response);

@@ -339,7 +339,7 @@ public abstract class ShipBoard  implements Serializable {
      * @throws IllegalArgumentException if the ship card was not reserved or the reservation list is empty
      * @throws IllegalArgumentException if the coordinates are out of bounds
      */
-    public void useReservedShipCard(ShipCard shipCard, int x, int y) {
+    public void useReservedShipCard(ShipCard shipCard, ShipCard.Orientation orientation, int x, int y) {
         if (shipCard == null) {
             throw new IllegalArgumentException("Ship card is null");
         }
@@ -352,6 +352,7 @@ public abstract class ShipBoard  implements Serializable {
             checkIndexes(j, i);
             reservedComponents.remove(shipCard);
             components[i][j] = shipCard;
+            shipCard.setOrientation(orientation);
         }
         else {
             throw new IllegalArgumentException("Ship card not previously reserved");

@@ -445,13 +445,13 @@ public class GameModel {
 
 
 
-    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y){
+    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         checkPlayerUsername(username);
 
         for(Player player : players){
             if(player.getUsername().equals(username)){
                 ShipBoard shipBoard = player.getShipBoard();
-                shipBoard.useReservedShipCard(shipCard, x, y);
+                shipBoard.useReservedShipCard(shipCard, orientation, x, y);
                 return shipBoard;
             }
         }
@@ -461,9 +461,10 @@ public class GameModel {
 
 
 
-    public ShipBoard connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, int x, int y){
+    public ShipBoard connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         checkPlayerUsername(username);
         checkHeldShipCard(shipCard, username);
+        shipCard.setOrientation(orientation);
 
         for (Player player : players) {
             if (player.getUsername().equals(username)) {

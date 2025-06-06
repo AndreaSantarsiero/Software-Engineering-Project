@@ -62,8 +62,8 @@ public class BuildingPhaseLv2 extends GamePhase {
     }
 
     @Override
-    public ShipBoard placeShipCard(String username, ShipCard shipCard, int x, int y){
-        return gameModel.connectShipCardToPlayerShipBoard(username, shipCard, x, y);
+    public ShipBoard placeShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
+        return gameModel.connectShipCardToPlayerShipBoard(username, shipCard, orientation, x, y);
     }
 
     @Override
@@ -77,8 +77,8 @@ public class BuildingPhaseLv2 extends GamePhase {
     }
 
     @Override
-    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, int x, int y){
-        return gameModel.useReservedShipCard(username, shipCard, x, y);
+    public ShipBoard useReservedShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
+        return gameModel.useReservedShipCard(username, shipCard, orientation, x, y);
     }
 
     @Override

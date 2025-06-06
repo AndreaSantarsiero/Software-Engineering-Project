@@ -21,6 +21,7 @@ public class ReleaseShipCardAction extends ClientGameAction {
     @Override
     public void execute(GameContext context){
         try{
+            shipCard.setOrientation(ShipCard.Orientation.DEG_0);
             context.releaseShipCard(username, shipCard);
             NotifySuccessAction response = new NotifySuccessAction();
             context.sendAction(username, response);

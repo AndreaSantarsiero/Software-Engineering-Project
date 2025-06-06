@@ -157,10 +157,10 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     @Override
-    public void setCoordinatesChoice(int i, int j) {
+    public void setCoordinatesChoice(int j, int i) {
         previousState = state;
-        selectedI = i;
         selectedJ = j;
+        selectedI = i;
         notifyListener();
     }
 
@@ -334,6 +334,21 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public int getSelectedX(){
         return selectedJ - shipBoard.adaptX(0);
+    }
+
+
+
+    public void resetViewData(){
+        selectedI = 0;
+        selectedJ = 0;
+        heldShipCard = null;
+        mainMenu = 0;
+        shipCardMenu = 0;
+        shipCardIndex =0;
+        shipCardActionMenu = 0;
+        shipCardOrientationMenu = 0;
+        adventureCardMenu = 0;
+        endBuildingMenu = 0;
     }
 
 

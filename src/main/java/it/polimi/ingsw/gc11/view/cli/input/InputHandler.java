@@ -132,11 +132,11 @@ public class InputHandler {
         }
 
         KeyMap<String> keyMap = new KeyMap<>();
-        keyMap.bind("up", "\033[A", "w", "W");
-        keyMap.bind("down", "\033[B", "s", "S");
-        keyMap.bind("left", "\033[D", "a", "A");
-        keyMap.bind("right", "\033[C", "d", "D");
-        keyMap.bind("enter", "\r", "\n");
+        keyMap.bind("up", "\033[A", "w", "W");      // Up
+        keyMap.bind("down", "\033[B", "s", "S");    // Down
+        keyMap.bind("left", "\033[D", "a", "A");    // Left
+        keyMap.bind("right", "\033[C", "d", "D");   // Right
+        keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
 
         int rows = shipBoard.getLength();
         int cols = shipBoard.getWidth();
@@ -145,32 +145,34 @@ public class InputHandler {
 
         while (true) {
             String key = bindingReader.readBinding(keyMap);
+            int oldI = i;
+            int oldJ = j;
 
             switch (key) {
                 case "up":
-                    i = (previouslySelectedI - 1 + rows) % rows;
+                    i = (i - 1 + rows) % rows;
                     break;
                 case "down":
-                    i = (previouslySelectedI + 1) % rows;
+                    i = (i + 1) % rows;
                     break;
                 case "left":
-                    j = (previouslySelectedJ - 1 + cols) % cols;
+                    j = (j - 1 + cols) % cols;
                     break;
                 case "right":
-                    j = (previouslySelectedJ + 1) % cols;
+                    j = (j + 1) % cols;
                     break;
                 case "enter":
                     data.confirmCoordinatesChoice();
                     return;
                 default:
-                    // Ignore unknown keys
+                    // ignore any other key
             }
 
             boolean success = false;
-            if (i != previouslySelectedI){
-                while(success){
+            if (i > oldI){
+                while(!success){
                     try {
-                        success = shipBoard.validateIndexes(i, j);
+                        success = shipBoard.validateIndexes(j, i);
                         if (!success) {
                             i = (i + 1) % rows;
                         }
@@ -179,15 +181,39 @@ public class InputHandler {
                     }
                 }
             }
-            else if (j != previouslySelectedJ){
-                while(success){
+            else if (i < oldI){
+                while(!success){
                     try {
-                        success = shipBoard.validateIndexes(i, j);
+                        success = shipBoard.validateIndexes(j, i);
+                        if (!success) {
+                            i = (i - 1 + rows) % rows;
+                        }
+                    } catch (Exception ignored){
+                        i = (i - 1 + rows) % rows;
+                    }
+                }
+            }
+            else if (j > oldJ){
+                while(!success){
+                    try {
+                        success = shipBoard.validateIndexes(j, i);
                         if (!success) {
                             j = (j + 1) % cols;
                         }
                     } catch (Exception ignored){
                         j = (j + 1) % cols;
+                    }
+                }
+            }
+            else if (j < oldJ){
+                while(!success){
+                    try {
+                        success = shipBoard.validateIndexes(j, i);
+                        if (!success) {
+                            j = (j - 1 + cols) % cols;
+                        }
+                    } catch (Exception ignored){
+                        j = (j - 1 + cols) % cols;
                     }
                 }
             }

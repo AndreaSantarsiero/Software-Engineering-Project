@@ -47,7 +47,7 @@ public class VirtualServer {
             }
         }
         catch (Exception e){
-            throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port + "\n" + e.getMessage());
+            throw new NetworkException("Impossible to connect with the server at " + ip + ":" + port + "\n" + e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
         }
     }
 

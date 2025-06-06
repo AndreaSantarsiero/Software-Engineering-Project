@@ -51,7 +51,7 @@ public abstract class GamePhaseData {
 
     public abstract void confirmIntegerChoice();
 
-    public void setCoordinatesChoice(int i, int j) {}
+    public void setCoordinatesChoice(int j, int i) {}
 
     public void confirmCoordinatesChoice(){}
 

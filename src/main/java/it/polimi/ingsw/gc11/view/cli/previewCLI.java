@@ -1,10 +1,10 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Planet;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
-import it.polimi.ingsw.gc11.model.adventurecard.StarDust;
+import it.polimi.ingsw.gc11.model.Shot;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.FlightBoardCLI;
@@ -45,10 +45,13 @@ public class previewCLI {
         List<AdventureCard> adventureCards = new ArrayList<>();
         adventureCards.add(new StarDust(AdventureCard.Type.TRIAL));
         adventureCards.add(new StarDust(AdventureCard.Type.LEVEL2));
-        StarDust starDust = new StarDust(AdventureCard.Type.TRIAL);
-        starDust.useCard();
-        adventureCards.add(starDust);
-        starDust = new StarDust(AdventureCard.Type.LEVEL2);
+        Pirates pirates = new Pirates(AdventureCard.Type.TRIAL, 1, 1, 1, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        OpenSpace openSpace = new OpenSpace(AdventureCard.Type.TRIAL);
+        pirates.useCard();
+        openSpace.useCard();
+        adventureCards.add(pirates);
+        adventureCards.add(openSpace);
+        StarDust starDust = new StarDust(AdventureCard.Type.LEVEL2);
         starDust.useCard();
         adventureCards.add(starDust);
 
