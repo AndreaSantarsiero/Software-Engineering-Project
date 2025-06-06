@@ -427,8 +427,61 @@ public class BuildingController extends Template implements Initializable {
         });
     }
 
-    private void showFreeShipCards(java.util.List<it.polimi.ingsw.gc11.model.shipcard.ShipCard> cards) {
-        // TODO: popolare cardTile con le carte ottenute dal server
+    private void onShipCardSelectedNetwork(int index) throws NetworkException {
+        if (virtualServer == null || buildingPhaseData == null) {
+            System.err.println("Connessione al server non inizializzata.");
+            return;
+        }
+        virtualServer.getFreeShipCard(index);
+    }
+
+    private void showFreeShipCards(List<ShipCard> cards) {
+        cardTile.getChildren().clear();
+
+        if (cards == null || cards.isEmpty()) {
+            return;
+        }
+
+        double horizontalPadding = 20.0;
+        String basePath = "/it/polimi/ingsw/gc11/shipCards/";
+
+        int idx = 0;
+        for (ShipCard card : cards) {
+            String imgPath = basePath + card.getId() + ".jpg";
+
+            if (imgPath == null) {
+                System.err.println("ShipCard senza imagePath – uso placeholder.");
+                imgPath = "/it/polimi/ingsw/gc11/cards/placeholder_card.png";
+            }
+
+            Image cardImage = new Image(getClass().getResource(imgPath).toExternalForm(), true);
+            ImageView view = new ImageView(cardImage);
+            view.setPreserveRatio(true);
+
+            // Il fitWidth è legato alla larghezza del cardPane (barra di destra)
+            view.fitWidthProperty().bind(cardPane.widthProperty().subtract(horizontalPadding));
+
+            /* Effetto hover: bagliore dorato */
+            DropShadow glow = new DropShadow(20, Color.web("#ffd700"));
+            view.setOnMouseEntered(e -> view.setEffect(glow));
+            view.setOnMouseExited(e -> view.setEffect(null));
+
+            final int chosen = idx;
+            view.setOnMouseClicked(e -> {
+                try {
+                    onShipCardSelectedNetwork(chosen);
+                } catch (NetworkException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            StackPane wrapper = new StackPane(view);
+            wrapper.setAlignment(Pos.CENTER);
+            wrapper.setPadding(new Insets(5));
+
+            cardTile.getChildren().add(wrapper);
+            idx++;
+        }
     }
 
     private void enablePlacementMode(BuildingPhaseData data) {
