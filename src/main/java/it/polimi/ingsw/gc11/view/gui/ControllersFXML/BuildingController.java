@@ -397,7 +397,6 @@ public class BuildingController extends Template implements Initializable {
     private void setupNetworking() {
         Scene scene = root.getScene();
         if (scene == null) {
-            // Scene not yet attached – abort for now.
             return;
         }
         this.stage = (Stage) scene.getWindow();
@@ -410,16 +409,14 @@ public class BuildingController extends Template implements Initializable {
         this.virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
-        // Register this controller as observer of the phase‑data model
         this.buildingPhaseData.setListener(this);
 
-        // First synchronisation with current model state
         this.update(this.buildingPhaseData);
     }
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
-        // All updates to the UI must occur on the JavaFX Application Thread
+
         Platform.runLater(() -> {
             switch (buildingPhaseData.getState()) {
                 case CHOOSE_FREE_SHIPCARD -> showFreeShipCards(buildingPhaseData.getFreeShipCards());
