@@ -11,6 +11,19 @@ public class AdventureCardCLI {
 
     public static int cardWidth = 23;
     public static int cardLength = 15;
+    List<String> stars = List.of(
+            ".        .      *  . ",
+                    "    *.   *           ",
+                    " .     .        .    ",
+                    ".        .      *  . ",
+                    " .     .        .    ",
+                    "    *.   *           ",
+                    "      .  .  *   .    ",
+                    "  .   *        *    .",
+                    "        .            ",
+                    ".        .      *  . ",
+                    "       *             ",
+                    " .          .      . ");
 
 
 
@@ -184,6 +197,27 @@ public class AdventureCardCLI {
         if (i == 1){
             System.out.print("     OPEN SPACE      ");
         }
+        else if (i == 4){
+            System.out.print("           _         ");
+        }
+        else if (i == 5){
+            System.out.print("         -=\\`\\       ");
+        }
+        else if (i == 6){
+            System.out.print("     |\\ ____\\_\\__    ");
+        }
+        else if (i == 7){
+            System.out.print("   -=\\c`\"\"\"\"\"\"\" \"`)  ");
+        }
+        else if (i == 8){
+            System.out.print("      `~~~~~/ /~~`   ");
+        }
+        else if (i == 9){
+            System.out.print("        -==/ /       ");
+        }
+        else if (i == 10){
+            System.out.print("          '-'        ");
+        }
         else {
             System.out.print("                     ");
         }
@@ -194,6 +228,15 @@ public class AdventureCardCLI {
     public void draw(Pirates pirates, int i){
         if (i == 1){
             System.out.print("       PIRATES       ");
+        }
+        else if (i == 3){
+            System.out.print("        \\   /        ");
+        }
+        else if (i == 4){
+            System.out.print("   .____-/.\\-____.   ");
+        }
+        else if (i == 5){
+            System.out.print("        ~`-'~        ");
         }
         else {
             System.out.print("                     ");
@@ -254,7 +297,7 @@ public class AdventureCardCLI {
             System.out.print("      STARDUST       ");
         }
         else {
-            System.out.print("                     ");
+            System.out.print(stars.get(i-2));
         }
     }
 
