@@ -11,8 +11,22 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-
+/**
+ * Represents the second level of the building phase in the game.
+ *
+ * In this phase, players can place, reserve, and remove {@link ShipCard}s on their
+ * personal {@link ShipBoard}, in preparation for the upcoming adventure phase.
+ * This phase is time-constrained using a system of up to three 60-second timers.
+ *
+ * Once all players complete their construction or all timers expire, the game transitions to the {@link CheckPhase}.
+ *
+ * Responsibilities include:
+ * <ul>
+ *     <li>Managing placement and reservation of ship components</li>
+ *     <li>Tracking which players have finished building</li>
+ *     <li>Handling the progression through timed building rounds</li>
+ * </ul>
+ */
 public class BuildingPhaseLv2 extends GamePhase {
 
     private final GameContext gameContext;
@@ -24,8 +38,11 @@ public class BuildingPhaseLv2 extends GamePhase {
     private Boolean timerFinished;
     private int curNumTimer;
 
-
-
+    /**
+     * Constructs a new BuildingPhaseLv2 instance and starts the first 60-second timer.
+     *
+     * @param gameContext the global game context
+     */
     public BuildingPhaseLv2(GameContext gameContext) {
         this.gameContext = gameContext;
         this.gameModel = gameContext.getGameModel();
@@ -49,44 +66,105 @@ public class BuildingPhaseLv2 extends GamePhase {
         this.timer.schedule(firstTimer, 60000);
     }
 
-
-
+    /**
+     * Retrieves a free {@link ShipCard} for a player at a specified position.
+     *
+     * @param username the player's username
+     * @param pos the index position of the requested card
+     * @return the selected ShipCard
+     */
     @Override
     public ShipCard getFreeShipCard(String username, int pos){
         return gameModel.getFreeShipCard(username, pos);
     }
 
+    /**
+     * Releases a previously selected {@link ShipCard} back to the shared pool.
+     *
+     * @param username the player's username
+     * @param shipCard the card to be released
+     */
     @Override
     public void releaseShipCard(String username, ShipCard shipCard) {
         gameModel.releaseShipCard(username, shipCard);
     }
 
+    /**
+     * Places a {@link ShipCard} on the player's ship board at a specific location and orientation.
+     *
+     * @param username the player's username
+     * @param shipCard the card to be placed
+     * @param orientation the orientation of the card
+     * @param x x-coordinate on the board
+     * @param y y-coordinate on the board
+     * @return the updated ShipBoard
+     */
     @Override
     public ShipBoard placeShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         return gameModel.connectShipCardToPlayerShipBoard(username, shipCard, orientation, x, y);
     }
 
+    /**
+     * Removes a {@link ShipCard} from the player's ship board at a specific location.
+     *
+     * @param username the player's username
+     * @param x x-coordinate of the card
+     * @param y y-coordinate of the card
+     * @return the updated ShipBoard
+     */
     @Override
     public ShipBoard removeShipCard(String username, int x, int y){
         return gameModel.removeShipCardFromPlayerShipBoard(username, x, y);
     }
 
+    /**
+     * Reserves a {@link ShipCard} for later use.
+     *
+     * @param username the player's username
+     * @param shipCard the card to be reserved
+     * @return the updated ShipBoard
+     */
     @Override
     public ShipBoard reserveShipCard(String username, ShipCard shipCard){
         return gameModel.reserveShipCard(username, shipCard);
     }
 
+    /**
+     * Places a previously reserved {@link ShipCard} on the ship board.
+     *
+     * @param username the player's username
+     * @param shipCard the reserved card
+     * @param orientation the orientation of the card
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return the updated ShipBoard
+     */
     @Override
     public ShipBoard useReservedShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         return gameModel.useReservedShipCard(username, shipCard, orientation, x, y);
     }
 
+    /**
+     * Allows the player to observe a selected mini-deck of {@link AdventureCard}s.
+     *
+     * @param username the player's username
+     * @param numDeck the index of the mini-deck
+     * @return the list of visible AdventureCards
+     */
     @Override
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
         //Aggiungere: controllare se ha posizionato almeno una shipcard
         return gameModel.observeMiniDeck(numDeck);
     }
 
+    /**
+     * Ends the building process for the specified player. If all players have finished,
+     * the phase automatically transitions to {@link CheckPhase}.
+     *
+     * @param username the player's username
+     * @param pos the position at which the player ends building
+     * @throws IllegalStateException if the player has already ended building
+     */
     @Override
     public void endBuilding(String username, int pos){
 
@@ -110,6 +188,13 @@ public class BuildingPhaseLv2 extends GamePhase {
     }
 
 
+    /**
+     * Starts the next 60-second timer in the phase, based on the current number of completed timers.
+     * After the third timer finishes, the game transitions to the {@link CheckPhase}.
+     *
+     * @param username the username of the player attempting to start the timer
+     * @throws IllegalStateException if the timer is already running, or conditions are not met for starting the next one
+     */
     public void startTimer(String username){
 
         //Timer is still running
@@ -154,8 +239,11 @@ public class BuildingPhaseLv2 extends GamePhase {
         }
     }
 
-
-
+    /**
+     * Returns the name of this game phase.
+     *
+     * @return the string "Level2BuildingPhase"
+     */
     @Override
     public String getPhaseName(){
         return "Level2BuildingPhase";
