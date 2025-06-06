@@ -6,13 +6,30 @@ import it.polimi.ingsw.gc11.model.Player;
 import java.util.ArrayList;
 
 
-
+/**
+ * Represents the Endgame Phase of the game.
+ *
+ * This phase is triggered after all AdventureCards have been resolved. It computes
+ * and applies final rewards and penalties to each player, including:
+ *
+ * <ul>
+ *   <li> {@code Finish Order Rewards}: bonuses based on the arrival position of each player</li>
+ *   <li> {@code Best Looking Ship Reward}: reward for the ship with the fewest exposed connectors</li>
+ *   <li> {@code Sale of Goods}: each material aboard the ship is converted into coins</li>
+ *   <li> {@code Damage Penalty}: coins are deducted for each ship card that was destroyed</li>
+ * </ul>
+ *
+ * After this phase, the game is considered completed.
+ */
 public class EndgamePhase extends GamePhase {
 
     GameContext gameContext;
 
-
-
+    /**
+     * Constructs the EndgamePhase and immediately computes the final rewards and penalties for all players.
+     *
+     * @param gameContext the global game context containing the game model
+     */
     public EndgamePhase(GameContext gameContext) {
         this.gameContext = gameContext;
         GameModel gameModel = gameContext.getGameModel();
@@ -53,7 +70,11 @@ public class EndgamePhase extends GamePhase {
     }
 
 
-
+    /**
+     * Returns the name of this phase.
+     *
+     * @return the string "EndGamePhase"
+     */
     @Override
     public String getPhaseName(){
         return "EndGamePhase";
