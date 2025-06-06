@@ -4,12 +4,18 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.view.BuildingPhaseData;
+import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
+import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
@@ -17,6 +23,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.*;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -26,8 +33,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
-public class BuildingController implements Initializable {
+public class BuildingController extends Template implements Initializable {
 
     @FXML private HBox root;
     @FXML private StackPane boardPane;
@@ -38,9 +46,16 @@ public class BuildingController implements Initializable {
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
 
+    private Stage stage;
+    private ViewModel viewModel;
+    private VirtualServer virtualServer;
+    private BuildingPhaseData buildingPhaseData;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Platform.runLater(this::setupNetworking);
 
         ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         ShipBoard shipBoard = loader.getShipBoard();
@@ -182,7 +197,7 @@ public class BuildingController implements Initializable {
                 reservedSlots.add(btn, i,0);
             }
             else {
-                //btn.setOpacity(0);
+                btn.setOpacity(0);
                 reservedSlots.add(btn, i,0);
             }
         }
@@ -356,20 +371,129 @@ public class BuildingController implements Initializable {
             });
 
             final int index = i;
-            btn.setOnAction(event -> onShipCardSelected(index));
+            btn.setOnAction(event -> {
+                try {
+                    onShipCardSelected(index);
+                } catch (NetworkException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
             cardTile.getChildren().add(btn);
         }
 
     }
 
-    private void onShipCardSelected(int index) {
-        System.out.println("ShipCard selezionata indice: " + index);
+    private void onShipCardSelected(int index) throws NetworkException {
+        virtualServer.getFreeShipCard(index);
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
     }
     private void onReservedShipCardSelected(int index) {
         System.out.println("Reserved ShipCard selezionata indice: " + index);
+    }
+
+    private void setupNetworking() {
+        Scene scene = root.getScene();
+        if (scene == null) {
+            return;
+        }
+        this.stage = (Stage) scene.getWindow();
+        this.viewModel = (ViewModel) this.stage.getUserData();
+        if (this.viewModel == null) {
+            System.err.println("ViewModel non trovato nello Stage.");
+            return;
+        }
+
+        this.virtualServer = viewModel.getVirtualServer();
+        this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+
+        this.buildingPhaseData.setListener(this);
+
+        this.update(this.buildingPhaseData);
+    }
+
+    @Override
+    public void update(BuildingPhaseData buildingPhaseData) {
+
+        Platform.runLater(() -> {
+            switch (buildingPhaseData.getState()) {
+                case CHOOSE_FREE_SHIPCARD -> showFreeShipCards(buildingPhaseData.getFreeShipCards());
+                case CHOOSE_POSITION -> enablePlacementMode(buildingPhaseData);
+                case WAITING, WAIT_ENEMIES_SHIP -> showWaitingOverlay();
+                default -> { /* altri stati ancora da gestire */ }
+            }
+        });
+    }
+
+    private void onShipCardSelectedNetwork(int index) throws NetworkException {
+        if (virtualServer == null || buildingPhaseData == null) {
+            System.err.println("Connessione al server non inizializzata.");
+            return;
+        }
+        virtualServer.getFreeShipCard(index);
+    }
+
+    private void showFreeShipCards(List<ShipCard> cards) {
+        cardTile.getChildren().clear();
+
+        if (cards == null || cards.isEmpty()) {
+            return;
+        }
+
+        double horizontalPadding = 20.0;
+        String basePath = "/it/polimi/ingsw/gc11/shipCards/";
+
+        int idx = 0;
+        for (ShipCard card : cards) {
+            String imgPath = basePath + card.getId() + ".jpg";
+
+            if (imgPath == null) {
+                System.err.println("ShipCard senza imagePath – uso placeholder.");
+                imgPath = "/it/polimi/ingsw/gc11/cards/placeholder_card.png";
+            }
+
+            Image cardImage = new Image(getClass().getResource(imgPath).toExternalForm(), true);
+            ImageView view = new ImageView(cardImage);
+            view.setPreserveRatio(true);
+
+            // Il fitWidth è legato alla larghezza del cardPane (barra di destra)
+            view.fitWidthProperty().bind(cardPane.widthProperty().subtract(horizontalPadding));
+
+            /* Effetto hover: bagliore dorato */
+            DropShadow glow = new DropShadow(20, Color.web("#ffd700"));
+            view.setOnMouseEntered(e -> view.setEffect(glow));
+            view.setOnMouseExited(e -> view.setEffect(null));
+
+            final int chosen = idx;
+            view.setOnMouseClicked(e -> {
+                try {
+                    onShipCardSelectedNetwork(chosen);
+                } catch (NetworkException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            StackPane wrapper = new StackPane(view);
+            wrapper.setAlignment(Pos.CENTER);
+            wrapper.setPadding(new Insets(5));
+
+            cardTile.getChildren().add(wrapper);
+            idx++;
+        }
+    }
+
+    private void enablePlacementMode(BuildingPhaseData data) {
+        // TODO: abilita il posizionamento dei moduli nella griglia ship‑board
+    }
+
+    private void showWaitingOverlay() {
+        // TODO: mostra animazione / label di attesa
+    }
+
+    @Override
+    public void change() {
+
     }
 }
