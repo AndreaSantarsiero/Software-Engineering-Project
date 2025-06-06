@@ -21,7 +21,7 @@ public class BuildingTemplate extends CLITemplate {
 
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
-    private static final int colCount = 13;
+    private static final int colCount = 14;
     private static final List<List<String>> mainMenu = List.of(
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
@@ -213,8 +213,12 @@ public class BuildingTemplate extends CLITemplate {
 
 
 
-        for(int y = 0; y < (freeShipCards.size()/colCount + 1); y++){
+        for(int y = 0; y < (freeShipCards.size()/colCount + 2); y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
+
+                if(y == (freeShipCards.size()/colCount + 1) && i > 3){
+                    continue;
+                }
 
                 //printing user shipBoard (reserved components)
                 if(y == 0){
