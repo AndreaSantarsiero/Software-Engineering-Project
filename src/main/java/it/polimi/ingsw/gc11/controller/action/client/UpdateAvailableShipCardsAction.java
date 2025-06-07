@@ -10,11 +10,13 @@ public class UpdateAvailableShipCardsAction extends ServerAction{
 
     private final List<ShipCard> availableShipCards;
     private final int shipCardsCount;
+    private final boolean updateState;
 
 
-    public UpdateAvailableShipCardsAction(List<ShipCard> availableShipCards, int shipCardsCount) {
+    public UpdateAvailableShipCardsAction(List<ShipCard> availableShipCards, int shipCardsCount, boolean updateState) {
         this.availableShipCards = availableShipCards;
         this.shipCardsCount = shipCardsCount;
+        this.updateState = updateState;
     }
 
 
@@ -23,7 +25,7 @@ public class UpdateAvailableShipCardsAction extends ServerAction{
 
     @Override
     public void loadData(BuildingPhaseData buildingPhaseData) {
-        buildingPhaseData.setFreeShipCards(availableShipCards, shipCardsCount);
+        buildingPhaseData.setFreeShipCards(availableShipCards, shipCardsCount, updateState);
     }
 
     @Override

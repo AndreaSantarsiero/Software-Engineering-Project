@@ -195,14 +195,19 @@ public class  BuildingPhaseData extends GamePhaseData {
         return freeShipCards;
     }
 
-    public void setFreeShipCards(List<ShipCard> freeShipCards, int freeShipCardsCount) {
+    public void setFreeShipCards(List<ShipCard> freeShipCards, int freeShipCardsCount, boolean updateState) {
         previousState = state;
         this.freeShipCards = freeShipCards;
         StructuralModule covered = new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
         for (int i = freeShipCards.size(); i < freeShipCardsCount; i++) {
             freeShipCards.add(covered);
         }
-        notifyListener();
+        if(updateState){
+            updateState();
+        }
+        else{
+            notifyListener();
+        }
     }
 
 
