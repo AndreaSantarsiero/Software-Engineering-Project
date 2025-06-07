@@ -9,7 +9,10 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 
 
-
+/**
+ * Represents the initial phase of the game, where players can join the lobby and choose their colors.
+ * Once the lobby is full and all players have chosen a color, the game transitions to the appropriate building phase.
+ */
 public class IdlePhase extends GamePhase {
 
     private final GameContext gameContext;
@@ -17,8 +20,11 @@ public class IdlePhase extends GamePhase {
     private boolean isFullLobby;
     private int numReadyPlayers;
 
-
-
+    /**
+     * Constructs a new {@code IdlePhase} with the given game context.
+     *
+     * @param gameContext The context that handles the current state of the game and allows transitions.
+     */
     public IdlePhase(GameContext gameContext) {
         this.gameContext = gameContext;
         this.gameModel = gameContext.getGameModel();
@@ -28,6 +34,14 @@ public class IdlePhase extends GamePhase {
 
 
 
+    /**
+     * Adds a player to the game if the lobby is not full and the username is not already taken.
+     * If the maximum number of players is reached, marks the lobby as full.
+     *
+     * @param playerUsername The username of the player to add.
+     * @throws FullLobbyException If the lobby is already full.
+     * @throws UsernameAlreadyTakenException If the username is already used by another player.
+     */
     @Override
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
         this.gameModel.addPlayer(playerUsername);
@@ -39,6 +53,14 @@ public class IdlePhase extends GamePhase {
 
 
 
+    /**
+     * Sets the color for the player with the given username and checks if all players are ready.
+     * If the lobby is full and all players have selected a color, transitions to the appropriate building phase
+     * and notifies each player with a {@link SetBuildingPhaseAction}.
+     *
+     * @param username The username of the player who chose the color.
+     * @param chosenColor The color selected by the player.
+     */
     @Override
     public void chooseColor(String username, String chosenColor) {
         Player player = this.gameModel.getPlayer(username);
@@ -63,7 +85,11 @@ public class IdlePhase extends GamePhase {
     }
 
 
-
+    /**
+     * Returns the name of this phase.
+     *
+     * @return The string "IdlePhase".
+     */
     @Override
     public String getPhaseName(){
         return "IdlePhase";
