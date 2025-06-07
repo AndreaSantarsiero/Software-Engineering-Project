@@ -59,6 +59,7 @@ public class JoiningPhaseData extends GamePhaseData {
 
     public void setSessionData(String username, UUID token) {
         virtualServer.setSessionData(username, token);
+        this.username = username;
         updateState();
     }
 

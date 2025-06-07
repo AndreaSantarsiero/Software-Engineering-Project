@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.PlayerContext;
 import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -11,15 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
 
 public class CreateMatchController extends Template implements Initializable {
 
@@ -35,18 +34,21 @@ public class CreateMatchController extends Template implements Initializable {
     private Label label;
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         flightType.getItems().addAll(flightTypes);
         numberOfPlayers.getItems().addAll(numberPlayers);
     }
 
+
+
     @FXML
     protected void onEnterButtonClick(ActionEvent event) {
 
         Scene scene = enterButton.getScene();
         Stage stage = (Stage) scene.getWindow();
-        ViewModel viewModel = (ViewModel) stage.getScene().getUserData();
+        ViewModel viewModel = (ViewModel) stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
@@ -86,6 +88,7 @@ public class CreateMatchController extends Template implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void update(JoiningPhaseData joiningPhaseData) {}
