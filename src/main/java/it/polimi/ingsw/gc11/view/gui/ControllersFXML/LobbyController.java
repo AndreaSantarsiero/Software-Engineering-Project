@@ -47,7 +47,7 @@ public class LobbyController extends Template {
         try {
             virtualServer.getPlayersColor();  //usare JoiningPhaseData
         } catch (Exception e) {
-            System.out.println("Error:  " + e.getMessage());
+            System.out.println("Error while getting players color:  " + e.getMessage());
             throw new RuntimeException(e);
         }
 

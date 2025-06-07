@@ -106,7 +106,7 @@ public class CreateMatchController extends Template implements Initializable {
                     throw new RuntimeException(e);
                 }
             }
-            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
+            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
                 label.setVisible(true);
                 label.setText("An errror occured");
                 label.setStyle("-fx-text-fill: red;" + label.getStyle());
