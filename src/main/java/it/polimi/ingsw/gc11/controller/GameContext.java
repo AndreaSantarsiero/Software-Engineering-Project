@@ -179,11 +179,11 @@ public class GameContext {
      * Returns a free ship card.
      *
      * @param username The player requesting the card.
-     * @param pos      The position of the card in the pool.
+     * @param shipCard the requested card, null if the user is requiring a covered one
      * @return The requested ship card.
      */
-    public ShipCard getFreeShipCard(String username, int pos){
-        return phase.getFreeShipCard(username, pos);
+    public ShipCard getFreeShipCard(String username, ShipCard shipCard) {
+        return phase.getFreeShipCard(username, shipCard);
     }
 
     /**
