@@ -12,11 +12,25 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 
 import java.util.Map;
 
+/**
+ * Represents the state in which a player must choose which crew members to sacrifice
+ * after accepting an {@link AbandonedShip} adventure card.
+ * <p>
+ * This state requires the player to remove a specific number of crew members from their
+ * {@link ShipBoard} and then receives a reward (coins) in return. Once the action is complete,
+ * the game transitions to the {@link IdleState}.
+ */
 public class ChooseHousing extends AdventureState {
     private GameModel gameModel;
     private AbandonedShip abandonedShip;
     private Player player;
 
+    /**
+     * Constructs a new {@code ChooseHousing} state.
+     *
+     * @param advContext the current adventure phase context.
+     * @param player     the player who accepted the {@link AbandonedShip} and must now sacrifice members.
+     */
     public ChooseHousing(AdventurePhase advContext, Player player) {
         super(advContext);
         this.gameModel = advContext.getGameModel();
@@ -25,6 +39,22 @@ public class ChooseHousing extends AdventureState {
     }
 
 
+    /**
+     * Removes the required number of crew members from the player's ship board as specified,
+     * gives coins as a reward, and moves the player's position back in time (days lost).
+     * <p>
+     * The number of members removed must be at least equal to the number required by the abandoned ship card.
+     * <p>
+     * After execution, the game returns to {@link IdleState}.
+     *
+     * @param username      the player performing the action.
+     * @param housingUsage  a map specifying how many members to remove from each {@link HousingUnit}.
+     * @return the updated {@link Player} object.
+     * @throws IllegalArgumentException if:
+     *         - it is not the calling player's turn,
+     *         - the number of members selected is insufficient.
+     * @throws IllegalStateException if the player has fewer members than required and is thus eliminated.
+     */
     @Override
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
 
