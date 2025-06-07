@@ -60,7 +60,6 @@ public class CreateMatchController extends Template implements Initializable {
         joiningPhaseData.setListener(this);
 
         //curr_state = CHOOSE_LEVEL
-        joiningPhaseData.updateState();
         //curr_state = CHOOSE_NUM_PLAYERS
 
 

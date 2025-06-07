@@ -72,11 +72,7 @@ public class LoginController extends Template {
 
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-
-        joiningPhaseData.setCreateOrJoinMenu(0); //create
-        joiningPhaseData.updateState();
-        this.update(joiningPhaseData);
-
+        joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS);
     }
 
 
@@ -85,10 +81,7 @@ public class LoginController extends Template {
 
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-
-        joiningPhaseData.setCreateOrJoinMenu(1); //join
-        joiningPhaseData.updateState();
-        this.update(joiningPhaseData);
+        joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_GAME);
     }
 
 
@@ -109,7 +102,7 @@ public class LoginController extends Template {
                 System.out.println("You are logged in as:   " + joiningPhaseData.getUsername());
                 match.setVisible(true);
             }
-            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_LEVEL) {
+            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateMatch.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
