@@ -4,8 +4,22 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
+/**
+ * Represents the initial state of the AdventurePhase, in which no player is currently resolving an adventure card.
+ * The first player can draw the top adventure card from the deck to begin the resolution process.
+ * If the adventure deck is empty, the game transitions immediately to the next phase.
+ */
 public class IdleState extends AdventureState{
 
+    /**
+     * Constructs a new {@code IdleState} and initializes the context accordingly.
+     * - Sets the current player index to 0.
+     * - Indicates that no card is being resolved.
+     * - Sets the currently drawn card to null.
+     * If the definitive adventure deck is empty, immediately proceeds to the next phase.
+     *
+     * @param advContext The adventure phase context (i.e., the owner of the current state).
+     */
     public IdleState(AdventurePhase advContext) {
         super(advContext);
         this.advContext.setIdxCurrentPlayer(0);
@@ -17,6 +31,14 @@ public class IdleState extends AdventureState{
         }
     }
 
+    /**
+     * Allows the first player in turn order to draw the top adventure card from the deck and trigger the transition
+     * to the adventure resolution state.
+     *
+     * @param username The username of the player attempting to draw the card.
+     * @return The {@link AdventureCard} drawn from the top of the deck.
+     * @throws IllegalArgumentException If the username is null, empty, or does not belong to the first player.
+     */
     @Override
     public AdventureCard getAdventureCard(String username){
         if (username == null || username.isEmpty()) {
