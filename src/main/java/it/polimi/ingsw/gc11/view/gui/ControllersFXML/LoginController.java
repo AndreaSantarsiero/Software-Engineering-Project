@@ -42,6 +42,8 @@ public class LoginController extends Template {
     @FXML
     protected void onEnterButtonClick(ActionEvent event) {
 
+        label2.setVisible(false);
+
         Scene scene = enterButton.getScene();
         this.stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
@@ -51,10 +53,12 @@ public class LoginController extends Template {
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
         joiningPhaseData.setListener(this);
 
+
         try {
             virtualServer.registerSession(username);
         }
         catch (Exception e) {
+            label2.setVisible(true);
             label2.setText("Error");
             label2.setStyle("-fx-text-fill: red;" + label2.getStyle());
             System.out.println("Error:  " + e.getMessage());
@@ -92,6 +96,7 @@ public class LoginController extends Template {
     public void update(JoiningPhaseData joiningPhaseData) {
         Platform.runLater(() -> {
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
+                label2.setVisible(true);
                 label2.setText("An errror occured");
                 label2.setStyle("-fx-text-fill: red;" + label2.getStyle());
                 System.out.println("Error:  " + joiningPhaseData.getServerMessage());
@@ -115,7 +120,8 @@ public class LoginController extends Template {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            } else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME) {
+            }
+            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/JoinMatch.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());

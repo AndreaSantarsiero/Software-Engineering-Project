@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,6 +36,9 @@ public class CreateMatchController extends Template implements Initializable {
     @FXML
     private Label label;
 
+    private Stage stage;
+    private String selectedFlightTypeString = null;
+    private  int selectedNumberOfPlayers = 0;
 
 
     @Override
@@ -47,13 +53,18 @@ public class CreateMatchController extends Template implements Initializable {
     protected void onEnterButtonClick(ActionEvent event) {
 
         Scene scene = enterButton.getScene();
-        Stage stage = (Stage) scene.getWindow();
+        this.stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        joiningPhaseData.setListener(this);
+
+        //curr_state = CHOOSE_LEVEL
+        joiningPhaseData.updateState();
+        //curr_state = CHOOSE_NUM_PLAYERS
 
 
-        String selectedFlightTypeString = flightType.getValue();
+        this.selectedFlightTypeString = flightType.getValue();
         FlightBoard.Type selectedFlightType = null;
         if (selectedFlightTypeString.equals("Trial")) {
             selectedFlightType = FlightBoard.Type.TRIAL;
@@ -61,38 +72,50 @@ public class CreateMatchController extends Template implements Initializable {
         else if (selectedFlightTypeString.equals("Lv 2")) {
             selectedFlightType = FlightBoard.Type.LEVEL2;
         }
-        int selectedNumberOfPlayers = Integer.parseInt(numberOfPlayers.getValue());
+        this.selectedNumberOfPlayers = Integer.parseInt(numberOfPlayers.getValue());
 
 
         try {
             virtualServer.createMatch(selectedFlightType, selectedNumberOfPlayers);
-
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load());
-            stage.setScene(newScene);
-            stage.show();
-
-            LobbyController controller = fxmlLoader.getController();
-            controller.setVirtualServer(virtualServer);
-
-            controller.init();
-
-            System.out.println( joiningPhaseData.getUsername() + ": created a new match of type " +
-                    selectedFlightTypeString  + " with " + selectedNumberOfPlayers + " players" );
         }
         catch (Exception e) {
-            label.setVisible(true );
+            label.setVisible(true);
             label.setText(e.getMessage());
             label.setStyle("-fx-text-fill: red;" + label.getStyle());
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            System.out.println("Error:  " + e.getMessage());
         }
     }
 
 
     @Override
-    public void update(JoiningPhaseData joiningPhaseData) {}
+    public void update(JoiningPhaseData joiningPhaseData) {
+        Platform.runLater(() -> {
+            if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load());
+                    stage.setScene(newScene);
+                    stage.show();
 
-    @Override
-    public void change() {}
+                    LobbyController controller = fxmlLoader.getController();
+                    controller.setStage(this.stage);
+                    controller.init();
+
+                    System.out.println(joiningPhaseData.getUsername() + ": created a new match of type " +
+                            this.selectedFlightTypeString + " with " + this.selectedNumberOfPlayers + " players");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
+                label.setVisible(true);
+                label.setText("An errror occured");
+                label.setStyle("-fx-text-fill: red;" + label.getStyle());
+                System.out.println("Error:  " + joiningPhaseData.getServerMessage());
+            }
+
+        });
+
+    }
+
 }
