@@ -9,9 +9,9 @@ import java.util.Map;
 
 
 
-public class GetEnemiesShipBoard extends ClientGameAction {
+public class GetEnemiesShipBoardAction extends ClientGameAction {
 
-    public GetEnemiesShipBoard(String username) {
+    public GetEnemiesShipBoardAction(String username) {
         super(username);
     }
 

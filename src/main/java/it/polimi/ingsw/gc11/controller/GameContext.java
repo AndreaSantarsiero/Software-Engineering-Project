@@ -118,8 +118,8 @@ public class GameContext {
 
 
     //BuildingPhaseLv2
-    public ShipCard getFreeShipCard(String username, int pos){
-        return phase.getFreeShipCard(username, pos);
+    public ShipCard getFreeShipCard(String username, ShipCard shipCard){
+        return phase.getFreeShipCard(username, shipCard);
     }
 
     public void releaseShipCard(String username, ShipCard shipCard){

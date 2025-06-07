@@ -59,11 +59,11 @@ public abstract class GamePhase {
      * Returns a free ship card from the pool.
      *
      * @param username the player's username
-     * @param pos the position of the card in the pool
+     * @param shipCard the requested card, null if the user is requiring a covered one
      * @return the requested {@link ShipCard}
      * @throws IllegalStateException if the operation is not permitted in this phase
      */
-    public ShipCard getFreeShipCard(String username, int pos){
+    public ShipCard getFreeShipCard(String username, ShipCard shipCard){
         throw new IllegalStateException("Can't get free ship card in the current game phase: " + getPhaseName());
     }
 

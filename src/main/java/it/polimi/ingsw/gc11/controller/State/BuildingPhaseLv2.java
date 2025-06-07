@@ -70,12 +70,12 @@ public class BuildingPhaseLv2 extends GamePhase {
      * Retrieves a free {@link ShipCard} for a player at a specified position.
      *
      * @param username the player's username
-     * @param pos the index position of the requested card
+     * @param shipCard the requested card, null if the user is requiring a covered one
      * @return the selected ShipCard
      */
     @Override
-    public ShipCard getFreeShipCard(String username, int pos){
-        return gameModel.getFreeShipCard(username, pos);
+    public ShipCard getFreeShipCard(String username, ShipCard shipCard){
+        return gameModel.getFreeShipCard(username, shipCard);
     }
 
     /**

@@ -385,7 +385,7 @@ public class BuildingController extends Template implements Initializable {
     }
 
     private void onShipCardSelected(int index) throws NetworkException {
-        virtualServer.getFreeShipCard(index);
+        virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
@@ -432,7 +432,7 @@ public class BuildingController extends Template implements Initializable {
             System.err.println("Connessione al server non inizializzata.");
             return;
         }
-        virtualServer.getFreeShipCard(index);
+        virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
     }
 
     private void showFreeShipCards(List<ShipCard> cards) {

@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.*;
 import it.polimi.ingsw.gc11.controller.action.server.ServerController.ConnectToGameAction;
 import it.polimi.ingsw.gc11.controller.action.server.ServerController.CreateMatchAction;
-import it.polimi.ingsw.gc11.controller.action.server.ServerController.GetAvailableMatches;
+import it.polimi.ingsw.gc11.controller.action.server.ServerController.GetAvailableMatchesAction;
 import it.polimi.ingsw.gc11.controller.action.server.GameContext.GetPlayersColorAction;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientRMI;
@@ -14,8 +14,6 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.PlayerContext;
-import javafx.concurrent.Task;
-
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -114,7 +112,7 @@ public class VirtualServer {
     }
 
     public void getAvailableMatches() throws NetworkException {
-        GetAvailableMatches action = new GetAvailableMatches(username);
+        GetAvailableMatchesAction action = new GetAvailableMatchesAction(username);
         client.sendAction(action);
     }
 
@@ -130,8 +128,8 @@ public class VirtualServer {
 
 
 
-    public void getFreeShipCard(int pos) throws NetworkException{
-        GetFreeShipCardAction action = new GetFreeShipCardAction(username, pos);
+    public void getFreeShipCard(ShipCard shipCard) throws NetworkException{
+        GetFreeShipCardAction action = new GetFreeShipCardAction(username, shipCard);
         client.sendAction(action);
     }
 
@@ -161,7 +159,7 @@ public class VirtualServer {
     }
 
     public void getPlayersShipBoard() throws NetworkException{
-        GetEnemiesShipBoard action = new GetEnemiesShipBoard(username);
+        GetEnemiesShipBoardAction action = new GetEnemiesShipBoardAction(username);
         client.sendAction(action);
     }
 

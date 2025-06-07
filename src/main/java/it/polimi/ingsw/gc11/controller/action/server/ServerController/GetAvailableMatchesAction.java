@@ -9,9 +9,9 @@ import java.util.Map;
 
 
 
-public class GetAvailableMatches extends ClientControllerAction {
+public class GetAvailableMatchesAction extends ClientControllerAction {
 
-    public GetAvailableMatches(String username) {
+    public GetAvailableMatchesAction(String username) {
         super(username);
     }
 

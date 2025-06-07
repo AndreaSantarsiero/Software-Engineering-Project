@@ -43,12 +43,12 @@ public class BuildingPhaseTrial extends GamePhase{
      * Returns a {@link ShipCard} from the shared pool for the specified position.
      *
      * @param username the requesting player's username
-     * @param pos the index in the deck
+     * @param shipCard the requested card, null if the user is requiring a covered one
      * @return the selected ShipCard
      */
     @Override
-    public ShipCard getFreeShipCard(String username, int pos){
-        return gameModel.getFreeShipCard(username, pos);
+    public ShipCard getFreeShipCard(String username, ShipCard shipCard) {
+        return gameModel.getFreeShipCard(username, shipCard);
     }
 
     /**

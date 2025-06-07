@@ -382,25 +382,50 @@ public class GameModel {
     /**
      * ShipCard's and ShipBoard's methods
      */
-    //Get shipcard in pos position in the arraylist of all shipcards down on the table
-    public ShipCard getFreeShipCard(String username, int pos){
+    public ShipCard getFreeShipCard(String username, ShipCard shipCard){
         checkPlayerUsername(username);
         if(heldShipCards.containsKey(username)){
             throw new IllegalArgumentException("Player " + username + " already hold a ship card in his hands");
         }
-        if(pos < 0 || pos >= freeShipCards.size()){
-            throw new IllegalArgumentException("Invalid position");
+        ShipCard selectedCard = null;
+
+        if (shipCard == null) {
+            for (ShipCard card : freeShipCards) {
+                if (card.isCovered()) {
+                    selectedCard = card;
+                    break;
+                }
+            }
+
+            if (selectedCard == null) {
+                throw new IllegalStateException("No covered ship cards available");
+            }
+        }
+        else {
+            if (!freeShipCards.contains(shipCard)) {
+                throw new IllegalArgumentException("The specified ship card is not available");
+            }
+            selectedCard = shipCard;
         }
 
-        ShipCard shipCard = freeShipCards.get(pos);
-        shipCard.discover();
-        freeShipCards.remove(shipCard);
-        heldShipCards.put(username, shipCard);
-        return shipCard;
+        selectedCard.discover();
+        freeShipCards.remove(selectedCard);
+        heldShipCards.put(username, selectedCard);
+        return selectedCard;
     }
 
     public int getFreeShipCardsCount() {
         return freeShipCards.size();
+    }
+
+    public List<ShipCard> getFreeShipCards() {
+        List<ShipCard> availableShipCards = new ArrayList<>();
+        for (ShipCard shipCard : freeShipCards) {
+            if (!shipCard.isCovered()) {
+                availableShipCards.add(shipCard);
+            }
+        }
+        return availableShipCards;
     }
 
     public void releaseShipCard(String username, ShipCard shipCard) {

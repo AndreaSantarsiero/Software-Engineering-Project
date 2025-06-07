@@ -150,7 +150,7 @@ public class BuildingTemplate extends CLITemplate {
                     data.resetViewData();
                 }
                 else if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
-                    mainCLI.getVirtualServer().getFreeShipCard(data.getShipCardIndex());
+                    mainCLI.getVirtualServer().getFreeShipCard(data.getFreeShipCards().get(data.getShipCardIndex()));
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){

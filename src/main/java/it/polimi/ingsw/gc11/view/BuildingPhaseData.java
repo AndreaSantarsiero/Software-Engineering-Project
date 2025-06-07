@@ -174,7 +174,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
         previousState = state;
-        if(state == BuildingState.SHIPCARD_SETUP){
+        if(state == BuildingState.SHIPCARD_SETUP || state == BuildingState.RESERVE_SHIPCARD) {
             state = BuildingState.CHOOSE_SHIPCARD_MENU;
         }
         else {
@@ -195,9 +195,13 @@ public class  BuildingPhaseData extends GamePhaseData {
         return freeShipCards;
     }
 
-    public void setFreeShipCards(List<ShipCard> freeShipCards) {
+    public void setFreeShipCards(List<ShipCard> freeShipCards, int freeShipCardsCount) {
         previousState = state;
         this.freeShipCards = freeShipCards;
+        StructuralModule covered = new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
+        for (int i = freeShipCards.size(); i < freeShipCardsCount; i++) {
+            freeShipCards.add(covered);
+        }
         notifyListener();
     }
 
@@ -244,6 +248,13 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
+        updateState();
+    }
+
+
+    public void removeShipCard(ShipBoard shipBoard, ShipCard heldShipCard){
+        this.shipBoard = shipBoard;
+        this.heldShipCard = heldShipCard;
         updateState();
     }
 
