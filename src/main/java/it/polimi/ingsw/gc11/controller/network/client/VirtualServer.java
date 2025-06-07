@@ -53,33 +53,16 @@ public class VirtualServer {
 
     private void startCommandListener() {
 
-//        Task<Void> cmdExecutor = new Task<Void>(){
-//            @Override
-//            protected Void call() throws Exception {
-//                while (true) {
-//                    try {
-//                        ServerAction action = serverActions.take();
-//                        action.execute(playerContext);
-//                    } catch (InterruptedException ignored) {}
-//                }
-//            }
-//        };
-//        Thread thread = new Thread(cmdExecutor);
-//        thread.setDaemon(true);
-//        thread.start();
-
-
-        Thread listener = new Thread(() -> {
+        Thread commandExecutor = new Thread(() -> {
             while (true) {
                 try {
                     ServerAction action = serverActions.take();
                     action.execute(this.playerContext);
                 } catch (InterruptedException ignored) {}
             }
-        }, "ClientCommandExecutor-");
-
-        listener.setDaemon(true);
-        listener.start();
+        }, "ClientCommandExecutor");
+        commandExecutor.setDaemon(true);
+        commandExecutor.start();
     }
 
     public void addServerAction(ServerAction serverAction) {

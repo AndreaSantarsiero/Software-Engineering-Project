@@ -10,7 +10,7 @@ public class UpdatePlayersColorAction extends ServerAction {
     private final Map<String, String> playersColor;
 
 
-    public UpdatePlayersColorAction(Map<String, String> playersColor) {
+    public   UpdatePlayersColorAction(Map<String, String> playersColor) {
         this.playersColor = playersColor;
     }
 

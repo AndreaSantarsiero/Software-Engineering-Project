@@ -39,25 +39,11 @@
       </HBox>
       <HBox fx:id="status" alignment="CENTER" visible="false">
          <children>
-            <Label fx:id="label2" prefHeight="44.0" prefWidth="773.0" styleClass="Text">
+            <Label fx:id="label" prefHeight="44.0" prefWidth="773.0" styleClass="Text" visible="false">
                <font>
                   <Font size="36.0" />
                </font>
             </Label>
-         </children>
-      </HBox>
-      <HBox fx:id="match" alignment="CENTER" spacing="200.0" visible="false">
-         <children>
-            <Button fx:id="create" mnemonicParsing="false" onAction="#onCreateMatchClick" text="CREATE MATCH">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Button>
-            <Button fx:id="join" mnemonicParsing="false" onAction="#onJoinMatchClick" text="JOIN MATCH">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Button>
          </children>
       </HBox>
    </children>

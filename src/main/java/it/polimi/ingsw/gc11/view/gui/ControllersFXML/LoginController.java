@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +18,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-
-
 public class LoginController extends Template {
 
     @FXML
@@ -28,13 +27,7 @@ public class LoginController extends Template {
     @FXML
     private HBox status;
     @FXML
-    private Label label2;
-    @FXML
-    private HBox match;
-    @FXML
-    private Button join;
-    @FXML
-    private Button create;
+    private Label label;
 
     private Stage stage;
 
@@ -42,7 +35,7 @@ public class LoginController extends Template {
     @FXML
     protected void onEnterButtonClick(ActionEvent event) {
 
-        label2.setVisible(false);
+        label.setVisible(false);
 
         Scene scene = enterButton.getScene();
         this.stage = (Stage) scene.getWindow();
@@ -51,81 +44,69 @@ public class LoginController extends Template {
         VirtualServer virtualServer = viewModel.getVirtualServer();
 
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        joiningPhaseData.setListener(this);
-
+        joiningPhaseData.setState(JoiningPhaseData.JoiningState.USERNAME_SETUP); //curr_state = USERNAME_SETUP
 
         try {
             virtualServer.registerSession(username);
         }
         catch (Exception e) {
-            label2.setVisible(true);
-            label2.setText("Error");
-            label2.setStyle("-fx-text-fill: red;" + label2.getStyle());
-            System.out.println("Error:  " + e.getMessage());
+            label.setVisible(true);
+            label.setText("Network Error");
+            label.setStyle("-fx-text-fill: red;" + label.getStyle());
+            System.out.println("Network Error:  " + e.getMessage());
         }
 
     }
 
 
-    @FXML
-    protected void onCreateMatchClick(ActionEvent event){
-
-        ViewModel viewModel = (ViewModel) this.stage.getUserData();
-        JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS);
-    }
-
-
-    @FXML
-    protected void onJoinMatchClick(ActionEvent event){
-
-        ViewModel viewModel = (ViewModel) this.stage.getUserData();
-        JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_GAME);
-    }
-
 
     @Override
     public void update(JoiningPhaseData joiningPhaseData) {
+
         Platform.runLater(() -> {
-            if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
-                label2.setVisible(true);
-                label2.setText("An errror occured");
-                label2.setStyle("-fx-text-fill: red;" + label2.getStyle());
+
+            //Can't register the session
+            if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
+                label.setVisible(true);
+                label.setText("An errror has occured, try again");
+                label.setStyle("-fx-text-fill: red;" + label.getStyle());
                 System.out.println("Error:  " + joiningPhaseData.getServerMessage());
             }
+
+            //Session registered successfully
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
-                enterButton.setVisible(false);
+                enterButton.setDisable(true);
                 status.setVisible(true);
-                label2.setText("You are logged in as:   " + joiningPhaseData.getUsername());
-                label2.setStyle("-fx-text-fill: green;" + label2.getStyle());
+                label.setText("You are logged in as:   " + joiningPhaseData.getUsername());
+                label.setStyle("-fx-text-fill: green;" + label.getStyle());
                 System.out.println("You are logged in as:   " + joiningPhaseData.getUsername());
-                match.setVisible(true);
-            }
-            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateMatch.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load());
-
-                    System.out.println(joiningPhaseData.getUsername() + ": clicked on create a new match");
-                    this.stage.setScene(newScene);
-                    this.stage.show();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                while (true) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateOrJoin.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load());
+                        joiningPhaseData.setListener(fxmlLoader.getController());
+                        //Delay
+                        Task<Void> sleeper = new Task<>() {
+                            @Override
+                            protected Void call() throws Exception {
+                                try {
+                                    Thread.sleep(1000);
+                                    stage.setScene(newScene);
+                                    stage.show();
+                                } catch (InterruptedException e) {}
+                                return null;
+                            }
+                        };
+                        new Thread(sleeper).start();
+                        break;
+                    }
+                    catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            }
-            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/JoinMatch.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load());
 
-                    System.out.println(joiningPhaseData.getUsername() + ": clicked on join a match");
-                    this.stage.setScene(newScene);
-                    this.stage.show();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
             }
+
         });
     }
 

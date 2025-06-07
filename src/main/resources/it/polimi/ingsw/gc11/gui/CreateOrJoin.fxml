@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="640.0" prefWidth="860.0" spacing="50.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.CreateOrJoinController">
+   <children>
+      <HBox alignment="CENTER">
+         <children>
+            <Label styleClass="Text" text="CREATE or JOIN MATCH">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox fx:id="match" alignment="CENTER" spacing="200.0">
+         <children>
+            <Button fx:id="create" mnemonicParsing="false" onAction="#onCreateMatchClick" text="CREATE MATCH">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+            <Button fx:id="join" mnemonicParsing="false" onAction="#onJoinMatchClick" text="JOIN MATCH">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <HBox fx:id="status" alignment="CENTER" visible="false">
+         <children>
+            <Label fx:id="label" prefHeight="44.0" prefWidth="773.0" styleClass="Text">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets top="20.0" />
+   </padding>
+</VBox>

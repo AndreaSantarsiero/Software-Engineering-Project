@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,9 +28,9 @@ public class CreateMatchController extends Template implements Initializable {
 
     @FXML
     private ComboBox<String> flightType;
+    private final String[] flightTypes = {"Trial", "Lv 2"};
     @FXML
     private ComboBox<String> numberOfPlayers;
-    private final String[] flightTypes = {"Trial", "Lv 2"};
     private final String[] numberPlayers = {"2", "3", "4"};
     @FXML
     private Button enterButton;
@@ -52,16 +53,17 @@ public class CreateMatchController extends Template implements Initializable {
     @FXML
     protected void onEnterButtonClick(ActionEvent event) {
 
+        if(flightType.getValue() == null || numberOfPlayers.getValue() == null) {
+            return;
+        }
+
         Scene scene = enterButton.getScene();
         this.stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        joiningPhaseData.setListener(this);
 
-        //curr_state = CHOOSE_LEVEL
         //curr_state = CHOOSE_NUM_PLAYERS
-
 
         this.selectedFlightTypeString = flightType.getValue();
         FlightBoard.Type selectedFlightType = null;
@@ -81,22 +83,26 @@ public class CreateMatchController extends Template implements Initializable {
             label.setVisible(true);
             label.setText(e.getMessage());
             label.setStyle("-fx-text-fill: red;" + label.getStyle());
-            System.out.println("Error:  " + e.getMessage());
+            System.out.println("Network Error:  " + e.getMessage());
         }
     }
 
 
     @Override
     public void update(JoiningPhaseData joiningPhaseData) {
+
         Platform.runLater(() -> {
+
+            //Match created successfully
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
+                    LobbyController controller = fxmlLoader.getController();
+                    joiningPhaseData.setListener(controller);
                     stage.setScene(newScene);
                     stage.show();
 
-                    LobbyController controller = fxmlLoader.getController();
                     controller.setStage(this.stage);
                     controller.init();
 
@@ -106,11 +112,36 @@ public class CreateMatchController extends Template implements Initializable {
                     throw new RuntimeException(e);
                 }
             }
+
+            //Can't create a match, new state is create_or_join a match
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
+                enterButton.setDisable(true);
                 label.setVisible(true);
                 label.setText("An errror occured");
                 label.setStyle("-fx-text-fill: red;" + label.getStyle());
                 System.out.println("Error:  " + joiningPhaseData.getServerMessage());
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateOrJoin.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load());
+                    joiningPhaseData.setListener(fxmlLoader.getController());
+                    //Delay
+                    Task<Void> sleeper = new Task<>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            try {
+                                Thread.sleep(1000);
+                                stage.setScene(newScene);
+                                stage.show();
+                            } catch (InterruptedException e) {}
+                            return null;
+                        }
+                    };
+                    new Thread(sleeper).start();
+                }
+                catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
         });
