@@ -55,7 +55,7 @@ public class ViewModel {
         this.virtualServer = new VirtualServer(playerContext);
 
         Properties config = new Properties();
-        try (FileInputStream fis = new FileInputStream("config.txt")) {
+        try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
             config.load(fis);
 
             // Reading client configuration
