@@ -84,19 +84,23 @@ public class LoginController extends Template {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateOrJoin.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load());
-                        joiningPhaseData.setListener(fxmlLoader.getController());
+                        CreateOrJoinController controller = fxmlLoader.getController();
+                        controller.setStage(stage);
+                        joiningPhaseData.setListener(controller);
                         //Delay
                         Task<Void> sleeper = new Task<>() {
                             @Override
                             protected Void call() throws Exception {
                                 try {
                                     Thread.sleep(1000);
-                                    stage.setScene(newScene);
-                                    stage.show();
                                 } catch (InterruptedException e) {}
                                 return null;
                             }
                         };
+                        sleeper.setOnSucceeded(event -> {
+                            stage.setScene(newScene);
+                            stage.show();
+                        });
                         new Thread(sleeper).start();
                         break;
                     }

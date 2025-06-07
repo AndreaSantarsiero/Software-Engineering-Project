@@ -29,6 +29,10 @@ public class CreateOrJoinController extends Template {
 
     private Stage stage;
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
 
     @FXML
     protected void onCreateMatchClick(ActionEvent event){
@@ -59,7 +63,9 @@ public class CreateOrJoinController extends Template {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateMatch.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
-                    joiningPhaseData.setListener(fxmlLoader.getController());
+                    CreateMatchController controller = fxmlLoader.getController();
+                    controller.init();
+                    joiningPhaseData.setListener(controller);
 
                     System.out.println(joiningPhaseData.getUsername() + ": clicked on create a new match");
                     this.stage.setScene(newScene);

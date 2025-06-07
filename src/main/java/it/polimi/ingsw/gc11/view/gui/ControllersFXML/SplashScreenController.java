@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
+import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.event.ActionEvent;
@@ -13,30 +14,38 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class SplashScreenController {
+public class SplashScreenController extends Template {
 
     @FXML
     Button playButton;
+
+    private Stage stage;
 
     @FXML
     protected void onPlayButtonClick(ActionEvent event) {
 
         Scene scene = playButton.getScene();
-        Stage stage = (Stage) scene.getWindow();
+        this.stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) stage.getUserData();
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
         joiningPhaseData.setState(JoiningPhaseData.JoiningState.CONNECTION_SETUP); //curr_state = CONNECTION_SETUP
 
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load());
-            stage.setScene(newScene);
-            stage.show();
-            joiningPhaseData.setListener(fxmlLoader.getController());
-        }
-        catch (IOException e) {
-            System.out.println("Error: Can't load Splash Screen.");
-        }
 
+    }
+
+    @Override
+    public void update(JoiningPhaseData joiningPhaseData) {
+        if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load());
+                stage.setScene(newScene);
+                stage.show();
+                joiningPhaseData.setListener(fxmlLoader.getController());
+            }
+            catch (IOException e) {
+                System.out.println("Error: Can't load Splash Screen.");
+            }
+        }
     }
 }

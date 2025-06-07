@@ -41,12 +41,12 @@ public class LobbyController extends Template {
         VirtualServer virtualServer = viewModel.getVirtualServer();
         this.joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
-        //curr_stage = GAME_SETUP
+        //curr_state = WAITING
 
         playerColumn = new TableColumn<>("Username");
         colorColumn = new TableColumn<>("Color");
         try {
-            virtualServer.getPlayersColor();  //usare JoiningPhaseData
+            virtualServer.getPlayersColor();
         }
         catch (Exception e) {
             label.setVisible(true);
@@ -62,7 +62,7 @@ public class LobbyController extends Template {
     public void update(JoiningPhaseData joiningPhaseData) {
         Platform.runLater(() -> {
 
-            if(joiningPhaseData.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
+            if(joiningPhaseData.getState() == JoiningPhaseData.JoiningState.WAITING) {
                 Map<String, String> player_color = joiningPhaseData.getPlayersColor();
                 for (Map.Entry<String, String> entry : player_color.entrySet()) {
                     playerColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));

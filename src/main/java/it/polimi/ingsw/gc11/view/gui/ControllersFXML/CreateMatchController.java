@@ -22,9 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
-
-public class CreateMatchController extends Template implements Initializable {
+public class CreateMatchController extends Template{
 
     @FXML
     private ComboBox<String> flightType;
@@ -38,24 +36,22 @@ public class CreateMatchController extends Template implements Initializable {
     private Label label;
 
     private Stage stage;
-    private String selectedFlightTypeString = null;
-    private  int selectedNumberOfPlayers = 0;
+    private String selectedFlightTypeString;
+    private  int selectedNumberOfPlayers;
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void init() {
         flightType.getItems().addAll(flightTypes);
         numberOfPlayers.getItems().addAll(numberPlayers);
     }
 
 
-
     @FXML
     protected void onEnterButtonClick(ActionEvent event) {
 
-        if(flightType.getValue() == null || numberOfPlayers.getValue() == null) {
-            return;
-        }
+//        if(flightType.getValue() == null || numberOfPlayers.getValue() == null) {
+//            return;
+//        }
 
         Scene scene = enterButton.getScene();
         this.stage = (Stage) scene.getWindow();
@@ -64,6 +60,7 @@ public class CreateMatchController extends Template implements Initializable {
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
         //curr_state = CHOOSE_NUM_PLAYERS
+        joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS);
 
         this.selectedFlightTypeString = flightType.getValue();
         FlightBoard.Type selectedFlightType = null;
@@ -78,6 +75,8 @@ public class CreateMatchController extends Template implements Initializable {
 
         try {
             virtualServer.createMatch(selectedFlightType, selectedNumberOfPlayers);
+            enterButton.setDisable(true);
+            System.out.println("match created");
         }
         catch (Exception e) {
             label.setVisible(true);
@@ -96,13 +95,12 @@ public class CreateMatchController extends Template implements Initializable {
             //Match created successfully
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectPlayerColor.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
-                    LobbyController controller = fxmlLoader.getController();
-                    joiningPhaseData.setListener(controller);
+                    SelectColorController controller = fxmlLoader.getController();
                     stage.setScene(newScene);
                     stage.show();
-
+                    joiningPhaseData.setListener(controller);
                     controller.setStage(this.stage);
                     controller.init();
 
@@ -131,12 +129,14 @@ public class CreateMatchController extends Template implements Initializable {
                         protected Void call() throws Exception {
                             try {
                                 Thread.sleep(1000);
-                                stage.setScene(newScene);
-                                stage.show();
                             } catch (InterruptedException e) {}
                             return null;
                         }
                     };
+                    sleeper.setOnSucceeded(event -> {
+                        stage.setScene(newScene);
+                        stage.show();
+                    });
                     new Thread(sleeper).start();
                 }
                 catch (IOException e) {

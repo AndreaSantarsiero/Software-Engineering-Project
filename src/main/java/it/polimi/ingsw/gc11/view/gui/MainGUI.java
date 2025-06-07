@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui;
 
+import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +24,8 @@ public class MainGUI extends Application {
         FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 860, 640);
+        JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        joiningPhaseData.setListener(loader.getController());
         stage.setUserData(viewModel);
 
         //stage.setFullScreen(true);

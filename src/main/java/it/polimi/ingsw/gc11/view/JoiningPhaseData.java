@@ -42,6 +42,7 @@ public class JoiningPhaseData extends GamePhaseData {
     public JoiningPhaseData() {
         availableMatches = new HashMap<>();
         state = JoiningState.CHOOSE_CONNECTION;
+        playersColor = null;
     }
 
 
