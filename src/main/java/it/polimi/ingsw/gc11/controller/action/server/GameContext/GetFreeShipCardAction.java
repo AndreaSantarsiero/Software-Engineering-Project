@@ -3,6 +3,8 @@ package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.SendFreeShipCardAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdateAvailableShipCardsAction;
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
 
@@ -26,8 +28,16 @@ public class GetFreeShipCardAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             ShipCard heldShipCard = context.getFreeShipCard(username, shipCard);
-            SendFreeShipCardAction response = new SendFreeShipCardAction(heldShipCard);
-            context.sendAction(username, response);
+            for(Player p : context.getGameModel().getPlayers()) {
+                if(p.getUsername().equals(username)) {
+                    SendFreeShipCardAction response = new SendFreeShipCardAction(heldShipCard, context.getGameModel().getFreeShipCards(), context.getGameModel().getFreeShipCardsCount());
+                    context.sendAction(p.getUsername(), response);
+                }
+                else{
+                    UpdateAvailableShipCardsAction update = new UpdateAvailableShipCardsAction(context.getGameModel().getFreeShipCards(), context.getGameModel().getFreeShipCardsCount(), false);
+                    context.sendAction(p.getUsername(), update);
+                }
+            }
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);

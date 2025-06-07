@@ -241,9 +241,9 @@ public class  BuildingPhaseData extends GamePhaseData {
         return heldShipCard;
     }
 
-    public void setHeldShipCard(ShipCard heldShipCard) {
+    public void setHeldShipCard(ShipCard heldShipCard, List<ShipCard> availableShipCards, int availableShipCardsCount) {
         this.heldShipCard = heldShipCard;
-        updateState();
+        setFreeShipCards(availableShipCards, availableShipCardsCount, true);
     }
 
 
