@@ -1,10 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
-
-import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
@@ -13,20 +9,16 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.Template;
-import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
-import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,7 +27,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class BuildingController extends Template implements Initializable {
+
+
+public class BuildingController extends Template {
 
     @FXML private HBox root;
     @FXML private StackPane boardPane;
@@ -53,10 +47,18 @@ public class BuildingController extends Template implements Initializable {
 
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater(this::setupNetworking);
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
+
+
+    public void initialize(Stage stage, ViewModel viewModel) {
+        this.stage = stage;
+        this.viewModel = viewModel;
+        stage.show();
+        this.virtualServer = viewModel.getVirtualServer();
+        this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
         ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
         ShipBoard shipBoard = loader.getShipBoard();
 
@@ -382,6 +384,7 @@ public class BuildingController extends Template implements Initializable {
             cardTile.getChildren().add(btn);
         }
 
+        update(buildingPhaseData);
     }
 
     private void onShipCardSelected(int index) throws NetworkException {

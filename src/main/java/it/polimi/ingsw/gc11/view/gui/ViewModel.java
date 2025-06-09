@@ -10,14 +10,19 @@ import java.io.IOException;
 import java.util.Properties;
 
 
+
 public class ViewModel {
 
     PlayerContext playerContext;
     VirtualServer virtualServer;
 
+
+
     public ViewModel() {
         this.playerContext = new PlayerContext();
     }
+
+
 
     public PlayerContext getPlayerContext() {
         return this.playerContext;
@@ -26,6 +31,8 @@ public class ViewModel {
     public VirtualServer getVirtualServer() {
         return this.virtualServer;
     }
+
+
 
     public void setRMIVirtualServer() throws NetworkException {
 

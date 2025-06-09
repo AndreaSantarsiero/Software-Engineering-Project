@@ -21,7 +21,9 @@ public class EndPhaseData extends GamePhaseData {
 
     @Override
     public void notifyListener() {
-        listener.update(this);
+        if(listener != null) {
+            listener.update(this);
+        }
     }
 
 

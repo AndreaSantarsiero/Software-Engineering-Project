@@ -30,7 +30,9 @@ public class AdventurePhaseData extends GamePhaseData {
 
     @Override
     public void notifyListener() {
-        listener.update(this);
+        if(listener != null) {
+            listener.update(this);
+        }
     }
 
 
