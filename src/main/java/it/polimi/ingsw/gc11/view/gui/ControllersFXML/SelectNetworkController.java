@@ -65,7 +65,7 @@ public class SelectNetworkController extends Template {
     protected void onSOCKETButtonClick(ActionEvent event) {
 
         Scene scene = socketButton.getScene();
-        Stage stage = (Stage) scene.getWindow();
+        this.stage = (Stage) scene.getWindow();
         ViewModel viewModel = (ViewModel) stage.getUserData();
 
         try{

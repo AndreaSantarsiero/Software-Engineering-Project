@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,17 +36,19 @@ public class SplashScreenController extends Template {
 
     @Override
     public void update(JoiningPhaseData joiningPhaseData) {
-        if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load());
-                stage.setScene(newScene);
-                stage.show();
-                joiningPhaseData.setListener(fxmlLoader.getController());
+        Platform.runLater(() -> {
+            if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load());
+                    stage.setScene(newScene);
+                    stage.show();
+                    joiningPhaseData.setListener(fxmlLoader.getController());
+                }
+                catch (IOException e) {
+                    System.out.println("Error: Can't load Splash Screen.");
+                }
             }
-            catch (IOException e) {
-                System.out.println("Error: Can't load Splash Screen.");
-            }
-        }
+        });
     }
 }

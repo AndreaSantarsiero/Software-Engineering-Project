@@ -65,11 +65,11 @@ public class CreateOrJoinController extends Template {
                     Scene newScene = new Scene(fxmlLoader.load());
                     CreateMatchController controller = fxmlLoader.getController();
                     controller.init();
+                    this.stage.setScene(newScene);
+                    this.stage.show();
                     joiningPhaseData.setListener(controller);
 
                     System.out.println(joiningPhaseData.getUsername() + ": clicked on create a new match");
-                    this.stage.setScene(newScene);
-                    this.stage.show();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

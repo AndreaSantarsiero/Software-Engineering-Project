@@ -47,9 +47,9 @@ public class CreateMatchController extends Template{
     @FXML
     protected void onEnterButtonClick(ActionEvent event) {
 
-//        if(flightType.getValue() == null || numberOfPlayers.getValue() == null) {
-//            return;
-//        }
+        if(flightType.getValue() == null || numberOfPlayers.getValue() == null) {
+            return;
+        }
 
         Scene scene = enterButton.getScene();
         this.stage = (Stage) scene.getWindow();
@@ -57,8 +57,7 @@ public class CreateMatchController extends Template{
         VirtualServer virtualServer = viewModel.getVirtualServer();
         JoiningPhaseData joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
-        //curr_state = CHOOSE_NUM_PLAYERS
-        joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS);
+        //joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS);
 
         this.selectedFlightTypeString = flightType.getValue();
         FlightBoard.Type selectedFlightType = null;
@@ -70,11 +69,11 @@ public class CreateMatchController extends Template{
         }
         this.selectedNumberOfPlayers = Integer.parseInt(numberOfPlayers.getValue());
 
+        joiningPhaseData.setState(JoiningPhaseData.JoiningState.GAME_SETUP);
 
         try {
             virtualServer.createMatch(selectedFlightType, selectedNumberOfPlayers);
             enterButton.setDisable(true);
-            System.out.println("match created");
         }
         catch (Exception e) {
             label.setVisible(true);
@@ -91,21 +90,24 @@ public class CreateMatchController extends Template{
         Platform.runLater(() -> {
 
             //Match created successfully
-            if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectPlayerColor.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load());
-                    SelectColorController controller = fxmlLoader.getController();
-                    stage.setScene(newScene);
-                    stage.show();
-                    joiningPhaseData.setListener(controller);
-                    controller.setStage(this.stage);
-                    controller.init();
+            if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
+                while(true) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectPlayerColor.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load());
+                        SelectColorController controller = fxmlLoader.getController();
+                        stage.setScene(newScene);
+                        stage.show();
+                        controller.setStage(this.stage);
+                        controller.init();
+                        joiningPhaseData.setListener(controller);
 
-                    System.out.println(joiningPhaseData.getUsername() + ": created a new match of type " +
-                            this.selectedFlightTypeString + " with " + this.selectedNumberOfPlayers + " players");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                        System.out.println(joiningPhaseData.getUsername() + ": created a new match of type " +
+                                this.selectedFlightTypeString + " with " + this.selectedNumberOfPlayers + " players");
+                        break;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
@@ -113,14 +115,15 @@ public class CreateMatchController extends Template{
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
                 enterButton.setDisable(true);
                 label.setVisible(true);
-                label.setText("An errror occured");
+                label.setText("Error:  " + joiningPhaseData.getServerMessage());
                 label.setStyle("-fx-text-fill: red;" + label.getStyle());
                 System.out.println("Error:  " + joiningPhaseData.getServerMessage());
 
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateOrJoin.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
-                    joiningPhaseData.setListener(fxmlLoader.getController());
+                    CreateOrJoinController controller = fxmlLoader.getController();
+                    controller.setStage(this.stage);
                     //Delay
                     Task<Void> sleeper = new Task<>() {
                         @Override
@@ -135,6 +138,7 @@ public class CreateMatchController extends Template{
                         stage.setScene(newScene);
                         stage.show();
                     });
+                    joiningPhaseData.setListener(controller);
                     new Thread(sleeper).start();
                 }
                 catch (IOException e) {

@@ -68,7 +68,7 @@ public class LoginController extends Template {
             //Can't register the session
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
                 label.setVisible(true);
-                label.setText("An errror has occured, try again");
+                label.setText("Error:  " + joiningPhaseData.getServerMessage());
                 label.setStyle("-fx-text-fill: red;" + label.getStyle());
                 System.out.println("Error:  " + joiningPhaseData.getServerMessage());
             }
@@ -86,7 +86,6 @@ public class LoginController extends Template {
                         Scene newScene = new Scene(fxmlLoader.load());
                         CreateOrJoinController controller = fxmlLoader.getController();
                         controller.setStage(stage);
-                        joiningPhaseData.setListener(controller);
                         //Delay
                         Task<Void> sleeper = new Task<>() {
                             @Override
@@ -102,6 +101,7 @@ public class LoginController extends Template {
                             stage.show();
                         });
                         new Thread(sleeper).start();
+                        joiningPhaseData.setListener(controller);
                         break;
                     }
                     catch (IOException e) {
