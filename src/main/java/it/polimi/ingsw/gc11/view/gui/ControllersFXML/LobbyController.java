@@ -8,6 +8,9 @@ import it.polimi.ingsw.gc11.view.Template;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,11 +27,11 @@ import java.util.Map;
 public class LobbyController extends Template {
 
     @FXML
-    private TableView<Player> playersTable;
+    private TableView<Map.Entry<String, String>> playersTable;
     @FXML
-    private TableColumn<Player, String> playerColumn;
+    private TableColumn<Map.Entry<String, String>, String> playerColumn;
     @FXML
-    private TableColumn<Player, Player.Color> colorColumn;
+    private TableColumn<Map.Entry<String, String>, String> colorColumn;
     @FXML
     private Label label;
 
@@ -49,45 +52,35 @@ public class LobbyController extends Template {
 
         //curr_state = WAITING
 
-        playerColumn = new TableColumn<>("Username");
-        colorColumn = new TableColumn<>("Color");
-//        try {
-//            virtualServer.getPlayersColor();
-//        }
-//        catch (Exception e) {
-//            label.setVisible(true);
-//            label.setText(e.getMessage());
-//            label.setStyle("-fx-text-fill: red;" + label.getStyle());
-//            System.out.println("Network Error:  " + e.getMessage());
-//        }
+        // Configure columns using lambda expressions to access key/value of Map.Entry
+        playerColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getKey()));
+        colorColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getValue()));
 
+        this.setPlayersInfo();
     }
 
+    private void setPlayersInfo(){
+
+        Map<String, String> playersColor = joiningPhaseData.getPlayersColor();
+
+        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(playersColor.entrySet());
+        playersTable.setItems(items);
+
+    }
 
     @Override
     public void update(JoiningPhaseData joiningPhaseData) {
         Platform.runLater(() -> {
 
             if(joiningPhaseData.getState() == JoiningPhaseData.JoiningState.WAITING) {
-                Map<String, String> player_color = joiningPhaseData.getPlayersColor();
-                for (Map.Entry<String, String> entry : player_color.entrySet()) {
-                    playerColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getKey()));
-                    colorColumn.setCellValueFactory(new PropertyValueFactory<>(entry.getValue()));
-                }
-//            ObservableList<Player> players = (ObservableList<Player>) virtualServer.getPlayers();
-//            playersTable.setItems(players);
-
-                playerColumn = new TableColumn<>("Username");
-                playerColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-
-                colorColumn = new TableColumn<>("Color");
-                colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
-
-                playersTable.getColumns().add(playerColumn);
-                playersTable.getColumns().add(colorColumn);
+                this.setPlayersInfo();
             }
+
         });
     }
+
+    //                playersTable.getColumns().add(playerColumn);
+//                playersTable.getColumns().add(colorColumn);
 
     @Override
     public void change() {
