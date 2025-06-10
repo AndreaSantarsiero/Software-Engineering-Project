@@ -1,12 +1,14 @@
 package it.polimi.ingsw.gc11.model;
 
+import java.io.Serializable;
+
 
 
 /**
  * Represents a material in the game. Each material has a specific type
  * that can be BLUE, GREEN, YELLOW, or RED
  */
-public class Material {
+public class Material implements Serializable {
 
     /**
      * Defines the possible types of materials

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.model;
 
+import java.io.Serializable;
 
 
-public abstract class Hit {
+
+public abstract class Hit implements Serializable {
     private int coord;
 
     public enum Type {

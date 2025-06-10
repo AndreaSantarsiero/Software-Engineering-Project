@@ -4,6 +4,8 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
+
 public class AdventureDeck {
     private ArrayList<AdventureCard> cards;
     private boolean observable;
