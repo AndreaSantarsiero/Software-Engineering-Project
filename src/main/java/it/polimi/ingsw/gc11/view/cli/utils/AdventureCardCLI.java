@@ -133,6 +133,15 @@ public class AdventureCardCLI {
         if (i == 1){
             System.out.print("   ABANDONED SHIP    ");
         }
+        else if (i == 5){
+            System.out.print(" Lost days: " + printNumber(abandonedShip.getLostDays()) + "       ");
+        }
+        else if (i == 7){
+            System.out.print(" Lost members: " + printNumber(abandonedShip.getLostMembers()) + "    ");
+        }
+        else if (i == 9){
+            System.out.print(" Coins: " + printNumber(abandonedShip.getCoins()) + "           ");
+        }
         else {
             System.out.print("                     ");
         }
@@ -143,6 +152,16 @@ public class AdventureCardCLI {
     public void draw(AbandonedStation abandonedStation, int i){
         if (i == 1){
             System.out.print("  ABANDONED STATION  ");
+        }
+        else if (i == 5){
+            System.out.print(" Lost days: " + printNumber(abandonedStation.getLostDays()) + "       ");
+        }
+        else if (i == 7){
+            System.out.print(" Members required: " + printNumber(abandonedStation.getMembersRequired()));
+        }
+        else if (i == 9){
+            printMaterials(abandonedStation.getMaterials());
+            setColor(abandonedStation);
         }
         else {
             System.out.print("                     ");
@@ -155,6 +174,30 @@ public class AdventureCardCLI {
         if (i == 1){
             System.out.print("     COMBAT ZONE     ");
         }
+        else if (i == 3){
+            System.out.print(" Least crew members: ");
+        }
+        else if (i == 4){
+            System.out.print(" Lost days: " + printNumber(combatZone.getLostDays()) + "       ");
+        }
+        else if (i == 5){
+            System.out.print(" ------------------- ");
+        }
+        else if (i == 6){
+            System.out.print(" Least engine power: ");
+        }
+        else if (i == 7){
+            System.out.print(" Lost members: " + printNumber(combatZone.getLostMembers()) + "    ");
+        }
+        else if (i == 8){
+            System.out.print(" ------------------- ");
+        }
+        else if (i == 9){
+            System.out.print(" Least fire power:   ");
+        }
+        else if (i == 10){
+            System.out.print(" Shots:              ");
+        }
         else {
             System.out.print("                     ");
         }
@@ -163,6 +206,30 @@ public class AdventureCardCLI {
     public void draw(CombatZoneLv2 combatZone, int i){
         if (i == 1){
             System.out.print("     COMBAT ZONE     ");
+        }
+        else if (i == 3){
+            System.out.print(" Least fire power:   ");
+        }
+        else if (i == 4){
+            System.out.print(" Lost days: " + printNumber(combatZone.getLostDays()) + "       ");
+        }
+        else if (i == 5){
+            System.out.print(" ------------------- ");
+        }
+        else if (i == 6){
+            System.out.print(" Least engine power: ");
+        }
+        else if (i == 7){
+            System.out.print(" Lost materials: " + printNumber(combatZone.getLostMaterials()) + "  ");
+        }
+        else if (i == 8){
+            System.out.print(" ------------------- ");
+        }
+        else if (i == 9){
+            System.out.print(" Least crew members: ");
+        }
+        else if (i == 10){
+            System.out.print(" Shots:              ");
         }
         else {
             System.out.print("                     ");
@@ -175,6 +242,24 @@ public class AdventureCardCLI {
         if (i == 1){
             System.out.print("      EPIDEMIC       ");
         }
+        else if (i == 4){
+            System.out.print("        ,-^-.        ");
+        }
+        else if (i == 5){
+            System.out.print("        |\\/\\|        ");
+        }
+        else if (i == 6){
+            System.out.print("        `-V-'        ");
+        }
+        else if (i == 7 || i == 8 || i == 9){
+            System.out.print("          H          ");
+        }
+        else if (i == 10){
+            System.out.print("       .-;\":-.       ");
+        }
+        else if (i == 11){
+            System.out.print("      ,'|  `; \\      ");
+        }
         else {
             System.out.print("                     ");
         }
@@ -185,6 +270,18 @@ public class AdventureCardCLI {
     public void draw(MeteorSwarm meteorSwarm, int i){
         if (i == 1){
             System.out.print("     METEOR SWARM    ");
+        }
+        else if (i == 4){
+            System.out.print(".          \\         ");
+        }
+        else if (i == 5){
+            System.out.print("     .      \\   ,    ");
+        }
+        else if (i == 6){
+            System.out.print("  .          o     . ");
+        }
+        else if (i == 9){
+            System.out.print(" Meteors:            ");
         }
         else {
             System.out.print("                     ");
@@ -238,6 +335,18 @@ public class AdventureCardCLI {
         else if (i == 5){
             System.out.print("        ~`-'~        ");
         }
+        else if (i == 7){
+            System.out.print(" Lost days: " + printNumber(pirates.getLostDays()) + "       ");
+        }
+        else if (i == 8){
+            System.out.print(" Fire power: " + printNumber(pirates.getFirePower()) + "      ");
+        }
+        else if (i == 9){
+            System.out.print(" Coins: " + printNumber(pirates.getCoins()) + "           ");
+        }
+        else if (i == 10){
+            System.out.print(" Shots:              ");
+        }
         else {
             System.out.print("                     ");
         }
@@ -274,6 +383,18 @@ public class AdventureCardCLI {
         if (i == 1){
             System.out.print("       SLAVERS       ");
         }
+        else if (i == 4){
+            System.out.print(" Fire power: " + printNumber(slavers.getFirePower()) + "      ");
+        }
+        else if (i == 6){
+            System.out.print(" Lost days: " + printNumber(slavers.getLostDays()) + "       ");
+        }
+        else if (i == 8){
+            System.out.print(" Lost members: " + printNumber(slavers.getLostMembers()) + "    ");
+        }
+        else if (i == 10){
+            System.out.print(" Coins: " + printNumber(slavers.getCoins()) + "           ");
+        }
         else {
             System.out.print("                     ");
         }
@@ -284,6 +405,19 @@ public class AdventureCardCLI {
     public void draw(Smugglers smugglers, int i){
         if (i == 1){
             System.out.print("      SMUGGLERS      ");
+        }
+        else if (i == 4){
+            System.out.print(" Fire power: " + printNumber(smugglers.getFirePower()) + "      ");
+        }
+        else if (i == 6){
+            System.out.print(" Lost days: " + printNumber(smugglers.getLostDays()) + "       ");
+        }
+        else if (i == 8){
+            System.out.print(" Lost materials: " + printNumber(smugglers.getLostMaterials()) + "  ");
+        }
+        else if (i == 10){
+            printMaterials(smugglers.getMaterials());
+            setColor(smugglers);
         }
         else {
             System.out.print("                     ");
@@ -312,4 +446,29 @@ public class AdventureCardCLI {
         }
     }
 
+
+
+    public String printNumber(int number){
+        if(number < 10){
+            return number + " ";
+        }
+        else{
+            return number + "";
+        }
+    }
+
+
+    public void printMaterials(List<Material> materials){
+        try{
+            System.out.print(" Materials: ");
+            MaterialCLI.print(materials);
+            for (int j = 0; j < (4 - materials.size()); j++) {
+                System.out.print("  ");
+            }
+            System.out.print(" ");
+        }
+        catch (Exception ignored){
+            System.out.print("                    ");
+        }
+    }
 }

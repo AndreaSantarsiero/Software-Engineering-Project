@@ -1,9 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
-import it.polimi.ingsw.gc11.model.Hit;
-import it.polimi.ingsw.gc11.model.Planet;
-import it.polimi.ingsw.gc11.model.Shot;
+import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
@@ -62,7 +60,39 @@ public class previewCLI {
         PlanetsCard planetsCard = new PlanetsCard(AdventureCard.Type.LEVEL2, 5, planets);
         planetsCard.useCard();
         adventureCards.add(planetsCard);
-        adventureCards.add(null);
+        MeteorSwarm meteorSwarm = new MeteorSwarm(AdventureCard.Type.TRIAL, new ArrayList<>(List.of(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP))));
+        meteorSwarm.useCard();
+        adventureCards.add(meteorSwarm);
+        for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
+            for (AdventureCard adventureCard : adventureCards) {
+                adventureCardCLI.print(adventureCard, i);
+            }
+            System.out.println();
+        }
+
+        adventureCards.clear();
+        Epidemic epidemic = new Epidemic();
+        epidemic.useCard();
+        adventureCards.add(epidemic);
+        AbandonedShip abandonedShip = new AbandonedShip(AdventureCard.Type.TRIAL, 3, 2, 10);
+        abandonedShip.useCard();
+        adventureCards.add(abandonedShip);
+        AbandonedStation abandonedStation = new AbandonedStation(AdventureCard.Type.TRIAL, 3, 2, 1, 1, 1, 1);
+        abandonedStation.useCard();
+        adventureCards.add(abandonedStation);
+        CombatZoneLv1 combatZoneLv1 = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        combatZoneLv1.useCard();
+        adventureCards.add(combatZoneLv1);
+        CombatZoneLv2 combatZoneLv2 = new CombatZoneLv2(AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        combatZoneLv2.useCard();
+        adventureCards.add(combatZoneLv2);
+        Slavers slavers = new Slavers(AdventureCard.Type.LEVEL2, 3, 7, 4, 8);
+        slavers.useCard();
+        adventureCards.add(slavers);
+        Smugglers smugglers = new Smugglers(AdventureCard.Type.LEVEL2, 4, 8, 3,new ArrayList<>(List.of(new Material(Material.Type.RED))));
+        smugglers.useCard();
+        adventureCards.add(smugglers);
+
         for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
             for (AdventureCard adventureCard : adventureCards) {
                 adventureCardCLI.print(adventureCard, i);
