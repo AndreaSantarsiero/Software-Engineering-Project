@@ -1,8 +1,12 @@
 package it.polimi.ingsw.gc11.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Planet {
+
+
+public class Planet implements Serializable {
+
     private boolean visited;
     private ArrayList<Material> materials;
     private Player player;
@@ -31,6 +35,10 @@ public class Planet {
     public void setVisited(Player player) {
         this.visited = true;
         this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public ArrayList<Material> getMaterials() { return materials;}
