@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.gc11.view.cli.input.CoordinatesInput;
 import it.polimi.ingsw.gc11.view.cli.input.EnterInput;
 import it.polimi.ingsw.gc11.view.cli.input.ListIndexInput;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
+import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
@@ -21,6 +23,7 @@ public class BuildingTemplate extends CLITemplate {
 
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
+    private final AdventureCardCLI adventureCardCLI;
     private static final int colCount = 14;
     private static final List<List<String>> mainMenu = List.of(
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
@@ -122,6 +125,7 @@ public class BuildingTemplate extends CLITemplate {
         super(mainCLI);
         shipCardCLI = new ShipCardCLI();
         shipBoardCLI = new ShipBoardCLI(shipCardCLI);
+        adventureCardCLI = new AdventureCardCLI();
     }
 
 
@@ -204,6 +208,19 @@ public class BuildingTemplate extends CLITemplate {
 
         if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP){
             printEnemiesShipBoard(data.getEnemiesShipBoard());
+            for (int i = 0; i < pressEnterToContinue.size(); i++) {
+                System.out.println(pressEnterToContinue.get(i));
+            }
+            mainCLI.addInputRequest(new EnterInput(data));
+            return;
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
+            System.out.println();
+            for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
+                for (AdventureCard adventureCard : data.getMiniDeck()) {
+                    adventureCardCLI.print(adventureCard, i);
+                }
+            }
             for (int i = 0; i < pressEnterToContinue.size(); i++) {
                 System.out.println(pressEnterToContinue.get(i));
             }
