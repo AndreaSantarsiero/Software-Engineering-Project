@@ -17,7 +17,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class SelectColorController extends Template {
 
@@ -37,18 +39,17 @@ public class SelectColorController extends Template {
 
     public void init() {
 
-        //curr_state = GAME_SETUP
+        //curr_state = CHOOSE_COLOR
 
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
         this.joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
-        joiningPhaseData.setState(JoiningPhaseData.JoiningState.CHOOSE_COLOR);
+        joiningPhaseData.resetServerMessage();
 
         try {
             virtualServer.getPlayersColor(); // calls update
-            //Change state and call update
-            joiningPhaseData.setState(JoiningPhaseData.JoiningState.COLOR_SETUP);
+            this.setAvailableColors();
         }
         catch (Exception e) {
             label.setVisible(true);
@@ -57,9 +58,17 @@ public class SelectColorController extends Template {
             System.out.println("Network Error:  " + e.getMessage());
         }
 
-        String[] col = { "red", "blue", "green", "yellow" };
-       availableColors.getItems().addAll(col);
+    }
 
+    private void setAvailableColors(){
+        String[] allColors = { "red", "blue", "green", "yellow" };
+        ArrayList<String> avColors = new ArrayList<>(List.of(allColors));
+        Map<String, String> playersColor = joiningPhaseData.getPlayersColor();
+        if (playersColor != null) {
+            avColors.removeAll(joiningPhaseData.getPlayersColor().values());
+        }
+        availableColors.getItems().clear();
+        availableColors.getItems().addAll(avColors.toArray(String[]::new));
     }
 
     @FXML
@@ -72,9 +81,10 @@ public class SelectColorController extends Template {
         ViewModel viewModel = (ViewModel) stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
 
-        //curr_state = COLOR_SETUP
-
         String selectedColorString = availableColors.getValue();
+
+        //Change state and call update
+        joiningPhaseData.setState(JoiningPhaseData.JoiningState.COLOR_SETUP);
 
         try {
             virtualServer.chooseColor(selectedColorString);
@@ -93,43 +103,36 @@ public class SelectColorController extends Template {
         Platform.runLater(() -> {
 
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
-                if(joiningPhaseData.getServerMessage() != null) {
+                //Can't load available colors or can't choose selected color
+                if ( !joiningPhaseData.getServerMessage().isEmpty()) {
                     label.setVisible(true);
                     label.setText("An errror has occured, try again");
                     label.setStyle("-fx-text-fill: red;" + label.getStyle());
                     System.out.println("Error:  " + joiningPhaseData.getServerMessage());
+                    joiningPhaseData.resetServerMessage();
                 }
                 else {
-                    ArrayList<String> allColors = new ArrayList<>();
-                    allColors.add("red");
-                    allColors.add("blue");
-                    allColors.add("green");
-                    allColors.add("yellow");
-                    allColors.removeAll(joiningPhaseData.getPlayersColor().values());
-                    //String[] col = { "red", "blue", "green", "yellow" };
-                    availableColors.getItems().addAll(allColors);
-
+                    this.setAvailableColors();
                 }
             }
 
-            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
-                enterButton.setVisible(true);
-            }
 
+            //Color setup sucessfull
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.WAITING) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     LobbyController controller = fxmlLoader.getController();
-                    joiningPhaseData.setListener(controller);
                     controller.setStage(this.stage);
                     controller.init();
                     stage.setScene(newScene);
                     stage.show();
+                    joiningPhaseData.setListener(controller);
 
                     System.out.println(joiningPhaseData.getUsername() + ": selected color " +
                             joiningPhaseData.getPlayersColor().get(joiningPhaseData.getUsername()));
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }

@@ -51,15 +51,15 @@ public class LobbyController extends Template {
 
         playerColumn = new TableColumn<>("Username");
         colorColumn = new TableColumn<>("Color");
-        try {
-            virtualServer.getPlayersColor();
-        }
-        catch (Exception e) {
-            label.setVisible(true);
-            label.setText(e.getMessage());
-            label.setStyle("-fx-text-fill: red;" + label.getStyle());
-            System.out.println("Network Error:  " + e.getMessage());
-        }
+//        try {
+//            virtualServer.getPlayersColor();
+//        }
+//        catch (Exception e) {
+//            label.setVisible(true);
+//            label.setText(e.getMessage());
+//            label.setStyle("-fx-text-fill: red;" + label.getStyle());
+//            System.out.println("Network Error:  " + e.getMessage());
+//        }
 
     }
 
