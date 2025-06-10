@@ -438,7 +438,7 @@ public class BuildingTemplate extends CLITemplate {
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE){
             mainCLI.addInputRequest(new CoordinatesInput(data, data.getShipBoard(), data.getSelectedI(), data.getSelectedJ()));
         }
-        else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK){
             mainCLI.addInputRequest(new EnterInput(data));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
