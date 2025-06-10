@@ -369,7 +369,7 @@ public class BuildingTemplate extends CLITemplate {
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
                         printMenu(data, shipBoard, menuIndex, shipCardOrientationMenu, data.getShipCardOrientationMenu());
                     }
-                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
                         printMenu(data, shipBoard, menuIndex, adventureDecksMenu, data.getAdventureCardMenu());
                     }
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){

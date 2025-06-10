@@ -4,8 +4,9 @@ import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.SendMiniDeckAction;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-
 import java.util.List;
+
+
 
 public class ObserveMiniDeckAction extends ClientGameAction {
     private int numDeck;
