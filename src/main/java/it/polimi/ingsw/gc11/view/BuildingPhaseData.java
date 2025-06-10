@@ -255,6 +255,9 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
+        for(AdventureCard adventureCard : miniDeck){
+            adventureCard.useCard();
+        }
         updateState();
     }
 

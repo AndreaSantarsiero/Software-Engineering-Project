@@ -220,6 +220,7 @@ public class BuildingTemplate extends CLITemplate {
                 for (AdventureCard adventureCard : data.getMiniDeck()) {
                     adventureCardCLI.print(adventureCard, i);
                 }
+                System.out.println();
             }
             for (int i = 0; i < pressEnterToContinue.size(); i++) {
                 System.out.println(pressEnterToContinue.get(i));
@@ -439,7 +440,7 @@ public class BuildingTemplate extends CLITemplate {
             mainCLI.addInputRequest(new CoordinatesInput(data, data.getShipBoard(), data.getSelectedI(), data.getSelectedJ()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK){
-            mainCLI.addInputRequest(new EnterInput(data));
+            mainCLI.addInputRequest(new MenuInput(data, adventureDecksMenu.size(), data.getAdventureCardMenu()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
             mainCLI.addInputRequest(new MenuInput(data, endBuildingMenu.size(), data.getEndBuildingMenu()));

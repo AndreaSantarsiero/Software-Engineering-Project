@@ -34,7 +34,7 @@ public class AdventureCardCLI {
             System.out.print("┌─────────────────────┐");
         }
         else if (i == (cardLength - 1)){
-            System.out.print("└─────────────────────┘");
+            System.out.print("└─────────────────────┘" + Ansi.ansi().reset());
         }
         else {
             System.out.print("│");
