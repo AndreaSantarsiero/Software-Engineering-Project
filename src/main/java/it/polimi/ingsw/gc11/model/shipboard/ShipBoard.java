@@ -194,16 +194,17 @@ public abstract class ShipBoard  implements Serializable {
 
 
     /**
-     * Adds a ship card to the specified position on the board
+     * Adds a ship card to the specified position on the board **without any adjacency check**.
      * <p>
-     * This method is intended to be used only during the initial construction of the ship
+     * <b>DO NOT USE WHILE IMPLEMENTING THE GAME!</b> This method bypasses the usual placement rules and
+     * is intended to be used exclusively by {@code ShipBoardLoader} during the loading phase.
      *
      * @param shipCard The ship card to be added
      * @param x The x-coordinate where the card is placed
      * @param y The y-coordinate where the card is placed
      * @throws IllegalArgumentException if the ship card is null or if coordinates are invalid
      */
-    public void addShipCard(ShipCard shipCard, int x, int y) {
+    public void loadShipCard(ShipCard shipCard, int x, int y) {
         if (shipCard == null) {
             throw new IllegalArgumentException("Ship card is null");
         }
@@ -211,6 +212,62 @@ public abstract class ShipBoard  implements Serializable {
         int i = adaptY(y);
         int j = adaptX(x);
         checkIndexes(j, i);
+        components[i][j] = shipCard;
+        lastModifiedI = i;
+        lastModifiedJ = j;
+        shipCard.place(this, x, y);
+    }
+
+    /**
+     * Adds a ship card to the specified position on the board, ensuring it is adjacent
+     * to at least one already-placed ship card.
+     * <p>
+     * This method is used during the normal gameplay to extend the ship structure,
+     * enforcing the rule that new cards must be placed next to existing ones.
+     *
+     * @param shipCard The ship card to be added
+     * @param x The x-coordinate where the card is placed
+     * @param y The y-coordinate where the card is placed
+     * @throws IllegalArgumentException if the ship card is null, coordinates are invalid, or there are no adjacent ship cards at the specified position
+     */
+    public void placeShipCard(ShipCard shipCard, int x, int y) {
+        if (shipCard == null) {
+            throw new IllegalArgumentException("Ship card is null");
+        }
+
+        int i = adaptY(y);
+        int j = adaptX(x);
+        boolean legalPosition = false;
+        checkIndexes(j, i);
+
+        try{
+            checkIndexes(j, i-1);
+            if(components[i-1][j] != null){
+                legalPosition = true;
+            }
+        } catch(Exception ignored){}
+        try{
+            checkIndexes(j+1, i);
+            if(components[i][j+1] != null){
+                legalPosition = true;
+            }
+        } catch(Exception ignored){}
+        try{
+            checkIndexes(j, i+1);
+            if(components[i+1][j] != null){
+                legalPosition = true;
+            }
+        } catch(Exception ignored){}
+        try{
+            checkIndexes(j-1, i);
+            if(components[i][j-1] != null){
+                legalPosition = true;
+            }
+        } catch(Exception ignored){}
+
+        if(!legalPosition){
+            throw new IllegalArgumentException("No ship cards were already placed close to these coordinates.");
+        }
         components[i][j] = shipCard;
         lastModifiedI = i;
         lastModifiedJ = j;

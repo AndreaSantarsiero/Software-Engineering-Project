@@ -494,7 +494,7 @@ public class GameModel {
         for (Player player : players) {
             if (player.getUsername().equals(username)) {
                 ShipBoard shipBoard = player.getShipBoard();
-                shipBoard.addShipCard(shipCard, x, y);
+                shipBoard.placeShipCard(shipCard, x, y);
                 heldShipCards.remove(username);
                 return shipBoard;
             }

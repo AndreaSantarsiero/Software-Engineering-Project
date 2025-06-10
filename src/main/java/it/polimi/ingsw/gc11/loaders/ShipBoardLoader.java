@@ -96,7 +96,7 @@ public class ShipBoardLoader {
             if (shipCard != null) {
                 shipCard.discover();
                 if(shipBoard.getShipCard(x, y) == null) {
-                    shipBoard.addShipCard(shipCard, x, y);
+                    shipBoard.loadShipCard(shipCard, x, y);
                 }
                 else {
                     System.err.println("Warning: a ShipCard was already present at this coordinates: (" + x + ", " + y +")");

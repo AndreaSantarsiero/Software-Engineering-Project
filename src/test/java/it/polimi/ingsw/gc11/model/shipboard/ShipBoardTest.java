@@ -20,7 +20,7 @@ public class ShipBoardTest {
     void setUp() {
         shipBoard = new Level1ShipBoard();
         HousingUnit centralUnit = new HousingUnit("centralUnit", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, true);
-        shipBoard.addShipCard(centralUnit, 7, 7);
+        shipBoard.loadShipCard(centralUnit, 7, 7);
     }
 
 
@@ -51,11 +51,11 @@ public class ShipBoardTest {
 
 
     @Test
-    void testAddShipCards() {
+    void testPlaceShipCards() {
         Cannon cannon = new Cannon("singleCannon", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Cannon.Type.SINGLE);
-        shipBoard.addShipCard(cannon, 6, 7);
+        shipBoard.placeShipCard(cannon, 6, 7);
         assertEquals(cannon, shipBoard.getShipCard(6, 7), "Ship card not placed correctly");
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.addShipCard(null, 8, 7), "Cannot place a null component");
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.placeShipCard(null, 8, 7), "Cannot place a null component");
     }
 
 
@@ -65,8 +65,8 @@ public class ShipBoardTest {
         Cannon cannon = new Cannon("singleCannon", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Cannon.Type.SINGLE);
         StructuralModule structuralModule = new StructuralModule("structuralModule", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL);
 
-        shipBoard.addShipCard(cannon, 6, 7);
-        shipBoard.addShipCard(structuralModule, 5, 7);
+        shipBoard.placeShipCard(cannon, 6, 7);
+        shipBoard.placeShipCard(structuralModule, 5, 7);
         shipBoard.removeShipCard(5, 7);
         assertEquals(cannon, shipBoard.getShipCard(6, 7), "This ship card should still be on the board");
         assertThrows(IllegalArgumentException.class, () -> shipBoard.removeShipCard(6, 6), "There are no components at these coordinates");
@@ -79,18 +79,18 @@ public class ShipBoardTest {
     void testRemoveAlienUnits() {
         HousingUnit housingUnit = new HousingUnit("housingUnit", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, false);
         AlienUnit alienUnit = new AlienUnit("alienUnit", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, AlienUnit.Type.BROWN);
-        shipBoard.addShipCard(housingUnit, 5, 7);
-        shipBoard.addShipCard(alienUnit, 6, 7);
+        shipBoard.placeShipCard(housingUnit, 6, 7);
+        shipBoard.placeShipCard(alienUnit, 5, 7);
         shipBoard.connectAlienUnit(alienUnit, housingUnit);
         assertEquals(1, shipBoard.getBrownAliens(), "Brown alien number not calculated correctly");
-        shipBoard.removeShipCard(6, 7);
+        shipBoard.removeShipCard(5, 7);
         //manca verifica su metodi che usano effettivamente le liste di alienUnit
     }
 
     @Test
     void testRemoveBatteries() {
         Battery battery = new Battery("doubleBattery", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Battery.Type.DOUBLE);
-        shipBoard.addShipCard(battery, 6, 7);
+        shipBoard.placeShipCard(battery, 6, 7);
         assertEquals(2, shipBoard.getTotalAvailableBatteries(), "Total available batteries number not calculated correctly");
         shipBoard.removeShipCard(6, 7);
         assertEquals(0, shipBoard.getEnginesPower(0), "Total available batteries number not calculated correctly after removing a battery module");
@@ -99,7 +99,7 @@ public class ShipBoardTest {
     @Test
     void testRemoveCannons() {
         Cannon cannon = new Cannon("singleCannon", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Cannon.Type.SINGLE);
-        shipBoard.addShipCard(cannon, 6, 7);
+        shipBoard.placeShipCard(cannon, 6, 7);
         assertThrows(IllegalArgumentException.class, () -> shipBoard.getCannonsPower(null), "Double cannons list cannot be null");
         List<Cannon> doubleCannons = new ArrayList<>();
         assertEquals(1, shipBoard.getCannonsPower(doubleCannons), "Cannon power not calculated correctly");
@@ -110,7 +110,7 @@ public class ShipBoardTest {
     @Test
     void testRemoveEngines() {
         Engine engine = new Engine("singleEngine", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Engine.Type.SINGLE);
-        shipBoard.addShipCard(engine, 6, 7);
+        shipBoard.placeShipCard(engine, 6, 7);
         assertEquals(1, shipBoard.getEnginesPower(0), "Engine power not calculated correctly");
         shipBoard.removeShipCard(6, 7);
         assertEquals(0, shipBoard.getEnginesPower(0), "Engine power not calculated correctly after removing an engine");
@@ -119,7 +119,7 @@ public class ShipBoardTest {
     @Test
     void testRemoveHousingUnits() {
         HousingUnit housingUnit = new HousingUnit("housingUnit", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, false);
-        shipBoard.addShipCard(housingUnit, 6, 7);
+        shipBoard.placeShipCard(housingUnit, 6, 7);
         assertEquals(4, shipBoard.getMembers(), "Members number not calculated correctly");
         shipBoard.removeShipCard(6, 7);
         assertEquals(2, shipBoard.getMembers(), "Members number not calculated correctly after removing a housing unit");
@@ -128,7 +128,7 @@ public class ShipBoardTest {
     @Test
     void testRemoveShields() {
         Shield shield = new Shield("shield", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL);
-        shipBoard.addShipCard(shield, 6, 7);
+        shipBoard.placeShipCard(shield, 6, 7);
         assertTrue(shipBoard.isBeingProtected(Hit.Direction.TOP), "Shield protection not calculated correctly");
         shipBoard.removeShipCard(6, 7);
         assertFalse(shipBoard.isBeingProtected(Hit.Direction.TOP), "Shield protection not calculated correctly after removing a shield");
@@ -137,7 +137,7 @@ public class ShipBoardTest {
     @Test
     void testRemoveStorages() {
         Storage storage = new Storage("storage", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Storage.Type.TRIPLE_BLUE);
-        shipBoard.addShipCard(storage, 6, 7);
+        shipBoard.placeShipCard(storage, 6, 7);
         shipBoard.removeShipCard(6, 7);
         //manca verifica su metodi che usano effettivamente le liste di storages
     }
