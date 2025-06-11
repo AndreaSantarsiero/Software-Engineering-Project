@@ -4,14 +4,14 @@ import it.polimi.ingsw.gc11.view.GamePhaseData;
 
 
 
-public class MenuInput extends InputRequest {
+public class HorizontalMenuInput extends InputRequest {
 
     private final int size;
     private final int previouslySelected;
 
 
 
-    public MenuInput(GamePhaseData gamePhaseData, int size, int previouslySelected) {
+    public HorizontalMenuInput(GamePhaseData gamePhaseData, int size, int previouslySelected) {
         super(gamePhaseData);
         this.size = size;
         this.previouslySelected = previouslySelected;
@@ -20,6 +20,6 @@ public class MenuInput extends InputRequest {
 
     @Override
     public void execute(InputHandler inputHandler){
-        inputHandler.interactiveMenu(gamePhaseData, size, previouslySelected);
+        inputHandler.interactiveHorizontalMenu(gamePhaseData, size, previouslySelected);
     }
 }

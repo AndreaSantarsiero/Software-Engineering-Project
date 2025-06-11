@@ -6,10 +6,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
-import it.polimi.ingsw.gc11.view.cli.input.CoordinatesInput;
-import it.polimi.ingsw.gc11.view.cli.input.EnterInput;
-import it.polimi.ingsw.gc11.view.cli.input.ListIndexInput;
-import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
+import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
@@ -166,7 +163,13 @@ public class BuildingTemplate extends CLITemplate {
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
-                    mainCLI.getVirtualServer().placeShipCard(data.getHeldShipCard(), data.getSelectedX(), data.getSelectedY());
+                    if(data.getHeldShipCard() != null){
+                        mainCLI.getVirtualServer().placeShipCard(data.getHeldShipCard(), data.getSelectedX(), data.getSelectedY());
+                    }
+                    else{
+                        ShipCard reservedShipCard = data.getShipBoard().getReservedComponents().get(data.getReservedShipCardIndex());
+                        mainCLI.getVirtualServer().useReservedShipCard(reservedShipCard, data.getSelectedX(), data.getSelectedY());
+                    }
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.REMOVE_SHIPCARD_SETUP){
@@ -272,14 +275,14 @@ public class BuildingTemplate extends CLITemplate {
                         System.out.print("         ");
                     }
                     else {
-                        shipBoardCLI.printReservedCards(shipBoard, i-5);
+                        shipBoardCLI.printReservedCards(shipBoard, i-5, data.getReservedShipCardIndex());
                         System.out.print("      ");
                     }
                 }
 
                 else if (y == 1){
                     if(i < 5){
-                        shipBoardCLI.printReservedCards(shipBoard, i+2);
+                        shipBoardCLI.printReservedCards(shipBoard, i+2, data.getReservedShipCardIndex());
                         System.out.print("      ");
                     }
                     else if (i == 5){
@@ -434,7 +437,7 @@ public class BuildingTemplate extends CLITemplate {
             mainCLI.addInputRequest(new MenuInput(data, shipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD){
-            //scelgo quale shipCard usare
+            mainCLI.addInputRequest(new HorizontalMenuInput(data, 2, data.getReservedShipCardIndex()));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE){
             mainCLI.addInputRequest(new CoordinatesInput(data, data.getShipBoard(), data.getSelectedI(), data.getSelectedJ()));

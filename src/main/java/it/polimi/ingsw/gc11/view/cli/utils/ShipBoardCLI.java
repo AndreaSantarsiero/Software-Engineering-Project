@@ -73,7 +73,7 @@ public class ShipBoardCLI {
      *
      * @param shipBoard the ShipBoard containing the reserved cards
      */
-    public void printReservedCards(ShipBoard shipBoard, int i) {
+    public void printReservedCards(ShipBoard shipBoard, int i, int selectedShipCard) {
         List<ShipCard> reservedCards = shipBoard.getReservedComponents();
         if (i == 0){
             while (reservedCards.size() < 2) {
@@ -90,10 +90,10 @@ public class ShipBoardCLI {
                 for (ShipCard shipCard : reservedCards) {
                     if (i < ShipCardCLI.cardLength){
                         if (shipCard != null) {
-                            shipCard.print(shipCardCLI, i, false);
+                            shipCard.print(shipCardCLI, i, i == selectedShipCard);
                         }
                         else {
-                            System.out.print(Ansi.ansi().reset());
+                            shipCardCLI.setSelectedBackground(i == selectedShipCard);
                             shipCardCLI.printEmptyShipCard(i);
                         }
                     }
@@ -179,7 +179,7 @@ public class ShipBoardCLI {
         }
         System.out.println("      ");
         for (int i = 0; i < ShipCardCLI.cardLength + 1; i++) {
-            printReservedCards(shipBoard, i);
+            printReservedCards(shipBoard, i, -1);
             System.out.println("   ");
         }
 

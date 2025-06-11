@@ -38,6 +38,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private int mainMenu;
     private int shipCardMenu;
     private int shipCardIndex;
+    private int reservedShipCardIndex;
     private int shipCardActionMenu;
     private int shipCardOrientationMenu;
     private int adventureCardMenu;
@@ -150,7 +151,12 @@ public class  BuildingPhaseData extends GamePhaseData {
     @Override
     public void setIntegerChoice(int choice) {
         previousState = state;
-        setShipCardIndex(choice);
+        if(state == BuildingState.CHOOSE_FREE_SHIPCARD){
+            setShipCardIndex(choice);
+        }
+        else if(state == BuildingState.CHOOSE_RESERVED_SHIPCARD){
+            setReservedShipCardIndex(choice);
+        }
     }
 
     @Override
@@ -294,6 +300,15 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setShipCardIndex(int shipCardIndex) {
         this.shipCardIndex = shipCardIndex;
+        notifyListener();
+    }
+
+    public int getReservedShipCardIndex(){
+        return reservedShipCardIndex;
+    }
+
+    public void setReservedShipCardIndex(int reservedShipCardIndex) {
+        this.reservedShipCardIndex = reservedShipCardIndex;
         notifyListener();
     }
 

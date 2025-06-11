@@ -69,6 +69,41 @@ public class InputHandler {
 
 
 
+    public void interactiveHorizontalMenu(GamePhaseData data, int size, int previouslySelected) {
+        if (!context.getCurrentPhase().equals(data)) {
+            return;
+        }
+
+        int selected = previouslySelected;
+
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("left", "\033[D", "a", "A");    // Left
+        keyMap.bind("right", "\033[C", "d", "D");   // Right
+        keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
+
+        while (true) {
+            String key = bindingReader.readBinding(keyMap);
+
+            switch (key) {
+                case "left":
+                    selected = (selected - 1 + size) % size;
+                    break;
+                case "right":
+                    selected = (selected + 1) % size;
+                    break;
+                case "enter":
+                    data.confirmIntegerChoice();
+                    return;
+                default:
+                    // ignore any other key
+            }
+
+            data.setIntegerChoice(selected);
+        }
+    }
+
+
+
     public void interactiveGridMenu(GamePhaseData data, int size, int cols, int previouslySelected) {
         if (!context.getCurrentPhase().equals(data)){
             return;
