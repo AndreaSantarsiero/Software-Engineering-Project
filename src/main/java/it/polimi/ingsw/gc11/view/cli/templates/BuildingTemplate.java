@@ -21,7 +21,8 @@ public class BuildingTemplate extends CLITemplate {
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
     private final AdventureCardCLI adventureCardCLI;
-    private static final int colCount = 14;
+    private static final int rowCount = 11;
+    private static final int colCount = 12;
     private static final List<List<String>> mainMenu = List.of(
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
@@ -207,6 +208,10 @@ public class BuildingTemplate extends CLITemplate {
         ShipBoard shipBoard = data.getShipBoard();
         List<ShipCard> freeShipCards = data.getFreeShipCards();
         int menuIndex = 0;
+        int offset = 0;
+        if(data.getShipCardIndex() >= colCount*rowCount){
+            offset = ((data.getShipCardIndex() + 1)/colCount - rowCount*colCount);
+        }
 
 
         if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP){
@@ -234,10 +239,10 @@ public class BuildingTemplate extends CLITemplate {
 
 
 
-        for(int y = 0; y < (freeShipCards.size()/colCount + 2); y++){
+        for(int y = 0; y < (rowCount + 2); y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
 
-                if(y == (freeShipCards.size()/colCount + 1) && i > 3){
+                if(y == (rowCount + 1) && i > 3){
                     continue;
                 }
 
@@ -387,7 +392,7 @@ public class BuildingTemplate extends CLITemplate {
 
 
                 //printing free ship cards
-                for(int x = 0; x < colCount; x++){
+                for(int x = offset * colCount; x < colCount; x++){
                     int index = y * colCount + x;
                     if(index < freeShipCards.size()){
                         ShipCard shipCard = freeShipCards.get(y * colCount + x);
@@ -395,10 +400,86 @@ public class BuildingTemplate extends CLITemplate {
                     }
                 }
 
+
+                //printing lateral bar
+                if (y == 0){
+                    if(i == 0){
+                        if(offset < 1){
+                            System.out.print(" ╔╗");
+                        }
+                        else {
+                            System.out.print(" ┌┐");
+                        }
+                    }
+                    else if (i < 6) {
+                        if (offset < 1) {
+                            System.out.print(" ║║");
+                        } else {
+                            System.out.print(" ││");
+                        }
+                    }
+                    else {
+                        if(offset < 2){
+                            System.out.print(" ║║");
+                        }
+                        else {
+                            System.out.print(" ││");
+                        }
+                    }
+                }
+                else if (y == 1){
+                    if (i < 5) {
+                        if (offset < 2) {
+                            System.out.print(" ║║");
+                        } else {
+                            System.out.print(" ││");
+                        }
+                    }
+                }
+                else if (y == (rowCount - 2)){
+                    if (i > 1) {
+                        if (offset > 0) {
+                            System.out.print(" ║║");
+                        } else {
+                            System.out.print(" ││");
+                        }
+                    }
+                }
+                else if (y == (rowCount - 1)){
+                    if(i == 0) {
+                        if(offset < 1){
+                            System.out.print(" ║║");
+                        }
+                        else {
+                            System.out.print(" ││");
+                        }
+                    }
+                    else if (i < 6) {
+                        if (offset < 2) {
+                            System.out.print(" ││");
+                        } else {
+                            System.out.print(" ║║");
+                        }
+                    }
+                    else {
+                        if(offset < 2){
+                            System.out.print(" └┘");
+                        }
+                        else {
+                            System.out.print(" ╚╝");
+                        }
+                    }
+                }
+                else {
+                    System.out.print(" ║║");
+                }
+
+
                 System.out.println(Ansi.ansi().reset());
             }
         }
-        System.out.println("(x, y): (" + data.getSelectedX() + "," + data.getSelectedY() + ")  --  (j, i): (" + data.getSelectedJ() + "," + data.getSelectedI() + ")");
+        //System.out.println("(x, y): (" + data.getSelectedX() + "," + data.getSelectedY() + ")  --  (j, i): (" + data.getSelectedJ() + "," + data.getSelectedI() + ")");
+        System.out.println("selected reserved card: " + data.getReservedShipCardIndex() + ", offset: " + offset);
 
 
         //printing error messages
