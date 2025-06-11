@@ -124,10 +124,10 @@ public class SelectColorController extends Template {
                     Scene newScene = new Scene(fxmlLoader.load());
                     LobbyController controller = fxmlLoader.getController();
                     controller.setStage(this.stage);
+                    joiningPhaseData.setListener(controller);
                     controller.init();
                     stage.setScene(newScene);
                     stage.show();
-                    joiningPhaseData.setListener(controller);
 
                     System.out.println(joiningPhaseData.getUsername() + ": selected color " +
                             joiningPhaseData.getPlayersColor().get(joiningPhaseData.getUsername()));

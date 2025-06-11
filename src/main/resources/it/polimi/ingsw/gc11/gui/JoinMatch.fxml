@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="640.0" prefWidth="860.0" spacing="30.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.JoinMatchController">
+
+   <children>
+
+      <!-- Header -->
+      <HBox alignment="CENTER">
+         <children>
+            <Label styleClass="Text" text="JOIN MATCH">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+
+      <!-- TableView for Matches -->
+      <HBox alignment="CENTER">
+         <children>
+            <TableView fx:id="matchTable" prefHeight="367.0" prefWidth="600.0">
+               <columns>
+                  <TableColumn fx:id="matchIdColumn" prefWidth="300.0" text="Match ID" />
+                  <TableColumn fx:id="playersColumn" prefWidth="300.0" text="Players" />
+               </columns>
+            </TableView>
+         </children>
+      </HBox>
+
+      <!-- Join Button -->
+      <HBox alignment="CENTER">
+         <children>
+            <Button fx:id="joinButton" onAction="#onJoinMatchClick" text="Join Selected Match" />
+         </children>
+      </HBox>
+
+      <!-- Error Message -->
+      <HBox alignment="CENTER">
+         <children>
+            <Label fx:id="errorLabel" styleClass="Text" text="error" visible="false">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+
+   </children>
+
+   <padding>
+      <Insets top="20.0" />
+   </padding>
+</VBox>

@@ -64,10 +64,10 @@ public class CreateOrJoinController extends Template {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateMatch.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     CreateMatchController controller = fxmlLoader.getController();
+                    joiningPhaseData.setListener(controller);
                     controller.init();
                     this.stage.setScene(newScene);
                     this.stage.show();
-                    joiningPhaseData.setListener(controller);
 
                     System.out.println(joiningPhaseData.getUsername() + ": clicked on create a new match");
                 } catch (IOException e) {
@@ -80,11 +80,14 @@ public class CreateOrJoinController extends Template {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/JoinMatch.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
-                    joiningPhaseData.setListener(fxmlLoader.getController());
-
-                    System.out.println(joiningPhaseData.getUsername() + ": clicked on join a match");
+                    JoinMatchController controller = fxmlLoader.getController();
+                    joiningPhaseData.setListener(controller);
+                    controller.init(stage);
                     this.stage.setScene(newScene);
                     this.stage.show();
+
+
+                    System.out.println(joiningPhaseData.getUsername() + ": clicked on join a match");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

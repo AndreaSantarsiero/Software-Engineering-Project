@@ -99,8 +99,8 @@ public class CreateMatchController extends Template{
                         stage.setScene(newScene);
                         stage.show();
                         controller.setStage(this.stage);
-                        controller.init();
                         joiningPhaseData.setListener(controller);
+                        controller.init();
 
                         System.out.println(joiningPhaseData.getUsername() + ": created a new match of type " +
                                 this.selectedFlightTypeString + " with " + this.selectedNumberOfPlayers + " players");

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.Template;
@@ -17,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Map;
@@ -79,24 +77,26 @@ public class LobbyController extends Template {
         });
     }
 
-    //                playersTable.getColumns().add(playerColumn);
-//                playersTable.getColumns().add(colorColumn);
 
     @Override
     public void change() {
         Platform.runLater(() -> {
+
             ViewModel viewModel = (ViewModel) stage.getUserData();
             GamePhaseData data = viewModel.getPlayerContext().getCurrentPhase();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1024, 768);
-                stage.setScene(newScene);
                 BuildingController controller = fxmlLoader.getController();
                 data.setListener(controller);
                 controller.initialize(stage, viewModel);
-            } catch (IOException e) {
+                stage.setScene(newScene);
+                stage.show();
+            }
+            catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
         });
     }
 }
