@@ -100,7 +100,7 @@ public class ShipBoardCLI {
                     else {
                         printInvalidSquare();
                     }
-                    System.out.println(Ansi.ansi().reset());
+                    System.out.print(Ansi.ansi().reset());
                 }
             }
         }
