@@ -392,11 +392,13 @@ public class BuildingTemplate extends CLITemplate {
 
 
                 //printing free ship cards
-                for(int x = offset * colCount; x < colCount; x++){
-                    int index = y * colCount + x;
-                    if(index < freeShipCards.size()){
-                        ShipCard shipCard = freeShipCards.get(y * colCount + x);
-                        shipCard.print(shipCardCLI, i, index == data.getShipCardIndex());
+                if (y < rowCount){
+                    for(int x = offset * colCount; x < colCount; x++){
+                        int index = y * colCount + x;
+                        if(index < freeShipCards.size()){
+                            ShipCard shipCard = freeShipCards.get(y * colCount + x);
+                            shipCard.print(shipCardCLI, i, index == data.getShipCardIndex());
+                        }
                     }
                 }
 
@@ -470,7 +472,7 @@ public class BuildingTemplate extends CLITemplate {
                         }
                     }
                 }
-                else {
+                else if (y < rowCount) {
                     System.out.print(" ║║");
                 }
 
