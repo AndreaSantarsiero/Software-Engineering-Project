@@ -17,7 +17,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public enum BuildingState {
         CHOOSE_MAIN_MENU,
         CHOOSE_FREE_SHIPCARD, WAIT_SHIPCARD, CHOOSE_SHIPCARD_MENU, CHOOSE_SHIPCARD_ACTION, PLACE_SHIPCARD,  CHOOSE_SHIPCARD_ORIENTATION, RESERVE_SHIPCARD, RELEASE_SHIPCARD, SHIPCARD_SETUP,
-        USE_RESERVED_SHIPCARD, CHOOSE_RESERVED_SHIPCARD,
+        CHOOSE_RESERVED_SHIPCARD,
         REMOVE_SHIPCARD, CHOOSE_SHIPCARD_TO_REMOVE, REMOVE_SHIPCARD_SETUP,
         WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
         CHOOSE_ADVENTURE_DECK, WAIT_ADVENTURE_DECK, SHOW_ADVENTURE_DECK,
@@ -75,7 +75,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         if(state == BuildingState.CHOOSE_MAIN_MENU){
             switch (mainMenu) {
                 case 0 -> state = BuildingState.CHOOSE_FREE_SHIPCARD;
-                case 1 -> state = BuildingState.USE_RESERVED_SHIPCARD;
+                case 1 -> state = BuildingState.CHOOSE_RESERVED_SHIPCARD;
                 case 2 -> state = BuildingState.REMOVE_SHIPCARD;
                 case 3 -> state = BuildingState.WAIT_ENEMIES_SHIP;
                 case 4 -> state = BuildingState.CHOOSE_ADVENTURE_DECK;
