@@ -239,10 +239,10 @@ public class BuildingTemplate extends CLITemplate {
 
 
 
-        for(int y = 0; y < (rowCount + 2); y++){
+        for(int y = 0; y < (rowCount + 1); y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
 
-                if(y == (rowCount + 1) && i > 3){
+                if(y == rowCount && i > 3){
                     continue;
                 }
 
