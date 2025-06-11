@@ -75,6 +75,7 @@ public class MainCLI {
                 }
                 catch (Exception e) {
                     System.err.println("[InputHandlerThread] Error during input setup: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }, "InputHandlerThread");

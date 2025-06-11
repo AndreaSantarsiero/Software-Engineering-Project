@@ -463,14 +463,14 @@ public class BuildingTemplate extends CLITemplate {
                         }
                     }
                     else if (i < 6) {
-                        if (offset > 1) {
+                        if (offset < 2) {
                             System.out.print(" ││");
                         } else {
                             System.out.print(" ║║");
                         }
                     }
                     else {
-                        if(offset > 1){
+                        if(offset < 2){
                             System.out.print(" └┘");
                         }
                         else {
