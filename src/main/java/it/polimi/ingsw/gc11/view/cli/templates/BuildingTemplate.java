@@ -210,7 +210,8 @@ public class BuildingTemplate extends CLITemplate {
         int menuIndex = 0;
         int offset = 0;
         if(data.getShipCardIndex() >= colCount*rowCount){
-            offset = ((data.getShipCardIndex() + 1)/colCount - rowCount*colCount);
+            offset = ((data.getShipCardIndex() + 1)/colCount - rowCount);
+            System.out.println("Offset: " + offset);
         }
 
 
