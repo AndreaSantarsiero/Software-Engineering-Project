@@ -437,9 +437,15 @@ public class BuildingTemplate extends CLITemplate {
                             System.out.print(" ││");
                         }
                     }
+                    else {
+                        System.out.print(" ║║");
+                    }
                 }
                 else if (y == (rowCount - 2)){
-                    if (i > 1) {
+                    if (i < 2) {
+                        System.out.print(" ║║");
+                    }
+                    else {
                         if (offset > 0) {
                             System.out.print(" ║║");
                         } else {
@@ -449,7 +455,7 @@ public class BuildingTemplate extends CLITemplate {
                 }
                 else if (y == (rowCount - 1)){
                     if(i == 0) {
-                        if(offset < 1){
+                        if(offset > 0){
                             System.out.print(" ║║");
                         }
                         else {
@@ -457,14 +463,14 @@ public class BuildingTemplate extends CLITemplate {
                         }
                     }
                     else if (i < 6) {
-                        if (offset < 2) {
+                        if (offset > 1) {
                             System.out.print(" ││");
                         } else {
                             System.out.print(" ║║");
                         }
                     }
                     else {
-                        if(offset < 2){
+                        if(offset > 1){
                             System.out.print(" └┘");
                         }
                         else {
