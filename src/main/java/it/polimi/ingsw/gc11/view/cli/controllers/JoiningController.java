@@ -61,6 +61,7 @@ public class JoiningController extends CLIController {
             }
         }
         template.render();
+        System.out.println("STATE: " + data.getState());
         if(data.isStateNew()){
             System.out.println("previousState != state, adding input request");
             addInputRequest();
