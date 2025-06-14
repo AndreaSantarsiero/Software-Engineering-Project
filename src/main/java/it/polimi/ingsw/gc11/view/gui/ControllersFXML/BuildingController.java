@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
@@ -21,6 +22,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,6 +33,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -64,9 +67,6 @@ public class BuildingController extends Controller {
         this.virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
-
-        buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU);
-
 
         double GAP_RATIO = 0.265;
 
@@ -407,11 +407,7 @@ public class BuildingController extends Controller {
 
             final int index = i;
             btn.setOnAction(event -> {
-                try {
-                    onShipCardSelected(index);
-                } catch (NetworkException e) {
-                    throw new RuntimeException(e);
-                }
+                onShipCardSelected(index);
             });
 
             cardTile.getChildren().add(btn);
@@ -419,19 +415,100 @@ public class BuildingController extends Controller {
     }
 
     public void heldShipCardOverlay(){
-        Rectangle rect = new Rectangle();
-        rect.setWidth(200);
-        rect.setHeight(120);
-        rect.setArcWidth(30);
-        rect.setArcHeight(30);
-        rect.setFill(Color.web("#0d47a1"));
+        Rectangle bg = new Rectangle(250, 360);
+        bg.setArcWidth(30);
+        bg.setArcHeight(30);
+        bg.setFill(Color.web("#0d47a1"));
 
-        boardPane.getChildren().add(rect);
+        String basePath = "/it/polimi/ingsw/gc11/shipCards/";
+        ImageView iv = new ImageView(
+                new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm())
+        );
+        iv.setPreserveRatio(true);
+        iv.setFitHeight(120);
+
+        Button left  = new Button("⟲");
+        left.setPrefWidth(80);
+        left.setPrefHeight(10);
+        Button right = new Button("⟳");
+        right.setPrefWidth(80);
+        right.setPrefHeight(10);
+
+        Button release = new Button("Release shipcard");
+        Button place = new Button("Place shipcard");
+        Button reserve = new Button("Reserve shipcard");
+
+        Stream.of(left, right).forEach(b -> {
+            b.setFont(Font.font(26));
+            b.setBackground(Background.EMPTY);
+            b.setBorder(Border.EMPTY);
+            b.setCursor(Cursor.HAND);
+            b.setTextFill(Color.WHITE);
+        });
+
+        Stream.of(release, place, reserve).forEach(b -> {
+            b.setFont(Font.font(20));
+            b.setBackground(Background.EMPTY);
+            b.setBorder(Border.EMPTY);
+            b.setCursor(Cursor.HAND);
+            b.setTextFill(Color.WHITE);
+        });
+
+        Color normalColor = Color.WHITE;
+        Color hoverColor  = Color.web("#ffd54f");
+
+        Stream.of(left, right, release, place, reserve).forEach(btn -> {
+            btn.setTextFill(normalColor);
+
+            btn.setOnMouseEntered(e -> btn.setTextFill(hoverColor));
+            btn.setOnMouseExited (e -> btn.setTextFill(normalColor));
+        });
+
+        HBox buttons = new HBox(40, left, right);
+        buttons.setAlignment(Pos.CENTER);
+
+        VBox content = new VBox(10, iv, buttons,  release, place, reserve);
+        content.setAlignment(Pos.CENTER);
+
+        StackPane card = new StackPane(bg, content);
+
+
+        StackPane.setAlignment(bg, Pos.CENTER);
+        StackPane.setAlignment(content, Pos.CENTER);
+
+        StackPane glass = new StackPane();
+        glass.setPickOnBounds(true);
+        glass.setMouseTransparent(false);
+        glass.getChildren().add(card);
+
+        Rectangle dimmer = new Rectangle();
+        dimmer.setFill(Color.rgb(0, 0, 0, 0.25));   // 25 % nero
+        dimmer.widthProperty().bind(boardPane.widthProperty());
+        dimmer.heightProperty().bind(boardPane.heightProperty());
+        glass.getChildren().add(0, dimmer);
+
+        boardPane.getChildren().add(card);
+
+        left.setOnAction(e -> iv.setRotate(iv.getRotate() - 90));
+        right.setOnAction(e -> iv.setRotate(iv.getRotate() + 90));
+
+        reserve.setOnAction(e -> {
+            boardPane.getChildren().remove(card);
+            onReserveShipCard();
+        });
+        release.setOnAction(e -> {
+            boardPane.getChildren().remove(card);
+            onRelaseShipCard();
+        });
     }
 
-    private void onShipCardSelected(int index) throws NetworkException {
-        virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
-        buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD);
+    private void onShipCardSelected(int index){
+        try {
+            virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
+        heldShipCardOverlay();
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
@@ -439,26 +516,30 @@ public class BuildingController extends Controller {
     private void onReservedShipCardSelected(int index) {
         System.out.println("Reserved ShipCard selezionata indice: " + index);
     }
+    private void onReserveShipCard(){
+        try {
+            virtualServer.reserveShipCard(buildingPhaseData.getHeldShipCard());
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void onRelaseShipCard(){
+        try {
+            virtualServer.releaseShipCard(buildingPhaseData.getHeldShipCard());
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
+        System.out.println("UPDATE: state = " + buildingPhaseData.getState());
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
             this.setFreeShipCards();
-
-            if(this.buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
-                heldShipCardOverlay();
-            }
         });
     }
 
-    private void enablePlacementMode(BuildingPhaseData data) {
-        // TODO: abilita il posizionamento dei moduli nella griglia ship‑board
-    }
-
-    private void showWaitingOverlay() {
-        // TODO: mostra animazione / label di attesa
-    }
 
     @Override
     public void change() {
