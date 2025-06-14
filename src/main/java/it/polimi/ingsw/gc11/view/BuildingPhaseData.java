@@ -278,8 +278,13 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setReservedShipCard(ShipCard reservedShipCard){
-        this.reservedShipCard = reservedShipCard;
-        shipBoard.getReservedComponents().remove(reservedShipCard);
+        if(reservedShipCard != null){
+            this.reservedShipCard = reservedShipCard;
+            shipBoard.getReservedComponents().remove(reservedShipCard);
+        }
+        else {
+            setServerMessage("Reserved ship card not valid for usage");
+        }
     }
 
     public void abortUseReservedShipCard(){
@@ -418,15 +423,16 @@ public class  BuildingPhaseData extends GamePhaseData {
 
 
     public void resetViewData(){
-        selectedI = 0;
-        selectedJ = 0;
+        selectedI = shipBoard.adaptY(7);
+        selectedJ = shipBoard.adaptX(7);
         heldShipCard = null;
         reservedShipCard = null;
         mainMenu = 0;
         shipCardMenu = 0;
-        shipCardIndex =0;
+        shipCardIndex = 0;
         shipCardActionMenu = 0;
         shipCardOrientationMenu = 0;
+        reservedShipCardIndex = 0;
         adventureCardMenu = 0;
         endBuildingMenu = 0;
     }
