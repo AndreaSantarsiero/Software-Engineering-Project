@@ -219,7 +219,6 @@ public class BuildingTemplate extends CLITemplate {
         int offset = 0;
         if(data.getShipCardIndex() >= colCount*rowCount){
             offset = ((data.getShipCardIndex() + 1)/colCount - rowCount) + 1;
-            System.out.println("Offset: " + offset);
         }
 
 
@@ -248,12 +247,8 @@ public class BuildingTemplate extends CLITemplate {
 
 
 
-        for(int y = 0; y < (rowCount + 1); y++){
+        for(int y = 0; y < rowCount; y++){
             for (int i = 0; i < ShipCardCLI.cardLength; i++) {
-
-                if(y == rowCount && i > 3){
-                    continue;
-                }
 
                 //printing user shipBoard (reserved components)
                 if(y == 0){
