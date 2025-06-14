@@ -170,7 +170,17 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     @Override
     public void confirmIntegerChoice() {
-        updateState();
+        if(state == BuildingState.CHOOSE_RESERVED_SHIPCARD){
+            try {
+                setReservedShipCard(shipBoard.getReservedComponents().get(reservedShipCardIndex));
+                updateState();
+            } catch (Exception e) {
+                setServerMessage("Reserved ship card not valid for usage");
+            }
+        }
+        else{
+            updateState();
+        }
     }
 
     @Override
@@ -272,6 +282,12 @@ public class  BuildingPhaseData extends GamePhaseData {
         shipBoard.getReservedComponents().remove(reservedShipCard);
     }
 
+    public void abortUseReservedShipCard(){
+        shipBoard.reserveShipCard(reservedShipCard);
+        reservedShipCard = null;
+        setState(BuildingState.CHOOSE_MAIN_MENU);
+    }
+
 
     public List<AdventureCard> getMiniDeck() {
         return miniDeck;
@@ -336,12 +352,6 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setReservedShipCardIndex(int reservedShipCardIndex) {
         this.reservedShipCardIndex = reservedShipCardIndex;
-        try {
-            setReservedShipCard(shipBoard.getReservedComponents().get(reservedShipCardIndex));
-            notifyListener();
-        } catch (Exception e) {
-            setServerMessage("Reserved ship card not valid for usage");
-        }
     }
 
     public int getShipCardActionMenu(){

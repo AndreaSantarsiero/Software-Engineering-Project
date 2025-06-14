@@ -164,7 +164,12 @@ public class BuildingTemplate extends CLITemplate {
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
-                    mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
+                    if(data.getReservedShipCard() != null){
+                        data.abortUseReservedShipCard();
+                    }
+                    else{
+                        mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
+                    }
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
