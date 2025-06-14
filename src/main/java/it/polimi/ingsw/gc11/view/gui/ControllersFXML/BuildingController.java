@@ -505,10 +505,11 @@ public class BuildingController extends Controller {
     private void onShipCardSelected(int index){
         try {
             virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
+            buildingPhaseData.setState(BuildingPhaseData.BuildingState.WAIT_SHIPCARD);
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
-        heldShipCardOverlay();  //devi aspettare che il server ti risponde per mostrarla
+        //heldShipCardOverlay();  //devi aspettare che il server ti risponde per mostrarla
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
@@ -537,6 +538,9 @@ public class BuildingController extends Controller {
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
             this.setFreeShipCards();
+            if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
+                heldShipCardOverlay();  //mostro la freeShipCard solo quando il server me la manda
+            }
         });
     }
 
