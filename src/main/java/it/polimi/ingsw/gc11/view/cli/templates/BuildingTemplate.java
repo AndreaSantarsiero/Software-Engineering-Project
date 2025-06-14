@@ -517,7 +517,7 @@ public class BuildingTemplate extends CLITemplate {
             }
         }
         //System.out.println("(x, y): (" + data.getSelectedX() + "," + data.getSelectedY() + ")  --  (j, i): (" + data.getSelectedJ() + "," + data.getSelectedI() + ")");
-        System.out.println("selected reserved card: " + data.getReservedShipCardIndex() + ", offset: " + offset);
+        //System.out.println("selected reserved card: " + data.getReservedShipCardIndex() + ", offset: " + offset);
 
 
         //printing error messages

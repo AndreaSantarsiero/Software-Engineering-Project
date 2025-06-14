@@ -376,14 +376,23 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setShipCardOrientationMenu(int shipCardOrientationMenu){
         this.shipCardOrientationMenu = shipCardOrientationMenu;
         if(heldShipCard != null){
-            switch (shipCardOrientationMenu) {
-                case 0 -> heldShipCard.setOrientation(ShipCard.Orientation.DEG_0);
-                case 1 -> heldShipCard.setOrientation(ShipCard.Orientation.DEG_90);
-                case 2 -> heldShipCard.setOrientation(ShipCard.Orientation.DEG_180);
-                case 3 -> heldShipCard.setOrientation(ShipCard.Orientation.DEG_270);
-            }
+            setShipCardOrientation(heldShipCard);
+        }
+        else if(reservedShipCard != null){
+            setShipCardOrientation(reservedShipCard);
         }
         notifyListener();
+    }
+
+    public void setShipCardOrientation(ShipCard shipCard){
+        if(shipCard != null){
+            switch (shipCardOrientationMenu) {
+                case 0 -> shipCard.setOrientation(ShipCard.Orientation.DEG_0);
+                case 1 -> shipCard.setOrientation(ShipCard.Orientation.DEG_90);
+                case 2 -> shipCard.setOrientation(ShipCard.Orientation.DEG_180);
+                case 3 -> shipCard.setOrientation(ShipCard.Orientation.DEG_270);
+            }
+        }
     }
 
     public int getAdventureCardMenu() {
