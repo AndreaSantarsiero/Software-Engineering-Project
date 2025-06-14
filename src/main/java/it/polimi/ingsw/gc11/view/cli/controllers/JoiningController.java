@@ -194,7 +194,7 @@ public class JoiningController extends CLIController {
 
     public void setConnectionTypeMenu(int connectionTypeMenu) {
         this.connectionTypeMenu = connectionTypeMenu;
-        template.render();
+        update(data);
     }
 
     public int getCreateOrJoinMenu() {
@@ -203,7 +203,7 @@ public class JoiningController extends CLIController {
 
     public void setCreateOrJoinMenu(int createOrJoinMenu) {
         this.createOrJoinMenu = createOrJoinMenu;
-        template.render();
+        update(data);
     }
 
     public int getGameLevel(){
@@ -212,7 +212,7 @@ public class JoiningController extends CLIController {
 
     public void setGameLevel(int gameLevel) {
         this.gameLevel = gameLevel;
-        template.render();
+        update(data);
     }
 
     public int getNumPlayers() {
@@ -221,7 +221,7 @@ public class JoiningController extends CLIController {
 
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
-        template.render();
+        update(data);
     }
 
     public int getExistingGameMenu() {
@@ -230,7 +230,7 @@ public class JoiningController extends CLIController {
 
     public void setExistingGameMenu(int existingGameMenu) {
         this.existingGameMenu = existingGameMenu;
-        template.render();
+        update(data);
     }
 
     public int getChosenColorMenu() {
@@ -239,7 +239,7 @@ public class JoiningController extends CLIController {
 
     public void setChosenColorMenu(int chosenColorMenu) {
         this.chosenColorMenu = chosenColorMenu;
-        template.render();
+        update(data);
     }
 
     public boolean isUsernameApproved(){
