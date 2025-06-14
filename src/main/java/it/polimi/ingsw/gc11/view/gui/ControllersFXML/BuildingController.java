@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
+import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.stream.IntStream;
+
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
@@ -10,12 +13,15 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -26,7 +32,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
+import javafx.util.Duration;
 
 
 public class BuildingController extends Controller {
@@ -40,18 +46,16 @@ public class BuildingController extends Controller {
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
 
+    @FXML private Button PROVA;
+
     private Stage stage;
     private ViewModel viewModel;
     private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
 
-
-
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
-
 
     public void initialize(Stage stage, ViewModel viewModel) {
         this.stage = stage;
@@ -59,10 +63,25 @@ public class BuildingController extends Controller {
         stage.show();
         this.virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        ShipBoardLoader loader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
-        ShipBoard shipBoard = loader.getShipBoard();
+        ShipBoard shipBoard = buildingPhaseData.getShipBoard();
+
+        buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU);
+
 
         double GAP_RATIO = 0.265;
+
+        DoubleBinding side = Bindings.createDoubleBinding(() ->
+                        Math.min(boardPane.getWidth(), boardPane.getHeight() * ((double) 937 /679)),
+                boardPane.widthProperty(), boardPane.heightProperty());
+
+        DoubleBinding gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
+
+        DoubleBinding cellSide = Bindings.createDoubleBinding(() ->
+                        (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
+                side, gap);
+
+        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
+
 
         root.widthProperty().addListener((o,oldW,newW) -> {
             double w = newW.doubleValue();
@@ -81,10 +100,6 @@ public class BuildingController extends Controller {
                 .toExternalForm()));
         boardImg.setPreserveRatio(true);
 
-        DoubleBinding side = Bindings.createDoubleBinding(() ->
-                        Math.min(boardPane.getWidth(), boardPane.getHeight() * ((double) 937 /679)),
-                boardPane.widthProperty(), boardPane.heightProperty());
-
         boardImg.fitWidthProperty().bind(side);
         boardImg.fitHeightProperty().bind(side);
 
@@ -100,15 +115,8 @@ public class BuildingController extends Controller {
         slotGrid.maxWidthProperty().bind(side);
         slotGrid.maxHeightProperty().bind(side);
 
-        DoubleBinding gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
         slotGrid.hgapProperty().bind(gap);
         slotGrid.vgapProperty().bind(gap);
-
-        DoubleBinding cellSide = Bindings.createDoubleBinding(() ->
-                        (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
-                side, gap);
-
-        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
 
         reservedSlots.hgapProperty().bind(gap.divide(7));
         reservedSlots.vgapProperty().bind(gap.divide(7));
@@ -291,11 +299,27 @@ public class BuildingController extends Controller {
                 }
             }
         }
+        update(buildingPhaseData);
+    }
 
 
+    public void setFreeShipCards(){
+        double GAP_RATIO = 0.265;
 
-        ShipCardLoader shipCardLoader = new ShipCardLoader();
-        List<ShipCard> shipCards = shipCardLoader.getAllShipCards();
+        DoubleBinding side = Bindings.createDoubleBinding(() ->
+                        Math.min(boardPane.getWidth(), boardPane.getHeight() * ((double) 937 /679)),
+                boardPane.widthProperty(), boardPane.heightProperty());
+
+        DoubleBinding gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
+
+        DoubleBinding cellSide = Bindings.createDoubleBinding(() ->
+                        (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
+                side, gap);
+
+        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
+
+
+        List<ShipCard> shipCards = buildingPhaseData.getFreeShipCards();
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
 
         cardTile.setPrefColumns(2);
@@ -314,9 +338,18 @@ public class BuildingController extends Controller {
 
         for (int i = 0; i < shipCards.size(); i++) {
             ShipCard shipCard = shipCards.get(i);
-            Image img = new Image(
-                    getClass().getResource(basePath + shipCard.getId() + ".jpg").toExternalForm()
-            );
+            Image img;
+
+            if(shipCard.isCovered()){
+                img = new Image(
+                        getClass().getResource(basePath + "CoveredShipCard.jpg").toExternalForm()
+                );
+            }
+            else{
+                img = new Image(
+                        getClass().getResource(basePath + shipCard.getId() + ".jpg").toExternalForm()
+                );
+            }
 
             BackgroundImage bgImg = new BackgroundImage(
                     img,
@@ -365,7 +398,7 @@ public class BuildingController extends Controller {
                 btn.setScaleX(1.05);
                 btn.setScaleY(1.05);
             });
-            
+
             btn.setOnMouseExited(e -> {
                 btn.setEffect(null);
                 btn.setScaleX(1.0);
@@ -383,12 +416,22 @@ public class BuildingController extends Controller {
 
             cardTile.getChildren().add(btn);
         }
+    }
 
-        update(buildingPhaseData);
+    public void heldShipCardOverlay(){
+        Rectangle rect = new Rectangle();
+        rect.setWidth(200);
+        rect.setHeight(120);
+        rect.setArcWidth(30);
+        rect.setArcHeight(30);
+        rect.setFill(Color.web("#0d47a1"));
+
+        boardPane.getChildren().add(rect);
     }
 
     private void onShipCardSelected(int index) throws NetworkException {
         virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
+        buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD);
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
@@ -397,94 +440,16 @@ public class BuildingController extends Controller {
         System.out.println("Reserved ShipCard selezionata indice: " + index);
     }
 
-    private void setupNetworking() {
-        Scene scene = root.getScene();
-        if (scene == null) {
-            return;
-        }
-        this.stage = (Stage) scene.getWindow();
-        this.viewModel = (ViewModel) this.stage.getUserData();
-        if (this.viewModel == null) {
-            System.err.println("ViewModel non trovato nello Stage.");
-            return;
-        }
-
-        this.virtualServer = viewModel.getVirtualServer();
-        this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-
-        this.buildingPhaseData.setListener(this);
-
-        this.update(this.buildingPhaseData);
-    }
-
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
-
         Platform.runLater(() -> {
-            switch (buildingPhaseData.getState()) {
-                case CHOOSE_FREE_SHIPCARD -> showFreeShipCards(buildingPhaseData.getFreeShipCards());
-                case CHOOSE_POSITION -> enablePlacementMode(buildingPhaseData);
-                case WAITING, WAIT_ENEMIES_SHIP -> showWaitingOverlay();
-                default -> { /* altri stati ancora da gestire */ }
+            cardTile.getChildren().clear();
+            this.setFreeShipCards();
+
+            if(this.buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
+                heldShipCardOverlay();
             }
         });
-    }
-
-    private void onShipCardSelectedNetwork(int index) throws NetworkException {
-        if (virtualServer == null || buildingPhaseData == null) {
-            System.err.println("Connessione al server non inizializzata.");
-            return;
-        }
-        virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
-    }
-
-    private void showFreeShipCards(List<ShipCard> cards) {
-        cardTile.getChildren().clear();
-
-        if (cards == null || cards.isEmpty()) {
-            return;
-        }
-
-        double horizontalPadding = 20.0;
-        String basePath = "/it/polimi/ingsw/gc11/shipCards/";
-
-        int idx = 0;
-        for (ShipCard card : cards) {
-            String imgPath = basePath + card.getId() + ".jpg";
-
-            if (imgPath == null) {
-                System.err.println("ShipCard senza imagePath – uso placeholder.");
-                imgPath = "/it/polimi/ingsw/gc11/cards/placeholder_card.png";
-            }
-
-            Image cardImage = new Image(getClass().getResource(imgPath).toExternalForm(), true);
-            ImageView view = new ImageView(cardImage);
-            view.setPreserveRatio(true);
-
-            // Il fitWidth è legato alla larghezza del cardPane (barra di destra)
-            view.fitWidthProperty().bind(cardPane.widthProperty().subtract(horizontalPadding));
-
-            /* Effetto hover: bagliore dorato */
-            DropShadow glow = new DropShadow(20, Color.web("#ffd700"));
-            view.setOnMouseEntered(e -> view.setEffect(glow));
-            view.setOnMouseExited(e -> view.setEffect(null));
-
-            final int chosen = idx;
-            view.setOnMouseClicked(e -> {
-                try {
-                    onShipCardSelectedNetwork(chosen);
-                } catch (NetworkException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-
-            StackPane wrapper = new StackPane(view);
-            wrapper.setAlignment(Pos.CENTER);
-            wrapper.setPadding(new Insets(5));
-
-            cardTile.getChildren().add(wrapper);
-            idx++;
-        }
     }
 
     private void enablePlacementMode(BuildingPhaseData data) {

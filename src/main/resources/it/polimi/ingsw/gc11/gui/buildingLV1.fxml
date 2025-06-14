@@ -10,6 +10,7 @@
            spacing="0"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingController">
+
         <!-- Parte sinistra: plancia nave -->
         <StackPane fx:id="boardPane" minWidth="0" minHeight="0">
             <children>
