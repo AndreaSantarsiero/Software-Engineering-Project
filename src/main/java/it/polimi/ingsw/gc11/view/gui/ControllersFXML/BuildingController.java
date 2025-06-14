@@ -472,16 +472,34 @@ public class BuildingController extends Controller {
 
         StackPane card = new StackPane(bg, content);
 
+
         StackPane.setAlignment(bg, Pos.CENTER);
         StackPane.setAlignment(content, Pos.CENTER);
+
+        StackPane glass = new StackPane();
+        glass.setPickOnBounds(true);
+        glass.setMouseTransparent(false);
+        glass.getChildren().add(card);
+
+        Rectangle dimmer = new Rectangle();
+        dimmer.setFill(Color.rgb(0, 0, 0, 0.25));   // 25 % nero
+        dimmer.widthProperty().bind(boardPane.widthProperty());
+        dimmer.heightProperty().bind(boardPane.heightProperty());
+        glass.getChildren().add(0, dimmer);
 
         boardPane.getChildren().add(card);
 
         left.setOnAction(e -> iv.setRotate(iv.getRotate() - 90));
         right.setOnAction(e -> iv.setRotate(iv.getRotate() + 90));
 
-        reserve.setOnAction(e -> {boardPane.getChildren().remove(card);
-                                            onReserveShipCard();});
+        reserve.setOnAction(e -> {
+            boardPane.getChildren().remove(card);
+            onReserveShipCard();
+        });
+        release.setOnAction(e -> {
+            boardPane.getChildren().remove(card);
+            onRelaseShipCard();
+        });
     }
 
     private void onShipCardSelected(int index){
@@ -490,7 +508,7 @@ public class BuildingController extends Controller {
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
-        buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD);
+        heldShipCardOverlay();
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
@@ -499,9 +517,15 @@ public class BuildingController extends Controller {
         System.out.println("Reserved ShipCard selezionata indice: " + index);
     }
     private void onReserveShipCard(){
-
         try {
             virtualServer.reserveShipCard(buildingPhaseData.getHeldShipCard());
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void onRelaseShipCard(){
+        try {
+            virtualServer.releaseShipCard(buildingPhaseData.getHeldShipCard());
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
@@ -513,11 +537,6 @@ public class BuildingController extends Controller {
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
             this.setFreeShipCards();
-
-            if(this.buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD ||
-                this.buildingPhaseData.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
-                heldShipCardOverlay();
-            }
         });
     }
 
