@@ -201,7 +201,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
         previousState = state;
-        if(state == BuildingState.SHIPCARD_SETUP || state == BuildingState.RESERVE_SHIPCARD) {
+        if(state == BuildingState.SHIPCARD_SETUP || state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD) {
             state = BuildingState.CHOOSE_SHIPCARD_MENU;
         }
         else {
@@ -352,6 +352,7 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setReservedShipCardIndex(int reservedShipCardIndex) {
         this.reservedShipCardIndex = reservedShipCardIndex;
+        notifyListener();
     }
 
     public int getShipCardActionMenu(){
