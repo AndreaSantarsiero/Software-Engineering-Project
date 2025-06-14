@@ -210,7 +210,7 @@ public class BuildingTemplate extends CLITemplate {
         int menuIndex = 0;
         int offset = 0;
         if(data.getShipCardIndex() >= colCount*rowCount){
-            offset = ((data.getShipCardIndex() + 1)/colCount - rowCount);
+            offset = ((data.getShipCardIndex() + 1)/colCount - rowCount) + 1;
             System.out.println("Offset: " + offset);
         }
 
@@ -394,7 +394,7 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing free ship cards
                 if (y < rowCount){
-                    for(int x = offset * colCount; x < colCount; x++){
+                    for(int x = offset * colCount; x < (colCount * (1 + offset)); x++){
                         int index = y * colCount + x;
                         if(index < freeShipCards.size()){
                             ShipCard shipCard = freeShipCards.get(y * colCount + x);
