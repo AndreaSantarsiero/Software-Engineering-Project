@@ -27,8 +27,6 @@ public class JoiningTemplate extends CLITemplate {
     public void render() {
         JoiningPhaseData data = controller.getPhaseData();
         clearView();
-        System.out.println("Thread name: " + Thread.currentThread().getName());
-        Thread.dumpStack();
         System.out.println("\n\n");
         System.out.println(" _______  _______  _        _______                     _________ _______           _______  _        _______  _______ ");
         System.out.println("(  ____ \\(  ___  )( \\      (  ___  )|\\     /||\\     /|  \\__   __/(  ____ )|\\     /|(  ____ \\| \\    /\\(  ____ \\(  ____ )");
