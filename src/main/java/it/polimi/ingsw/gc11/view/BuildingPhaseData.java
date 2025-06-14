@@ -326,7 +326,12 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setReservedShipCardIndex(int reservedShipCardIndex) {
         this.reservedShipCardIndex = reservedShipCardIndex;
-        notifyListener();
+        try {
+            heldShipCard = shipBoard.getReservedComponents().get(reservedShipCardIndex);
+            notifyListener();
+        } catch (IndexOutOfBoundsException e) {
+            setServerMessage("Reserved ship card not valid for usage");
+        }
     }
 
     public int getShipCardActionMenu(){

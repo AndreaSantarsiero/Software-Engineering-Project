@@ -353,7 +353,9 @@ public class BuildingTemplate extends CLITemplate {
                             }
                         }
                         if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
-                            data.getHeldShipCard().print(shipCardCLI, i+5, false);
+                            if(data.getHeldShipCard() != null) {
+                                data.getHeldShipCard().print(shipCardCLI, i + 5, false);
+                            }
                         }
                         else {
                             shipCardCLI.printEmptyShipCard(i+5);
