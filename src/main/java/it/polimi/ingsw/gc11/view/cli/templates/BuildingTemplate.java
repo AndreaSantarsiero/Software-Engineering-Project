@@ -33,6 +33,14 @@ public class BuildingTemplate extends CLITemplate {
             List.of("┬─┐┌─┐┌┬┐┌─┐┬  ┬┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     "├┬┘├┤ ││││ │└┐┌┘├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
                     "┴└─└─┘┴ ┴└─┘ └┘ └─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
+            List.of("┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌─┐┌─┐┌┬┐  ┌┬┐┌─┐┌┐┌┬ ┬",
+                    "├─┤ ││└┐┌┘├─┤││││  ├┤  ││  │││├┤ ││││ │",
+                    "┴ ┴─┴┘ └┘ ┴ ┴┘└┘└─┘└─┘─┴┘  ┴ ┴└─┘┘└┘└─┘")
+    );
+    //"Take a free Ship Card", "See adventure card decks", "See enemies ships"
+    //https://manytools.org/hacker-tools/ascii-banner/
+    //style Calvin S
+    private static final List<List<String>> advancedMenu = List.of(
             List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
                     "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
                     "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
@@ -44,11 +52,11 @@ public class BuildingTemplate extends CLITemplate {
                     "┴└─└─┘└─┘└─┘ ┴    ┴ ┴┴ ┴└─┘┴└─"),
             List.of("┌─┐┌┐┌┌┬┐  ┌┐ ┬ ┬┬┬  ┌┬┐┬┌┐┌┌─┐",
                     "├┤ │││ ││  ├┴┐│ │││   │││││││ ┬",
-                    "└─┘┘└┘─┴┘  └─┘└─┘┴┴─┘─┴┘┴┘└┘└─┘")
+                    "└─┘┘└┘─┴┘  └─┘└─┘┴┴─┘─┴┘┴┘└┘└─┘"),
+            List.of("┌┐ ┌─┐┌─┐┬┌─  ┌┬┐┌─┐  ┌─┐┬─┐┌─┐┬  ┬┬┌─┐┬ ┬┌─┐  ┌┬┐┌─┐┌┐┌┬ ┬",
+                    "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
+                    "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
     );
-    //"Take a free Ship Card", "See adventure card decks", "See enemies ships"
-    //https://manytools.org/hacker-tools/ascii-banner/
-    //style Calvin S
     private static final List<List<String>> shipCardMenu = List.of(
             List.of("┌─┐┬  ┌─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     "├─┘│  ├─┤│  ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
@@ -385,6 +393,9 @@ public class BuildingTemplate extends CLITemplate {
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
                         printMenu(data, shipBoard, menuIndex, endBuildingMenu, data.getEndBuildingMenu());
                     }
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
+                        printMenu(data, shipBoard, menuIndex, advancedMenu, data.getAdvancedMenu());
+                    }
                     else {
                         printMenu(data, shipBoard, menuIndex, mainMenu, data.getMainMenu());
                     }
@@ -399,6 +410,9 @@ public class BuildingTemplate extends CLITemplate {
                         if(index < freeShipCards.size()){
                             ShipCard shipCard = freeShipCards.get(y * colCount + x);
                             shipCard.print(shipCardCLI, i, index == data.getShipCardIndex());
+                        }
+                        else {
+                            shipBoardCLI.printInvalidSquare();
                         }
                     }
                 }
@@ -510,6 +524,9 @@ public class BuildingTemplate extends CLITemplate {
     public void addInputRequest(BuildingPhaseData data) {
         if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
             mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, advancedMenu.size(), data.getAdvancedMenu()));
         }
         else if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
             mainCLI.addInputRequest(new ListIndexInput(data, data.getFreeShipCards().size(), colCount, data.getShipCardIndex()));

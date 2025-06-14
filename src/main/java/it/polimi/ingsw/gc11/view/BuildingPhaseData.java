@@ -15,7 +15,7 @@ import java.util.Map;
 public class  BuildingPhaseData extends GamePhaseData {
 
     public enum BuildingState {
-        CHOOSE_MAIN_MENU,
+        CHOOSE_MAIN_MENU, CHOOSE_ADVANCED_MENU,
         CHOOSE_FREE_SHIPCARD, WAIT_SHIPCARD, CHOOSE_SHIPCARD_MENU, CHOOSE_SHIPCARD_ACTION, PLACE_SHIPCARD,  CHOOSE_SHIPCARD_ORIENTATION, RESERVE_SHIPCARD, RELEASE_SHIPCARD, SHIPCARD_SETUP,
         CHOOSE_RESERVED_SHIPCARD,
         REMOVE_SHIPCARD, CHOOSE_SHIPCARD_TO_REMOVE, REMOVE_SHIPCARD_SETUP,
@@ -36,6 +36,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private ShipCard heldShipCard;
     private List<AdventureCard> miniDeck;
     private int mainMenu;
+    private int advancedMenu;
     private int shipCardMenu;
     private int shipCardIndex;
     private int reservedShipCardIndex;
@@ -77,10 +78,16 @@ public class  BuildingPhaseData extends GamePhaseData {
                 case 0 -> state = BuildingState.CHOOSE_FREE_SHIPCARD;
                 case 1 -> state = BuildingState.CHOOSE_RESERVED_SHIPCARD;
                 case 2 -> state = BuildingState.REMOVE_SHIPCARD;
-                case 3 -> state = BuildingState.WAIT_ENEMIES_SHIP;
-                case 4 -> state = BuildingState.CHOOSE_ADVENTURE_DECK;
-                case 5 -> state = BuildingState.RESET_TIMER;
-                case 6 -> state = BuildingState.CHOOSE_POSITION;
+                case 3 -> state = BuildingState.CHOOSE_ADVANCED_MENU;
+            }
+        }
+        else if(state == BuildingState.CHOOSE_ADVANCED_MENU){
+            switch (advancedMenu) {
+                case 0 -> state = BuildingState.WAIT_ENEMIES_SHIP;
+                case 1 -> state = BuildingState.CHOOSE_ADVENTURE_DECK;
+                case 2 -> state = BuildingState.RESET_TIMER;
+                case 3 -> state = BuildingState.CHOOSE_POSITION;
+                case 4 -> state = BuildingState.CHOOSE_MAIN_MENU;
             }
         }
         else if(state == BuildingState.CHOOSE_SHIPCARD_MENU){
@@ -128,6 +135,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         previousState = state;
         switch (state) {
             case CHOOSE_MAIN_MENU -> setMainMenu(choice);
+            case CHOOSE_ADVANCED_MENU -> setAdvancedMenu(choice);
             case CHOOSE_SHIPCARD_MENU -> setShipCardMenu(choice);
             case CHOOSE_SHIPCARD_ACTION -> setShipCardActionMenu(choice);
             case CHOOSE_SHIPCARD_ORIENTATION -> setShipCardOrientationMenu(choice);
@@ -282,6 +290,15 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setMainMenu(int mainMenu) {
         this.mainMenu = mainMenu;
+        notifyListener();
+    }
+
+    public int getAdvancedMenu(){
+        return advancedMenu;
+    }
+
+    public void setAdvancedMenu(int advancedMenu) {
+        this.advancedMenu = advancedMenu;
         notifyListener();
     }
 
