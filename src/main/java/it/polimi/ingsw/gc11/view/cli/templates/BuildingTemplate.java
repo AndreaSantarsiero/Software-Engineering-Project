@@ -176,8 +176,7 @@ public class BuildingTemplate extends CLITemplate {
                         mainCLI.getVirtualServer().placeShipCard(data.getHeldShipCard(), data.getSelectedX(), data.getSelectedY());
                     }
                     else{
-                        ShipCard reservedShipCard = data.getShipBoard().getReservedComponents().get(data.getReservedShipCardIndex());
-                        mainCLI.getVirtualServer().useReservedShipCard(reservedShipCard, data.getSelectedX(), data.getSelectedY());
+                        mainCLI.getVirtualServer().useReservedShipCard(data.getReservedShipCard(), data.getSelectedX(), data.getSelectedY());
                     }
                     return;
                 }
@@ -329,6 +328,9 @@ public class BuildingTemplate extends CLITemplate {
                             if(data.getHeldShipCard() != null){
                                 data.getHeldShipCard().print(shipCardCLI, i-2, false);
                             }
+                            else if(data.getReservedShipCard() != null){
+                                data.getReservedShipCard().print(shipCardCLI, i-2, false);
+                            }
                             else {
                                 shipCardCLI.printEmptyShipCard(i-2);
                             }
@@ -354,7 +356,13 @@ public class BuildingTemplate extends CLITemplate {
                         }
                         if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
                             if(data.getHeldShipCard() != null) {
-                                data.getHeldShipCard().print(shipCardCLI, i + 5, false);
+                                data.getHeldShipCard().print(shipCardCLI, i+5, false);
+                            }
+                            else if(data.getReservedShipCard() != null){
+                                data.getReservedShipCard().print(shipCardCLI, i+5, false);
+                            }
+                            else {
+                                shipCardCLI.printEmptyShipCard(i+5);
                             }
                         }
                         else {

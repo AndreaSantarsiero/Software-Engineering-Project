@@ -18,7 +18,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         CHOOSE_MAIN_MENU, CHOOSE_ADVANCED_MENU,
         CHOOSE_FREE_SHIPCARD, WAIT_SHIPCARD, CHOOSE_SHIPCARD_MENU, CHOOSE_SHIPCARD_ACTION, PLACE_SHIPCARD,  CHOOSE_SHIPCARD_ORIENTATION, RESERVE_SHIPCARD, RELEASE_SHIPCARD, SHIPCARD_SETUP,
         CHOOSE_RESERVED_SHIPCARD,
-        REMOVE_SHIPCARD, CHOOSE_SHIPCARD_TO_REMOVE, REMOVE_SHIPCARD_SETUP,
+        CHOOSE_SHIPCARD_TO_REMOVE, REMOVE_SHIPCARD_SETUP,
         WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
         CHOOSE_ADVENTURE_DECK, WAIT_ADVENTURE_DECK, SHOW_ADVENTURE_DECK,
         RESET_TIMER,
@@ -34,6 +34,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private final Map<String, ShipBoard> enemiesShipBoard;
     private List<ShipCard> freeShipCards;
     private ShipCard heldShipCard;
+    private ShipCard reservedShipCard;
     private List<AdventureCard> miniDeck;
     private int mainMenu;
     private int advancedMenu;
@@ -77,7 +78,7 @@ public class  BuildingPhaseData extends GamePhaseData {
             switch (mainMenu) {
                 case 0 -> state = BuildingState.CHOOSE_FREE_SHIPCARD;
                 case 1 -> state = BuildingState.CHOOSE_RESERVED_SHIPCARD;
-                case 2 -> state = BuildingState.REMOVE_SHIPCARD;
+                case 2 -> state = BuildingState.CHOOSE_SHIPCARD_TO_REMOVE;
                 case 3 -> state = BuildingState.CHOOSE_ADVANCED_MENU;
             }
         }
@@ -262,6 +263,15 @@ public class  BuildingPhaseData extends GamePhaseData {
         setFreeShipCards(availableShipCards, availableShipCardsCount, true);
     }
 
+    public ShipCard getReservedShipCard(){
+        return reservedShipCard;
+    }
+
+    public void setReservedShipCard(ShipCard reservedShipCard){
+        this.reservedShipCard = reservedShipCard;
+        shipBoard.getReservedComponents().remove(reservedShipCard);
+    }
+
 
     public List<AdventureCard> getMiniDeck() {
         return miniDeck;
@@ -327,9 +337,9 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setReservedShipCardIndex(int reservedShipCardIndex) {
         this.reservedShipCardIndex = reservedShipCardIndex;
         try {
-            heldShipCard = shipBoard.getReservedComponents().get(reservedShipCardIndex);
+            setReservedShipCard(shipBoard.getReservedComponents().get(reservedShipCardIndex));
             notifyListener();
-        } catch (IndexOutOfBoundsException e) {
+        } catch (Exception e) {
             setServerMessage("Reserved ship card not valid for usage");
         }
     }
