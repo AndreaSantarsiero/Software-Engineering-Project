@@ -75,7 +75,6 @@ public class JoiningController extends CLIController {
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
                 mainCLI.getVirtualServer().registerSession(data.getUsername());
-                return true;
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
                 if(createOrJoinMenu == 0){
@@ -92,7 +91,6 @@ public class JoiningController extends CLIController {
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
-            return true;
         }
 
         return false;
