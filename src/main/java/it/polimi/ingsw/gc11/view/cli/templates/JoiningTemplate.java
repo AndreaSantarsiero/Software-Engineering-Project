@@ -1,12 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
-import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.*;
-import it.polimi.ingsw.gc11.view.cli.MainCLI;
-import it.polimi.ingsw.gc11.view.cli.input.IntegerInput;
-import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
-import it.polimi.ingsw.gc11.view.cli.input.StringInput;
+import it.polimi.ingsw.gc11.view.cli.controllers.JoiningController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,38 +10,22 @@ import java.util.Map;
 
 public class JoiningTemplate extends CLITemplate {
 
+    private final JoiningController controller;
     private static final List<String> connectionTypes = List.of("Remote Method Invocation", "Socket");
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
     private static final List<String> gameLevels = List.of("Trial", "Level II");
     private static final List<String> colorOptions = List.of("blue", "green", "red", "yellow");
-    private boolean usernameApproved = false;
-    private boolean noAvailableMatches = false;
-    private boolean gameApproved = false;
 
 
 
-    public JoiningTemplate(MainCLI mainCLI) {
-        super(mainCLI);
+    public JoiningTemplate(JoiningController controller) {
+        this.controller = controller;
     }
 
 
 
-    @Override
-    public void update (JoiningPhaseData joiningPhaseData) {
-        if (active && joiningPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
-            render(joiningPhaseData);
-        }
-    }
-
-    @Override
-    public void change(){
-        active = false;
-        mainCLI.changeTemplate(this);
-    }
-
-
-
-    public void render(JoiningPhaseData data) {
+    public void render() {
+        JoiningPhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("\n\n");
         System.out.println(" _______  _______  _        _______                     _________ _______           _______  _        _______  _______ ");
@@ -60,10 +39,10 @@ public class JoiningTemplate extends CLITemplate {
         System.out.println("\n\n");
 
 
-        renderMenu("Choose networking protocol (Use W/S to navigate, Enter to select):", connectionTypes, data.getConnectionTypeMenu());
+        renderMenu("Choose networking protocol (Use W/S to navigate, Enter to select):", connectionTypes, controller.getConnectionTypeMenu());
 
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_USERNAME.ordinal()) {
-            if(usernameApproved) {
+            if(controller.isUsernameApproved()) {
                 System.out.println("Chosen username: " + data.getUsername());
             }
             else {
@@ -79,23 +58,23 @@ public class JoiningTemplate extends CLITemplate {
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CREATE_OR_JOIN.ordinal()) {
             System.out.println("\n\n");
-            if(!gameApproved){
+            if(!controller.isGameApproved()){
                 String serverMessage = data.getServerMessage();
                 if(serverMessage != null && !serverMessage.isEmpty()) {
                     System.out.println(serverMessage);
                     data.resetServerMessage();
                 }
             }
-            renderMenu("Do you want to create a match or join an existing one?", gameOptions, data.getCreateOrJoinMenu());
+            renderMenu("Do you want to create a match or join an existing one?", gameOptions, controller.getCreateOrJoinMenu());
         }
-        if (data.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_LEVEL.ordinal()) {
-            renderMenu("- Choose match difficulty", gameLevels, data.getGameLevel());
+        if (controller.getCreateOrJoinMenu() == 0 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_LEVEL.ordinal()) {
+            renderMenu("- Choose match difficulty", gameLevels, controller.getGameLevel());
 
             if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS.ordinal()){
-                renderIntegerChoice("\n- Insert number of players", data.getNumPlayers());
+                renderIntegerChoice("\n- Insert number of players", controller.getNumPlayers());
             }
         }
-        if (data.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
+        if (controller.getCreateOrJoinMenu() == 1 && data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_GAME.ordinal()) {
             List<String> availableMatches = new ArrayList<>();
             for (Map.Entry<String, List<String>> entry : data.getAvailableMatches().entrySet()) {
                 List<String> usernames = entry.getValue();
@@ -106,11 +85,11 @@ public class JoiningTemplate extends CLITemplate {
             System.out.println("\n\n");
 
             if(availableMatches.isEmpty()) {
-                noAvailableMatches = true;
+                controller.setNoAvailableMatches(true);
                 System.out.println("No available matches found, press enter to continue...");
             }
             else {
-                renderMenu("Available matches:", availableMatches, data.getExistingGameMenu());
+                renderMenu("Available matches:", availableMatches, controller.getExistingGameMenu());
             }
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.CHOOSE_COLOR.ordinal()) {
@@ -120,83 +99,32 @@ public class JoiningTemplate extends CLITemplate {
                 System.out.println(serverMessage);
                 data.resetServerMessage();
             }
-            renderMenu("Choose your color", colorOptions, data.getChosenColorMenu());
+            renderMenu("Choose your color", colorOptions, controller.getChosenColorMenu());
         }
         if (data.getState().ordinal() >= JoiningPhaseData.JoiningState.WAITING.ordinal()) {
             System.out.println("\n\nWaiting for the match to start...");
         }
-
-
-        if(data.isStateNew()){
-            addInputRequest(data);
-        }
     }
 
 
 
-    public void addInputRequest(JoiningPhaseData data) {
-        try{
-            if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
-                mainCLI.addInputRequest(new MenuInput(data, connectionTypes.size(), data.getConnectionTypeMenu()));
-            }
-            else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
-                mainCLI.virtualServerSetup(data, data.getConnectionTypeMenu());
-                data.updateState();
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
-                mainCLI.addInputRequest(new StringInput(data));
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
-                mainCLI.getVirtualServer().registerSession(data.getUsername());
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
-                usernameApproved = true;
-                mainCLI.getVirtualServer().getAvailableMatches();
-                mainCLI.addInputRequest(new MenuInput(data, gameOptions.size(), data.getCreateOrJoinMenu()));
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_LEVEL) {
-                mainCLI.addInputRequest(new MenuInput(data, gameLevels.size(), data.getGameLevel()));
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
-                mainCLI.addInputRequest(new IntegerInput(data, 2, 4, data.getNumPlayers()));
-            }
-            else if (data.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME){
-                if(noAvailableMatches){
-                    data.setState(JoiningPhaseData.JoiningState.CREATE_OR_JOIN);
-                }
-                else{
-                    List<String> availableMatches = new ArrayList<>(data.getAvailableMatches().keySet());
-                    mainCLI.addInputRequest(new MenuInput(data, availableMatches.size(), data.getExistingGameMenu()));
-                }
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
-                if(data.getCreateOrJoinMenu() == 0){
-                    mainCLI.getVirtualServer().createMatch(flightLevelSetup(data.getGameLevel()), data.getNumPlayers());
-                }
-                else {
-                    mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(data.getExistingGameMenu()));
-                }
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
-                gameApproved = true;
-                mainCLI.addInputRequest(new MenuInput(data, colorOptions.size(), data.getChosenColorMenu()));
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
-                mainCLI.getVirtualServer().chooseColor(colorOptions.get(data.getChosenColorMenu()));
-            }
-        } catch (NetworkException e) {
-            System.out.println("Connection error: " + e.getMessage());
-        }
+    public int getConnectionTypesSize(){
+        return connectionTypes.size();
     }
 
+    public int getGameOptionsSize(){
+        return gameOptions.size();
+    }
 
+    public int getGameLevelsSize(){
+        return gameLevels.size();
+    }
 
-    public FlightBoard.Type flightLevelSetup(int choice) {
-        if (choice == 0) {
-            return FlightBoard.Type.TRIAL;
-        }
-        else {
-            return FlightBoard.Type.LEVEL2;
-        }
+    public int getColorOptionsSize(){
+        return colorOptions.size();
+    }
+
+    public String getChosenColor(int choice){
+        return colorOptions.get(choice);
     }
 }

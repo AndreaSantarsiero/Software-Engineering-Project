@@ -4,12 +4,10 @@ import it.polimi.ingsw.gc11.controller.ServerMAIN;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.view.GamePhaseData;
-import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.PlayerContext;
+import it.polimi.ingsw.gc11.view.*;
+import it.polimi.ingsw.gc11.view.cli.controllers.*;
 import it.polimi.ingsw.gc11.view.cli.input.InputHandler;
 import it.polimi.ingsw.gc11.view.cli.input.InputRequest;
-import it.polimi.ingsw.gc11.view.cli.templates.*;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
@@ -32,7 +30,7 @@ public class MainCLI {
         context = new PlayerContext();
         GamePhaseData data = context.getCurrentPhase();
         InputHandler inputHandler = new InputHandler(context);
-        data.setListener(new JoiningTemplate(this));
+        data.setListener(new JoiningController(this, (JoiningPhaseData) data));
         startInputHandler(inputHandler);
 
         try {
@@ -185,28 +183,28 @@ public class MainCLI {
 
 
 
-    public void changeTemplate(JoiningTemplate joiningTemplate) {
+    public void changeController(JoiningController joiningController) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new BuildingTemplate(this));
+        data.setListener(new BuildingController(this, (BuildingPhaseData) data));
     }
 
-    public void changeTemplate(BuildingTemplate buildingTemplate) {
+    public void changeController(BuildingController buildingController) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new CheckTemplate(this));
+        data.setListener(new CheckController(this, (CheckPhaseData) data));
     }
 
-    public void changeTemplate(CheckTemplate checkTemplate) {
+    public void changeController(CheckController checkController) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new AdventureTemplate(this));
+        data.setListener(new AdventureController(this, (AdventurePhaseData) data));
     }
 
-    public void changeTemplate(AdventureTemplate adventureTemplate) {
+    public void changeController(AdventureController adventureController) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new EndTemplate(this));
+        data.setListener(new EndController(this, (EndPhaseData) data));
     }
 
-    public void changeTemplate(EndTemplate endTemplate) {
+    public void changeController(EndController endController) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new JoiningTemplate(this));
+        data.setListener(new JoiningController(this, (JoiningPhaseData) data));
     }
 }

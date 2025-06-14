@@ -3,7 +3,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.Template;
+import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -20,7 +20,7 @@ import java.io.IOException;
 
 
 
-public class CreateMatchController extends Template{
+public class CreateMatchController extends Controller {
 
     @FXML
     private ComboBox<String> flightType;

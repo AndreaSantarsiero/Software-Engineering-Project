@@ -1,34 +1,24 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.EndPhaseData;
-import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.controllers.EndController;
 
 
 
 public class EndTemplate extends CLITemplate {
 
-    public EndTemplate(MainCLI mainCLI) {
-        super(mainCLI);
+    private EndController controller;
+
+
+
+    public EndTemplate(EndController controller) {
+        this.controller = controller;
     }
 
 
 
-    @Override
-    public void update (EndPhaseData endPhaseData) {
-        if (active && endPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
-            render(endPhaseData);
-        }
-    }
-
-    @Override
-    public void change(){
-        active = false;
-        mainCLI.changeTemplate(this);
-    }
-
-
-
-    public void render(EndPhaseData data) {
+    public void render() {
+        EndPhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("\n\nBuilding Phase");
     }

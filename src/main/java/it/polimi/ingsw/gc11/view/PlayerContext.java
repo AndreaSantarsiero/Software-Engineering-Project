@@ -33,7 +33,7 @@ public class PlayerContext {
     }
 
     public void setBuildingPhase() {
-        Template oldListener = currentPhase.getListener();
+        Controller oldListener = currentPhase.getListener();
         this.currentPhase = new BuildingPhaseData();
         if (oldListener != null) {
             oldListener.change();
@@ -41,7 +41,7 @@ public class PlayerContext {
     }
 
     public void setCheckPhase() {
-        Template oldListener = currentPhase.getListener();
+        Controller oldListener = currentPhase.getListener();
         this.currentPhase = new CheckPhaseData();
         if (oldListener != null) {
             oldListener.change();
@@ -49,7 +49,7 @@ public class PlayerContext {
     }
 
     public void setAdventurePhase() {
-        Template oldListener = currentPhase.getListener();
+        Controller oldListener = currentPhase.getListener();
         this.currentPhase = new AdventurePhaseData();
         if (oldListener != null) {
             oldListener.change();
@@ -57,7 +57,7 @@ public class PlayerContext {
     }
 
     public void setEndPhase() {
-        Template oldListener = currentPhase.getListener();
+        Controller oldListener = currentPhase.getListener();
         this.currentPhase = new EndPhaseData();
         if (oldListener != null) {
             oldListener.change();

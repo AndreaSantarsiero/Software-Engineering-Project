@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.view.cli.input;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
+import it.polimi.ingsw.gc11.view.cli.controllers.CLIController;
 import org.jline.keymap.BindingReader;
 import org.jline.keymap.KeyMap;
 import org.jline.reader.LineReader;
@@ -35,7 +36,7 @@ public class InputHandler {
 
 
 
-    public void interactiveMenu(GamePhaseData data, int size, int previouslySelected) {
+    public void interactiveMenu(GamePhaseData data, CLIController controller, int size, int previouslySelected) {
         if (!context.getCurrentPhase().equals(data)){
             return;
         }
@@ -52,14 +53,14 @@ public class InputHandler {
             switch (key) {
                 case "up":
                     selected = (selected - 1 + size) % size;
-                    data.setMenuChoice(selected);
+                    controller.setMenuChoice(selected);
                     break;
                 case "down":
                     selected = (selected + 1) % size;
-                    data.setMenuChoice(selected);
+                    controller.setMenuChoice(selected);
                     break;
                 case "enter":
-                    data.confirmMenuChoice();
+                    controller.confirmMenuChoice();
                     return;
                 default:
                     // ignore any other key
@@ -69,7 +70,7 @@ public class InputHandler {
 
 
 
-    public void interactiveHorizontalMenu(GamePhaseData data, int size, int previouslySelected) {
+    public void interactiveHorizontalMenu(GamePhaseData data, CLIController controller, int size, int previouslySelected) {
         if (!context.getCurrentPhase().equals(data)) {
             return;
         }
@@ -92,19 +93,19 @@ public class InputHandler {
                     selected = (selected + 1) % size;
                     break;
                 case "enter":
-                    data.confirmIntegerChoice();
+                    controller.confirmIntegerChoice();
                     return;
                 default:
                     // ignore any other key
             }
 
-            data.setIntegerChoice(selected);
+            controller.setIntegerChoice(selected);
         }
     }
 
 
 
-    public void interactiveGridMenu(GamePhaseData data, int size, int cols, int previouslySelected) {
+    public void interactiveGridMenu(GamePhaseData data, CLIController controller, int size, int cols, int previouslySelected) {
         if (!context.getCurrentPhase().equals(data)){
             return;
         }
@@ -137,7 +138,7 @@ public class InputHandler {
                     j = (j + 1) % cols;
                     break;
                 case "enter":
-                    data.confirmIntegerChoice();
+                    controller.confirmIntegerChoice();
                     return;
                 default:
                     // ignore any other key
@@ -155,13 +156,13 @@ public class InputHandler {
                 }
             }
 
-            data.setIntegerChoice(selected);
+            controller.setIntegerChoice(selected);
         }
     }
 
 
 
-    public void interactiveMatrixSelector(GamePhaseData data, ShipBoard shipBoard, int previouslySelectedI, int previouslySelectedJ) {
+    public void interactiveMatrixSelector(GamePhaseData data, CLIController controller, ShipBoard shipBoard, int previouslySelectedI, int previouslySelectedJ) {
         if (!context.getCurrentPhase().equals(data)) {
             return;
         }
@@ -197,7 +198,7 @@ public class InputHandler {
                     j = (j + 1) % cols;
                     break;
                 case "enter":
-                    data.confirmCoordinatesChoice();
+                    controller.confirmCoordinatesChoice();
                     return;
                 default:
                     // ignore any other key
@@ -253,13 +254,13 @@ public class InputHandler {
                 }
             }
 
-            data.setCoordinatesChoice(j, i);
+            controller.setCoordinatesChoice(j, i);
         }
     }
 
 
 
-    public void interactiveNumberSelector(GamePhaseData data, int minValue, int maxValue, int previouslySelected) {
+    public void interactiveNumberSelector(GamePhaseData data, CLIController controller, int minValue, int maxValue, int previouslySelected) {
         if (!context.getCurrentPhase().equals(data)){
             return;
         }
@@ -279,22 +280,22 @@ public class InputHandler {
             switch (key) {
                 case "up":
                     selected = (selected + 1 > maxValue) ? minValue : selected + 1;
-                    data.setIntegerChoice(selected);
+                    controller.setIntegerChoice(selected);
                     break;
                 case "down":
                     selected = (selected - 1 < minValue) ? maxValue : selected - 1;
-                    data.setIntegerChoice(selected);
+                    controller.setIntegerChoice(selected);
                     break;
                 case "right":
                     selected = ((selected - minValue + 3) % range) + minValue;
-                    data.setIntegerChoice(selected);
+                    controller.setIntegerChoice(selected);
                     break;
                 case "left":
                     selected = ((selected - minValue - 3 + range) % range) + minValue;
-                    data.setIntegerChoice(selected);
+                    controller.setIntegerChoice(selected);
                     break;
                 case "enter":
-                    data.confirmIntegerChoice();
+                    controller.confirmIntegerChoice();
                     return;
                 default:
                     // Ignore unknown keys
@@ -305,9 +306,9 @@ public class InputHandler {
 
 
 
-    public void readLine(GamePhaseData data) {
+    public void readLine(GamePhaseData data, CLIController controller) {
         if (context.getCurrentPhase().equals(data)) {
-            data.setStringInput(lineReader.readLine());
+            controller.setStringInput(lineReader.readLine());
         }
     }
 

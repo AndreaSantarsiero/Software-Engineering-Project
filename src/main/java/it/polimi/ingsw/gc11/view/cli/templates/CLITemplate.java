@@ -1,29 +1,12 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
-import it.polimi.ingsw.gc11.view.*;
-import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
 import java.util.List;
 
 
 
-public abstract class CLITemplate extends Template {
-
-    protected final MainCLI mainCLI;
-    protected boolean active = true;
-
-
-
-    public CLITemplate(MainCLI mainCLI) {
-        this.mainCLI = mainCLI;
-    }
-
-
-
-    public abstract void change();
-
-
+public abstract class CLITemplate {
 
     protected void clearView() {
         System.out.print("\u001b[H\u001b[2J");

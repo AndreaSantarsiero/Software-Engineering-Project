@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 
 public abstract class GamePhaseData {
 
-    protected Template listener;
+    protected Controller listener;
     protected String serverMessage;
 
 
@@ -15,11 +15,11 @@ public abstract class GamePhaseData {
 
 
 
-    public Template getListener() {
+    public Controller getListener() {
         return listener;
     }
 
-    public void setListener(Template listener) {
+    public void setListener(Controller listener) {
         this.listener = listener;
     }
 
@@ -40,20 +40,6 @@ public abstract class GamePhaseData {
     }
 
 
-
-    public abstract void setMenuChoice(int choice);
-
-    public abstract void confirmMenuChoice();
-
-    public abstract void setStringInput(String input);
-
-    public abstract void setIntegerChoice(int choice);
-
-    public abstract void confirmIntegerChoice();
-
-    public void setCoordinatesChoice(int j, int i) {}
-
-    public void confirmCoordinatesChoice(){}
 
     public void updateState(){}
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.Template;
+import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -18,7 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class LoginController extends Template {
+public class LoginController extends Controller {
 
     @FXML
     private Button enterButton;

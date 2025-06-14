@@ -5,11 +5,11 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
-import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
+import it.polimi.ingsw.gc11.view.cli.controllers.BuildingController;
 import org.fusesource.jansi.Ansi;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,7 @@ import java.util.Map;
 
 public class BuildingTemplate extends CLITemplate {
 
+    private final BuildingController controller;
     private final ShipCardCLI shipCardCLI;
     private final ShipBoardCLI shipBoardCLI;
     private final AdventureCardCLI adventureCardCLI;
@@ -127,8 +128,8 @@ public class BuildingTemplate extends CLITemplate {
 
 
 
-    public BuildingTemplate(MainCLI mainCLI) {
-        super(mainCLI);
+    public BuildingTemplate(BuildingController controller) {
+        this.controller = controller;
         shipCardCLI = new ShipCardCLI();
         shipBoardCLI = new ShipBoardCLI(shipCardCLI);
         adventureCardCLI = new AdventureCardCLI();
@@ -136,87 +137,8 @@ public class BuildingTemplate extends CLITemplate {
 
 
 
-    @Override
-    public void update (BuildingPhaseData buildingPhaseData) {
-        if (active && buildingPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
-            render(buildingPhaseData);
-        }
-    }
-
-    @Override
-    public void change(){
-        active = false;
-        mainCLI.changeTemplate(this);
-    }
-
-
-
-    public void render(BuildingPhaseData data) {
-
-        //if I'm waiting for the server to answer then it's useless to refresh the view
-        if(data.isStateNew()){
-            try{
-                if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
-                    data.resetViewData();
-                }
-                else if (data.getState() == BuildingPhaseData.BuildingState.WAIT_SHIPCARD){
-                    mainCLI.getVirtualServer().getFreeShipCard(data.getFreeShipCards().get(data.getShipCardIndex()));
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD){
-                    if(data.getReservedShipCard() != null){
-                        data.abortUseReservedShipCard();
-                    }
-                    else{
-                        mainCLI.getVirtualServer().reserveShipCard(data.getHeldShipCard());
-                    }
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
-                    if(data.getReservedShipCard() != null){
-                        data.setServerMessage("Cannot release a reserved ship card");
-                    }
-                    else{
-                        mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
-                    }
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){
-                    if(data.getHeldShipCard() != null){
-                        mainCLI.getVirtualServer().placeShipCard(data.getHeldShipCard(), data.getSelectedX(), data.getSelectedY());
-                    }
-                    else{
-                        mainCLI.getVirtualServer().useReservedShipCard(data.getReservedShipCard(), data.getSelectedX(), data.getSelectedY());
-                    }
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.REMOVE_SHIPCARD_SETUP){
-                    mainCLI.getVirtualServer().removeShipCard(data.getSelectedX(), data.getSelectedY());
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP){
-                    mainCLI.getVirtualServer().getPlayersShipBoard();
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
-                    mainCLI.getVirtualServer().observeMiniDeck(data.getAdventureCardMenu());
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
-                    //manca azione per reset timer
-                    return;
-                }
-                else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
-                    mainCLI.getVirtualServer().endBuilding(data.getEndBuildingMenu());
-                    return;
-                }
-            } catch (NetworkException e) {
-                System.out.println("Connection error: " + e.getMessage());
-                return;
-            }
-        }
-
-
+    public void render() {
+        BuildingPhaseData data = controller.getPhaseData();
 
         clearView();
         System.out.println("╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
@@ -226,8 +148,8 @@ public class BuildingTemplate extends CLITemplate {
         List<ShipCard> freeShipCards = data.getFreeShipCards();
         int menuIndex = 0;
         int offset = 0;
-        if(data.getShipCardIndex() >= colCount*rowCount){
-            offset = ((data.getShipCardIndex() + 1)/colCount - rowCount) + 1;
+        if(controller.getShipCardIndex() >= colCount*rowCount){
+            offset = ((controller.getShipCardIndex() + 1)/colCount - rowCount) + 1;
         }
 
 
@@ -236,7 +158,6 @@ public class BuildingTemplate extends CLITemplate {
             for (int i = 0; i < pressEnterToContinue.size(); i++) {
                 System.out.println(pressEnterToContinue.get(i));
             }
-            mainCLI.addInputRequest(new EnterInput(data));
             return;
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
@@ -250,7 +171,6 @@ public class BuildingTemplate extends CLITemplate {
             for (int i = 0; i < pressEnterToContinue.size(); i++) {
                 System.out.println(pressEnterToContinue.get(i));
             }
-            mainCLI.addInputRequest(new EnterInput(data));
             return;
         }
 
@@ -293,14 +213,14 @@ public class BuildingTemplate extends CLITemplate {
                         System.out.print("         ");
                     }
                     else {
-                        shipBoardCLI.printReservedCards(shipBoard, i-5, data.getReservedShipCardIndex());
+                        shipBoardCLI.printReservedCards(shipBoard, i-5, controller.getReservedShipCardIndex());
                         System.out.print("      ");
                     }
                 }
 
                 else if (y == 1){
                     if(i < 5){
-                        shipBoardCLI.printReservedCards(shipBoard, i+2, data.getReservedShipCardIndex());
+                        shipBoardCLI.printReservedCards(shipBoard, i+2, controller.getReservedShipCardIndex());
                         System.out.print("      ");
                     }
                     else if (i == 5){
@@ -314,7 +234,7 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing user shipBoard (main board)
                 else if (y < shipBoard.getLength() + 2){
-                    shipBoardCLI.print(shipBoard, y-2, i, data.getSelectedJ(), data.getSelectedI());
+                    shipBoardCLI.print(shipBoard, y-2, i, controller.getSelectedJ(), controller.getSelectedI());
                     System.out.print("      ");
                 }
 
@@ -393,26 +313,26 @@ public class BuildingTemplate extends CLITemplate {
 
                 //printing menu
                 else {
-                    if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() != 0)){
-                        printMenu(data, shipBoard, menuIndex, shipCardMenu, data.getShipCardMenu());
+                    if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU || data.getState() == BuildingPhaseData.BuildingState.RESERVE_SHIPCARD || data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && controller.getShipCardMenu() != 0)){
+                        printMenu(data, shipBoard, menuIndex, shipCardMenu, controller.getShipCardMenu());
                     }
-                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && data.getShipCardMenu() == 0)){
-                        printMenu(data, shipBoard, menuIndex, shipCardActionMenu, data.getShipCardActionMenu());
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION || data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD || (data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP && controller.getShipCardMenu() == 0)){
+                        printMenu(data, shipBoard, menuIndex, shipCardActionMenu, controller.getShipCardActionMenu());
                     }
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
-                        printMenu(data, shipBoard, menuIndex, shipCardOrientationMenu, data.getShipCardOrientationMenu());
+                        printMenu(data, shipBoard, menuIndex, shipCardOrientationMenu, controller.getShipCardOrientationMenu());
                     }
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK || data.getState() == BuildingPhaseData.BuildingState.WAIT_ADVENTURE_DECK){
-                        printMenu(data, shipBoard, menuIndex, adventureDecksMenu, data.getAdventureCardMenu());
+                        printMenu(data, shipBoard, menuIndex, adventureDecksMenu, controller.getAdventureCardMenu());
                     }
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
-                        printMenu(data, shipBoard, menuIndex, endBuildingMenu, data.getEndBuildingMenu());
+                        printMenu(data, shipBoard, menuIndex, endBuildingMenu, controller.getEndBuildingMenu());
                     }
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
-                        printMenu(data, shipBoard, menuIndex, advancedMenu, data.getAdvancedMenu());
+                        printMenu(data, shipBoard, menuIndex, advancedMenu, controller.getAdvancedMenu());
                     }
                     else {
-                        printMenu(data, shipBoard, menuIndex, mainMenu, data.getMainMenu());
+                        printMenu(data, shipBoard, menuIndex, mainMenu, controller.getMainMenu());
                     }
                     menuIndex++;
                 }
@@ -424,7 +344,7 @@ public class BuildingTemplate extends CLITemplate {
                         int index = y * colCount + x;
                         if(index < freeShipCards.size()){
                             ShipCard shipCard = freeShipCards.get(y * colCount + x);
-                            shipCard.print(shipCardCLI, i, index == data.getShipCardIndex());
+                            shipCard.print(shipCardCLI, i, index == controller.getShipCardIndex());
                         }
                         else {
                             shipBoardCLI.printInvalidSquare();
@@ -526,50 +446,6 @@ public class BuildingTemplate extends CLITemplate {
             System.out.println(Ansi.ansi().fg(Ansi.Color.RED) + serverMessage.toUpperCase() + Ansi.ansi().reset());
             data.resetServerMessage();
         }
-
-
-
-        //input and commands
-        if(data.isStateNew()){
-            addInputRequest(data);
-        }
-    }
-
-
-    public void addInputRequest(BuildingPhaseData data) {
-        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
-            mainCLI.addInputRequest(new MenuInput(data, mainMenu.size(), data.getMainMenu()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
-            mainCLI.addInputRequest(new MenuInput(data, advancedMenu.size(), data.getAdvancedMenu()));
-        }
-        else if (data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
-            mainCLI.addInputRequest(new ListIndexInput(data, data.getFreeShipCards().size(), colCount, data.getShipCardIndex()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
-            mainCLI.addInputRequest(new MenuInput(data, shipCardMenu.size(), data.getShipCardMenu()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION){
-            mainCLI.addInputRequest(new MenuInput(data, shipCardActionMenu.size(), data.getShipCardActionMenu()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.PLACE_SHIPCARD){
-            mainCLI.addInputRequest(new CoordinatesInput(data, data.getShipBoard(), data.getSelectedI(), data.getSelectedJ()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ORIENTATION){
-            mainCLI.addInputRequest(new MenuInput(data, shipCardOrientationMenu.size(), data.getShipCardOrientationMenu()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD){
-            mainCLI.addInputRequest(new HorizontalMenuInput(data, 2, data.getReservedShipCardIndex()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE){
-            mainCLI.addInputRequest(new CoordinatesInput(data, data.getShipBoard(), data.getSelectedI(), data.getSelectedJ()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK){
-            mainCLI.addInputRequest(new MenuInput(data, adventureDecksMenu.size(), data.getAdventureCardMenu()));
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
-            mainCLI.addInputRequest(new MenuInput(data, endBuildingMenu.size(), data.getEndBuildingMenu()));
-        }
     }
 
 
@@ -616,5 +492,43 @@ public class BuildingTemplate extends CLITemplate {
             System.out.println(entry.getKey() + "'S SHIP:");
             shipBoardCLI.printFullShip(entry.getValue());
         }
+    }
+
+
+
+    public int getRowCount(){
+        return rowCount;
+    }
+
+    public int getColCount(){
+        return colCount;
+    }
+
+    public int getMainMenuSize(){
+        return mainMenu.size();
+    }
+
+    public int getAdvancedMenuSize(){
+        return advancedMenu.size();
+    }
+
+    public int getShipCardMenuSize(){
+        return shipCardMenu.size();
+    }
+
+    public int getShipCardActionMenuSize(){
+        return shipCardActionMenu.size();
+    }
+
+    public int getShipCardOrientationMenuSize(){
+        return shipCardOrientationMenu.size();
+    }
+
+    public int getAdventureDecksMenuSize(){
+        return adventureDecksMenu.size();
+    }
+
+    public int endBuildingMenuSize(){
+        return endBuildingMenu.size();
     }
 }

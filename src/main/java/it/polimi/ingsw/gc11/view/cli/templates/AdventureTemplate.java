@@ -1,34 +1,24 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
-import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
 
 
 
 public class AdventureTemplate extends CLITemplate {
 
-    public AdventureTemplate(MainCLI mainCLI) {
-        super(mainCLI);
+    private AdventureController controller;
+
+
+
+    public AdventureTemplate(AdventureController controller) {
+        this.controller = controller;
     }
 
 
 
-    @Override
-    public void update (AdventurePhaseData adventurePhaseData) {
-        if (active && adventurePhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
-            render(adventurePhaseData);
-        }
-    }
-
-    @Override
-    public void change(){
-        active = false;
-        mainCLI.changeTemplate(this);
-    }
-
-
-
-    public void render(AdventurePhaseData data) {
+    public void render() {
+        AdventurePhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("\n\nBuilding Phase");
     }

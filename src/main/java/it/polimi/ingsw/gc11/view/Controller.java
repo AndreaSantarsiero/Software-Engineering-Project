@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.view;
 
 
 
-public abstract class Template {
+public abstract class Controller {
     public void update(JoiningPhaseData joiningPhaseData){};
     public void update(BuildingPhaseData buildingPhaseData){};
     public void update(CheckPhaseData checkPhaseData){};

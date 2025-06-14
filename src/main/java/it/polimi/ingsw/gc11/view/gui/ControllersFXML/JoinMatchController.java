@@ -2,7 +2,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
-import it.polimi.ingsw.gc11.view.Template;
+import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class JoinMatchController extends Template {
+public class JoinMatchController extends Controller {
 
     @FXML
     private TableView<MatchEntry> matchTable;

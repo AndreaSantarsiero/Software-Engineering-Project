@@ -1,34 +1,24 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
-import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.controllers.CheckController;
 
 
 
 public class CheckTemplate extends CLITemplate {
 
-    public CheckTemplate(MainCLI mainCLI) {
-        super(mainCLI);
+    private final CheckController controller;
+
+
+
+    public CheckTemplate(CheckController controller) {
+        this.controller = controller;
     }
 
 
 
-    @Override
-    public void update (CheckPhaseData checkPhaseData) {
-        if (active && checkPhaseData.equals(mainCLI.getContext().getCurrentPhase())) {
-            render(checkPhaseData);
-        }
-    }
-
-    @Override
-    public void change(){
-        active = false;
-        mainCLI.changeTemplate(this);
-    }
-
-
-
-    public void render(CheckPhaseData data) {
+    public void render() {
+        CheckPhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("\n\nBuilding Phase");
     }

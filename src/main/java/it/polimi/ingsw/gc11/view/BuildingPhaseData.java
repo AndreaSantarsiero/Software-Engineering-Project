@@ -36,17 +36,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     private ShipCard heldShipCard;
     private ShipCard reservedShipCard;
     private List<AdventureCard> miniDeck;
-    private int mainMenu;
-    private int advancedMenu;
-    private int shipCardMenu;
-    private int shipCardIndex;
-    private int reservedShipCardIndex;
-    private int shipCardActionMenu;
-    private int shipCardOrientationMenu;
-    private int adventureCardMenu;
-    private int endBuildingMenu;
-    private int selectedI;
-    private int selectedJ;
 
 
 
@@ -73,40 +62,9 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     @Override
     public void updateState() {
-        previousState = state;
-        if(state == BuildingState.CHOOSE_MAIN_MENU){
-            switch (mainMenu) {
-                case 0 -> state = BuildingState.CHOOSE_FREE_SHIPCARD;
-                case 1 -> state = BuildingState.CHOOSE_RESERVED_SHIPCARD;
-                case 2 -> state = BuildingState.CHOOSE_SHIPCARD_TO_REMOVE;
-                case 3 -> state = BuildingState.CHOOSE_ADVANCED_MENU;
-            }
-        }
-        else if(state == BuildingState.CHOOSE_ADVANCED_MENU){
-            switch (advancedMenu) {
-                case 0 -> state = BuildingState.WAIT_ENEMIES_SHIP;
-                case 1 -> state = BuildingState.CHOOSE_ADVENTURE_DECK;
-                case 2 -> state = BuildingState.RESET_TIMER;
-                case 3 -> state = BuildingState.CHOOSE_POSITION;
-                case 4 -> state = BuildingState.CHOOSE_MAIN_MENU;
-            }
-        }
-        else if(state == BuildingState.CHOOSE_SHIPCARD_MENU){
-            switch (shipCardMenu) {
-                case 0 -> state = BuildingState.CHOOSE_SHIPCARD_ACTION;
-                case 1 -> state = BuildingState.RESERVE_SHIPCARD;
-                case 2 -> state = BuildingState.RELEASE_SHIPCARD;
-            }
-        }
-        else if(state == BuildingState.CHOOSE_SHIPCARD_ACTION){
-            switch (shipCardActionMenu) {
-                case 0 -> state = BuildingState.PLACE_SHIPCARD;
-                case 1 -> state = BuildingState.CHOOSE_SHIPCARD_ORIENTATION;
-                case 2 -> state = BuildingState.SHIPCARD_SETUP;
-                case 3 -> state = BuildingState.CHOOSE_SHIPCARD_MENU;
-            }
-        }
-        else if(state == BuildingState.PLACE_SHIPCARD || state == BuildingState.CHOOSE_SHIPCARD_ORIENTATION || state == BuildingState.CHOOSE_RESERVED_SHIPCARD || state == BuildingState.REMOVE_SHIPCARD_SETUP) {
+        actualizePreviousState();
+
+        if(state == BuildingState.PLACE_SHIPCARD || state == BuildingState.CHOOSE_SHIPCARD_ORIENTATION || state == BuildingState.CHOOSE_RESERVED_SHIPCARD || state == BuildingState.REMOVE_SHIPCARD_SETUP) {
             state = BuildingState.CHOOSE_SHIPCARD_ACTION;
         }
         else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.SHOW_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
@@ -120,9 +78,13 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setState(BuildingState state) {
-        previousState = state;
+        actualizePreviousState();
         this.state = state;
         notifyListener();
+    }
+
+    public void actualizePreviousState() {
+        previousState = state;
     }
 
     public boolean isStateNew() {
@@ -132,75 +94,9 @@ public class  BuildingPhaseData extends GamePhaseData {
 
 
     @Override
-    public void setMenuChoice(int choice){
-        previousState = state;
-        switch (state) {
-            case CHOOSE_MAIN_MENU -> setMainMenu(choice);
-            case CHOOSE_ADVANCED_MENU -> setAdvancedMenu(choice);
-            case CHOOSE_SHIPCARD_MENU -> setShipCardMenu(choice);
-            case CHOOSE_SHIPCARD_ACTION -> setShipCardActionMenu(choice);
-            case CHOOSE_SHIPCARD_ORIENTATION -> setShipCardOrientationMenu(choice);
-            case CHOOSE_ADVENTURE_DECK -> setAdventureCardMenu(choice);
-            case CHOOSE_POSITION -> setEndBuildingMenu(choice);
-            case null, default -> {
-            }
-        }
-    }
-
-    @Override
-    public void confirmMenuChoice(){
-        updateState();
-    }
-
-    @Override
-    public void setStringInput(String input) {
-        updateState();
-    }
-
-    @Override
-    public void setIntegerChoice(int choice) {
-        previousState = state;
-        if(state == BuildingState.CHOOSE_FREE_SHIPCARD){
-            setShipCardIndex(choice);
-        }
-        else if(state == BuildingState.CHOOSE_RESERVED_SHIPCARD){
-            setReservedShipCardIndex(choice);
-        }
-    }
-
-    @Override
-    public void confirmIntegerChoice() {
-        if(state == BuildingState.CHOOSE_RESERVED_SHIPCARD){
-            try {
-                setReservedShipCard(shipBoard.getReservedComponents().get(reservedShipCardIndex));
-                updateState();
-            } catch (Exception e) {
-                setServerMessage("Reserved ship card not valid for usage");
-            }
-        }
-        else{
-            updateState();
-        }
-    }
-
-    @Override
-    public void setCoordinatesChoice(int j, int i) {
-        previousState = state;
-        selectedJ = j;
-        selectedI = i;
-        notifyListener();
-    }
-
-    @Override
-    public void confirmCoordinatesChoice(){
-        updateState();
-    }
-
-
-    @Override
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
-        previousState = state;
+        actualizePreviousState();
         if(state == BuildingState.SHIPCARD_SETUP || state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD) {
             state = BuildingState.CHOOSE_SHIPCARD_MENU;
         }
@@ -223,7 +119,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setFreeShipCards(List<ShipCard> freeShipCards, int freeShipCardsCount, boolean updateState) {
-        previousState = state;
+        actualizePreviousState();
         this.freeShipCards = freeShipCards;
         StructuralModule covered = new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
         for (int i = freeShipCards.size(); i < freeShipCardsCount; i++) {
@@ -258,7 +154,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
-        previousState = state;
+        actualizePreviousState();
         this.enemiesShipBoard.put(username, shipBoard);
         notifyListener();
     }
@@ -315,135 +211,9 @@ public class  BuildingPhaseData extends GamePhaseData {
 
 
 
-    public int getMainMenu() {
-        return mainMenu;
-    }
-
-    public void setMainMenu(int mainMenu) {
-        this.mainMenu = mainMenu;
-        notifyListener();
-    }
-
-    public int getAdvancedMenu(){
-        return advancedMenu;
-    }
-
-    public void setAdvancedMenu(int advancedMenu) {
-        this.advancedMenu = advancedMenu;
-        notifyListener();
-    }
-
-    public int getShipCardMenu() {
-        return shipCardMenu;
-    }
-
-    public void setShipCardMenu(int shipCardMenu) {
-        this.shipCardMenu = shipCardMenu;
-        notifyListener();
-    }
-
-    public int getShipCardIndex() {
-        return shipCardIndex;
-    }
-
-    public void setShipCardIndex(int shipCardIndex) {
-        this.shipCardIndex = shipCardIndex;
-        notifyListener();
-    }
-
-    public int getReservedShipCardIndex(){
-        return reservedShipCardIndex;
-    }
-
-    public void setReservedShipCardIndex(int reservedShipCardIndex) {
-        this.reservedShipCardIndex = reservedShipCardIndex;
-        notifyListener();
-    }
-
-    public int getShipCardActionMenu(){
-        return shipCardActionMenu;
-    }
-
-    public void setShipCardActionMenu(int shipCardActionMenu){
-        this.shipCardActionMenu = shipCardActionMenu;
-        notifyListener();
-    }
-
-    public int getShipCardOrientationMenu(){
-        return shipCardOrientationMenu;
-    }
-
-    public void setShipCardOrientationMenu(int shipCardOrientationMenu){
-        this.shipCardOrientationMenu = shipCardOrientationMenu;
-        if(heldShipCard != null){
-            setShipCardOrientation(heldShipCard);
-        }
-        else if(reservedShipCard != null){
-            setShipCardOrientation(reservedShipCard);
-        }
-        notifyListener();
-    }
-
-    public void setShipCardOrientation(ShipCard shipCard){
-        if(shipCard != null){
-            switch (shipCardOrientationMenu) {
-                case 0 -> shipCard.setOrientation(ShipCard.Orientation.DEG_0);
-                case 1 -> shipCard.setOrientation(ShipCard.Orientation.DEG_90);
-                case 2 -> shipCard.setOrientation(ShipCard.Orientation.DEG_180);
-                case 3 -> shipCard.setOrientation(ShipCard.Orientation.DEG_270);
-            }
-        }
-    }
-
-    public int getAdventureCardMenu() {
-        return adventureCardMenu;
-    }
-
-    public void setAdventureCardMenu(int adventureCardMenu) {
-        this.adventureCardMenu = adventureCardMenu;
-        notifyListener();
-    }
-
-    public int getEndBuildingMenu(){
-        return endBuildingMenu;
-    }
-
-    public void setEndBuildingMenu(int endBuildingMenu) {
-        this.endBuildingMenu = endBuildingMenu;
-        notifyListener();
-    }
-
-    public int getSelectedI(){
-        return selectedI;
-    }
-
-    public int getSelectedJ(){
-        return selectedJ;
-    }
-
-    public int getSelectedY(){
-        return selectedI - shipBoard.adaptY(0);
-    }
-
-    public int getSelectedX(){
-        return selectedJ - shipBoard.adaptX(0);
-    }
-
-
-
     public void resetViewData(){
-        selectedI = shipBoard.adaptY(7);
-        selectedJ = shipBoard.adaptX(7);
         heldShipCard = null;
         reservedShipCard = null;
-        mainMenu = 0;
-        shipCardMenu = 0;
-        shipCardIndex = 0;
-        shipCardActionMenu = 0;
-        shipCardOrientationMenu = 0;
-        reservedShipCardIndex = 0;
-        adventureCardMenu = 0;
-        endBuildingMenu = 0;
     }
 
 

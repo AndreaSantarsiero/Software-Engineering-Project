@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.input;
 
 import it.polimi.ingsw.gc11.view.GamePhaseData;
-
+import it.polimi.ingsw.gc11.view.cli.controllers.CLIController;
 
 
 public class IntegerInput extends InputRequest {
@@ -12,8 +12,8 @@ public class IntegerInput extends InputRequest {
 
 
 
-    public IntegerInput(GamePhaseData gamePhaseData, int minValue, int maxValue, int previouslySelected) {
-        super(gamePhaseData);
+    public IntegerInput(GamePhaseData gamePhaseData, CLIController controller, int minValue, int maxValue, int previouslySelected) {
+        super(gamePhaseData, controller);
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.previouslySelected = previouslySelected;
@@ -22,6 +22,6 @@ public class IntegerInput extends InputRequest {
 
     @Override
     public void execute(InputHandler inputHandler){
-        inputHandler.interactiveNumberSelector(gamePhaseData, minValue, maxValue, previouslySelected);
+        inputHandler.interactiveNumberSelector(gamePhaseData, controller, minValue, maxValue, previouslySelected);
     }
 }

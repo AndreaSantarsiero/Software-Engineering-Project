@@ -28,23 +28,6 @@ public class EndPhaseData extends GamePhaseData {
 
 
 
-    @Override
-    public void setMenuChoice(int choice){}
-
-    @Override
-    public void confirmMenuChoice(){}
-
-    @Override
-    public void setStringInput(String input) {}
-
-    @Override
-    public void setIntegerChoice(int choice) {}
-
-    @Override
-    public void confirmIntegerChoice() {}
-
-
-
     public Player getPlayer() {
         return player;
     }

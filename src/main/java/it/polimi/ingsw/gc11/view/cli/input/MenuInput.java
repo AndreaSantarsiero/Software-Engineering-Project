@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.input;
 
 import it.polimi.ingsw.gc11.view.GamePhaseData;
-
+import it.polimi.ingsw.gc11.view.cli.controllers.CLIController;
 
 
 public class MenuInput extends InputRequest {
@@ -11,8 +11,8 @@ public class MenuInput extends InputRequest {
 
 
 
-    public MenuInput(GamePhaseData gamePhaseData, int size, int previouslySelected) {
-        super(gamePhaseData);
+    public MenuInput(GamePhaseData gamePhaseData, CLIController controller, int size, int previouslySelected) {
+        super(gamePhaseData, controller);
         this.size = size;
         this.previouslySelected = previouslySelected;
     }
@@ -20,6 +20,6 @@ public class MenuInput extends InputRequest {
 
     @Override
     public void execute(InputHandler inputHandler){
-        inputHandler.interactiveMenu(gamePhaseData, size, previouslySelected);
+        inputHandler.interactiveMenu(gamePhaseData, controller, size, previouslySelected);
     }
 }
