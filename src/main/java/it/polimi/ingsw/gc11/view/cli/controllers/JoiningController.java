@@ -33,7 +33,6 @@ public class JoiningController extends CLIController {
         super(mainCLI);
         this.data = data;
         this.template = new JoiningTemplate(this);
-        update(data);
     }
 
     public JoiningPhaseData getPhaseData(){
