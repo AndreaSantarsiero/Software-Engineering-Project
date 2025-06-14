@@ -415,7 +415,7 @@ public class BuildingController extends Controller {
     }
 
     public void heldShipCardOverlay(){
-        Rectangle bg = new Rectangle(240, 320);
+        Rectangle bg = new Rectangle(250, 360);
         bg.setArcWidth(30);
         bg.setArcHeight(30);
         bg.setFill(Color.web("#0d47a1"));
@@ -434,21 +434,40 @@ public class BuildingController extends Controller {
         right.setPrefWidth(80);
         right.setPrefHeight(10);
 
-        Button release = new Button("Release");
-        Button place = new Button("Place");
+        Button release = new Button("Release shipcard");
+        Button place = new Button("Place shipcard");
+        Button reserve = new Button("Reserve shipcard");
 
-        Stream.of(left, right, release, place).forEach(b -> {
-            b.setFont(Font.font(24));
+        Stream.of(left, right).forEach(b -> {
+            b.setFont(Font.font(26));
             b.setBackground(Background.EMPTY);
             b.setBorder(Border.EMPTY);
             b.setCursor(Cursor.HAND);
             b.setTextFill(Color.WHITE);
         });
 
+        Stream.of(release, place, reserve).forEach(b -> {
+            b.setFont(Font.font(20));
+            b.setBackground(Background.EMPTY);
+            b.setBorder(Border.EMPTY);
+            b.setCursor(Cursor.HAND);
+            b.setTextFill(Color.WHITE);
+        });
+
+        Color normalColor = Color.WHITE;
+        Color hoverColor  = Color.web("#ffd54f");
+
+        Stream.of(left, right, release, place, reserve).forEach(btn -> {
+            btn.setTextFill(normalColor);
+
+            btn.setOnMouseEntered(e -> btn.setTextFill(hoverColor));
+            btn.setOnMouseExited (e -> btn.setTextFill(normalColor));
+        });
+
         HBox buttons = new HBox(40, left, right);
         buttons.setAlignment(Pos.CENTER);
 
-        VBox content = new VBox(10, iv, buttons,  release, place);
+        VBox content = new VBox(10, iv, buttons,  release, place, reserve);
         content.setAlignment(Pos.CENTER);
 
         StackPane card = new StackPane(bg, content);
@@ -461,7 +480,8 @@ public class BuildingController extends Controller {
         left.setOnAction(e -> iv.setRotate(iv.getRotate() - 90));
         right.setOnAction(e -> iv.setRotate(iv.getRotate() + 90));
 
-
+        reserve.setOnAction(e -> {boardPane.getChildren().remove(card);
+                                            onReserveShipCard();});
     }
 
     private void onShipCardSelected(int index){
@@ -478,11 +498,18 @@ public class BuildingController extends Controller {
     private void onReservedShipCardSelected(int index) {
         System.out.println("Reserved ShipCard selezionata indice: " + index);
     }
+    private void onReserveShipCard(){
+
+        try {
+            virtualServer.reserveShipCard(buildingPhaseData.getHeldShipCard());
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
         System.out.println("UPDATE: state = " + buildingPhaseData.getState());
-        System.out.println("UPDATE: this.state = " + this.buildingPhaseData.getState());
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
             this.setFreeShipCards();
