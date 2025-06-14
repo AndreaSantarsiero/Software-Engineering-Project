@@ -168,7 +168,12 @@ public class BuildingTemplate extends CLITemplate {
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_SHIPCARD){
-                    mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
+                    if(data.getReservedShipCard() != null){
+                        data.setServerMessage("Cannot release a reserved ship card");
+                    }
+                    else{
+                        mainCLI.getVirtualServer().releaseShipCard(data.getHeldShipCard());
+                    }
                     return;
                 }
                 else if(data.getState() == BuildingPhaseData.BuildingState.SHIPCARD_SETUP){

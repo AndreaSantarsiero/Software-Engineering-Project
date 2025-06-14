@@ -410,6 +410,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         selectedI = 0;
         selectedJ = 0;
         heldShipCard = null;
+        reservedShipCard = null;
         mainMenu = 0;
         shipCardMenu = 0;
         shipCardIndex =0;
