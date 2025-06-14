@@ -87,19 +87,21 @@ public class ShipBoardCLI {
                 printInvalidSquare();
             }
             else if(x == (shipBoard.getWidth() - 1)){
+                int counter = 0;
                 for (ShipCard shipCard : reservedCards) {
                     if (i < ShipCardCLI.cardLength){
                         if (shipCard != null) {
-                            shipCard.print(shipCardCLI, i, i == selectedShipCard);
+                            shipCard.print(shipCardCLI, i, counter == selectedShipCard);
                         }
                         else {
-                            shipCardCLI.setSelectedBackground(i == selectedShipCard);
+                            shipCardCLI.setSelectedBackground(counter == selectedShipCard);
                             shipCardCLI.printEmptyShipCard(i);
                         }
                     }
                     else {
                         printInvalidSquare();
                     }
+                    counter++;
                     System.out.print(Ansi.ansi().reset());
                 }
             }

@@ -31,7 +31,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private BuildingState state;
     private BuildingState previousState;
     private ShipBoard shipBoard;
-    private Map<String, ShipBoard> enemiesShipBoard;
+    private final Map<String, ShipBoard> enemiesShipBoard;
     private List<ShipCard> freeShipCards;
     private ShipCard heldShipCard;
     private List<AdventureCard> miniDeck;
