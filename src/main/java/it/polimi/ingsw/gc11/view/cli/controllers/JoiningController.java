@@ -68,6 +68,33 @@ public class JoiningController extends CLIController {
 
     //if it's not necessary to render the template, then return true
     public boolean addServerRequest(){
+        try{
+            if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
+                mainCLI.virtualServerSetup(data, connectionTypeMenu);
+                updateInternalState();
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
+                mainCLI.getVirtualServer().registerSession(data.getUsername());
+                return true;
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
+                if(createOrJoinMenu == 0){
+                    mainCLI.getVirtualServer().createMatch(flightLevelSetup(gameLevel), numPlayers);
+                }
+                else {
+                    mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(existingGameMenu));
+                }
+                return true;
+            }
+            else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
+                mainCLI.getVirtualServer().chooseColor(template.getChosenColor(chosenColorMenu));
+                return true;
+            }
+        } catch (NetworkException e) {
+            System.out.println("Connection error: " + e.getMessage());
+            return true;
+        }
+
         return false;
     }
 
@@ -78,15 +105,8 @@ public class JoiningController extends CLIController {
             if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_CONNECTION){
                 mainCLI.addInputRequest(new MenuInput(data, this, template.getConnectionTypesSize(), connectionTypeMenu));
             }
-            else if (data.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP){
-                mainCLI.virtualServerSetup(data, connectionTypeMenu);
-                updateInternalState();
-            }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
                 mainCLI.addInputRequest(new StringInput(data, this));
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP){
-                mainCLI.getVirtualServer().registerSession(data.getUsername());
             }
             else if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
                 usernameApproved = true;
@@ -108,20 +128,9 @@ public class JoiningController extends CLIController {
                     mainCLI.addInputRequest(new MenuInput(data, this, availableMatches.size(), existingGameMenu));
                 }
             }
-            else if(data.getState() == JoiningPhaseData.JoiningState.GAME_SETUP) {
-                if(createOrJoinMenu == 0){
-                    mainCLI.getVirtualServer().createMatch(flightLevelSetup(gameLevel), numPlayers);
-                }
-                else {
-                    mainCLI.getVirtualServer().connectToGame(new ArrayList<>(data.getAvailableMatches().keySet()).get(existingGameMenu));
-                }
-            }
             else if(data.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
                 gameApproved = true;
                 mainCLI.addInputRequest(new MenuInput(data, this, template.getColorOptionsSize(), chosenColorMenu));
-            }
-            else if(data.getState() == JoiningPhaseData.JoiningState.COLOR_SETUP) {
-                mainCLI.getVirtualServer().chooseColor(template.getChosenColor(chosenColorMenu));
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
