@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.view.cli.controllers;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.IntegerInput;
@@ -34,7 +33,7 @@ public class JoiningController extends CLIController {
         super(mainCLI);
         this.data = data;
         this.template = new JoiningTemplate(this);
-        template.render();
+        update(data);
     }
 
     public JoiningPhaseData getPhaseData(){
@@ -52,7 +51,7 @@ public class JoiningController extends CLIController {
 
 
     @Override
-    public void update (BuildingPhaseData buildingPhaseData) {
+    public void update (JoiningPhaseData data) {
         if (!active) {
             return;
         }

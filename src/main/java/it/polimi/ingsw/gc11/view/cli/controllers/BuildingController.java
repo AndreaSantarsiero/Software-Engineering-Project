@@ -3,7 +3,6 @@ package it.polimi.ingsw.gc11.view.cli.controllers;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
-import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.templates.BuildingTemplate;

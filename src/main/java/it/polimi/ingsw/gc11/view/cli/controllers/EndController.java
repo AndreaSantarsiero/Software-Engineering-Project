@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc11.view.cli.controllers;
 
-import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.EndPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.templates.EndTemplate;
@@ -35,7 +34,7 @@ public class EndController extends CLIController {
 
 
     @Override
-    public void update (BuildingPhaseData buildingPhaseData) {
+    public void update (EndPhaseData data) {
         if (!active) {
             return;
         }

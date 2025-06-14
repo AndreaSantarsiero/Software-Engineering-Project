@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli.controllers;
 
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
-import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
 
@@ -35,7 +34,7 @@ public class AdventureController extends CLIController {
 
 
     @Override
-    public void update (BuildingPhaseData buildingPhaseData) {
+    public void update (AdventurePhaseData data) {
         if (!active) {
             return;
         }
