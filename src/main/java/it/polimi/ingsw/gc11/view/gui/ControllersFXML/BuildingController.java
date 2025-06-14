@@ -508,7 +508,7 @@ public class BuildingController extends Controller {
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
-        heldShipCardOverlay();
+        heldShipCardOverlay();  //devi aspettare che il server ti risponde per mostrarla
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);

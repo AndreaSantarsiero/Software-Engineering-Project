@@ -42,11 +42,11 @@ public class LobbyController extends Controller {
 
 
 
-    public void init() {
+    public void init(JoiningPhaseData joiningPhaseData) {
 
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
-        this.joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        this.joiningPhaseData = joiningPhaseData;
 
         //curr_state = WAITING
 

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.State.IdlePhase;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
 import it.polimi.ingsw.gc11.controller.action.client.SetBuildingPhaseAction;
@@ -26,12 +25,11 @@ public class ChooseColorAction extends ClientGameAction {
     public void execute(GameContext context) {
         try{
             context.chooseColor(username, playerColor);
-            Map<String, String> playersColor = context.getPlayersColor();
-            UpdatePlayersColorAction response = new UpdatePlayersColorAction(playersColor);
-
             NotifySuccessAction success = new NotifySuccessAction();
             context.sendAction(username, success);
 
+            Map<String, String> playersColor = context.getPlayersColor();
+            UpdatePlayersColorAction response = new UpdatePlayersColorAction(playersColor);
             for (Player player : context.getGameModel().getPlayers()) {
                 context.sendAction(player.getUsername(), response);
             }

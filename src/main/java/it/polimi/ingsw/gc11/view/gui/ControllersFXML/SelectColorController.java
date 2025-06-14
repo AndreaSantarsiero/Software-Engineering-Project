@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
@@ -124,7 +125,7 @@ public class SelectColorController extends Controller {
                     LobbyController controller = fxmlLoader.getController();
                     controller.setStage(this.stage);
                     joiningPhaseData.setListener(controller);
-                    controller.init();
+                    controller.init(joiningPhaseData);
                     stage.setScene(newScene);
                     stage.show();
 
@@ -137,6 +138,29 @@ public class SelectColorController extends Controller {
             }
 
         });
+    }
 
+
+
+    @Override
+    public void change() {
+        Platform.runLater(() -> {
+
+            ViewModel viewModel = (ViewModel) stage.getUserData();
+            GamePhaseData data = viewModel.getPlayerContext().getCurrentPhase();
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1024, 768);
+                BuildingController controller = fxmlLoader.getController();
+                data.setListener(controller);
+                controller.initialize(stage, viewModel);
+                stage.setScene(newScene);
+                stage.show();
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
     }
 }
