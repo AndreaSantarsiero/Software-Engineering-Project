@@ -20,4 +20,6 @@ module it.polimi.ingsw.gc11 {
     exports it.polimi.ingsw.gc11.model;
     exports it.polimi.ingsw.gc11.controller.network;
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML to javafx.fxml;
+    opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase to javafx.fxml;
+    opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase to javafx.fxml;
 }

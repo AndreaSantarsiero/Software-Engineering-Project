@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
+package it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.FlightBoard;

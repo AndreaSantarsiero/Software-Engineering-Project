@@ -9,7 +9,7 @@
 <HBox fx:id="root"
            spacing="0"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingController">
+           fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller">
         <VBox>
             <VBox fx:id="buttons">
                 <HBox fx:id="playersButtons" />

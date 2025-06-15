@@ -1,9 +1,10 @@
-package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
+package it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.view.GamePhaseData;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -87,7 +88,7 @@ public class LobbyController extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1024, 768);
-                BuildingController controller = fxmlLoader.getController();
+                BuildingLv1Controller controller = fxmlLoader.getController();
                 data.setListener(controller);
                 controller.initialize(stage, viewModel);
                 stage.setScene(newScene);

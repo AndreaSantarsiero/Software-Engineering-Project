@@ -1,4 +1,4 @@
-package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
+package it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -17,7 +17,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
@@ -28,10 +27,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.fusesource.jansi.Ansi;
 
 
-public class BuildingController extends Controller {
+public class BuildingLv1Controller extends Controller {
 
     @FXML private HBox root;
     @FXML private StackPane boardPane;
