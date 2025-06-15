@@ -28,6 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.fusesource.jansi.Ansi;
 
 
 public class BuildingController extends Controller {
@@ -680,12 +681,12 @@ public class BuildingController extends Controller {
     }
     private void onShipBoardSelected(int x, int y) {
         if(placeShipCard){
+            placeShipCard = false;
             try {
                 virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 5,y + 5);
             } catch (NetworkException e) {
                 throw new RuntimeException(e);
             }
-            placeShipCard = false;
         }
     }
     private void onReservedShipCardSelected(int index) {
@@ -737,6 +738,16 @@ public class BuildingController extends Controller {
             if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
                 heldShipCardOverlay();
                 buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION);
+            }
+
+            String serverMessage = buildingPhaseData.getServerMessage();
+            if(serverMessage != null && !serverMessage.isEmpty()) {
+                System.out.println(serverMessage.toUpperCase());
+                buildingPhaseData.resetServerMessage();
+            }
+
+            if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.")) {
+                placeShipCard = true;
             }
         });
     }
