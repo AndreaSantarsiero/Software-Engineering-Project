@@ -41,8 +41,8 @@ public class BuildingController extends Controller {
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
-
-    @FXML private Button PROVA;
+    @FXML private VBox buttons;
+    @FXML private HBox playersButtons, deckButtons;
 
     private Stage stage;
     private ViewModel viewModel;
@@ -94,6 +94,12 @@ public class BuildingController extends Controller {
         });
         HBox.setHgrow(boardPane, Priority.ALWAYS);
         HBox.setHgrow(cardPane, Priority.ALWAYS);
+
+        for(String player : buildingPhaseData.getEnemiesShipBoard().keySet()){
+            Button button = new Button();
+            button.setText(player);
+            playersButtons.getChildren().add(button);
+        }
 
         boardImg.setImage(new Image(getClass()
                 .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard1.jpg")

@@ -10,33 +10,43 @@
            spacing="0"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingController">
+        <VBox>
+            <VBox fx:id="buttons">
+                <HBox fx:id="playersButtons" />
+                <HBox fx:id="deckButtons" >
+                    <Button text="Deck 1" />
+                    <Button text="Deck 2" />
+                    <Button text="Deck 3" />
+                </HBox>
+            </VBox>
 
-        <!-- Parte sinistra: plancia nave -->
-        <StackPane fx:id="boardPane" minWidth="0" minHeight="0">
-            <children>
-                <!-- Immagine di sfondo con sagoma degli slot -->
-                <ImageView  fx:id="boardImg" preserveRatio="true"/>
+            <!-- Parte sinistra: plancia nave -->
+            <StackPane fx:id="boardPane" minWidth="0" minHeight="0">
+                <children>
+                    <!-- Immagine di sfondo con sagoma degli slot -->
+                    <ImageView  fx:id="boardImg" preserveRatio="true"/>
 
-                <GridPane fx:id="reservedSlots"/>
-                <!-- Griglia trasparente allineata agli slot -->
-                <GridPane   fx:id="slotGrid" >
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="10"/>
-                        <ColumnConstraints percentWidth="10"/>
-                        <ColumnConstraints percentWidth="10" />
-                        <ColumnConstraints percentWidth="10" />
-                        <ColumnConstraints percentWidth="10" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints percentHeight="10" />
-                        <RowConstraints percentHeight="10" />
-                        <RowConstraints percentHeight="10" />
-                        <RowConstraints percentHeight="10" />
-                        <RowConstraints percentHeight="10" />
-                    </rowConstraints>
-                </GridPane>
-            </children>
-        </StackPane>
+                    <GridPane fx:id="reservedSlots"/>
+                    <!-- Griglia trasparente allineata agli slot -->
+                    <GridPane   fx:id="slotGrid" >
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="10"/>
+                            <ColumnConstraints percentWidth="10"/>
+                            <ColumnConstraints percentWidth="10" />
+                            <ColumnConstraints percentWidth="10" />
+                            <ColumnConstraints percentWidth="10" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints percentHeight="10" />
+                            <RowConstraints percentHeight="10" />
+                            <RowConstraints percentHeight="10" />
+                            <RowConstraints percentHeight="10" />
+                            <RowConstraints percentHeight="10" />
+                        </rowConstraints>
+                    </GridPane>
+                </children>
+            </StackPane>
+        </VBox>
 
         <!-- Parte destra: selezione tessere scrollabile -->
         <AnchorPane fx:id="cardPane" minWidth="0" minHeight="0"
