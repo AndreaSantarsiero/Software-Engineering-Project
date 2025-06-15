@@ -131,174 +131,6 @@ public class BuildingController extends Controller {
 
         reservedSlots.toFront();
 
-        for(int i = 0; i < 2; i++){
-            Image img;
-
-            Button btn = new Button();
-            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            int finalI = i;
-            btn.setOnAction(event -> onReservedShipCardSelected(finalI));
-            btn.minWidthProperty().bind(cellSize);
-            btn.minHeightProperty().bind(cellSize);
-            btn.prefWidthProperty().bind(cellSize);
-            btn.prefHeightProperty().bind(cellSize);
-            btn.maxWidthProperty().bind(cellSize);
-            btn.maxHeightProperty().bind(cellSize);
-
-            Rectangle clip = new Rectangle();
-            clip.widthProperty().bind(btn.widthProperty());
-            clip.heightProperty().bind(btn.heightProperty());
-            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
-            btn.setClip(clip);
-
-            ColorAdjust darken  = new ColorAdjust();
-            darken.setBrightness(-0.2);
-
-            DropShadow rim = new DropShadow();
-            rim.setColor(Color.web("#ffffffAA"));
-            rim.setRadius(10);
-            rim.setSpread(0.5);
-
-            btn.setOnMouseEntered(e -> {
-                Effect combined = new Blend(
-                        BlendMode.SRC_OVER,
-                        rim,
-                        new Blend(
-                                BlendMode.SRC_OVER,
-                                null,
-                                darken
-                        )
-                );
-                btn.setEffect(combined);
-                btn.setScaleX(1.05);
-                btn.setScaleY(1.05);
-            });
-
-            btn.setOnMouseExited(e -> {
-                btn.setEffect(null);
-                btn.setScaleX(1.0);
-                btn.setScaleY(1.0);
-            });
-
-            if(i < shipBoard.getReservedComponents().size()) {
-
-                img = new Image(getClass()
-                        .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
-                        .toExternalForm()
-                );
-
-                BackgroundImage bgImg = new BackgroundImage(
-                        img,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundPosition.CENTER,
-                        new BackgroundSize(
-                                100, 100,
-                                true, true,
-                                true, false
-                        )
-                );
-
-                btn.setBackground(new Background(bgImg));
-                GridPane.setHgrow(btn, Priority.ALWAYS);
-                GridPane.setVgrow(btn, Priority.ALWAYS);
-
-                reservedSlots.add(btn, i,0);
-            }
-            else {
-                btn.setOpacity(0);
-                reservedSlots.add(btn, i,0);
-            }
-        }
-
-
-        for(int r = 0; r < 5; r++){
-            for(int c = 0; c < 5; c++){
-                if(shipBoard.validateIndexes(c,r)){
-                    ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
-                    Image img;
-
-                    Button btn = new Button();
-                    btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                    final int x = c;
-                    final int y = r;
-                    btn.setOnAction(event -> onShipBoardSelected(x, y));
-                    btn.minWidthProperty().bind(cellSize);
-                    btn.minHeightProperty().bind(cellSize);
-                    btn.prefWidthProperty().bind(cellSize);
-                    btn.prefHeightProperty().bind(cellSize);
-                    btn.maxWidthProperty().bind(cellSize);
-
-                    Rectangle clip = new Rectangle();
-                    clip.widthProperty().bind(btn.widthProperty());
-                    clip.heightProperty().bind(btn.heightProperty());
-                    clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-                    clip.arcHeightProperty().bind(cellSide.multiply(0.055));
-                    btn.setClip(clip);
-
-                    ColorAdjust darken  = new ColorAdjust();
-                    darken.setBrightness(-0.2);
-
-                    DropShadow rim = new DropShadow();
-                    rim.setColor(Color.web("#ffffffAA"));
-                    rim.setRadius(10);
-                    rim.setSpread(0.5);
-
-                    btn.setOnMouseEntered(e -> {
-                        Effect combined = new Blend(
-                                BlendMode.SRC_OVER,
-                                rim,
-                                new Blend(
-                                        BlendMode.SRC_OVER,
-                                        null,
-                                        darken
-                                )
-                        );
-                        btn.setEffect(combined);
-                        btn.setScaleX(1.05);
-                        btn.setScaleY(1.05);
-                    });
-
-                    btn.setOnMouseExited(e -> {
-                        btn.setEffect(null);
-                        btn.setScaleX(1.0);
-                        btn.setScaleY(1.0);
-                    });
-
-                    if(shipCard != null) {
-
-                        img = new Image(getClass()
-                                        .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipCard.getId() + ".jpg")
-                                        .toExternalForm()
-                        );
-
-                        BackgroundImage bgImg = new BackgroundImage(
-                                img,
-                                BackgroundRepeat.NO_REPEAT,
-                                BackgroundRepeat.NO_REPEAT,
-                                BackgroundPosition.CENTER,
-                                new BackgroundSize(
-                                        100, 100,
-                                        true, true,
-                                        true, false
-                                )
-                        );
-
-                        btn.setBackground(new Background(bgImg));
-
-                        GridPane.setHgrow(btn, Priority.ALWAYS);
-                        GridPane.setVgrow(btn, Priority.ALWAYS);
-
-                        slotGrid.add(btn, c, r);
-                    }
-                    else{
-                        btn.setOpacity(0);
-                        slotGrid.add(btn, c, r);
-                    }
-                }
-            }
-        }
         update(buildingPhaseData);
     }
 
@@ -464,19 +296,20 @@ public class BuildingController extends Controller {
                                 .toExternalForm()
                         );
 
-                        BackgroundImage bgImg = new BackgroundImage(
-                                img,
-                                BackgroundRepeat.NO_REPEAT,
-                                BackgroundRepeat.NO_REPEAT,
-                                BackgroundPosition.CENTER,
-                                new BackgroundSize(
-                                        100, 100,
-                                        true, true,
-                                        true, false
-                                )
-                        );
+                        ImageView iv = new ImageView(img);
+                        iv.setPreserveRatio(true);
 
-                        btn.setBackground(new Background(bgImg));
+                        iv.fitWidthProperty().bind(btn.widthProperty());
+                        iv.fitHeightProperty().bind(btn.heightProperty());
+
+                        switch(shipCard.getOrientation()){
+                            case DEG_0 -> iv.setRotate(0);
+                            case DEG_90 -> iv.setRotate(90);
+                            case DEG_180 -> iv.setRotate(180);
+                            case DEG_270 -> iv.setRotate(270);
+                        }
+
+                        btn.setGraphic(iv);
 
                         GridPane.setHgrow(btn, Priority.ALWAYS);
                         GridPane.setVgrow(btn, Priority.ALWAYS);
@@ -564,7 +397,7 @@ public class BuildingController extends Controller {
                         )
                 );
 
-                //btn.setOpacity(1);
+                btn.setOpacity(1);
                 btn.setBackground(new Background(bgImg));
                 GridPane.setHgrow(btn, Priority.ALWAYS);
                 GridPane.setVgrow(btn, Priority.ALWAYS);
@@ -721,6 +554,7 @@ public class BuildingController extends Controller {
                 buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_270);
                 break;
         }
+        System.out.println(buildingPhaseData.getHeldShipCard().getOrientation());
         placeShipCard = true;
     }
 
@@ -743,12 +577,14 @@ public class BuildingController extends Controller {
             String serverMessage = buildingPhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage.toUpperCase());
+
+                if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.")) {
+                    placeShipCard = true;
+                }
+
                 buildingPhaseData.resetServerMessage();
             }
 
-            if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.")) {
-                placeShipCard = true;
-            }
         });
     }
 
