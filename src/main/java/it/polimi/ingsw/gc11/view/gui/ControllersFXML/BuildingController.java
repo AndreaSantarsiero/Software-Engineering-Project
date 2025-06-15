@@ -55,6 +55,8 @@ public class BuildingController extends Controller {
     private DoubleBinding cellSide;
     private DoubleBinding cellSize;
 
+    private Boolean placeShipCard = false;
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -490,8 +492,6 @@ public class BuildingController extends Controller {
     }
 
     public void setReservedSlots(){
-        reservedSlots.getChildren().clear();
-
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
 
         for(int i = 0; i < 2; i++){
@@ -664,6 +664,10 @@ public class BuildingController extends Controller {
             boardPane.getChildren().remove(card);
             onReleaseShipCard();
         });
+        place.setOnAction(e -> {
+            boardPane.getChildren().remove(card);
+            onPlaceShipCard(iv.getRotate());
+        });
     }
 
     private void onShipCardSelected(int index){
@@ -675,7 +679,14 @@ public class BuildingController extends Controller {
         }
     }
     private void onShipBoardSelected(int x, int y) {
-        System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
+        if(placeShipCard){
+            try {
+                virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 5,y + 5);
+            } catch (NetworkException e) {
+                throw new RuntimeException(e);
+            }
+            placeShipCard = false;
+        }
     }
     private void onReservedShipCardSelected(int index) {
         System.out.println("Reserved ShipCard selezionata indice: " + index);
@@ -694,6 +705,23 @@ public class BuildingController extends Controller {
             throw new RuntimeException(e);
         }
     }
+    private void onPlaceShipCard(double orientation){
+        switch(Math.floorMod((int) orientation, 360)){
+            case 0:
+                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_0);
+                break;
+            case 90:
+                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_90);
+                break;
+            case 180:
+                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_180);
+                break;
+            case 270:
+                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_270);
+                break;
+        }
+        placeShipCard = true;
+    }
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
@@ -701,7 +729,9 @@ public class BuildingController extends Controller {
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
             setFreeShipCards();
+            slotGrid.getChildren().clear();
             setShipBoard();
+            reservedSlots.getChildren().clear();
             setReservedSlots();
 
             if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
