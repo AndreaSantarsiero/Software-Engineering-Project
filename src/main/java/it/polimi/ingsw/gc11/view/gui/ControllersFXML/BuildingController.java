@@ -1,30 +1,23 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
 
-import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
-import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
-import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
@@ -35,7 +28,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 
 public class BuildingController extends Controller {
@@ -56,6 +48,13 @@ public class BuildingController extends Controller {
     private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
 
+    private double GAP_RATIO = 0.265;
+
+    private DoubleBinding side;
+    private DoubleBinding gap;
+    private DoubleBinding cellSide;
+    private DoubleBinding cellSize;
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -68,19 +67,17 @@ public class BuildingController extends Controller {
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
 
-        double GAP_RATIO = 0.265;
-
-        DoubleBinding side = Bindings.createDoubleBinding(() ->
+        side = Bindings.createDoubleBinding(() ->
                         Math.min(boardPane.getWidth(), boardPane.getHeight() * ((double) 937 /679)),
                 boardPane.widthProperty(), boardPane.heightProperty());
 
-        DoubleBinding gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
+        gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
 
-        DoubleBinding cellSide = Bindings.createDoubleBinding(() ->
+        cellSide = Bindings.createDoubleBinding(() ->
                         (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
                 side, gap);
 
-        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
+        cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
 
 
         root.widthProperty().addListener((o,oldW,newW) -> {
@@ -304,20 +301,6 @@ public class BuildingController extends Controller {
 
 
     public void setFreeShipCards(){
-        double GAP_RATIO = 0.265;
-
-        DoubleBinding side = Bindings.createDoubleBinding(() ->
-                        Math.min(boardPane.getWidth(), boardPane.getHeight() * ((double) 937 /679)),
-                boardPane.widthProperty(), boardPane.heightProperty());
-
-        DoubleBinding gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
-
-        DoubleBinding cellSide = Bindings.createDoubleBinding(() ->
-                        (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
-                side, gap);
-
-        DoubleBinding cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
-
 
         List<ShipCard> shipCards = buildingPhaseData.getFreeShipCards();
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
@@ -414,6 +397,186 @@ public class BuildingController extends Controller {
         }
     }
 
+    public void setShipBoard(){
+
+        ShipBoard shipBoard = buildingPhaseData.getShipBoard();
+
+        for(int r = 0; r < 5; r++){
+            for(int c = 0; c < 5; c++){
+                if(shipBoard.validateIndexes(c,r)){
+                    ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
+                    Image img;
+
+                    Button btn = new Button();
+                    btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                    final int x = c;
+                    final int y = r;
+                    btn.setOnAction(event -> onShipBoardSelected(x, y));
+                    btn.minWidthProperty().bind(cellSize);
+                    btn.minHeightProperty().bind(cellSize);
+                    btn.prefWidthProperty().bind(cellSize);
+                    btn.prefHeightProperty().bind(cellSize);
+                    btn.maxWidthProperty().bind(cellSize);
+
+                    Rectangle clip = new Rectangle();
+                    clip.widthProperty().bind(btn.widthProperty());
+                    clip.heightProperty().bind(btn.heightProperty());
+                    clip.arcWidthProperty().bind(cellSide.multiply(0.055));
+                    clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+                    btn.setClip(clip);
+
+                    ColorAdjust darken  = new ColorAdjust();
+                    darken.setBrightness(-0.2);
+
+                    DropShadow rim = new DropShadow();
+                    rim.setColor(Color.web("#ffffffAA"));
+                    rim.setRadius(10);
+                    rim.setSpread(0.5);
+
+                    btn.setOnMouseEntered(e -> {
+                        Effect combined = new Blend(
+                                BlendMode.SRC_OVER,
+                                rim,
+                                new Blend(
+                                        BlendMode.SRC_OVER,
+                                        null,
+                                        darken
+                                )
+                        );
+                        btn.setEffect(combined);
+                        btn.setScaleX(1.05);
+                        btn.setScaleY(1.05);
+                    });
+
+                    btn.setOnMouseExited(e -> {
+                        btn.setEffect(null);
+                        btn.setScaleX(1.0);
+                        btn.setScaleY(1.0);
+                    });
+
+                    if(shipCard != null) {
+
+                        img = new Image(getClass()
+                                .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipCard.getId() + ".jpg")
+                                .toExternalForm()
+                        );
+
+                        BackgroundImage bgImg = new BackgroundImage(
+                                img,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.CENTER,
+                                new BackgroundSize(
+                                        100, 100,
+                                        true, true,
+                                        true, false
+                                )
+                        );
+
+                        btn.setBackground(new Background(bgImg));
+
+                        GridPane.setHgrow(btn, Priority.ALWAYS);
+                        GridPane.setVgrow(btn, Priority.ALWAYS);
+
+                        slotGrid.add(btn, c, r);
+                    }
+                    else{
+                        btn.setOpacity(0);
+                        slotGrid.add(btn, c, r);
+                    }
+                }
+            }
+        }
+    }
+
+    public void setReservedSlots(){
+        reservedSlots.getChildren().clear();
+
+        ShipBoard shipBoard = buildingPhaseData.getShipBoard();
+
+        for(int i = 0; i < 2; i++){
+            Image img;
+
+            Button btn = new Button();
+            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            int finalI = i;
+            btn.setOnAction(event -> onReservedShipCardSelected(finalI));
+            btn.minWidthProperty().bind(cellSize);
+            btn.minHeightProperty().bind(cellSize);
+            btn.prefWidthProperty().bind(cellSize);
+            btn.prefHeightProperty().bind(cellSize);
+            btn.maxWidthProperty().bind(cellSize);
+            btn.maxHeightProperty().bind(cellSize);
+
+            Rectangle clip = new Rectangle();
+            clip.widthProperty().bind(btn.widthProperty());
+            clip.heightProperty().bind(btn.heightProperty());
+            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
+            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+            btn.setClip(clip);
+
+            ColorAdjust darken  = new ColorAdjust();
+            darken.setBrightness(-0.2);
+
+            DropShadow rim = new DropShadow();
+            rim.setColor(Color.web("#ffffffAA"));
+            rim.setRadius(10);
+            rim.setSpread(0.5);
+
+            btn.setOnMouseEntered(e -> {
+                Effect combined = new Blend(
+                        BlendMode.SRC_OVER,
+                        rim,
+                        new Blend(
+                                BlendMode.SRC_OVER,
+                                null,
+                                darken
+                        )
+                );
+                btn.setEffect(combined);
+                btn.setScaleX(1.05);
+                btn.setScaleY(1.05);
+            });
+
+            btn.setOnMouseExited(e -> {
+                btn.setEffect(null);
+                btn.setScaleX(1.0);
+                btn.setScaleY(1.0);
+            });
+
+            if(i < shipBoard.getReservedComponents().size()) {
+
+                img = new Image(getClass()
+                        .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
+                        .toExternalForm()
+                );
+
+                BackgroundImage bgImg = new BackgroundImage(
+                        img,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(
+                                100, 100,
+                                true, true,
+                                true, false
+                        )
+                );
+
+                //btn.setOpacity(1);
+                btn.setBackground(new Background(bgImg));
+                GridPane.setHgrow(btn, Priority.ALWAYS);
+                GridPane.setVgrow(btn, Priority.ALWAYS);
+
+                reservedSlots.add(btn, i,0);
+            }
+            else {
+                btn.setOpacity(0);
+                reservedSlots.add(btn, i,0);
+            }
+        }
+    }
+
     public void heldShipCardOverlay(){
         Rectangle bg = new Rectangle(250, 360);
         bg.setArcWidth(30);
@@ -476,16 +639,17 @@ public class BuildingController extends Controller {
         StackPane.setAlignment(bg, Pos.CENTER);
         StackPane.setAlignment(content, Pos.CENTER);
 
-        StackPane glass = new StackPane();
-        glass.setPickOnBounds(true);
-        glass.setMouseTransparent(false);
-        glass.getChildren().add(card);
+//        StackPane glass = new StackPane();
+//        glass.setPickOnBounds(true);
+//        glass.setMouseTransparent(false);
+//        glass.getChildren().add(card);
+//
+//        Rectangle dimmer = new Rectangle();
+//        dimmer.setFill(Color.rgb(0, 0, 0, 0.25));   // 25 % nero
+//        dimmer.widthProperty().bind(boardPane.widthProperty());
+//        dimmer.heightProperty().bind(boardPane.heightProperty());
+//        glass.getChildren().add(0, dimmer);
 
-        Rectangle dimmer = new Rectangle();
-        dimmer.setFill(Color.rgb(0, 0, 0, 0.25));   // 25 % nero
-        dimmer.widthProperty().bind(boardPane.widthProperty());
-        dimmer.heightProperty().bind(boardPane.heightProperty());
-        glass.getChildren().add(0, dimmer);
 
         boardPane.getChildren().add(card);
 
@@ -498,7 +662,7 @@ public class BuildingController extends Controller {
         });
         release.setOnAction(e -> {
             boardPane.getChildren().remove(card);
-            onRelaseShipCard();
+            onReleaseShipCard();
         });
     }
 
@@ -509,7 +673,6 @@ public class BuildingController extends Controller {
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
-        //heldShipCardOverlay();  //devi aspettare che il server ti risponde per mostrarla
     }
     private void onShipBoardSelected(int x, int y) {
         System.out.println("ShipCard selezionata coord: x=" + x + " y=" + y);
@@ -524,7 +687,7 @@ public class BuildingController extends Controller {
             throw new RuntimeException(e);
         }
     }
-    private void onRelaseShipCard(){
+    private void onReleaseShipCard(){
         try {
             virtualServer.releaseShipCard(buildingPhaseData.getHeldShipCard());
         } catch (NetworkException e) {
@@ -537,9 +700,13 @@ public class BuildingController extends Controller {
         System.out.println("UPDATE: state = " + buildingPhaseData.getState());
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
-            this.setFreeShipCards();
+            setFreeShipCards();
+            setShipBoard();
+            setReservedSlots();
+
             if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
-                heldShipCardOverlay();  //mostro la freeShipCard solo quando il server me la manda
+                heldShipCardOverlay();
+                buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION);
             }
         });
     }
