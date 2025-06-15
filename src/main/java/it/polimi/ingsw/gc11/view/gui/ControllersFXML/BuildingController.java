@@ -328,7 +328,7 @@ public class BuildingController extends Controller {
     public void setReservedSlots(){
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
 
-        for(int i = 0; i < 2; i++){
+        for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
 
             Button btn = new Button();
@@ -378,36 +378,23 @@ public class BuildingController extends Controller {
                 btn.setScaleY(1.0);
             });
 
-            if(i < shipBoard.getReservedComponents().size()) {
+            img = new Image(getClass()
+                    .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
+                    .toExternalForm()
+            );
 
-                img = new Image(getClass()
-                        .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
-                        .toExternalForm()
-                );
+            ImageView iv = new ImageView(img);
+            iv.setPreserveRatio(true);
 
-                BackgroundImage bgImg = new BackgroundImage(
-                        img,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundPosition.CENTER,
-                        new BackgroundSize(
-                                100, 100,
-                                true, true,
-                                true, false
-                        )
-                );
+            iv.fitWidthProperty().bind(btn.widthProperty());
+            iv.fitHeightProperty().bind(btn.heightProperty());
 
-                btn.setOpacity(1);
-                btn.setBackground(new Background(bgImg));
-                GridPane.setHgrow(btn, Priority.ALWAYS);
-                GridPane.setVgrow(btn, Priority.ALWAYS);
+            btn.setGraphic(iv);
 
-                reservedSlots.add(btn, i,0);
-            }
-            else {
-                btn.setOpacity(0);
-                reservedSlots.add(btn, i,0);
-            }
+            GridPane.setHgrow(btn, Priority.ALWAYS);
+            GridPane.setVgrow(btn, Priority.ALWAYS);
+
+            reservedSlots.add(btn, i,0);
         }
     }
 
@@ -561,6 +548,8 @@ public class BuildingController extends Controller {
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
         System.out.println("UPDATE: state = " + buildingPhaseData.getState());
+        System.out.println("RESERVED-DATA: " +  buildingPhaseData.getReservedShipCard());
+        System.out.println("RESERVED: " +  buildingPhaseData.getShipBoard().getReservedComponents());
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
             setFreeShipCards();
