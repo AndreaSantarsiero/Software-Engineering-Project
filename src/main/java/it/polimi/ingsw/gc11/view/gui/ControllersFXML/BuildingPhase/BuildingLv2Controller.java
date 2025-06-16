@@ -2,19 +2,23 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
@@ -26,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -55,7 +60,10 @@ public class BuildingLv2Controller extends Controller {
     private DoubleBinding cellSide;
     private DoubleBinding cellSize;
 
+
+    //Pseudo-State flags
     private Boolean placeShipCard = false;
+    private Boolean playersButtonsSetuped = false;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -93,11 +101,19 @@ public class BuildingLv2Controller extends Controller {
         HBox.setHgrow(boardContainer, Priority.ALWAYS);
         HBox.setHgrow(freeShipCards, Priority.ALWAYS);
 
-        for(String player : buildingPhaseData.getEnemiesShipBoard().keySet()){
-            Button button = new Button();
-            button.setText(player);
-            playersButtons.getChildren().add(button);
+
+        //Setup buttons to view other players' shipboard
+        try{
+            virtualServer.getPlayersShipBoard();
         }
+        catch(Exception e){
+//            errorLabel.setVisible(true);
+//            errorLabel.setText(e.getMessage());
+//            errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
+            System.out.println("Network Error:  " + e.getMessage());
+        }
+
+
 
         shipBoardImage.setImage(new Image(getClass()
                 .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard2.jpg")
@@ -554,6 +570,28 @@ public class BuildingLv2Controller extends Controller {
         placeShipCard = true;
     }
 
+    private void setupOthersPlayersButtons(){
+        for(String player : buildingPhaseData.getEnemiesShipBoard().keySet()){
+            Button playerButton = new Button();
+            playerButton.setText(player);
+            playerButton.setOnMouseEntered(e -> {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv2.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EnemyShipboardLv2Controller controller = fxmlLoader.getController();
+                    buildingPhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                }
+                catch (IOException exc) {
+                    throw new RuntimeException(exc);
+                }
+            });
+            playersButtons.getChildren().add(playerButton);
+        }
+    }
+
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
 
@@ -569,6 +607,11 @@ public class BuildingLv2Controller extends Controller {
             setShipBoard();
             reservedSlots.getChildren().clear();
             setReservedSlots();
+
+            if (!this.playersButtonsSetuped) {
+                setupOthersPlayersButtons();
+                this.playersButtonsSetuped = true;
+            }
 
             if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
                 heldShipCardOverlay();
