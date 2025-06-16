@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
@@ -36,6 +37,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private ShipCard heldShipCard;
     private ShipCard reservedShipCard;
     private List<AdventureCard> miniDeck;
+    private FlightBoard.Type flightType;
 
 
 
@@ -146,6 +148,20 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
         updateState();
+    }
+
+
+    public void initializeFlightType(FlightBoard.Type flightType) {
+        this.flightType = flightType;
+        notifyListener();
+    }
+
+    public FlightBoard.Type getFlightType() {
+        return flightType;
+    }
+
+    public void setFlightType(FlightBoard.Type flightType) {
+        this.flightType = flightType;
     }
 
 

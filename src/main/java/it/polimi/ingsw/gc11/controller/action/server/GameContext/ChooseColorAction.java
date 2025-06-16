@@ -36,8 +36,11 @@ public class ChooseColorAction extends ClientGameAction {
 
             if (context.getGameModel().isGameStarted()) {
                 for (Player p : context.getGameModel().getPlayers()) {
-                    SetBuildingPhaseAction send = new SetBuildingPhaseAction(p.getShipBoard(),
-                            context.getGameModel().getFreeShipCardsCount());
+                    SetBuildingPhaseAction send = new SetBuildingPhaseAction(
+                            p.getShipBoard(),
+                            context.getGameModel().getFreeShipCardsCount(),
+                            context.getGameModel().getFlightBoard().getType()
+                    );
                     context.sendAction(p.getUsername(), send);
                 }
             }
