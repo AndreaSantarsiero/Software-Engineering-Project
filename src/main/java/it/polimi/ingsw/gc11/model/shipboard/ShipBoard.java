@@ -394,6 +394,7 @@ public abstract class ShipBoard  implements Serializable {
      * This method is intended to be used only during the initial construction of the ship
      *
      * @param shipCard The reserved ship card to be placed on the board
+     * @param orientation The orientation of the ship card to be placed
      * @param x The x-coordinate where the ship card should be placed
      * @param y The y-coordinate where the ship card should be placed
      * @throws IllegalArgumentException if the ship card is null
@@ -408,6 +409,8 @@ public abstract class ShipBoard  implements Serializable {
         }
 
         placeShipCard(shipCard, x, y);
+        reservedComponents.remove(shipCard);
+        shipCard.setOrientation(orientation);
     }
 
     /**

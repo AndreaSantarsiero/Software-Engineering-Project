@@ -125,6 +125,7 @@ public class JoiningController extends CLIController {
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
