@@ -95,7 +95,7 @@ public class LobbyController extends Controller {
                     Scene newScene = new Scene(fxmlLoader.load(), 1024, 768);
                     BuildingLv1Controller controller = fxmlLoader.getController();
                     buildingPhaseData.setListener(controller);
-                    controller.initialize(stage, viewModel);
+                    controller.initialize(stage);
                     stage.setScene(newScene);
                     stage.show();
                 }
