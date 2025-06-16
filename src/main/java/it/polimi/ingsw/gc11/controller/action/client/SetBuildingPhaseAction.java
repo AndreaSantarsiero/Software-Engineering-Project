@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.action.client;
 
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.*;
 
@@ -9,14 +10,21 @@ public class SetBuildingPhaseAction extends ServerAction {
 
     private final ShipBoard shipBoard;
     private final int freeShipCardsCount;
+    private final FlightBoard.Type flightType;
 
 
 
     public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount) {
         this.shipBoard = shipBoard;
         this.freeShipCardsCount = freeShipCardsCount;
+        this.flightType = null;
     }
 
+    public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType) {
+        this.shipBoard = shipBoard;
+        this.freeShipCardsCount = freeShipCardsCount;
+        this.flightType = flightType;
+    }
 
 
     public ShipBoard getShipBoard() {
@@ -29,6 +37,7 @@ public class SetBuildingPhaseAction extends ServerAction {
     @Override public void loadData(BuildingPhaseData buildingPhaseData) {
         buildingPhaseData.initializeFreeShipCards(freeShipCardsCount);
         buildingPhaseData.initializeShipBoard(shipBoard);
+        buildingPhaseData.initializeFlightType(flightType);
     }
 
     @Override public void loadData(CheckPhaseData checkPhaseData) {}
