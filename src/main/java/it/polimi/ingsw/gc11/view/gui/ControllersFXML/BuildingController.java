@@ -400,7 +400,7 @@ public class BuildingController extends Controller {
             GridPane.setHgrow(btn, Priority.ALWAYS);
             GridPane.setVgrow(btn, Priority.ALWAYS);
 
-            reservedSlots.add(btn, i,0);
+            reservedSlots.getChildren().add(btn);
         }
     }
 
@@ -553,9 +553,9 @@ public class BuildingController extends Controller {
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
-        System.out.println("UPDATE: state = " + buildingPhaseData.getState());
-        System.out.println("RESERVED-DATA: " +  buildingPhaseData.getReservedShipCard());
-        System.out.println("RESERVED: " +  buildingPhaseData.getShipBoard().getReservedComponents());
+//        System.out.println("UPDATE: state = " + buildingPhaseData.getState());
+//        System.out.println("RESERVED-DATA: " +  buildingPhaseData.getReservedShipCard());
+//        System.out.println("RESERVED: " +  buildingPhaseData.getShipBoard().getReservedComponents());
         Platform.runLater(() -> {
             cardTile.getChildren().clear();
             setFreeShipCards();
@@ -563,6 +563,10 @@ public class BuildingController extends Controller {
             setShipBoard();
             reservedSlots.getChildren().clear();
             setReservedSlots();
+
+            Bounds b = reservedSlots.getLayoutBounds();
+            System.out.println("RESERVED-GRID size = " + b.getWidth()+"×"+b.getHeight()
+                    + " | children = " + reservedSlots.getChildren().size());
 
             if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
                 heldShipCardOverlay();
