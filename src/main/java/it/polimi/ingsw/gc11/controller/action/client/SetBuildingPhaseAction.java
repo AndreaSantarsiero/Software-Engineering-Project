@@ -14,12 +14,6 @@ public class SetBuildingPhaseAction extends ServerAction {
 
 
 
-    public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount) {
-        this.shipBoard = shipBoard;
-        this.freeShipCardsCount = freeShipCardsCount;
-        this.flightType = null;
-    }
-
     public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType) {
         this.shipBoard = shipBoard;
         this.freeShipCardsCount = freeShipCardsCount;
@@ -36,8 +30,8 @@ public class SetBuildingPhaseAction extends ServerAction {
 
     @Override public void loadData(BuildingPhaseData buildingPhaseData) {
         buildingPhaseData.initializeFreeShipCards(freeShipCardsCount);
-        buildingPhaseData.initializeShipBoard(shipBoard);
         buildingPhaseData.initializeFlightType(flightType);
+        buildingPhaseData.initializeShipBoard(shipBoard);
     }
 
     @Override public void loadData(CheckPhaseData checkPhaseData) {}

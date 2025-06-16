@@ -153,7 +153,6 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void initializeFlightType(FlightBoard.Type flightType) {
         this.flightType = flightType;
-        notifyListener();
     }
 
     public FlightBoard.Type getFlightType() {
