@@ -413,6 +413,8 @@ public abstract class ShipBoard  implements Serializable {
             checkIndexes(j, i);
             reservedComponents.remove(shipCard);
             components[i][j] = shipCard;
+            lastModifiedI = i;
+            lastModifiedJ = j;
             shipCard.setOrientation(orientation);
         }
         else {
