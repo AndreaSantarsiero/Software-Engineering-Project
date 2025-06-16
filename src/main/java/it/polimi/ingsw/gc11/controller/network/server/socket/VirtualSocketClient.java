@@ -78,6 +78,9 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
             }
         } catch (EOFException | SocketException e) {
             System.out.println("Client disconnected: " + socket.getRemoteSocketAddress());
-        } catch (IOException | ClassNotFoundException ignored) {}
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("[SOCKET] Error while reading client message: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
