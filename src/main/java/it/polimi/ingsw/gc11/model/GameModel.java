@@ -193,6 +193,7 @@ public class GameModel {
             throw new IllegalArgumentException("Ship card cannot be null");
         }
         if(!heldShipCards.containsKey(username)){
+            shipCard.setOrientation(ShipCard.Orientation.DEG_0);
             heldShipCards.put(username, shipCard);
             return;
         }
@@ -409,6 +410,7 @@ public class GameModel {
         }
 
         selectedCard.discover();
+        selectedCard.setOrientation(ShipCard.Orientation.DEG_0);
         freeShipCards.remove(selectedCard);
         heldShipCards.put(username, selectedCard);
         return selectedCard;
@@ -512,6 +514,7 @@ public class GameModel {
             if (player.getUsername().equals(username)) {
                 ShipBoard shipBoard = player.getShipBoard();
                 ShipCard shipCard = shipBoard.removeShipCard(x, y);
+                shipCard.setOrientation(ShipCard.Orientation.DEG_0);
                 heldShipCards.put(username, shipCard);
                 return shipBoard;
             }
