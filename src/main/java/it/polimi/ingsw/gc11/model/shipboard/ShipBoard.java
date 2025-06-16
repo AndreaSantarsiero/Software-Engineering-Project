@@ -293,7 +293,7 @@ public abstract class ShipBoard  implements Serializable {
         int j = adaptX(x);
         checkIndexes(j, i);
         if (components[i][j] == null) {
-            throw new IllegalArgumentException("Ship card already null");
+            throw new IllegalArgumentException("No ship card found at these coordinates");
         }
         if (j == lastModifiedJ && i == lastModifiedI) {
             ShipCard shipCard = components[i][j];
@@ -302,7 +302,7 @@ public abstract class ShipBoard  implements Serializable {
             return shipCard;
         }
         else {
-            throw new IllegalArgumentException("Ship card already welded");
+            throw new IllegalArgumentException("Cannot remove ship card because it's already welded");
         }
     }
 
@@ -398,28 +398,16 @@ public abstract class ShipBoard  implements Serializable {
      * @param y The y-coordinate where the ship card should be placed
      * @throws IllegalArgumentException if the ship card is null
      * @throws IllegalArgumentException if the ship card was not reserved or the reservation list is empty
-     * @throws IllegalArgumentException if the coordinates are out of bounds
      */
     public void useReservedShipCard(ShipCard shipCard, ShipCard.Orientation orientation, int x, int y) {
         if (shipCard == null) {
             throw new IllegalArgumentException("Ship card is null");
         }
-        if (reservedComponents.isEmpty()) {
+        if (reservedComponents.isEmpty() || !reservedComponents.contains(shipCard)) {
             throw new IllegalArgumentException("Ship card not previously reserved");
         }
-        if (reservedComponents.contains(shipCard)) {
-            int i = adaptY(y);
-            int j = adaptX(x);
-            checkIndexes(j, i);
-            reservedComponents.remove(shipCard);
-            components[i][j] = shipCard;
-            lastModifiedI = i;
-            lastModifiedJ = j;
-            shipCard.setOrientation(orientation);
-        }
-        else {
-            throw new IllegalArgumentException("Ship card not previously reserved");
-        }
+
+        placeShipCard(shipCard, x, y);
     }
 
     /**
