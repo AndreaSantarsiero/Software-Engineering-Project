@@ -379,6 +379,9 @@ public abstract class ShipBoard  implements Serializable {
         if (shipCard == null) {
             throw new IllegalArgumentException("Ship card is null");
         }
+        if (reservedComponents.contains(shipCard)) {
+            return;
+        }
         if (reservedComponents.size() < 2) {
             reservedComponents.add(shipCard);
         }

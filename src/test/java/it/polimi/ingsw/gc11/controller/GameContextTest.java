@@ -165,8 +165,8 @@ public class GameContextTest {
 
     @Test
     void testChooseColor() throws FullLobbyException, UsernameAlreadyTakenException {
-        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor(null, "blue"),  "username cannot be null");
-        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username1", "blue"), "player not in lobby");
+        assertThrows(IllegalStateException.class, () -> gameContext.chooseColor(null, "blue"),  "username cannot be null");
+        assertThrows(IllegalStateException.class, () -> gameContext.chooseColor("username1", "blue"), "player not in lobby");
 
         gameContext.connectPlayerToGame("username1");
         assertThrows(NullPointerException.class, () -> gameContext.chooseColor("username1", null), "color cannot be null");
