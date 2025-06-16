@@ -240,6 +240,10 @@ public abstract class ShipBoard  implements Serializable {
         boolean legalPosition = false;
         checkIndexes(j, i);
 
+        if(components[i][j] != null){
+            throw new IllegalStateException("Cannot place a component where another one was already placed");
+        }
+
         try{
             checkIndexes(j, i-1);
             if(components[i-1][j] != null){

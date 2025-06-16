@@ -56,6 +56,8 @@ public class ShipBoardTest {
         shipBoard.placeShipCard(cannon, 6, 7);
         assertEquals(cannon, shipBoard.getShipCard(6, 7), "Ship card not placed correctly");
         assertThrows(IllegalArgumentException.class, () -> shipBoard.placeShipCard(null, 8, 7), "Cannot place a null component");
+        Engine engine = new Engine("singleEngine", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, Engine.Type.SINGLE);
+        assertThrows(IllegalStateException.class, () -> shipBoard.placeShipCard(engine, 6, 7), "Cannot place a component where another one was already placed");
     }
 
 
