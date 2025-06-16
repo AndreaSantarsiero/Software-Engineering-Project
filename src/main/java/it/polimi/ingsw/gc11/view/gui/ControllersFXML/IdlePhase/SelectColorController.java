@@ -100,6 +100,7 @@ public class SelectColorController extends Controller {
         }
     }
 
+
     @Override
     public void update(JoiningPhaseData joiningPhaseData) {
 
