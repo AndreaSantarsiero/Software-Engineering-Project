@@ -1,10 +1,11 @@
 package it.polimi.ingsw.gc11.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 
 
-public class Dice {
+public class Dice implements Serializable {
 
     private int dice;
     private final Random random;

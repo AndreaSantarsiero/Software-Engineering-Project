@@ -1,9 +1,11 @@
 package it.polimi.ingsw.gc11.model;
 
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FlightBoard {
+
+
+public class FlightBoard implements Serializable {
 
     public enum Type {
         TRIAL, LEVEL2;

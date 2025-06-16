@@ -48,6 +48,7 @@ public class ClientSocket extends Client {
             } catch (IOException | ClassNotFoundException e) {
                 if (!socket.isClosed()) {
                     System.err.println("Error in socket connection: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         });
