@@ -32,7 +32,7 @@
         </HBox>
         <HBox fx:id="subHeaderContainer">
             <children>
-                <HBox fx:id="playersButtons" />
+                <HBox fx:id="playersButtons" prefWidth="300.0" />
                 <HBox fx:id="deckButtons">
                     <children>
                         <Button mnemonicParsing="false" text="MiniDeck1" />
