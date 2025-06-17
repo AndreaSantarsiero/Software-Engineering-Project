@@ -102,17 +102,8 @@ public class BuildingLv2Controller extends Controller {
         HBox.setHgrow(freeShipCards, Priority.ALWAYS);
 
 
-        //Setup buttons to view other players' shipboard
+        //Setup buttons to view enemies' shipboard
         this.setupOthersPlayersButtons();
-//        try{
-//            virtualServer.getPlayersShipBoard();
-//        }
-//        catch(Exception e){
-//            errorLabel.setVisible(true);
-//            errorLabel.setText(e.getMessage());
-//            errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
-//            System.out.println("Network Error:  " + e.getMessage());
-//        }
 
 
         shipBoardImage.setImage(new Image(getClass()
@@ -570,13 +561,23 @@ public class BuildingLv2Controller extends Controller {
         placeShipCard = true;
     }
 
+
+    //Setup of buttons to see enemies' shipboards
     private void setupOthersPlayersButtons(){
         for(String player : buildingPhaseData.getPlayersUsernames()){
             Button playerButton = new Button();
             playerButton.setText(player);
             playerButton.setOnMouseClicked(e -> {
 
-
+                try{
+                    virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
+                }
+                catch(Exception exc){
+//                    errorLabel.setVisible(true);
+//                    errorLabel.setText(e.getMessage());
+//                    errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
+                    System.out.println("Network Error:  " + exc.getMessage());
+                }
 
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv2.fxml"));
