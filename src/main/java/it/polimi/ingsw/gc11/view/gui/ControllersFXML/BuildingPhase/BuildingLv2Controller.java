@@ -124,6 +124,9 @@ public class BuildingLv2Controller extends Controller {
         //Setup buttons to view enemies' shipboard
         this.setupOthersPlayersButtons();
 
+        for(Node n : playersButtons.getChildren()) {
+            ((Button) n).prefWidthProperty().bind(shipCardSize.multiply(0.75));
+        }
         playersButtons.setSpacing(10);
         playersButtons.setPadding(new Insets(0,0,0,50));
         playersButtons.prefWidthProperty().bind(availW
@@ -609,12 +612,6 @@ public class BuildingLv2Controller extends Controller {
             });
             playersButtons.getChildren().add(playerButton);
         }
-        playersButtons.setSpacing(10);
-        playersButtons.prefWidthProperty().bind(availW
-                .subtract(playersButtons.widthProperty())
-                .subtract(FreeShipCardText.widthProperty())
-                .subtract(root.spacingProperty().multiply(2))
-                .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
     }
 
     @Override
