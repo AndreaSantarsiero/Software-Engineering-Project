@@ -103,16 +103,16 @@ public class BuildingLv2Controller extends Controller {
 
 
         //Setup buttons to view other players' shipboard
-        try{
-            virtualServer.getPlayersShipBoard();
-        }
-        catch(Exception e){
+        this.setupOthersPlayersButtons();
+//        try{
+//            virtualServer.getPlayersShipBoard();
+//        }
+//        catch(Exception e){
 //            errorLabel.setVisible(true);
 //            errorLabel.setText(e.getMessage());
 //            errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
-            System.out.println("Network Error:  " + e.getMessage());
-        }
-
+//            System.out.println("Network Error:  " + e.getMessage());
+//        }
 
 
         shipBoardImage.setImage(new Image(getClass()
@@ -571,22 +571,26 @@ public class BuildingLv2Controller extends Controller {
     }
 
     private void setupOthersPlayersButtons(){
-        for(String player : buildingPhaseData.getEnemiesShipBoard().keySet()){
+        for(String player : buildingPhaseData.getPlayersUsernames()){
             Button playerButton = new Button();
             playerButton.setText(player);
-            playerButton.setOnMouseEntered(e -> {
+            playerButton.setOnMouseClicked(e -> {
+
+
+
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv2.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                     EnemyShipboardLv2Controller controller = fxmlLoader.getController();
                     buildingPhaseData.setListener(controller);
-                    controller.initialize(stage);
+                    controller.initialize(stage, player);
                     stage.setScene(newScene);
                     stage.show();
                 }
                 catch (IOException exc) {
                     throw new RuntimeException(exc);
                 }
+
             });
             playersButtons.getChildren().add(playerButton);
         }
@@ -608,10 +612,10 @@ public class BuildingLv2Controller extends Controller {
             reservedSlots.getChildren().clear();
             setReservedSlots();
 
-            if (!this.playersButtonsSetuped) {
-                setupOthersPlayersButtons();
-                this.playersButtonsSetuped = true;
-            }
+//            if (!this.playersButtonsSetuped) {
+//                setupOthersPlayersButtons();
+//                this.playersButtonsSetuped = true;
+//            }
 
             if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
                 heldShipCardOverlay();

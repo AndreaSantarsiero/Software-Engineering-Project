@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -19,15 +20,17 @@ public class EnemyShipboardLv2Controller extends Controller {
 
     @FXML private GridPane slotGrid;
     @FXML private Button goBackButton;
+    @FXML private Label ownerUsername;
 
     private Stage stage;
     private BuildingPhaseData buildingPhaseData;
 
-    public void initialize(Stage stage) {
+    public void initialize(Stage stage, String ownerUsername) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        this.ownerUsername.setText(ownerUsername + "'s Shipboard");
     }
 
     @FXML

@@ -38,6 +38,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private ShipCard reservedShipCard;
     private List<AdventureCard> miniDeck;
     private FlightBoard.Type flightType;
+    private ArrayList<String> playersUsernames;
 
 
 
@@ -161,6 +162,19 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setFlightType(FlightBoard.Type flightType) {
         this.flightType = flightType;
+    }
+
+
+    public void initializePlayersUsernames(ArrayList<String> playersUsernames) {
+        this.playersUsernames = playersUsernames;
+    }
+
+    public ArrayList<String> getPlayersUsernames() {
+        return playersUsernames;
+    }
+
+    public void setPlayersUsernames(ArrayList<String> playersUsernames) {
+        this.playersUsernames = playersUsernames;
     }
 
 

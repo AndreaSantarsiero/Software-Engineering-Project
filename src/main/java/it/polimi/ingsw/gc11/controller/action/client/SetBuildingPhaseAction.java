@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.*;
 
+import java.util.ArrayList;
 
 
 public class SetBuildingPhaseAction extends ServerAction {
@@ -11,13 +12,16 @@ public class SetBuildingPhaseAction extends ServerAction {
     private final ShipBoard shipBoard;
     private final int freeShipCardsCount;
     private final FlightBoard.Type flightType;
+    private ArrayList<String> playersUsernames;
 
 
 
-    public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType) {
+    public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType,
+                                  ArrayList<String> playersUsernames) {
         this.shipBoard = shipBoard;
         this.freeShipCardsCount = freeShipCardsCount;
         this.flightType = flightType;
+        this.playersUsernames = playersUsernames;
     }
 
 
@@ -32,6 +36,7 @@ public class SetBuildingPhaseAction extends ServerAction {
         buildingPhaseData.initializeFreeShipCards(freeShipCardsCount);
         buildingPhaseData.initializeFlightType(flightType);
         buildingPhaseData.initializeShipBoard(shipBoard);
+        buildingPhaseData.initializePlayersUsernames(playersUsernames);
     }
 
     @Override public void loadData(CheckPhaseData checkPhaseData) {}
