@@ -127,23 +127,21 @@ public class JoinMatchController extends Controller {
             }
 
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
-                while(true) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectPlayerColor.fxml"));
-                        Scene newScene = new Scene(fxmlLoader.load());
-                        SelectColorController controller = fxmlLoader.getController();
-                        stage.setScene(newScene);
-                        stage.show();
-                        controller.setStage(this.stage);
-                        controller.init();
-                        joiningPhaseData.setListener(controller);
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectPlayerColor.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load());
+                    SelectColorController controller = fxmlLoader.getController();
+                    stage.setScene(newScene);
+                    stage.show();
+                    joiningPhaseData.setListener(controller);
+                    controller.setStage(this.stage);
+                    controller.init();
 
-                        System.out.println(joiningPhaseData.getUsername() + ": joined " +
-                                matchTable.getSelectionModel().getSelectedItem().getMatchId());
-                        break;
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    System.out.println(joiningPhaseData.getUsername() + ": joined " +
+                            matchTable.getSelectionModel().getSelectedItem().getMatchId());
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
 

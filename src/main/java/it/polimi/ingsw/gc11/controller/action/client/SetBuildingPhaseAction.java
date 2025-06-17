@@ -33,8 +33,8 @@ public class SetBuildingPhaseAction extends ServerAction {
     @Override public void loadData(JoiningPhaseData joiningPhaseData) {}
 
     @Override public void loadData(BuildingPhaseData buildingPhaseData) {
-        buildingPhaseData.initializeFreeShipCards(freeShipCardsCount);
         buildingPhaseData.initializeFlightType(flightType);
+        buildingPhaseData.initializeFreeShipCards(freeShipCardsCount);
         buildingPhaseData.initializePlayersUsernames(playersUsernames);
         buildingPhaseData.initializeShipBoard(shipBoard);
 
