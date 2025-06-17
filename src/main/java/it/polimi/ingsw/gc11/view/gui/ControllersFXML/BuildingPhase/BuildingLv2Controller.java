@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
@@ -18,8 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
@@ -37,33 +38,48 @@ import java.util.stream.Stream;
 public class BuildingLv2Controller extends Controller {
 
 
+    @FXML public HBox arrows;
+    @FXML public Button left;
+    @FXML public Button right;
+    @FXML public Button release;
+    @FXML public Button place;
+    @FXML public Button reserve;
     @FXML private VBox root;
+    @FXML private HBox mainContainer;
+    @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private StackPane boardContainer;
+    @FXML private VBox cardPane;
     @FXML private Pane freeShipCards;
     @FXML private ImageView shipBoardImage;
-    @FXML private GridPane reservedSlots;
+    @FXML private HBox reservedSlots;
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
     @FXML private VBox buttons;
     @FXML private HBox playersButtons, deckButtons;
-    @FXML private Rectangle heldShipCard;
+    @FXML private Label FreeShipCardText;
+    @FXML private VBox heldShipCard;
+    @FXML private ImageView heldShipCardImage;
 
     private Stage stage;
     private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
 
-    private double GAP_RATIO = 0.265;
+    private static final double GRID_GAP = 3;
+    private static final double BOARD_RATIO = 937.0 / 679.0;
 
-    private DoubleBinding side;
-    private DoubleBinding gap;
     private DoubleBinding cellSide;
-    private DoubleBinding cellSize;
 
+    private DoubleBinding availW;
+    private DoubleBinding availH;
+    private DoubleBinding boardW;
+    private DoubleBinding boardH;
+    private DoubleBinding gridW;
+    private DoubleBinding gridH;
+    private DoubleBinding shipCardSize;
 
     //Pseudo-State flags
     private Boolean placeShipCard = false;
-    private Boolean playersButtonsSetuped = false;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -76,73 +92,98 @@ public class BuildingLv2Controller extends Controller {
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
 
-        side = Bindings.createDoubleBinding(() ->
-                        Math.min(boardContainer.getWidth(), boardContainer.getHeight() * ((double) 937 /679)),
-                boardContainer.widthProperty(), boardContainer.heightProperty());
+        root.setSpacing(20);
 
-        gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
+        headerContainer.minHeightProperty().bind(
+                root.heightProperty().multiply(0.10)
+        );
+        headerContainer.prefHeightProperty().bind(headerContainer.minHeightProperty());
+        headerContainer.maxHeightProperty().bind(headerContainer.minHeightProperty());
 
-        cellSide = Bindings.createDoubleBinding(() ->
-                        (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
-                side, gap);
+        availW  = root.widthProperty().subtract(mainContainer.spacingProperty());
+        availH = root.heightProperty()
+                .subtract(headerContainer.heightProperty())
+                .subtract(subHeaderContainer.heightProperty())
+                .subtract(root.spacingProperty().multiply(3));
 
-        cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
+        DoubleBinding wFromH  = availH.multiply(BOARD_RATIO);
+        DoubleBinding maxBoardW = availW.multiply(0.80).subtract(root.spacingProperty());
+        boardW = Bindings.createDoubleBinding(
+                () -> Math.min(maxBoardW.get(), wFromH.get()),
+                maxBoardW, wFromH
+        );
+        boardH  = boardW.divide(BOARD_RATIO);
 
+        gridW = boardW.multiply(0.66);
+        gridH = gridW;
 
-        root.widthProperty().addListener((o,oldW,newW) -> {
-            double w = newW.doubleValue();
-            boardContainer.minWidth(w * 0.8);
-            boardContainer.maxWidth(w * 0.8);
-            boardContainer.prefWidth(w * 0.8);
-            freeShipCards.setMaxWidth(w * 0.2);
-            freeShipCards.setMinWidth(w * 0.2);
-            freeShipCards.setPrefWidth(w * 0.2);
-        });
-        HBox.setHgrow(boardContainer, Priority.ALWAYS);
-        HBox.setHgrow(freeShipCards, Priority.ALWAYS);
-
+        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(5);
 
         //Setup buttons to view enemies' shipboard
         this.setupOthersPlayersButtons();
 
+        deckButtons.setSpacing(10);
+        deckButtons.prefWidthProperty().bind(availW
+                .subtract(playersButtons.widthProperty())
+                .subtract(FreeShipCardText.widthProperty())
+                .subtract(root.spacingProperty().multiply(2))
+                .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
 
-        shipBoardImage.setImage(new Image(getClass()
-                .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard2.jpg")
-                .toExternalForm()));
+        boardContainer.setMinSize(0, 0);
+        boardContainer.prefWidthProperty().bind(boardW);
+        boardContainer.prefHeightProperty().bind(boardH);
+
         shipBoardImage.setPreserveRatio(true);
+        shipBoardImage.fitWidthProperty().bind(boardW);
+        shipBoardImage.fitHeightProperty().bind(boardH);
 
-        shipBoardImage.fitWidthProperty().bind(side);
-        shipBoardImage.fitHeightProperty().bind(side);
+        cardPane.minWidthProperty().bind(availW.multiply(0.3));
+        cardPane.prefWidthProperty().bind(availW.multiply(0.3));
+        cardPane.maxWidthProperty().bind(availW.multiply(0.3));
+        cardPane.prefHeightProperty().bind(boardH);
 
-        slotGrid.translateXProperty().bind(side.divide(slotGrid.getColumnCount() + 0.79));
-        slotGrid.translateYProperty().bind(side.divide(slotGrid.getColumnCount() + 0.08));
+        cardPane.setFillWidth(true);
+        cardPane.setSpacing(15);
+        cardPane.setAlignment(Pos.TOP_CENTER);
 
-        StackPane.setAlignment(slotGrid, Pos.CENTER);
+        tileScroll.prefWidthProperty().bind(cardPane.widthProperty());
+        tileScroll.maxWidthProperty().bind(cardPane.widthProperty());
+        tileScroll.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.5));
 
-        slotGrid.prefWidthProperty().bind(side);
-        slotGrid.prefHeightProperty().bind(side);
-        slotGrid.minWidthProperty().bind(side);
-        slotGrid.minHeightProperty().bind(side);
-        slotGrid.maxWidthProperty().bind(side);
-        slotGrid.maxHeightProperty().bind(side);
 
-        slotGrid.hgapProperty().bind(gap);
-        slotGrid.vgapProperty().bind(gap);
+        heldShipCard.maxWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        heldShipCard.minWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        heldShipCard.prefWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        heldShipCard.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
+        heldShipCard.minHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
+        heldShipCard.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
 
-        reservedSlots.hgapProperty().bind(gap.divide(7));
-        reservedSlots.vgapProperty().bind(gap.divide(7));
 
-        reservedSlots.translateXProperty().bind(boardContainer.widthProperty().subtract(shipBoardImage.fitWidthProperty()).divide(2).add(shipBoardImage.fitWidthProperty().divide(1.4)));
-        reservedSlots.translateYProperty().bind(boardContainer.heightProperty().subtract(shipBoardImage.fitHeightProperty()).divide(2).add(shipBoardImage.fitHeightProperty().divide(6.17)));
+        slotGrid.prefWidthProperty().bind(gridW);
+        slotGrid.prefHeightProperty().bind(gridH);
+        slotGrid.minWidthProperty().bind(gridW);
+        slotGrid.minHeightProperty().bind(gridH);
+        slotGrid.maxWidthProperty().bind(gridW);
+        slotGrid.maxHeightProperty().bind(gridH);
 
-        Rectangle clip2 = new Rectangle();
-        clip2.widthProperty().bind(reservedSlots.widthProperty());
-        clip2.heightProperty().bind(cellSize);
-        reservedSlots.setClip(clip2);
+        slotGrid.setHgap(GRID_GAP);
+        slotGrid.setVgap(GRID_GAP);
+        slotGrid.setPickOnBounds(false);
+        slotGrid.toFront();
 
+        reservedSlots.prefWidthProperty().bind(shipCardSize.multiply(2).add(GRID_GAP));
+        reservedSlots.prefHeightProperty().bind(shipCardSize);
+        reservedSlots.setSpacing(GRID_GAP);
+
+        reservedSlots.translateXProperty().bind(boardContainer.widthProperty().subtract(boardW).divide(2).add(boardW.divide(1.395)));
+        reservedSlots.translateYProperty().bind(boardContainer.heightProperty().subtract(boardH).divide(2).add(boardH.divide(31)));
+
+        reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
 
+
         update(buildingPhaseData);
+
     }
 
 
@@ -151,14 +192,14 @@ public class BuildingLv2Controller extends Controller {
         List<ShipCard> shipCards = buildingPhaseData.getFreeShipCards();
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
 
-        cardTile.setPrefColumns(2);
+        cardTile.setPrefColumns(4);
         double hgap = cardTile.getHgap();
 
         ChangeListener<Bounds> cl = (obs, oldB, newB) -> {
             double availW = newB.getWidth();
             int tileCols = cardTile.getPrefColumns();
             double totalHGap = (tileCols - 1)*hgap;
-            double cellW = (availW - totalHGap - 25)/tileCols;
+            double cellW = (availW - totalHGap - 5)/tileCols;
             cardTile.setPrefTileWidth(cellW);
             cardTile.setPrefTileHeight(cellW);
         };
@@ -201,8 +242,8 @@ public class BuildingLv2Controller extends Controller {
             Rectangle clip = new Rectangle();
             clip.widthProperty().bind(btn.widthProperty());
             clip.heightProperty().bind(btn.heightProperty());
-            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+            clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+            clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
             btn.setClip(clip);
 
             ColorAdjust darken  = new ColorAdjust();
@@ -258,17 +299,17 @@ public class BuildingLv2Controller extends Controller {
                     final int x = c;
                     final int y = r;
                     btn.setOnAction(event -> onShipBoardSelected(x, y));
-                    btn.minWidthProperty().bind(cellSize);
-                    btn.minHeightProperty().bind(cellSize);
-                    btn.prefWidthProperty().bind(cellSize);
-                    btn.prefHeightProperty().bind(cellSize);
-                    btn.maxWidthProperty().bind(cellSize);
+                    btn.minWidthProperty().bind(shipCardSize);
+                    btn.minHeightProperty().bind(shipCardSize);
+                    btn.prefWidthProperty().bind(shipCardSize);
+                    btn.prefHeightProperty().bind(shipCardSize);
+                    btn.maxWidthProperty().bind(shipCardSize);
 
                     Rectangle clip = new Rectangle();
                     clip.widthProperty().bind(btn.widthProperty());
                     clip.heightProperty().bind(btn.heightProperty());
-                    clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-                    clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+                    clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+                    clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
                     btn.setClip(clip);
 
                     ColorAdjust darken  = new ColorAdjust();
@@ -338,7 +379,6 @@ public class BuildingLv2Controller extends Controller {
 
     public void setReservedSlots(){
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
-
         for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
 
@@ -346,18 +386,18 @@ public class BuildingLv2Controller extends Controller {
             btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             int finalI = i;
             btn.setOnAction(event -> onReservedShipCardSelected(finalI));
-            btn.minWidthProperty().bind(cellSize);
-            btn.minHeightProperty().bind(cellSize);
-            btn.prefWidthProperty().bind(cellSize);
-            btn.prefHeightProperty().bind(cellSize);
-            btn.maxWidthProperty().bind(cellSize);
-            btn.maxHeightProperty().bind(cellSize);
+            btn.minWidthProperty().bind(shipCardSize);
+            btn.minHeightProperty().bind(shipCardSize);
+            btn.prefWidthProperty().bind(shipCardSize);
+            btn.prefHeightProperty().bind(shipCardSize);
+            btn.maxWidthProperty().bind(shipCardSize);
+            btn.maxHeightProperty().bind(shipCardSize);
 
             Rectangle clip = new Rectangle();
             clip.widthProperty().bind(btn.widthProperty());
             clip.heightProperty().bind(btn.heightProperty());
-            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+            clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+            clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
             btn.setClip(clip);
 
             ColorAdjust darken  = new ColorAdjust();
@@ -405,33 +445,23 @@ public class BuildingLv2Controller extends Controller {
             GridPane.setHgrow(btn, Priority.ALWAYS);
             GridPane.setVgrow(btn, Priority.ALWAYS);
 
-            reservedSlots.add(btn, i,0);
+            reservedSlots.getChildren().add(btn);
         }
     }
 
-    public void heldShipCardOverlay(){
-        //Rectangle heldShipCard = new Rectangle(250, 360);
-        heldShipCard.setArcWidth(30);
-        heldShipCard.setArcHeight(30);
-        heldShipCard.setFill(Color.web("#0d47a1"));
+    public void heldShipCardOverlay() {
 
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
-        ImageView iv = new ImageView(
-                new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm())
-        );
-        iv.setPreserveRatio(true);
-        iv.setFitHeight(120);
 
-        Button left  = new Button("⟲");
-        left.setPrefWidth(80);
+        heldShipCardImage.setImage(new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm()));
+        heldShipCardImage.setFitHeight(shipCardSize.divide(1.5).doubleValue());
+        heldShipCardImage.setFitWidth(shipCardSize.divide(1.5).doubleValue());
+        heldShipCardImage.setRotate(0);
+
+        left.setPrefWidth(heldShipCard.getWidth() / 2 -30);
         left.setPrefHeight(10);
-        Button right = new Button("⟳");
-        right.setPrefWidth(80);
+        right.setPrefWidth(heldShipCard.getWidth() / 2 -30);
         right.setPrefHeight(10);
-
-        Button release = new Button("Release shipcard");
-        Button place = new Button("Place shipcard");
-        Button reserve = new Button("Reserve shipcard");
 
         Stream.of(left, right).forEach(b -> {
             b.setFont(Font.font(26));
@@ -449,8 +479,10 @@ public class BuildingLv2Controller extends Controller {
             b.setTextFill(Color.WHITE);
         });
 
+        for (Node child : (heldShipCard.getChildren())) { child.setOpacity(1);}
+
         Color normalColor = Color.WHITE;
-        Color hoverColor  = Color.web("#ffd54f");
+        Color hoverColor  = Color.web("#FFD700");
 
         Stream.of(left, right, release, place, reserve).forEach(btn -> {
             btn.setTextFill(normalColor);
@@ -459,46 +491,20 @@ public class BuildingLv2Controller extends Controller {
             btn.setOnMouseExited (e -> btn.setTextFill(normalColor));
         });
 
-        HBox buttons = new HBox(40, left, right);
-        buttons.setAlignment(Pos.CENTER);
-
-        VBox content = new VBox(10, iv, buttons,  release, place, reserve);
-        content.setAlignment(Pos.CENTER);
-
-        StackPane card = new StackPane(heldShipCard, content);
-
-
-        StackPane.setAlignment(heldShipCard, Pos.CENTER);
-        StackPane.setAlignment(content, Pos.CENTER);
-
-//        StackPane glass = new StackPane();
-//        glass.setPickOnBounds(true);
-//        glass.setMouseTransparent(false);
-//        glass.getChildren().add(card);
-//
-//        Rectangle dimmer = new Rectangle();
-//        dimmer.setFill(Color.rgb(0, 0, 0, 0.25));   // 25 % nero
-//        dimmer.widthProperty().bind(boardPane.widthProperty());
-//        dimmer.heightProperty().bind(boardPane.heightProperty());
-//        glass.getChildren().add(0, dimmer);
-
-
-        boardContainer.getChildren().add(card);
-
-        left.setOnAction(e -> iv.setRotate(iv.getRotate() - 90));
-        right.setOnAction(e -> iv.setRotate(iv.getRotate() + 90));
+        left.setOnAction(e -> heldShipCardImage.setRotate(heldShipCardImage.getRotate() - 90));
+        right.setOnAction(e -> heldShipCardImage.setRotate(heldShipCardImage.getRotate() + 90));
 
         reserve.setOnAction(e -> {
-            boardContainer.getChildren().remove(card);
+            for (Node child : (heldShipCard.getChildren())) { child.setOpacity(0);}
             onReserveShipCard();
         });
         release.setOnAction(e -> {
-            boardContainer.getChildren().remove(card);
+            for (Node child : (heldShipCard.getChildren())) { child.setOpacity(0);}
             onReleaseShipCard();
         });
         place.setOnAction(e -> {
-            boardContainer.getChildren().remove(card);
-            onPlaceShipCard(iv.getRotate());
+            for (Node child : (heldShipCard.getChildren())) { child.setOpacity(0);}
+            onPlaceShipCard(heldShipCardImage.getRotate());
         });
     }
 
@@ -561,7 +567,6 @@ public class BuildingLv2Controller extends Controller {
         placeShipCard = true;
     }
 
-
     //Setup of buttons to see enemies' shipboards
     private void setupOthersPlayersButtons(){
         for(String player : buildingPhaseData.getPlayersUsernames()){
@@ -600,9 +605,9 @@ public class BuildingLv2Controller extends Controller {
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
 
-        System.out.println("UPDATE: state = " + buildingPhaseData.getState());
-        System.out.println("RESERVED-DATA: " +  buildingPhaseData.getReservedShipCard());
-        System.out.println("RESERVED: " +  buildingPhaseData.getShipBoard().getReservedComponents());
+//        System.out.println("UPDATE: state = " + buildingPhaseData.getState());
+//        System.out.println("RESERVED-DATA: " +  buildingPhaseData.getReservedShipCard());
+//        System.out.println("RESERVED: " +  buildingPhaseData.getShipBoard().getReservedComponents());
 
         Platform.runLater(() -> {
 
@@ -612,11 +617,6 @@ public class BuildingLv2Controller extends Controller {
             setShipBoard();
             reservedSlots.getChildren().clear();
             setReservedSlots();
-
-//            if (!this.playersButtonsSetuped) {
-//                setupOthersPlayersButtons();
-//                this.playersButtonsSetuped = true;
-//            }
 
             if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
                 heldShipCardOverlay();

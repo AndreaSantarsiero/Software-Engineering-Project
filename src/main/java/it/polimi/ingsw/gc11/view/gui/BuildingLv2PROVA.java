@@ -22,7 +22,7 @@ public class BuildingLv2PROVA extends Application {
         stage.setUserData(viewModel);
         stage.setTitle("Galaxy Trucker");
 
-        FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLv2.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/oldBuildingLv2.fxml"));
         Scene scene = new Scene(loader.load(), 1280, 720);
         viewModel.getPlayerContext().setBuildingPhase();
         BuildingPhaseData buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();

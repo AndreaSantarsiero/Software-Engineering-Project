@@ -18,7 +18,7 @@
     <children>
 
         <!-- Title -->
-        <HBox alignment="CENTER">
+        <HBox fx:id="headerContainer" alignment="CENTER">
             <children>
                 <Label styleClass="Text" text="BUILDING PHASE">
                     <font>
@@ -27,7 +27,7 @@
                 </Label>
             </children>
         </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
          <children>
             <HBox fx:id="playersButtons" prefHeight="45.0" prefWidth="1255.0">
                <children>
@@ -35,7 +35,7 @@
                      <font>
                         <Font size="18.0" />
                      </font></Button>
-                  <Label fx:id="ownerUsername" styleClass="Text" text="&lt;username&gt;'s Shipboard">
+                  <Label fx:id="owner" styleClass="Text" text="&lt;username&gt;'s Shipboard">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -51,7 +51,7 @@
       </HBox>
 
         <!-- Main Game Layout -->
-        <HBox alignment="TOP_CENTER" spacing="100.0">
+        <HBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="100.0">
 
             <!-- CENTER: ShipBoard (background image + grid) -->
             <StackPane fx:id="boardContainer">
@@ -60,21 +60,6 @@
                   <Image url="@../boards/ShipBoard2.jpg" />
                </image>
             </ImageView>
-            <GridPane fx:id="reservedSlots">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.9058837890625" minWidth="10.0" prefWidth="105.78857421875" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.94024658203125" minWidth="10.0" prefWidth="109.21142578125" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <StackPane.margin>
-                  <Insets />
-               </StackPane.margin>
-               <padding>
-                  <Insets bottom="450.0" left="570.0" right="15.0" top="20.0" />
-               </padding>
-            </GridPane>
             <GridPane fx:id="slotGrid">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
