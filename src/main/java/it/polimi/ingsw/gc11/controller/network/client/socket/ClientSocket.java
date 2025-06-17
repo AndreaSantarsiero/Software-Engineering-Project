@@ -80,6 +80,7 @@ public class ClientSocket extends Client {
         action.setToken(clientSessionToken);
         try {
             synchronized (outputStream) {
+                outputStream.reset();
                 outputStream.writeObject(action);
                 outputStream.flush();
             }
@@ -93,6 +94,7 @@ public class ClientSocket extends Client {
         ClientGameMessage message = new ClientGameMessage(clientSessionToken, action);
         try {
             synchronized (outputStream) {
+                outputStream.reset();
                 outputStream.writeObject(message);
                 outputStream.flush();
             }

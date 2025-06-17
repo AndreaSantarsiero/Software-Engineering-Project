@@ -42,6 +42,7 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
     @Override
     public synchronized void sendAction(ServerAction action) throws NetworkException {
         try {
+            out.reset();
             out.writeObject(action);
             out.flush();
             System.out.println("[SOCKET] Sending socket session action went good...");
