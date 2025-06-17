@@ -78,18 +78,7 @@
                         <Insets />
                     </StackPane.margin>
                 </GridPane>
-                <GridPane fx:id="reservedSlots">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" />
-                        <ColumnConstraints hgrow="SOMETIMES" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="0.0" minHeight="0.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <StackPane.margin>
-                        <Insets />
-                    </StackPane.margin>
-                </GridPane>
+                <HBox fx:id="reservedSlots"/>
             </StackPane>
 
             <!-- RIGHT: Covered ShipCards -->

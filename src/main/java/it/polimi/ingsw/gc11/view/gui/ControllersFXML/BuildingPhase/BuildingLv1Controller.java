@@ -48,7 +48,7 @@ public class BuildingLv1Controller extends Controller {
     @FXML private VBox cardPane;
     @FXML private Pane freeShipCards;
     @FXML private ImageView shipBoardImage;
-    @FXML private GridPane reservedSlots;
+    @FXML private HBox reservedSlots;
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
@@ -61,7 +61,7 @@ public class BuildingLv1Controller extends Controller {
     private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
 
-    private static final double GRID_GAP = 2;
+    private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
 
     private DoubleBinding cellSide;
@@ -155,65 +155,22 @@ public class BuildingLv1Controller extends Controller {
 
         slotGrid.setHgap(GRID_GAP);
         slotGrid.setVgap(GRID_GAP);
+        slotGrid.setPickOnBounds(false);
+        slotGrid.toFront();
+
+        reservedSlots.prefWidthProperty().bind(shipCardSize.multiply(2).add(GRID_GAP));
+        reservedSlots.prefHeightProperty().bind(shipCardSize);
+        reservedSlots.setSpacing(GRID_GAP);
+
+        reservedSlots.translateXProperty().bind(boardContainer.widthProperty().subtract(boardW).divide(2).add(boardW.divide(1.395)));
+        reservedSlots.translateYProperty().bind(boardContainer.heightProperty().subtract(boardH).divide(2).add(boardH.divide(31)));
+
+        reservedSlots.setPickOnBounds(false);
+        reservedSlots.toFront();
 
         setFreeShipCards();
         setShipBoard();
-
-//        boardContainer.setMinWidth(0);
-//        boardContainer.setMinHeight(0);
-//        cardPane.setMinWidth(0);
-//        cardPane.setMinHeight(0);
-
-//        side = Bindings.createDoubleBinding(() ->
-//                        Math.min(boardContainer.getWidth(), boardContainer.getHeight() * ((double) 937 /679)),
-//                boardContainer.widthProperty(), boardContainer.heightProperty());
-//
-//        gap = side.divide(slotGrid.getColumnCount()).multiply(GAP_RATIO);
-//
-//        cellSide = Bindings.createDoubleBinding(() ->
-//                        (side.get() - gap.get() * (slotGrid.getColumnCount() - 1)) / slotGrid.getColumnCount(),
-//                side, gap);
-//
-//        cellSize = side.divide(slotGrid.getColumnCount() + 2.8);
-//
-//        for(String player : buildingPhaseData.getEnemiesShipBoard().keySet()){
-//            Button button = new Button();
-//            button.setText(player);
-//            playersButtons.getChildren().add(button);
-//        }
-
-//        shipBoardImage.setPreserveRatio(true);
-
-//        shipBoardImage.fitWidthProperty().bind(side);
-//        shipBoardImage.fitHeightProperty().bind(side);
-
-//        slotGrid.translateXProperty().bind(side.divide(slotGrid.getColumnCount() + 0.79));
-//        slotGrid.translateYProperty().bind(side.divide(slotGrid.getColumnCount() + 0.08));
-//
-//        StackPane.setAlignment(slotGrid, Pos.CENTER);
-//
-//        slotGrid.prefWidthProperty().bind(side);
-//        slotGrid.prefHeightProperty().bind(side);
-//        slotGrid.minWidthProperty().bind(side);
-//        slotGrid.minHeightProperty().bind(side);
-//        slotGrid.maxWidthProperty().bind(side);
-//        slotGrid.maxHeightProperty().bind(side);
-//
-//        slotGrid.hgapProperty().bind(gap);
-//        slotGrid.vgapProperty().bind(gap);
-//
-//        reservedSlots.hgapProperty().bind(gap.divide(7));
-//        reservedSlots.vgapProperty().bind(gap.divide(7));
-//
-//        reservedSlots.translateXProperty().bind(boardContainer.widthProperty().subtract(shipBoardImage.fitWidthProperty()).divide(2).add(shipBoardImage.fitWidthProperty().divide(1.4)));
-//        reservedSlots.translateYProperty().bind(boardContainer.heightProperty().subtract(shipBoardImage.fitHeightProperty()).divide(2).add(shipBoardImage.fitHeightProperty().divide(6.17)));
-//
-//        Rectangle clip2 = new Rectangle();
-//        clip2.widthProperty().bind(reservedSlots.widthProperty());
-//        clip2.heightProperty().bind(cellSize);
-//        reservedSlots.setClip(clip2);
-//
-//        reservedSlots.toFront();
+        setReservedSlots();
 
         //update(buildingPhaseData);
     }
@@ -414,8 +371,8 @@ public class BuildingLv1Controller extends Controller {
 
     public void setReservedSlots(){
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
-
-        for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
+//for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
+        for(int i = 0; i < 2; i++){
             Image img;
 
             Button btn = new Button();
@@ -432,8 +389,8 @@ public class BuildingLv1Controller extends Controller {
             Rectangle clip = new Rectangle();
             clip.widthProperty().bind(btn.widthProperty());
             clip.heightProperty().bind(btn.heightProperty());
-            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+            clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+            clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
             btn.setClip(clip);
 
             ColorAdjust darken  = new ColorAdjust();
@@ -466,9 +423,14 @@ public class BuildingLv1Controller extends Controller {
             });
 
             img = new Image(getClass()
-                    .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
+                    .getResource("/it/polimi/ingsw/gc11/shipCards/BlueTripleStorage6.jpg")
                     .toExternalForm()
             );
+
+//            img = new Image(getClass()
+//                    .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
+//                    .toExternalForm()
+//            );
 
             ImageView iv = new ImageView(img);
             iv.setPreserveRatio(true);
@@ -481,7 +443,7 @@ public class BuildingLv1Controller extends Controller {
             GridPane.setHgrow(btn, Priority.ALWAYS);
             GridPane.setVgrow(btn, Priority.ALWAYS);
 
-            reservedSlots.add(btn, i,0);
+            reservedSlots.getChildren().add(btn);
         }
     }
 
