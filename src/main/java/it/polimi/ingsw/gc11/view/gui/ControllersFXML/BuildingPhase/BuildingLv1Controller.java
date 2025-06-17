@@ -429,14 +429,9 @@ public class BuildingLv1Controller extends Controller {
             });
 
             img = new Image(getClass()
-                    .getResource("/it/polimi/ingsw/gc11/shipCards/BlueTripleStorage6.jpg")
+                    .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
                     .toExternalForm()
             );
-
-//            img = new Image(getClass()
-//                    .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
-//                    .toExternalForm()
-//            );
 
             ImageView iv = new ImageView(img);
             iv.setPreserveRatio(true);
@@ -456,13 +451,11 @@ public class BuildingLv1Controller extends Controller {
     public void heldShipCardOverlay() {
 
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
-//        ImageView iv = new ImageView(
-//                new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm())
-//        );
 
         heldShipCardImage.setImage(new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm()));
         heldShipCardImage.setFitHeight(shipCardSize.divide(1.5).doubleValue());
         heldShipCardImage.setFitWidth(shipCardSize.divide(1.5).doubleValue());
+        heldShipCardImage.setRotate(0);
 
         left.setPrefWidth(heldShipCard.getWidth() / 2 -30);
         left.setPrefHeight(10);
