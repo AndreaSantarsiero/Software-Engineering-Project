@@ -92,7 +92,20 @@
                         </Pane>
                     </content>
                 </ScrollPane>
-                <Rectangle fx:id="heldShipCard" arcHeight="20" arcWidth="20" fill="#032b8a" stroke="BLACK" strokeType="INSIDE" />
+                <VBox fx:id="heldShipCard" alignment="CENTER" spacing="5" style="-fx-background-color: #032b8a;
+                                                  -fx-background-radius: 20;
+                                                  -fx-padding: 10;
+                                                  -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);" >
+                    <ImageView fx:id="heldShipCardImage" preserveRatio="true" opacity="0"/>
+                    <HBox fx:id="arrows" alignment="CENTER" spacing="10">
+                        <Button fx:id="left" text="⟲" styleClass="Text2" opacity="0"/>
+                        <Button fx:id="right" text="⟳" styleClass="Text2" opacity="0"/>
+                    </HBox>
+                    <Button fx:id="release" styleClass="Text2" text="Release shipcard" opacity="0"/>
+                    <Button fx:id="place" styleClass="Text2" text="Place shipcard" opacity="0"/>
+                    <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" opacity="0"/>
+
+                </VBox>
                 <!-- Cards added dynamically in controller -->
             </VBox>
 
