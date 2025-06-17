@@ -532,7 +532,7 @@ public class BuildingLv2Controller extends Controller {
         if(placeShipCard){
             placeShipCard = false;
             try {
-                virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 5,y + 5);
+                virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 4,y + 5);
             } catch (NetworkException e) {
                 throw new RuntimeException(e);
             }
