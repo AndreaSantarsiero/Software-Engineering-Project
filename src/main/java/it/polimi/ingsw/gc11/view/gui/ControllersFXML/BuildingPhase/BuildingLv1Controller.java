@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
@@ -65,6 +66,12 @@ public class BuildingLv1Controller extends Controller {
     private DoubleBinding cellSide;
     private DoubleBinding cellSize;
 
+    private DoubleBinding availW;
+    private DoubleBinding availH;
+    private DoubleBinding boardW;
+    private DoubleBinding boardH;
+    private DoubleBinding shipCardSize;
+
     private Boolean placeShipCard = false;
 
     public void setStage(Stage stage) {
@@ -87,19 +94,21 @@ public class BuildingLv1Controller extends Controller {
         headerContainer.prefHeightProperty().bind(headerContainer.minHeightProperty());
         headerContainer.maxHeightProperty().bind(headerContainer.minHeightProperty());
 
-        DoubleBinding availW  = root.widthProperty().subtract(mainContainer.spacingProperty());
-        DoubleBinding availH = root.heightProperty()
+        availW  = root.widthProperty().subtract(mainContainer.spacingProperty());
+        availH = root.heightProperty()
                 .subtract(headerContainer.heightProperty())
                 .subtract(subHeaderContainer.heightProperty())
                 .subtract(root.spacingProperty().multiply(3));
 
         DoubleBinding wFromH  = availH.multiply(BOARD_RATIO);
         DoubleBinding maxBoardW = availW.multiply(0.80).subtract(root.spacingProperty());
-        DoubleBinding boardW = Bindings.createDoubleBinding(
+        boardW = Bindings.createDoubleBinding(
                 () -> Math.min(maxBoardW.get(), wFromH.get()),
                 maxBoardW, wFromH
         );
-        DoubleBinding boardH  = boardW.divide(BOARD_RATIO);
+        boardH  = boardW.divide(BOARD_RATIO);
+
+        shipCardSize = boardW.divide(8);
 
         deckButtons.setSpacing(10);
         deckButtons.prefWidthProperty().bind(availW
@@ -132,6 +141,7 @@ public class BuildingLv1Controller extends Controller {
         heldShipCard.widthProperty().bind(cardPane.widthProperty().multiply(0.7));
         heldShipCard.heightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
 
+        setFreeShipCards();
 
 //        boardContainer.setMinWidth(0);
 //        boardContainer.setMinHeight(0);
@@ -195,17 +205,18 @@ public class BuildingLv1Controller extends Controller {
 
     public void setFreeShipCards(){
 
-        List<ShipCard> shipCards = buildingPhaseData.getFreeShipCards();
+        //List<ShipCard> shipCards = buildingPhaseData.getFreeShipCards();
+        List<ShipCard> shipCards = new ShipCardLoader().getAllShipCards();
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
 
-        cardTile.setPrefColumns(2);
+        cardTile.setPrefColumns(4);
         double hgap = cardTile.getHgap();
 
         ChangeListener<Bounds> cl = (obs, oldB, newB) -> {
             double availW = newB.getWidth();
             int tileCols = cardTile.getPrefColumns();
             double totalHGap = (tileCols - 1)*hgap;
-            double cellW = (availW - totalHGap - 25)/tileCols;
+            double cellW = (availW - totalHGap - 5)/tileCols;
             cardTile.setPrefTileWidth(cellW);
             cardTile.setPrefTileHeight(cellW);
         };
@@ -248,8 +259,8 @@ public class BuildingLv1Controller extends Controller {
             Rectangle clip = new Rectangle();
             clip.widthProperty().bind(btn.widthProperty());
             clip.heightProperty().bind(btn.heightProperty());
-            clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-            clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+            clip.arcWidthProperty().bind(shipCardSize.multiply(0.055));
+            clip.arcHeightProperty().bind(shipCardSize.multiply(0.055));
             btn.setClip(clip);
 
             ColorAdjust darken  = new ColorAdjust();
