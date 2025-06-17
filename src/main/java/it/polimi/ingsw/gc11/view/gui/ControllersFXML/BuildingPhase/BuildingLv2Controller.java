@@ -464,13 +464,11 @@ public class BuildingLv2Controller extends Controller {
     }
 
     void hide(Node n) {
-        n.setOpacity(0);
-        n.setMouseTransparent(false);
+        n.setVisible(false);
     }
 
     void show(Node n) {
-        n.setOpacity(1);
-        n.setMouseTransparent(true);
+        n.setVisible(true);
     }
 
     public void heldShipCardOverlay() {
