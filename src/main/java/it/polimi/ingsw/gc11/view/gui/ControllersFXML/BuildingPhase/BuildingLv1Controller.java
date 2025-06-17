@@ -464,22 +464,30 @@ public class BuildingLv1Controller extends Controller {
         }
     }
 
+    void hide(Node n) {
+        n.setVisible(false);
+    }
+
+    void show(Node n) {
+        n.setVisible(true);
+    }
+
     public void heldShipCardOverlay() {
 
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
 
         heldShipCardImage.setImage(new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm()));
-        heldShipCardImage.setFitHeight(shipCardSize.divide(1.5).doubleValue());
-        heldShipCardImage.setFitWidth(shipCardSize.divide(1.5).doubleValue());
+        heldShipCardImage.setFitHeight(shipCardSize.divide(1.3).doubleValue());
+        heldShipCardImage.setFitWidth(shipCardSize.divide(1.3).doubleValue());
         heldShipCardImage.setRotate(0);
 
         left.setPrefWidth(heldShipCard.getWidth() / 2 -30);
-        left.setPrefHeight(10);
+        left.setPrefHeight(20);
         right.setPrefWidth(heldShipCard.getWidth() / 2 -30);
-        right.setPrefHeight(10);
+        right.setPrefHeight(20);
 
         Stream.of(left, right).forEach(b -> {
-            b.setFont(Font.font(26));
+            b.setFont(Font.font(35));
             b.setBackground(Background.EMPTY);
             b.setBorder(Border.EMPTY);
             b.setCursor(Cursor.HAND);
@@ -494,7 +502,9 @@ public class BuildingLv1Controller extends Controller {
             b.setTextFill(Color.WHITE);
         });
 
-        for (Node child : (heldShipCard.getChildren())) { child.setOpacity(1);}
+        for (Node child : (heldShipCard.getChildren())) { show(child); }
+        show(left);
+        show(right);
 
         Color normalColor = Color.WHITE;
         Color hoverColor  = Color.web("#FFD700");
@@ -510,15 +520,18 @@ public class BuildingLv1Controller extends Controller {
         right.setOnAction(e -> heldShipCardImage.setRotate(heldShipCardImage.getRotate() + 90));
 
         reserve.setOnAction(e -> {
-            for (Node child : (heldShipCard.getChildren())) { child.setOpacity(0);}
+            for (Node child : (heldShipCard.getChildren())) { hide(child); }
+            hide(left);
+            hide(right);
             onReserveShipCard();
         });
         release.setOnAction(e -> {
-            for (Node child : (heldShipCard.getChildren())) { child.setOpacity(0);}
+            for (Node child : (heldShipCard.getChildren())) { hide(child); }
+            hide(left);
+            hide(right);
             onReleaseShipCard();
         });
         place.setOnAction(e -> {
-            for (Node child : (heldShipCard.getChildren())) { child.setOpacity(0);}
             onPlaceShipCard(heldShipCardImage.getRotate());
         });
     }
@@ -533,10 +546,15 @@ public class BuildingLv1Controller extends Controller {
     }
 
     private void onShipBoardSelected(int x, int y) {
-        if(placeShipCard){
+        if(placeShipCard) {
             placeShipCard = false;
             try {
-                virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 5,y + 5);
+                virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 5, y + 5);
+                for (Node child : (heldShipCard.getChildren())) {
+                    hide(child);
+                }
+                hide(left);
+                hide(right);
             } catch (NetworkException e) {
                 throw new RuntimeException(e);
             }
@@ -578,7 +596,6 @@ public class BuildingLv1Controller extends Controller {
                 buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_270);
                 break;
         }
-        System.out.println(buildingPhaseData.getHeldShipCard().getOrientation());
         placeShipCard = true;
     }
 

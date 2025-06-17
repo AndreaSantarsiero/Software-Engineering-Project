@@ -90,15 +90,18 @@
                         </Pane>
                     </content>
                 </ScrollPane>
-                <VBox fx:id="heldShipCard" alignment="CENTER" spacing="5" style="-fx-background-color: #032b8a;                                                   -fx-background-radius: 20;                                                   -fx-padding: 10;                                                   -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
-                    <ImageView fx:id="heldShipCardImage" opacity="0" preserveRatio="true" />
+                <VBox fx:id="heldShipCard" alignment="CENTER" style="-fx-background-color: #032b8a;
+                                                  -fx-background-radius: 20;
+                                                  -fx-padding: 10;
+                                                  -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);" >
+                    <ImageView fx:id="heldShipCardImage" preserveRatio="true" visible="false"/>
                     <HBox fx:id="arrows" alignment="CENTER" spacing="10">
-                        <Button fx:id="left" opacity="0" styleClass="Text2" text="⟲" />
-                        <Button fx:id="right" opacity="0" styleClass="Text2" text="⟳" />
+                        <Button fx:id="left" text="⟲" styleClass="Text2" visible="false"/>
+                        <Button fx:id="right" text="⟳" styleClass="Text2" visible="false"/>
                     </HBox>
-                    <Button fx:id="release" opacity="0" styleClass="Text2" text="Release shipcard" />
-                    <Button fx:id="place" opacity="0" styleClass="Text2" text="Place shipcard" />
-                    <Button fx:id="reserve" opacity="0" styleClass="Text2" text="Reserve shipcard" />
+                    <Button fx:id="release" styleClass="Text2" text="Release shipcard" visible="false"/>
+                    <Button fx:id="place" styleClass="Text2" text="Place shipcard" visible="false"/>
+                    <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false"/>
 
                 </VBox>
                 <!-- Cards added dynamically in controller -->
