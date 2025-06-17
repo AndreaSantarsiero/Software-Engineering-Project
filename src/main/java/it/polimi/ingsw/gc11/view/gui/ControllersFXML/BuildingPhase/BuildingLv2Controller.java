@@ -11,10 +11,12 @@ import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -114,13 +116,20 @@ public class BuildingLv2Controller extends Controller {
         );
         boardH  = boardW.divide(BOARD_RATIO);
 
-        gridW = boardW.multiply(0.66);
-        gridH = gridW;
+        gridW = boardW.multiply(0.92);
+        gridH = gridW.subtract(GRID_GAP * (slotGrid.getColumnCount()-1)).multiply(5).divide(7).add(GRID_GAP * (slotGrid.getRowCount() - 1));
 
-        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(5);
+        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(7);
 
         //Setup buttons to view enemies' shipboard
         this.setupOthersPlayersButtons();
+
+        playersButtons.setSpacing(10);
+        playersButtons.setPadding(new Insets(0,0,0,50));
+        playersButtons.prefWidthProperty().bind(availW
+                .subtract(FreeShipCardText.widthProperty())
+                .subtract(20)
+                .divide(2));
 
         deckButtons.setSpacing(10);
         deckButtons.prefWidthProperty().bind(availW
@@ -168,6 +177,8 @@ public class BuildingLv2Controller extends Controller {
 
         slotGrid.setHgap(GRID_GAP);
         slotGrid.setVgap(GRID_GAP);
+        slotGrid.setAlignment(Pos.CENTER);
+        slotGrid.translateXProperty().bind(new SimpleDoubleProperty(GRID_GAP).divide(3).multiply(-1));
         slotGrid.setPickOnBounds(false);
         slotGrid.toFront();
 
