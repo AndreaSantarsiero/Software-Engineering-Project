@@ -35,6 +35,7 @@ public class SelectColorController extends Controller {
 
     private Stage stage;
     private JoiningPhaseData joiningPhaseData;
+    private boolean colorSelected = false;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -122,21 +123,19 @@ public class SelectColorController extends Controller {
 
 
             //Color setup sucessfull
-            else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.WAITING) {
+            if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.WAITING) {
+//                    colorSelected = true;
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     LobbyController controller = fxmlLoader.getController();
-                    controller.setStage(this.stage);
                     joiningPhaseData.setListener(controller);
-                    controller.init(joiningPhaseData);
+                    controller.init(stage);
                     stage.setScene(newScene);
                     stage.show();
 
-                    System.out.println(joiningPhaseData.getUsername() + ": selected color " +
-                            joiningPhaseData.getPlayersColor().get(joiningPhaseData.getUsername()));
-                }
-                catch (IOException e) {
+                    System.out.println(joiningPhaseData.getUsername() + ": selected color " + availableColors.getValue());
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -146,37 +145,38 @@ public class SelectColorController extends Controller {
 
 
 
-    @Override
-    public void change() {
+//    @Override
+//    public void change() {
+//
+//        Platform.runLater(() -> {
+//
+//            ViewModel viewModel = (ViewModel) stage.getUserData();
+//            BuildingPhaseData buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+//            try {
+//                if (buildingPhaseData.getFlightType() == FlightBoard.Type.TRIAL) {
+//                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml"));
+//                    Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
+//                    BuildingLv1Controller controller = fxmlLoader.getController();
+//                    buildingPhaseData.setListener(controller);
+//                    controller.initialize(stage);
+//                    stage.setScene(newScene);
+//                    stage.show();
+//                }
+//                else if (buildingPhaseData.getFlightType() == FlightBoard.Type.LEVEL2) {
+//                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
+//                    Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
+//                    BuildingLv2Controller controller = fxmlLoader.getController();
+//                    buildingPhaseData.setListener(controller);
+//                    controller.initialize(stage);
+//                    stage.setScene(newScene);
+//                    stage.show();
+//                }
+//            }
+//            catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//        });
+//    }
 
-        Platform.runLater(() -> {
-
-            ViewModel viewModel = (ViewModel) stage.getUserData();
-            BuildingPhaseData buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-            try {
-                if (buildingPhaseData.getFlightType() == FlightBoard.Type.TRIAL) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    BuildingLv1Controller controller = fxmlLoader.getController();
-                    buildingPhaseData.setListener(controller);
-                    controller.initialize(stage);
-                    stage.setScene(newScene);
-                    stage.show();
-                }
-                else if (buildingPhaseData.getFlightType() == FlightBoard.Type.LEVEL2) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    BuildingLv2Controller controller = fxmlLoader.getController();
-                    buildingPhaseData.setListener(controller);
-                    controller.initialize(stage);
-                    stage.setScene(newScene);
-                    stage.show();
-                }
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        });
-    }
 }

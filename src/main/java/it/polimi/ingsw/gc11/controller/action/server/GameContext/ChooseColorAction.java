@@ -31,6 +31,8 @@ public class ChooseColorAction extends ClientGameAction {
             NotifySuccessAction success = new NotifySuccessAction();
             context.sendAction(username, success);
 
+            Thread.sleep(1000);
+
             Map<String, String> playersColor = context.getPlayersColor();
             UpdatePlayersColorAction response = new UpdatePlayersColorAction(playersColor);
             for (Player player : context.getGameModel().getPlayers()) {
@@ -47,6 +49,7 @@ public class ChooseColorAction extends ClientGameAction {
                 for (Player p : context.getGameModel().getPlayers()) {
                     ArrayList<String> othersPlayers = new ArrayList<>(allPlayersUsernames);
                     othersPlayers.remove(p.getUsername());
+                    System.out.println("FlightType: " + gameModel.getFlightBoard().getType());
 
                     SetBuildingPhaseAction send = new SetBuildingPhaseAction(
                             p.getShipBoard(),

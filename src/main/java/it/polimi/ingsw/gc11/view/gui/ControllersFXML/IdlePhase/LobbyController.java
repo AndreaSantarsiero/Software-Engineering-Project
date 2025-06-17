@@ -39,17 +39,12 @@ public class LobbyController extends Controller {
     private Stage stage;
     private JoiningPhaseData joiningPhaseData;
 
-    public void setStage(Stage stage) {
+
+    public void init(Stage stage) {
         this.stage = stage;
-    }
-
-
-
-    public void init(JoiningPhaseData joiningPhaseData) {
-
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
-        this.joiningPhaseData = joiningPhaseData;
+        this.joiningPhaseData = (JoiningPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
         //curr_state = WAITING
 
@@ -90,7 +85,7 @@ public class LobbyController extends Controller {
             ViewModel viewModel = (ViewModel) stage.getUserData();
             BuildingPhaseData buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
             try {
-                if (buildingPhaseData.getFlightType() == FlightBoard.Type.TRIAL) {
+                if (buildingPhaseData.getFlightType().equals(FlightBoard.Type.TRIAL)) {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
                     BuildingLv1Controller controller = fxmlLoader.getController();
@@ -99,7 +94,7 @@ public class LobbyController extends Controller {
                     stage.setScene(newScene);
                     stage.show();
                 }
-                else if (buildingPhaseData.getFlightType() == FlightBoard.Type.LEVEL2) {
+                else if (buildingPhaseData.getFlightType().equals(FlightBoard.Type.LEVEL2) ) {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
                     BuildingLv2Controller controller = fxmlLoader.getController();
@@ -108,9 +103,12 @@ public class LobbyController extends Controller {
                     stage.setScene(newScene);
                     stage.show();
                 }
+                else {
+                    System.out.println("Error: " + buildingPhaseData.getFlightType());
+                }
             }
             catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error: " + e.getMessage());
             }
 
         });
