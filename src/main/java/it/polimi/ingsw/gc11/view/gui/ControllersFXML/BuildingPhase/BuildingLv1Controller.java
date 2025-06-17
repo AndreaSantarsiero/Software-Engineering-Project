@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableNumberValue;
 import javafx.fxml.FXML;
@@ -59,17 +61,17 @@ public class BuildingLv1Controller extends Controller {
     private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
 
+    private static final double GRID_GAP = 2;
     private static final double BOARD_RATIO = 937.0 / 679.0;
 
-    private DoubleBinding side;
-    private DoubleBinding gap;
     private DoubleBinding cellSide;
-    private DoubleBinding cellSize;
 
     private DoubleBinding availW;
     private DoubleBinding availH;
     private DoubleBinding boardW;
     private DoubleBinding boardH;
+    private DoubleBinding gridW;
+    private DoubleBinding gridH;
     private DoubleBinding shipCardSize;
 
     private Boolean placeShipCard = false;
@@ -108,7 +110,10 @@ public class BuildingLv1Controller extends Controller {
         );
         boardH  = boardW.divide(BOARD_RATIO);
 
-        shipCardSize = boardW.divide(8);
+        gridW = boardW.multiply(0.66);
+        gridH = gridW;
+
+        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(5);
 
         deckButtons.setSpacing(10);
         deckButtons.prefWidthProperty().bind(availW
@@ -141,7 +146,18 @@ public class BuildingLv1Controller extends Controller {
         heldShipCard.widthProperty().bind(cardPane.widthProperty().multiply(0.7));
         heldShipCard.heightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
 
+        slotGrid.prefWidthProperty().bind(gridW);
+        slotGrid.prefHeightProperty().bind(gridH);
+        slotGrid.minWidthProperty().bind(gridW);
+        slotGrid.minHeightProperty().bind(gridH);
+        slotGrid.maxWidthProperty().bind(gridW);
+        slotGrid.maxHeightProperty().bind(gridH);
+
+        slotGrid.setHgap(GRID_GAP);
+        slotGrid.setVgap(GRID_GAP);
+
         setFreeShipCards();
+        setShipBoard();
 
 //        boardContainer.setMinWidth(0);
 //        boardContainer.setMinHeight(0);
@@ -303,10 +319,12 @@ public class BuildingLv1Controller extends Controller {
 
     public void setShipBoard(){
 
-        ShipBoard shipBoard = buildingPhaseData.getShipBoard();
+        //ShipBoard shipBoard = buildingPhaseData.getShipBoard();
+
+        ShipBoard shipBoard = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json").getShipBoard();
 
         for(int r = 0; r < 5; r++){
-            for(int c = 0; c < 7; c++){
+            for(int c = 0; c < 5; c++){
                 if(shipBoard.validateIndexes(c,r)){
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;
@@ -316,17 +334,17 @@ public class BuildingLv1Controller extends Controller {
                     final int x = c;
                     final int y = r;
                     btn.setOnAction(event -> onShipBoardSelected(x, y));
-                    btn.minWidthProperty().bind(cellSize);
-                    btn.minHeightProperty().bind(cellSize);
-                    btn.prefWidthProperty().bind(cellSize);
-                    btn.prefHeightProperty().bind(cellSize);
-                    btn.maxWidthProperty().bind(cellSize);
+                    btn.minWidthProperty().bind(shipCardSize);
+                    btn.minHeightProperty().bind(shipCardSize);
+                    btn.prefWidthProperty().bind(shipCardSize);
+                    btn.prefHeightProperty().bind(shipCardSize);
+                    btn.maxWidthProperty().bind(shipCardSize);
 
                     Rectangle clip = new Rectangle();
                     clip.widthProperty().bind(btn.widthProperty());
                     clip.heightProperty().bind(btn.heightProperty());
-                    clip.arcWidthProperty().bind(cellSide.multiply(0.055));
-                    clip.arcHeightProperty().bind(cellSide.multiply(0.055));
+                    clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+                    clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
                     btn.setClip(clip);
 
                     ColorAdjust darken  = new ColorAdjust();
@@ -404,12 +422,12 @@ public class BuildingLv1Controller extends Controller {
             btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             int finalI = i;
             btn.setOnAction(event -> onReservedShipCardSelected(finalI));
-            btn.minWidthProperty().bind(cellSize);
-            btn.minHeightProperty().bind(cellSize);
-            btn.prefWidthProperty().bind(cellSize);
-            btn.prefHeightProperty().bind(cellSize);
-            btn.maxWidthProperty().bind(cellSize);
-            btn.maxHeightProperty().bind(cellSize);
+            btn.minWidthProperty().bind(shipCardSize);
+            btn.minHeightProperty().bind(shipCardSize);
+            btn.prefWidthProperty().bind(shipCardSize);
+            btn.prefHeightProperty().bind(shipCardSize);
+            btn.maxWidthProperty().bind(shipCardSize);
+            btn.maxHeightProperty().bind(shipCardSize);
 
             Rectangle clip = new Rectangle();
             clip.widthProperty().bind(btn.widthProperty());
