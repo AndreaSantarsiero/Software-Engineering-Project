@@ -598,9 +598,9 @@ public class BuildingLv1Controller extends Controller {
                 }
 
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv2.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    EnemyShipboardLv2Controller controller = fxmlLoader.getController();
+                    EnemyShipboardLv1Controller controller = fxmlLoader.getController();
                     buildingPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);

@@ -74,9 +74,6 @@
                         <RowConstraints percentHeight="20" />
                         <RowConstraints percentHeight="20" />
                     </rowConstraints>
-                    <StackPane.margin>
-                        <Insets />
-                    </StackPane.margin>
                 </GridPane>
                 <HBox fx:id="reservedSlots"/>
             </StackPane>
