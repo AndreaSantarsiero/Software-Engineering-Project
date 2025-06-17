@@ -31,26 +31,24 @@
                 </Label>
             </children>
         </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <HBox fx:id="playersButtons" prefHeight="26.0" prefWidth="385.0" />
-            <HBox fx:id="deckButtons" prefHeight="26.0" prefWidth="243.0">
-               <children>
-                  <Button mnemonicParsing="false" text="MiniDeck1" />
-                  <Button mnemonicParsing="false" text="MiniDeck2" />
-                  <Button mnemonicParsing="false" text="MiniDeck3" />
-               </children>
-            </HBox>
-                <Label styleClass="Text" text="FREE Ship Cards">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-               <HBox.margin>
-                  <Insets left="330.0" />
-               </HBox.margin>
-                </Label>
-         </children>
-      </HBox>
+
+        <HBox fx:id="playersButtons" prefHeight="26.0" prefWidth="385.0" />
+        <HBox fx:id="deckButtons" prefHeight="26.0" prefWidth="243.0">
+            <children>
+                <Button mnemonicParsing="false" text="MiniDeck1" />
+                <Button mnemonicParsing="false" text="MiniDeck2" />
+                <Button mnemonicParsing="false" text="MiniDeck3" />
+            </children>
+        </HBox>
+        <Label styleClass="Text" text="FREE Ship Cards">
+            <font>
+                <Font size="24.0" />
+            </font>
+            <HBox.margin>
+                <Insets left="330.0" />
+            </HBox.margin>
+        </Label>
+
 
         <!-- Main Game Layout -->
         <HBox spacing="100.0">
