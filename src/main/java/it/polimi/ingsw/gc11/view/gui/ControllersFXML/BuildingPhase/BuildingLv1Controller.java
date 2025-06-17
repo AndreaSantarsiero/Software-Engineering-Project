@@ -168,18 +168,13 @@ public class BuildingLv1Controller extends Controller {
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
 
-        setFreeShipCards();
-        setShipBoard();
-        setReservedSlots();
-
-        //update(buildingPhaseData);
+        update(buildingPhaseData);
     }
 
 
     public void setFreeShipCards(){
 
-        //List<ShipCard> shipCards = buildingPhaseData.getFreeShipCards();
-        List<ShipCard> shipCards = new ShipCardLoader().getAllShipCards();
+        List<ShipCard> shipCards = buildingPhaseData.getFreeShipCards();
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
 
         cardTile.setPrefColumns(4);
@@ -276,9 +271,7 @@ public class BuildingLv1Controller extends Controller {
 
     public void setShipBoard(){
 
-        //ShipBoard shipBoard = buildingPhaseData.getShipBoard();
-
-        ShipBoard shipBoard = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json").getShipBoard();
+        ShipBoard shipBoard = buildingPhaseData.getShipBoard();
 
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
@@ -371,8 +364,7 @@ public class BuildingLv1Controller extends Controller {
 
     public void setReservedSlots(){
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
-//for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
-        for(int i = 0; i < 2; i++){
+        for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
 
             Button btn = new Button();
