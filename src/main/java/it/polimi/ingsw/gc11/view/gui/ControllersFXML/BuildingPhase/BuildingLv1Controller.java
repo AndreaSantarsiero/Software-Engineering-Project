@@ -259,8 +259,8 @@ public class BuildingLv1Controller extends Controller {
             Rectangle clip = new Rectangle();
             clip.widthProperty().bind(btn.widthProperty());
             clip.heightProperty().bind(btn.heightProperty());
-            clip.arcWidthProperty().bind(shipCardSize.multiply(0.055));
-            clip.arcHeightProperty().bind(shipCardSize.multiply(0.055));
+            clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+            clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
             btn.setClip(clip);
 
             ColorAdjust darken  = new ColorAdjust();
