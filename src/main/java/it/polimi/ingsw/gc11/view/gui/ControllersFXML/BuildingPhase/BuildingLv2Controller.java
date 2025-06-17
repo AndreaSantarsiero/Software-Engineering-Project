@@ -573,7 +573,6 @@ public class BuildingLv2Controller extends Controller {
             Button playerButton = new Button();
             playerButton.setText(player);
             playerButton.setOnMouseClicked(e -> {
-
                 try{
                     virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
                 }
@@ -596,10 +595,15 @@ public class BuildingLv2Controller extends Controller {
                 catch (IOException exc) {
                     throw new RuntimeException(exc);
                 }
-
             });
             playersButtons.getChildren().add(playerButton);
         }
+        playersButtons.setSpacing(10);
+        playersButtons.prefWidthProperty().bind(availW
+                .subtract(playersButtons.widthProperty())
+                .subtract(FreeShipCardText.widthProperty())
+                .subtract(root.spacingProperty().multiply(2))
+                .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
     }
 
     @Override

@@ -119,7 +119,7 @@ public class EnemyShipboardLv2Controller extends Controller {
     @FXML
     protected void onGoBackButtonClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/oldBuildingLv2.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLv2.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
             BuildingLv2Controller controller = fxmlLoader.getController();
             buildingPhaseData.setListener(controller);
