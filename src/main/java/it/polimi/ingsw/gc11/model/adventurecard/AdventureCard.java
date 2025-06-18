@@ -13,13 +13,17 @@ public abstract class AdventureCard implements Serializable {
         TRIAL, LEVEL1, LEVEL2;
     }
 
+    private final String id;
     private Type type;
     private boolean used;
 
-    public AdventureCard(Type type) {
+    public AdventureCard(String id, Type type) {
+        this.id = id;
         this.type = type;
         this.used = false;
     }
+
+    public String getId() {return id;}
 
     public void useCard(){
         this.used = true;

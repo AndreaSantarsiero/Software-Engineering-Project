@@ -9,8 +9,8 @@ import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 
 public class Epidemic extends AdventureCard {
 
-    public Epidemic() {
-        super(Type.LEVEL2);
+    public Epidemic(String id) {
+        super(id, Type.LEVEL2);
     }
 
     @Override

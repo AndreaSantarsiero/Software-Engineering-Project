@@ -36,9 +36,9 @@
                 <HBox fx:id="playersButtons" />
                 <HBox fx:id="deckButtons">
                     <children>
-                        <Button mnemonicParsing="false" text="MiniDeck1" />
-                        <Button mnemonicParsing="false" text="MiniDeck2" />
-                        <Button mnemonicParsing="false" text="MiniDeck3" />
+                        <Button text="MiniDeck1" onAction="#handleMiniDeck" userData="0" />
+                        <Button text="MiniDeck2" onAction="#handleMiniDeck" userData="1"/>
+                        <Button text="MiniDeck3" onAction="#handleMiniDeck" userData="2"/>
                     </children>
                 </HBox>
                 <Label styleClass="Text" text="FREE Ship Cards" fx:id="FreeShipCardText">

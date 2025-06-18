@@ -16,6 +16,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableNumberValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -780,6 +781,25 @@ public class BuildingLv1Controller extends Controller {
                 }
             });
             playersButtons.getChildren().add(playerButton);
+        }
+    }
+
+    @FXML
+    private void handleMiniDeck(ActionEvent event) {
+        Button btn = (Button) event.getSource();
+        int index   = Integer.parseInt(btn.getUserData().toString());
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/MiniDeck.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            MiniDeckController controller = fxmlLoader.getController();
+            buildingPhaseData.setListener(controller);
+            controller.initialize(stage, index);
+            stage.setScene(newScene);
+            stage.show();
+        }
+        catch (IOException exc) {
+            throw new RuntimeException(exc);
         }
     }
 

@@ -9,8 +9,8 @@ import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 
 public class OpenSpace extends AdventureCard {
 
-    public OpenSpace(AdventureCard.Type type) {
-        super(type);
+    public OpenSpace(String id, AdventureCard.Type type) {
+        super(id, type);
     }
 
     @Override

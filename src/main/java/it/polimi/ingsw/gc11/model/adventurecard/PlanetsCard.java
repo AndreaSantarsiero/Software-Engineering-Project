@@ -15,8 +15,8 @@ public class PlanetsCard extends AdventureCard {
     private final int lostDays;
 
 
-    public PlanetsCard(AdventureCard.Type type, int lostDays, ArrayList<Planet> planets){
-        super(type);
+    public PlanetsCard(String id, AdventureCard.Type type, int lostDays, ArrayList<Planet> planets){
+        super(id, type);
 
         if (lostDays < 0) {
             throw new IllegalArgumentException("negative lost days.");

@@ -18,8 +18,8 @@ public class Smugglers extends AdventureCard {
     private boolean defeated;
 
 
-    public Smugglers(AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  ArrayList<Material> materials) throws IllegalArgumentException {
-        super(type);
+    public Smugglers(String id, AdventureCard.Type type, int lostDays, int firePower, int lostMaterials,  ArrayList<Material> materials) throws IllegalArgumentException {
+        super(id, type);
 
         if(lostDays < 0 || firePower < 0 || lostMaterials < 0 || materials == null) {
             throw new IllegalArgumentException("Invalid arguments");

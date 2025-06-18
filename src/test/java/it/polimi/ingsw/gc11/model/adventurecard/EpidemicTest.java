@@ -9,7 +9,7 @@ class EpidemicTest {
 
     @Test
     void testEpidemicType() {
-        Epidemic epidemic = new Epidemic();
+        Epidemic epidemic = new Epidemic("id");
         assertEquals(AdventureCard.Type.LEVEL2, epidemic.getType());
     }
 

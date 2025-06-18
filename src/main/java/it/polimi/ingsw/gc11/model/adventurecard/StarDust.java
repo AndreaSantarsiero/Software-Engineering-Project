@@ -10,8 +10,8 @@ import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 
 public class StarDust extends AdventureCard {
 
-    public StarDust(AdventureCard.Type type) {
-        super(type);
+    public StarDust(String id, AdventureCard.Type type) {
+        super(id, type);
     }
 
     //NEED METHOD IN SHIPBOARD THAT COUNTS THE EXPOSED CONNECTORS

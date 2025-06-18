@@ -15,8 +15,8 @@ public class Slavers extends AdventureCard {
     private final int coins;
 
 
-    public Slavers(AdventureCard.Type type, int lostDays, int firePower, int lostMembers, int coins) throws IllegalArgumentException{
-        super(type);
+    public Slavers(String id, AdventureCard.Type type, int lostDays, int firePower, int lostMembers, int coins) throws IllegalArgumentException{
+        super(id, type);
         if (type == null || lostDays < 0 || firePower < 0 || lostMembers < 0 || coins < 0) {
             throw new IllegalArgumentException("At least 1 param isn't valid.");
         }

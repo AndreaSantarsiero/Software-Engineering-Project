@@ -16,13 +16,13 @@ class MeteorSwarmTest {
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.RIGHT));
 
-        MeteorSwarm meteorSwarm = new MeteorSwarm(AdventureCard.Type.LEVEL1, meteors);
+        MeteorSwarm meteorSwarm = new MeteorSwarm("id", AdventureCard.Type.LEVEL1, meteors);
         assertEquals(meteors, meteorSwarm.getMeteors());
     }
 
     @Test
     void testNullMeteorListThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> new MeteorSwarm(AdventureCard.Type.LEVEL1, null));
+        assertThrows(IllegalArgumentException.class, () -> new MeteorSwarm("id", AdventureCard.Type.LEVEL1, null));
     }
 
     @Test
@@ -31,13 +31,13 @@ class MeteorSwarmTest {
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.RIGHT));
         meteors.add(null);
 
-        assertThrows(NullPointerException.class, () -> new MeteorSwarm(AdventureCard.Type.LEVEL1, meteors));
+        assertThrows(NullPointerException.class, () -> new MeteorSwarm("id", AdventureCard.Type.LEVEL1, meteors));
     }
 
     @Test
     void testEmptyMeteorList() {
         ArrayList<Meteor> meteors = new ArrayList<>();
-        MeteorSwarm meteorSwarm = new MeteorSwarm(AdventureCard.Type.LEVEL1, meteors);
+        MeteorSwarm meteorSwarm = new MeteorSwarm("id", AdventureCard.Type.LEVEL1, meteors);
         assertTrue(meteorSwarm.getMeteors().isEmpty());
     }
 }

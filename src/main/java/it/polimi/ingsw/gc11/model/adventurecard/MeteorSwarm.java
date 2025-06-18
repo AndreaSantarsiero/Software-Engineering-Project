@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class MeteorSwarm extends AdventureCard {
     private final ArrayList<Meteor> meteors;
 
-    public MeteorSwarm(AdventureCard.Type type, ArrayList<Meteor> meteors) throws IllegalArgumentException {
-        super(type);
+    public MeteorSwarm(String id, AdventureCard.Type type, ArrayList<Meteor> meteors) throws IllegalArgumentException {
+        super(id, type);
 
         if (meteors == null){
             throw new IllegalArgumentException();

@@ -17,8 +17,8 @@ public class Pirates extends AdventureCard {
     public ArrayList<Shot> shots;
 
 
-    public Pirates(AdventureCard.Type type, int lostDays, int firePower, int coins, ArrayList<Shot> shots) throws IllegalArgumentException{
-        super(type);
+    public Pirates(String id, AdventureCard.Type type, int lostDays, int firePower, int coins, ArrayList<Shot> shots) throws IllegalArgumentException{
+        super(id, type);
         if (shots == null || shots.isEmpty()|| lostDays < 0 || firePower < 0 || coins < 0){
             throw new IllegalArgumentException();
         }

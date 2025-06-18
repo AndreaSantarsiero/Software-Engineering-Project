@@ -16,7 +16,7 @@ class PiratesTest {
         shots.add(new Shot(Hit.Type.SMALL,Hit.Direction.RIGHT));
         shots.add(new Shot(Hit.Type.SMALL,Hit.Direction.RIGHT));
 
-        Pirates pirates = new Pirates(AdventureCard.Type.LEVEL1, 3, 10, 5, shots);
+        Pirates pirates = new Pirates("id", AdventureCard.Type.LEVEL1, 3, 10, 5, shots);
 
         assertEquals(3, pirates.getLostDays());
         assertEquals(10, pirates.getFirePower());
@@ -26,7 +26,7 @@ class PiratesTest {
 
     @Test
     void testNullShotsListThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Pirates(AdventureCard.Type.LEVEL1, 3, 10, 5, null));
+        assertThrows(IllegalArgumentException.class, () -> new Pirates("id", AdventureCard.Type.LEVEL1, 3, 10, 5, null));
     }
 
     @Test
@@ -34,7 +34,7 @@ class PiratesTest {
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG,Hit.Direction.RIGHT));
 
-        assertThrows(IllegalArgumentException.class, () -> new Pirates(AdventureCard.Type.LEVEL1, -1, 10, 5, shots));
+        assertThrows(IllegalArgumentException.class, () -> new Pirates("id", AdventureCard.Type.LEVEL1, -1, 10, 5, shots));
     }
 
     @Test
@@ -42,7 +42,7 @@ class PiratesTest {
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG,Hit.Direction.RIGHT));
 
-        assertThrows(IllegalArgumentException.class, () -> new Pirates(AdventureCard.Type.LEVEL1, 3, -5, 5, shots));
+        assertThrows(IllegalArgumentException.class, () -> new Pirates("id", AdventureCard.Type.LEVEL1, 3, -5, 5, shots));
     }
 
     @Test
@@ -50,7 +50,7 @@ class PiratesTest {
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG,Hit.Direction.RIGHT));
 
-        assertThrows(IllegalArgumentException.class, () -> new Pirates(AdventureCard.Type.LEVEL1, 3, 10, -2, shots));
+        assertThrows(IllegalArgumentException.class, () -> new Pirates("id", AdventureCard.Type.LEVEL1, 3, 10, -2, shots));
     }
 
     @Test
@@ -59,13 +59,13 @@ class PiratesTest {
         shots.add(new Shot(Hit.Type.BIG,Hit.Direction.RIGHT));
         shots.add(null);  // Inseriamo un valore null nella lista
 
-        assertThrows(NullPointerException.class, () -> new Pirates(AdventureCard.Type.LEVEL1, 3, 10, 5, shots));
+        assertThrows(NullPointerException.class, () -> new Pirates("id", AdventureCard.Type.LEVEL1, 3, 10, 5, shots));
     }
 
     @Test
     void testEmptyShotsList() {
         ArrayList<Shot> shots = new ArrayList<>();
 
-        assertThrows(IllegalArgumentException.class, () -> new Pirates(AdventureCard.Type.LEVEL1, 3, 10, 5, shots));
+        assertThrows(IllegalArgumentException.class, () -> new Pirates("id", AdventureCard.Type.LEVEL1, 3, 10, 5, shots));
     }
 }

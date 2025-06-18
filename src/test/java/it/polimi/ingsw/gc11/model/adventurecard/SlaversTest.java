@@ -9,7 +9,7 @@ class SlaversTest {
 
     @Test
     void testValidSlaversCreation() {
-        Slavers slavers = new Slavers(AdventureCard.Type.LEVEL1, 3, 8, 5, 2);
+        Slavers slavers = new Slavers("id", AdventureCard.Type.LEVEL1, 3, 8, 5, 2);
 
         assertEquals(3, slavers.getLostDays());
         assertEquals(8, slavers.getFirePower());
@@ -19,21 +19,21 @@ class SlaversTest {
 
     @Test
     void testNegativeLostDaysThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Slavers(AdventureCard.Type.LEVEL1, -1, 8, 5, 2));
+        assertThrows(IllegalArgumentException.class, () -> new Slavers("id", AdventureCard.Type.LEVEL1, -1, 8, 5, 2));
     }
 
     @Test
     void testNegativeFirePowerThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Slavers(AdventureCard.Type.LEVEL1, 3, -8, 5, 2));
+        assertThrows(IllegalArgumentException.class, () -> new Slavers("id", AdventureCard.Type.LEVEL1, 3, -8, 5, 2));
     }
 
     @Test
     void testNegativeCoinsThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Slavers(AdventureCard.Type.LEVEL1, 3, 8, -5, 2));
+        assertThrows(IllegalArgumentException.class, () -> new Slavers("id", AdventureCard.Type.LEVEL1, 3, 8, -5, 2));
     }
 
     @Test
     void testNegativeLostMembersThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Slavers(AdventureCard.Type.LEVEL1, 3, 8, 5, -2));
+        assertThrows(IllegalArgumentException.class, () -> new Slavers("id", AdventureCard.Type.LEVEL1, 3, 8, 5, -2));
     }
 }

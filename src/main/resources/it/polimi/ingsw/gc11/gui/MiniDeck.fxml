@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.MiniDeckController">
    <children>
       <HBox fx:id="headerContainer" alignment="CENTER">
          <children>
@@ -26,7 +26,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Label fx:id="owner" styleClass="Text" text="&lt;username&gt;'s Shipboard">
+            <Label fx:id="title" styleClass="Text" text="Mini Deck">
                <font>
                   <Font size="18.0" />
                </font>
@@ -39,6 +39,10 @@
             </Label>
          </children>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <HBox fx:id="cards" spacing="20">
+         <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+         </padding>
+      </HBox>
    </children>
 </VBox>

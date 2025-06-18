@@ -21,7 +21,7 @@ class AdventureDeckTest {
     void setUp() {
         observableDeck = new AdventureDeck(true);
         nonObservableDeck = new AdventureDeck(false);
-        card = new OpenSpace(AdventureCard.Type.TRIAL); // Assumo che AdventureCard abbia un costruttore vuoto
+        card = new OpenSpace("id", AdventureCard.Type.TRIAL); // Assumo che AdventureCard abbia un costruttore vuoto
     }
 
 
@@ -50,8 +50,8 @@ class AdventureDeckTest {
 
     @Test
     void testShuffle() {
-        AdventureCard card2 = new OpenSpace(AdventureCard.Type.TRIAL);
-        AdventureCard card3 = new StarDust(AdventureCard.Type.TRIAL);
+        AdventureCard card2 = new OpenSpace("id", AdventureCard.Type.TRIAL);
+        AdventureCard card3 = new StarDust("id", AdventureCard.Type.TRIAL);
         observableDeck.addCard(card);
         observableDeck.addCard(card2);
         observableDeck.addCard(card3);

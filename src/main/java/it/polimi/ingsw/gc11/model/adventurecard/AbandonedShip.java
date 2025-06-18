@@ -14,8 +14,8 @@ public class AbandonedShip extends AdventureCard {
     private final int coins;
     private boolean resolved;
 
-    public AbandonedShip(AdventureCard.Type type, int lostDays, int lostMembers, int coins) throws IllegalArgumentException{
-        super(type);
+    public AbandonedShip(String id, AdventureCard.Type type, int lostDays, int lostMembers, int coins) throws IllegalArgumentException{
+        super(id, type);
 
         if(lostDays < 0 || lostMembers < 0 || coins < 0) {
             throw new IllegalArgumentException("Invalid arguments.");
