@@ -695,12 +695,11 @@ public class BuildingLv1Controller extends Controller {
             }
         }
         if(state == State.PLACING_RESERVED_SHIPCARD){
-            try {
-                virtualServer.reserveShipCard(buildingPhaseData.getReservedShipCard());
+            if(state == State.PLACING_RESERVED_SHIPCARD){
+                reservedSlots.getChildren().clear();
+                setReservedSlots();
                 previousState = state;
                 state = State.IDLE;
-            } catch (NetworkException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -817,29 +816,36 @@ public class BuildingLv1Controller extends Controller {
             reservedSlots.getChildren().clear();
             setReservedSlots();
 
-            String serverMessage = buildingPhaseData.getServerMessage();
-            if(serverMessage != null && !serverMessage.isEmpty()) {
-                System.out.println(serverMessage.toUpperCase());
-
-                if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.")) {
-                    state = previousState;
-                    if(state == State.PLACING_FREE_SHIPCARD) {
-                        buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_0);
-                    }
-                    if(state == State.PLACING_RESERVED_SHIPCARD){
-                        buildingPhaseData.getReservedShipCard().setOrientation(ShipCard.Orientation.DEG_0);
-                    }
-                }
-
-                buildingPhaseData.resetServerMessage();
-            }
-
             if(state == State.PLACING_FREE_SHIPCARD){
                 heldShipCardOverlay();
             }
 
             if(state == State.PLACING_RESERVED_SHIPCARD){
                 reservedShipCardOverlay();
+            }
+
+            String serverMessage = buildingPhaseData.getServerMessage();
+            if(serverMessage != null && !serverMessage.isEmpty()) {
+                System.out.println(serverMessage.toUpperCase());
+
+                if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.") ||
+                serverMessage.toUpperCase().equals("CANNOT PLACE A COMPONENT WHERE ANOTHER ONE WAS ALREADY PLACED")) {
+                    if(previousState == State.PLACING_RESERVED_SHIPCARD){
+                        reservedShipCardOverlay();
+                        for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
+                        left.setMouseTransparent(true);
+                        right.setMouseTransparent(true);
+                    }
+                    if(previousState == State.PLACING_FREE_SHIPCARD){
+                        heldShipCardOverlay();
+                        for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
+                        left.setMouseTransparent(true);
+                        right.setMouseTransparent(true);
+                    }
+                    state = previousState;
+                }
+
+                buildingPhaseData.resetServerMessage();
             }
 
         });
