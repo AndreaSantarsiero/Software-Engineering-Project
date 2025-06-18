@@ -36,7 +36,5 @@
 
 .Text2{
     -fx-font-family: 'Luckiest Guy', cursive;
-    -fx-font-size: 4rem;
     -fx-effect: dropshadow(gaussian, black, 4, 0.3, 2, 2);
-    -fx-padding: 10px;
 }

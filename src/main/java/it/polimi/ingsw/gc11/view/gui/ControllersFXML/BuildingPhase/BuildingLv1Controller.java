@@ -86,6 +86,7 @@ public class BuildingLv1Controller extends Controller {
     private DoubleBinding shipCardSize;
 
     private Boolean placeShipCard = false;
+    private Boolean reserveShipCard = false;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -470,6 +471,7 @@ public class BuildingLv1Controller extends Controller {
 
     void show(Node n) {
         n.setVisible(true);
+        n.setMouseTransparent(false);
     }
 
     public void heldShipCardOverlay() {
@@ -477,17 +479,32 @@ public class BuildingLv1Controller extends Controller {
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
 
         heldShipCardImage.setImage(new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm()));
-        heldShipCardImage.setFitHeight(shipCardSize.divide(1.3).doubleValue());
-        heldShipCardImage.setFitWidth(shipCardSize.divide(1.3).doubleValue());
+        heldShipCardImage.setPreserveRatio(true);
+        heldShipCardImage.setSmooth(true);
+        heldShipCardImage.fitWidthProperty().bind(
+                heldShipCard.widthProperty().multiply(0.4));
         heldShipCardImage.setRotate(0);
 
-        left.setPrefWidth(heldShipCard.getWidth() / 2 -30);
-        left.setPrefHeight(20);
-        right.setPrefWidth(heldShipCard.getWidth() / 2 -30);
-        right.setPrefHeight(20);
+        left.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
+        right.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
+
+        left.prefHeightProperty().bind(heldShipCard.heightProperty().multiply(0.08));
+        right.prefHeightProperty().bind(left.prefHeightProperty());
+
+        left.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ",
+                        heldShipCard.widthProperty().divide(10).asString(), "px;")
+        );
+        right.styleProperty().bind(left.styleProperty());
+
+        release.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ",
+                        heldShipCard.widthProperty().divide(25).asString(), "px;")
+        );
+        place.styleProperty().bind(release.styleProperty());
+        reserve.styleProperty().bind(release.styleProperty());
 
         Stream.of(left, right).forEach(b -> {
-            b.setFont(Font.font(35));
             b.setBackground(Background.EMPTY);
             b.setBorder(Border.EMPTY);
             b.setCursor(Cursor.HAND);
@@ -495,7 +512,6 @@ public class BuildingLv1Controller extends Controller {
         });
 
         Stream.of(release, place, reserve).forEach(b -> {
-            b.setFont(Font.font(20));
             b.setBackground(Background.EMPTY);
             b.setBorder(Border.EMPTY);
             b.setCursor(Cursor.HAND);
@@ -532,6 +548,9 @@ public class BuildingLv1Controller extends Controller {
             onReleaseShipCard();
         });
         place.setOnAction(e -> {
+            for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
+            left.setMouseTransparent(true);
+            right.setMouseTransparent(true);
             onPlaceShipCard(heldShipCardImage.getRotate());
         });
     }
@@ -559,10 +578,19 @@ public class BuildingLv1Controller extends Controller {
                 throw new RuntimeException(e);
             }
         }
+        else if(reserveShipCard) {
+            reserveShipCard = false;
+            try {
+                virtualServer.useReservedShipCard(buildingPhaseData.getReservedShipCard(), x + 5, y + 5);
+            } catch (NetworkException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void onReservedShipCardSelected(int index) {
-        System.out.println("Reserved ShipCard selezionata indice: " + index);
+        reserveShipCard = true;
+        buildingPhaseData.setReservedShipCard(buildingPhaseData.getShipBoard().getReservedComponents().get(index));
     }
 
     private void onReserveShipCard(){

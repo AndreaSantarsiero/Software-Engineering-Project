@@ -468,6 +468,7 @@ public class BuildingLv2Controller extends Controller {
     }
 
     void show(Node n) {
+        n.setMouseTransparent(false);
         n.setVisible(true);
     }
 
@@ -476,17 +477,32 @@ public class BuildingLv2Controller extends Controller {
         String basePath = "/it/polimi/ingsw/gc11/shipCards/";
 
         heldShipCardImage.setImage(new Image(getClass().getResource(basePath + buildingPhaseData.getHeldShipCard().getId() + ".jpg").toExternalForm()));
-        heldShipCardImage.setFitHeight(shipCardSize.divide(1.3).doubleValue());
-        heldShipCardImage.setFitWidth(shipCardSize.divide(1.3).doubleValue());
+        heldShipCardImage.setPreserveRatio(true);
+        heldShipCardImage.setSmooth(true);
+        heldShipCardImage.fitWidthProperty().bind(
+                heldShipCard.widthProperty().multiply(0.4));
         heldShipCardImage.setRotate(0);
 
-        left.setPrefWidth(heldShipCard.getWidth() / 2 -30);
-        left.setPrefHeight(10);
-        right.setPrefWidth(heldShipCard.getWidth() / 2 -30);
-        right.setPrefHeight(10);
+        left.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
+        right.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
+
+        left.prefHeightProperty().bind(heldShipCard.heightProperty().multiply(0.08));
+        right.prefHeightProperty().bind(left.prefHeightProperty());
+
+        left.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ",
+                        heldShipCard.widthProperty().divide(10).asString(), "px;")
+        );
+        right.styleProperty().bind(left.styleProperty());
+
+        release.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ",
+                        heldShipCard.widthProperty().divide(25).asString(), "px;")
+        );
+        place.styleProperty().bind(release.styleProperty());
+        reserve.styleProperty().bind(release.styleProperty());
 
         Stream.of(left, right).forEach(b -> {
-            b.setFont(Font.font(35));
             b.setBackground(Background.EMPTY);
             b.setBorder(Border.EMPTY);
             b.setCursor(Cursor.HAND);
@@ -494,7 +510,6 @@ public class BuildingLv2Controller extends Controller {
         });
 
         Stream.of(release, place, reserve).forEach(b -> {
-            b.setFont(Font.font(20));
             b.setBackground(Background.EMPTY);
             b.setBorder(Border.EMPTY);
             b.setCursor(Cursor.HAND);
@@ -531,6 +546,9 @@ public class BuildingLv2Controller extends Controller {
             onReleaseShipCard();
         });
         place.setOnAction(e -> {
+            for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
+            left.setMouseTransparent(true);
+            right.setMouseTransparent(true);
             onPlaceShipCard(heldShipCardImage.getRotate());
         });
     }
