@@ -44,13 +44,16 @@ import java.util.stream.Stream;
 
 public class BuildingLv1Controller extends Controller {
 
+    private enum State{
+        IDLE, PLACING_FREE_SHIPCARD, PLACING_RESERVED_SHIPCARD
+    }
 
-    @FXML public HBox arrows;
-    @FXML public Button left;
-    @FXML public Button right;
-    @FXML public Button release;
-    @FXML public Button place;
-    @FXML public Button reserve;
+    @FXML private HBox arrows;
+    @FXML private Button left;
+    @FXML private Button right;
+    @FXML private Button release;
+    @FXML private Button place;
+    @FXML private Button reserve;
     @FXML private VBox root;
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
@@ -71,6 +74,8 @@ public class BuildingLv1Controller extends Controller {
     private Stage stage;
     private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
+    private State previousState;
+    private State state = State.IDLE;
 
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
@@ -467,10 +472,15 @@ public class BuildingLv1Controller extends Controller {
 
     void hide(Node n) {
         n.setVisible(false);
+        n.setManaged(false);
+        n.setOpacity(0);
+        n.setMouseTransparent(true);
     }
 
     void show(Node n) {
         n.setVisible(true);
+        n.setManaged(true);
+        n.setOpacity(1);
         n.setMouseTransparent(false);
     }
 
@@ -483,7 +493,7 @@ public class BuildingLv1Controller extends Controller {
         heldShipCardImage.setSmooth(true);
         heldShipCardImage.fitWidthProperty().bind(
                 heldShipCard.widthProperty().multiply(0.4));
-        heldShipCardImage.setRotate(0);
+        heldShipCard.setRotate(0);
 
         left.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
         right.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
@@ -555,76 +565,190 @@ public class BuildingLv1Controller extends Controller {
         });
     }
 
+    public void reservedShipCardOverlay() {
+
+        String basePath = "/it/polimi/ingsw/gc11/shipCards/";
+
+        heldShipCardImage.setImage(new Image(getClass().getResource(basePath + buildingPhaseData.getReservedShipCard().getId() + ".jpg").toExternalForm()));
+        heldShipCardImage.setPreserveRatio(true);
+        heldShipCardImage.setSmooth(true);
+        heldShipCardImage.fitWidthProperty().bind(
+                heldShipCard.widthProperty().multiply(0.4));
+
+        left.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
+        right.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
+
+        left.prefHeightProperty().bind(heldShipCard.heightProperty().multiply(0.08));
+        right.prefHeightProperty().bind(left.prefHeightProperty());
+
+        left.styleProperty().bind(
+                Bindings.concat("-fx-font-size: ",
+                        heldShipCard.widthProperty().divide(10).asString(), "px;")
+        );
+        right.styleProperty().bind(left.styleProperty());
+
+        place.styleProperty().bind(Bindings.concat("-fx-font-size: ",
+                heldShipCard.widthProperty().divide(25).asString(), "px;"));
+        reserve.styleProperty().bind(place.styleProperty());
+
+        Stream.of(left, right).forEach(b -> {
+            b.setBackground(Background.EMPTY);
+            b.setBorder(Border.EMPTY);
+            b.setCursor(Cursor.HAND);
+            b.setTextFill(Color.WHITE);
+        });
+
+        Stream.of(place, reserve).forEach(b -> {
+            b.setBackground(Background.EMPTY);
+            b.setBorder(Border.EMPTY);
+            b.setCursor(Cursor.HAND);
+            b.setTextFill(Color.WHITE);
+        });
+
+        show(heldShipCardImage);
+        show(reserve);
+        show(place);
+        show(arrows);
+        show(left);
+        show(right);
+
+        Color normalColor = Color.WHITE;
+        Color hoverColor  = Color.web("#FFD700");
+
+        Stream.of(left, right, place, reserve).forEach(btn -> {
+            btn.setTextFill(normalColor);
+
+            btn.setOnMouseEntered(e -> btn.setTextFill(hoverColor));
+            btn.setOnMouseExited (e -> btn.setTextFill(normalColor));
+        });
+
+        left.setOnAction(e -> heldShipCardImage.setRotate(heldShipCardImage.getRotate() - 90));
+        right.setOnAction(e -> heldShipCardImage.setRotate(heldShipCardImage.getRotate() + 90));
+
+        reserve.setOnAction(e -> {
+            for (Node child : (heldShipCard.getChildren())) { hide(child); }
+            hide(left);
+            hide(right);
+            onReserveShipCard();
+        });
+        place.setOnAction(e -> {
+            for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
+            left.setMouseTransparent(true);
+            right.setMouseTransparent(true);
+            onPlaceShipCard(heldShipCardImage.getRotate());
+        });
+    }
+
     private void onShipCardSelected(int index){
-        try {
-            virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
-            buildingPhaseData.setState(BuildingPhaseData.BuildingState.WAIT_SHIPCARD);
-        } catch (NetworkException e) {
-            throw new RuntimeException(e);
+        if(state == State.IDLE) {
+            try {
+                virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
+                previousState = state;
+                state = State.PLACING_FREE_SHIPCARD;
+            } catch (NetworkException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     private void onShipBoardSelected(int x, int y) {
-        if(placeShipCard) {
-            placeShipCard = false;
+        if(state == State.PLACING_FREE_SHIPCARD) {
             try {
                 virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 5, y + 5);
-                for (Node child : (heldShipCard.getChildren())) {
-                    hide(child);
-                }
-                hide(left);
-                hide(right);
+                previousState = state;
+                state = State.IDLE;
             } catch (NetworkException e) {
                 throw new RuntimeException(e);
             }
         }
-        else if(reserveShipCard) {
-            reserveShipCard = false;
+        else if(state == State.PLACING_RESERVED_SHIPCARD) {
             try {
                 virtualServer.useReservedShipCard(buildingPhaseData.getReservedShipCard(), x + 5, y + 5);
+                previousState = state;
+                state = State.IDLE;
             } catch (NetworkException e) {
                 throw new RuntimeException(e);
             }
         }
+        for (Node child : (heldShipCard.getChildren())) {
+            hide(child);
+        }
+        hide(left);
+        hide(right);
     }
 
     private void onReservedShipCardSelected(int index) {
-        reserveShipCard = true;
+        reservedSlots.getChildren().remove(index);
         buildingPhaseData.setReservedShipCard(buildingPhaseData.getShipBoard().getReservedComponents().get(index));
+        previousState = state;
+        state = State.PLACING_RESERVED_SHIPCARD;
+        reservedShipCardOverlay();
     }
 
     private void onReserveShipCard(){
-        try {
-            virtualServer.reserveShipCard(buildingPhaseData.getHeldShipCard());
-        } catch (NetworkException e) {
-            throw new RuntimeException(e);
+        if(state == State.PLACING_FREE_SHIPCARD) {
+            try {
+                virtualServer.reserveShipCard(buildingPhaseData.getHeldShipCard());
+                previousState = state;
+                state = State.IDLE;
+            } catch (NetworkException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(state == State.PLACING_RESERVED_SHIPCARD){
+            try {
+                virtualServer.reserveShipCard(buildingPhaseData.getReservedShipCard());
+                previousState = state;
+                state = State.IDLE;
+            } catch (NetworkException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     private void onReleaseShipCard(){
         try {
             virtualServer.releaseShipCard(buildingPhaseData.getHeldShipCard());
+            previousState = state;
+            state = State.IDLE;
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void onPlaceShipCard(double orientation){
-        switch(Math.floorMod((int) orientation, 360)){
-            case 0:
-                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_0);
-                break;
-            case 90:
-                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_90);
-                break;
-            case 180:
-                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_180);
-                break;
-            case 270:
-                buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_270);
-                break;
+        if(state == State.PLACING_FREE_SHIPCARD) {
+            switch (Math.floorMod((int) orientation, 360)) {
+                case 0:
+                    buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_0);
+                    break;
+                case 90:
+                    buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_90);
+                    break;
+                case 180:
+                    buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_180);
+                    break;
+                case 270:
+                    buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_270);
+                    break;
+            }
         }
-        placeShipCard = true;
+        if(state == State.PLACING_RESERVED_SHIPCARD){
+            switch (Math.floorMod((int) orientation, 360)) {
+                case 0:
+                    buildingPhaseData.getReservedShipCard().setOrientation(ShipCard.Orientation.DEG_0);
+                    break;
+                case 90:
+                    buildingPhaseData.getReservedShipCard().setOrientation(ShipCard.Orientation.DEG_90);
+                    break;
+                case 180:
+                    buildingPhaseData.getReservedShipCard().setOrientation(ShipCard.Orientation.DEG_180);
+                    break;
+                case 270:
+                    buildingPhaseData.getReservedShipCard().setOrientation(ShipCard.Orientation.DEG_270);
+                    break;
+            }
+        }
     }
 
     private void setupOthersPlayersButtons(){
@@ -675,20 +799,29 @@ public class BuildingLv1Controller extends Controller {
             reservedSlots.getChildren().clear();
             setReservedSlots();
 
-            if(buildingPhaseData.getState() == BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU){
-                heldShipCardOverlay();
-                buildingPhaseData.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_ACTION);
-            }
-
             String serverMessage = buildingPhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage.toUpperCase());
 
                 if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.")) {
-                    placeShipCard = true;
+                    state = previousState;
+                    if(state == State.PLACING_FREE_SHIPCARD) {
+                        buildingPhaseData.getHeldShipCard().setOrientation(ShipCard.Orientation.DEG_0);
+                    }
+                    if(state == State.PLACING_RESERVED_SHIPCARD){
+                        buildingPhaseData.getReservedShipCard().setOrientation(ShipCard.Orientation.DEG_0);
+                    }
                 }
 
                 buildingPhaseData.resetServerMessage();
+            }
+
+            if(state == State.PLACING_FREE_SHIPCARD){
+                heldShipCardOverlay();
+            }
+
+            if(state == State.PLACING_RESERVED_SHIPCARD){
+                reservedShipCardOverlay();
             }
 
         });
