@@ -414,7 +414,9 @@ public abstract class ShipBoard  implements Serializable {
         }
 
         placeShipCard(shipCard, orientation, x, y);
+        shipCard.setOrientation(ShipCard.Orientation.DEG_0);
         reservedComponents.remove(shipCard);
+        shipCard.setOrientation(orientation);
     }
 
     /**
