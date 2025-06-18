@@ -25,7 +25,7 @@ public class ConnectionTest {
     @BeforeEach
     void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException {
         serverController = new ServerController(RMIPort, socketPort);
-        Thread.sleep(100);  //waiting for the server to start up
+        Thread.sleep(20);  //waiting for the server to start up
         System.out.println("\nServer started on RMI port: " + RMIPort + ", Socket port: " + socketPort);
     }
 
@@ -35,20 +35,21 @@ public class ConnectionTest {
         socketPort++;
         if (serverController != null) {
             serverController.shutdown();
-            Thread.sleep(100);  //waiting for the server to shut down
+            Thread.sleep(20);  //waiting for the server to shut down
         }
     }
 
 
 
     @Test
-    void testCreateMatch() throws NetworkException {
+    void testCreateMatch() throws NetworkException, InterruptedException {
         DumbPlayerContext playerOneContext = new DumbPlayerContext();
         VirtualServer playerOne   = new VirtualServer(playerOneContext);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
         dataOne.setVirtualServer(playerOne);
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
+        Thread.sleep(20);  //waiting for the server to register the session
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 4);
 
         DumbPlayerContext playerTwoContext = new DumbPlayerContext();
@@ -57,13 +58,14 @@ public class ConnectionTest {
         dataTwo.setVirtualServer(playerTwo);
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("username2");
+        Thread.sleep(20);  //waiting for the server to register the session
         playerTwo.createMatch(FlightBoard.Type.TRIAL, 2);
     }
 
 
 
     @Test
-    void testFullLobby() throws NetworkException {
+    void testFullLobby() throws NetworkException, InterruptedException {
         DumbPlayerContext playerOneContext = new DumbPlayerContext();
         VirtualServer playerOne   = new VirtualServer(playerOneContext);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
@@ -92,6 +94,7 @@ public class ConnectionTest {
         playerFour.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerFour.registerSession("playerFour");
 
+        Thread.sleep(20);  //waiting for the server to register every session
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
     }
 }

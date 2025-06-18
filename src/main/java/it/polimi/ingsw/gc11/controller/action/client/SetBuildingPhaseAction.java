@@ -16,8 +16,7 @@ public class SetBuildingPhaseAction extends ServerAction {
 
 
 
-    public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType,
-                                  ArrayList<String> playersUsernames) {
+    public SetBuildingPhaseAction(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType, ArrayList<String> playersUsernames) {
         this.shipBoard = shipBoard;
         this.freeShipCardsCount = freeShipCardsCount;
         this.flightType = flightType;

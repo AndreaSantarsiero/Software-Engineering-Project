@@ -132,7 +132,7 @@ public class GameContextTest {
         playerOne.chooseColor("blue");
         playerTwo.chooseColor("red");
         playerThree.chooseColor("yellow");
-        Thread.sleep(20);  //waiting for the players to choose the color
+        Thread.sleep(40);  //waiting for the players to choose the color
     }
 
     @AfterEach
@@ -199,27 +199,11 @@ public class GameContextTest {
 
         //IDLE PHASE
         assertThrows(IllegalStateException.class, () -> gameContext.getFreeShipCard("username1", null), "you can call getFreeShipCard() only in Building Phase.");
-        assertThrows(IllegalStateException.class, () -> gameContext.releaseShipCard("username1", new StructuralModule("1",
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE)), "you can call releaseShipCard() only in Building Phase.");
-        assertThrows(IllegalStateException.class, () -> gameContext.placeShipCard("username1", new StructuralModule("1",
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 7, 7),  "you can call placeShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.releaseShipCard("username1", new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE)), "you can call releaseShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.placeShipCard("username1", new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 7, 7),  "you can call placeShipCard() only in Building Phase.");
         assertThrows(IllegalStateException.class, () -> gameContext.removeShipCard("username1" ,7, 7), "you can call removeShipCard() only in Building Phase.");
-        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("1",
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE)), "you can call reserveShipCard() only in Building Phase.");
-        assertThrows(IllegalStateException.class, () -> gameContext.useReservedShipCard("username1", new StructuralModule("1",
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 8,8), "you can call useReserveShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE)), "you can call reserveShipCard() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.useReservedShipCard("username1", new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 8,8), "you can call useReserveShipCard() only in Building Phase.");
         assertThrows(IllegalStateException.class, () -> gameContext.observeMiniDeck("username1", 1), "you can call observeMiniDeck() only in Building Phase.");
         assertThrows(IllegalStateException.class, () -> gameContext.endBuilding("username1"),"you can call endBuilding() only in Building Phase.");
 
@@ -251,11 +235,7 @@ public class GameContextTest {
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "this player don't have any shipCard in hand");
         ShipCard shipCard = gameContext.getFreeShipCard("username1", null);
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "shipCard cannot be null");
-        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", new Shield("1",
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE,
-                ShipCard.Connector.SINGLE)), "shipCard should be match");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", new Shield("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE)), "shipCard should be match");
         gameContext.releaseShipCard("username1", shipCard);
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", shipCard), "shipCard already released");
 
@@ -269,14 +249,13 @@ public class GameContextTest {
 
         ShipCard shipCard = gameContext.getFreeShipCard("username2", null);
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", shipCard, ShipCard.Orientation.DEG_0, 7, 7), "this player don't have any shipCard in hand");
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, -1, 0), "Coordinates should be valid");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, -1, 0), "Coordinates should be valid");
 
     }
 
     @Test
     void testPlaceShipCard(){
-        assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 7));
+        assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6));
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 3, 3), "coordinates should be valid");
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 7), "slot already used");
     }
@@ -300,7 +279,7 @@ public class GameContextTest {
 
     @Test
     void testRemoveShipCard(){
-        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 7);
+        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6);
         ShipBoard old = SerializationUtils.clone(gameContext.getGameModel().getPlayerShipBoard("username1"));
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 8);
         assertNotEquals(gameContext.getGameModel().getPlayerShipBoard("username1"), old, "shipBorard cannot be equals after placement");
@@ -335,14 +314,14 @@ public class GameContextTest {
     @Test
     void testUseReservedShipCard(){
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should be empty");
-        assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should be zero");
+        assertEquals(1, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should be one (the central unit)");
         ShipCard shipCard = gameContext.getFreeShipCard("username1", null);
         gameContext.reserveShipCard("username1", shipCard);
-        assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should be zero");
-        gameContext.useReservedShipCard("username1", shipCard, ShipCard.Orientation.DEG_0, 7, 7);
+        assertEquals(1, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should still be one (the central unit)");
+        gameContext.useReservedShipCard("username1", shipCard, ShipCard.Orientation.DEG_0, 7, 6);
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should zero after use");
-        assertEquals(1, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should be one after used a reserved component");
-        assertNotNull(gameContext.getGameModel().getPlayerShipBoard("username1").getShipCard(7, 7),"shipCard isn't in the right position");
+        assertEquals(2, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should be two after used a reserved component");
+        assertNotNull(gameContext.getGameModel().getPlayerShipBoard("username1").getShipCard(7, 6),"shipCard isn't in the right position");
     }
 
     @Test
@@ -401,7 +380,7 @@ public class GameContextTest {
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card becouse members number is not enough");
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
         gameContext.acceptAdventureCard("username1");
@@ -423,7 +402,7 @@ public class GameContextTest {
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card becouse members number is not enough");
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
         gameContext.acceptAdventureCard("username1");
@@ -475,12 +454,12 @@ public class GameContextTest {
         advPhase.setAdvState(new AbandonedStationState(advPhase));
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
         gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
         gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
@@ -501,12 +480,12 @@ public class GameContextTest {
         advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
         gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
         gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
@@ -543,27 +522,25 @@ public class GameContextTest {
     void testkillMembers(){
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<HousingUnit, Integer> map = new HashMap<>();
 
         assertEquals(8, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
-
         assertThrows(IllegalStateException.class, () -> gameContext.killMembers("username1", map));
 
         gameContext.acceptAdventureCard("username1");
         assertInstanceOf(ChooseHousing.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
-
         assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
 
         map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,7), 2, Integer::sum);
@@ -576,9 +553,7 @@ public class GameContextTest {
         assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
 
         map.remove(invalid);
-
         gameContext.killMembers("username1", map);
-
         assertEquals(0, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
         assertInstanceOf(IdleState.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
 
@@ -598,17 +573,15 @@ public class GameContextTest {
 
     @Test
     void testChooseFirePowerInvalidState() {
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.chooseFirePower("username1",
-                        new HashMap<>(), new ArrayList<>()));
+        assertThrows(IllegalStateException.class, () -> gameContext.chooseFirePower("username1", new HashMap<>(), new ArrayList<>()));
     }
 
     @Test
     void testChooseFirePowerInvalidArgumentsPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -622,7 +595,7 @@ public class GameContextTest {
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -644,8 +617,8 @@ public class GameContextTest {
     void testChooseFirePowerInvalidArgumentsSmugglers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Material> materials = new ArrayList<>();
         materials.add(new Material(Material.Type.RED));
         materials.add(new Material(Material.Type.YELLOW));
@@ -659,7 +632,7 @@ public class GameContextTest {
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -681,7 +654,6 @@ public class GameContextTest {
     void testChooseFirePowerInvalidArgumentsSlavers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
 
         advCard = new Slavers(AdventureCard.Type.LEVEL2,2,7,4,8);
@@ -692,7 +664,7 @@ public class GameContextTest {
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -714,8 +686,8 @@ public class GameContextTest {
     void testChooseFirePowerInvalidArgumentsCombactZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -728,7 +700,7 @@ public class GameContextTest {
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -750,8 +722,8 @@ public class GameContextTest {
     void testChooseFirePowerInvalidArgumentsCombactZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
@@ -766,7 +738,7 @@ public class GameContextTest {
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -788,8 +760,8 @@ public class GameContextTest {
     void testChooseFirePowerValidPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -819,8 +791,8 @@ public class GameContextTest {
     void testChooseFirePowerValidSmuglers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Material> materials = new ArrayList<>();
         materials.add(new Material(Material.Type.RED));
         materials.add(new Material(Material.Type.YELLOW));
@@ -850,7 +822,6 @@ public class GameContextTest {
     void testChooseFirePowerValidSlavers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
 
         advCard = new Slavers(AdventureCard.Type.LEVEL2,2,7,4,8);
@@ -877,8 +848,8 @@ public class GameContextTest {
     void testChooseFirePowerValidCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -907,8 +878,8 @@ public class GameContextTest {
     void testChooseFirePowerValidCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
@@ -940,8 +911,8 @@ public class GameContextTest {
     void testRewardDecisionInvalidArgumentsSlavers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
@@ -955,8 +926,8 @@ public class GameContextTest {
     void testRewardDecisionValidSlaversAccept() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
@@ -970,8 +941,8 @@ public class GameContextTest {
     void testRewardDecisionValidSlaversDecline() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
@@ -985,8 +956,8 @@ public class GameContextTest {
     void testRewardDecisionInvalidArgumentsSmugglers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Material> materials = new ArrayList<>();
         materials.add(new Material(Material.Type.RED));
         materials.add(new Material(Material.Type.YELLOW));
@@ -1005,8 +976,8 @@ public class GameContextTest {
     void testRewardDecisionValidSmugglersAccept() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Material> materials = new ArrayList<>();
         materials.add(new Material(Material.Type.RED));
         materials.add(new Material(Material.Type.YELLOW));
@@ -1025,8 +996,8 @@ public class GameContextTest {
     void testRewardDecisionValidSmugglersDecline() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Material> materials = new ArrayList<>();
         materials.add(new Material(Material.Type.RED));
         materials.add(new Material(Material.Type.YELLOW));
@@ -1045,8 +1016,8 @@ public class GameContextTest {
     void testRewardDecisionInvalidArgumentsPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1065,8 +1036,8 @@ public class GameContextTest {
     void testRewardDecisionValidPiratesAccept() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1085,8 +1056,8 @@ public class GameContextTest {
     void testRewardDecisionValidPiratesDecline() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1105,8 +1076,8 @@ public class GameContextTest {
     void testGetCoordinateInvalidArgumentsPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1128,8 +1099,8 @@ public class GameContextTest {
     void testGetCoordinateValidPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1151,8 +1122,8 @@ public class GameContextTest {
     void testGetCoordinateInvalidArgumentsMeteors() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Meteor> meteors = new ArrayList<>();
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1173,8 +1144,8 @@ public class GameContextTest {
     void testGetCoordinateValidMeteors() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Meteor> meteors = new ArrayList<>();
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1195,8 +1166,8 @@ public class GameContextTest {
     void testGetCoordinateInvalidArgumentscombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -1214,8 +1185,8 @@ public class GameContextTest {
     void testGetCoordinateValidCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -1233,8 +1204,8 @@ public class GameContextTest {
     void testGetCoordinateInvalidArgumentscombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -1252,8 +1223,8 @@ public class GameContextTest {
     void testGetCoordinateValidCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -1271,8 +1242,8 @@ public class GameContextTest {
     void testHandleShotInvalidArgumentsPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1301,8 +1272,8 @@ public class GameContextTest {
     void testHandleShotValidPirates() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
@@ -1330,8 +1301,8 @@ public class GameContextTest {
     void testHandleShotInvalidArgumentsCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -1354,8 +1325,8 @@ public class GameContextTest {
     void testHandleShotValidCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
@@ -1377,8 +1348,8 @@ public class GameContextTest {
     void testHandleShotInvalidArgumentsCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
@@ -1403,8 +1374,8 @@ public class GameContextTest {
     void testHandleShotValidCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
@@ -1429,8 +1400,8 @@ public class GameContextTest {
     void testUseBatteriesInvalidArgumentsSmugglers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Material> materials = new ArrayList<>();
         materials.add(new Material(Material.Type.RED));
         materials.add(new Material(Material.Type.YELLOW));
@@ -1443,7 +1414,7 @@ public class GameContextTest {
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
@@ -1463,8 +1434,8 @@ public class GameContextTest {
     void testUseBatteriesValidSmugglers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Material> materials = new ArrayList<>();
         materials.add(new Material(Material.Type.RED));
         materials.add(new Material(Material.Type.YELLOW));
@@ -1492,7 +1463,6 @@ public class GameContextTest {
     void testLandOnPlanetInvalidArguments() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
 
         ArrayList<Planet> planets = new ArrayList<>();
@@ -1534,8 +1504,8 @@ public class GameContextTest {
     void testChooseEnginePowerInvalidArgumentsCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG,   Hit.Direction.BOTTOM));
@@ -1549,7 +1519,7 @@ public class GameContextTest {
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Engine engine = new Engine("eng1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
 
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(engine, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -1568,8 +1538,8 @@ public class GameContextTest {
     void testChooseEnginePowerInvalidArgumentsCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
         shots.add(new Shot(Hit.Type.BIG,   Hit.Direction.TOP));
@@ -1577,8 +1547,7 @@ public class GameContextTest {
         advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2, 4, 3, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-        advPhase.setAdvState(new Check2Lv2(advPhase, 1,
-                gameContext.getGameModel().getPlayer("username1")));
+        advPhase.setAdvState(new Check2Lv2(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
@@ -1597,8 +1566,8 @@ public class GameContextTest {
     void testChooseEnginePowerValidCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.RIGHT));
 
@@ -1611,7 +1580,7 @@ public class GameContextTest {
         Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Engine doubleEngine = new Engine("engDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
 
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(doubleEngine, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -1687,7 +1656,7 @@ public class GameContextTest {
         Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Engine doubleEngine = new Engine("engDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
 
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(doubleEngine, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
@@ -1719,7 +1688,7 @@ public class GameContextTest {
         Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
         Shield shield = new Shield("shi1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
-        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 6);
         board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
         board.placeShipCard(shield, ShipCard.Orientation.DEG_0, 8, 7);
 
@@ -1741,8 +1710,8 @@ public class GameContextTest {
     void testMeteorDefenseValidMeteorSwarm() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Meteor> meteors = new ArrayList<>();
         meteors.add(new Meteor(Hit.Type.BIG, Hit.Direction.TOP));
 
@@ -1757,13 +1726,12 @@ public class GameContextTest {
         Shield shield = new Shield("shi1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
         board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
         board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 8, 8);
-        board.placeShipCard(shield, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(shield, ShipCard.Orientation.DEG_0, 7, 6);
 
         Map<Battery,Integer> usage = new HashMap<>();
         usage.put(battery, 2);
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.meteorDefense("username1", usage, cannon));
+        Player p = assertDoesNotThrow(() -> gameContext.meteorDefense("username1", usage, cannon));
         assertEquals("username1", p.getUsername());
     }
 }
