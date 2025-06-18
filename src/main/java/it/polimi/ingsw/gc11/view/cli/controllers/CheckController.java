@@ -11,6 +11,9 @@ public class CheckController extends CLIController {
 
     private final CheckTemplate template;
     private final CheckPhaseData data;
+    private int mainMenu;
+    private int selectedI;
+    private int selectedJ;
 
 
 
@@ -58,4 +61,31 @@ public class CheckController extends CLIController {
 
     @Override
     public void confirmIntegerChoice() {}
+
+
+
+    public int getMainMenu() {
+        return mainMenu;
+    }
+
+    public void setMainMenu(int mainMenu) {
+        this.mainMenu = mainMenu;
+        template.render();
+    }
+
+    public int getSelectedI(){
+        return selectedI;
+    }
+
+    public int getSelectedJ(){
+        return selectedJ;
+    }
+
+    public int getSelectedY(){
+        return selectedI - data.getShipBoard().adaptY(0);
+    }
+
+    public int getSelectedX(){
+        return selectedJ - data.getShipBoard().adaptX(0);
+    }
 }

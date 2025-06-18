@@ -10,6 +10,9 @@ public class AdventureController extends CLIController {
 
     private final AdventureTemplate template;
     private final AdventurePhaseData data;
+    private int mainMenu;
+    private int selectedI;
+    private int selectedJ;
 
 
 
@@ -57,4 +60,31 @@ public class AdventureController extends CLIController {
 
     @Override
     public void confirmIntegerChoice() {}
+
+
+
+    public int getMainMenu() {
+        return mainMenu;
+    }
+
+    public void setMainMenu(int mainMenu) {
+        this.mainMenu = mainMenu;
+        template.render();
+    }
+
+    public int getSelectedI(){
+        return selectedI;
+    }
+
+    public int getSelectedJ(){
+        return selectedJ;
+    }
+
+    public int getSelectedY(){
+        return selectedI - data.getMyShipBoard().adaptY(0);
+    }
+
+    public int getSelectedX(){
+        return selectedJ - data.getMyShipBoard().adaptX(0);
+    }
 }
