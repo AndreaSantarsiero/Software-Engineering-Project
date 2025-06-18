@@ -1,12 +1,12 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 /**
@@ -74,11 +74,9 @@ public class CheckPhase extends GamePhase {
      * @param cardsToEliminateX list of X coordinates of cards to destroy
      * @param cardsToEliminateY list of Y coordinates of cards to destroy
      * @return the updated {@link ShipBoard} of the player
-     * @throws IllegalStateException if the ship remains invalid or the player is not allowed to repair
      */
     @Override
-    public ShipBoard repairShip(String username, ArrayList<Integer> cardsToEliminateX,
-                                ArrayList<Integer> cardsToEliminateY) {
+    public ShipBoard repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
 
         Player player = this.gameModel.getPlayer(username);
         if (!badShipPlayers.contains(player)) {
@@ -86,13 +84,7 @@ public class CheckPhase extends GamePhase {
         }
 
         for (int i = 0; i < cardsToEliminateX.size(); i++) {
-            if (this.gameModel.getFlightBoard().getType().equals(FlightBoard.Type.LEVEL2)) {
-                player.getShipBoard()
-                        .getShipCard(cardsToEliminateX.get(i), cardsToEliminateY.get(i))
-                        .destroy();
-            }
-            player.getShipBoard()
-                    .destroyShipCard(cardsToEliminateX.get(i), cardsToEliminateY.get(i));
+            player.getShipBoard().destroyShipCard(cardsToEliminateX.get(i), cardsToEliminateY.get(i));
         }
 
         if (player.getShipBoard().checkShip()){
@@ -101,13 +93,9 @@ public class CheckPhase extends GamePhase {
             if (this.badShipPlayers.isEmpty()) {
                 this.gameContext.setPhase(new AdventurePhase(this.gameContext));
             }
-            //Avvisa il player che ora la sua shipboard è stata riparata
-            return player.getShipBoard();
         }
-        else{
-            //Avvisa il player che la sua shipBoard è ancora da riparare
-            throw new IllegalStateException("Your shipboard wasn't repaired correctly.");
-        }
+
+        return player.getShipBoard();   //returns the shipBoard in any case, the client can see by itself if the ship is valid or not calling checkShip()
     }
 
     /**

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.gc11.view.cli.controllers;
 
-import it.polimi.ingsw.gc11.view.AdventurePhaseData;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
+import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.templates.CheckTemplate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -11,6 +14,8 @@ public class CheckController extends CLIController {
 
     private final CheckTemplate template;
     private final CheckPhaseData data;
+    private final List<Integer> shipCardsToRemoveX;
+    private final List<Integer> shipCardsToRemoveY;
     private int mainMenu;
     private int selectedI;
     private int selectedJ;
@@ -21,6 +26,8 @@ public class CheckController extends CLIController {
         super(mainCLI);
         this.data = data;
         template = new CheckTemplate(this);
+        shipCardsToRemoveX = new ArrayList<>();
+        shipCardsToRemoveY = new ArrayList<>();
     }
 
     public CheckPhaseData getPhaseData() {
@@ -38,31 +45,119 @@ public class CheckController extends CLIController {
 
 
     @Override
-    public void update (AdventurePhaseData data) {
+    public void update (CheckPhaseData data) {
         if (!active) {
             return;
         }
+        if(data.isStateNew()){
+            if(addServerRequest()){
+                return;
+            }
+        }
         template.render();
+        if(data.isStateNew()){
+            addInputRequest();
+        }
+    }
+
+
+    //if it's not necessary to render the template, then return true
+    public boolean addServerRequest(){
+        try{
+            if (data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
+                resetViewData();
+                return false;
+            }
+            else if(data.getState() == CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP){
+                mainCLI.getVirtualServer().getPlayersShipBoard();
+                return true;
+            }
+            else if(data.getState() == CheckPhaseData.CheckState.REMOVE_SHIPCARDS_SETUP) {
+                mainCLI.getVirtualServer().repairShip(shipCardsToRemoveX, shipCardsToRemoveY);
+                resetShipCardsToRemove();
+                return true;
+            }
+        } catch (NetworkException e) {
+            System.out.println("Connection error: " + e.getMessage());
+            e.printStackTrace();
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public void addInputRequest() {
+        if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getMainMenuSize(), mainMenu));
+        }
+        else if(data.getState() == CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE){
+            mainCLI.addInputRequest(new CoordinatesInput(data, this, data.getShipBoard(), selectedI, selectedJ));
+        }
+        else if(data.getState() == CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP){
+            mainCLI.addInputRequest(new EnterInput(data, this));
+        }
+    }
+
+
+
+    public void updateInternalState() {
+        if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
+            switch (mainMenu) {
+                case 0 -> data.setState(CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE);
+                case 1 -> data.setState(CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP);
+                case 2 -> data.setState(CheckPhaseData.CheckState.REMOVE_SHIPCARDS_SETUP);
+                case 3 -> {
+                    resetShipCardsToRemove();
+                    data.setState(CheckPhaseData.CheckState.REMOVE_SHIPCARDS_SETUP);
+                }
+            }
+        }
+        else {
+            data.updateState();
+        }
     }
 
 
 
     @Override
-    public void setMenuChoice(int choice){}
+    public void setMenuChoice(int choice){
+        data.actualizePreviousState();
+        setMainMenu(choice);
+    }
 
     @Override
-    public void confirmMenuChoice(){}
+    public void confirmMenuChoice(){
+        updateInternalState();
+    }
 
     @Override
-    public void setStringInput(String input) {}
+    public void setCoordinatesChoice(int j, int i) {
+        data.actualizePreviousState();
+        selectedJ = j;
+        selectedI = i;
+        template.render();
+    }
 
     @Override
-    public void setIntegerChoice(int choice) {}
+    public void confirmCoordinatesChoice() {
+        data.getShipBoard().getShipCard(getSelectedX(), getSelectedY()).destroy();
+        addShipCardToRemove(getSelectedX(), getSelectedY());
+        updateInternalState();
+    }
 
-    @Override
-    public void confirmIntegerChoice() {}
 
 
+    public void addShipCardToRemove(int x, int y) {
+        shipCardsToRemoveX.add(x);
+        shipCardsToRemoveY.add(y);
+        template.render();
+    }
+
+    public void resetShipCardsToRemove() {
+        shipCardsToRemoveX.clear();
+        shipCardsToRemoveY.clear();
+    }
 
     public int getMainMenu() {
         return mainMenu;
@@ -87,5 +182,13 @@ public class CheckController extends CLIController {
 
     public int getSelectedX(){
         return selectedJ - data.getShipBoard().adaptX(0);
+    }
+
+
+
+    public void resetViewData(){
+        selectedI = data.getShipBoard().adaptY(7);
+        selectedJ = data.getShipBoard().adaptX(7);
+        mainMenu = 0;
     }
 }

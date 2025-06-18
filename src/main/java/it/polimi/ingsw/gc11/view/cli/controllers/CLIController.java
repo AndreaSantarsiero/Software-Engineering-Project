@@ -22,11 +22,11 @@ public abstract class CLIController extends Controller {
 
     public abstract void confirmMenuChoice();
 
-    public abstract void setStringInput(String input);
+    public void setStringInput(String input) {}
 
-    public abstract void setIntegerChoice(int choice);
+    public void setIntegerChoice(int choice) {}
 
-    public abstract void confirmIntegerChoice();
+    public void confirmIntegerChoice() {}
 
     public void setCoordinatesChoice(int j, int i) {}
 
