@@ -491,12 +491,11 @@ public class GameModel {
     public ShipBoard connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         checkPlayerUsername(username);
         checkHeldShipCard(shipCard, username);
-        shipCard.setOrientation(orientation);
 
         for (Player player : players) {
             if (player.getUsername().equals(username)) {
                 ShipBoard shipBoard = player.getShipBoard();
-                shipBoard.placeShipCard(shipCard, x, y);
+                shipBoard.placeShipCard(shipCard, orientation, x, y);
                 heldShipCards.remove(username);
                 return shipBoard;
             }
