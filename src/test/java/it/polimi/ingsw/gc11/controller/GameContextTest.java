@@ -400,10 +400,10 @@ public class GameContextTest {
 
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card becouse members number is not enough");
 
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
         gameContext.acceptAdventureCard("username1");
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card again");
         assertInstanceOf(ChooseMaterialStation.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(), "check correct state");
@@ -422,10 +422,10 @@ public class GameContextTest {
 
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card becouse members number is not enough");
 
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
         gameContext.acceptAdventureCard("username1");
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card again");
         assertInstanceOf(ChooseHousing.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(), "check correct state");
@@ -474,15 +474,15 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedStationState(advPhase));
 
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
         assertThrows(IllegalStateException.class, () -> gameContext.declineAdventureCard("username2"),"only the first player can decline the card");
         gameContext.declineAdventureCard("username1");
@@ -500,15 +500,15 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
 
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
-        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        gameContext.getGameModel().getPlayer("username2").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
         assertThrows(IllegalStateException.class, () -> gameContext.declineAdventureCard("username2"),"only the first player can decline the card");
         gameContext.declineAdventureCard("username1");
@@ -550,10 +550,10 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
 
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 7, 8);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 7);
-        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), 8, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 9);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<HousingUnit, Integer> map = new HashMap<>();
 
@@ -620,37 +620,24 @@ public class GameContextTest {
         advPhase.setAdvState(new PiratesState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon cannon = new Cannon("can1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(cannon, 7, 8);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
         List<Cannon> doubles = new ArrayList<>();
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
-
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", null, doubles));
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", usage, null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", usage, null));
 
 
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery, Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 1);
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
     }
 
     @Test
@@ -670,37 +657,24 @@ public class GameContextTest {
         advPhase.setAdvState(new SmugglersState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon cannon = new Cannon("can1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(cannon, 7, 8);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
         List<Cannon> doubles = new ArrayList<>();
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
-
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", null, doubles));
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", usage, null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", usage, null));
 
 
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery, Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 1);
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
     }
 
     @Test
@@ -716,37 +690,24 @@ public class GameContextTest {
         advPhase.setAdvState(new SlaversState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon cannon = new Cannon("can1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(cannon, 7, 8);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
         List<Cannon> doubles = new ArrayList<>();
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
-
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", null, doubles));
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", usage, null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", usage, null));
 
 
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery, Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 1);
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
     }
 
     @Test
@@ -765,37 +726,24 @@ public class GameContextTest {
         advPhase.setAdvState(new Check3Lv1(advPhase,1, gameContext.getGameModel().getPlayer("username1")));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon cannon = new Cannon("can1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(cannon, 7, 8);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
         List<Cannon> doubles = new ArrayList<>();
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
-
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", null, doubles));
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", usage, null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", usage, null));
 
 
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery, Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 1);
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
     }
 
     @Test
@@ -816,37 +764,24 @@ public class GameContextTest {
         advPhase.setAdvState(new Check1Lv2(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon cannon = new Cannon("can1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(cannon, 7, 8);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
         List<Cannon> doubles = new ArrayList<>();
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
-
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", null, doubles));
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseFirePower("username1", usage, null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", usage, null));
 
 
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery, Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 1);
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("username1", wrongUsage, doubles));
     }
 
     @Test
@@ -866,15 +801,10 @@ public class GameContextTest {
         advPhase.setAdvState(new PiratesState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon doubleCannon = new Cannon("canDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(doubleCannon, 8, 8);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(doubleCannon, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
@@ -902,15 +832,10 @@ public class GameContextTest {
         advPhase.setAdvState(new SmugglersState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon doubleCannon = new Cannon("canDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(doubleCannon, 8, 8);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(doubleCannon, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
@@ -934,15 +859,10 @@ public class GameContextTest {
         advPhase.setAdvState(new SlaversState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon doubleCannon = new Cannon("canDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(doubleCannon, 8, 8);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(doubleCannon, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
@@ -969,15 +889,10 @@ public class GameContextTest {
         advPhase.setAdvState(new Check3Lv1(advPhase,1, gameContext.getGameModel().getPlayer("username1")));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon doubleCannon = new Cannon("canDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(doubleCannon, 8, 8);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(doubleCannon, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
@@ -1006,15 +921,10 @@ public class GameContextTest {
         advPhase.setAdvState(new Check1Lv2(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon doubleCannon = new Cannon("canDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(doubleCannon, 8, 8);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon doubleCannon = new Cannon("canDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(doubleCannon, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
@@ -1037,10 +947,8 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.rewardDecision("", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.rewardDecision(null, false));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.rewardDecision("", true));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.rewardDecision(null, false));
     }
 
     @Test
@@ -1054,8 +962,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.rewardDecision("username1", true));
+        Player p = assertDoesNotThrow(() -> gameContext.rewardDecision("username1", true));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1070,8 +977,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.rewardDecision("username1", false));
+        Player p = assertDoesNotThrow(() -> gameContext.rewardDecision("username1", false));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1091,10 +997,8 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.rewardDecision("", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.rewardDecision(null, false));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.rewardDecision("", true));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.rewardDecision(null, false));
     }
 
     @Test
@@ -1113,8 +1017,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.rewardDecision("username1", true));
+        Player p = assertDoesNotThrow(() -> gameContext.rewardDecision("username1", true));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1134,8 +1037,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.rewardDecision("username1", false));
+        Player p = assertDoesNotThrow(() -> gameContext.rewardDecision("username1", false));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1155,10 +1057,8 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.rewardDecision("", true));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.rewardDecision(null, false));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.rewardDecision("", true));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.rewardDecision(null, false));
     }
 
     @Test
@@ -1177,8 +1077,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.rewardDecision("username1", true));
+        Player p = assertDoesNotThrow(() -> gameContext.rewardDecision("username1", true));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1198,8 +1097,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.rewardDecision("username1", false));
+        Player p = assertDoesNotThrow(() -> gameContext.rewardDecision("username1", false));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1222,10 +1120,8 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new CoordinateState(advPhase,players,0));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(""));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(null));
     }
 
     @Test
@@ -1247,8 +1143,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new CoordinateState(advPhase,players,0));
 
-        Hit hit = assertDoesNotThrow(() ->
-                gameContext.getCoordinate("username1"));
+        Hit hit = assertDoesNotThrow(() -> gameContext.getCoordinate("username1"));
         assertNotNull(hit);
     }
 
@@ -1270,10 +1165,8 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new MeteorSwarmState(advPhase,0));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(""));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(null));
     }
 
     @Test
@@ -1294,8 +1187,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new MeteorSwarmState(advPhase,0));
 
-        Hit hit = assertDoesNotThrow(() ->
-                gameContext.getCoordinate("username1"));
+        Hit hit = assertDoesNotThrow(() -> gameContext.getCoordinate("username1"));
         assertNotNull(hit);
     }
 
@@ -1314,10 +1206,8 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv1(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(""));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(null));
     }
 
     @Test
@@ -1335,8 +1225,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv1(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
 
-        Hit hit = assertDoesNotThrow(() ->
-                gameContext.getCoordinate("username1"));
+        Hit hit = assertDoesNotThrow(() -> gameContext.getCoordinate("username1"));
         assertNotNull(hit);
     }
 
@@ -1355,10 +1244,8 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv2(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(""));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.getCoordinate(null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(""));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getCoordinate(null));
     }
 
     @Test
@@ -1376,8 +1263,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv2(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
 
-        Hit hit = assertDoesNotThrow(() ->
-                gameContext.getCoordinate("username1"));
+        Hit hit = assertDoesNotThrow(() -> gameContext.getCoordinate("username1"));
         assertNotNull(hit);
     }
 
@@ -1404,17 +1290,11 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleHit(advPhase,players,7,0, 0,played));
 
         Map<Battery, Integer> batteries = new HashMap<>();
-        batteries.put(new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE), 1);
+        batteries.put(new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE), 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot("", batteries));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot(null, batteries));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot("username1", null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot("", batteries));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot(null, batteries));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot("username1", null));
     }
 
     @Test
@@ -1440,13 +1320,9 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleHit(advPhase,players,7,0, 0,played));
 
         Map<Battery, Integer> batteries = new HashMap<>();
-        batteries.put(new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE), 1);
+        batteries.put(new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE), 1);
 
-        Object outcome = assertDoesNotThrow(() ->
-                gameContext.handleShot("username1", batteries));
+        Object outcome = assertDoesNotThrow(() -> gameContext.handleShot("username1", batteries));
         assertNotNull(outcome);
     }
 
@@ -1467,17 +1343,11 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleShotLv1(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();
-        batteries.put(new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE), 1);
+        batteries.put(new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE), 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot("", batteries));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot(null, batteries));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot("username1", null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot("", batteries));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot(null, batteries));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot("username1", null));
     }
 
     @Test
@@ -1497,13 +1367,9 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleShotLv1(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();
-        batteries.put(new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE), 1);
+        batteries.put(new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE), 1);
 
-        Object outcome = assertDoesNotThrow(() ->
-                gameContext.handleShot("username1", batteries));
+        Object outcome = assertDoesNotThrow(() -> gameContext.handleShot("username1", batteries));
         assertNotNull(outcome);
     }
 
@@ -1526,17 +1392,11 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleShotLv2(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();
-        batteries.put(new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE), 1);
+        batteries.put(new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE), 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot("", batteries));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot(null, batteries));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.handleShot("username1", null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot("", batteries));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot(null, batteries));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.handleShot("username1", null));
     }
 
     @Test
@@ -1558,13 +1418,9 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleShotLv2(advPhase,gameContext.getGameModel().getPlayer("username1"),7,0));
 
         Map<Battery, Integer> batteries = new HashMap<>();
-        batteries.put(new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE), 1);
+        batteries.put(new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE), 1);
 
-        Object outcome = assertDoesNotThrow(() ->
-                gameContext.handleShot("username1", batteries));
+        Object outcome = assertDoesNotThrow(() -> gameContext.handleShot("username1", batteries));
         assertNotNull(outcome);
     }
 
@@ -1586,33 +1442,21 @@ public class GameContextTest {
         advPhase.setAdvState(new LooseBatteriesSmugglers(advPhase,gameContext.getGameModel().getPlayer("username1"),2));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        board.placeShipCard(battery, 7, 7);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.useBatteries("wrongUser", usage));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.useBatteries("wrongUser", usage));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.useBatteries("username1", null));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.useBatteries("username1", null));
-
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery, Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 2);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.useBatteries("username1", wrongUsage));
-
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.useBatteries("username1", usage));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.useBatteries("username1", wrongUsage));
+        assertThrows(IllegalStateException.class, () -> gameContext.useBatteries("username1", usage));
     }
 
     @Test
@@ -1632,18 +1476,14 @@ public class GameContextTest {
         advPhase.setAdvState(new LooseBatteriesSmugglers(advPhase,gameContext.getGameModel().getPlayer("username1"),1));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
 
         assertEquals(2, gameContext.getGameModel().getPlayerShipBoard("username1").getTotalAvailableBatteries());
-        Player p = assertDoesNotThrow(() ->
-                gameContext.useBatteries("username1", usage));
+        Player p = assertDoesNotThrow(() -> gameContext.useBatteries("username1", usage));
         assertEquals("username1", p.getUsername());
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getTotalAvailableBatteries());
     }
@@ -1664,20 +1504,15 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.landOnPlanet("", 0));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.landOnPlanet(null, 0));
-
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.landOnPlanet("username1", -1));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet("", 0));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet("username1", -1));
     }
 
     @Test
     void testLandOnPlanetValid() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
 
         ArrayList<Planet> planets = new ArrayList<>();
@@ -1689,12 +1524,10 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.landOnPlanet("username1", 0));
+        Player p = assertDoesNotThrow(() -> gameContext.landOnPlanet("username1", 0));
         assertEquals("username1", p.getUsername());
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.landOnPlanet("username2", 0));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet("username2", 0));
     }
 
     @Test
@@ -1710,39 +1543,25 @@ public class GameContextTest {
         advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 2, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-        advPhase.setAdvState(new Check2Lv1(advPhase, 1,
-                gameContext.getGameModel().getPlayer("username1")));
+        advPhase.setAdvState(new Check2Lv1(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Engine engine = new Engine("eng1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE,
-                Engine.Type.DOUBLE);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Engine engine = new Engine("eng1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
 
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(engine, 7, 8);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(engine, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseEnginePower("wrongUser", usage));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseEnginePower("wrongUser", usage));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseEnginePower("username1", null));
 
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseEnginePower("username1", null));
-
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery, Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 1);
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseEnginePower("username1", wrongUsage));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseEnginePower("username1", wrongUsage));
     }
 
     @Test
@@ -1762,24 +1581,16 @@ public class GameContextTest {
                 gameContext.getGameModel().getPlayer("username1")));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Engine engine = new Engine("eng1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE,
-                Engine.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(engine, 8, 8);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Engine engine = new Engine("eng1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(engine, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseEnginePower("wrongUser", usage));
-        assertThrows(NullPointerException.class,
-                () -> gameContext.chooseEnginePower("username1", null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseEnginePower("wrongUser", usage));
+        assertThrows(NullPointerException.class, () -> gameContext.chooseEnginePower("username1", null));
     }
 
     @Test
@@ -1794,27 +1605,19 @@ public class GameContextTest {
         advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 1, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-        advPhase.setAdvState(new Check2Lv1(advPhase, 1,
-                gameContext.getGameModel().getPlayer("username1")));
+        advPhase.setAdvState(new Check2Lv1(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Engine doubleEngine = new Engine("engDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE,
-                Engine.Type.DOUBLE);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Engine doubleEngine = new Engine("engDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
 
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(doubleEngine, 7, 8);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(doubleEngine, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.chooseEnginePower("username1", usage));
+        Player p = assertDoesNotThrow(() -> gameContext.chooseEnginePower("username1", usage));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1822,34 +1625,26 @@ public class GameContextTest {
     void testChooseEnginePowerValidCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
 
         advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2, 4, 2, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
-        advPhase.setAdvState(new Check2Lv2(advPhase, 1,
-                gameContext.getGameModel().getPlayer("username1")));
+        advPhase.setAdvState(new Check2Lv2(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Engine doubleEngine = new Engine("engDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE,
-                Engine.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(doubleEngine, 8, 8);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Engine doubleEngine = new Engine("engDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(doubleEngine, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.chooseEnginePower("username1", usage));
+        Player p = assertDoesNotThrow(() -> gameContext.chooseEnginePower("username1", usage));
         assertEquals("username1", p.getUsername());
     }
 
@@ -1857,7 +1652,6 @@ public class GameContextTest {
     void testChooseEnginePowerInvalidArgumentsOpenSpace() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
 
         advCard = new OpenSpace(AdventureCard.Type.LEVEL2);
@@ -1866,31 +1660,22 @@ public class GameContextTest {
         advPhase.setAdvState(new OpenSpaceState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Engine engine = new Engine("eng1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE,
-                Engine.Type.DOUBLE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(engine, 8, 8);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Engine engine = new Engine("eng1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(engine, ShipCard.Orientation.DEG_0, 8, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseEnginePower("wrongUser", usage));
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseEnginePower("username1", null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseEnginePower("wrongUser", usage));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseEnginePower("username1", null));
     }
 
     @Test
     void testChooseEnginePowerValidOpenSpace() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
 
         advCard = new OpenSpace(AdventureCard.Type.LEVEL2);
@@ -1899,23 +1684,16 @@ public class GameContextTest {
         advPhase.setAdvState(new OpenSpaceState(advPhase));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Engine doubleEngine = new Engine("engDouble",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE,
-                Engine.Type.DOUBLE);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Engine doubleEngine = new Engine("engDouble", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Engine.Type.DOUBLE);
 
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(doubleEngine, 7, 8);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(doubleEngine, ShipCard.Orientation.DEG_0, 7, 8);
 
         Map<Battery, Integer> usage = new HashMap<>();
         usage.put(battery, 2);
 
-        Player p = assertDoesNotThrow(() ->
-                gameContext.chooseEnginePower("username1", usage));
+        Player p = assertDoesNotThrow(() -> gameContext.chooseEnginePower("username1", usage));
         assertEquals("username1", p.getUsername());
         assertEquals(8, gameContext.getGameModel().getPositionOnBoard("username1"));
     }
@@ -1925,8 +1703,8 @@ public class GameContextTest {
     void testMeteorDefenseInvalidArgumentsMeteorSwarm() {
         AdventureCard advCard;
         AdventurePhase advPhase;
-
         goToAdvPhase();
+
         ArrayList<Meteor> meteors = new ArrayList<>();
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP));
         meteors.add(new Meteor(Hit.Type.BIG,   Hit.Direction.LEFT));
@@ -1938,38 +1716,25 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleMeteor(advPhase,8,0,0));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("bat1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon cannon = new Cannon("can1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.SINGLE);
-        Shield shield = new Shield("shi1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE);
-        board.placeShipCard(battery, 7, 7);
-        board.placeShipCard(cannon, 7, 8);
-        board.placeShipCard(shield, 8, 7);
+        Battery battery = new Battery("bat1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("can1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.SINGLE);
+        Shield shield = new Shield("shi1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 7, 7);
+        board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 7, 8);
+        board.placeShipCard(shield, ShipCard.Orientation.DEG_0, 8, 7);
 
         Map<Battery,Integer> usage = new HashMap<>();
         usage.put(battery, 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.meteorDefense("wrongUser", usage, cannon));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.meteorDefense("wrongUser", usage, cannon));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.meteorDefense("username1", null, cannon));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.meteorDefense("username1", null, cannon));
 
-        Battery fake = new Battery("fake",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
+        Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
         Map<Battery,Integer> wrongUsage = new HashMap<>();
         wrongUsage.put(fake, 1);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.meteorDefense("username1", wrongUsage, cannon));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.meteorDefense("username1", wrongUsage, cannon));
     }
 
     @Test
@@ -1987,19 +1752,12 @@ public class GameContextTest {
         advPhase.setAdvState(new HandleMeteor(advPhase,8,0,0));
 
         ShipBoard board = gameContext.getGameModel().getPlayerShipBoard("username1");
-        Battery battery = new Battery("batOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE,
-                Battery.Type.DOUBLE);
-        Cannon cannon = new Cannon("canOK",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
-        Shield shield = new Shield("shi1",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE, ShipCard.Connector.NONE);
-        board.placeShipCard(battery, 8, 7);
-        board.placeShipCard(cannon, 8, 8);
-        board.placeShipCard(shield, 7, 7);
+        Battery battery = new Battery("batOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
+        Cannon cannon = new Cannon("canOK", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Cannon.Type.DOUBLE);
+        Shield shield = new Shield("shi1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
+        board.placeShipCard(battery, ShipCard.Orientation.DEG_0, 8, 7);
+        board.placeShipCard(cannon, ShipCard.Orientation.DEG_0, 8, 8);
+        board.placeShipCard(shield, ShipCard.Orientation.DEG_0, 7, 7);
 
         Map<Battery,Integer> usage = new HashMap<>();
         usage.put(battery, 2);

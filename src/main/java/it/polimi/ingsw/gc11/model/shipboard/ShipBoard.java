@@ -226,11 +226,12 @@ public abstract class ShipBoard  implements Serializable {
      * enforcing the rule that new cards must be placed next to existing ones.
      *
      * @param shipCard The ship card to be added
+     * @param orientation The orientation of the ship card to be placed
      * @param x The x-coordinate where the card is placed
      * @param y The y-coordinate where the card is placed
      * @throws IllegalArgumentException if the ship card is null, coordinates are invalid, or there are no adjacent ship cards at the specified position
      */
-    public void placeShipCard(ShipCard shipCard, int x, int y) {
+    public void placeShipCard(ShipCard shipCard, ShipCard.Orientation orientation, int x, int y) {
         if (shipCard == null) {
             throw new IllegalArgumentException("Ship card is null");
         }
@@ -273,6 +274,7 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("No ship cards were already placed close to these coordinates.");
         }
         components[i][j] = shipCard;
+        shipCard.setOrientation(orientation);
         lastModifiedI = i;
         lastModifiedJ = j;
         shipCard.place(this, x, y);
@@ -411,9 +413,8 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("Ship card not previously reserved");
         }
 
-        placeShipCard(shipCard, x, y);
+        placeShipCard(shipCard, orientation, x, y);
         reservedComponents.remove(shipCard);
-        shipCard.setOrientation(orientation);
     }
 
     /**

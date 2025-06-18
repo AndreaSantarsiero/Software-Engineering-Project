@@ -62,7 +62,7 @@ public class ShipBoard6Test {
         boolean result = (boolean) method.invoke(shipBoard);
         assertTrue(result, "ShipBoard6 respects all the other restrictions");
 
-        shipBoard.placeShipCard(shipBoard.getShipCard(8, 9), 9, 7);
+        shipBoard.placeShipCard(shipBoard.getShipCard(8, 9), ShipCard.Orientation.DEG_0, 9, 7);
         result = (boolean) method.invoke(shipBoard);
         assertFalse(result, "ShipBoard6 DO NOT respect all the other restrictions after adding a ship card");
     }
