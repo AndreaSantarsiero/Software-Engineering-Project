@@ -695,12 +695,11 @@ public class BuildingLv1Controller extends Controller {
             }
         }
         if(state == State.PLACING_RESERVED_SHIPCARD){
-            if(state == State.PLACING_RESERVED_SHIPCARD){
-                reservedSlots.getChildren().clear();
-                setReservedSlots();
-                previousState = state;
-                state = State.IDLE;
-            }
+            reservedSlots.getChildren().clear();
+            setReservedSlots();
+            previousState = state;
+            state = State.IDLE;
+
         }
     }
 
