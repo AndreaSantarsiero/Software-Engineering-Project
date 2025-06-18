@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -44,6 +45,8 @@ public class MiniDeckController extends Controller {
 
         goBackButton.setPadding(new Insets(0,20,0,0));
 
+        cards.setAlignment(Pos.CENTER);
+
         try {
             virtualServer.observeMiniDeck(index);
         } catch (NetworkException e) {
@@ -53,40 +56,26 @@ public class MiniDeckController extends Controller {
 
     @FXML
     protected void onGoBackButtonClick(ActionEvent event) {
-        if(buildingPhaseData.getFlightType() == FlightBoard.Type.TRIAL) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV1.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                BuildingLv1Controller controller = fxmlLoader.getController();
-                buildingPhaseData.setListener(controller);
-                controller.initialize(stage);
-                stage.setScene(newScene);
-                stage.show();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            BuildingLv2Controller controller = fxmlLoader.getController();
+            buildingPhaseData.setListener(controller);
+            controller.initialize(stage);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        if(buildingPhaseData.getFlightType() == FlightBoard.Type.LEVEL2) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                BuildingLv2Controller controller = fxmlLoader.getController();
-                buildingPhaseData.setListener(controller);
-                controller.initialize(stage);
-                stage.setScene(newScene);
-                stage.show();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+
     }
 
     public void setCards(){
-        String basepath = "src/main/resources/it/polimi/ingsw/gc11/adventureCards/";
+        String basepath = "/it/polimi/ingsw/gc11/adventureCards/";
 
         for(AdventureCard card : buildingPhaseData.getMiniDeck()){
             ImageView iv = new ImageView(new Image(getClass()
-                    .getResource("/it/polimi/ingsw/gc11/shipCards/" + card.getId() + ".jpg")
+                    .getResource(basepath + card.getId() + ".jpg")
                     .toExternalForm()
             ));
             cards.getChildren().add(iv);

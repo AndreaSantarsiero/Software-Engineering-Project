@@ -34,13 +34,13 @@
         <HBox fx:id="subHeaderContainer">
             <children>
                 <HBox fx:id="playersButtons" />
-                <HBox fx:id="deckButtons">
-                    <children>
-                        <Button text="MiniDeck1" onAction="#handleMiniDeck" userData="0" />
-                        <Button text="MiniDeck2" onAction="#handleMiniDeck" userData="1"/>
-                        <Button text="MiniDeck3" onAction="#handleMiniDeck" userData="2"/>
-                    </children>
-                </HBox>
+<!--                <HBox fx:id="deckButtons">-->
+<!--                    <children>-->
+<!--                        <Button text="MiniDeck1" onAction="#handleMiniDeck" userData="0" />-->
+<!--                        <Button text="MiniDeck2" onAction="#handleMiniDeck" userData="1"/>-->
+<!--                        <Button text="MiniDeck3" onAction="#handleMiniDeck" userData="2"/>-->
+<!--                    </children>-->
+<!--                </HBox>-->
                 <Label styleClass="Text" text="FREE Ship Cards" fx:id="FreeShipCardText">
                     <font>
                         <Font size="24.0" />

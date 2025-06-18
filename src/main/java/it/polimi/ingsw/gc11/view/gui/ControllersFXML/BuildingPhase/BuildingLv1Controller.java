@@ -60,14 +60,12 @@ public class BuildingLv1Controller extends Controller {
     @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private StackPane boardContainer;
     @FXML private VBox cardPane;
-    @FXML private Pane freeShipCards;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
-    @FXML private VBox buttons;
-    @FXML private HBox playersButtons, deckButtons;
+    @FXML private HBox playersButtons;
     @FXML private Label FreeShipCardText;
     @FXML private VBox heldShipCard;
     @FXML private ImageView heldShipCardImage;
@@ -133,7 +131,6 @@ public class BuildingLv1Controller extends Controller {
 
         shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(5);
 
-        //DA AGGIUNGERE PER LV 1, ORA MANDA A LV2
         this.setupOthersPlayersButtons();
 
         for(Node n : playersButtons.getChildren()) {
@@ -144,14 +141,15 @@ public class BuildingLv1Controller extends Controller {
         playersButtons.prefWidthProperty().bind(availW
                 .subtract(FreeShipCardText.widthProperty())
                 .subtract(20)
-                .divide(2));
-
-        deckButtons.setSpacing(10);
-        deckButtons.prefWidthProperty().bind(availW
-                .subtract(playersButtons.widthProperty())
-                .subtract(FreeShipCardText.widthProperty())
                 .subtract(root.spacingProperty().multiply(2))
                 .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
+
+//        deckButtons.setSpacing(10);
+//        deckButtons.prefWidthProperty().bind(availW
+//                .subtract(playersButtons.widthProperty())
+//                .subtract(FreeShipCardText.widthProperty())
+//                .subtract(root.spacingProperty().multiply(2))
+//                .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
 
         boardContainer.setMinSize(0, 0);
         boardContainer.prefWidthProperty().bind(boardW);
@@ -784,24 +782,24 @@ public class BuildingLv1Controller extends Controller {
         }
     }
 
-    @FXML
-    private void handleMiniDeck(ActionEvent event) {
-        Button btn = (Button) event.getSource();
-        int index   = Integer.parseInt(btn.getUserData().toString());
-
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/MiniDeck.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            MiniDeckController controller = fxmlLoader.getController();
-            buildingPhaseData.setListener(controller);
-            controller.initialize(stage, index);
-            stage.setScene(newScene);
-            stage.show();
-        }
-        catch (IOException exc) {
-            throw new RuntimeException(exc);
-        }
-    }
+//    @FXML
+//    private void handleMiniDeck(ActionEvent event) {
+//        Button btn = (Button) event.getSource();
+//        int index   = Integer.parseInt(btn.getUserData().toString());
+//
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/MiniDeck.fxml"));
+//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+//            MiniDeckController controller = fxmlLoader.getController();
+//            buildingPhaseData.setListener(controller);
+//            controller.initialize(stage, index);
+//            stage.setScene(newScene);
+//            stage.show();
+//        }
+//        catch (IOException exc) {
+//            throw new RuntimeException(exc);
+//        }
+//    }
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
