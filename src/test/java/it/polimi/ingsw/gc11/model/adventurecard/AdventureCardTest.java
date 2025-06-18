@@ -12,7 +12,7 @@ public class AdventureCardTest {
 
     private static class TestAdventureCard extends AdventureCard {
         public TestAdventureCard(AdventureCard.Type type) {
-            super(type);
+            super("id", type);
         }
 
         @Override
