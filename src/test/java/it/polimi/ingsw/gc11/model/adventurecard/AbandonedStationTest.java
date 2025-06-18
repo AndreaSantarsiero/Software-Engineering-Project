@@ -11,7 +11,7 @@ class AbandonedStationTest {
 
     @Test
     void testValidAbandonedStation() {
-        AbandonedStation station = new AbandonedStation(AdventureCard.Type.TRIAL, 3, 2, 1, 2, 3, 4);
+        AbandonedStation station = new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, 2, 1, 2, 3, 4);
 
         assertEquals(3, station.getLostDays());
         assertEquals(2, station.getMembersRequired());
@@ -33,11 +33,11 @@ class AbandonedStationTest {
 
     @Test
     void testNegativeValuesThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation(AdventureCard.Type.TRIAL, -1, 2, 1, 2, 3, 4));
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation(AdventureCard.Type.TRIAL, 3, -2, 1, 2, 3, 4));
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation(AdventureCard.Type.TRIAL, 3, 2, -1, 2, 3, 4));
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation(AdventureCard.Type.TRIAL, 3, 2, 1, -2, 3, 4));
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation(AdventureCard.Type.TRIAL, 3, 2, 1, 2, -3, 4));
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation(AdventureCard.Type.TRIAL, 3, 2, 1, 2, 3, -4));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation("id", AdventureCard.Type.TRIAL, -1, 2, 1, 2, 3, 4));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, -2, 1, 2, 3, 4));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, 2, -1, 2, 3, 4));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, 2, 1, -2, 3, 4));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, 2, 1, 2, -3, 4));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, 2, 1, 2, 3, -4));
     }
 }

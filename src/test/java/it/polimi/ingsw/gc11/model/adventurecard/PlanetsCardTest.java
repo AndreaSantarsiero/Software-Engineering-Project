@@ -32,24 +32,24 @@ class PlanetsCardTest {
 
     @Test
     void testValidConstructor() {
-        assertDoesNotThrow(() -> new PlanetsCard(AdventureCard.Type.TRIAL, 2, validPlanets));
+        assertDoesNotThrow(() -> new PlanetsCard("id", AdventureCard.Type.TRIAL, 2, validPlanets));
     }
 
     @Test
     void testConstructorThrowsForNegativeLostDays() {
-        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard(AdventureCard.Type.TRIAL, -1, validPlanets));
+        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard("id", AdventureCard.Type.TRIAL, -1, validPlanets));
     }
 
     @Test
     void testConstructorThrowsForNullPlanets() {
-        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard(AdventureCard.Type.TRIAL, 2, null));
+        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard("id", AdventureCard.Type.TRIAL, 2, null));
     }
 
     @Test
     void testConstructorThrowsForLessThanTwoPlanets() {
         ArrayList<Planet> onePlanet = new ArrayList<>();
         onePlanet.add(planet1);
-        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard(AdventureCard.Type.TRIAL, 2, onePlanet));
+        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard("id", AdventureCard.Type.TRIAL, 2, onePlanet));
     }
 
     @Test
@@ -60,24 +60,24 @@ class PlanetsCardTest {
         tooManyPlanets.add(planet3);
         tooManyPlanets.add(new Planet(4, 1, 2, 3));
         tooManyPlanets.add(new Planet(1, 2, 3, 4));
-        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard(AdventureCard.Type.TRIAL, 2, tooManyPlanets));
+        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard("id", AdventureCard.Type.TRIAL, 2, tooManyPlanets));
     }
 
     @Test
     void testConstructorThrowsForNullPlanetInList() {
         validPlanets.add(null);
-        assertThrows(NullPointerException.class, () -> new PlanetsCard(AdventureCard.Type.TRIAL, 2, validPlanets));
+        assertThrows(NullPointerException.class, () -> new PlanetsCard("id", AdventureCard.Type.TRIAL, 2, validPlanets));
     }
 
     @Test
     void testConstructorThrowsForVisitedPlanets(){
         validPlanets.getFirst().setVisited(new Player("Player1"));
-        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard(AdventureCard.Type.TRIAL, 2, validPlanets));
+        assertThrows(IllegalArgumentException.class, () -> new PlanetsCard("id", AdventureCard.Type.TRIAL, 2, validPlanets));
     }
 
     @Test
     void testGetLostDays() {
-        PlanetsCard card = new PlanetsCard(AdventureCard.Type.TRIAL, 3, validPlanets);
+        PlanetsCard card = new PlanetsCard("id", AdventureCard.Type.TRIAL, 3, validPlanets);
         assertEquals(3, card.getLostDays());
     }
 

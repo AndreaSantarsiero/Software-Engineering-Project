@@ -372,7 +372,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = new AbandonedStation(AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
+        advCard = new AbandonedStation("id", AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedStationState(advPhase));
@@ -394,7 +394,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2,1,4,6);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
@@ -416,7 +416,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = new AbandonedStation(AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
+        advCard = new AbandonedStation("id", AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedStationState(advPhase));
@@ -432,7 +432,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2,1,4,6);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
@@ -448,7 +448,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = new AbandonedStation(AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
+        advCard = new AbandonedStation("id", AdventureCard.Type.LEVEL2,1, 7, 0,0,1,1);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedStationState(advPhase));
@@ -474,7 +474,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
 
         goToAdvPhase();
-        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2,1,4,6);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
@@ -524,7 +524,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new AbandonedShip(AdventureCard.Type.LEVEL2,1,4,6);
+        advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2,1,4,6);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
@@ -587,7 +587,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PiratesState(advPhase));
@@ -624,7 +624,7 @@ public class GameContextTest {
         materials.add(new Material(Material.Type.YELLOW));
         materials.add(new Material(Material.Type.YELLOW));
 
-        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        advCard = new Smugglers("id", AdventureCard.Type.LEVEL2,1,8,3, materials);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new SmugglersState(advPhase));
@@ -656,7 +656,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new Slavers(AdventureCard.Type.LEVEL2,2,7,4,8);
+        advCard = new Slavers("id", AdventureCard.Type.LEVEL2,2,7,4,8);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new SlaversState(advPhase));
@@ -692,7 +692,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check3Lv1(advPhase,1, gameContext.getGameModel().getPlayer("username1")));
@@ -730,7 +730,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check1Lv2(advPhase));
@@ -767,7 +767,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PiratesState(advPhase));
@@ -798,7 +798,7 @@ public class GameContextTest {
         materials.add(new Material(Material.Type.YELLOW));
         materials.add(new Material(Material.Type.YELLOW));
 
-        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        advCard = new Smugglers("id", AdventureCard.Type.LEVEL2,1,8,3, materials);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new SmugglersState(advPhase));
@@ -824,7 +824,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new Slavers(AdventureCard.Type.LEVEL2,2,7,4,8);
+        advCard = new Slavers("id", AdventureCard.Type.LEVEL2,2,7,4,8);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new SlaversState(advPhase));
@@ -854,7 +854,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check3Lv1(advPhase,1, gameContext.getGameModel().getPlayer("username1")));
@@ -886,7 +886,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check1Lv2(advPhase));
@@ -913,7 +913,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
+        advCard = new Slavers("id", AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
@@ -928,7 +928,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
+        advCard = new Slavers("id", AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
@@ -943,7 +943,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new Slavers(AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
+        advCard = new Slavers("id", AdventureCard.Type.LEVEL2, 2, 7, 4, 8);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinState(advPhase,gameContext.getGameModel().getPlayer("username1")));
@@ -963,7 +963,7 @@ public class GameContextTest {
         materials.add(new Material(Material.Type.YELLOW));
         materials.add(new Material(Material.Type.YELLOW));
 
-        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        advCard = new Smugglers("id", AdventureCard.Type.LEVEL2,1,8,3, materials);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
@@ -983,7 +983,7 @@ public class GameContextTest {
         materials.add(new Material(Material.Type.YELLOW));
         materials.add(new Material(Material.Type.YELLOW));
 
-        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        advCard = new Smugglers("id", AdventureCard.Type.LEVEL2,1,8,3, materials);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
@@ -1003,7 +1003,7 @@ public class GameContextTest {
         materials.add(new Material(Material.Type.YELLOW));
         materials.add(new Material(Material.Type.YELLOW));
 
-        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        advCard = new Smugglers("id", AdventureCard.Type.LEVEL2,1,8,3, materials);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinSmugglersState(advPhase,gameContext.getGameModel().getPlayer("username1")));
@@ -1023,7 +1023,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
@@ -1043,7 +1043,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
@@ -1063,7 +1063,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.TOP));
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new WinAgainstPirates(advPhase, gameContext.getGameModel().getPlayer("username1"), new ArrayList<>()));
@@ -1086,7 +1086,7 @@ public class GameContextTest {
         ArrayList<Player> players = new ArrayList<>();
         players.add(gameContext.getGameModel().getPlayer("username1"));
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new CoordinateState(advPhase,players,0));
@@ -1109,7 +1109,7 @@ public class GameContextTest {
         ArrayList<Player> players = new ArrayList<>();
         players.add(gameContext.getGameModel().getPlayer("username1"));
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new CoordinateState(advPhase,players,0));
@@ -1131,7 +1131,7 @@ public class GameContextTest {
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
 
-        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        advCard = new MeteorSwarm("id", AdventureCard.Type.LEVEL2, meteors);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new MeteorSwarmState(advPhase,0));
@@ -1153,7 +1153,7 @@ public class GameContextTest {
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
 
-        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        advCard = new MeteorSwarm("id", AdventureCard.Type.LEVEL2, meteors);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new MeteorSwarmState(advPhase,0));
@@ -1172,7 +1172,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv1(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
@@ -1191,7 +1191,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv1(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
@@ -1210,7 +1210,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv2(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
@@ -1229,7 +1229,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Penalty3Lv2(advPhase, gameContext.getGameModel().getPlayer("username1"), 0));
@@ -1255,7 +1255,7 @@ public class GameContextTest {
         ArrayList<Boolean> played =  new ArrayList<>();
         played.add(false);
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new HandleHit(advPhase,players,7,0, 0,played));
@@ -1285,7 +1285,7 @@ public class GameContextTest {
         ArrayList<Boolean> played =  new ArrayList<>();
         played.add(false);
 
-        advCard = new Pirates(AdventureCard.Type.LEVEL2,2,6,7, shots);
+        advCard = new Pirates("id", AdventureCard.Type.LEVEL2,2,6,7, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new HandleHit(advPhase,players,7,0, 0,played));
@@ -1307,7 +1307,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setDrawnAdvCard(advCard);
@@ -1331,7 +1331,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL,3,2, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL,3,2, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setDrawnAdvCard(advCard);
@@ -1356,7 +1356,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setDrawnAdvCard(advCard);
@@ -1382,7 +1382,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2,4,3, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2,4,3, shots);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setDrawnAdvCard(advCard);
@@ -1407,7 +1407,7 @@ public class GameContextTest {
         materials.add(new Material(Material.Type.YELLOW));
         materials.add(new Material(Material.Type.YELLOW));
 
-        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        advCard = new Smugglers("id", AdventureCard.Type.LEVEL2,1,8,3, materials);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new LooseBatteriesSmugglers(advPhase,gameContext.getGameModel().getPlayer("username1"),2));
@@ -1441,7 +1441,7 @@ public class GameContextTest {
         materials.add(new Material(Material.Type.YELLOW));
         materials.add(new Material(Material.Type.YELLOW));
 
-        advCard = new Smugglers(AdventureCard.Type.LEVEL2,1,8,3, materials);
+        advCard = new Smugglers("id", AdventureCard.Type.LEVEL2,1,8,3, materials);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new LooseBatteriesSmugglers(advPhase,gameContext.getGameModel().getPlayer("username1"),1));
@@ -1469,7 +1469,7 @@ public class GameContextTest {
         planets.add(new Planet(1,2,3,0));
         planets.add(new Planet(0,0,1,4));
 
-        advCard = new PlanetsCard(AdventureCard.Type.LEVEL2, 1, planets);
+        advCard = new PlanetsCard("id", AdventureCard.Type.LEVEL2, 1, planets);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
@@ -1489,7 +1489,7 @@ public class GameContextTest {
         planets.add(new Planet(1,2,3,0));
         planets.add(new Planet(0,0,1,4));
 
-        advCard = new PlanetsCard(AdventureCard.Type.LEVEL2, 1, planets);
+        advCard = new PlanetsCard("id", AdventureCard.Type.LEVEL2, 1, planets);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
@@ -1510,7 +1510,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM));
         shots.add(new Shot(Hit.Type.BIG,   Hit.Direction.BOTTOM));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 2, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 3, 2, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check2Lv1(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
@@ -1544,7 +1544,7 @@ public class GameContextTest {
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));
         shots.add(new Shot(Hit.Type.BIG,   Hit.Direction.TOP));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2, 4, 3, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2, 4, 3, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check2Lv2(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
@@ -1571,7 +1571,7 @@ public class GameContextTest {
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.BIG, Hit.Direction.RIGHT));
 
-        advCard = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 1, shots);
+        advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 3, 1, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check2Lv1(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
@@ -1599,7 +1599,7 @@ public class GameContextTest {
         ArrayList<Shot> shots = new ArrayList<>();
         shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.TOP));
 
-        advCard = new CombatZoneLv2(AdventureCard.Type.LEVEL2, 4, 2, shots);
+        advCard = new CombatZoneLv2("id", AdventureCard.Type.LEVEL2, 4, 2, shots);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new Check2Lv2(advPhase, 1, gameContext.getGameModel().getPlayer("username1")));
@@ -1623,7 +1623,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new OpenSpace(AdventureCard.Type.LEVEL2);
+        advCard = new OpenSpace("id", AdventureCard.Type.LEVEL2);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new OpenSpaceState(advPhase));
@@ -1647,7 +1647,7 @@ public class GameContextTest {
         AdventurePhase advPhase;
         goToAdvPhase();
 
-        advCard = new OpenSpace(AdventureCard.Type.LEVEL2);
+        advCard = new OpenSpace("id", AdventureCard.Type.LEVEL2);
         ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new OpenSpaceState(advPhase));
@@ -1679,7 +1679,7 @@ public class GameContextTest {
         meteors.add(new Meteor(Hit.Type.BIG,   Hit.Direction.LEFT));
         meteors.add(new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT));
 
-        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        advCard = new MeteorSwarm("id", AdventureCard.Type.LEVEL2, meteors);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new HandleMeteor(advPhase,8,0,0));
@@ -1715,7 +1715,7 @@ public class GameContextTest {
         ArrayList<Meteor> meteors = new ArrayList<>();
         meteors.add(new Meteor(Hit.Type.BIG, Hit.Direction.TOP));
 
-        advCard = new MeteorSwarm(AdventureCard.Type.LEVEL2, meteors);
+        advCard = new MeteorSwarm("id", AdventureCard.Type.LEVEL2, meteors);
         ((AdventurePhase)gameContext.getPhase()).setDrawnAdvCard(advCard);
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new HandleMeteor(advPhase,8,0,0));

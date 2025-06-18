@@ -41,15 +41,15 @@ public class previewCLI {
 
         System.out.println("\n\n\nExample of some adventure cards:");
         List<AdventureCard> adventureCards = new ArrayList<>();
-        adventureCards.add(new StarDust(AdventureCard.Type.TRIAL));
-        adventureCards.add(new StarDust(AdventureCard.Type.LEVEL2));
-        Pirates pirates = new Pirates(AdventureCard.Type.TRIAL, 1, 1, 1, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
-        OpenSpace openSpace = new OpenSpace(AdventureCard.Type.TRIAL);
+        adventureCards.add(new StarDust("id", AdventureCard.Type.TRIAL));
+        adventureCards.add(new StarDust("id", AdventureCard.Type.LEVEL2));
+        Pirates pirates = new Pirates("id", AdventureCard.Type.TRIAL, 1, 1, 1, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        OpenSpace openSpace = new OpenSpace("id", AdventureCard.Type.TRIAL);
         pirates.useCard();
         openSpace.useCard();
         adventureCards.add(pirates);
         adventureCards.add(openSpace);
-        StarDust starDust = new StarDust(AdventureCard.Type.LEVEL2);
+        StarDust starDust = new StarDust("id", AdventureCard.Type.LEVEL2);
         starDust.useCard();
         adventureCards.add(starDust);
 
@@ -57,10 +57,10 @@ public class previewCLI {
         planets.add(new Planet(1, 1, 1, 1));
         planets.add(new Planet(0, 0, 3, 2));
         planets.add(new Planet(5, 0, 0, 0));
-        PlanetsCard planetsCard = new PlanetsCard(AdventureCard.Type.LEVEL2, 5, planets);
+        PlanetsCard planetsCard = new PlanetsCard("id", AdventureCard.Type.LEVEL2, 5, planets);
         planetsCard.useCard();
         adventureCards.add(planetsCard);
-        MeteorSwarm meteorSwarm = new MeteorSwarm(AdventureCard.Type.TRIAL, new ArrayList<>(List.of(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP))));
+        MeteorSwarm meteorSwarm = new MeteorSwarm("id", AdventureCard.Type.TRIAL, new ArrayList<>(List.of(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP))));
         meteorSwarm.useCard();
         adventureCards.add(meteorSwarm);
         for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
@@ -71,25 +71,25 @@ public class previewCLI {
         }
 
         adventureCards.clear();
-        Epidemic epidemic = new Epidemic();
+        Epidemic epidemic = new Epidemic("id");
         epidemic.useCard();
         adventureCards.add(epidemic);
-        AbandonedShip abandonedShip = new AbandonedShip(AdventureCard.Type.TRIAL, 3, 2, 10);
+        AbandonedShip abandonedShip = new AbandonedShip("id", AdventureCard.Type.TRIAL, 3, 2, 10);
         abandonedShip.useCard();
         adventureCards.add(abandonedShip);
-        AbandonedStation abandonedStation = new AbandonedStation(AdventureCard.Type.TRIAL, 3, 2, 1, 1, 1, 1);
+        AbandonedStation abandonedStation = new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, 2, 1, 1, 1, 1);
         abandonedStation.useCard();
         adventureCards.add(abandonedStation);
-        CombatZoneLv1 combatZoneLv1 = new CombatZoneLv1(AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        CombatZoneLv1 combatZoneLv1 = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
         combatZoneLv1.useCard();
         adventureCards.add(combatZoneLv1);
-        CombatZoneLv2 combatZoneLv2 = new CombatZoneLv2(AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        CombatZoneLv2 combatZoneLv2 = new CombatZoneLv2("id", AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
         combatZoneLv2.useCard();
         adventureCards.add(combatZoneLv2);
-        Slavers slavers = new Slavers(AdventureCard.Type.LEVEL2, 3, 7, 4, 8);
+        Slavers slavers = new Slavers("id", AdventureCard.Type.LEVEL2, 3, 7, 4, 8);
         slavers.useCard();
         adventureCards.add(slavers);
-        Smugglers smugglers = new Smugglers(AdventureCard.Type.LEVEL2, 4, 8, 3,new ArrayList<>(List.of(new Material(Material.Type.RED))));
+        Smugglers smugglers = new Smugglers("id", AdventureCard.Type.LEVEL2, 4, 8, 3,new ArrayList<>(List.of(new Material(Material.Type.RED))));
         smugglers.useCard();
         adventureCards.add(smugglers);
 

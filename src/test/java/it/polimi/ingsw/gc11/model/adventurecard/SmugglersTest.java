@@ -26,7 +26,7 @@ public class SmugglersTest {
 
     @Test
     public void testConstructorValidArguments() {
-        Smugglers smugglers = new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, materials);
+        Smugglers smugglers = new Smugglers("id", AdventureCard.Type.TRIAL, 3, 5, 2, materials);
 
         assertEquals(3, smugglers.getLostDays());
         assertEquals(5, smugglers.getFirePower());
@@ -38,35 +38,35 @@ public class SmugglersTest {
 
     @Test
     public void testConstructorWithNullMaterials() {
-        assertThrows(IllegalArgumentException.class, () -> new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2,  null), "Materials list cannot be null");
+        assertThrows(IllegalArgumentException.class, () -> new Smugglers("id", AdventureCard.Type.TRIAL, 3, 5, 2,  null), "Materials list cannot be null");
     }
 
     @Test
     public void testConstructorWithNegativeLostDays() {
-        assertThrows(IllegalArgumentException.class, () -> new Smugglers(AdventureCard.Type.TRIAL, -1, 5, 2, materials), "Lost days cannot be negative");
+        assertThrows(IllegalArgumentException.class, () -> new Smugglers("id", AdventureCard.Type.TRIAL, -1, 5, 2, materials), "Lost days cannot be negative");
     }
 
     @Test
     public void testConstructorWithNullMaterialInList() {
         materials.add(null);
-        assertThrows(IllegalArgumentException.class, () -> new Smugglers(AdventureCard.Type.TRIAL, 3, 5, 2, materials), "Cannot add null materials to the list");
+        assertThrows(IllegalArgumentException.class, () -> new Smugglers("id", AdventureCard.Type.TRIAL, 3, 5, 2, materials), "Cannot add null materials to the list");
     }
 
     @Test
     public void testConstructorWithNegativeFirePower() {
-        assertThrows(IllegalArgumentException.class, () -> new Smugglers(AdventureCard.Type.TRIAL, 3, -5, 2, materials), " Fire power cannot be negative");
+        assertThrows(IllegalArgumentException.class, () -> new Smugglers("id", AdventureCard.Type.TRIAL, 3, -5, 2, materials), " Fire power cannot be negative");
     }
 
     @Test
     public void testConstructorWithNegativeLostMaterials() {
-        assertThrows(IllegalArgumentException.class, () -> new Smugglers(AdventureCard.Type.TRIAL, 3, 5, -2, materials), "Lost materials cannot be negative");
+        assertThrows(IllegalArgumentException.class, () -> new Smugglers("id", AdventureCard.Type.TRIAL, 3, 5, -2, materials), "Lost materials cannot be negative");
     }
 
 
 
     @Test
     public void testConstructorWithValidMaterials() {
-        Smugglers smugglers = new Smugglers(AdventureCard.Type.TRIAL, 1, 2, 3, materials);
+        Smugglers smugglers = new Smugglers("id", AdventureCard.Type.TRIAL, 1, 2, 3, materials);
 
         assertNotNull(smugglers.getMaterials());
         assertEquals(1, smugglers.getLostDays());

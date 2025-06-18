@@ -15,8 +15,8 @@ public class CombatZoneLv1 extends AdventureCard {
 
 
 
-    public CombatZoneLv1(AdventureCard.Type type, int lostDays, int lostMembers, ArrayList<Shot> shots) {
-        super(type);
+    public CombatZoneLv1(String id, AdventureCard.Type type, int lostDays, int lostMembers, ArrayList<Shot> shots) {
+        super(id, type);
         if ( type == null || shots == null ||
                 shots.isEmpty() ||lostDays <0 || lostMembers <0 ) {
             throw new IllegalArgumentException("At least 1 param isn't valid.");

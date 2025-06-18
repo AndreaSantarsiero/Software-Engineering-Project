@@ -16,8 +16,8 @@ public class AbandonedStation extends AdventureCard {
     private final ArrayList<Material> materials;
     private boolean resolved;
 
-    public AbandonedStation(AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed)throws IllegalArgumentException {
-        super(type);
+    public AbandonedStation(String id, AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed)throws IllegalArgumentException {
+        super(id, type);
 
         if (lostDays < 0) {
             throw new IllegalArgumentException("negative lost days.");

@@ -114,7 +114,7 @@ public class AdventureCardLoader {
                         adventureCards.add(getNewAbandonedStation(node));
                         break;
                     case "Epidemic":
-                        adventureCards.add(new Epidemic());
+                        adventureCards.add(new Epidemic(node.get("id").asText()));
                         break;
                     case "MeteorSwarm":
                         adventureCards.add(getNewMeteorSwarm(node));
@@ -151,6 +151,7 @@ public class AdventureCardLoader {
 
     private AbandonedShip getNewAbandonedShip(JsonNode node){
         return new AbandonedShip(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 node.get("lostMembers").asInt(),
@@ -160,6 +161,7 @@ public class AdventureCardLoader {
 
     private AbandonedStation getNewAbandonedStation(JsonNode node){
         return new AbandonedStation(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 node.get("membersRequired").asInt(),
@@ -180,6 +182,7 @@ public class AdventureCardLoader {
             ));
         }
         return new  MeteorSwarm(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 meteors
         );
@@ -187,6 +190,7 @@ public class AdventureCardLoader {
 
     private OpenSpace getNewOpenSpace(JsonNode node){
         return new OpenSpace(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText())
         );
     }
@@ -201,6 +205,7 @@ public class AdventureCardLoader {
             ));
         }
         return new Pirates(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 node.get("firePower").asInt(),
@@ -221,6 +226,7 @@ public class AdventureCardLoader {
             ));
         }
         return new PlanetsCard(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 planets
@@ -229,6 +235,7 @@ public class AdventureCardLoader {
 
     private Slavers getNewSlavers(JsonNode node){
         return new Slavers(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 node.get("firePower").asInt(),
@@ -246,6 +253,7 @@ public class AdventureCardLoader {
             );
         }
         return new Smugglers(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 node.get("firePower").asInt(),
@@ -256,6 +264,7 @@ public class AdventureCardLoader {
 
     private StarDust getNewStarDust(JsonNode node){
         return new StarDust(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText())
         );
     }
@@ -270,7 +279,8 @@ public class AdventureCardLoader {
             ));
         }
         return new CombatZoneLv1(
-               AdventureCard.Type.valueOf(node.get("type").asText()),
+                node.get("id").asText(),
+                AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 node.get("lostMembers").asInt(),
                 shots
@@ -287,6 +297,7 @@ public class AdventureCardLoader {
             ));
         }
         return new CombatZoneLv2(
+                node.get("id").asText(),
                 AdventureCard.Type.valueOf(node.get("type").asText()),
                 node.get("lostDays").asInt(),
                 node.get("lostMaterials").asInt(),

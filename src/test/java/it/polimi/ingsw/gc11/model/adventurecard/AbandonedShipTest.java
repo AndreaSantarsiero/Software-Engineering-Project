@@ -9,7 +9,7 @@ class AbandonedShipTest {
 
     @Test
     void testValidAbandonedShip() {
-        AbandonedShip ship = new AbandonedShip(AdventureCard.Type.TRIAL, 2, 3, 5);
+        AbandonedShip ship = new AbandonedShip("id", AdventureCard.Type.TRIAL, 2, 3, 5);
         assertEquals(2, ship.getLostDays());
         assertEquals(3, ship.getLostMembers());
         assertEquals(5, ship.getCoins());
@@ -17,8 +17,8 @@ class AbandonedShipTest {
 
     @Test
     void testNegativeValuesThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedShip(AdventureCard.Type.TRIAL, -1, 3, 5));
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedShip(AdventureCard.Type.TRIAL, 2, -3, 5));
-        assertThrows(IllegalArgumentException.class, () -> new AbandonedShip(AdventureCard.Type.TRIAL, 2, 3, -5));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedShip("id", AdventureCard.Type.TRIAL, -1, 3, 5));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedShip("id", AdventureCard.Type.TRIAL, 2, -3, 5));
+        assertThrows(IllegalArgumentException.class, () -> new AbandonedShip("id", AdventureCard.Type.TRIAL, 2, 3, -5));
     }
 }
