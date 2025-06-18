@@ -73,7 +73,7 @@ public class GameModel {
         //Trial Flight has only 1 deck which contains all the trial adventure cards
         if (flightType.equals(FlightBoard.Type.TRIAL)) {
             this.flightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
-            this.adventureCardsDecks.add(new AdventureDeck(true));
+            this.adventureCardsDecks.add(new AdventureDeck(false));
             for (int i = 0; i < this.adventureCardsTrial.size(); i++) {
                 this.adventureCardsDecks.getFirst().addCard(adventureCardsTrial.get(i));
             }
