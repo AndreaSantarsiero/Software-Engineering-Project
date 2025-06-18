@@ -150,13 +150,6 @@ public class BuildingPhaseTrial extends GamePhase{
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
             this.gameContext.setPhase(new CheckPhase(this.gameContext));
-
-            //Chiedo approval di santa:
-//            SetCheckPhaseAction send = new SetCheckPhaseAction();
-//            for (Player p : gameModel.getPlayers()) {
-//                gameContext.sendAction(p.getUsername(), send);
-//            }
-
         }
     }
 
