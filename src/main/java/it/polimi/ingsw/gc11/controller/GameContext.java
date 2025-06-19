@@ -15,6 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
+
 /**
  * Acts as the controller for a single match instance.
  * <p>
@@ -304,8 +305,7 @@ public class GameContext {
      * @param cardsToEliminateY   Y-coordinates of damaged cards.
      * @return The updated ship board.
      */
-    public ShipBoard repairShip(String username, ArrayList<Integer> cardsToEliminateX,
-                              ArrayList<Integer> cardsToEliminateY) {
+    public ShipBoard repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
         return phase.repairShip(username, cardsToEliminateX, cardsToEliminateY);
     }
     //Da implementare a livello di rete

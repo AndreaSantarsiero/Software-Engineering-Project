@@ -47,13 +47,13 @@ public class CheckTemplate extends CLITemplate {
         int menuIndex = 0;
 
 
-//        if(data.getState() == CheckPhaseData.CheckState.SHOW_ENEMIES_SHIP){
-//            printEnemiesShipBoard(data.getEnemiesShipBoard());
-//            for (int i = 0; i < pressEnterToContinue.size(); i++) {
-//                System.out.println(pressEnterToContinue.get(i));
-//            }
-//            return;
-//        }
+        if(data.getState() == CheckPhaseData.CheckState.SHOW_ENEMIES_SHIP){
+            printEnemiesShipBoard(data.getEnemiesShipBoard());
+            for (int i = 0; i < pressEnterToContinue.size(); i++) {
+                System.out.println(pressEnterToContinue.get(i));
+            }
+            return;
+        }
 
 
 
@@ -138,5 +138,15 @@ public class CheckTemplate extends CLITemplate {
             System.out.println(Ansi.ansi().fg(Ansi.Color.RED) + serverMessage.toUpperCase() + Ansi.ansi().reset());
             data.resetServerMessage();
         }
+    }
+
+
+
+    public int getRowCount(){
+        return rowCount;
+    }
+
+    public int getMainMenuSize(){
+        return mainMenu.size();
     }
 }

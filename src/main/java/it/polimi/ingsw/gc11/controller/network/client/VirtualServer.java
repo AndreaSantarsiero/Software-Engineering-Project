@@ -158,6 +158,13 @@ public class VirtualServer {
 
 
 
+    public void repairShip(List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) throws NetworkException{
+        RepairShipAction action = new RepairShipAction(username, cardsToEliminateX, cardsToEliminateY);
+        client.sendAction(action);
+    }
+
+
+
     public void getAdventureCard() throws NetworkException{
         GetAdventureCardAction action = new GetAdventureCardAction(username);
         client.sendAction(action);

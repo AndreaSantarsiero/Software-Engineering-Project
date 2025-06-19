@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 
+
 /**
  * Abstract class representing a generic phase of the game.
  *
@@ -178,8 +179,7 @@ public abstract class GamePhase {
      * @return the updated {@link ShipBoard}
      * @throws IllegalStateException if the operation is not permitted in this phase
      */
-    public ShipBoard repairShip(String username, ArrayList<Integer> cardsToEliminateX,
-                              ArrayList<Integer> cardsToEliminateY) {
+    public ShipBoard repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
         throw new IllegalStateException("Can't repair your ship in the current game phase: " + getPhaseName());
     }
 

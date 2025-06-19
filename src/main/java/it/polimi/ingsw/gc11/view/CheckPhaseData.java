@@ -9,8 +9,19 @@ import java.util.Map;
 
 public class CheckPhaseData extends GamePhaseData {
 
-    private ShipBoard shipBoard;
-    private Map<String, ShipBoard> enemiesShipBoard;
+    public enum CheckState {
+        CHOOSE_MAIN_MENU,
+        CHOOSE_SHIPCARD_TO_REMOVE,
+        WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
+        REMOVE_SHIPCARDS_SETUP,
+        WAITING
+    }
+
+
+
+    private CheckState state;
+    private CheckState previousState;private ShipBoard shipBoard;
+    private final Map<String, ShipBoard> enemiesShipBoard;
 
 
 
@@ -29,12 +40,55 @@ public class CheckPhaseData extends GamePhaseData {
 
 
 
+    public CheckState getState() {
+        return state;
+    }
+
+    @Override
+    public void updateState() {
+        actualizePreviousState();
+
+        if(state == CheckState.CHOOSE_SHIPCARD_TO_REMOVE || state == CheckState.SHOW_ENEMIES_SHIP) {
+            state = CheckState.CHOOSE_MAIN_MENU;
+        }
+        else if(state == CheckState.REMOVE_SHIPCARDS_SETUP) {
+            if(shipBoard.checkShip()){
+                state = CheckState.WAITING;
+            }
+            else {
+                state = CheckState.CHOOSE_MAIN_MENU;
+            }
+        }
+        else if (state.ordinal() < CheckState.values().length - 1) {
+            state = CheckState.values()[state.ordinal() + 1];
+        }
+
+        notifyListener();
+    }
+
+    public void setState(CheckState state) {
+        actualizePreviousState();
+        this.state = state;
+        notifyListener();
+    }
+
+    public void actualizePreviousState() {
+        previousState = state;
+    }
+
+    public boolean isStateNew() {
+        return !state.equals(previousState);
+    }
+
+
+
     public ShipBoard getShipBoard() {
         return shipBoard;
     }
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
+        notifyListener();
     }
 
     public Map<String, ShipBoard> getEnemiesShipBoard() {
@@ -44,6 +98,8 @@ public class CheckPhaseData extends GamePhaseData {
     public void setEnemiesShipBoard(String username, ShipBoard enemiesShipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
     }
+
+
 
     @Override
     public void handle(ServerAction action) {
