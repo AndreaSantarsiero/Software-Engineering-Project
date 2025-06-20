@@ -14,8 +14,7 @@ public class CheckPhaseData extends GamePhaseData {
         CHOOSE_MAIN_MENU,
         CHOOSE_SHIPCARD_TO_REMOVE,
         WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
-        REMOVE_SHIPCARDS_SETUP,
-        WAITING
+        REMOVE_SHIPCARDS_SETUP
     }
 
 
@@ -58,16 +57,8 @@ public class CheckPhaseData extends GamePhaseData {
     public void updateState() {
         actualizePreviousState();
 
-        if(state == CheckState.CHOOSE_SHIPCARD_TO_REMOVE || state == CheckState.SHOW_ENEMIES_SHIP) {
+        if(state == CheckState.CHOOSE_SHIPCARD_TO_REMOVE || state == CheckState.SHOW_ENEMIES_SHIP || state == CheckState.REMOVE_SHIPCARDS_SETUP) {
             state = CheckState.CHOOSE_MAIN_MENU;
-        }
-        else if(state == CheckState.REMOVE_SHIPCARDS_SETUP) {
-            if(shipBoard.checkShip()){
-                state = CheckState.WAITING;
-            }
-            else {
-                state = CheckState.CHOOSE_MAIN_MENU;
-            }
         }
         else if (state.ordinal() < CheckState.values().length - 1) {
             state = CheckState.values()[state.ordinal() + 1];
@@ -98,7 +89,7 @@ public class CheckPhaseData extends GamePhaseData {
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
-        notifyListener();
+        updateState();
     }
 
 

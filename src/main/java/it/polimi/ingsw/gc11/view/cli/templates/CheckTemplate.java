@@ -13,7 +13,10 @@ public class CheckTemplate extends CLITemplate {
 
     private final CheckController controller;
     private static final int rowCount = 10;
-    private static final List<List<String>> mainMenu = List.of(
+    private static final List<String> waitingMessage = List.of("┬ ┬┌─┐┬┌┬┐┬┌┐┌┌─┐  ┌─┐┌┬┐┬ ┬┌─┐┬─┐  ┌─┐┬  ┌─┐┬ ┬┌─┐┬─┐┌─┐         ",
+                                                               "│││├─┤│ │ │││││ ┬  │ │ │ ├─┤├┤ ├┬┘  ├─┘│  ├─┤└┬┘├┤ ├┬┘└─┐         ",
+                                                               "└┴┘┴ ┴┴ ┴ ┴┘└┘└─┘  └─┘ ┴ ┴ ┴└─┘┴└─  ┴  ┴─┘┴ ┴ ┴ └─┘┴└─└─┘  o  o  o");
+    private static final List<List<String>> repairingMenu = List.of(
             List.of("┬─┐┌─┐┌┬┐┌─┐┬  ┬┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     "├┬┘├┤ ││││ │└┐┌┘├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
                     "┴└─└─┘┴ ┴└─┘ └┘ └─┘  └─┘┴ ┴┴┴  └─┘┴ ┴┴└──┴┘"),
@@ -26,6 +29,11 @@ public class CheckTemplate extends CLITemplate {
             List.of("┬─┐┌─┐┌─┐┌─┐┌┬┐  ┌─┐┬ ┬┬┌─┐",
                     "├┬┘├┤ └─┐├┤  │   └─┐├─┤│├─┘",
                     "┴└─└─┘└─┘└─┘ ┴   └─┘┴ ┴┴┴  ")
+    );
+    private static final List<List<String>> waitingMenu = List.of(
+            List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
+                    "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
+                    "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  ")
     );
 
 
@@ -122,7 +130,20 @@ public class CheckTemplate extends CLITemplate {
 
                 //printing menu
                 else {
-                    printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
+                    if(controller.isShipBoardLegal()){
+                        if(menuIndex < 3){
+                            printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
+                        }
+                        else if(menuIndex < 5){
+                            printEmptyShipLine(shipBoard);
+                        }
+                        else{
+                            printMenu(shipBoard, menuIndex, waitingMenu, controller.getMainMenu());
+                        }
+                    }
+                    else {
+                        printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());
+                    }
                     menuIndex++;
                 }
 
@@ -146,7 +167,11 @@ public class CheckTemplate extends CLITemplate {
         return rowCount;
     }
 
-    public int getMainMenuSize(){
-        return mainMenu.size();
+    public int getRepairingMenuSize(){
+        return repairingMenu.size();
+    }
+
+    public int getWaitingMenuSize(){
+        return waitingMenu.size();
     }
 }
