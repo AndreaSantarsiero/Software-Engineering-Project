@@ -18,12 +18,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
@@ -64,6 +64,7 @@ public class BuildingLv2Controller extends Controller {
     @FXML private GridPane slotGrid;
     @FXML private VBox buttons;
     @FXML private HBox playersButtons, deckButtons, timer, endBuilding;
+    @FXML private ComboBox<String> choosePosition;
     @FXML private Label FreeShipCardText;
     @FXML private VBox heldShipCard;
     @FXML private ImageView heldShipCardImage;
@@ -74,6 +75,8 @@ public class BuildingLv2Controller extends Controller {
     private BuildingPhaseData buildingPhaseData;
     private State previousState;
     private State state = State.IDLE;
+
+    private boolean clickedEndBuilding = false;
 
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
@@ -139,6 +142,11 @@ public class BuildingLv2Controller extends Controller {
 
         endBuilding.setSpacing(10);
         endBuilding.prefWidthProperty().bind(availW.multiply(0.25));
+
+
+        String[] positions = {"1", "2", "3", "4"};
+        choosePosition.getItems().clear();
+        choosePosition.getItems().addAll(positions);
 
 
 
@@ -207,6 +215,9 @@ public class BuildingLv2Controller extends Controller {
 
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
+
+
+
 
 
         firstRendering();
@@ -813,6 +824,20 @@ public class BuildingLv2Controller extends Controller {
         }
     }
 
+    @FXML
+    private void onEndBuildingClick(ActionEvent event) {
+
+        try {
+            int position = Integer.parseInt(choosePosition.getValue());
+            this.clickedEndBuilding = true;
+            buildingPhaseData.resetActionSuccessful();
+            virtualServer.endBuildingLevel2(position);
+        }
+        catch (NetworkException e) {
+            System.out.println("Network Error:  " + e.getMessage());
+        }
+    }
+
     private void firstRendering(){
         cardTile.getChildren().clear();
         setFreeShipCards();
@@ -844,11 +869,6 @@ public class BuildingLv2Controller extends Controller {
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
-
-//        System.out.println("UPDATE: state = " + buildingPhaseData.getState());
-//        System.out.println("RESERVED-DATA: " +  buildingPhaseData.getReservedShipCard());
-//        System.out.println("RESERVED: " +  buildingPhaseData.getShipBoard().getReservedComponents());
-
         Platform.runLater(() -> {
 
             if (buildingPhaseData.isFreeShipCardModified()) {
@@ -875,11 +895,16 @@ public class BuildingLv2Controller extends Controller {
                 reservedShipCardOverlay();
             }
 
+            if( this.clickedEndBuilding && buildingPhaseData.isActionSuccessful()) {
+                buildingPhaseData.resetActionSuccessful();
+                root.setDisable(true);
+            }
 
             String serverMessage = buildingPhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage.toUpperCase());
                 this.setErrorLabel();
+                this.clickedEndBuilding = false;
 
                 if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.") ||
                         serverMessage.toUpperCase().equals("CANNOT PLACE A COMPONENT WHERE ANOTHER ONE WAS ALREADY PLACED")) {
