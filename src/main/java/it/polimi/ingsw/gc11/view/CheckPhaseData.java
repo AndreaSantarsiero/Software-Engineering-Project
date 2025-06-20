@@ -113,7 +113,7 @@ public class CheckPhaseData extends GamePhaseData {
         return enemiesShipBoard;
     }
 
-    public void setEnemiesShipBoard(String username, ShipBoard enemiesShipBoard) {
+    public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
     }
 

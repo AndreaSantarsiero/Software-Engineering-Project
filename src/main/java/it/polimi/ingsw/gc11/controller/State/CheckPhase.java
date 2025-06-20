@@ -56,12 +56,7 @@ public class CheckPhase extends GamePhase {
 
         //All the players have a correct shipboard
         if (this.badShipPlayers.isEmpty()) {
-            System.out.println("Going to AdventurePhase...");
-            this.gameContext.setPhase(new AdventurePhase(this.gameContext));
-            for (Player player : gameModel.getPlayers()) {
-                SetAdventurePhaseAction send = new SetAdventurePhaseAction(player);
-                gameContext.sendAction(player.getUsername(), send);
-            }
+            goToAdventurePhase();
         }
     }
 
@@ -91,12 +86,23 @@ public class CheckPhase extends GamePhase {
             this.badShipPlayers.remove(player);
             this.gameModel.endBuildingTrial(username);//Player position is set to the first available
             if (this.badShipPlayers.isEmpty()) {
-                this.gameContext.setPhase(new AdventurePhase(this.gameContext));
+                goToAdventurePhase();//All the players corrected their shipboard
             }
         }
 
         return player.getShipBoard();   //returns the shipBoard in any case, the client can see by itself if the ship is valid or not calling checkShip()
     }
+
+    private void goToAdventurePhase() {
+        System.out.println("Going to AdventurePhase...");
+        this.gameContext.setPhase(new AdventurePhase(this.gameContext));
+        for (Player player : gameModel.getPlayers()) {
+            SetAdventurePhaseAction send = new SetAdventurePhaseAction(player);
+            gameContext.sendAction(player.getUsername(), send);
+        }
+    }
+
+
 
     /**
      * Allows a player to change their position in the flight ranking.

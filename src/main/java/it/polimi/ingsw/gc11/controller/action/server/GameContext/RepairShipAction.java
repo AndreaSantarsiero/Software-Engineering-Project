@@ -25,8 +25,10 @@ public class RepairShipAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             ShipBoard shipBoard = context.repairShip(username, cardsToEliminateX, cardsToEliminateY);
-            UpdateShipBoardAction response = new UpdateShipBoardAction(shipBoard);
-            context.sendAction(username, response);
+            if(context.getPhase().getPhaseName().equals("CheckPhase")){
+                UpdateShipBoardAction response = new UpdateShipBoardAction(shipBoard);
+                context.sendAction(username, response);
+            }
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
