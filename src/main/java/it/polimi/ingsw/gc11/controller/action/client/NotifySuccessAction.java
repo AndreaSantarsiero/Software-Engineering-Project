@@ -21,10 +21,14 @@ public class NotifySuccessAction extends ServerAction {
     }
 
     @Override
-    public void loadData(CheckPhaseData checkPhaseData) {}
+    public void loadData(CheckPhaseData checkPhaseData) {
+        checkPhaseData.updateState();
+    }
 
     @Override
-    public void loadData(AdventurePhaseData adventurePhaseData) {}
+    public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.updateState();
+    }
 
     @Override
     public void loadData(EndPhaseData endPhaseData) {}
