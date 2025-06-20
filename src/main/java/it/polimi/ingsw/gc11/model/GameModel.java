@@ -326,21 +326,26 @@ public class GameModel {
         if(numDeck < 0 || numDeck >= adventureCardsDecks.size()){
             throw new IllegalArgumentException("Invalid deck number");
         }
+        AdventureDeck requestedMiniDeck = adventureCardsDecks.get(numDeck);
+
         if(heldMiniDecks.containsKey(username)){
             throw new IllegalArgumentException("Player " + username + " already holds a mini deck in his hands");
         }
         if(heldShipCards.containsKey(username)){
             throw new IllegalArgumentException("Player " + username + " already holds a ship card in his hands");
         }
-        if(!adventureCardsDecks.get(numDeck).isObservable()){
-            throw new IllegalStateException("Deck isn't observable");
-        }
         if(getPlayer(username).getShipBoard().getShipCardsNumber() < 2){
             throw new IllegalArgumentException("Cannot observe a mini deck before placing at least one ship card");
         }
-        AdventureDeck miniDeck = adventureCardsDecks.get(numDeck);
-        heldMiniDecks.put(username, miniDeck);
-        return miniDeck.getCards();
+
+        for(Map.Entry<String, AdventureDeck> entry : heldMiniDecks.entrySet()){
+            if(entry.getValue().equals(requestedMiniDeck)){
+                throw new IllegalStateException(entry.getKey() + " is already observing this mini deck in this moment");
+            }
+        }
+
+        heldMiniDecks.put(username, requestedMiniDeck);
+        return requestedMiniDeck.getCards();
     }
 
     public void releaseMiniDeck(String username){

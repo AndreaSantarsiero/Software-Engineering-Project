@@ -157,7 +157,7 @@ public class BuildingTemplate extends CLITemplate {
 
             //printing timers
             if (i == 1 && data.getFlightType().equals(FlightBoard.Type.LEVEL2)) {
-                System.out.printf("  |  time left: %d:%02d, timers left: %d%n", minutes, seconds, data.getTimersLeft());
+                System.out.printf("  |  time left: %d:%02d, timers left: %d", minutes, seconds, data.getTimersLeft());
             }
             System.out.println();
         }
