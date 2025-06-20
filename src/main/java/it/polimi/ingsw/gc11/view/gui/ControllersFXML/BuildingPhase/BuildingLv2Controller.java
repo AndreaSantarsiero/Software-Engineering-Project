@@ -13,6 +13,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -61,10 +62,11 @@ public class BuildingLv2Controller extends Controller {
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
     @FXML private VBox buttons;
-    @FXML private HBox playersButtons, deckButtons;
+    @FXML private HBox playersButtons, deckButtons, timer, endBuilding;
     @FXML private Label FreeShipCardText;
     @FXML private VBox heldShipCard;
     @FXML private ImageView heldShipCardImage;
+    @FXML private Label errorLabel;
 
     private Stage stage;
     private VirtualServer virtualServer;
@@ -85,8 +87,6 @@ public class BuildingLv2Controller extends Controller {
     private DoubleBinding gridH;
     private DoubleBinding shipCardSize;
 
-    //Pseudo-State flags
-    private Boolean placeShipCard = false;
 
 
     public void initialize(Stage stage) {
@@ -97,9 +97,7 @@ public class BuildingLv2Controller extends Controller {
 
         root.setSpacing(20);
 
-        headerContainer.minHeightProperty().bind(
-                root.heightProperty().multiply(0.10)
-        );
+        headerContainer.minHeightProperty().bind(root.heightProperty().multiply(0.10));
         headerContainer.prefHeightProperty().bind(headerContainer.minHeightProperty());
         headerContainer.maxHeightProperty().bind(headerContainer.minHeightProperty());
 
@@ -131,16 +129,18 @@ public class BuildingLv2Controller extends Controller {
         playersButtons.setSpacing(10);
         playersButtons.setPadding(new Insets(0,0,0,50));
         playersButtons.prefWidthProperty().bind(availW
-                .subtract(FreeShipCardText.widthProperty())
                 .subtract(20)
                 .divide(2));
 
         deckButtons.setSpacing(10);
-        deckButtons.prefWidthProperty().bind(availW
-                .subtract(playersButtons.widthProperty())
-                .subtract(FreeShipCardText.widthProperty())
-                .subtract(root.spacingProperty().multiply(2))
-                .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
+
+
+        timer.setSpacing(10);
+
+
+        endBuilding.setSpacing(10);;
+
+
 
         boardContainer.setMinSize(0, 0);
         boardContainer.prefWidthProperty().bind(boardW);
@@ -149,6 +149,7 @@ public class BuildingLv2Controller extends Controller {
         shipBoardImage.setPreserveRatio(true);
         shipBoardImage.fitWidthProperty().bind(boardW);
         shipBoardImage.fitHeightProperty().bind(boardH);
+
 
         cardPane.minWidthProperty().bind(availW.multiply(0.3));
         cardPane.prefWidthProperty().bind(availW.multiply(0.3));
@@ -159,10 +160,14 @@ public class BuildingLv2Controller extends Controller {
         cardPane.setSpacing(15);
         cardPane.setAlignment(Pos.TOP_CENTER);
 
+        FreeShipCardText.setAlignment(Pos.TOP_CENTER);
+        FreeShipCardText.prefWidthProperty().bind(cardPane.widthProperty());
+        FreeShipCardText.maxWidthProperty().bind(cardPane.widthProperty());
+        FreeShipCardText.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.1));
+
         tileScroll.prefWidthProperty().bind(cardPane.widthProperty());
         tileScroll.maxWidthProperty().bind(cardPane.widthProperty());
-        tileScroll.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.5));
-
+        tileScroll.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.6));
 
         heldShipCard.maxWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
         heldShipCard.minWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
@@ -170,6 +175,13 @@ public class BuildingLv2Controller extends Controller {
         heldShipCard.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
         heldShipCard.minHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
         heldShipCard.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
+
+        errorLabel.maxWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        errorLabel.minWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        errorLabel.prefWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        errorLabel.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.2).subtract(cardPane.getSpacing()));
+        errorLabel.minHeightProperty().bind(cardPane.heightProperty().multiply(0.2).subtract(cardPane.getSpacing()));
+        errorLabel.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.2).subtract(cardPane.getSpacing()));
 
 
         slotGrid.prefWidthProperty().bind(gridW);
@@ -397,23 +409,25 @@ public class BuildingLv2Controller extends Controller {
         for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
 
-            Button btn = new Button();
-            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            Button btnReservedCard = new Button();
+            btnReservedCard.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             int finalI = i;
-            btn.setOnAction(event -> onReservedShipCardSelected(finalI));
-            btn.minWidthProperty().bind(shipCardSize);
-            btn.minHeightProperty().bind(shipCardSize);
-            btn.prefWidthProperty().bind(shipCardSize);
-            btn.prefHeightProperty().bind(shipCardSize);
-            btn.maxWidthProperty().bind(shipCardSize);
-            btn.maxHeightProperty().bind(shipCardSize);
+            btnReservedCard.setOnAction(event -> {
+                onReservedShipCardSelected(finalI);
+            });
+            btnReservedCard.minWidthProperty().bind(shipCardSize);
+            btnReservedCard.minHeightProperty().bind(shipCardSize);
+            btnReservedCard.prefWidthProperty().bind(shipCardSize);
+            btnReservedCard.prefHeightProperty().bind(shipCardSize);
+            btnReservedCard.maxWidthProperty().bind(shipCardSize);
+            btnReservedCard.maxHeightProperty().bind(shipCardSize);
 
             Rectangle clip = new Rectangle();
-            clip.widthProperty().bind(btn.widthProperty());
-            clip.heightProperty().bind(btn.heightProperty());
+            clip.widthProperty().bind(btnReservedCard.widthProperty());
+            clip.heightProperty().bind(btnReservedCard.heightProperty());
             clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
             clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
-            btn.setClip(clip);
+            btnReservedCard.setClip(clip);
 
             ColorAdjust darken  = new ColorAdjust();
             darken.setBrightness(-0.2);
@@ -423,7 +437,7 @@ public class BuildingLv2Controller extends Controller {
             rim.setRadius(10);
             rim.setSpread(0.5);
 
-            btn.setOnMouseEntered(e -> {
+            btnReservedCard.setOnMouseEntered(e -> {
                 Effect combined = new Blend(
                         BlendMode.SRC_OVER,
                         rim,
@@ -433,15 +447,15 @@ public class BuildingLv2Controller extends Controller {
                                 darken
                         )
                 );
-                btn.setEffect(combined);
-                btn.setScaleX(1.05);
-                btn.setScaleY(1.05);
+                btnReservedCard.setEffect(combined);
+                btnReservedCard.setScaleX(1.05);
+                btnReservedCard.setScaleY(1.05);
             });
 
-            btn.setOnMouseExited(e -> {
-                btn.setEffect(null);
-                btn.setScaleX(1.0);
-                btn.setScaleY(1.0);
+            btnReservedCard.setOnMouseExited(e -> {
+                btnReservedCard.setEffect(null);
+                btnReservedCard.setScaleX(1.0);
+                btnReservedCard.setScaleY(1.0);
             });
 
             img = new Image(getClass()
@@ -452,15 +466,15 @@ public class BuildingLv2Controller extends Controller {
             ImageView iv = new ImageView(img);
             iv.setPreserveRatio(true);
 
-            iv.fitWidthProperty().bind(btn.widthProperty());
-            iv.fitHeightProperty().bind(btn.heightProperty());
+            iv.fitWidthProperty().bind(btnReservedCard.widthProperty());
+            iv.fitHeightProperty().bind(btnReservedCard.heightProperty());
 
-            btn.setGraphic(iv);
+            btnReservedCard.setGraphic(iv);
 
-            GridPane.setHgrow(btn, Priority.ALWAYS);
-            GridPane.setVgrow(btn, Priority.ALWAYS);
+            GridPane.setHgrow(btnReservedCard, Priority.ALWAYS);
+            GridPane.setVgrow(btnReservedCard, Priority.ALWAYS);
 
-            reservedSlots.getChildren().add(btn);
+            reservedSlots.getChildren().add(btnReservedCard);
         }
     }
 
@@ -808,6 +822,26 @@ public class BuildingLv2Controller extends Controller {
         setReservedSlots();
     }
 
+    private void setErrorLabel(){
+        errorLabel.setVisible(true);
+        errorLabel.setText(buildingPhaseData.getServerMessage());
+        //Timer, the user can see the error message for an interval of 3s
+        Task<Void> timer = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException _) {}
+                return null;
+            }
+        };
+        timer.setOnSucceeded(event -> {
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+        });
+        new Thread(timer).start();
+    }
+
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
 
@@ -831,7 +865,7 @@ public class BuildingLv2Controller extends Controller {
                 setReservedSlots();
                 buildingPhaseData.resetShipBoardModified();
             }
-            
+
 
             if(state == State.PLACING_FREE_SHIPCARD){
                 heldShipCardOverlay();
@@ -845,9 +879,11 @@ public class BuildingLv2Controller extends Controller {
             String serverMessage = buildingPhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage.toUpperCase());
+                this.setErrorLabel();
 
                 if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.") ||
                         serverMessage.toUpperCase().equals("CANNOT PLACE A COMPONENT WHERE ANOTHER ONE WAS ALREADY PLACED")) {
+
                     if(previousState == State.PLACING_RESERVED_SHIPCARD){
                         reservedShipCardOverlay();
                         for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }

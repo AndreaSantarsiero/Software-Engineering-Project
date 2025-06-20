@@ -37,12 +37,13 @@ public class MiniDeckController extends Controller {
 
 
     private Stage stage;
+    private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
 
     public void initialize(Stage stage, int index) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
-        VirtualServer virtualServer = viewModel.getVirtualServer();
+        this.virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
         goBackButton.setTranslateX(20);
@@ -55,14 +56,17 @@ public class MiniDeckController extends Controller {
 
         try {
             virtualServer.observeMiniDeck(index);
-        } catch (NetworkException e) {
-            throw new RuntimeException(e);
+        }
+        catch (NetworkException e) {
+            System.out.println("Network Error:  " + e.getMessage());
         }
     }
 
     @FXML
     protected void onGoBackButtonClick(ActionEvent event) {
+
         try {
+            virtualServer.releaseMiniDeck();
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
             BuildingLv2Controller controller = fxmlLoader.getController();
@@ -70,8 +74,12 @@ public class MiniDeckController extends Controller {
             controller.initialize(stage);
             stage.setScene(newScene);
             stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        }
+        catch (NetworkException e) {
+            System.out.println("Network Error:  " + e.getMessage());
+        }
+        catch (IOException e) {
+            System.out.println("FXML Error:  " + e.getMessage());
         }
 
     }
