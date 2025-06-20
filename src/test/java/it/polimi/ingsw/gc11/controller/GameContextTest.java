@@ -93,6 +93,20 @@ public class GameContextTest {
         gameContext.endBuildingLevel2("username3",3);
     }
 
+    void goToCheckPhase(){
+        StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.SINGLE, ShipCard.Connector.NONE);
+        gameContext.getGameModel().setHeldShipCard(shipCard, "username1");
+        gameContext.placeShipCard("username1", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
+        gameContext.getGameModel().setHeldShipCard(shipCard, "username2");
+        gameContext.placeShipCard("username2", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
+        gameContext.getGameModel().setHeldShipCard(shipCard, "username3");
+        gameContext.placeShipCard("username3", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
+
+        gameContext.endBuildingLevel2("username1",1);
+        gameContext.endBuildingLevel2("username2",2);
+        gameContext.endBuildingLevel2("username3",3);
+    }
+
     @BeforeEach
     void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException, FullLobbyException {
         serverController = new ServerController(RMIPort, socketPort);
@@ -339,15 +353,13 @@ public class GameContextTest {
         assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", 3),"invalid deck's number");
         assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", -1),"invalid deck's number");
     }
-/*
+
     @Test
     void testGoToCheckPhase(){
-        assertThrows(IllegalStateException.class, () -> gameContext.goToCheckPhase());
-        connect3Players();
-        assertDoesNotThrow(() -> gameContext.goToCheckPhase());
-        assertInstanceOf(CheckPhase.class, gameContext.getPhase());
+        goToCheckPhase();
+        assertInstanceOf(CheckPhase.class, gameContext.getPhase(), "game should be in check phase");
     }
-*/
+
     @Test
     void testSetAdvPhase(){
         goToAdvPhase();
