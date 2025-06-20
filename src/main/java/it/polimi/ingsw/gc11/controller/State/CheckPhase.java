@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.SetAdventurePhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
@@ -42,10 +43,11 @@ public class CheckPhase extends GamePhase {
         this.gameContext = gameContext;
         this.gameModel = gameContext.getGameModel();
         this.badShipPlayers = new ArrayList<>();
+    }
 
+    public void initialize() {
         List<Player> players = gameModel.getPlayers();
         for (Player player : players) {
-            //Player's shipboard is illegal
             if(!player.getShipBoard().checkShip()){
                 player.setPosition(-1); //Player is removed from the ranking (position)
                 this.badShipPlayers.add(player);
@@ -54,14 +56,12 @@ public class CheckPhase extends GamePhase {
 
         //All the players have a correct shipboard
         if (this.badShipPlayers.isEmpty()) {
+            //System.out.println("Going to AdventurePhase...");
             this.gameContext.setPhase(new AdventurePhase(this.gameContext));
-
-            //Chiedo approval di santa:
-//            SetAdventurePhaseAction send = new SetAdventurePhaseAction();
-//            for (Player p : gameModel.getPlayers()) {
-//                gameContext.sendAction(p.getUsername(), send);
-//            }
-
+            SetAdventurePhaseAction send = new SetAdventurePhaseAction();
+            for (Player p : gameModel.getPlayers()) {
+                gameContext.sendAction(p.getUsername(), send);
+            }
         }
     }
 

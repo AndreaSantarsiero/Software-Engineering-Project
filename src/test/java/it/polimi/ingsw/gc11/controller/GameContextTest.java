@@ -91,7 +91,6 @@ public class GameContextTest {
         gameContext.endBuildingLevel2("username1",1);
         gameContext.endBuildingLevel2("username2",2);
         gameContext.endBuildingLevel2("username3",3);
-        gameContext.setPhase(new AdventurePhase(gameContext));
     }
 
     @BeforeEach

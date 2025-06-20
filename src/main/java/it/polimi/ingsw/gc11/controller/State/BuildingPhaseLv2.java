@@ -267,11 +267,16 @@ public class BuildingPhaseLv2 extends GamePhase {
         gameModel.endBuildingLevel2(username, pos);
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
-            this.gameContext.setPhase(new CheckPhase(this.gameContext));
+            //System.out.println("Going to CheckPhase...");
+            CheckPhase checkPhase = new CheckPhase(gameContext);
+            this.gameContext.setPhase(checkPhase);
+            checkPhase.initialize();
 
-            SetCheckPhaseAction send = new SetCheckPhaseAction();
-            for (Player p : gameModel.getPlayers()) {
-                gameContext.sendAction(p.getUsername(), send);
+            if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
+                SetCheckPhaseAction send = new SetCheckPhaseAction();
+                for (Player p : gameModel.getPlayers()) {
+                    gameContext.sendAction(p.getUsername(), send);
+                }
             }
         }
     }
