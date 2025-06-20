@@ -126,6 +126,9 @@ public class CheckTemplate extends CLITemplate {
                     shipBoardCLI.print(shipBoard, y-2, i, controller.getSelectedJ(), controller.getSelectedI());
                     System.out.print("      ");
                 }
+                else if (y < shipBoard.getLength() + 3 && i < 2){
+                    System.out.println();
+                }
 
 
                 //printing menu

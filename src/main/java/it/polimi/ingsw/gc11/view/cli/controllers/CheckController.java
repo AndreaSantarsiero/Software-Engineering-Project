@@ -91,7 +91,7 @@ public class CheckController extends CLIController {
 
     public void addInputRequest() {
         if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
-            if(shipBoardLegal){
+            if(!shipBoardLegal){
                 mainCLI.addInputRequest(new MenuInput(data, this, template.getRepairingMenuSize(), mainMenu));
             }
             else {
@@ -110,7 +110,7 @@ public class CheckController extends CLIController {
 
     public void updateInternalState() {
         if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
-            if(shipBoardLegal){
+            if(!shipBoardLegal){
                 switch (mainMenu) {
                     case 0 -> data.setState(CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE);
                     case 1 -> data.setState(CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP);
