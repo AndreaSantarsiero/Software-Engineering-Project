@@ -133,22 +133,24 @@ public class CheckTemplate extends CLITemplate {
                     if(i < 2){
                         System.out.println();
                     }
-                    else if (data.isShipBoardLegal()) {
-                        if(i < 5){
-                            printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
-                        }
-                        else {
-                            System.out.println();
-                        }
-                    }
                     else{
-                        printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());
+                        if (data.isShipBoardLegal()) {
+                            if(i < 5){
+                                printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
+                            }
+                            else {
+                                System.out.println();
+                            }
+                        }
+                        else{
+                            printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());
+                        }
+                        menuIndex++;
                     }
-                    menuIndex++;
                 }
                 else {
                     if(data.isShipBoardLegal()){
-                        printMenu(shipBoard, menuIndex, waitingMenu, controller.getMainMenu());
+                        printMenu(shipBoard, menuIndex-5, waitingMenu, controller.getMainMenu());
                     }
                     else {
                         printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());

@@ -35,6 +35,7 @@ public class CheckPhaseData extends GamePhaseData {
 
     public void initialize(ShipBoard shipBoard, ArrayList<String> playersUsername){
         this.shipBoard = shipBoard;
+        shipBoardLegal = shipBoard.checkShip();
         this.playersUsername = playersUsername;
         notifyListener();
     }
