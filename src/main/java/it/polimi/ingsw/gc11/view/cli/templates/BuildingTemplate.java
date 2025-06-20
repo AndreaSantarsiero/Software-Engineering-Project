@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
@@ -8,6 +9,8 @@ import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import it.polimi.ingsw.gc11.view.cli.controllers.BuildingController;
 import org.fusesource.jansi.Ansi;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 
@@ -17,6 +20,9 @@ public class BuildingTemplate extends CLITemplate {
     private final BuildingController controller;
     private static final int rowCount = 11;
     private static final int colCount = 12;
+    private static final List<String> title = List.of("╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗",
+                                                      "╠╩╗║ ║║║   ║║║║║║║ ╦  ╠═╝╠═╣╠═╣╚═╗║╣ ",
+                                                      "╚═╝╚═╝╩╩═╝═╩╝╩╝╚╝╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
     private static final List<List<String>> mainMenu = List.of(
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
@@ -126,17 +132,34 @@ public class BuildingTemplate extends CLITemplate {
 
     public void render() {
         BuildingPhaseData data = controller.getPhaseData();
-
         clearView();
-        System.out.println("╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
-                           "╠╩╗║ ║║║   ║║║║║║║ ╦  ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
-                           "╚═╝╚═╝╩╩═╝═╩╝╩╝╚╝╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
         ShipBoard shipBoard = data.getShipBoard();
         List<ShipCard> freeShipCards = data.getFreeShipCards();
         int menuIndex = 0;
         int offset = 0;
+        long minutes = 0;
+        long seconds = 0;
         if(controller.getShipCardIndex() >= colCount*rowCount){
             offset = ((controller.getShipCardIndex() + 1)/colCount - rowCount) + 1;
+        }
+        if(data.getFlightType().equals(FlightBoard.Type.LEVEL2)){
+            Instant now = Instant.now();
+            Duration remaining = Duration.between(now, data.getExpireTimerInstant());
+            long secondsLeft = Math.max(0, remaining.getSeconds());
+            minutes = secondsLeft / 60;
+            seconds = secondsLeft % 60;
+        }
+
+
+        //printing title
+        for (int i = 0; i < title.size(); i++) {
+            System.out.print(title.get(i));
+
+            //printing timers
+            if (i == 1 && data.getFlightType().equals(FlightBoard.Type.LEVEL2)) {
+                System.out.printf("  |  time left: %d:%02d, timers left: %d%n", minutes, seconds, data.getTimersLeft());
+            }
+            System.out.println();
         }
 
 
