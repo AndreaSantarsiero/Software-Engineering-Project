@@ -16,6 +16,7 @@ public class CheckController extends CLIController {
     private final CheckPhaseData data;
     private final List<Integer> shipCardsToRemoveX;
     private final List<Integer> shipCardsToRemoveY;
+    private boolean shipBoardLegal = false;
     private int mainMenu;
     private int selectedI;
     private int selectedJ;
@@ -49,6 +50,7 @@ public class CheckController extends CLIController {
         if (!active) {
             return;
         }
+        shipBoardLegal = data.getShipBoard().checkShip();
         if(data.isStateNew()){
             if(addServerRequest()){
                 return;
@@ -89,7 +91,12 @@ public class CheckController extends CLIController {
 
     public void addInputRequest() {
         if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
-            mainCLI.addInputRequest(new MenuInput(data, this, template.getMainMenuSize(), mainMenu));
+            if(!shipBoardLegal){
+                mainCLI.addInputRequest(new MenuInput(data, this, template.getRepairingMenuSize(), mainMenu));
+            }
+            else {
+                mainCLI.addInputRequest(new MenuInput(data, this, template.getWaitingMenuSize(), mainMenu));
+            }
         }
         else if(data.getState() == CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE){
             mainCLI.addInputRequest(new CoordinatesInput(data, this, data.getShipBoard(), selectedI, selectedJ));
@@ -103,14 +110,19 @@ public class CheckController extends CLIController {
 
     public void updateInternalState() {
         if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
-            switch (mainMenu) {
-                case 0 -> data.setState(CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE);
-                case 1 -> data.setState(CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP);
-                case 2 -> data.setState(CheckPhaseData.CheckState.REMOVE_SHIPCARDS_SETUP);
-                case 3 -> {
-                    resetShipCardsToRemove();
-                    data.setState(CheckPhaseData.CheckState.REMOVE_SHIPCARDS_SETUP);
+            if(!shipBoardLegal){
+                switch (mainMenu) {
+                    case 0 -> data.setState(CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE);
+                    case 1 -> data.setState(CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP);
+                    case 2 -> data.setState(CheckPhaseData.CheckState.REMOVE_SHIPCARDS_SETUP);
+                    case 3 -> {
+                        resetShipCardsToRemove();
+                        data.setState(CheckPhaseData.CheckState.REMOVE_SHIPCARDS_SETUP);
+                    }
                 }
+            }
+            else {
+                data.setState(CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP);
             }
         }
         else {
@@ -157,6 +169,10 @@ public class CheckController extends CLIController {
     public void resetShipCardsToRemove() {
         shipCardsToRemoveX.clear();
         shipCardsToRemoveY.clear();
+    }
+
+    public boolean isShipBoardLegal() {
+        return shipBoardLegal;
     }
 
     public int getMainMenu() {

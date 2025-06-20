@@ -222,10 +222,8 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
-        actualizePreviousState();
         this.enemiesShipBoard.put(username, shipBoard);
         this.enemiesShipBoardModified = true;
-        notifyListener();
     }
 
 
