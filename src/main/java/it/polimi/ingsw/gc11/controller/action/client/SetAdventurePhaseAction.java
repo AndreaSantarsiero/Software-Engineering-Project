@@ -35,5 +35,6 @@ public class SetAdventurePhaseAction extends ServerAction {
     public void execute(PlayerContext playerContext) {
         System.out.println("[CLIENT] setting adventure phase");
         playerContext.setAdventurePhase();
+        playerContext.getCurrentPhase().handle(this);
     }
 }

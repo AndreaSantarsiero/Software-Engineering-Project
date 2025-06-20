@@ -37,5 +37,6 @@ public class SetCheckPhaseAction extends ServerAction {
     public void execute(PlayerContext playerContext) {
         System.out.println("[CLIENT] setting check phase");
         playerContext.setCheckPhase();
+        playerContext.getCurrentPhase().handle(this);
     }
 }

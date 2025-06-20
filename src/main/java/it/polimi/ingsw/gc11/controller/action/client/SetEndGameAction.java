@@ -15,6 +15,8 @@ public class SetEndGameAction extends ServerAction {
 
     @Override
     public void execute(PlayerContext playerContext) {
+        System.out.println("[CLIENT] setting end phase");
         playerContext.setEndPhase();
+        playerContext.getCurrentPhase().handle(this);
     }
 }

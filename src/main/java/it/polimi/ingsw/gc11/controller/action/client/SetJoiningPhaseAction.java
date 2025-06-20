@@ -15,6 +15,7 @@ public class SetJoiningPhaseAction extends ServerAction {
 
     @Override
     public void execute(PlayerContext playerContext) {
+        System.out.println("[CLIENT] setting joining phase");
         playerContext.setJoiningPhase();
     }
 }
