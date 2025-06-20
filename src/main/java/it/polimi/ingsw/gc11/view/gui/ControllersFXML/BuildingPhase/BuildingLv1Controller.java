@@ -4,10 +4,14 @@ import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
+import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase.LobbyController;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -69,6 +73,7 @@ public class BuildingLv1Controller extends Controller {
     @FXML private Label FreeShipCardText;
     @FXML private VBox heldShipCard;
     @FXML private ImageView heldShipCardImage;
+    @FXML private Button endBuilding;
 
     private Stage stage;
     private VirtualServer virtualServer;
@@ -130,6 +135,15 @@ public class BuildingLv1Controller extends Controller {
         gridH = gridW;
 
         shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(5);
+
+        endBuilding.setBackground(Background.EMPTY);
+        endBuilding.setBorder(Border.EMPTY);
+        endBuilding.setCursor(Cursor.HAND);
+        endBuilding.setTextFill(Color.WHITE);
+        endBuilding.setOnMouseEntered(e -> endBuilding.setTextFill(Color.web("#FFD700")));
+        endBuilding.setOnMouseExited (e -> endBuilding.setTextFill(Color.WHITE));
+        endBuilding.setAlignment(Pos.CENTER_RIGHT);
+        endBuilding.setTranslateX(-20);
 
         this.setupOthersPlayersButtons();
 
@@ -780,24 +794,8 @@ public class BuildingLv1Controller extends Controller {
         }
     }
 
-//    @FXML
-//    private void handleMiniDeck(ActionEvent event) {
-//        Button btn = (Button) event.getSource();
-//        int index   = Integer.parseInt(btn.getUserData().toString());
-//
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/MiniDeck.fxml"));
-//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-//            MiniDeckController controller = fxmlLoader.getController();
-//            buildingPhaseData.setListener(controller);
-//            controller.initialize(stage, index);
-//            stage.setScene(newScene);
-//            stage.show();
-//        }
-//        catch (IOException exc) {
-//            throw new RuntimeException(exc);
-//        }
-//    }
+    public void endBuilding(ActionEvent actionEvent) {
+    }
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
@@ -853,6 +851,22 @@ public class BuildingLv1Controller extends Controller {
 
     @Override
     public void change() {
+        Platform.runLater(() -> {
+            ViewModel viewModel = (ViewModel) stage.getUserData();
+            CheckPhaseData checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckLV2.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
+                CheckLv1Controller controller = fxmlLoader.getController();
+                buildingPhaseData.setListener(controller);
+                controller.initialize(stage);
+                stage.setScene(newScene);
+                stage.show();
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        });
 
     }
 
