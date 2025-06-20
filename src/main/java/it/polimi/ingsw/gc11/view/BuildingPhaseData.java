@@ -63,11 +63,13 @@ public class  BuildingPhaseData extends GamePhaseData {
         state = BuildingState.CHOOSE_MAIN_MENU;
     }
 
-    public void initialize(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType, ArrayList<String> playersUsernames){
+    public void initialize(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType, ArrayList<String> playersUsernames, Instant expireTimerInstant, int timersLeft){
         this.shipBoard = shipBoard;
         initializeFreeShipCards(freeShipCardsCount);
         this.flightType = flightType;
         this.playersUsernames = playersUsernames;
+        this.expireTimerInstant = expireTimerInstant;
+        this.timersLeft = timersLeft;
         notifyListener();
     }
 

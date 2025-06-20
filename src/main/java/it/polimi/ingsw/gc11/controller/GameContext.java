@@ -298,11 +298,10 @@ public class GameContext {
     /**
      * Allows a player to know how many timers are left.
      *
-     * @param username The player requesting how many timers are left.
      * @return the number of timers left.
      */
-    public int getTimersLeft(String username) {
-        return phase.getTimersLeft(username);
+    public int getTimersLeft() {
+        return phase.getTimersLeft();
     }
 
 

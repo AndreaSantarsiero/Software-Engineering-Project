@@ -189,11 +189,10 @@ public class BuildingPhaseLv2 extends GamePhase {
     /**
      * Allows a player to know how many timers are left.
      *
-     * @param username The player requesting how many timers are left.
      * @return the number of timers left.
      */
     @Override
-    public int getTimersLeft(String username) {
+    public int getTimersLeft() {
         return maxNumTimer - curNumTimer - 1;
     }
 

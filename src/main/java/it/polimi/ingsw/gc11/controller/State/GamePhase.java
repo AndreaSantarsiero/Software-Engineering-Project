@@ -170,10 +170,9 @@ public abstract class GamePhase {
     /**
      * Allows a player to know how many timers are left.
      *
-     * @param username The player requesting how many timers are left.
      * @return the number of timers left.
      */
-    public int getTimersLeft(String username) {
+    public int getTimersLeft() {
         throw new IllegalStateException("Can't get timers left number in the current game phase: " + getPhaseName());
     }
 
