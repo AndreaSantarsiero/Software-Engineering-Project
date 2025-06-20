@@ -58,9 +58,9 @@ public class CheckPhase extends GamePhase {
         if (this.badShipPlayers.isEmpty()) {
             System.out.println("Going to AdventurePhase...");
             this.gameContext.setPhase(new AdventurePhase(this.gameContext));
-            SetAdventurePhaseAction send = new SetAdventurePhaseAction();
-            for (Player p : gameModel.getPlayers()) {
-                gameContext.sendAction(p.getUsername(), send);
+            for (Player player : gameModel.getPlayers()) {
+                SetAdventurePhaseAction send = new SetAdventurePhaseAction(player);
+                gameContext.sendAction(player.getUsername(), send);
             }
         }
     }

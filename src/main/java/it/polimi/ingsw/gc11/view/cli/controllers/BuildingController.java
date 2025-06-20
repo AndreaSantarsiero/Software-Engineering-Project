@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.templates.BuildingTemplate;
+import java.time.Duration;
+import java.time.Instant;
 
 
 
@@ -25,6 +27,7 @@ public class BuildingController extends CLIController {
     private int endBuildingMenu;
     private int selectedI;
     private int selectedJ;
+    private Instant lastTemplateRender;
 
 
 
@@ -32,6 +35,20 @@ public class BuildingController extends CLIController {
         super(mainCLI);
         this.data = data;
         this.template = new BuildingTemplate(this);
+        lastTemplateRender = Instant.now();
+        startTimerUpdater();
+    }
+
+    private void startTimerUpdater() {
+        Thread timerThread = new Thread(() -> {
+            while (active) {
+                if (Duration.between(lastTemplateRender, Instant.now()).toMillis() >= 5000) {
+                    template.render();
+                }
+            }
+        });
+        timerThread.setDaemon(true);
+        timerThread.start();
     }
 
     public BuildingPhaseData getPhaseData() {
@@ -56,6 +73,7 @@ public class BuildingController extends CLIController {
 
     @Override
     public void update (BuildingPhaseData buildingPhaseData) {
+        lastTemplateRender = Instant.now();
         if (!active) {
             return;
         }

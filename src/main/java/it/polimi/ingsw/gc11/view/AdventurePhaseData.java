@@ -14,7 +14,6 @@ public class AdventurePhaseData extends GamePhaseData {
 
     private AdventureCard adventureCard; //carta correntemente in esecuzione, quella pescata dal player
     private Player player;
-    private ShipBoard myShipBoard;
     private Hit hit; //hit coming from the advCard, contiene tutti i parametri: direzione, coordinate, dimensione
     private Map<String, ShipBoard> enemiesShipBoard;  //associo username altri player alla loro nave
     private Map<Player, Integer> players; //list of enemies players
@@ -24,6 +23,11 @@ public class AdventurePhaseData extends GamePhaseData {
     public AdventurePhaseData() {
         this.enemiesShipBoard = new HashMap<>();
         this.players          = new HashMap<>();
+    }
+
+    public void initialize(Player player) {
+        this.player = player;
+        notifyListener();
     }
 
 
@@ -77,15 +81,6 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public Map<Player, Integer> getPlayers() {
         return players;
-    }
-
-    public void setMyShipBoard(ShipBoard myShipBoard) {
-        this.myShipBoard = myShipBoard;
-        this.notifyListener();
-    }
-
-    public ShipBoard getMyShipBoard() {
-        return myShipBoard;
     }
 
     @Override
