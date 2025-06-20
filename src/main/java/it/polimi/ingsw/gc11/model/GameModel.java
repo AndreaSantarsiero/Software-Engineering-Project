@@ -358,9 +358,9 @@ public class GameModel {
 
     public void createDefinitiveDeck(){
         this.definitiveDeck = new AdventureDeck(false);
-        for (int i = 0; i < this.adventureCardsDecks.size(); i++) {
-            while(adventureCardsDecks.get(i).getSize() > 0){
-                this.definitiveDeck.addCard(adventureCardsDecks.get(i).getTopCard());
+        for (AdventureDeck adventureDeck : adventureCardsDecks){
+            for (AdventureCard adventureCard : adventureDeck.getCards()){
+                definitiveDeck.addCard(adventureCard);
             }
         }
         this.definitiveDeck.shuffle();

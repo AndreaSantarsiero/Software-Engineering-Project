@@ -88,7 +88,6 @@ public class GameContextTest {
         gameContext.getGameModel().setHeldShipCard(shipCard, "username3");
         gameContext.placeShipCard("username3", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
 
-        gameContext.getGameModel().createDefinitiveDeck();
         gameContext.endBuildingLevel2("username1",1);
         gameContext.endBuildingLevel2("username2",2);
         gameContext.endBuildingLevel2("username3",3);
@@ -506,8 +505,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testEndbuilding(){
-        gameContext.getGameModel().createDefinitiveDeck();
+    void testEndBuilding(){
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.endBuildingLevel2("username1",1);
 

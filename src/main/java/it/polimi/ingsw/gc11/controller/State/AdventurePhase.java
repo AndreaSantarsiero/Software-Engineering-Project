@@ -36,6 +36,7 @@ public class AdventurePhase extends GamePhase {
     public AdventurePhase(GameContext gameContext) {
         this.gameContext = gameContext;
         this.gameModel = gameContext.getGameModel();
+        gameModel.createDefinitiveDeck();
         this.advState = new IdleState(this);
         this.drawnAdvCard = null;
         this.idxCurrentPlayer = 0;

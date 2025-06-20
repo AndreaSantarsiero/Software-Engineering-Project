@@ -42,9 +42,9 @@ public class AdventureDeck implements Serializable {
         if (cards.isEmpty()) {
             throw new IllegalStateException("no cards available.");
         }
-        AdventureCard drawed = cards.removeFirst();
-        drawed.useCard();
-        return drawed;
+        AdventureCard drewCard = cards.removeFirst();
+        drewCard.useCard();
+        return drewCard;
     }
 
     public int getSize(){ return cards.size();}

@@ -80,7 +80,7 @@ public class FlightBoard implements Serializable {
                 return;
             }
         }
-        throw new IllegalArgumentException("The fligthBoard you are trying to access is illegal");
+        throw new IllegalArgumentException("The flightBoard you are trying to access is illegal");
     }
 
 }
