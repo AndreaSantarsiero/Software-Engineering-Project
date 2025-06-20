@@ -147,12 +147,22 @@ public abstract class GamePhase {
     }
 
     /**
+     * Allows a player to release a mini-deck of AdventureCards that he was previously observing.
+     *
+     * @param username the player's username
+     * @throws IllegalStateException if the operation is not permitted in this phase
+     */
+    public void releaseMiniDeck(String username) {
+        throw new IllegalStateException("Can't release mini deck in the current game phase: " + getPhaseName());
+    }
+
+    /**
      * Ends the building phase for the player.
      *
      * @param username the player's username
      * @throws IllegalStateException if the operation is not permitted in this phase
      */
-    public void endBuilding(String username) {
+    public void endBuildingTrial(String username) {
         throw new IllegalStateException("Can't end building in the current game phase: " + getPhaseName());
     }
 
@@ -163,7 +173,7 @@ public abstract class GamePhase {
      * @param pos the position to assign
      * @throws IllegalStateException if the operation is not permitted in this phase
      */
-    public void endBuilding(String username, int pos) {
+    public void endBuildingLevel2(String username, int pos) {
         throw new IllegalStateException("Can't end building in the current game phase: " + getPhaseName());
     }
 

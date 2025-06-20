@@ -151,8 +151,18 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
-    public void endBuilding(int pos) throws NetworkException{
-        EndBuildingAction action = new EndBuildingAction(username);
+    public void releaseMiniDeck() throws NetworkException{
+        ReleaseMiniDeckAction action = new ReleaseMiniDeckAction(username);
+        client.sendAction(action);
+    }
+
+    public void endBuildingTrial() throws NetworkException{
+        EndBuildingTrialAction action = new EndBuildingTrialAction(username);
+        client.sendAction(action);
+    }
+
+    public void endBuildingLevel2(int pos) throws NetworkException{
+        EndBuildingLevel2Action action = new EndBuildingLevel2Action(username, pos);
         client.sendAction(action);
     }
 

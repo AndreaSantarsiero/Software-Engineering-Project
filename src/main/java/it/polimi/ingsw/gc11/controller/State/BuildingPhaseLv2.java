@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.SetCheckPhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -11,12 +12,14 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+
 /**
  * Represents the second level of the building phase in the game.
  *
  * In this phase, players can place, reserve, and remove {@link ShipCard}s on their
  * personal {@link ShipBoard}, in preparation for the upcoming adventure phase.
- * This phase is time-constrained using a system of up to three 60-second timers.
+ * This phase is time-constrained using a system of up to three 90-second timers.
  *
  * Once all players complete their construction or all timers expire, the game transitions to the {@link CheckPhase}.
  *
@@ -39,7 +42,7 @@ public class BuildingPhaseLv2 extends GamePhase {
     private int curNumTimer;
 
     /**
-     * Constructs a new BuildingPhaseLv2 instance and starts the first 60-second timer.
+     * Constructs a new BuildingPhaseLv2 instance and starts the first 90-second timer.
      *
      * @param gameContext the global game context
      */
@@ -62,8 +65,8 @@ public class BuildingPhaseLv2 extends GamePhase {
                 timer.cancel(); // stop the timer after the task
             }
         };
-        // Schedule the task to run after 60 seconds (60000 milliseconds)
-        this.timer.schedule(firstTimer, 60000);
+        // Schedule the task to run after 90 seconds (90000 milliseconds)
+        this.timer.schedule(firstTimer, 90000);
     }
 
     /**
@@ -153,43 +156,22 @@ public class BuildingPhaseLv2 extends GamePhase {
      */
     @Override
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
-        //Aggiungere: controllare se ha posizionato almeno una shipcard
-        return gameModel.observeMiniDeck(numDeck);
+        return gameModel.observeMiniDeck(username, numDeck);
     }
 
     /**
-     * Ends the building process for the specified player. If all players have finished,
-     * the phase automatically transitions to {@link CheckPhase}.
+     * Allows the player to release the mini-deck of {@link AdventureCard}s he's observing.
      *
      * @param username the player's username
-     * @param pos the position at which the player ends building
-     * @throws IllegalStateException if the player has already ended building
      */
     @Override
-    public void endBuilding(String username, int pos){
-
-        for(Player player : playersFinished){
-            if (player.getUsername().equals(username)){
-                throw new IllegalStateException("You have already ended building.");
-            }
-        }
-
-        gameModel.endBuilding(username, pos);
-        this.playersFinished.add(gameModel.getPlayer(username));
-        if (this.playersFinished.size() == gameModel.getPlayers().size()) {
-            this.gameContext.setPhase(new CheckPhase(this.gameContext));
-
-            //Chiedo approval di santa:
-//            SetCheckPhaseAction send = new SetCheckPhaseAction();
-//            for (Player p : gameModel.getPlayers()) {
-//                gameContext.sendAction(p.getUsername(), send);
-//            }
-        }
+    public void releaseMiniDeck(String username) {
+        gameModel.releaseMiniDeck(username);
     }
 
 
     /**
-     * Starts the next 60-second timer in the phase, based on the current number of completed timers.
+     * Starts the next 90-second timer in the phase, based on the current number of completed timers.
      * After the third timer finishes, the game transitions to the {@link CheckPhase}.
      *
      * @param username the username of the player attempting to start the timer
@@ -217,8 +199,8 @@ public class BuildingPhaseLv2 extends GamePhase {
                         timer.cancel(); // stop the timer after the task
                     }
                 };
-                // Schedule the task to run after 60 seconds (60000 milliseconds)
-                this.timer.schedule(lastTimer, 60000);
+                // Schedule the task to run after 90 seconds (90000 milliseconds)
+                this.timer.schedule(lastTimer, 90000);
             }
             else {
                 throw new IllegalStateException("You must end building to activate the last timer.");
@@ -234,10 +216,40 @@ public class BuildingPhaseLv2 extends GamePhase {
                     timer.cancel(); // stop the timer after the task
                 }
             };
-            // Schedule the task to run after 60 seconds (60000 milliseconds)
-            this.timer.schedule(secondTimer, 60000);
+            // Schedule the task to run after 90 seconds (90000 milliseconds)
+            this.timer.schedule(secondTimer, 90000);
         }
     }
+
+    /**
+     * Ends the building process for the specified player. If all players have finished,
+     * the phase automatically transitions to {@link CheckPhase}.
+     *
+     * @param username the player's username
+     * @param pos the position at which the player ends building
+     * @throws IllegalStateException if the player has already ended building
+     */
+    @Override
+    public void endBuildingLevel2(String username, int pos){
+
+        for(Player player : playersFinished){
+            if (player.getUsername().equals(username)){
+                throw new IllegalStateException("You have already ended building.");
+            }
+        }
+
+        gameModel.endBuildingLevel2(username, pos);
+        this.playersFinished.add(gameModel.getPlayer(username));
+        if (this.playersFinished.size() == gameModel.getPlayers().size()) {
+            this.gameContext.setPhase(new CheckPhase(this.gameContext));
+
+            SetCheckPhaseAction send = new SetCheckPhaseAction();
+            for (Player p : gameModel.getPlayers()) {
+                gameContext.sendAction(p.getUsername(), send);
+            }
+        }
+    }
+
 
     /**
      * Returns the name of this game phase.

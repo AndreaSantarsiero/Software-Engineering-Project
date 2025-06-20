@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.controllers;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
@@ -114,12 +115,21 @@ public class BuildingController extends CLIController {
                 mainCLI.getVirtualServer().observeMiniDeck(adventureCardMenu);
                 return true;
             }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_ADVENTURE_DECK){
+                mainCLI.getVirtualServer().releaseMiniDeck();
+                return true;
+            }
             else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
                 //manca azione per reset timer
                 return true;
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
-                mainCLI.getVirtualServer().endBuilding(endBuildingMenu);
+                if(data.getFlightType().equals(FlightBoard.Type.TRIAL)){
+                    mainCLI.getVirtualServer().endBuildingTrial();
+                }
+                else{
+                    mainCLI.getVirtualServer().endBuildingLevel2(endBuildingMenu);
+                }
                 return true;
             }
         } catch (NetworkException e) {
@@ -187,7 +197,14 @@ public class BuildingController extends CLIController {
                 case 0 -> data.setState(BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP);
                 case 1 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_ADVENTURE_DECK);
                 case 2 -> data.setState(BuildingPhaseData.BuildingState.RESET_TIMER);
-                case 3 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_POSITION);
+                case 3 -> {
+                    if(data.getFlightType().equals(FlightBoard.Type.TRIAL)){
+                        data.setState(BuildingPhaseData.BuildingState.END_BUILDING_SETUP);
+                    }
+                    else {
+                        data.setState(BuildingPhaseData.BuildingState.CHOOSE_POSITION);
+                    }
+                }
                 case 4 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU);
             }
         }

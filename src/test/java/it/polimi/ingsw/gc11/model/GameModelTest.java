@@ -240,11 +240,11 @@ class GameModelTest {
     @Test
     void observeMiniDeck() {
         gameModel.setLevel(FlightBoard.Type.LEVEL2);
-        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck(4));
-        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck(-1));
-        assertThrows(IllegalStateException.class, () -> gameModel.observeMiniDeck(3));
-        assertDoesNotThrow(() -> gameModel.observeMiniDeck(1));
-        assertEquals(3, gameModel.observeMiniDeck(1).size());
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 4));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", -1));
+        assertThrows(IllegalStateException.class, () -> gameModel.observeMiniDeck("Player1", 3));
+        assertDoesNotThrow(() -> gameModel.observeMiniDeck("Player1", 1));
+        assertEquals(3, gameModel.observeMiniDeck("Player1", 1).size());
     }
 
     @Test

@@ -88,9 +88,9 @@ public class GameContextTest {
         gameContext.placeShipCard("username3", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
 
         gameContext.getGameModel().createDefinitiveDeck();
-        gameContext.endBuilding("username1",1);
-        gameContext.endBuilding("username2",2);
-        gameContext.endBuilding("username3",3);
+        gameContext.endBuildingLevel2("username1",1);
+        gameContext.endBuildingLevel2("username2",2);
+        gameContext.endBuildingLevel2("username3",3);
         gameContext.setPhase(new AdventurePhase(gameContext));
     }
 
@@ -205,7 +205,7 @@ public class GameContextTest {
         assertThrows(IllegalStateException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE)), "you can call reserveShipCard() only in Building Phase.");
         assertThrows(IllegalStateException.class, () -> gameContext.useReservedShipCard("username1", new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 8,8), "you can call useReserveShipCard() only in Building Phase.");
         assertThrows(IllegalStateException.class, () -> gameContext.observeMiniDeck("username1", 1), "you can call observeMiniDeck() only in Building Phase.");
-        assertThrows(IllegalStateException.class, () -> gameContext.endBuilding("username1"),"you can call endBuilding() only in Building Phase.");
+        assertThrows(IllegalStateException.class, () -> gameContext.endBuildingTrial("username1"),"you can call endBuilding() only in Building Phase.");
 
     }
 
@@ -498,14 +498,14 @@ public class GameContextTest {
     void testEndbuilding(){
         gameContext.getGameModel().createDefinitiveDeck();
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 8, 8);
-        gameContext.endBuilding("username1",1);
+        gameContext.endBuildingLevel2("username1",1);
 
-        assertThrows(IllegalStateException.class, () -> gameContext.getGameModel().endBuilding("username1"),"you cannot end building more than once");
+        assertThrows(IllegalStateException.class, () -> gameContext.getGameModel().endBuildingTrial("username1"),"you cannot end building more than once");
         gameContext.placeShipCard("username2", gameContext.getFreeShipCard("username2", null), ShipCard.Orientation.DEG_0, 8, 8);
-        gameContext.endBuilding("username2",2);
+        gameContext.endBuildingLevel2("username2",2);
         gameContext.placeShipCard("username3", gameContext.getFreeShipCard("username3", null), ShipCard.Orientation.DEG_0, 8, 8);
-        gameContext.endBuilding("username3",3);
-        assertThrows(IllegalArgumentException.class, () -> gameContext.getGameModel().endBuilding("username4"),"username should be valid");
+        gameContext.endBuildingLevel2("username3",3);
+        assertThrows(IllegalArgumentException.class, () -> gameContext.getGameModel().endBuildingTrial("username4"),"username should be valid");
         assertEquals(6, gameContext.getGameModel().getPositionOnBoard("username1"), "check the right position");
         assertEquals(3, gameContext.getGameModel().getPositionOnBoard("username2"), "check the right position");
         assertEquals(1, gameContext.getGameModel().getPositionOnBoard("username3"), "check the right position");
@@ -515,7 +515,7 @@ public class GameContextTest {
     void testEndbuildingInvalid(){
         goToAdvPhase();
         assertInstanceOf(AdventurePhase.class, gameContext.getPhase(),"check right phase");
-        assertThrows(IllegalStateException.class, () -> gameContext.endBuilding("username1"),"you cannot end building in teh adventure state");
+        assertThrows(IllegalStateException.class, () -> gameContext.endBuildingTrial("username1"),"you cannot end building in teh adventure state");
     }
 
     @Test

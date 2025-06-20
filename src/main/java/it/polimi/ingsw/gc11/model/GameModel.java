@@ -17,7 +17,8 @@ public class GameModel {
     private final ArrayList<Player> players;
     private final Map<String, Boolean> availableColors;
     private FlightBoard flightBoard;
-    private List<AdventureDeck> adventureCardsDecks;
+    private final List<AdventureDeck> adventureCardsDecks;
+    private final Map<String, AdventureDeck> heldMiniDecks;
     private AdventureDeck definitiveDeck;
     private List<ShipCard> freeShipCards;
     private final Map<String, ShipCard> heldShipCards;
@@ -41,6 +42,7 @@ public class GameModel {
         availableColors.put("yellow", Boolean.TRUE);
         flightBoard = null;
         adventureCardsDecks = new ArrayList<>();
+        heldMiniDecks = new HashMap<>();
         definitiveDeck = null;
         ShipCardLoader shipCardLoader = new ShipCardLoader();
         freeShipCards = shipCardLoader.getAvailableShipCards();
@@ -147,7 +149,16 @@ public class GameModel {
         }
     }
 
+    private void checkHeldMiniDeck(String username) {
+        if(heldMiniDecks.containsKey(username)){
+            throw new IllegalArgumentException("Player " + username + " cannot do this action while observing a mini deck");
+        }
+    }
+
+
+
     public ShipCard getHeldShipCard(String username){
+        checkPlayerUsername(username);
         if(!heldShipCards.containsKey(username)){
             throw new IllegalArgumentException("Player " + username + " does not hold a ship card in his hands");
         }
@@ -157,6 +168,7 @@ public class GameModel {
     //per i test
     public void setHeldShipCard(ShipCard shipCard, String username){
         checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
         if(shipCard == null){
             throw new IllegalArgumentException("Ship card cannot be null");
         }
@@ -168,13 +180,7 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " already hold a ship card in his hands");
     }
 
-//    //per i test
-//    public void removeHeldShipCard(String username){
-//        if(!heldShipCards.containsKey(username)){
-//            throw new IllegalArgumentException("Player " + username + " does not hold a ship card in his hands");
-//        }
-//        heldShipCards.remove(username);
-//    }
+
 
     /**
      * Player's methods
@@ -229,15 +235,17 @@ public class GameModel {
 
 
     public void setPlayerColor(String username, String color) {
-        Player player = this.getPlayer(username);
-        //Player has already chosen a color
+        checkPlayerUsername(username);
+        Player player = getPlayer(username);
         if (player.getColor() != null) {
             throw new IllegalArgumentException("You have already chosen a color");
         }
+
         Boolean isAvailable = this.availableColors.get(color);
         if (!isAvailable){
             throw new IllegalArgumentException(color.toUpperCase() + " is not available");
         }
+
         this.availableColors.put(color, Boolean.FALSE);
         player.setColor(color, centralUnits);
     }
@@ -314,14 +322,33 @@ public class GameModel {
    /**
     * AdventureDeck's methods
     */
-    public ArrayList<AdventureCard> observeMiniDeck(int numDeck){
+    public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck){
         if(numDeck < 0 || numDeck >= adventureCardsDecks.size()){
             throw new IllegalArgumentException("Invalid deck number");
+        }
+        if(heldMiniDecks.containsKey(username)){
+            throw new IllegalArgumentException("Player " + username + " already holds a mini deck in his hands");
+        }
+        if(heldShipCards.containsKey(username)){
+            throw new IllegalArgumentException("Player " + username + " already holds a ship card in his hands");
         }
         if(!adventureCardsDecks.get(numDeck).isObservable()){
             throw new IllegalStateException("Deck isn't observable");
         }
-        return this.adventureCardsDecks.get(numDeck).getCards();
+        if(getPlayer(username).getShipBoard().getShipCardsNumber() < 2){
+            throw new IllegalArgumentException("Cannot observe a mini deck before placing at least one ship card");
+        }
+        AdventureDeck miniDeck = adventureCardsDecks.get(numDeck);
+        heldMiniDecks.put(username, miniDeck);
+        return miniDeck.getCards();
+    }
+
+    public void releaseMiniDeck(String username){
+        checkPlayerUsername(username);
+        if(!heldMiniDecks.containsKey(username)){
+            throw new IllegalArgumentException("Player " + username + " does not hold a mini deck in his hands");
+        }
+        heldMiniDecks.remove(username);
     }
 
     public void createDefinitiveDeck(){
@@ -353,6 +380,7 @@ public class GameModel {
      */
     public ShipCard getFreeShipCard(String username, ShipCard shipCard){
         checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
         if(heldShipCards.containsKey(username)){
             throw new IllegalArgumentException("Player " + username + " already hold a ship card in his hands");
         }
@@ -408,22 +436,9 @@ public class GameModel {
 
 
 
-    public ShipCard getShipCardFromShipBoard(String username, int x, int y){
-        checkPlayerUsername(username);
-
-        for(Player player : players){
-            if(player.getUsername().equals(username)){
-                return player.getShipBoard().getShipCard(x,y);
-            }
-        }
-
-        throw new IllegalArgumentException("Player " + username + " not found");
-    }
-
-
-
     public ShipBoard reserveShipCard(String username, ShipCard shipCard){
         checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
         checkHeldShipCard(shipCard, username);
 
         for(Player player : players){
@@ -442,6 +457,7 @@ public class GameModel {
 
     public ShipBoard useReservedShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
 
         for(Player player : players){
             if(player.getUsername().equals(username)){
@@ -458,6 +474,7 @@ public class GameModel {
 
     public ShipBoard connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
         checkHeldShipCard(shipCard, username);
 
         for (Player player : players) {
@@ -476,6 +493,7 @@ public class GameModel {
 
     public ShipBoard removeShipCardFromPlayerShipBoard(String username, int x, int y){
         checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
 
         for (Player player : players) {
             if (player.getUsername().equals(username)) {
@@ -591,8 +609,41 @@ public class GameModel {
 
     }
 
-    public void endBuilding(String username, int pos){
+
+
+    public void endBuildingTrial(String username){
         checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
+        int pos = 1;
+
+        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
+            throw new IllegalStateException("you can't call this mathod in trial level");
+        }
+
+        for(Player player : players){
+            if(player.getUsername().equals(username)){
+                if(player.getPosition() == -1){
+                    for(Player p : players){
+                        if(p.getPosition() != -1){
+                            pos++;
+                        }
+                    }
+                    Collections.swap(players, players.indexOf(player), pos-1);
+                    flightBoard.initializePosition(player, pos);
+                    return;
+                }
+                else{
+                    throw new IllegalStateException("Player " + username + " is already landed");
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+    public void endBuildingLevel2(String username, int pos){
+        checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
         if(getFlightBoard().getType() != FlightBoard.Type.LEVEL2){
             throw new IllegalStateException("You can call this method only in level 2.");
         }
@@ -628,36 +679,5 @@ public class GameModel {
 
         Collections.swap(players, players.indexOf(getPlayer(username)), pos-1);
         flightBoard.initializePosition(getPlayer(username), pos);
-    }
-
-
-    public void endBuilding(String username){
-
-        int pos = 1;
-
-        checkPlayerUsername(username);
-        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
-            throw new IllegalStateException("you can't call this mathod in trial level");
-        }
-
-        for(Player player : players){
-            if(player.getUsername().equals(username)){
-                if(player.getPosition() == -1){
-                    for(Player p : players){
-                        if(p.getPosition() != -1){
-                            pos++;
-                        }
-                    }
-                    Collections.swap(players, players.indexOf(player), pos-1);
-                    flightBoard.initializePosition(player, pos);
-                    return;
-                }
-                else{
-                    throw new IllegalStateException("Player " + username + " is already landed");
-                }
-            }
-        }
-
-        throw new IllegalArgumentException("Player " + username + " not found");
     }
 }
