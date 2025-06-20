@@ -48,10 +48,9 @@ public class CheckLv1Controller extends Controller {
 
     private Stage stage;
     private CheckPhaseData checkPhaseData;
-    private String ownerUsername;
 
 
-    public void initialize(Stage stage, String ownerUsername) {
+    public void initialize(Stage stage) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
@@ -213,7 +212,7 @@ public class CheckLv1Controller extends Controller {
     }
 
     public void setReservedSlots(){
-        ShipBoard shipBoard = checkPhaseData.getEnemiesShipBoard().get(this.ownerUsername);
+        ShipBoard shipBoard = checkPhaseData.getShipBoard();
         for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
 

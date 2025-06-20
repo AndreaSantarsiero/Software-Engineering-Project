@@ -16,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -27,6 +28,7 @@ import java.io.IOException;
 
 public class MiniDeckController extends Controller {
 
+    @FXML private Label title;
     @FXML private Button goBackButton;
     @FXML private VBox root;
     @FXML private HBox headerContainer;
@@ -43,7 +45,11 @@ public class MiniDeckController extends Controller {
         VirtualServer virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
-        goBackButton.setPadding(new Insets(0,20,0,0));
+        goBackButton.setTranslateX(20);
+        title.setAlignment(Pos.CENTER);
+        title.translateXProperty().bind(goBackButton.widthProperty()
+                .add(goBackButton.getTranslateX())
+                .subtract(title.widthProperty().divide(2)));
 
         cards.setAlignment(Pos.CENTER);
 

@@ -29,6 +29,11 @@
                         <Font size="58.0" />
                     </font>
                 </Label>
+                <Button fx:id="endBuilding" mnemonicParsing="false" onAction="#endBuilding" styleClass="Text2" stylesheets="@style.css" text="End building phase">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Button>
             </children>
         </HBox>
         <HBox fx:id="subHeaderContainer">

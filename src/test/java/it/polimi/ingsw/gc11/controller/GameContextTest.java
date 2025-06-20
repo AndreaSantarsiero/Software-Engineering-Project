@@ -29,6 +29,7 @@ import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
 import it.polimi.ingsw.gc11.controller.dumbClient.DumbPlayerContext;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.controller.network.server.VirtualClient;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -124,10 +125,27 @@ public class GameContextTest {
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
         Thread.sleep(20);  //waiting for the server to create the match
 
-        gameContext = serverController.getPlayerVirtualClient("username1", playerOne.getSessionToken()).getGameContext();
-        playerTwo.connectToGame(gameContext.getMatchID());
-        playerThree.connectToGame(gameContext.getMatchID());
-        Thread.sleep(20);  //waiting for the players to connect the game
+        // --- FIX: attendi che il GameContext venga assegnato dal thread server ---
+
+        VirtualClient vc1 = serverController.getPlayerVirtualClient(
+                "username1",
+                playerOne.getSessionToken());
+
+        // polling (max ~2 s): il GameContext viene settato in un thread server
+                for (int i = 0; i < 80 && vc1.getGameContext() == null; i++) {
+                    Thread.sleep(25);
+                }
+
+                gameContext = vc1.getGameContext();
+                assertNotNull(gameContext, "GameContext non inizializzato dal server");
+
+                String matchID = gameContext.getMatchID();
+
+                playerTwo.connectToGame(matchID);
+                playerThree.connectToGame(matchID);
+
+        // -------------------------------------------------------------------------
+
 
         playerOne.chooseColor("blue");
         playerTwo.chooseColor("red");
@@ -1734,4 +1752,65 @@ public class GameContextTest {
         Player p = assertDoesNotThrow(() -> gameContext.meteorDefense("username1", usage, cannon));
         assertEquals("username1", p.getUsername());
     }
+
+    // ------------------- Abandoned-Station & Choose-Material-Station -------------------
+
+    @Test
+    void testChooseMaterialsWrongUserAndNotEnoughMembers() throws Exception {
+
+        // porta il contesto nella AdventurePhase con username1 di turno
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        AdventureCard advCard = new AbandonedStation(
+                "id",
+                AdventureCard.Type.LEVEL1,
+                1,      // membersRequired
+                2,      // lostDays
+                0, 0, 0, 0);
+
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
+
+        // sistemiamo i posti letto per username1 (basterebbero 4 HousingUnit)
+        ShipBoard sb1 = gameContext.getGameModel()
+                .getPlayer("username1")
+                .getShipBoard();
+        sb1.placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
+                ShipCard.Orientation.DEG_0, 7, 8);
+        sb1.placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
+                ShipCard.Orientation.DEG_0, 7, 6);
+        sb1.placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
+                ShipCard.Orientation.DEG_0, 8, 7);
+        sb1.placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
+                ShipCard.Orientation.DEG_0, 8, 8);
+
+        // username1 accetta la carta → ChooseMaterialStation
+        gameContext.acceptAdventureCard("username1");
+
+        // username2 prova ad interagire → IllegalArgumentException
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseMaterials("username2", new HashMap<>()),
+                "solo il giocatore che ha accettato può scegliere i materiali");
+
+        AdventureCard hiCrewCard = new AbandonedStation(
+                "hi-crew",
+                AdventureCard.Type.LEVEL1,
+                100,    // membersRequired (di gran lunga > crew disponibile)
+                2,
+                0, 0, 0, 0);
+
+        advPhase.setDrawnAdvCard(hiCrewCard);
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
+
+        // Tentativo di chooseMaterials con membri insuff. → IllegalStateException
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.chooseMaterials("username1", new HashMap<>()),
+                "deve lanciare IllegalStateException quando i membri sono insufficienti");
+    }
+
 }
