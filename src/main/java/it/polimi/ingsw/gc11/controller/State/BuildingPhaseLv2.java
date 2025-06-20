@@ -17,13 +17,10 @@ import java.util.TimerTask;
 
 /**
  * Represents the second level of the building phase in the game.
- *
  * In this phase, players can place, reserve, and remove {@link ShipCard}s on their
  * personal {@link ShipBoard}, in preparation for the upcoming adventure phase.
  * This phase is time-constrained using a system of up to three 90-second timers.
- *
  * Once all players complete their construction or all timers expire, the game transitions to the {@link CheckPhase}.
- *
  * Responsibilities include:
  * <ul>
  *     <li>Managing placement and reservation of ship components</li>
@@ -35,9 +32,9 @@ public class BuildingPhaseLv2 extends GamePhase {
 
     private final GameContext gameContext;
     private final GameModel gameModel;
-    private List<Player> playersFinished;
+    private final List<Player> playersFinished;
 
-    private final Timer timer;
+    private Timer timer;
     private final int timerMilliSeconds = 90000;
     private final int maxNumTimer;
     private Boolean timerFinished;
@@ -204,29 +201,24 @@ public class BuildingPhaseLv2 extends GamePhase {
      * @throws IllegalStateException if the timer is already running, or conditions are not met for starting the next one
      */
     public void startTimer(String username){
-
-        //Timer is still running
         if (!timerFinished){
             throw new IllegalStateException("The current timer is not expired yet");
         }
 
-        //Only the last timer is missing
+        TimerTask newTimerTask;
         if(curNumTimer == maxNumTimer-1){
             //Player has already ended building
             if (this.gameModel.getPlayer(username).getPosition() != -1){
                 //last timer
-                TimerTask lastTimer = new TimerTask() {
+                newTimerTask = new TimerTask() {
                     @Override
                     public void run() {
                         timerFinished = true;
                         curNumTimer++;
-                        //The last timer has finished therefore the game evolves to next phase
-                        gameContext.setPhase(new CheckPhase(gameContext));
-                        timer.cancel(); // stop the timer after the task
+                        timer.cancel();
+                        goToCheckPhase(); //The last timer has finished therefore the game evolves to next phase
                     }
                 };
-                // Schedule the task to run after timerMilliSeconds
-                this.timer.schedule(lastTimer, timerMilliSeconds);
             }
             else {
                 throw new IllegalStateException("You must end building to activate the last timer.");
@@ -234,17 +226,20 @@ public class BuildingPhaseLv2 extends GamePhase {
         }
         else {
             //other timers
-            TimerTask secondTimer = new TimerTask() {
+            newTimerTask = new TimerTask() {
                 @Override
                 public void run() {
                     timerFinished = true;
                     curNumTimer++;
-                    timer.cancel(); // stop the timer after the task
+                    timer.cancel();
                 }
             };
-            // Schedule the task to run after timerMilliSeconds
-            this.timer.schedule(secondTimer, timerMilliSeconds);
         }
+
+        // Schedule the task to run after timerMilliSeconds
+        timer = new Timer();
+        timer.schedule(newTimerTask, timerMilliSeconds);
+
     }
 
     /**
@@ -267,16 +262,20 @@ public class BuildingPhaseLv2 extends GamePhase {
         gameModel.endBuildingLevel2(username, pos);
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
-            //System.out.println("Going to CheckPhase...");
-            CheckPhase checkPhase = new CheckPhase(gameContext);
-            this.gameContext.setPhase(checkPhase);
-            checkPhase.initialize();
+            goToCheckPhase();
+        }
+    }
 
-            if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
-                SetCheckPhaseAction send = new SetCheckPhaseAction();
-                for (Player p : gameModel.getPlayers()) {
-                    gameContext.sendAction(p.getUsername(), send);
-                }
+    private void goToCheckPhase(){
+        //System.out.println("Going to CheckPhase...");
+        CheckPhase checkPhase = new CheckPhase(gameContext);
+        this.gameContext.setPhase(checkPhase);
+        checkPhase.initialize();
+
+        if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
+            SetCheckPhaseAction send = new SetCheckPhaseAction();
+            for (Player p : gameModel.getPlayers()) {
+                gameContext.sendAction(p.getUsername(), send);
             }
         }
     }
