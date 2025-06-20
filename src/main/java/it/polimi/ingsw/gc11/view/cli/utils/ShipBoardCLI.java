@@ -47,7 +47,7 @@ public class ShipBoardCLI {
         for (int x = 0; x < shipBoard.getWidth(); x++) {
             if (shipBoard.validateIndexes(x, y)) {
                 ShipCard shipCard = shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-                if(shipCard != null) {
+                if(shipCard != null && !shipCard.isScrap()) {
                     shipCard.print(shipCardCLI, i, y == selectedI && x == selectedJ);
                 }
                 else if (shipBoard.validateIndexes(x, y)) {

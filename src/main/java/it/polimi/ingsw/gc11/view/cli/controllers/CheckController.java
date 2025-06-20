@@ -99,7 +99,7 @@ public class CheckController extends CLIController {
         else if(data.getState() == CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE){
             mainCLI.addInputRequest(new CoordinatesInput(data, this, data.getShipBoard(), selectedI, selectedJ));
         }
-        else if(data.getState() == CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP){
+        else if(data.getState() == CheckPhaseData.CheckState.SHOW_ENEMIES_SHIP){
             mainCLI.addInputRequest(new EnterInput(data, this));
         }
     }
