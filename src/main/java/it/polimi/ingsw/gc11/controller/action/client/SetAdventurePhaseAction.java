@@ -15,6 +15,7 @@ public class SetAdventurePhaseAction extends ServerAction {
 
     @Override
     public void execute(PlayerContext playerContext) {
+        System.out.println("[CLIENT] setting adventure phase");
         playerContext.setAdventurePhase();
     }
 }

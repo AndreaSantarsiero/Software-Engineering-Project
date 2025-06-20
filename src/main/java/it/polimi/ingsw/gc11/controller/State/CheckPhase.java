@@ -56,7 +56,7 @@ public class CheckPhase extends GamePhase {
 
         //All the players have a correct shipboard
         if (this.badShipPlayers.isEmpty()) {
-            //System.out.println("Going to AdventurePhase...");
+            System.out.println("Going to AdventurePhase...");
             this.gameContext.setPhase(new AdventurePhase(this.gameContext));
             SetAdventurePhaseAction send = new SetAdventurePhaseAction();
             for (Player p : gameModel.getPlayers()) {

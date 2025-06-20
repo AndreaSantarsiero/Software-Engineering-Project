@@ -138,8 +138,17 @@ public class BuildingPhaseTrial extends GamePhase{
         gameModel.endBuildingTrial(username);
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
-            this.gameContext.setPhase(new CheckPhase(this.gameContext));
+            goToCheckPhase();
+        }
+    }
 
+    private void goToCheckPhase(){
+        System.out.println("Going to CheckPhase...");
+        CheckPhase checkPhase = new CheckPhase(gameContext);
+        this.gameContext.setPhase(checkPhase);
+        checkPhase.initialize();
+
+        if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
             SetCheckPhaseAction send = new SetCheckPhaseAction();
             for (Player p : gameModel.getPlayers()) {
                 gameContext.sendAction(p.getUsername(), send);

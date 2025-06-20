@@ -268,7 +268,7 @@ public class BuildingPhaseLv2 extends GamePhase {
     }
 
     private void goToCheckPhase(){
-        //System.out.println("Going to CheckPhase...");
+        System.out.println("Going to CheckPhase...");
         CheckPhase checkPhase = new CheckPhase(gameContext);
         this.gameContext.setPhase(checkPhase);
         checkPhase.initialize();
