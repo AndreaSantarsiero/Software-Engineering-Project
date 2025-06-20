@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
+import it.polimi.ingsw.gc11.controller.action.client.SetCheckPhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 /**
@@ -126,8 +128,17 @@ public class BuildingPhaseTrial extends GamePhase{
      */
     @Override
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
-        //Aggiungere: controllare se ha posizionato almeno una shipcard
-        return gameModel.observeMiniDeck(numDeck);
+        return gameModel.observeMiniDeck(username, numDeck);
+    }
+
+    /**
+     * Allows the player to release the mini-deck of {@link AdventureCard}s he's observing.
+     *
+     * @param username the player's username
+     */
+    @Override
+    public void releaseMiniDeck(String username) {
+        gameModel.releaseMiniDeck(username);
     }
 
     /**
@@ -150,6 +161,11 @@ public class BuildingPhaseTrial extends GamePhase{
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
             this.gameContext.setPhase(new CheckPhase(this.gameContext));
+
+            SetCheckPhaseAction send = new SetCheckPhaseAction();
+            for (Player p : gameModel.getPlayers()) {
+                gameContext.sendAction(p.getUsername(), send);
+            }
         }
     }
 

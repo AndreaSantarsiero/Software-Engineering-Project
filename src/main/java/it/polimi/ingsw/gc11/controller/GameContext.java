@@ -273,6 +273,15 @@ public class GameContext {
     }
 
     /**
+     * Allows a player to release a mini deck that was observing.
+     *
+     * @param username The player requesting to release the mini deck.
+     */
+    public void releaseMiniDeck(String username) {
+        phase.releaseMiniDeck(username);
+    }
+
+    /**
      * Ends the building phase for the given player.
      *
      * @param username The player ending their turn.

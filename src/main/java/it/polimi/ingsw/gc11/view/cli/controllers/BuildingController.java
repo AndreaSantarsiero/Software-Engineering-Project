@@ -114,6 +114,10 @@ public class BuildingController extends CLIController {
                 mainCLI.getVirtualServer().observeMiniDeck(adventureCardMenu);
                 return true;
             }
+            else if(data.getState() == BuildingPhaseData.BuildingState.RELEASE_ADVENTURE_DECK){
+                mainCLI.getVirtualServer().releaseMiniDeck();
+                return true;
+            }
             else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
                 //manca azione per reset timer
                 return true;
