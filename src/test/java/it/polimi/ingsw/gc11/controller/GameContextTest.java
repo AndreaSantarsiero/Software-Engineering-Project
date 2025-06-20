@@ -1756,26 +1756,23 @@ public class GameContextTest {
     // ------------------- Abandoned-Station & Choose-Material-Station -------------------
 
     @Test
-    void testAcceptAdventureCardValidStation() {
+    void testChooseMaterialsWrongUserAndNotEnoughMembers() throws Exception {
+
         // porta il contesto nella AdventurePhase con username1 di turno
         goToAdvPhase();
-
         AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
 
-    /* 1.  Prepariamo la carta Abandoned-Station che richiede 1 membro
-           e fa perdere 2 giorni. */
         AdventureCard advCard = new AbandonedStation(
                 "id",
                 AdventureCard.Type.LEVEL1,
                 1,      // membersRequired
                 2,      // lostDays
-                0, 0, 0, 0);   // materiali irrilevanti per questo test
+                0, 0, 0, 0);
 
         advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new AbandonedStationState(advPhase));
 
-    /* 2.  Assicuriamoci che username1 abbia posti letto (HousingUnit)
-           sufficienti per ospitare l’equipaggio. */
+        // sistemiamo i posti letto per username1 (basterebbero 4 HousingUnit)
         ShipBoard sb1 = gameContext.getGameModel()
                 .getPlayer("username1")
                 .getShipBoard();
@@ -1792,30 +1789,28 @@ public class GameContextTest {
                         ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
                 ShipCard.Orientation.DEG_0, 8, 8);
 
-        /* 3.  username1 accetta la carta: transizione a ChooseMaterialStation. */
+        // username1 accetta la carta → ChooseMaterialStation
         gameContext.acceptAdventureCard("username1");
 
-    /* 4.  Preleviamo (facoltativamente) posti letto anche per username2,
-           pur non essendo necessario ai fini del test del ramo d’errore. */
-        ShipBoard sb2 = gameContext.getGameModel()
-                .getPlayer("username2")
-                .getShipBoard();
-        sb2.placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 7, 8);
-        sb2.placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 7, 6);
-        sb2.placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 8, 7);
-        sb2.placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 8, 8);
-
-    /* 5.  username2 tenta di scegliere i materiali → IllegalArgumentException
-           perché non è il giocatore che ha accettato la carta. */
+        // username2 prova ad interagire → IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseMaterials("username2", new HashMap<>()));
+                () -> gameContext.chooseMaterials("username2", new HashMap<>()),
+                "solo il giocatore che ha accettato può scegliere i materiali");
+
+        AdventureCard hiCrewCard = new AbandonedStation(
+                "hi-crew",
+                AdventureCard.Type.LEVEL1,
+                100,    // membersRequired (di gran lunga > crew disponibile)
+                2,
+                0, 0, 0, 0);
+
+        advPhase.setDrawnAdvCard(hiCrewCard);
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
+
+        // Tentativo di chooseMaterials con membri insuff. → IllegalStateException
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.chooseMaterials("username1", new HashMap<>()),
+                "deve lanciare IllegalStateException quando i membri sono insufficienti");
     }
+
 }
