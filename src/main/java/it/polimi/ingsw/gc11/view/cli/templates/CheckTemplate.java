@@ -126,23 +126,28 @@ public class CheckTemplate extends CLITemplate {
                     shipBoardCLI.print(shipBoard, y-2, i, controller.getSelectedJ(), controller.getSelectedI());
                     System.out.print("      ");
                 }
-                else if (y < shipBoard.getLength() + 3 && i < 2){
-                    System.out.println();
-                }
 
 
                 //printing menu
-                else {
-                    if(controller.isShipBoardLegal()){
-                        if(menuIndex < 3){
+                else if (y < shipBoard.getLength() + 3){
+                    if(i < 2){
+                        System.out.println();
+                    }
+                    else if (controller.isShipBoardLegal()) {
+                        if(i < 5){
                             printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
                         }
-                        else if(menuIndex < 5){
-                            printEmptyShipLine(shipBoard);
+                        else {
+                            System.out.println();
                         }
-                        else{
-                            printMenu(shipBoard, menuIndex, waitingMenu, controller.getMainMenu());
-                        }
+                    }
+                    else{
+                        printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());
+                    }
+                }
+                else {
+                    if(controller.isShipBoardLegal()){
+                        printMenu(shipBoard, menuIndex, waitingMenu, controller.getMainMenu());
                     }
                     else {
                         printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());
