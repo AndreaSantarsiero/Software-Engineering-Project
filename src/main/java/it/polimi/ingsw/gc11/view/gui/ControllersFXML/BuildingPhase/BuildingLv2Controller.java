@@ -81,8 +81,6 @@ public class BuildingLv2Controller extends Controller {
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
 
-    private DoubleBinding cellSide;
-
     private DoubleBinding availW;
     private DoubleBinding availH;
     private DoubleBinding boardW;
@@ -416,6 +414,7 @@ public class BuildingLv2Controller extends Controller {
     }
 
     public void setReservedSlots(){
+        reservedSlots.getChildren().clear();
         ShipBoard shipBoard = buildingPhaseData.getShipBoard();
         for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
@@ -708,6 +707,7 @@ public class BuildingLv2Controller extends Controller {
     }
 
     private void onReserveShipCard(){
+        System.out.println("State: " + state);
         if(state == State.PLACING_FREE_SHIPCARD) {
             try {
                 virtualServer.reserveShipCard(buildingPhaseData.getHeldShipCard());
@@ -719,8 +719,10 @@ public class BuildingLv2Controller extends Controller {
             }
         }
         if(state == State.PLACING_RESERVED_SHIPCARD){
+            //buildingPhaseData.setReservedShipCard(buildingPhaseData.getHeldShipCard());
             reservedSlots.getChildren().clear();
-            setReservedSlots();
+            this.setReservedSlots();
+            //update(buildingPhaseData);
             previousState = state;
             state = State.IDLE;
         }
@@ -871,20 +873,14 @@ public class BuildingLv2Controller extends Controller {
     public void update(BuildingPhaseData buildingPhaseData) {
         Platform.runLater(() -> {
 
-            if (buildingPhaseData.isFreeShipCardModified()) {
-                cardTile.getChildren().clear();
-                setFreeShipCards();
-                buildingPhaseData.resetFreeShipCardModified();
-            }
+            cardTile.getChildren().clear();
+            setFreeShipCards();
 
-            if (buildingPhaseData.isShipBoardModified()) {
-                slotGrid.getChildren().clear();
-                setShipBoard();
+            slotGrid.getChildren().clear();
+            setShipBoard();
 
-                reservedSlots.getChildren().clear();
-                setReservedSlots();
-                buildingPhaseData.resetShipBoardModified();
-            }
+            reservedSlots.getChildren().clear();
+            setReservedSlots();
 
 
             if(state == State.PLACING_FREE_SHIPCARD){
@@ -900,27 +896,30 @@ public class BuildingLv2Controller extends Controller {
                 root.setDisable(true);
             }
 
+            //There is a SERVER EXCEPTION
             String serverMessage = buildingPhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage.toUpperCase());
                 this.setErrorLabel();
                 this.clickedEndBuilding = false;
 
-                if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.") ||
-                        serverMessage.toUpperCase().equals("CANNOT PLACE A COMPONENT WHERE ANOTHER ONE WAS ALREADY PLACED")) {
+                if (previousState == State.PLACING_RESERVED_SHIPCARD) {
+                    reservedShipCardOverlay();
+                    for (Node child : (heldShipCard.getChildren())) {
+                        child.setMouseTransparent(true);
+                    }
+                    left.setMouseTransparent(true);
+                    right.setMouseTransparent(true);
+                    state = previousState;
+                }
 
-                    if(previousState == State.PLACING_RESERVED_SHIPCARD){
-                        reservedShipCardOverlay();
-                        for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
-                        left.setMouseTransparent(true);
-                        right.setMouseTransparent(true);
+                if (previousState == State.PLACING_FREE_SHIPCARD) {
+                    heldShipCardOverlay();
+                    for (Node child : (heldShipCard.getChildren())) {
+                        child.setMouseTransparent(true);
                     }
-                    if(previousState == State.PLACING_FREE_SHIPCARD){
-                        heldShipCardOverlay();
-                        for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
-                        left.setMouseTransparent(true);
-                        right.setMouseTransparent(true);
-                    }
+                    left.setMouseTransparent(true);
+                    right.setMouseTransparent(true);
                     state = previousState;
                 }
 
