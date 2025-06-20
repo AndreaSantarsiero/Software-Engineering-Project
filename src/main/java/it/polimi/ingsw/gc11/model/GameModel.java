@@ -125,7 +125,7 @@ public class GameModel {
 
 
 
-    private void checkPlayerUsername(String username) {
+    public void checkPlayerUsername(String username) {
         if (username == null || username.isEmpty()){
             throw new IllegalArgumentException("Username cannot be null or empty");
         }

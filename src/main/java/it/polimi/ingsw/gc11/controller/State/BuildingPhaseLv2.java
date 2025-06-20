@@ -179,7 +179,8 @@ public class BuildingPhaseLv2 extends GamePhase {
      */
     @Override
     public Instant resetBuildingTimer(String username) {
-        startTimer(username);
+        gameModel.checkPlayerUsername(username);
+        startNewTimer(username);
         return Instant.now().plusMillis(timerMilliSeconds);
     }
 
@@ -200,11 +201,12 @@ public class BuildingPhaseLv2 extends GamePhase {
      * @param username the username of the player attempting to start the timer
      * @throws IllegalStateException if the timer is already running, or conditions are not met for starting the next one
      */
-    public void startTimer(String username){
+    public void startNewTimer(String username){
         if (!timerFinished){
             throw new IllegalStateException("The current timer is not expired yet");
         }
 
+        timerFinished = false;
         TimerTask newTimerTask;
         if(curNumTimer == maxNumTimer-1){
             //Player has already ended building
@@ -239,7 +241,6 @@ public class BuildingPhaseLv2 extends GamePhase {
         // Schedule the task to run after timerMilliSeconds
         timer = new Timer();
         timer.schedule(newTimerTask, timerMilliSeconds);
-
     }
 
     /**
