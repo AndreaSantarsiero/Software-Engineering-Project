@@ -151,9 +151,14 @@ public class CheckController extends CLIController {
 
     @Override
     public void confirmCoordinatesChoice() {
-        data.getShipBoard().getShipCard(getSelectedX(), getSelectedY()).destroy();
-        addShipCardToRemove(getSelectedX(), getSelectedY());
-        updateInternalState();
+        if(getSelectedX() == 7 && getSelectedX() == 7){
+            data.setServerMessage("Cannot remove the central unit");
+        }
+        else {
+            data.getShipBoard().getShipCard(getSelectedX(), getSelectedY()).destroy();
+            addShipCardToRemove(getSelectedX(), getSelectedY());
+            updateInternalState();
+        }
     }
 
 

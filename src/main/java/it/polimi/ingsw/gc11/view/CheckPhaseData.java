@@ -85,6 +85,14 @@ public class CheckPhaseData extends GamePhaseData {
 
 
 
+    @Override
+    public void setServerMessage(String serverMessage) {
+        this.serverMessage = serverMessage;
+        setState(CheckState.CHOOSE_MAIN_MENU);
+    }
+
+
+
     public ShipBoard getShipBoard() {
         return shipBoard;
     }
