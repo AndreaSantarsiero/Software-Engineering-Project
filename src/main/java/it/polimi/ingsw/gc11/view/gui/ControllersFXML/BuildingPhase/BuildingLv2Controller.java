@@ -128,18 +128,17 @@ public class BuildingLv2Controller extends Controller {
             ((Button) n).prefWidthProperty().bind(shipCardSize.multiply(0.75));
         }
         playersButtons.setSpacing(10);
-        playersButtons.setPadding(new Insets(0,0,0,50));
-        playersButtons.prefWidthProperty().bind(availW
-                .subtract(20)
-                .divide(2));
+        //playersButtons.setPadding(new Insets(0,0,0,50));
+        playersButtons.prefWidthProperty().bind(availW.multiply(0.25));
 
         deckButtons.setSpacing(10);
-
+        deckButtons.prefWidthProperty().bind(availW.multiply(0.25));
 
         timer.setSpacing(10);
+        timer.prefWidthProperty().bind(availW.multiply(0.25));
 
-
-        endBuilding.setSpacing(10);;
+        endBuilding.setSpacing(10);
+        endBuilding.prefWidthProperty().bind(availW.multiply(0.25));
 
 
 

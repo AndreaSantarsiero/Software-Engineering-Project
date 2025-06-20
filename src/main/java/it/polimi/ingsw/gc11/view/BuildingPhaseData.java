@@ -54,7 +54,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private List<AdventureCard> miniDeck;
     private boolean miniDeckModified  = false;
 
-
+    private boolean actionSuccessful = false;
 
 
     public BuildingPhaseData() {
@@ -269,10 +269,12 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
-        this.miniDeckModified = true;
-        for(AdventureCard adventureCard : miniDeck){
-            adventureCard.useCard();
+        if (miniDeck != null) {
+            for(AdventureCard adventureCard : miniDeck){
+                adventureCard.useCard();
+            }
         }
+
         updateState();
     }
 
@@ -311,9 +313,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
-    public boolean isMiniDeckModified(){
-        return this.miniDeckModified;
-    }
 
 
     public void resetShipBoardModified(){
@@ -337,8 +336,17 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
-    public void resetMiniDeckModified(){
-        this.miniDeckModified = false;
+
+    public boolean isActionSuccessful(){
+        return actionSuccessful;
+    }
+
+    public void setActionSuccessful(){
+        actionSuccessful = true;
+    }
+
+    public void resetActionSuccessful(){
+        actionSuccessful = false;
     }
 
 
