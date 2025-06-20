@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
+import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
 import java.util.HashMap;
@@ -54,6 +55,17 @@ public class AdventureTemplate extends CLITemplate {
             }
 
             printEnemiesShipBoard(enemiesShipBoard);
+            for (int i = 0; i < pressEnterToContinue.size(); i++) {
+                System.out.println(pressEnterToContinue.get(i));
+            }
+            return;
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ADVENTURE_CARD){
+            System.out.println();
+            for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
+                adventureCardCLI.print(data.getAdventureCard(), i);
+                System.out.println();
+            }
             for (int i = 0; i < pressEnterToContinue.size(); i++) {
                 System.out.println(pressEnterToContinue.get(i));
             }

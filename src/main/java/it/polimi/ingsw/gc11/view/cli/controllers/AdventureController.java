@@ -82,6 +82,9 @@ public class AdventureController extends CLIController {
         if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getMainMenuSize(), mainMenu));
         }
+        else if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ADVENTURE_CARD){
+            mainCLI.addInputRequest(new EnterInput(data, this));
+        }
         else if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
             mainCLI.addInputRequest(new EnterInput(data, this));
         }
