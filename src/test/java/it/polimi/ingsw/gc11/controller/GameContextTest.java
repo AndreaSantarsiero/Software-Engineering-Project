@@ -125,27 +125,10 @@ public class GameContextTest {
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 3);
         Thread.sleep(20);  //waiting for the server to create the match
 
-        // --- FIX: attendi che il GameContext venga assegnato dal thread server ---
-
-        VirtualClient vc1 = serverController.getPlayerVirtualClient(
-                "username1",
-                playerOne.getSessionToken());
-
-        // polling (max ~2 s): il GameContext viene settato in un thread server
-                for (int i = 0; i < 80 && vc1.getGameContext() == null; i++) {
-                    Thread.sleep(25);
-                }
-
-                gameContext = vc1.getGameContext();
-                assertNotNull(gameContext, "GameContext non inizializzato dal server");
-
-                String matchID = gameContext.getMatchID();
-
-                playerTwo.connectToGame(matchID);
-                playerThree.connectToGame(matchID);
-
-        // -------------------------------------------------------------------------
-
+        gameContext = serverController.getPlayerVirtualClient("username1", playerOne.getSessionToken()).getGameContext();
+        playerTwo.connectToGame(gameContext.getMatchID());
+        playerThree.connectToGame(gameContext.getMatchID());
+        Thread.sleep(20);  //waiting for the players to connect to the game
 
         playerOne.chooseColor("blue");
         playerTwo.chooseColor("red");
@@ -344,9 +327,19 @@ public class GameContextTest {
 
     @Test
     void testObserveMiniDeck(){
+        assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", 1),"cannot observe a mini deck before placing at least one component");
+
+        StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE);
+        gameContext.getGameModel().setHeldShipCard(shipCard, "username1");
+        gameContext.placeShipCard("username1", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
+        gameContext.getGameModel().setHeldShipCard(shipCard, "username2");
+        gameContext.placeShipCard("username2", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
+
         assertEquals(3, gameContext.observeMiniDeck("username1", 0).size(),"deck size should be 3");
-        assertThrows(IllegalStateException.class, () -> gameContext.observeMiniDeck("username1", 3),"you can't observe this deck");
-        assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", -1),"deck's number should be valid");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", 1),"cannot observe two mini decks at the same time");
+        assertThrows(IllegalStateException.class, () -> gameContext.observeMiniDeck("username2", 0),"another player is already observing this mini deck");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", 3),"invalid deck's number");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", -1),"invalid deck's number");
     }
 /*
     @Test

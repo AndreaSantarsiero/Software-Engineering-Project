@@ -23,9 +23,9 @@ public class BuildingTemplate extends CLITemplate {
     private static final List<String> title = List.of("╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗",
                                                       "╠╩╗║ ║║║   ║║║║║║║ ╦  ╠═╝╠═╣╠═╣╚═╗║╣ ",
                                                       "╚═╝╚═╝╩╩═╝═╩╝╩╝╚╝╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
-    private static final List<String> waitingMessage = List.of("┬ ┬┌─┐┬┌┬┐┬┌┐┌┌─┐  ┌─┐┌┬┐┬ ┬┌─┐┬─┐  ┌─┐┬  ┌─┐┬ ┬┌─┐┬─┐┌─┐       ",
-                                                               "│││├─┤│ │ │││││ ┬  │ │ │ ├─┤├┤ ├┬┘  ├─┘│  ├─┤└┬┘├┤ ├┬┘└─┐       ",
-                                                               "└┴┘┴ ┴┴ ┴ ┴┘└┘└─┘  └─┘ ┴ ┴ ┴└─┘┴└─  ┴  ┴─┘┴ ┴ ┴ └─┘┴└─└─┘o  o  o");
+    private static final List<String> waitingMessage = List.of("┬ ┬┌─┐┬┌┬┐┬┌┐┌┌─┐  ┌─┐┌┬┐┬ ┬┌─┐┬─┐  ┌─┐┬  ┌─┐┬ ┬┌─┐┬─┐┌─┐         ",
+                                                               "│││├─┤│ │ │││││ ┬  │ │ │ ├─┤├┤ ├┬┘  ├─┘│  ├─┤└┬┘├┤ ├┬┘└─┐         ",
+                                                               "└┴┘┴ ┴┴ ┴ ┴┘└┘└─┘  └─┘ ┴ ┴ ┴└─┘┴└─  ┴  ┴─┘┴ ┴ ┴ └─┘┴└─└─┘  o  o  o");
     private static final List<List<String>> mainMenu = List.of(
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
