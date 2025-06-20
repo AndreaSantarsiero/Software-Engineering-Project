@@ -31,7 +31,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -89,16 +88,12 @@ public class BuildingLv2Controller extends Controller {
     //Pseudo-State flags
     private Boolean placeShipCard = false;
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
 
     public void initialize(Stage stage) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) stage.getUserData();
         this.virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        ShipBoard shipBoard = buildingPhaseData.getShipBoard();
 
         root.setSpacing(20);
 
@@ -202,7 +197,7 @@ public class BuildingLv2Controller extends Controller {
         reservedSlots.toFront();
 
 
-        update(buildingPhaseData);
+        firstRendering();
 
     }
 
@@ -253,18 +248,18 @@ public class BuildingLv2Controller extends Controller {
                     )
             );
 
-            Button btn = new Button();
-            btn.setBackground(new Background(bgImg));
-            btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            btn.prefWidthProperty().bind(cardTile.prefTileWidthProperty());
-            btn.prefHeightProperty().bind(cardTile.prefTileHeightProperty());
+            Button btnShipCard = new Button();
+            btnShipCard.setBackground(new Background(bgImg));
+            btnShipCard.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            btnShipCard.prefWidthProperty().bind(cardTile.prefTileWidthProperty());
+            btnShipCard.prefHeightProperty().bind(cardTile.prefTileHeightProperty());
 
             Rectangle clip = new Rectangle();
-            clip.widthProperty().bind(btn.widthProperty());
-            clip.heightProperty().bind(btn.heightProperty());
+            clip.widthProperty().bind(btnShipCard.widthProperty());
+            clip.heightProperty().bind(btnShipCard.heightProperty());
             clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
             clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
-            btn.setClip(clip);
+            btnShipCard.setClip(clip);
 
             ColorAdjust darken  = new ColorAdjust();
             darken.setBrightness(-0.2);
@@ -274,7 +269,7 @@ public class BuildingLv2Controller extends Controller {
             rim.setRadius(10);
             rim.setSpread(0.5);
 
-            btn.setOnMouseEntered(e -> {
+            btnShipCard.setOnMouseEntered(e -> {
                 Effect combined = new Blend(
                         BlendMode.SRC_OVER,
                         rim,
@@ -284,23 +279,23 @@ public class BuildingLv2Controller extends Controller {
                                 darken
                         )
                 );
-                btn.setEffect(combined);
-                btn.setScaleX(1.05);
-                btn.setScaleY(1.05);
+                btnShipCard.setEffect(combined);
+                btnShipCard.setScaleX(1.05);
+                btnShipCard.setScaleY(1.05);
             });
 
-            btn.setOnMouseExited(e -> {
-                btn.setEffect(null);
-                btn.setScaleX(1.0);
-                btn.setScaleY(1.0);
+            btnShipCard.setOnMouseExited(e -> {
+                btnShipCard.setEffect(null);
+                btnShipCard.setScaleX(1.0);
+                btnShipCard.setScaleY(1.0);
             });
 
             final int index = i;
-            btn.setOnAction(event -> {
+            btnShipCard.setOnAction(event -> {
                 onShipCardSelected(index);
             });
 
-            cardTile.getChildren().add(btn);
+            cardTile.getChildren().add(btnShipCard);
         }
     }
 
@@ -644,8 +639,9 @@ public class BuildingLv2Controller extends Controller {
                 virtualServer.getFreeShipCard(buildingPhaseData.getFreeShipCards().get(index));
                 previousState = state;
                 state = State.PLACING_FREE_SHIPCARD;
-            } catch (NetworkException e) {
-                throw new RuntimeException(e);
+            }
+            catch (NetworkException e) {
+                System.out.println("Network Error:  " + e.getMessage());
             }
         }
     }
@@ -656,8 +652,9 @@ public class BuildingLv2Controller extends Controller {
                 virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 4, y + 5);
                 previousState = state;
                 state = State.IDLE;
-            } catch (NetworkException e) {
-                throw new RuntimeException(e);
+            }
+            catch (NetworkException e) {
+                System.out.println("Network Error:  " + e.getMessage());
             }
         }
         else if(state == State.PLACING_RESERVED_SHIPCARD) {
@@ -665,8 +662,9 @@ public class BuildingLv2Controller extends Controller {
                 virtualServer.useReservedShipCard(buildingPhaseData.getReservedShipCard(), x + 4, y + 5);
                 previousState = state;
                 state = State.IDLE;
-            } catch (NetworkException e) {
-                throw new RuntimeException(e);
+            }
+            catch (NetworkException e) {
+                System.out.println("Network Error:  " + e.getMessage());
             }
         }
         for (Node child : (heldShipCard.getChildren())) {
@@ -690,8 +688,9 @@ public class BuildingLv2Controller extends Controller {
                 virtualServer.reserveShipCard(buildingPhaseData.getHeldShipCard());
                 previousState = state;
                 state = State.IDLE;
-            } catch (NetworkException e) {
-                throw new RuntimeException(e);
+            }
+            catch (NetworkException e) {
+                System.out.println("Network Error:  " + e.getMessage());
             }
         }
         if(state == State.PLACING_RESERVED_SHIPCARD){
@@ -707,8 +706,9 @@ public class BuildingLv2Controller extends Controller {
             virtualServer.releaseShipCard(buildingPhaseData.getHeldShipCard());
             previousState = state;
             state = State.IDLE;
-        } catch (NetworkException e) {
-            throw new RuntimeException(e);
+        }
+        catch (NetworkException e) {
+            System.out.println("Network Error:  " + e.getMessage());
         }
     }
 
@@ -795,8 +795,17 @@ public class BuildingLv2Controller extends Controller {
             stage.show();
         }
         catch (IOException exc) {
-            throw new RuntimeException(exc);
+            System.out.println("Error loading fxml:  " + exc.getMessage());
         }
+    }
+
+    private void firstRendering(){
+        cardTile.getChildren().clear();
+        setFreeShipCards();
+        slotGrid.getChildren().clear();
+        setShipBoard();
+        reservedSlots.getChildren().clear();
+        setReservedSlots();
     }
 
     @Override
@@ -808,12 +817,21 @@ public class BuildingLv2Controller extends Controller {
 
         Platform.runLater(() -> {
 
-            cardTile.getChildren().clear();
-            setFreeShipCards();
-            slotGrid.getChildren().clear();
-            setShipBoard();
-            reservedSlots.getChildren().clear();
-            setReservedSlots();
+            if (buildingPhaseData.isFreeShipCardModified()) {
+                cardTile.getChildren().clear();
+                setFreeShipCards();
+                buildingPhaseData.resetFreeShipCardModified();
+            }
+
+            if (buildingPhaseData.isShipBoardModified()) {
+                slotGrid.getChildren().clear();
+                setShipBoard();
+
+                reservedSlots.getChildren().clear();
+                setReservedSlots();
+                buildingPhaseData.resetShipBoardModified();
+            }
+            
 
             if(state == State.PLACING_FREE_SHIPCARD){
                 heldShipCardOverlay();

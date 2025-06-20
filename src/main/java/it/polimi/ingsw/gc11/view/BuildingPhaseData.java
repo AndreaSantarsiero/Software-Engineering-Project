@@ -6,7 +6,10 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -18,7 +21,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         CHOOSE_RESERVED_SHIPCARD,
         CHOOSE_SHIPCARD_TO_REMOVE, REMOVE_SHIPCARD_SETUP,
         WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
-        CHOOSE_ADVENTURE_DECK, WAIT_ADVENTURE_DECK, SHOW_ADVENTURE_DECK, RELEASE_ADVENTURE_DECK,
+        CHOOSE_ADVENTURE_DECK, WAIT_ADVENTURE_DECK, SHOW_ADVENTURE_DECK,
         RESET_TIMER,
         CHOOSE_POSITION, END_BUILDING_SETUP,
         WAITING
@@ -36,8 +39,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     private List<AdventureCard> miniDeck;
     private FlightBoard.Type flightType;
     private ArrayList<String> playersUsernames;
-    private Timer timer;
-    private int timersLeft;
 
 
 
@@ -45,14 +46,6 @@ public class  BuildingPhaseData extends GamePhaseData {
         enemiesShipBoard = new HashMap<>();
         freeShipCards = new ArrayList<>();
         state = BuildingState.CHOOSE_MAIN_MENU;
-    }
-
-    public void initialize(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType, ArrayList<String> playersUsernames){
-        this.shipBoard = shipBoard;
-        initializeFreeShipCards(freeShipCardsCount);
-        this.flightType = flightType;
-        this.playersUsernames = playersUsernames;
-        notifyListener();
     }
 
 
@@ -77,7 +70,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         if(state == BuildingState.PLACE_SHIPCARD || state == BuildingState.CHOOSE_SHIPCARD_ORIENTATION || state == BuildingState.CHOOSE_RESERVED_SHIPCARD || state == BuildingState.REMOVE_SHIPCARD_SETUP) {
             state = BuildingState.CHOOSE_SHIPCARD_ACTION;
         }
-        else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.RELEASE_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
+        else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.SHOW_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
             state = BuildingState.CHOOSE_MAIN_MENU;
         }
         else if (state.ordinal() < BuildingState.values().length - 1) {
@@ -144,6 +137,11 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
+    public void initializeShipBoard(ShipBoard shipBoard) {
+        this.shipBoard = shipBoard;
+        notifyListener();
+    }
+
     public ShipBoard getShipBoard() {
         return shipBoard;
     }
@@ -154,6 +152,10 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
+    public void initializeFlightType(FlightBoard.Type flightType) {
+        this.flightType = flightType;
+    }
+
     public FlightBoard.Type getFlightType() {
         return this.flightType;
     }
@@ -162,6 +164,10 @@ public class  BuildingPhaseData extends GamePhaseData {
         this.flightType = flightType;
     }
 
+
+    public void initializePlayersUsernames(ArrayList<String> playersUsernames) {
+        this.playersUsernames = playersUsernames;
+    }
 
     public ArrayList<String> getPlayersUsernames() {
         return playersUsernames;
