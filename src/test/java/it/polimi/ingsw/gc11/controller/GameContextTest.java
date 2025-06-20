@@ -508,13 +508,13 @@ public class GameContextTest {
     @Test
     void testEndbuilding(){
         gameContext.getGameModel().createDefinitiveDeck();
-        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 8, 8);
+        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.endBuildingLevel2("username1",1);
 
         assertThrows(IllegalStateException.class, () -> gameContext.getGameModel().endBuildingTrial("username1"),"you cannot end building more than once");
-        gameContext.placeShipCard("username2", gameContext.getFreeShipCard("username2", null), ShipCard.Orientation.DEG_0, 8, 8);
+        gameContext.placeShipCard("username2", gameContext.getFreeShipCard("username2", null), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.endBuildingLevel2("username2",2);
-        gameContext.placeShipCard("username3", gameContext.getFreeShipCard("username3", null), ShipCard.Orientation.DEG_0, 8, 8);
+        gameContext.placeShipCard("username3", gameContext.getFreeShipCard("username3", null), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.endBuildingLevel2("username3",3);
         assertThrows(IllegalArgumentException.class, () -> gameContext.getGameModel().endBuildingTrial("username4"),"username should be valid");
         assertEquals(6, gameContext.getGameModel().getPositionOnBoard("username1"), "check the right position");

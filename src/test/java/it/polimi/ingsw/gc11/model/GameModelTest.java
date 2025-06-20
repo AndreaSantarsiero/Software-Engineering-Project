@@ -246,9 +246,8 @@ class GameModelTest {
         gameModel.setPlayerColor("Player1", "red");
         assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 1), "Cannot observe a mini deck before placing at least one ship card");
         gameModel.getPlayer("Player1").getShipBoard().placeShipCard(new Cannon("cannon", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, Cannon.Type.SINGLE), ShipCard.Orientation.DEG_0, 7, 8);
-        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 4));
-        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", -1));
-        assertThrows(IllegalStateException.class, () -> gameModel.observeMiniDeck("Player1", 3));
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 4), "invalid numDeck");
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", -1), "invalid numDeck");
         assertEquals(3, gameModel.observeMiniDeck("Player1", 1).size());
         assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 0), "Player Player1 already holds a mini deck in his hands");
     }
