@@ -133,7 +133,7 @@ public class CheckTemplate extends CLITemplate {
                     if(i < 2){
                         System.out.println();
                     }
-                    else if (controller.isShipBoardLegal()) {
+                    else if (data.isShipBoardLegal()) {
                         if(i < 5){
                             printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
                         }
@@ -144,9 +144,10 @@ public class CheckTemplate extends CLITemplate {
                     else{
                         printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());
                     }
+                    menuIndex++;
                 }
                 else {
-                    if(controller.isShipBoardLegal()){
+                    if(data.isShipBoardLegal()){
                         printMenu(shipBoard, menuIndex, waitingMenu, controller.getMainMenu());
                     }
                     else {

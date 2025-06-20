@@ -16,7 +16,6 @@ public class CheckController extends CLIController {
     private final CheckPhaseData data;
     private final List<Integer> shipCardsToRemoveX;
     private final List<Integer> shipCardsToRemoveY;
-    private boolean shipBoardLegal = false;
     private int mainMenu;
     private int selectedI;
     private int selectedJ;
@@ -50,7 +49,6 @@ public class CheckController extends CLIController {
         if (!active) {
             return;
         }
-        shipBoardLegal = data.getShipBoard().checkShip();
         if(data.isStateNew()){
             if(addServerRequest()){
                 return;
@@ -91,7 +89,7 @@ public class CheckController extends CLIController {
 
     public void addInputRequest() {
         if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
-            if(!shipBoardLegal){
+            if(!data.isShipBoardLegal()){
                 mainCLI.addInputRequest(new MenuInput(data, this, template.getRepairingMenuSize(), mainMenu));
             }
             else {
@@ -110,7 +108,7 @@ public class CheckController extends CLIController {
 
     public void updateInternalState() {
         if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
-            if(!shipBoardLegal){
+            if(!data.isShipBoardLegal()){
                 switch (mainMenu) {
                     case 0 -> data.setState(CheckPhaseData.CheckState.CHOOSE_SHIPCARD_TO_REMOVE);
                     case 1 -> data.setState(CheckPhaseData.CheckState.WAIT_ENEMIES_SHIP);
@@ -171,9 +169,6 @@ public class CheckController extends CLIController {
         shipCardsToRemoveY.clear();
     }
 
-    public boolean isShipBoardLegal() {
-        return shipBoardLegal;
-    }
 
     public int getMainMenu() {
         return mainMenu;

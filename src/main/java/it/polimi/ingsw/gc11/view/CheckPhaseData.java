@@ -22,6 +22,7 @@ public class CheckPhaseData extends GamePhaseData {
     private CheckState state;
     private CheckState previousState;
     private ShipBoard shipBoard;
+    private boolean shipBoardLegal = false;
     private ArrayList<String> playersUsername;
     private final Map<String, ShipBoard> enemiesShipBoard;
 
@@ -89,7 +90,12 @@ public class CheckPhaseData extends GamePhaseData {
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
+        shipBoardLegal = shipBoard.checkShip();
         updateState();
+    }
+
+    public boolean isShipBoardLegal() {
+        return shipBoardLegal;
     }
 
 
