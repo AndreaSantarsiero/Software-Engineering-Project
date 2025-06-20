@@ -6,10 +6,8 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
 
 
 
@@ -21,7 +19,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         CHOOSE_RESERVED_SHIPCARD,
         CHOOSE_SHIPCARD_TO_REMOVE, REMOVE_SHIPCARD_SETUP,
         WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
-        CHOOSE_ADVENTURE_DECK, WAIT_ADVENTURE_DECK, SHOW_ADVENTURE_DECK,
+        CHOOSE_ADVENTURE_DECK, WAIT_ADVENTURE_DECK, SHOW_ADVENTURE_DECK, RELEASE_ADVENTURE_DECK,
         RESET_TIMER,
         CHOOSE_POSITION, END_BUILDING_SETUP,
         WAITING
@@ -31,14 +29,31 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     private BuildingState state;
     private BuildingState previousState;
-    private ShipBoard shipBoard;
-    private final Map<String, ShipBoard> enemiesShipBoard;
-    private List<ShipCard> freeShipCards;
-    private ShipCard heldShipCard;
-    private ShipCard reservedShipCard;
-    private List<AdventureCard> miniDeck;
+
     private FlightBoard.Type flightType;
     private ArrayList<String> playersUsernames;
+    private Instant expireTimerInstant;
+    private int timersLeft;
+
+    //Mutable objects
+    private ShipBoard shipBoard;
+    private boolean shipBoardModified  = false;
+
+    private final Map<String, ShipBoard> enemiesShipBoard;
+    private boolean enemiesShipBoardModified  = false;
+
+    private List<ShipCard> freeShipCards;
+    private boolean freeShipCardsModified  = false;
+
+    private ShipCard heldShipCard;
+    private boolean heldShipCardModified  = false;
+
+    private ShipCard reservedShipCard;
+    private boolean reservedShipCardModified  = false;
+
+    private List<AdventureCard> miniDeck;
+    private boolean miniDeckModified  = false;
+
 
 
 
@@ -46,6 +61,14 @@ public class  BuildingPhaseData extends GamePhaseData {
         enemiesShipBoard = new HashMap<>();
         freeShipCards = new ArrayList<>();
         state = BuildingState.CHOOSE_MAIN_MENU;
+    }
+
+    public void initialize(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType, ArrayList<String> playersUsernames){
+        this.shipBoard = shipBoard;
+        initializeFreeShipCards(freeShipCardsCount);
+        this.flightType = flightType;
+        this.playersUsernames = playersUsernames;
+        notifyListener();
     }
 
 
@@ -70,7 +93,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         if(state == BuildingState.PLACE_SHIPCARD || state == BuildingState.CHOOSE_SHIPCARD_ORIENTATION || state == BuildingState.CHOOSE_RESERVED_SHIPCARD || state == BuildingState.REMOVE_SHIPCARD_SETUP) {
             state = BuildingState.CHOOSE_SHIPCARD_ACTION;
         }
-        else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.SHOW_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
+        else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.RELEASE_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
             state = BuildingState.CHOOSE_MAIN_MENU;
         }
         else if (state.ordinal() < BuildingState.values().length - 1) {
@@ -115,6 +138,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         for (int i = 0; i < freeShipCardsCount; i++) {
             freeShipCards.add(new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE));
         }
+        this.freeShipCardsModified = true;
     }
 
     public List<ShipCard> getFreeShipCards(){
@@ -124,6 +148,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setFreeShipCards(List<ShipCard> freeShipCards, int freeShipCardsCount, boolean updateState) {
         actualizePreviousState();
         this.freeShipCards = freeShipCards;
+        this.freeShipCardsModified = true;
         StructuralModule covered = new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
         for (int i = freeShipCards.size(); i < freeShipCardsCount; i++) {
             freeShipCards.add(covered);
@@ -137,24 +162,16 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
-    public void initializeShipBoard(ShipBoard shipBoard) {
-        this.shipBoard = shipBoard;
-        notifyListener();
-    }
-
     public ShipBoard getShipBoard() {
         return shipBoard;
     }
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
+        this.shipBoardModified = true;
         updateState();
     }
 
-
-    public void initializeFlightType(FlightBoard.Type flightType) {
-        this.flightType = flightType;
-    }
 
     public FlightBoard.Type getFlightType() {
         return this.flightType;
@@ -164,10 +181,6 @@ public class  BuildingPhaseData extends GamePhaseData {
         this.flightType = flightType;
     }
 
-
-    public void initializePlayersUsernames(ArrayList<String> playersUsernames) {
-        this.playersUsernames = playersUsernames;
-    }
 
     public ArrayList<String> getPlayersUsernames() {
         return playersUsernames;
@@ -185,6 +198,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         actualizePreviousState();
         this.enemiesShipBoard.put(username, shipBoard);
+        this.enemiesShipBoardModified = true;
         notifyListener();
     }
 
@@ -195,6 +209,7 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setHeldShipCard(ShipCard heldShipCard, List<ShipCard> availableShipCards, int availableShipCardsCount) {
         this.heldShipCard = heldShipCard;
+        this.heldShipCardModified = true;
         setFreeShipCards(availableShipCards, availableShipCardsCount, true);
     }
 
@@ -205,6 +220,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setReservedShipCard(ShipCard reservedShipCard){
         if(reservedShipCard != null){
             this.reservedShipCard = reservedShipCard;
+            this.reservedShipCardModified = true;
             shipBoard.getReservedComponents().remove(reservedShipCard);
         }
         else {
@@ -215,6 +231,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void abortUseReservedShipCard(){
         reservedShipCard.setOrientation(ShipCard.Orientation.DEG_0);
         shipBoard.reserveShipCard(reservedShipCard);
+        this.reservedShipCardModified = true;
         reservedShipCard = null;
         setState(BuildingState.CHOOSE_MAIN_MENU);
     }
@@ -226,6 +243,7 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setMiniDeck(List<AdventureCard> miniDeck) {
         this.miniDeck = miniDeck;
+        this.miniDeckModified = true;
         for(AdventureCard adventureCard : miniDeck){
             adventureCard.useCard();
         }
@@ -246,6 +264,56 @@ public class  BuildingPhaseData extends GamePhaseData {
         reservedShipCard = null;
     }
 
+    public boolean isShipBoardModified(){
+        return this.shipBoardModified;
+    }
+
+    public boolean isEnemiesShipBoardModified(){
+        return this.enemiesShipBoardModified;
+    }
+
+    public boolean isFreeShipCardModified(){
+        return this.freeShipCardsModified;
+    }
+
+    public boolean isHeldShipCardModified(){
+        return this.heldShipCardModified;
+    }
+
+    public boolean isReservedShipCardModified(){
+        return this.reservedShipCardModified;
+    }
+
+
+    public boolean isMiniDeckModified(){
+        return this.miniDeckModified;
+    }
+
+
+    public void resetShipBoardModified(){
+        this.shipBoardModified = false;
+    }
+
+    public void resetEnemiesShipBoardModified(){
+        this.enemiesShipBoardModified = false;
+    }
+
+    public void resetFreeShipCardModified(){
+        this.freeShipCardsModified = false;
+    }
+
+    public void resetHeldShipCardModified(){
+        this.heldShipCardModified = false;
+    }
+
+    public void resetReservedShipCardModified(){
+        this.reservedShipCardModified = false;
+    }
+
+
+    public void resetMiniDeckModified(){
+        this.miniDeckModified = false;
+    }
 
 
     @Override
