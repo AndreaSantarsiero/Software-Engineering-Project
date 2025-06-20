@@ -318,13 +318,20 @@ public abstract class ShipBoard  implements Serializable {
      * @throws IllegalArgumentException if the card is already null
      */
     public void destroyShipCard(int x, int y) {
+        if (x == 7 && y == 7) {
+            throw new IllegalArgumentException("Cannot destroy the Central unit");
+        }
         int i = adaptY(y);
         int j = adaptX(x);
         checkIndexes(j, i);
+
         if (components[i][j] == null) {
-            throw new IllegalArgumentException("Ship card already null");
+            throw new IllegalArgumentException("Ship card is null");
         }
-        ShipCard shipCard = components[i][j];
+        if (components[i][j].isScrap()){
+            throw new IllegalArgumentException("Ship card already destroyed");
+        }
+
         components[i][j].unPlace(this);
         components[i][j] = null;
     }

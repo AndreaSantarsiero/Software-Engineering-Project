@@ -29,7 +29,9 @@ public class RepairShipAction extends ClientGameAction {
                 UpdateShipBoardAction response = new UpdateShipBoardAction(shipBoard);
                 context.sendAction(username, response);
             }
-        } catch (Exception e){
+        }
+        catch (IllegalArgumentException ignored) {}
+        catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
         }
