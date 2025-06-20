@@ -23,6 +23,9 @@ public class BuildingTemplate extends CLITemplate {
     private static final List<String> title = List.of("╔╗ ╦ ╦╦╦  ╔╦╗╦╔╗╔╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗",
                                                       "╠╩╗║ ║║║   ║║║║║║║ ╦  ╠═╝╠═╣╠═╣╚═╗║╣ ",
                                                       "╚═╝╚═╝╩╩═╝═╩╝╩╝╚╝╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
+    private static final List<String> waitingMessage = List.of("┬ ┬┌─┐┬┌┬┐┬┌┐┌┌─┐  ┌─┐┌┬┐┬ ┬┌─┐┬─┐  ┌─┐┬  ┌─┐┬ ┬┌─┐┬─┐┌─┐       ",
+                                                               "│││├─┤│ │ │││││ ┬  │ │ │ ├─┤├┤ ├┬┘  ├─┘│  ├─┤└┬┘├┤ ├┬┘└─┐       ",
+                                                               "└┴┘┴ ┴┴ ┴ ┴┘└┘└─┘  └─┘ ┴ ┴ ┴└─┘┴└─  ┴  ┴─┘┴ ┴ ┴ └─┘┴└─└─┘o  o  o");
     private static final List<List<String>> mainMenu = List.of(
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌─┐┬─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   ├┤ ├┬┘├┤ ├┤   └─┐├─┤│├─┘│  ├─┤├┬┘ ││",
@@ -340,6 +343,9 @@ public class BuildingTemplate extends CLITemplate {
                     }
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
                         printMenu(shipBoard, menuIndex, advancedMenu, controller.getAdvancedMenu());
+                    }
+                    else if(data.getState() == BuildingPhaseData.BuildingState.WAITING){
+                        printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
                     }
                     else {
                         printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());

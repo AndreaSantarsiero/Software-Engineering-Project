@@ -340,7 +340,7 @@ public class GameModel {
 
         for(Map.Entry<String, AdventureDeck> entry : heldMiniDecks.entrySet()){
             if(entry.getValue().equals(requestedMiniDeck)){
-                throw new IllegalStateException(entry.getKey() + " is already observing this mini deck in this moment");
+                throw new IllegalStateException(entry.getKey() + " is already observing this mini deck");
             }
         }
 

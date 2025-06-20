@@ -128,7 +128,7 @@ public class BuildingController extends CLIController {
                     mainCLI.getVirtualServer().endBuildingTrial();
                 }
                 else{
-                    mainCLI.getVirtualServer().endBuildingLevel2(endBuildingMenu);
+                    mainCLI.getVirtualServer().endBuildingLevel2(endBuildingMenu + 1);
                 }
                 return true;
             }
