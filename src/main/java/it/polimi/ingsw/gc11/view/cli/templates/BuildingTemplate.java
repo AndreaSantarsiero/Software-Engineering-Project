@@ -134,6 +134,7 @@ public class BuildingTemplate extends CLITemplate {
 
 
     public void render() {
+        controller.setLastTemplateRender(Instant.now());
         BuildingPhaseData data = controller.getPhaseData();
         clearView();
         ShipBoard shipBoard = data.getShipBoard();

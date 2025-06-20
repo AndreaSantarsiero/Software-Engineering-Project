@@ -44,7 +44,6 @@ public class BuildingController extends CLIController {
             while (active) {
                 if (Duration.between(lastTemplateRender, Instant.now()).toMillis() >= 5000) {
                     template.render();
-                    lastTemplateRender = Instant.now();
                 }
             }
         });
@@ -54,6 +53,10 @@ public class BuildingController extends CLIController {
 
     public BuildingPhaseData getPhaseData() {
         return data;
+    }
+
+    public void setLastTemplateRender(Instant lastTemplateRender) {
+        this.lastTemplateRender = lastTemplateRender;
     }
 
 
@@ -74,7 +77,6 @@ public class BuildingController extends CLIController {
 
     @Override
     public void update (BuildingPhaseData buildingPhaseData) {
-        lastTemplateRender = Instant.now();
         if (!active) {
             return;
         }
