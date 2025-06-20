@@ -8,10 +8,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 
@@ -274,8 +271,16 @@ public class BuildingPhaseLv2 extends GamePhase {
         checkPhase.initialize();
 
         if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
-            SetCheckPhaseAction send = new SetCheckPhaseAction();
-            for (Player p : gameModel.getPlayers()) {
+            GameModel gameModel = gameContext.getGameModel();
+            ArrayList<String> allPlayersUsernames = new ArrayList<>();
+            for (Player player : gameModel.getPlayers()) {
+                allPlayersUsernames.add(player.getUsername());
+            }
+
+            for (Player p : gameContext.getGameModel().getPlayers()) {
+                ArrayList<String> othersPlayers = new ArrayList<>(allPlayersUsernames);
+                othersPlayers.remove(p.getUsername());
+                SetCheckPhaseAction send = new SetCheckPhaseAction(p.getShipBoard(), othersPlayers);
                 gameContext.sendAction(p.getUsername(), send);
             }
         }

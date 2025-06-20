@@ -31,7 +31,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private BuildingState previousState;
 
     private FlightBoard.Type flightType;
-    private ArrayList<String> playersUsernames;
+    private ArrayList<String> playersUsername;
     private Instant expireTimerInstant;
     private int timersLeft;
 
@@ -67,7 +67,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         this.shipBoard = shipBoard;
         initializeFreeShipCards(freeShipCardsCount);
         this.flightType = flightType;
-        this.playersUsernames = playersUsernames;
+        this.playersUsername = playersUsernames;
         this.expireTimerInstant = expireTimerInstant;
         this.timersLeft = timersLeft;
         notifyListener();
@@ -184,12 +184,12 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
-    public ArrayList<String> getPlayersUsernames() {
-        return playersUsernames;
+    public ArrayList<String> getPlayersUsername() {
+        return playersUsername;
     }
 
-    public void setPlayersUsernames(ArrayList<String> playersUsernames) {
-        this.playersUsernames = playersUsernames;
+    public void setPlayersUsername(ArrayList<String> playersUsername) {
+        this.playersUsername = playersUsername;
     }
 
 

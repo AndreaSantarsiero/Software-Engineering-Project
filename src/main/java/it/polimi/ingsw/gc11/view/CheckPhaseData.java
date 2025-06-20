@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,13 +21,21 @@ public class CheckPhaseData extends GamePhaseData {
 
 
     private CheckState state;
-    private CheckState previousState;private ShipBoard shipBoard;
+    private CheckState previousState;
+    private ShipBoard shipBoard;
+    private ArrayList<String> playersUsername;
     private final Map<String, ShipBoard> enemiesShipBoard;
 
 
 
     public CheckPhaseData() {
         enemiesShipBoard = new HashMap<>();
+    }
+
+    public void initialize(ShipBoard shipBoard, ArrayList<String> playersUsername){
+        this.shipBoard = shipBoard;
+        this.playersUsername = playersUsername;
+        notifyListener();
     }
 
 
@@ -90,6 +99,16 @@ public class CheckPhaseData extends GamePhaseData {
         this.shipBoard = shipBoard;
         notifyListener();
     }
+
+
+    public ArrayList<String> getPlayersUsername() {
+        return playersUsername;
+    }
+
+    public void setPlayersUsername(ArrayList<String> playersUsername) {
+        this.playersUsername = playersUsername;
+    }
+
 
     public Map<String, ShipBoard> getEnemiesShipBoard() {
         return enemiesShipBoard;

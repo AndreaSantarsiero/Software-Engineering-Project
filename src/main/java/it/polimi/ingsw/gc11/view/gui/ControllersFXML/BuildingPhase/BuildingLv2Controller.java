@@ -33,10 +33,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
+
+
 
 public class BuildingLv2Controller extends Controller {
 
@@ -763,7 +764,7 @@ public class BuildingLv2Controller extends Controller {
 
     //Setup of buttons to see enemies' shipboards
     private void setupOthersPlayersButtons(){
-        for(String player : buildingPhaseData.getPlayersUsernames()){
+        for(String player : buildingPhaseData.getPlayersUsername()){
             Button playerButton = new Button();
             playerButton.setText(player);
             playerButton.setOnMouseClicked(e -> {

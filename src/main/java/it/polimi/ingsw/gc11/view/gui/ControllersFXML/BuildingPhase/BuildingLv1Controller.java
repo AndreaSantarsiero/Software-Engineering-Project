@@ -2,24 +2,18 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
-import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
-import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase.LobbyController;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableNumberValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,14 +32,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.stage.WindowEvent;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
+
+
 
 public class BuildingLv1Controller extends Controller {
 
@@ -763,7 +755,7 @@ public class BuildingLv1Controller extends Controller {
     }
 
     private void setupOthersPlayersButtons(){
-        for(String player : buildingPhaseData.getPlayersUsernames()){
+        for(String player : buildingPhaseData.getPlayersUsername()){
             Button playerButton = new Button();
             playerButton.setText(player);
             playerButton.setOnMouseClicked(e -> {

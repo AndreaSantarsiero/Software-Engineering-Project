@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 
 
+
 public class SetBuildingPhaseAction extends ServerAction {
 
     private final ShipBoard shipBoard;
@@ -27,10 +28,6 @@ public class SetBuildingPhaseAction extends ServerAction {
         this.timersLeft = timersLeft;
     }
 
-
-    public ShipBoard getShipBoard() {
-        return shipBoard;
-    }
 
 
     @Override public void loadData(JoiningPhaseData joiningPhaseData) {}
