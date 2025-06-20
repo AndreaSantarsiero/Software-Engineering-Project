@@ -34,7 +34,7 @@ public class AdventureTemplate extends CLITemplate {
         System.out.println("╔═╗╔╦╗╦  ╦╔═╗╔╗╔╔╦╗╦ ╦╦═╗╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
                            "╠═╣ ║║╚╗╔╝║╣ ║║║ ║ ║ ║╠╦╝║╣   ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
                            "╩ ╩═╩╝ ╚╝ ╚═╝╝╚╝ ╩ ╚═╝╩╚═╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
-        ShipBoard shipBoard = data.getMyShipBoard();
+        ShipBoard shipBoard = data.getPlayer().getShipBoard();
         int menuIndex = 0;
 
 

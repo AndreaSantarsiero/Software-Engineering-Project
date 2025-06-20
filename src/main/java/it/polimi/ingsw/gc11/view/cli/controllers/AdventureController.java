@@ -81,10 +81,10 @@ public class AdventureController extends CLIController {
     }
 
     public int getSelectedY(){
-        return selectedI - data.getMyShipBoard().adaptY(0);
+        return selectedI - data.getPlayer().getShipBoard().adaptY(0);
     }
 
     public int getSelectedX(){
-        return selectedJ - data.getMyShipBoard().adaptX(0);
+        return selectedJ - data.getPlayer().getShipBoard().adaptX(0);
     }
 }
