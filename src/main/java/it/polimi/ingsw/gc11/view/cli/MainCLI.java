@@ -188,9 +188,14 @@ public class MainCLI {
         data.setListener(new BuildingController(this, (BuildingPhaseData) data));
     }
 
-    public void changeController(BuildingController buildingController) {
+    public void changeController(BuildingController buildingController, boolean skippingCheckPhase) {
         GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new CheckController(this, (CheckPhaseData) data));
+        if (skippingCheckPhase) {
+            data.setListener(new AdventureController(this, (AdventurePhaseData) data));
+        }
+        else {
+            data.setListener(new CheckController(this, (CheckPhaseData) data));
+        }
     }
 
     public void changeController(CheckController checkController) {

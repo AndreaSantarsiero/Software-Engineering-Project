@@ -43,7 +43,13 @@ public class BuildingController extends CLIController {
     @Override
     public void change(){
         active = false;
-        mainCLI.changeController(this);
+        mainCLI.changeController(this, false);
+    }
+
+    @Override
+    public void change(boolean skippingCheckPhase){
+        active = false;
+        mainCLI.changeController(this, true);
     }
 
 

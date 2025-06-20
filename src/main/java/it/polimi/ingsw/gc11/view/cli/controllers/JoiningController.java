@@ -136,8 +136,11 @@ public class JoiningController extends CLIController {
             if(createOrJoinMenu == 0) {
                 data.setState(JoiningPhaseData.JoiningState.CHOOSE_LEVEL);
             }
-            else {
+            else if(createOrJoinMenu == 1) {
                 data.setState(JoiningPhaseData.JoiningState.CHOOSE_GAME);
+            }
+            else if(createOrJoinMenu == 2) {
+                mainCLI.getContext().kill(mainCLI);
             }
         }
         else {

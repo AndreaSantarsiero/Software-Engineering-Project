@@ -28,8 +28,14 @@ public class PlayerContext {
         mainCLI.shutdown();
     }
 
+
+
     public void setJoiningPhase() {
+        Controller oldListener = currentPhase.getListener();
         this.currentPhase = new JoiningPhaseData();
+        if (oldListener != null) {
+            oldListener.change();
+        }
     }
 
     public void setBuildingPhase() {
@@ -49,10 +55,22 @@ public class PlayerContext {
     }
 
     public void setAdventurePhase() {
+        boolean skippingCheckPhase = false;
+        try{
+            CheckPhaseData checkPhaseData = (CheckPhaseData) currentPhase;
+        } catch (ClassCastException e){
+            skippingCheckPhase = true;
+        }
+
         Controller oldListener = currentPhase.getListener();
         this.currentPhase = new AdventurePhaseData();
         if (oldListener != null) {
-            oldListener.change();
+            if(skippingCheckPhase){
+                oldListener.change(true);
+            }
+            else {
+                oldListener.change();
+            }
         }
     }
 
