@@ -19,8 +19,8 @@ import java.util.Map;
 //Adventure Context
 public class AdventurePhase extends GamePhase {
 
-    private GameContext gameContext;
-    private GameModel gameModel;
+    private final GameContext gameContext;
+    private final GameModel gameModel;
     private AdventureState advState;
     private AdventureCard drawnAdvCard;
     private int idxCurrentPlayer;

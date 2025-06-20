@@ -40,7 +40,6 @@ public class BuildingTemplate extends CLITemplate {
                     "├─┤ ││└┐┌┘├─┤││││  ├┤  ││  │││├┤ ││││ │",
                     "┴ ┴─┴┘ └┘ ┴ ┴┘└┘└─┘└─┘─┴┘  ┴ ┴└─┘┘└┘└─┘")
     );
-    //"Take a free Ship Card", "See adventure card decks", "See enemies ships"
     //https://manytools.org/hacker-tools/ascii-banner/
     //style Calvin S
     private static final List<List<String>> advancedMenu = List.of(

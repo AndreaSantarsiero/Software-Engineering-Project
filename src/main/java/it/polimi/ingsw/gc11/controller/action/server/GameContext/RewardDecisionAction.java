@@ -5,13 +5,18 @@ import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.model.Player;
 
+
+
 public class RewardDecisionAction extends ClientGameAction {
+
     private final boolean decision;
+
 
     public RewardDecisionAction(String username, boolean decision) {
         super(username);
         this.decision = decision;
     }
+
 
     @Override
     public void execute(GameContext context) {
@@ -21,7 +26,7 @@ public class RewardDecisionAction extends ClientGameAction {
             //Invio il cambiamento della posizione sulla flightboard del player che ha giocato la carta a tutti i player
             for(Player p : context.getGameModel().getPlayers()) {
                 if(!p.isAbort()){
-                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, context.getGameModel().getPositionOnBoard(p.getUsername()));
+                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player);
                     context.sendAction(p.getUsername(), response);
                 }
             }

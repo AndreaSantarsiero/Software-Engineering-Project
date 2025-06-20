@@ -1,22 +1,31 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
 public class AdventureTemplate extends CLITemplate {
 
-    private AdventureController controller;
+    private final AdventureController controller;
     private static final int rowCount = 10;
     private static final List<List<String>> mainMenu = List.of(
+            List.of("┌┬┐┌─┐┬┌─┌─┐  ┌┐┌┌─┐┬ ┬  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    " │ ├─┤├┴┐├┤   │││├┤ │││  ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    " ┴ ┴ ┴┴ ┴└─┘  ┘└┘└─┘└┴┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
             List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
                     "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
-                    "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  ")
+                    "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
+            List.of("┌─┐┌┐ ┌─┐┬─┐┌┬┐  ┌─┐┬  ┬┌─┐┬ ┬┌┬┐",
+                    "├─┤├┴┐│ │├┬┘ │   ├┤ │  ││ ┬├─┤ │ ",
+                    "┴ ┴└─┘└─┘┴└─ ┴   └  ┴─┘┴└─┘┴ ┴ ┴")
     );
 
 
@@ -38,13 +47,18 @@ public class AdventureTemplate extends CLITemplate {
         int menuIndex = 0;
 
 
-//        if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
-//            printEnemiesShipBoard(data.getEnemiesShipBoard());
-//            for (int i = 0; i < pressEnterToContinue.size(); i++) {
-//                System.out.println(pressEnterToContinue.get(i));
-//            }
-//            return;
-//        }
+        if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
+            Map<String, ShipBoard> enemiesShipBoard = new HashMap<>();
+            for(Map.Entry<String, Player> entry : data.getPlayers().entrySet()){
+                enemiesShipBoard.put(entry.getKey(), entry.getValue().getShipBoard());
+            }
+
+            printEnemiesShipBoard(enemiesShipBoard);
+            for (int i = 0; i < pressEnterToContinue.size(); i++) {
+                System.out.println(pressEnterToContinue.get(i));
+            }
+            return;
+        }
 
 
 
@@ -129,5 +143,15 @@ public class AdventureTemplate extends CLITemplate {
             System.out.println(Ansi.ansi().fg(Ansi.Color.RED) + serverMessage.toUpperCase() + Ansi.ansi().reset());
             data.resetServerMessage();
         }
+    }
+
+
+
+    public int getRowCount(){
+        return rowCount;
+    }
+
+    public int getMainMenuSize(){
+        return mainMenu.size();
     }
 }

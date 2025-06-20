@@ -8,6 +8,16 @@ import java.util.List;
 
 
 public class EndPhaseData extends GamePhaseData {
+
+    public enum EndState {
+        CHOOSE_MAIN_MENU,
+        WAITING
+    }
+
+
+
+    private EndState state;
+    private EndState previousState;
     private Player player;
     private List<Player> players; //list of enemies players
 
@@ -24,6 +34,37 @@ public class EndPhaseData extends GamePhaseData {
         if(listener != null) {
             listener.update(this);
         }
+    }
+
+
+
+    public EndState getState() {
+        return state;
+    }
+
+    @Override
+    public void updateState() {
+        actualizePreviousState();
+
+        if (state.ordinal() < EndState.values().length - 1) {
+            state = EndState.values()[state.ordinal() + 1];
+        }
+
+        notifyListener();
+    }
+
+    public void setState(EndState state) {
+        actualizePreviousState();
+        this.state = state;
+        notifyListener();
+    }
+
+    public void actualizePreviousState() {
+        previousState = state;
+    }
+
+    public boolean isStateNew() {
+        return !state.equals(previousState);
     }
 
 

@@ -327,8 +327,6 @@ public class GameContext {
 
 
     //CheckPhase
-
-    //Da implementare a livello di rete
     /**
      * Repairs a ship by removing selected cards.
      *
@@ -353,7 +351,7 @@ public class GameContext {
 
 
 
-    //AdventurePhase, devono ritornare Player
+    //AdventurePhase (must return Player instance)
     /**
      * Allows the first player in the turn order to draw the current adventure card.
      *

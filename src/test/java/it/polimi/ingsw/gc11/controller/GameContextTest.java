@@ -29,7 +29,6 @@ import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
 import it.polimi.ingsw.gc11.controller.dumbClient.DumbPlayerContext;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.controller.network.server.VirtualClient;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
@@ -108,7 +107,7 @@ public class GameContextTest {
     }
 
     @BeforeEach
-    void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException, FullLobbyException {
+    void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException {
         serverController = new ServerController(RMIPort, socketPort);
         Thread.sleep(20);  //waiting for the server to start up
 
@@ -187,7 +186,7 @@ public class GameContextTest {
         gameContext.chooseColor("username1", "blue");
         assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username1", "red"), "you cannot change color");
         gameContext.connectPlayerToGame("username2");
-        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username2", "blue"),  "color already choosen");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username2", "blue"),  "color already chosen");
         gameContext.chooseColor("username2", "red");
     }
 
@@ -223,7 +222,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testNullGetFreeShipcard(){
+    void testNullGetFreeShipCard(){
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard(null, null), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("invalidUsername", null), "username should be valid");
     }
@@ -237,14 +236,14 @@ public class GameContextTest {
     }
 
     @Test
-    void testRelaseShipCardIllegalArgument(){
+    void testReleaseShipCardIllegalArgument(){
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard(null, null), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("", null), "username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("invalidUsername", null), "username should be valid");
     }
 
     @Test
-    void testRelaseShipCards(){
+    void testReleaseShipCards(){
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "this player don't have any shipCard in hand");
         ShipCard shipCard = gameContext.getFreeShipCard("username1", null);
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "shipCard cannot be null");
@@ -287,7 +286,7 @@ public class GameContextTest {
         assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("invalidUsername", 7,7), "username should be valid");
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("username1", -1, 7), "coordinates should be valid");
-        assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("username1", 7, 7), "do not exixts eny shipCard in this position");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard("username1", 7, 7), "do not exists eny shipCard in this position");
     }
 
     @Test
@@ -295,15 +294,15 @@ public class GameContextTest {
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6);
         ShipBoard old = SerializationUtils.clone(gameContext.getGameModel().getPlayerShipBoard("username1"));
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 8);
-        assertNotEquals(gameContext.getGameModel().getPlayerShipBoard("username1"), old, "shipBorard cannot be equals after placement");
+        assertNotEquals(gameContext.getGameModel().getPlayerShipBoard("username1"), old, "shipBoard cannot be equals after placement");
         gameContext.removeShipCard("username1", 7, 8);
-        assertEquals(gameContext.getGameModel().getPlayerShipBoard("username1"), old, "shipBorard cannot be equals after removement");
+        assertEquals(gameContext.getGameModel().getPlayerShipBoard("username1"), old, "shipBoard cannot be equals after removing a ship card");
     }
 
     @Test
     void testReserveShipCardInvalid(){
         assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username", gameContext.getFreeShipCard("username", null)),"username cannot be illegal");
-        assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("id", ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE)), "you cannot reserve a shipcard if you did take it in hand");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("id", ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE)), "you cannot reserve a ship card if you did take it in hand");
     }
 
     @Test
@@ -320,7 +319,7 @@ public class GameContextTest {
     void testUseReservedShipCardInvalidArguments() {
         gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", null));
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username", gameContext.getGameModel().getPlayerShipBoard("username").getReservedComponents().getFirst(), ShipCard.Orientation.DEG_0, 7, 7),"username cannot be illegal");
-        assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username1", new StructuralModule("testmodule", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 7, 7),"you cannot use this component if you didn't reserve it befoe");
+        assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username1", new StructuralModule("testModule", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 7, 7),"you cannot use this component if you didn't reserve it before");
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username1", gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().getFirst(), ShipCard.Orientation.DEG_0, -1, 7),"coordinates should be valid");
     }
 
@@ -378,13 +377,13 @@ public class GameContextTest {
     void testGetAdvCardValid(){
         goToAdvPhase();
         assertInstanceOf(AdventureCard.class, gameContext.getAdventureCard("username1"),"should be returned an adventure card");
-        AdventurePhase advphase = (AdventurePhase) gameContext.getPhase();
-        advphase.setAdvState(new IdleState(advphase));
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setAdvState(new IdleState(advPhase));
         AdventureCard advCard1 = gameContext.getAdventureCard("username1");
-        advphase.setAdvState(new IdleState(advphase));
+        advPhase.setAdvState(new IdleState(advPhase));
         AdventureCard advCard2 = gameContext.getAdventureCard("username1");
 
-        assertNotEquals(advCard1, advCard2,"the adventure card should be removed after drawed");
+        assertNotEquals(advCard1, advCard2,"the adventure card should be removed after being drew");
     }
 
     @Test
@@ -398,7 +397,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedStationState(advPhase));
 
-        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card becouse members number is not enough");
+        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card because members number is not enough");
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
@@ -420,7 +419,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new AbandonedShipState(advPhase));
 
-        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card becouse members number is not enough");
+        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"),"you cannot accept this card because members number is not enough");
 
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
         gameContext.getGameModel().getPlayer("username1").getShipBoard().placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
@@ -532,14 +531,14 @@ public class GameContextTest {
     }
 
     @Test
-    void testEndbuildingInvalid(){
+    void testEndBuildingInvalid(){
         goToAdvPhase();
         assertInstanceOf(AdventurePhase.class, gameContext.getPhase(),"check right phase");
         assertThrows(IllegalStateException.class, () -> gameContext.endBuildingTrial("username1"),"you cannot end building in teh adventure state");
     }
 
     @Test
-    void testkillMembers(){
+    void testKillMembers(){
         AdventureCard advCard;
         AdventurePhase advPhase;
         goToAdvPhase();
@@ -703,7 +702,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testChooseFirePowerInvalidArgumentsCombactZone1() {
+    void testChooseFirePowerInvalidArgumentsCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
         goToAdvPhase();
@@ -739,7 +738,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testChooseFirePowerInvalidArgumentsCombactZone2() {
+    void testChooseFirePowerInvalidArgumentsCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
         goToAdvPhase();
@@ -808,7 +807,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testChooseFirePowerValidSmuglers() {
+    void testChooseFirePowerValidSmugglers() {
         AdventureCard advCard;
         AdventurePhase advPhase;
         goToAdvPhase();
@@ -1183,7 +1182,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testGetCoordinateInvalidArgumentscombatZone1() {
+    void testGetCoordinateInvalidArgumentsCombatZone1() {
         AdventureCard advCard;
         AdventurePhase advPhase;
         goToAdvPhase();
@@ -1221,7 +1220,7 @@ public class GameContextTest {
     }
 
     @Test
-    void testGetCoordinateInvalidArgumentscombatZone2() {
+    void testGetCoordinateInvalidArgumentsCombatZone2() {
         AdventureCard advCard;
         AdventurePhase advPhase;
         goToAdvPhase();
@@ -1758,7 +1757,7 @@ public class GameContextTest {
     // ------------------- Abandoned-Station & Choose-Material-Station -------------------
 
     @Test
-    void testChooseMaterialsWrongUserAndNotEnoughMembers() throws Exception {
+    void testChooseMaterialsWrongUserAndNotEnoughMembers() {
 
         // porta il contesto nella AdventurePhase con username1 di turno
         goToAdvPhase();
