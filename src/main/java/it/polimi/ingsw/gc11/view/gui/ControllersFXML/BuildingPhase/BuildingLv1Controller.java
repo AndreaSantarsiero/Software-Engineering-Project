@@ -795,6 +795,12 @@ public class BuildingLv1Controller extends Controller {
     }
 
     public void endBuilding(ActionEvent actionEvent) {
+        try {
+            virtualServer.endBuildingTrial();
+            //scena d'attesa
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
