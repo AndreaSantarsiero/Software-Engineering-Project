@@ -36,9 +36,7 @@ public class BuildingController extends CLIController {
         this.data = data;
         this.template = new BuildingTemplate(this);
         lastTemplateRender = Instant.now();
-        if(data.getFlightType().equals(FlightBoard.Type.LEVEL2)) {
-            startTimerUpdater();
-        }
+        startTimerUpdater();
     }
 
     private void startTimerUpdater() {
