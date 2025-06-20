@@ -162,7 +162,7 @@ public abstract class GamePhase {
      * @param username the player's username
      * @throws IllegalStateException if the operation is not permitted in this phase
      */
-    public void endBuilding(String username) {
+    public void endBuildingTrial(String username) {
         throw new IllegalStateException("Can't end building in the current game phase: " + getPhaseName());
     }
 
@@ -173,7 +173,7 @@ public abstract class GamePhase {
      * @param pos the position to assign
      * @throws IllegalStateException if the operation is not permitted in this phase
      */
-    public void endBuilding(String username, int pos) {
+    public void endBuildingLevel2(String username, int pos) {
         throw new IllegalStateException("Can't end building in the current game phase: " + getPhaseName());
     }
 

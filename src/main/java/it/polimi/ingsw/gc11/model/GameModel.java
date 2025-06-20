@@ -609,7 +609,39 @@ public class GameModel {
 
     }
 
-    public void endBuilding(String username, int pos){
+
+
+    public void endBuildingTrial(String username){
+        checkPlayerUsername(username);
+        checkHeldMiniDeck(username);
+        int pos = 1;
+
+        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
+            throw new IllegalStateException("you can't call this mathod in trial level");
+        }
+
+        for(Player player : players){
+            if(player.getUsername().equals(username)){
+                if(player.getPosition() == -1){
+                    for(Player p : players){
+                        if(p.getPosition() != -1){
+                            pos++;
+                        }
+                    }
+                    Collections.swap(players, players.indexOf(player), pos-1);
+                    flightBoard.initializePosition(player, pos);
+                    return;
+                }
+                else{
+                    throw new IllegalStateException("Player " + username + " is already landed");
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("Player " + username + " not found");
+    }
+
+    public void endBuildingLevel2(String username, int pos){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
         if(getFlightBoard().getType() != FlightBoard.Type.LEVEL2){
@@ -647,36 +679,5 @@ public class GameModel {
 
         Collections.swap(players, players.indexOf(getPlayer(username)), pos-1);
         flightBoard.initializePosition(getPlayer(username), pos);
-    }
-
-
-    public void endBuilding(String username){
-        checkPlayerUsername(username);
-        checkHeldMiniDeck(username);
-        int pos = 1;
-
-        if(getFlightBoard().getType() != FlightBoard.Type.TRIAL){
-            throw new IllegalStateException("you can't call this mathod in trial level");
-        }
-
-        for(Player player : players){
-            if(player.getUsername().equals(username)){
-                if(player.getPosition() == -1){
-                    for(Player p : players){
-                        if(p.getPosition() != -1){
-                            pos++;
-                        }
-                    }
-                    Collections.swap(players, players.indexOf(player), pos-1);
-                    flightBoard.initializePosition(player, pos);
-                    return;
-                }
-                else{
-                    throw new IllegalStateException("Player " + username + " is already landed");
-                }
-            }
-        }
-
-        throw new IllegalArgumentException("Player " + username + " not found");
     }
 }

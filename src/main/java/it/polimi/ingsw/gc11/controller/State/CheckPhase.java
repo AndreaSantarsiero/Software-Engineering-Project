@@ -89,7 +89,7 @@ public class CheckPhase extends GamePhase {
 
         if (player.getShipBoard().checkShip()){
             this.badShipPlayers.remove(player);
-            this.gameModel.endBuilding(username);//Player position is set to the first available
+            this.gameModel.endBuildingTrial(username);//Player position is set to the first available
             if (this.badShipPlayers.isEmpty()) {
                 this.gameContext.setPhase(new AdventurePhase(this.gameContext));
             }
@@ -114,7 +114,7 @@ public class CheckPhase extends GamePhase {
             throw new IllegalStateException("You can't change your position because you have to repair your ship.");
         }
 
-        this.gameModel.endBuilding(username, pos);
+        this.gameModel.endBuildingLevel2(username, pos);
     }
 
     /**

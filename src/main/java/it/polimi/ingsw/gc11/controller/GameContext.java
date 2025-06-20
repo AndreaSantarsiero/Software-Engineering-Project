@@ -286,8 +286,8 @@ public class GameContext {
      *
      * @param username The player ending their turn.
      */
-    public void endBuilding(String username){
-        phase.endBuilding(username);
+    public void endBuildingTrial(String username){
+        phase.endBuildingTrial(username);
     }
 
     //Da implementare a livello di rete
@@ -297,8 +297,8 @@ public class GameContext {
      * @param username The player ending the building.
      * @param pos      The selected position.
      */
-    public void endBuilding(String username, int pos){
-        phase.endBuilding(username, pos);
+    public void endBuildingLevel2(String username, int pos){
+        phase.endBuildingLevel2(username, pos);
     }
 
 

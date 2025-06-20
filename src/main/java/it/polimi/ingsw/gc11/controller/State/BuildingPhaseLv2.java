@@ -230,7 +230,7 @@ public class BuildingPhaseLv2 extends GamePhase {
      * @throws IllegalStateException if the player has already ended building
      */
     @Override
-    public void endBuilding(String username, int pos){
+    public void endBuildingLevel2(String username, int pos){
 
         for(Player player : playersFinished){
             if (player.getUsername().equals(username)){
@@ -238,7 +238,7 @@ public class BuildingPhaseLv2 extends GamePhase {
             }
         }
 
-        gameModel.endBuilding(username, pos);
+        gameModel.endBuildingLevel2(username, pos);
         this.playersFinished.add(gameModel.getPlayer(username));
         if (this.playersFinished.size() == gameModel.getPlayers().size()) {
             this.gameContext.setPhase(new CheckPhase(this.gameContext));

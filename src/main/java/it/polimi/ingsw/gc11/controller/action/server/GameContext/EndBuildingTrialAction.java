@@ -5,12 +5,10 @@ import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
 
 
-public class EndBuildingAction extends ClientGameAction {
 
-    private int pos;
+public class EndBuildingTrialAction extends ClientGameAction {
 
-
-    public EndBuildingAction(String username) {
+    public EndBuildingTrialAction(String username) {
         super(username);
     }
 
@@ -18,7 +16,7 @@ public class EndBuildingAction extends ClientGameAction {
     @Override
     public void execute(GameContext context) {
         try {
-            context.endBuilding(username);
+            context.endBuildingTrial(username);
             if(!context.getPhase().getPhaseName().equals("CheckPhase")){
                 NotifySuccessAction response = new NotifySuccessAction();
                 context.sendAction(username, response);
