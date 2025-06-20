@@ -120,28 +120,6 @@ public class BuildingPhaseTrial extends GamePhase{
     }
 
     /**
-     * Allows the player to observe a mini-deck of {@link AdventureCard}s.
-     *
-     * @param username the player's username
-     * @param numDeck the index of the mini-deck
-     * @return the list of AdventureCards from the selected mini-deck
-     */
-    @Override
-    public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck) {
-        return gameModel.observeMiniDeck(username, numDeck);
-    }
-
-    /**
-     * Allows the player to release the mini-deck of {@link AdventureCard}s he's observing.
-     *
-     * @param username the player's username
-     */
-    @Override
-    public void releaseMiniDeck(String username) {
-        gameModel.releaseMiniDeck(username);
-    }
-
-    /**
      * Marks the player as finished with the building phase.
      * If all players have finished, the phase transitions to {@link CheckPhase}.
      *
