@@ -9,11 +9,13 @@ public class SendBuildingTimerAction extends ServerAction {
 
     private final Instant expireTimerInstant;
     private final int timersLeft;
+    private final boolean updateState;
 
 
-    public SendBuildingTimerAction(Instant expireTimerInstant, int timersLeft) {
+    public SendBuildingTimerAction(Instant expireTimerInstant, int timersLeft, boolean updateState) {
         this.expireTimerInstant = expireTimerInstant;
         this.timersLeft = timersLeft;
+        this.updateState = updateState;
     }
 
 
@@ -23,7 +25,7 @@ public class SendBuildingTimerAction extends ServerAction {
     @Override
     public void loadData(BuildingPhaseData buildingPhaseData) {
         buildingPhaseData.setTimersLeft(timersLeft);
-        buildingPhaseData.setExpireTimerInstant(expireTimerInstant);
+        buildingPhaseData.setExpireTimerInstant(expireTimerInstant, updateState);
     }
 
     @Override

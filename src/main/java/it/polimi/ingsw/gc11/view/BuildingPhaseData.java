@@ -197,9 +197,14 @@ public class  BuildingPhaseData extends GamePhaseData {
         return expireTimerInstant;
     }
 
-    public void setExpireTimerInstant(Instant expireTimerInstant){
+    public void setExpireTimerInstant(Instant expireTimerInstant, boolean updateState) {
         this.expireTimerInstant = expireTimerInstant;
-        updateState();
+        if(updateState){
+            updateState();
+        }
+        else{
+            notifyListener();
+        }
     }
 
 
