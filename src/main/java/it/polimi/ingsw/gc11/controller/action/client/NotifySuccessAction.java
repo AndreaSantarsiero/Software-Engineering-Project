@@ -16,6 +16,7 @@ public class NotifySuccessAction extends ServerAction {
 
     @Override
     public void loadData(BuildingPhaseData buildingPhaseData) {
+        buildingPhaseData.setActionSuccessful();
         buildingPhaseData.updateState();
     }
 

@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.MiniDeckController">
    <children>
       <HBox fx:id="headerContainer" alignment="CENTER">
@@ -19,7 +18,7 @@
             </Label>
          </children>
       </HBox>
-      <HBox fx:id="playersButtons" prefHeight="45.0" prefWidth="1255.0">
+      <HBox fx:id="subHeader" prefHeight="45.0" prefWidth="1255.0">
          <children>
             <Button fx:id="goBackButton" mnemonicParsing="false" onAction="#onGoBackButtonClick" prefHeight="50.0" prefWidth="209.0" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" text="Go back to your ship">
                <font>
@@ -37,11 +36,16 @@
                   <Insets left="300.0" />
                </HBox.margin>
             </Label>
+            <Label fx:id="errorLabel" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="Label" visible="false" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
       <HBox fx:id="cards" spacing="20">
          <padding>
-            <Insets top="20" right="20" bottom="20" left="20"/>
+            <Insets bottom="20" left="20" right="20" top="20" />
          </padding>
       </HBox>
    </children>
