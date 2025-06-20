@@ -12,6 +12,15 @@ import java.util.Map;
 
 public class AdventurePhaseData extends GamePhaseData {
 
+    public enum AdventureState {
+        CHOOSE_MAIN_MENU,
+        WAITING
+    }
+
+
+
+    private AdventureState state;
+    private AdventureState previousState;
     private AdventureCard adventureCard; //carta correntemente in esecuzione, quella pescata dal player
     private Player player;
     private Hit hit; //hit coming from the advCard, contiene tutti i parametri: direzione, coordinate, dimensione
@@ -41,13 +50,44 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
 
+    public AdventureState getState() {
+        return state;
+    }
+
+    @Override
+    public void updateState() {
+        actualizePreviousState();
+
+        if (state.ordinal() < AdventureState.values().length - 1) {
+            state = AdventureState.values()[state.ordinal() + 1];
+        }
+
+        notifyListener();
+    }
+
+    public void setState(AdventureState state) {
+        actualizePreviousState();
+        this.state = state;
+        notifyListener();
+    }
+
+    public void actualizePreviousState() {
+        previousState = state;
+    }
+
+    public boolean isStateNew() {
+        return !state.equals(previousState);
+    }
+
+
+
     public Player getPlayer() {
         return player;
     }
 
     public void setPlayer(Player player) {
         this.player = player;
-        this.notifyListener();
+        updateState();
     }
 
 
@@ -57,8 +97,9 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
-        this.notifyListener();
+        updateState();
     }
+
 
     public Hit getHit() {
         return hit;
@@ -66,22 +107,25 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setHit(Hit hit) {
         this.hit = hit;
-        this.notifyListener();
+        notifyListener();
     }
 
+
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
-        this.enemiesShipBoard.put(username, shipBoard);
-        this.notifyListener();
+        enemiesShipBoard.put(username, shipBoard);
+        notifyListener();
     }
 
     public void setEnemiesPlayer(Player player, int position) {
-        this.players.put(player, position);
-        this.notifyListener();
+        players.put(player, position);
+        notifyListener();
     }
 
     public Map<Player, Integer> getPlayers() {
         return players;
     }
+
+
 
     @Override
     public void handle(ServerAction action) {

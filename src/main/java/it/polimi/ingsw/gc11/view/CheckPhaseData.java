@@ -30,6 +30,7 @@ public class CheckPhaseData extends GamePhaseData {
 
     public CheckPhaseData() {
         enemiesShipBoard = new HashMap<>();
+        state = CheckState.CHOOSE_MAIN_MENU;
     }
 
     public void initialize(ShipBoard shipBoard, ArrayList<String> playersUsername){
