@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import java.time.Instant;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +155,26 @@ public abstract class GamePhase {
      */
     public void releaseMiniDeck(String username) {
         throw new IllegalStateException("Can't release mini deck in the current game phase: " + getPhaseName());
+    }
+
+    /**
+     * Allows a player to reset the building phase timer.
+     *
+     * @param username The player requesting to reset the building phase timer.
+     * @return the time instant where the timer will be expired.
+     */
+    public Instant resetBuildingTimer(String username) {
+        throw new IllegalStateException("Can't reset building timer in the current game phase: " + getPhaseName());
+    }
+
+    /**
+     * Allows a player to know how many timers are left.
+     *
+     * @param username The player requesting how many timers are left.
+     * @return the number of timers left.
+     */
+    public int getTimersLeft(String username) {
+        throw new IllegalStateException("Can't get timers left number in the current game phase: " + getPhaseName());
     }
 
     /**

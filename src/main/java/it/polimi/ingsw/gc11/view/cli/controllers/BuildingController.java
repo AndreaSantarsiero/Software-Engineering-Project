@@ -120,7 +120,7 @@ public class BuildingController extends CLIController {
                 return true;
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER){
-                //manca azione per reset timer
+                mainCLI.getVirtualServer().resetBuildingTimer();
                 return true;
             }
             else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){

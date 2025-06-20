@@ -156,6 +156,11 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
+    public void resetBuildingTimer() throws NetworkException{
+        ResetBuildingTimerAction action = new ResetBuildingTimerAction(username);
+        client.sendAction(action);
+    }
+
     public void endBuildingTrial() throws NetworkException{
         EndBuildingTrialAction action = new EndBuildingTrialAction(username);
         client.sendAction(action);

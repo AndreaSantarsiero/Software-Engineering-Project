@@ -10,6 +10,7 @@ import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -76,7 +77,6 @@ public class GameContext {
         listener.start();
     }
 
-
     /**
      * Sends a server-to-client action.
      *
@@ -87,10 +87,10 @@ public class GameContext {
         try{
             serverController.sendAction(username, action);
         } catch (NetworkException e) {
+            System.out.println("Error while sending action to a client: " + e.getMessage());
             //resend?
         }
     }
-
 
     /**
      * Adds a new client-issued action to the execution queue.
@@ -100,6 +100,8 @@ public class GameContext {
     public void addClientAction(ClientGameAction clientGameAction) {
         clientGameActions.add(clientGameAction);
     }
+
+
 
     /**
      * Returns the game model associated with this match.
@@ -175,7 +177,8 @@ public class GameContext {
     }
 
 
-    //BuildingPhaseLv2
+
+    //BuildingPhase
     /**
      * Returns a free ship card.
      *
@@ -281,6 +284,28 @@ public class GameContext {
         phase.releaseMiniDeck(username);
     }
 
+
+    /**
+     * Allows a player to reset the building phase timer.
+     *
+     * @param username The player requesting to reset the building phase timer.
+     * @return the time instant where the timer will be expired.
+     */
+    public Instant resetBuildingTimer(String username) {
+        return phase.resetBuildingTimer(username);
+    }
+
+    /**
+     * Allows a player to know how many timers are left.
+     *
+     * @param username The player requesting how many timers are left.
+     * @return the number of timers left.
+     */
+    public int getTimersLeft(String username) {
+        return phase.getTimersLeft(username);
+    }
+
+
     /**
      * Ends the building phase for the given player.
      *
@@ -290,7 +315,6 @@ public class GameContext {
         phase.endBuildingTrial(username);
     }
 
-    //Da implementare a livello di rete
     /**
      * Ends the building phase and chooses a ship position.
      *

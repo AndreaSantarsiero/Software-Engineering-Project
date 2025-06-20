@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -37,7 +38,8 @@ public class BuildingPhaseLv2 extends GamePhase {
     private List<Player> playersFinished;
 
     private final Timer timer;
-    private int maxNumTimer;
+    private final int timerMilliSeconds = 90000;
+    private final int maxNumTimer;
     private Boolean timerFinished;
     private int curNumTimer;
 
@@ -65,8 +67,8 @@ public class BuildingPhaseLv2 extends GamePhase {
                 timer.cancel(); // stop the timer after the task
             }
         };
-        // Schedule the task to run after 90 seconds (90000 milliseconds)
-        this.timer.schedule(firstTimer, 90000);
+        // Schedule the task to run after timerMilliSeconds
+        this.timer.schedule(firstTimer, timerMilliSeconds);
     }
 
     /**
@@ -170,6 +172,31 @@ public class BuildingPhaseLv2 extends GamePhase {
     }
 
 
+
+
+    /**
+     * Allows a player to reset the building phase timer.
+     *
+     * @param username The player requesting to reset the building phase timer.
+     * @return the time instant where the timer will be expired.
+     */
+    @Override
+    public Instant resetBuildingTimer(String username) {
+        startTimer(username);
+        return Instant.now().plusMillis(timerMilliSeconds);
+    }
+
+    /**
+     * Allows a player to know how many timers are left.
+     *
+     * @param username The player requesting how many timers are left.
+     * @return the number of timers left.
+     */
+    @Override
+    public int getTimersLeft(String username) {
+        return maxNumTimer - curNumTimer - 1;
+    }
+
     /**
      * Starts the next 90-second timer in the phase, based on the current number of completed timers.
      * After the third timer finishes, the game transitions to the {@link CheckPhase}.
@@ -181,14 +208,14 @@ public class BuildingPhaseLv2 extends GamePhase {
 
         //Timer is still running
         if (!timerFinished){
-            throw new IllegalStateException("Timer has already been started.");
+            throw new IllegalStateException("The current timer is not expired yet");
         }
 
         //Only the last timer is missing
         if(curNumTimer == maxNumTimer-1){
             //Player has already ended building
             if (this.gameModel.getPlayer(username).getPosition() != -1){
-                //Third and last Timer
+                //last timer
                 TimerTask lastTimer = new TimerTask() {
                     @Override
                     public void run() {
@@ -199,15 +226,15 @@ public class BuildingPhaseLv2 extends GamePhase {
                         timer.cancel(); // stop the timer after the task
                     }
                 };
-                // Schedule the task to run after 90 seconds (90000 milliseconds)
-                this.timer.schedule(lastTimer, 90000);
+                // Schedule the task to run after timerMilliSeconds
+                this.timer.schedule(lastTimer, timerMilliSeconds);
             }
             else {
                 throw new IllegalStateException("You must end building to activate the last timer.");
             }
         }
         else {
-            //Second Timer
+            //other timers
             TimerTask secondTimer = new TimerTask() {
                 @Override
                 public void run() {
@@ -216,8 +243,8 @@ public class BuildingPhaseLv2 extends GamePhase {
                     timer.cancel(); // stop the timer after the task
                 }
             };
-            // Schedule the task to run after 90 seconds (90000 milliseconds)
-            this.timer.schedule(secondTimer, 90000);
+            // Schedule the task to run after timerMilliSeconds
+            this.timer.schedule(secondTimer, timerMilliSeconds);
         }
     }
 

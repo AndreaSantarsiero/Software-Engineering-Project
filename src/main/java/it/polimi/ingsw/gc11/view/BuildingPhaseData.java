@@ -191,6 +191,25 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
+    public Instant getExpireTimerInstant(){
+        return expireTimerInstant;
+    }
+
+    public void setExpireTimerInstant(Instant expireTimerInstant){
+        this.expireTimerInstant = expireTimerInstant;
+        notifyListener();
+    }
+
+
+    public int getTimersLeft(){
+        return timersLeft;
+    }
+
+    public void setTimersLeft(int timersLeft){
+        this.timersLeft = timersLeft;
+    }
+
+
     public Map<String, ShipBoard> getEnemiesShipBoard() {
         return enemiesShipBoard;
     }

@@ -4,6 +4,8 @@ import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.shipboard.Level1ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.Cannon;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -238,13 +240,17 @@ class GameModelTest {
     }
 
     @Test
-    void observeMiniDeck() {
+    void observeMiniDeck() throws FullLobbyException, UsernameAlreadyTakenException {
         gameModel.setLevel(FlightBoard.Type.LEVEL2);
+        gameModel.addPlayer("Player1");
+        gameModel.setPlayerColor("Player1", "red");
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 1), "Cannot observe a mini deck before placing at least one ship card");
+        gameModel.getPlayer("Player1").getShipBoard().placeShipCard(new Cannon("cannon", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, Cannon.Type.SINGLE), ShipCard.Orientation.DEG_0, 7, 8);
         assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 4));
         assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", -1));
         assertThrows(IllegalStateException.class, () -> gameModel.observeMiniDeck("Player1", 3));
-        assertDoesNotThrow(() -> gameModel.observeMiniDeck("Player1", 1));
         assertEquals(3, gameModel.observeMiniDeck("Player1", 1).size());
+        assertThrows(IllegalArgumentException.class, () -> gameModel.observeMiniDeck("Player1", 0), "Player Player1 already holds a mini deck in his hands");
     }
 
     @Test
