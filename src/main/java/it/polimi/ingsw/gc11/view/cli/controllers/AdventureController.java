@@ -2,7 +2,6 @@ package it.polimi.ingsw.gc11.view.cli.controllers;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
-import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.EnterInput;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
@@ -15,6 +14,7 @@ public class AdventureController extends CLIController {
     private final AdventureTemplate template;
     private final AdventurePhaseData data;
     private int mainMenu;
+    private int acceptCardMenu;
     private int selectedI;
     private int selectedJ;
 
@@ -150,6 +150,15 @@ public class AdventureController extends CLIController {
         template.render();
     }
 
+    public int getAcceptCardMenu() {
+        return acceptCardMenu;
+    }
+
+    public void setAcceptCardMenu(int acceptCardMenu) {
+        this.acceptCardMenu = acceptCardMenu;
+        template.render();
+    }
+
     public int getSelectedI(){
         return selectedI;
     }
@@ -172,6 +181,5 @@ public class AdventureController extends CLIController {
         selectedI = data.getPlayer().getShipBoard().adaptY(7);
         selectedJ = data.getPlayer().getShipBoard().adaptX(7);
         mainMenu = 0;
-        data.resetViewData();
     }
 }

@@ -28,6 +28,14 @@ public class AdventureTemplate extends CLITemplate {
                     "├─┤├┴┐│ │├┬┘ │   ├┤ │  ││ ┬├─┤ │ ",
                     "┴ ┴└─┘└─┘┴└─ ┴   └  ┴─┘┴└─┘┴ ┴ ┴ ")
     );
+    private static final List<List<String>> acceptCardMenu = List.of(
+            List.of("┌─┐┌─┐┌─┐┌─┐┌─┐┌┬┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    "├─┤│  │  ├┤ ├─┘ │   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "┴ ┴└─┘└─┘└─┘┴   ┴   ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
+            List.of("┌┬┐┌─┐┌─┐┬  ┬┌┐┌┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    " ││├┤ │  │  ││││├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "─┴┘└─┘└─┘┴─┘┴┘└┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘")
+    );
 
 
 
@@ -165,5 +173,9 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getMainMenuSize(){
         return mainMenu.size();
+    }
+
+    public int getAcceptCardMenuSize(){
+        return acceptCardMenu.size();
     }
 }

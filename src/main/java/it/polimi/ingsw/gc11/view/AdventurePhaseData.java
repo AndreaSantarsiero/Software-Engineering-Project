@@ -18,11 +18,11 @@ public class AdventurePhaseData extends GamePhaseData {
         CHOOSE_MAIN_MENU, ACCEPT_CARD_MENU,
         WAIT_ADVENTURE_CARD, SHOW_ADVENTURE_CARD, RESOLVE_ADVENTURE_CARD,
         SHOW_ENEMIES_SHIP,
-        CHOOSE_BATTERIES,
-        CHOOSE_MEMBERS,
+        CHOOSE_BATTERIES, SELECT_NUM_BATTERIES,
+        CHOOSE_MEMBERS, SELECT_NUM_MEMBERS,
         CHOOSE_DOUBLE_CANNONS,
         CHOOSE_DOUBLE_CANNON,
-        CHOOSE_SHIELDS,
+        CHOOSE_SHIELD,
         ADD_MATERIALS,
         REMOVE_MATERIALS,
         WAITING
@@ -38,6 +38,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private Hit hit;
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
+
 
 
     public AdventurePhaseData() {
@@ -130,6 +131,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
+        adventureCardStates.clear();
         adventureCard.getStates(this);
     }
 
@@ -159,11 +161,6 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
-    public void resetViewData(){
-        adventureCardStates.clear();
-    }
-
-
 
     //visitor pattern
     public void setStates(AbandonedShip abandonedShip) {
@@ -184,7 +181,7 @@ public class AdventurePhaseData extends GamePhaseData {
         adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
         adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
-        adventureCardStates.add(AdventureState.CHOOSE_SHIELDS);
+        adventureCardStates.add(AdventureState.CHOOSE_SHIELD);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
@@ -194,7 +191,7 @@ public class AdventurePhaseData extends GamePhaseData {
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
         adventureCardStates.add(AdventureState.REMOVE_MATERIALS);
-        adventureCardStates.add(AdventureState.CHOOSE_SHIELDS);
+        adventureCardStates.add(AdventureState.CHOOSE_SHIELD);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
