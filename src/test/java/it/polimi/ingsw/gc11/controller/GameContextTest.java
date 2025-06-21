@@ -20,6 +20,7 @@ import it.polimi.ingsw.gc11.controller.State.PiratesStates.CoordinateState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.HandleHit;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
+import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.LandedPlanet;
 import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.PlanetsState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
@@ -1825,7 +1826,7 @@ public class GameContextTest {
 
         AdventureCard advCard = new AbandonedStation(
                 "resolved-card", AdventureCard.Type.LEVEL1,
-                0, 1,                    // membersRequired, lostDays
+                0, 0,                    // membersRequired, lostDays
                 0, 0, 0, 0);             // nessun materiale
 
         advPhase.setDrawnAdvCard(advCard);
@@ -1892,5 +1893,224 @@ public class GameContextTest {
                 () -> gameContext.chooseMaterials("username1", req),
                 "deve lanciare se i materiali richiesti non sono disponibili");
     }
+
+
+    /* ---------- 1. landOnPlanet: username sbagliato ---------- */
+    @Test
+    void landOnPlanet_wrongUser_throws() {
+        goToAdvPhase();
+
+        Planet p1 = new Planet(1,0,0,0);
+        Planet p2 = new Planet(0,1,0,0);
+        PlanetsCard card = new PlanetsCard("pc-1", AdventureCard.Type.LEVEL1,
+                0, new ArrayList<>(List.of(p1,p2)));
+
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        phase.setDrawnAdvCard(card);
+        phase.setAdvState(card.getInitialState(phase));          // PlanetsState
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.landOnPlanet("wrongUser", 0));
+    }
+
+    /* ---------- 2. landOnPlanet: pianeta già occupato ---------- */
+    @Test
+    void landOnPlanet_alreadyVisited_throws() {
+        goToAdvPhase();
+
+        Planet p1 = new Planet(1,0,0,0);
+        Planet p2 = new Planet(0,1,0,0);
+        PlanetsCard card = new PlanetsCard("pc-2", AdventureCard.Type.LEVEL1,
+                0, new ArrayList<>(List.of(p1,p2)));
+
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        phase.setDrawnAdvCard(card);
+        phase.setAdvState(card.getInitialState(phase));   // PlanetsState
+
+        /* Primo atterraggio va a buon fine */
+        gameContext.landOnPlanet("username1", 0);
+
+        /* Secondo tentativo sullo stesso indice deve fallire */
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.landOnPlanet("username1", 0));
+    }
+
+    /* ---------- 3. landOnPlanet: doppia accept ---------- */
+    @Test
+    void landOnPlanet_doubleResolution_throws() {
+        goToAdvPhase();
+
+        Planet p1 = new Planet(1,0,0,0);
+        Planet p2 = new Planet(0,1,0,0);
+        PlanetsCard card = new PlanetsCard("pc-3", AdventureCard.Type.LEVEL1,
+                0, new ArrayList<>(List.of(p1,p2)));
+
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        phase.setDrawnAdvCard(card);
+        phase.setAdvState(card.getInitialState(phase));   // PlanetsState
+
+        /* Metto già la flag a true per simulare carta in risoluzione */
+        phase.setResolvingAdvCard(true);
+
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.landOnPlanet("username1", 0));
+    }
+
+    /* ---------- 4. landOnPlanet: flusso corretto → LandedPlanet ---------- */
+    @Test
+    void landOnPlanet_ok_goesToLandedPlanet() {
+        goToAdvPhase();
+
+        Planet p1 = new Planet(1,0,0,0);
+        Planet p2 = new Planet(0,1,0,0);
+        PlanetsCard card = new PlanetsCard("pc-4", AdventureCard.Type.LEVEL1,
+                0, new ArrayList<>(List.of(p1,p2)));
+
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        phase.setDrawnAdvCard(card);
+        phase.setAdvState(card.getInitialState(phase));   // PlanetsState
+
+        gameContext.landOnPlanet("username1", 0);
+
+        assertInstanceOf(LandedPlanet.class, phase.getCurrentAdvState());
+    }
+
+    /* ---------- 5. chooseMaterials: username sbagliato ---------- */
+    @Test
+    void chooseMaterials_wrongUser_throws() {
+        /* Arrivo prima nello stato LandedPlanet */
+        LandedPlanet landed = prepareLandedPlanetScenario(0);
+
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
+        req.put(null, new AbstractMap.SimpleEntry<>(
+                List.of(new Material(Material.Type.BLUE)), List.of()));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseMaterials("otherUser", req));
+    }
+
+    /* ---------- 6. chooseMaterials: materiali non disponibili ---------- */
+    @Test
+    void chooseMaterials_unavailableMaterial_throws() {
+        LandedPlanet landed = prepareLandedPlanetScenario(0);
+
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
+        req.put(null, new AbstractMap.SimpleEntry<>(
+                List.of(new Material(Material.Type.RED)), List.of()));   // RED non in lista
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseMaterials("username1", req));
+    }
+
+    /* ---------- 7a. chooseMaterials OK → ritorna PlanetsState (altri pianeti) ---------- */
+    @Test
+    void chooseMaterials_ok_backToPlanetsState() {
+        LandedPlanet landed = prepareLandedPlanetScenario(0);
+
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        ShipBoard board  = player.getShipBoard();
+
+        Storage storage = new Storage("S-01",
+                    ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                    ShipCard.Connector.NONE,  ShipCard.Connector.NONE,
+                    Storage.Type.DOUBLE_BLUE);
+
+        player.getShipBoard().placeShipCard(storage,storage.getOrientation(),7,8);
+
+        Material blue = new Material(Material.Type.BLUE);
+
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
+        req.put(
+                storage,
+                new AbstractMap.SimpleEntry<>(
+                        List.of(blue),                     // newMaterials
+                        Arrays.asList((Material) null)     // oldMaterials stessa size
+                )
+        );
+
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        int idxBefore = phase.getIdxCurrentPlayer();
+
+        gameContext.chooseMaterials("username1", req);
+
+        assertEquals(idxBefore + 1, phase.getIdxCurrentPlayer(), "Turno avanzato");
+        assertInstanceOf(PlanetsState.class, phase.getCurrentAdvState(),
+                "Ci sono ancora pianeti → PlanetsState");
+    }
+
+    /* ---------- 7b. chooseMaterials OK → IdleState (ultimo pianeta) ---------- */
+    @Test
+    void chooseMaterials_lastPlanet_idle() {
+        goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        Planet p0 = new Planet(0,0,0,1);   // RED   (sarà l’ultimo)
+        Planet p1 = new Planet(1,0,0,0);   // BLUE  (già “virtualmente” visitato)
+
+        PlanetsCard card = new PlanetsCard("pc-final",
+                AdventureCard.Type.LEVEL1,
+                2, new ArrayList<>(List.of(p0, p1)));
+
+        phase.setDrawnAdvCard(card);
+
+        phase.setAdvState(new PlanetsState(phase, /*numVisited=*/1));
+
+        gameContext.landOnPlanet("username1", 0);   // numVisited diventa 2 == size()
+
+        LandedPlanet landed = (LandedPlanet) phase.getCurrentAdvState();
+
+        Player    player  = gameContext.getGameModel().getPlayer("username1");
+        ShipBoard board   = player.getShipBoard();
+        Storage   storage = new Storage(
+                "S-X",
+                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
+                ShipCard.Connector.NONE,  ShipCard.Connector.NONE,
+                Storage.Type.SINGLE_RED);
+
+        board.addToList(storage, 8, 7);   // registrato fra gli storage
+
+        Material red = new Material(Material.Type.RED);
+
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req =
+                Map.of(storage,
+                        new AbstractMap.SimpleEntry<>(
+                                List.of(red),                    // nuovi materiali
+                                Arrays.asList((Material) null)   // vecchi (null) – stessa size
+                        ));
+
+        gameContext.chooseMaterials("username1", req);
+
+        assertInstanceOf(IdleState.class, phase.getCurrentAdvState(),
+                "Ultimo pianeta → IdleState");
+    }
+
+
+
+    /* ======  funzione per portare il gioco in stato LandedPlanet ====== */
+    private LandedPlanet prepareLandedPlanetScenario(int planetIdx) {
+        goToAdvPhase();
+
+        Planet p1 = new Planet(1,0,0,0);
+        Planet p2 = new Planet(0,0,0,1);
+        ArrayList<Planet> planets = new ArrayList<>(List.of(p1,p2));
+
+        PlanetsCard card = new PlanetsCard("pc-util", AdventureCard.Type.LEVEL1,
+                2, planets);
+
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        phase.setDrawnAdvCard(card);
+
+        /* Stato iniziale: PlanetsState, idxCurrentPlayer = 0 */
+        phase.setAdvState(card.getInitialState(phase));
+
+        /* L’utente atterra sul pianeta desiderato */
+        gameContext.landOnPlanet("username1", planetIdx);
+
+        /* Ora lo stato è LandedPlanet */
+        return (LandedPlanet) phase.getCurrentAdvState();
+    }
+
+
+
 
 }

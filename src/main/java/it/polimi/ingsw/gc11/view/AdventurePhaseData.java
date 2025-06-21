@@ -38,7 +38,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private Hit hit;
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
-
+    private Hit hit;
 
 
     public AdventurePhaseData() {
@@ -159,6 +159,14 @@ public class AdventurePhaseData extends GamePhaseData {
         return enemies;
     }
 
+    public Hit getHit() {
+        return hit;
+    }
+
+    public void setHit(Hit hit) {
+        this.hit = hit;
+        notifyListener();
+    }
 
 
     public void resetViewData(){
