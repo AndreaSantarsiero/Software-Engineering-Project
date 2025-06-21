@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
@@ -24,10 +25,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class CheckLv1Controller extends Controller {
 
-    @FXML private Button goBackButton;
-    @FXML private Label owner;
+    @FXML private Button checkButton;
 
     @FXML private StackPane root;
     @FXML private VBox mainVBox;
@@ -54,13 +56,19 @@ public class CheckLv1Controller extends Controller {
 
 
     private Stage stage;
+    private VirtualServer virtualServer;
     private CheckPhaseData checkPhaseData;
+
+    private ArrayList<Integer> xCoordinates = new ArrayList<>();
+    private ArrayList<Integer> yCoordinates  = new ArrayList<>();
+    private int currCoord;
+
 
 
     public void initialize(Stage stage) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
-        VirtualServer virtualServer = viewModel.getVirtualServer();
+        virtualServer = viewModel.getVirtualServer();
         this.checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
 
@@ -156,6 +164,19 @@ public class CheckLv1Controller extends Controller {
                     clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
                     btn.setClip(clip);
 
+                    if (alreadyIn(c, r) != -1) {
+                        btn.setStyle(
+                                "-fx-border-color: gold;" +
+                                        "-fx-border-width: 3;" +
+                                        "-fx-border-radius: 5;");
+
+                        DropShadow glow = new DropShadow();
+                        glow.setColor(Color.web("#FFD700"));
+                        glow.setRadius(15);
+                        glow.setSpread(0.6);
+                        btn.setEffect(glow);
+                    }
+
                     ColorAdjust darken  = new ColorAdjust();
                     darken.setBrightness(-0.2);
 
@@ -244,8 +265,35 @@ public class CheckLv1Controller extends Controller {
         }
     }
 
-    private void onShipBoardSelected(int x, int y) {
+    private int alreadyIn(int x, int y){
+        for(int i = 0; i < xCoordinates.size(); i++){
+            if(xCoordinates.get(i) == x &&  yCoordinates.get(i) == y){
+                return i;
+            }
+        }
+        return  -1;
+    }
 
+    private void onShipBoardSelected(int x, int y) {
+        currCoord = alreadyIn(x,y);
+
+        if(currCoord != -1){
+            xCoordinates.remove(currCoord);
+            yCoordinates.remove(currCoord);
+        }
+        else{
+            xCoordinates.add(x);
+            yCoordinates.add(y);
+        }
+    }
+
+    @FXML
+    private void checkShipBoard(){
+        try {
+            virtualServer.repairShip(xCoordinates, yCoordinates);
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setWaiting(){

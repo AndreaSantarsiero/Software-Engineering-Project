@@ -29,7 +29,9 @@
                         </Label>
                     </children>
                 </HBox>
-                <Button></Button>
+                <Button fx:id="checkButton" text="Check your ShipBoard" onAction="#checkShipBoard" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" >
+
+                </Button>
 
                 <!-- Main Game Layout -->
                 <HBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="100.0">
