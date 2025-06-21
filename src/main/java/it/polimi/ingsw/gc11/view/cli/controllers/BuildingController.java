@@ -279,6 +279,7 @@ public class BuildingController extends CLIController {
             case CHOOSE_SHIPCARD_ORIENTATION -> setShipCardOrientationMenu(choice);
             case CHOOSE_ADVENTURE_DECK -> setAdventureCardMenu(choice);
             case CHOOSE_POSITION -> setEndBuildingMenu(choice);
+            case CHOOSE_WAITING_MENU -> setWaitingMenu(choice);
             case null, default -> {
             }
         }
