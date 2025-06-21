@@ -8,7 +8,6 @@ import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
-
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,10 @@ import java.util.Map;
  * their specific context.
  */
 public abstract class AdventureState{
+
     protected AdventurePhase advContext;
+
+
 
     /**
      * Constructs a new AdventureState with a reference to its AdventurePhase context.
@@ -157,10 +159,10 @@ public abstract class AdventureState{
      *
      * @param username the player's username
      * @param numPlanet the index of the chosen planet
-     * @return the updated Player object
+     * @return the list of materials available on the chosen planet
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
-    public Player landOnPlanet(String username, int numPlanet){
+    public List<Material> landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current adventure state.");
     }
 

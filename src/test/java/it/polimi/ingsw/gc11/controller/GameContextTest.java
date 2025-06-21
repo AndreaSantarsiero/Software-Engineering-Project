@@ -1513,8 +1513,7 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
 
-        Player p = assertDoesNotThrow(() -> gameContext.landOnPlanet("username1", 0));
-        assertEquals("username1", p.getUsername());
+        List<Material> materials = assertDoesNotThrow(() -> gameContext.landOnPlanet("username1", 0));
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
         assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet("username2", 0));
     }

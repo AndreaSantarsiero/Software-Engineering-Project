@@ -348,10 +348,10 @@ public abstract class GamePhase {
      *
      * @param username the player's username
      * @param numPlanet the index of the selected planet
-     * @return the updated {@link Player}
+     * @return the list of materials available on the chosen planet
      * @throws IllegalStateException if landing on a planet is not permitted in this phase
      */
-    public Player landOnPlanet(String username, int numPlanet){
+    public List<Material> landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current game phase: " + getPhaseName());
     }
 

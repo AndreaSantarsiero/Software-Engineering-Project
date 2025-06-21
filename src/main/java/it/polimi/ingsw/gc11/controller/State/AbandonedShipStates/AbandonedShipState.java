@@ -48,7 +48,7 @@ public class AbandonedShipState extends AdventureState {
         }
 
         if (advContext.isResolvingAdvCard()) {
-            throw new IllegalStateException("You are already accepted this adventure card!");
+            throw new IllegalStateException("You have already accepted this adventure card!");
         }
 
         if(expectedPlayer.getShipBoard().getMembers() >= abandonedShip.getLostMembers()){
@@ -89,5 +89,4 @@ public class AbandonedShipState extends AdventureState {
         }
         //The advState remains the same as before
     }
-
 }

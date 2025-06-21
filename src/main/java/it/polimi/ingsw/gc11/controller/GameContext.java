@@ -464,9 +464,9 @@ public class GameContext {
      *
      * @param username  the player landing on the planet.
      * @param numPlanet the index of the planet.
-     * @return the updated {@link Player} after the landing.
+     * @return the list of materials available on the chosen planet
      */
-    public Player landOnPlanet(String username, int numPlanet){
+    public List<Material> landOnPlanet(String username, int numPlanet){
         return phase.landOnPlanet(username, numPlanet);
     }
 

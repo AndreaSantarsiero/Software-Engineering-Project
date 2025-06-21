@@ -4,6 +4,8 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 
+
+
 /**
  * Represents the initial state of the AdventurePhase, in which no player is currently resolving an adventure card.
  * The first player can draw the top adventure card from the deck to begin the resolution process.
