@@ -9,15 +9,19 @@ import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class CheckLv1Controller extends Controller {
@@ -25,13 +29,16 @@ public class CheckLv1Controller extends Controller {
     @FXML private Button goBackButton;
     @FXML private Label owner;
 
-    @FXML private VBox root;
+    @FXML private StackPane root;
+    @FXML private VBox mainVBox;
     @FXML private GridPane slotGrid;
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
+
+    private Pane glassPane;
 
 
     private static final double GRID_GAP = 3;
@@ -56,22 +63,25 @@ public class CheckLv1Controller extends Controller {
         VirtualServer virtualServer = viewModel.getVirtualServer();
         this.checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
-        root.setSpacing(20);
+
+        mainVBox.prefWidthProperty().bind(root.widthProperty());
+        mainVBox.prefHeightProperty().bind(root.heightProperty());
+        mainVBox.setSpacing(20);
 
         headerContainer.minHeightProperty().bind(
-                root.heightProperty().multiply(0.10)
+                mainVBox.heightProperty().multiply(0.10)
         );
         headerContainer.prefHeightProperty().bind(headerContainer.minHeightProperty());
         headerContainer.maxHeightProperty().bind(headerContainer.minHeightProperty());
 
-        availW  = root.widthProperty().subtract(mainContainer.spacingProperty());
-        availH = root.heightProperty()
+        availW  = mainVBox.widthProperty().subtract(mainContainer.spacingProperty());
+        availH = mainVBox.heightProperty()
                 .subtract(headerContainer.heightProperty())
                 .subtract(subHeaderContainer.heightProperty())
-                .subtract(root.spacingProperty().multiply(3));
+                .subtract(mainVBox.spacingProperty().multiply(3));
 
         DoubleBinding wFromH  = availH.multiply(BOARD_RATIO);
-        DoubleBinding maxBoardW = availW.multiply(0.80).subtract(root.spacingProperty());
+        DoubleBinding maxBoardW = availW.multiply(0.80).subtract(mainVBox.spacingProperty());
         boardW = Bindings.createDoubleBinding(
                 () -> Math.min(maxBoardW.get(), wFromH.get()),
                 maxBoardW, wFromH
@@ -238,6 +248,31 @@ public class CheckLv1Controller extends Controller {
 
     }
 
+    private void setWaiting(){
+        if(glassPane != null){
+            return;
+        }
+
+        glassPane = new Pane();
+        glassPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.4);");
+        glassPane.prefWidthProperty().bind(root.widthProperty());
+        glassPane.prefHeightProperty().bind(root.heightProperty());
+
+        glassPane.addEventFilter(MouseEvent.ANY, Event::consume);
+
+        Label message = new Label("Your ship is valid – waiting for the other players...");
+        message.getStyleClass().add("Text");
+
+        StackPane.setAlignment(message, Pos.CENTER);
+
+        StackPane overlay = new StackPane(message);
+        overlay.prefWidthProperty().bind(glassPane.prefWidthProperty());
+        overlay.prefHeightProperty().bind(glassPane.prefHeightProperty());
+
+        glassPane.getChildren().add(overlay);
+        root.getChildren().add(glassPane);
+    }
+
     @Override
     public void update(CheckPhaseData buildingPhaseData) {
         Platform.runLater(() -> {
@@ -246,6 +281,10 @@ public class CheckLv1Controller extends Controller {
             setShipBoard();
             reservedSlots.getChildren().clear();
             setReservedSlots();
+
+            if(checkPhaseData.isShipBoardLegal()){
+                setWaiting();
+            }
 
         });
     }
