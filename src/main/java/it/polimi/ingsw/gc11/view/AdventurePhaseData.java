@@ -2,9 +2,12 @@ package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -12,11 +15,16 @@ import java.util.Map;
 public class AdventurePhaseData extends GamePhaseData {
 
     public enum AdventureState {
-        CHOOSE_MAIN_MENU,
-        WAIT_ADVENTURE_CARD, SHOW_ADVENTURE_CARD,
+        CHOOSE_MAIN_MENU, ACCEPT_CARD_MENU,
+        WAIT_ADVENTURE_CARD, SHOW_ADVENTURE_CARD, RESOLVE_ADVENTURE_CARD,
         SHOW_ENEMIES_SHIP,
-        CHOOSE_BATTERY_USAGE,
-        CHOOSE_CANNON_POWER,
+        CHOOSE_BATTERIES,
+        CHOOSE_MEMBERS,
+        CHOOSE_DOUBLE_CANNONS,
+        CHOOSE_DOUBLE_CANNON,
+        CHOOSE_SHIELDS,
+        ADD_MATERIALS,
+        REMOVE_MATERIALS,
         WAITING
     }
 
@@ -26,13 +34,16 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureState previousState;
     private FlightBoard.Type flightType;
     private AdventureCard adventureCard;
+    private final List<AdventureState> adventureCardStates;
+    private Hit hit;
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
 
 
 
     public AdventurePhaseData() {
-        this.enemies = new HashMap<>();
+        enemies = new HashMap<>();
+        adventureCardStates = new ArrayList<>();
         state = AdventureState.CHOOSE_MAIN_MENU;
     }
 
@@ -120,7 +131,22 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
-        adventureCard.getInitialState(this);
+        adventureCard.getStates(this);
+    }
+
+
+    public List<AdventureState> getAdventureCardStates() {
+        return adventureCardStates;
+    }
+
+
+    public Hit getHit() {
+        return hit;
+    }
+
+    public void setHit(Hit hit) {
+        this.hit = hit;
+        updateState();
     }
 
 
@@ -135,52 +161,89 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
 
+    public void resetViewData(){
+        adventureCardStates.clear();
+    }
+
+
+
     //visitor pattern
-    public void setInitialState(AbandonedShip abandonedShip) {
+    public void setStates(AbandonedShip abandonedShip) {
+        adventureCardStates.add(AdventureState.ACCEPT_CARD_MENU);
+        adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+    }
+
+    public void setStates(AbandonedStation abandonedStation) {
+        adventureCardStates.add(AdventureState.ACCEPT_CARD_MENU);
+        adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
+        adventureCardStates.add(AdventureState.ADD_MATERIALS);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+    }
+
+    public void setStates(CombatZoneLv1 combatZoneLv1) {
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
+        adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_SHIELDS);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+    }
+
+    public void setStates(CombatZoneLv2 combatZoneLv2) {
+        adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.REMOVE_MATERIALS);
+        adventureCardStates.add(AdventureState.CHOOSE_SHIELDS);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+    }
+
+    public void setStates(Epidemic epidemic) {
         setState(AdventureState.CHOOSE_MAIN_MENU);
     }
 
-    public void setInitialState(AbandonedStation abandonedStation) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
+    public void setStates(MeteorSwarm meteorSwarm) {
+        adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNON);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
-    public void setInitialState(CombatZoneLv1 combatZoneLv1) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
+    public void setStates(OpenSpace openSpace) {
+        setState(AdventureState.CHOOSE_BATTERIES);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
-    public void setInitialState(CombatZoneLv2 combatZoneLv2) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
+    public void setStates(Pirates pirates) {
+        adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
-    public void setInitialState(Epidemic epidemic) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
+    public void setStates(PlanetsCard planetsCard) {
+        adventureCardStates.add(AdventureState.ACCEPT_CARD_MENU);
+        adventureCardStates.add(AdventureState.ADD_MATERIALS);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
-    public void setInitialState(MeteorSwarm meteorSwarm) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
+    public void setStates(Smugglers smugglers) {
+        adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.ADD_MATERIALS);
+        adventureCardStates.add(AdventureState.REMOVE_MATERIALS);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
-    public void setInitialState(OpenSpace openSpace) {
-        setState(AdventureState.CHOOSE_BATTERY_USAGE);
+    public void setStates(Slavers slavers) {
+        adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
+        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
-    public void setInitialState(Pirates pirates) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
-    }
-
-    public void setInitialState(PlanetsCard planetsCard) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
-    }
-
-    public void setInitialState(Smugglers smugglers) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
-    }
-
-    public void setInitialState(Slavers slavers) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
-    }
-
-    public void setInitialState(StarDust starDust) {
+    public void setStates(StarDust starDust) {
         setState(AdventureState.CHOOSE_MAIN_MENU);
     }
 

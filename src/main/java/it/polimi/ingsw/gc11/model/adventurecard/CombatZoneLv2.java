@@ -61,7 +61,7 @@ public class CombatZoneLv2 extends AdventureCard{
     }
 
     @Override
-    public void getInitialState(AdventurePhaseData adventurePhaseData){
-        adventurePhaseData.setInitialState(this);
+    public void getStates(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setStates(this);
     }
 }

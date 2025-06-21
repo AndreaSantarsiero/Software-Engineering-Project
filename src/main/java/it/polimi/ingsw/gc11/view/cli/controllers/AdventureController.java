@@ -172,5 +172,6 @@ public class AdventureController extends CLIController {
         selectedI = data.getPlayer().getShipBoard().adaptY(7);
         selectedJ = data.getPlayer().getShipBoard().adaptX(7);
         mainMenu = 0;
+        data.resetViewData();
     }
 }

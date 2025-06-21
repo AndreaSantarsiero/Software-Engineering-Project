@@ -45,5 +45,5 @@ public abstract class AdventureCard implements Serializable {
 
     public abstract void print(AdventureCardCLI adventureCardCLI, int i);
 
-    public abstract void getInitialState(AdventurePhaseData adventurePhaseData);
+    public abstract void getStates(AdventurePhaseData adventurePhaseData);
 }
