@@ -37,22 +37,16 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     //Mutable objects
     private ShipBoard shipBoard;
-    private boolean shipBoardModified  = false;
 
     private final Map<String, ShipBoard> enemiesShipBoard;
-    private boolean enemiesShipBoardModified  = false;
 
     private List<ShipCard> freeShipCards;
-    private boolean freeShipCardsModified  = false;
 
     private ShipCard heldShipCard;
-    private boolean heldShipCardModified  = false;
 
     private ShipCard reservedShipCard;
-    private boolean reservedShipCardModified  = false;
 
     private List<AdventureCard> miniDeck;
-    private boolean miniDeckModified  = false;
 
     private boolean actionSuccessful = false;
 
@@ -140,7 +134,6 @@ public class  BuildingPhaseData extends GamePhaseData {
         for (int i = 0; i < freeShipCardsCount; i++) {
             freeShipCards.add(new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE));
         }
-        this.freeShipCardsModified = true;
     }
 
     public List<ShipCard> getFreeShipCards(){
@@ -150,7 +143,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setFreeShipCards(List<ShipCard> freeShipCards, int freeShipCardsCount, boolean updateState) {
         actualizePreviousState();
         this.freeShipCards = freeShipCards;
-        this.freeShipCardsModified = true;
         StructuralModule covered = new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE);
         for (int i = freeShipCards.size(); i < freeShipCardsCount; i++) {
             freeShipCards.add(covered);
@@ -170,7 +162,6 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setShipBoard(ShipBoard shipBoard) {
         this.shipBoard = shipBoard;
-        this.shipBoardModified = true;
         updateState();
     }
 
@@ -223,7 +214,6 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setEnemiesShipBoard(String username, ShipBoard shipBoard) {
         this.enemiesShipBoard.put(username, shipBoard);
-        this.enemiesShipBoardModified = true;
     }
 
 
@@ -233,7 +223,6 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     public void setHeldShipCard(ShipCard heldShipCard, List<ShipCard> availableShipCards, int availableShipCardsCount) {
         this.heldShipCard = heldShipCard;
-        this.heldShipCardModified = true;
         setFreeShipCards(availableShipCards, availableShipCardsCount, true);
     }
 
@@ -244,7 +233,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void setReservedShipCard(ShipCard reservedShipCard){
         if(reservedShipCard != null) {
             this.reservedShipCard = reservedShipCard;
-            this.reservedShipCardModified = true;
             shipBoard.getReservedComponents().remove(reservedShipCard);
         }
         else {
@@ -256,7 +244,6 @@ public class  BuildingPhaseData extends GamePhaseData {
         shipBoard.getReservedComponents().removeAll(Collections.singleton(null));
         reservedShipCard.setOrientation(ShipCard.Orientation.DEG_0);
         shipBoard.reserveShipCard(reservedShipCard);
-        this.reservedShipCardModified = true;
         reservedShipCard = null;
         setState(BuildingState.CHOOSE_MAIN_MENU);
     }
@@ -290,50 +277,6 @@ public class  BuildingPhaseData extends GamePhaseData {
         heldShipCard = null;
         reservedShipCard = null;
     }
-
-    public boolean isShipBoardModified(){
-        return this.shipBoardModified;
-    }
-
-    public boolean isEnemiesShipBoardModified(){
-        return this.enemiesShipBoardModified;
-    }
-
-    public boolean isFreeShipCardModified(){
-        return this.freeShipCardsModified;
-    }
-
-    public boolean isHeldShipCardModified(){
-        return this.heldShipCardModified;
-    }
-
-    public boolean isReservedShipCardModified(){
-        return this.reservedShipCardModified;
-    }
-
-
-
-
-    public void resetShipBoardModified(){
-        this.shipBoardModified = false;
-    }
-
-    public void resetEnemiesShipBoardModified(){
-        this.enemiesShipBoardModified = false;
-    }
-
-    public void resetFreeShipCardModified(){
-        this.freeShipCardsModified = false;
-    }
-
-    public void resetHeldShipCardModified(){
-        this.heldShipCardModified = false;
-    }
-
-    public void resetReservedShipCardModified(){
-        this.reservedShipCardModified = false;
-    }
-
 
 
     public boolean isActionSuccessful(){
