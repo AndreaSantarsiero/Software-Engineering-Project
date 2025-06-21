@@ -120,6 +120,18 @@ public class BuildingPhaseTrial extends GamePhase{
     }
 
     /**
+     * Allows a player to know how many timers are left.
+     *
+     * @return the number of timers left.
+     */
+    @Override
+    public int getTimersLeft() {
+        return - 1;
+    }
+
+
+
+    /**
      * Marks the player as finished with the building phase.
      * If all players have finished, the phase transitions to {@link CheckPhase}.
      *

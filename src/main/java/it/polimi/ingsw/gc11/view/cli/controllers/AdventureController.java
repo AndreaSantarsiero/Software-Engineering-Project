@@ -41,7 +41,7 @@ public class AdventureController extends CLIController {
 
 
     @Override
-    public void update (CheckPhaseData data) {
+    public void update (AdventurePhaseData data) {
         if (!active) {
             return;
         }
