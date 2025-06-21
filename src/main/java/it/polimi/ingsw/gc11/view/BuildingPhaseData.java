@@ -130,6 +130,9 @@ public class  BuildingPhaseData extends GamePhaseData {
         if(state == BuildingState.SHIPCARD_SETUP || state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD) {
             state = BuildingState.CHOOSE_SHIPCARD_MENU;
         }
+        else if(buildingEnded){
+            state = BuildingState.CHOOSE_WAITING_MENU;
+        }
         else {
             state = BuildingState.CHOOSE_MAIN_MENU;
         }
