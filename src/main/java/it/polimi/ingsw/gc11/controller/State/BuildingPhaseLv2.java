@@ -203,12 +203,12 @@ public class BuildingPhaseLv2 extends GamePhase {
             throw new IllegalStateException("The current timer is not expired yet");
         }
 
-        timerFinished = false;
         TimerTask newTimerTask;
         if(curNumTimer == maxNumTimer-1){
             //Player has already ended building
             if (this.gameModel.getPlayer(username).getPosition() != -1){
                 //last timer
+                timerFinished = false;
                 newTimerTask = new TimerTask() {
                     @Override
                     public void run() {
@@ -225,6 +225,7 @@ public class BuildingPhaseLv2 extends GamePhase {
         }
         else {
             //other timers
+            timerFinished = false;
             newTimerTask = new TimerTask() {
                 @Override
                 public void run() {
