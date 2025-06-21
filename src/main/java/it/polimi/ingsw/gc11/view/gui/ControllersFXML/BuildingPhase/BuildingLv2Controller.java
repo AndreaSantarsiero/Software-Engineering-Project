@@ -719,7 +719,8 @@ public class BuildingLv2Controller extends Controller {
             }
         }
         if(state == State.PLACING_RESERVED_SHIPCARD){
-            //buildingPhaseData.setReservedShipCard(buildingPhaseData.getHeldShipCard());
+            ShipCard reservedShipCard = buildingPhaseData.getReservedShipCard();
+            buildingPhaseData.getShipBoard().reserveShipCard(reservedShipCard);
             reservedSlots.getChildren().clear();
             this.setReservedSlots();
             //update(buildingPhaseData);
@@ -910,7 +911,7 @@ public class BuildingLv2Controller extends Controller {
                     }
                     left.setMouseTransparent(true);
                     right.setMouseTransparent(true);
-                    state = previousState;
+                    //state = previousState;
                 }
 
                 if (previousState == State.PLACING_FREE_SHIPCARD) {
@@ -920,7 +921,7 @@ public class BuildingLv2Controller extends Controller {
                     }
                     left.setMouseTransparent(true);
                     right.setMouseTransparent(true);
-                    state = previousState;
+                    //state = previousState;
                 }
 
                 buildingPhaseData.resetServerMessage();
