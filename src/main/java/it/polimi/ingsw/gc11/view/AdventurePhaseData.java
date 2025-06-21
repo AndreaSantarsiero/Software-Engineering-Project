@@ -32,7 +32,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     private AdventureState state;
     private AdventureState previousState;
-    private FlightBoard.Type flightType;
+    private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private final List<AdventureState> adventureCardStates;
     private Hit hit;
@@ -106,12 +106,12 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
 
-    public FlightBoard.Type getFlightType() {
-        return this.flightType;
+    public FlightBoard getFlightBoard() {
+        return flightBoard;
     }
 
-    public void setFlightType(FlightBoard.Type flightType) {
-        this.flightType = flightType;
+    public void setFlightBoard(FlightBoard flightBoard) {
+        this.flightBoard = flightBoard;
     }
 
 
