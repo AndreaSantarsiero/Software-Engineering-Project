@@ -26,9 +26,11 @@ public class BuildingController extends CLIController {
     private int shipCardOrientationMenu;
     private int adventureCardMenu;
     private int endBuildingMenu;
+    private int waitingMenu;
     private int selectedI;
     private int selectedJ;
     private Instant lastTemplateRender;
+    boolean buildingEnded = false;
 
 
 
@@ -202,10 +204,13 @@ public class BuildingController extends CLIController {
             mainCLI.addInputRequest(new MenuInput(data, this, template.getAdventureDecksMenuSize(), adventureCardMenu));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
-            mainCLI.addInputRequest(new MenuInput(data, this, template.endBuildingMenuSize(), endBuildingMenu));
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getEndBuildingMenuSize(), endBuildingMenu));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP || data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
             mainCLI.addInputRequest(new EnterInput(data, this));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getWaitingMenuSize(), waitingMenu));
         }
     }
 
@@ -250,6 +255,19 @@ public class BuildingController extends CLIController {
                 case 2 -> data.setState(BuildingPhaseData.BuildingState.SHIPCARD_SETUP);
                 case 3 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU);
             }
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU){
+            switch (waitingMenu) {
+                case 0 -> data.setState(BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP);
+                case 1 -> data.setState(BuildingPhaseData.BuildingState.RESET_TIMER);
+            }
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
+            buildingEnded = true;
+            data.setState(BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU);
+        }
+        else if((data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP || data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER) && buildingEnded){
+            data.setState(BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU);
         }
         else {
             data.updateState();
@@ -422,6 +440,15 @@ public class BuildingController extends CLIController {
 
     public void setEndBuildingMenu(int endBuildingMenu) {
         this.endBuildingMenu = endBuildingMenu;
+        template.render();
+    }
+
+    public int getWaitingMenu(){
+        return waitingMenu;
+    }
+
+    public void setWaitingMenu(int waitingMenu) {
+        this.waitingMenu = waitingMenu;
         template.render();
     }
 

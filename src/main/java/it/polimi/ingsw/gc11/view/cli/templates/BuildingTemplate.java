@@ -123,6 +123,14 @@ public class BuildingTemplate extends CLITemplate {
                     "├┤ │ ││ │├┬┘ │ ├─┤",
                     "└  └─┘└─┘┴└─ ┴ ┴ ┴")
     );
+    private static final List<List<String>> waitingMenu = List.of(
+            List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
+                    "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
+                    "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
+            List.of("┬─┐┌─┐┌─┐┌─┐┌┬┐  ┌┬┐┬┌┬┐┌─┐┬─┐",
+                    "├┬┘├┤ └─┐├┤  │    │ ││││├┤ ├┬┘",
+                    "┴└─└─┘└─┘└─┘ ┴    ┴ ┴┴ ┴└─┘┴└─")
+    );
 
 
 
@@ -344,8 +352,16 @@ public class BuildingTemplate extends CLITemplate {
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
                         printMenu(shipBoard, menuIndex, advancedMenu, controller.getAdvancedMenu());
                     }
-                    else if(data.getState() == BuildingPhaseData.BuildingState.WAITING){
-                        printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU){
+                        if(menuIndex < 3){
+                            printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
+                        }
+                        else if (menuIndex < 5) {
+                            printEmptyShipLine(shipBoard);
+                        }
+                        else {
+                            printMenu(shipBoard, menuIndex-5, waitingMenu, controller.getWaitingMenu());
+                        }
                     }
                     else {
                         printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
@@ -498,7 +514,11 @@ public class BuildingTemplate extends CLITemplate {
         return adventureDecksMenu.size();
     }
 
-    public int endBuildingMenuSize(){
+    public int getEndBuildingMenuSize(){
         return endBuildingMenu.size();
+    }
+
+    public int getWaitingMenuSize(){
+        return waitingMenu.size();
     }
 }
