@@ -15,6 +15,8 @@ public class AdventureController extends CLIController {
     private final AdventurePhaseData data;
     private int mainMenu;
     private int acceptCardMenu;
+    private int actionMenu;
+    private int advancedActionMenu;
     private int selectedI;
     private int selectedJ;
 
@@ -82,6 +84,15 @@ public class AdventureController extends CLIController {
         if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getMainMenuSize(), mainMenu));
         }
+        else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getAcceptCardMenuSize(), acceptCardMenu));
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getActionMenuSize(), actionMenu));
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ADVANCED_ACTION_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getAdvancedActionMenuSize(), advancedActionMenu));
+        }
         else if(data.getState() == AdventurePhaseData.AdventureState.RESOLVE_ADVENTURE_CARD){
             mainCLI.addInputRequest(new EnterInput(data, this));
         }
@@ -97,7 +108,27 @@ public class AdventureController extends CLIController {
             switch (mainMenu) {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.WAIT_ADVENTURE_CARD);
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP);
-                case 2 -> data.setState(AdventurePhaseData.AdventureState.WAITING);
+                case 2 -> data.setState(AdventurePhaseData.AdventureState.ABORT_FLIGHT);
+            }
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
+            switch (mainMenu) {
+                case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_DOUBLE_CANNONS);
+                case 1 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_MEMBERS);
+                case 2 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_BATTERIES);
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP);
+                case 4 -> {
+                    data.resetResponse();
+                    data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
+                }
+            }
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ADVANCED_ACTION_MENU){
+            switch (mainMenu) {
+                case 0 -> data.setState(AdventurePhaseData.AdventureState.ADD_MATERIALS);
+                case 1 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_SHIELD);
+                case 2 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_DOUBLE_CANNON);
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else {
@@ -110,7 +141,14 @@ public class AdventureController extends CLIController {
     @Override
     public void setMenuChoice(int choice){
         data.actualizePreviousState();
-        setMainMenu(choice);
+        switch (data.getState()) {
+            case CHOOSE_MAIN_MENU -> setMainMenu(choice);
+            case ACCEPT_CARD_MENU -> setAcceptCardMenu(choice);
+            case CHOOSE_ACTION_MENU -> setActionMenu(choice);
+            case CHOOSE_ADVANCED_ACTION_MENU -> setAdvancedActionMenu(choice);
+            case null, default -> {
+            }
+        }
     }
 
     @Override
@@ -156,6 +194,24 @@ public class AdventureController extends CLIController {
 
     public void setAcceptCardMenu(int acceptCardMenu) {
         this.acceptCardMenu = acceptCardMenu;
+        template.render();
+    }
+
+    public int getActionMenu() {
+        return actionMenu;
+    }
+
+    public void setActionMenu(int actionMenu) {
+        this.actionMenu = actionMenu;
+        template.render();
+    }
+
+    private int getAdvancedActionMenu(){
+        return advancedActionMenu;
+    }
+
+    public void setAdvancedActionMenu(int advancedActionMenu) {
+        this.advancedActionMenu = advancedActionMenu;
         template.render();
     }
 
