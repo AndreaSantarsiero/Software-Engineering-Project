@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import java.util.ArrayList;
 
@@ -37,6 +38,8 @@ public class Smugglers extends AdventureCard {
         this.defeated = false;
     }
 
+
+
     public int getLostDays() {return lostDays;}
 
     public int getFirePower() {return firePower;}
@@ -49,6 +52,8 @@ public class Smugglers extends AdventureCard {
 
     public void defeate() {defeated = true;}
 
+
+
     @Override
     public AdventureState getInitialState(AdventurePhase advContext){
         return new SmugglersState(advContext);
@@ -57,5 +62,10 @@ public class Smugglers extends AdventureCard {
     @Override
     public void print(AdventureCardCLI adventureCardCLI, int i){
         adventureCardCLI.draw(this, i);
+    }
+
+    @Override
+    public void getInitialState(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setInitialState(this);
     }
 }
