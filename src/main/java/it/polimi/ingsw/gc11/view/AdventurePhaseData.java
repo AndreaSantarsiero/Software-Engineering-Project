@@ -27,12 +27,13 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureCard adventureCard;
     private Player player;
     private Hit hit;
-    private final Map<String, Player> players; //list of enemies players
+    private final Map<String, Player> enemies; //list of enemies players
 
 
 
     public AdventurePhaseData() {
-        this.players = new HashMap<>();
+        this.enemies = new HashMap<>();
+        state = AdventureState.CHOOSE_MAIN_MENU;
     }
 
     public void initialize(Player player) {
@@ -85,6 +86,14 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
 
+    @Override
+    public void setServerMessage(String serverMessage) {
+        this.serverMessage = serverMessage;
+        setState(AdventureState.CHOOSE_MAIN_MENU);
+    }
+
+
+
     public FlightBoard.Type getFlightType() {
         return this.flightType;
     }
@@ -125,12 +134,12 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     public void setEnemiesPlayer(String username, Player player) {
-        players.put(username, player);
+        enemies.put(username, player);
         notifyListener();
     }
 
-    public Map<String, Player> getPlayers() {
-        return players;
+    public Map<String, Player> getEnemies() {
+        return enemies;
     }
 
 

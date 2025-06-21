@@ -2,8 +2,8 @@ package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.Player;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -19,12 +19,13 @@ public class EndPhaseData extends GamePhaseData {
     private EndState state;
     private EndState previousState;
     private Player player;
-    private List<Player> players; //list of enemies players
+    private final Map<String, Player> enemies; //list of enemies players
 
 
 
     public EndPhaseData() {
-        players = new ArrayList<>();
+        enemies = new HashMap<>();
+        state = EndState.CHOOSE_MAIN_MENU;
     }
 
 
@@ -69,6 +70,14 @@ public class EndPhaseData extends GamePhaseData {
 
 
 
+    @Override
+    public void setServerMessage(String serverMessage) {
+        this.serverMessage = serverMessage;
+        setState(EndState.CHOOSE_MAIN_MENU);
+    }
+
+
+
     public Player getPlayer() {
         return player;
     }
@@ -76,6 +85,17 @@ public class EndPhaseData extends GamePhaseData {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+
+    public void setEnemiesPlayer(String username, Player player) {
+        enemies.put(username, player);
+        notifyListener();
+    }
+
+    public Map<String, Player> getEnemies() {
+        return enemies;
+    }
+
 
 
     @Override

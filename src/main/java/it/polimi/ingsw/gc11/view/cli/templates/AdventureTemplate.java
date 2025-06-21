@@ -50,7 +50,7 @@ public class AdventureTemplate extends CLITemplate {
 
         if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
             Map<String, ShipBoard> enemiesShipBoard = new HashMap<>();
-            for(Map.Entry<String, Player> entry : data.getPlayers().entrySet()){
+            for(Map.Entry<String, Player> entry : data.getEnemies().entrySet()){
                 enemiesShipBoard.put(entry.getKey(), entry.getValue().getShipBoard());
             }
 
