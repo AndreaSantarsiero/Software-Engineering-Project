@@ -44,10 +44,9 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -562,7 +561,7 @@ public class GameContextTest {
         assertInstanceOf(ChooseHousing.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
         assertThrows(IllegalArgumentException.class, () -> gameContext.killMembers("username1", map));
 
-        map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,7), 2, Integer::sum);
+        map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,6), 2, Integer::sum);
         map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(7,8), 2, Integer::sum);
         map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(8,7), 2, Integer::sum);
         map.merge((HousingUnit) gameContext.getGameModel().getPlayer("username1").getShipBoard().getShipCard(8,8), 2, Integer::sum);
@@ -1812,6 +1811,86 @@ public class GameContextTest {
         assertThrows(IllegalStateException.class,
                 () -> gameContext.chooseMaterials("username1", new HashMap<>()),
                 "deve lanciare IllegalStateException quando i membri sono insufficienti");
+    }
+
+    /*
+     *      ChooseMaterialStation – branch-coverage aggiuntiva
+     */
+
+    /** 1) Carta già risolta → IllegalStateException. */
+    @Test
+    void testChooseMaterialsCardAlreadyResolved() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        AdventureCard advCard = new AbandonedStation(
+                "resolved-card", AdventureCard.Type.LEVEL1,
+                0, 1,                    // membersRequired, lostDays
+                0, 0, 0, 0);             // nessun materiale
+
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
+
+        gameContext.acceptAdventureCard("username1");   // passa in ChooseMaterialStation
+        advPhase.setResolvingAdvCard(true);                          // forziamo lo stato "già risolto"
+        advCard.useCard();
+
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.chooseMaterials("username1", new HashMap<>()),
+                "deve segnalare che la carta è già stata risolta");
+    }
+
+    /** 2) Membri equipaggio insufficienti → IllegalStateException. */
+    @Test
+    void testChooseMaterialsNotEnoughMembers() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        AdventureCard advCard = new AbandonedStation(
+                "need-crew",
+                AdventureCard.Type.LEVEL1,
+                100,           // lostDays
+                2,             // membersRequired  >  membri disponibili (0)
+                0, 0, 0, 0);
+
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
+
+        // È acceptAdventureCard che deve lanciare, non chooseMaterials
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.acceptAdventureCard("username1"),
+                "deve lanciare se l'equipaggio non è sufficiente per accettare la carta");
+    }
+
+    /** 3) Materiale richiesto non presente → IllegalArgumentException. */
+    @Test
+    void testChooseMaterialsMaterialNotAvailable() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        /* Nessun materiale disponibile nella stazione. */
+        AdventureCard advCard = new AbandonedStation(
+                "no-mat", AdventureCard.Type.LEVEL1,
+                0, 0,
+                0, 0, 0, 0);
+
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.setAdvState(new AbandonedStationState(advPhase));
+
+        gameContext.acceptAdventureCard("username1");
+
+        /* Map con una lista contenente null → non presente in availableMaterials. */
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
+        req.put(null,
+                new AbstractMap.SimpleEntry<>(
+                        Arrays.asList((Material) null),
+                        List.of()
+                )
+        );
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseMaterials("username1", req),
+                "deve lanciare se i materiali richiesti non sono disponibili");
     }
 
 }
