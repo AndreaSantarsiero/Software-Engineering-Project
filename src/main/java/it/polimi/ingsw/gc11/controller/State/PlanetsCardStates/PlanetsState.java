@@ -71,16 +71,6 @@ public class PlanetsState extends AdventureState {
         advContext.setResolvingAdvCard(true);
     }
 
-    /**
-     * Handles the logic when a player declines the {@link AbandonedShip} adventure card.
-     * <p>
-     * If all players have declined, the game returns to the {@link IdleState}.
-     * Otherwise, the state remains in {@code AbandonedShipState} and the next player is prompted.
-     *
-     * @param username the username of the player declining the card.
-     * @throws IllegalStateException    if the username is invalid.
-     * @throws IllegalArgumentException if the player is not the one currently expected to act.
-     */
     @Override
     public void declineAdventureCard(String username) {
         GameModel gameModel = this.advContext.getGameModel();
