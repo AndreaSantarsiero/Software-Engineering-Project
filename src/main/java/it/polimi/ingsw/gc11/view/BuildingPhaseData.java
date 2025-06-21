@@ -253,6 +253,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void abortUseReservedShipCard(){
+        shipBoard.getReservedComponents().removeAll(Collections.singleton(null));
         reservedShipCard.setOrientation(ShipCard.Orientation.DEG_0);
         shipBoard.reserveShipCard(reservedShipCard);
         this.reservedShipCardModified = true;
