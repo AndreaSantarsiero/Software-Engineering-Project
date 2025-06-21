@@ -146,67 +146,67 @@ public class CheckLv1Controller extends Controller {
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;
 
-                    Button btn = new Button();
-                    btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                    final int x = c;
-                    final int y = r;
-                    btn.setOnAction(event -> onShipBoardSelected(x, y));
-                    btn.minWidthProperty().bind(shipCardSize);
-                    btn.minHeightProperty().bind(shipCardSize);
-                    btn.prefWidthProperty().bind(shipCardSize);
-                    btn.prefHeightProperty().bind(shipCardSize);
-                    btn.maxWidthProperty().bind(shipCardSize);
-
-                    Rectangle clip = new Rectangle();
-                    clip.widthProperty().bind(btn.widthProperty());
-                    clip.heightProperty().bind(btn.heightProperty());
-                    clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
-                    clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
-                    btn.setClip(clip);
-
-                    if (alreadyIn(c, r) != -1) {
-                        btn.setStyle(
-                                "-fx-border-color: gold;" +
-                                        "-fx-border-width: 3;" +
-                                        "-fx-border-radius: 5;");
-
-                        DropShadow glow = new DropShadow();
-                        glow.setColor(Color.web("#FFD700"));
-                        glow.setRadius(15);
-                        glow.setSpread(0.6);
-                        btn.setEffect(glow);
-                    }
-
-                    ColorAdjust darken  = new ColorAdjust();
-                    darken.setBrightness(-0.2);
-
-                    DropShadow rim = new DropShadow();
-                    rim.setColor(Color.web("#ffffffAA"));
-                    rim.setRadius(10);
-                    rim.setSpread(0.5);
-
-                    btn.setOnMouseEntered(e -> {
-                        Effect combined = new Blend(
-                                BlendMode.SRC_OVER,
-                                rim,
-                                new Blend(
-                                        BlendMode.SRC_OVER,
-                                        null,
-                                        darken
-                                )
-                        );
-                        btn.setEffect(combined);
-                        btn.setScaleX(1.05);
-                        btn.setScaleY(1.05);
-                    });
-
-                    btn.setOnMouseExited(e -> {
-                        btn.setEffect(null);
-                        btn.setScaleX(1.0);
-                        btn.setScaleY(1.0);
-                    });
-
                     if(shipCard != null) {
+
+                        Button btn = new Button();
+                        btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                        final int x = c;
+                        final int y = r;
+                        btn.setOnAction(event -> onShipBoardSelected(x, y));
+                        btn.minWidthProperty().bind(shipCardSize);
+                        btn.minHeightProperty().bind(shipCardSize);
+                        btn.prefWidthProperty().bind(shipCardSize);
+                        btn.prefHeightProperty().bind(shipCardSize);
+                        btn.maxWidthProperty().bind(shipCardSize);
+
+                        Rectangle clip = new Rectangle();
+                        clip.widthProperty().bind(btn.widthProperty());
+                        clip.heightProperty().bind(btn.heightProperty());
+                        clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+                        clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
+                        btn.setClip(clip);
+
+                        if (alreadyIn(c, r) != -1) {
+                            btn.setStyle(
+                                    "-fx-border-color: gold;" +
+                                            "-fx-border-width: 3;" +
+                                            "-fx-border-radius: 5;");
+
+                            DropShadow glow = new DropShadow();
+                            glow.setColor(Color.web("#FFD700"));
+                            glow.setRadius(15);
+                            glow.setSpread(0.6);
+                            btn.setEffect(glow);
+                        }
+
+                        ColorAdjust darken  = new ColorAdjust();
+                        darken.setBrightness(-0.2);
+
+                        DropShadow rim = new DropShadow();
+                        rim.setColor(Color.web("#ffffffAA"));
+                        rim.setRadius(10);
+                        rim.setSpread(0.5);
+
+                        btn.setOnMouseEntered(e -> {
+                            Effect combined = new Blend(
+                                    BlendMode.SRC_OVER,
+                                    rim,
+                                    new Blend(
+                                            BlendMode.SRC_OVER,
+                                            null,
+                                            darken
+                                    )
+                            );
+                            btn.setEffect(combined);
+                            btn.setScaleX(1.05);
+                            btn.setScaleY(1.05);
+                        });
+
+                        btn.setOnMouseExited(e -> {
+                            btn.setEffect(null);
+                            btn.setScaleX(1.0);
+                            btn.setScaleY(1.0);
+                        });
 
                         img = new Image(getClass()
                                 .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipCard.getId() + ".jpg")
@@ -231,10 +231,6 @@ public class CheckLv1Controller extends Controller {
                         GridPane.setHgrow(btn, Priority.ALWAYS);
                         GridPane.setVgrow(btn, Priority.ALWAYS);
 
-                        slotGrid.add(btn, c, r);
-                    }
-                    else{
-                        btn.setOpacity(0);
                         slotGrid.add(btn, c, r);
                     }
                 }
