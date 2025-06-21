@@ -242,7 +242,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
     public void setReservedShipCard(ShipCard reservedShipCard){
-        if(reservedShipCard != null){
+        if(reservedShipCard != null) {
             this.reservedShipCard = reservedShipCard;
             this.reservedShipCardModified = true;
             shipBoard.getReservedComponents().remove(reservedShipCard);

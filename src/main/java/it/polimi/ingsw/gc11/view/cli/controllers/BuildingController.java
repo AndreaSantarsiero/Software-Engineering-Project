@@ -297,10 +297,11 @@ public class BuildingController extends CLIController {
     @Override
     public void confirmIntegerChoice() {
         if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD){
-            try {
+            if (data.getShipBoard().getReservedComponents().size() > reservedShipCardIndex) {
                 data.setReservedShipCard(data.getShipBoard().getReservedComponents().get(reservedShipCardIndex));
                 updateInternalState();
-            } catch (Exception e) {
+            }
+            else {
                 data.setServerMessage("Reserved ship card not valid for usage");
             }
         }
