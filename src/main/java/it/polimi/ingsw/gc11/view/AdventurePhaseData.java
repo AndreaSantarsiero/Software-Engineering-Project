@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureCard adventureCard;
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
-
+    private Hit hit;
 
 
     public AdventurePhaseData() {
@@ -133,6 +134,14 @@ public class AdventurePhaseData extends GamePhaseData {
         return enemies;
     }
 
+    public Hit getHit() {
+        return hit;
+    }
+
+    public void setHit(Hit hit) {
+        this.hit = hit;
+        notifyListener();
+    }
 
 
     //visitor pattern
