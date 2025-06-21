@@ -37,11 +37,11 @@
             </Button>
          </children>
       </HBox>
-      <HBox fx:id="status" alignment="CENTER" visible="false">
+      <HBox fx:id="status" alignment="CENTER">
          <children>
-            <Label fx:id="label" prefHeight="44.0" prefWidth="773.0" styleClass="Text" visible="false">
+            <Label fx:id="errorLabel" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="Label" visible="false" wrapText="true">
                <font>
-                  <Font size="36.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
          </children>

@@ -27,7 +27,7 @@ public class LoginController extends Controller {
     @FXML
     private HBox status;
     @FXML
-    private Label label;
+    private Label errorLabel;
 
     private Stage stage;
 
@@ -35,7 +35,7 @@ public class LoginController extends Controller {
     @FXML
     protected void onEnterButtonClick(ActionEvent event) {
 
-        label.setVisible(false);
+        errorLabel.setVisible(false);
 
         Scene scene = enterButton.getScene();
         this.stage = (Stage) scene.getWindow();
@@ -50,9 +50,9 @@ public class LoginController extends Controller {
             virtualServer.registerSession(username);
         }
         catch (Exception e) {
-            label.setVisible(true);
-            label.setText("Network Error");
-            label.setStyle("-fx-text-fill: red;" + label.getStyle());
+            errorLabel.setVisible(true);
+            errorLabel.setText("Network Error");
+            errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
             System.out.println("Network Error:  " + e.getMessage());
         }
 
@@ -67,18 +67,18 @@ public class LoginController extends Controller {
 
             //Can't register the session
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_USERNAME){
-                label.setVisible(true);
-                label.setText("Error:  " + joiningPhaseData.getServerMessage());
-                label.setStyle("-fx-text-fill: red;" + label.getStyle());
+                errorLabel.setVisible(true);
+                errorLabel.setText("Error:  " + joiningPhaseData.getServerMessage());
                 System.out.println("Error:  " + joiningPhaseData.getServerMessage());
+                joiningPhaseData.resetServerMessage();
             }
 
             //Session registered successfully
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
                 enterButton.setDisable(true);
                 status.setVisible(true);
-                label.setText("You are logged in as:   " + joiningPhaseData.getUsername());
-                label.setStyle("-fx-text-fill: green;" + label.getStyle());
+                errorLabel.setText("You are logged in as:   " + joiningPhaseData.getUsername());
+                errorLabel.setStyle("-fx-text-fill: green;" + errorLabel.getStyle());
                 System.out.println("You are logged in as:   " + joiningPhaseData.getUsername());
                 while (true) {
                     try {
