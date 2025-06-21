@@ -8,9 +8,9 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-
 import java.util.Map;
+
+
 
 /**
  * Represents the state in which a player must choose which crew members to sacrifice
@@ -21,9 +21,12 @@ import java.util.Map;
  * the game transitions to the {@link IdleState}.
  */
 public class ChooseHousing extends AdventureState {
-    private GameModel gameModel;
-    private AbandonedShip abandonedShip;
-    private Player player;
+
+    private final GameModel gameModel;
+    private final AbandonedShip abandonedShip;
+    private final Player player;
+
+
 
     /**
      * Constructs a new {@code ChooseHousing} state.
@@ -37,6 +40,7 @@ public class ChooseHousing extends AdventureState {
         this.abandonedShip = (AbandonedShip) this.advContext.getDrawnAdvCard();
         this.player = player;
     }
+
 
 
     /**
@@ -57,14 +61,14 @@ public class ChooseHousing extends AdventureState {
      */
     @Override
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
-
+        gameModel.checkPlayerUsername(username);
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        //It should be impossible to throw this exception
         if(player.getShipBoard().getMembers() < abandonedShip.getLostMembers()){
-            //Il giocatore va eliminato dalla partita
-            throw new IllegalStateException("You don't have enough members... Game over");
+            throw new IllegalStateException("You don't have enough members to accept this adventure card!");
         }
 
         int sum = 0;
@@ -73,7 +77,7 @@ public class ChooseHousing extends AdventureState {
         }
 
         if(sum < abandonedShip.getLostMembers()){
-            throw new IllegalArgumentException("You don't select enough members");
+            throw new IllegalArgumentException("You didn't select enough members");
         }
 
 

@@ -7,7 +7,6 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -22,6 +21,8 @@ public class ChooseMaterialStation extends AdventureState {
     GameModel gameModel;
     Player player;
 
+
+
     public ChooseMaterialStation(AdventurePhase advContext, Player player) {
         super(advContext);
         this.abandonedStation = (AbandonedStation) advContext.getDrawnAdvCard();
@@ -29,8 +30,11 @@ public class ChooseMaterialStation extends AdventureState {
         this.player = player;
     }
 
+
+
     @Override
     public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        gameModel.checkPlayerUsername(username);
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }

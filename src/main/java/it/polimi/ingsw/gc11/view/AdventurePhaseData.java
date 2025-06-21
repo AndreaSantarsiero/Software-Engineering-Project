@@ -16,7 +16,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public enum AdventureState {
         CHOOSE_MAIN_MENU, ACCEPT_CARD_MENU,
-        WAIT_ADVENTURE_CARD, SHOW_ADVENTURE_CARD, RESOLVE_ADVENTURE_CARD,
+        WAIT_ADVENTURE_CARD, RESOLVE_ADVENTURE_CARD,
         SHOW_ENEMIES_SHIP,
         CHOOSE_BATTERIES, SELECT_NUM_BATTERIES,
         CHOOSE_MEMBERS, SELECT_NUM_MEMBERS,
@@ -72,7 +72,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public void updateState() {
         actualizePreviousState();
 
-        if(state == AdventureState.SHOW_ADVENTURE_CARD || state == AdventureState.SHOW_ENEMIES_SHIP) {
+        if(state == AdventureState.RESOLVE_ADVENTURE_CARD || state == AdventureState.SHOW_ENEMIES_SHIP) {
             state = AdventureState.CHOOSE_MAIN_MENU;
         }
         else if (state.ordinal() < AdventureState.values().length - 1) {

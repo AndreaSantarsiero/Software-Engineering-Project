@@ -5,18 +5,20 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-
 import java.util.List;
 import java.util.Map;
 
 
+
 public class SlaversState extends AdventureState {
-    private GameModel gameModel;
-    private Slavers slavers;
+
+    private final GameModel gameModel;
+    private final Slavers slavers;
     private double playerFirePower;
+
+
 
     public SlaversState(AdventurePhase advContext) {
         super(advContext);
@@ -24,6 +26,7 @@ public class SlaversState extends AdventureState {
         this.slavers = (Slavers) advContext.getDrawnAdvCard();
         this.playerFirePower = 0;
     }
+
 
 
     @Override
@@ -37,7 +40,7 @@ public class SlaversState extends AdventureState {
         }
 
         //Imposto che il giorcatore sta effettivamente giocando la carta
-        if(this.advContext.isResolvingAdvCard() == true){
+        if(this.advContext.isResolvingAdvCard()){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);
@@ -77,6 +80,5 @@ public class SlaversState extends AdventureState {
 
         return player;
     }
-
 }
 

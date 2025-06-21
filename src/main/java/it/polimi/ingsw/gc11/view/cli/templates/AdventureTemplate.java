@@ -68,7 +68,7 @@ public class AdventureTemplate extends CLITemplate {
             }
             return;
         }
-        else if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ADVENTURE_CARD){
+        else if(data.getState() == AdventurePhaseData.AdventureState.RESOLVE_ADVENTURE_CARD){
             System.out.println();
             for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
                 adventureCardCLI.print(data.getAdventureCard(), i);

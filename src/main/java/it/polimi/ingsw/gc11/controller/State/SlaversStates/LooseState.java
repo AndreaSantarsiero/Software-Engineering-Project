@@ -3,25 +3,27 @@ package it.polimi.ingsw.gc11.controller.State.SlaversStates;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
-import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-
 import java.util.Map;
 
+
+
 public class LooseState extends AdventureState {
-    private Player player;
-    private GameModel gameModel;
-    private Slavers slavers;
+
+    private final Player player;
+    private final Slavers slavers;
+
+
 
     public LooseState(AdventurePhase advContext, Player player) {
         super(advContext);
         this.player = player;
-        this.gameModel = advContext.getGameModel();
         this.slavers = (Slavers) advContext.getDrawnAdvCard();
     }
+
+
 
     @Override
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){

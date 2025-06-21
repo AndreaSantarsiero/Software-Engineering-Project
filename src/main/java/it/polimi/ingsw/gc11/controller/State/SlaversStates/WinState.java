@@ -7,10 +7,15 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
 
+
+
 public class  WinState extends AdventureState {
-    private Player player;
-    private GameModel gameModel;
-    private Slavers slavers;
+
+    private final Player player;
+    private final GameModel gameModel;
+    private final Slavers slavers;
+
+
 
     public WinState(AdventurePhase advContext, Player player) {
         super(advContext);
@@ -18,6 +23,8 @@ public class  WinState extends AdventureState {
         this.gameModel = advContext.getGameModel();
         this.slavers = (Slavers) advContext.getDrawnAdvCard();
     }
+
+
 
     @Override
     public Player rewardDecision(String username, boolean decision){

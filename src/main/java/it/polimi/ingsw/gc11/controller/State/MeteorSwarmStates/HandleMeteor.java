@@ -8,30 +8,32 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Meteor;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.MeteorSwarm;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-
 import java.util.Map;
 
 
+
 public class HandleMeteor extends AdventureState {
-    private GameModel gameModel;
-    private Player player;
-    private int coordinates;
+
+    private final GameModel gameModel;
+    private final int coordinates;
     private int iterationsHit;
     private int iterationsPlayer;
-    private MeteorSwarm meteorSwarm;
+    private final MeteorSwarm meteorSwarm;
+
+
 
     public HandleMeteor(AdventurePhase advContext, int coordinates, int iterationsHit, int iterationsPlayer) {
        super(advContext);
        this.gameModel = advContext.getGameModel();
-       this.player = player;
        this.coordinates = coordinates;
        this.iterationsHit = iterationsHit;
        this.iterationsPlayer = iterationsPlayer;
        this.meteorSwarm = (MeteorSwarm) advContext.getDrawnAdvCard();
     }
+
+
 
     //Assumiamo che i comandi siano memorizzati in una coda
     @Override
