@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
