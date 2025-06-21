@@ -287,6 +287,8 @@ public class CheckLv1Controller extends Controller {
     private void checkShipBoard(){
         try {
             virtualServer.repairShip(xCoordinates, yCoordinates);
+            xCoordinates.clear();
+            yCoordinates.clear();
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
