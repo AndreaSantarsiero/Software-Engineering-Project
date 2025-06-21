@@ -550,6 +550,7 @@ public class GameModel {
         for (Player player : players) {
             if (player.getUsername().equals(username)) {
                 curr = player;
+                break;
             }
         }
 
@@ -564,11 +565,6 @@ public class GameModel {
                         if (Math.floorMod(p.getPosition(), flightBoard.getLength()) == Math.floorMod(i, flightBoard.getLength())) {
                             numDays++;
 
-                            if(curr.getPosition() - p.getPosition() >= flightBoard.getLength()){
-                                p.setAbort();
-                                return;
-                            }
-
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
                             break;
@@ -579,16 +575,11 @@ public class GameModel {
             }
         }
         else {
-            for (int i = curr.getPosition() + 1; i > curr.getPosition() + numDays; i--) {
+            for (int i = curr.getPosition() - 1; i >= curr.getPosition() + numDays; i--) {
                 for (Player p : players) {
                     if (!p.getUsername().equals(username) && !p.isAbort()) {
                         if (Math.floorMod(p.getPosition(), flightBoard.getLength()) == Math.floorMod(i, flightBoard.getLength())) {
                             numDays--;
-
-                            if(p.getPosition() - curr.getPosition() >= flightBoard.getLength()){
-                                curr.setAbort();
-                                return;
-                            }
 
                             //swap positions in players
                             Collections.swap(players, players.indexOf(curr), players.indexOf(p));
@@ -599,6 +590,17 @@ public class GameModel {
             }
         }
         curr.setPosition(curr.getPosition()+numDays);
+    }
+
+    public void checkLapping(){
+        for(int i = players.size()-1; i >= 0; i--) {
+            if (Math.abs(players.getFirst().getPosition() - players.get(i).getPosition()) > flightBoard.getLength()) {
+                players.get(i).setAbort();
+            }
+            else{
+                break;
+            }
+        }
     }
 
     public int getPositionOnBoard(String username){
