@@ -6,7 +6,9 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -96,9 +98,15 @@ public class CheckPhase extends GamePhase {
     private void goToAdventurePhase() {
         System.out.println("Going to AdventurePhase...");
         this.gameContext.setPhase(new AdventurePhase(this.gameContext));
+        Map<String, Player> enemies = new HashMap<>();
+        for (Player player : this.gameModel.getPlayers()) {
+            enemies.put(player.getUsername(), player);
+        }
         for (Player player : gameModel.getPlayers()) {
-            SetAdventurePhaseAction send = new SetAdventurePhaseAction(player);
+            enemies.remove(player.getUsername());
+            SetAdventurePhaseAction send = new SetAdventurePhaseAction(player, enemies);
             gameContext.sendAction(player.getUsername(), send);
+            enemies.put(player.getUsername(), player);
         }
     }
 

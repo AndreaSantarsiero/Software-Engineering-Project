@@ -27,7 +27,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureCard adventureCard;
     private Player player;
     private Hit hit;
-    private final Map<String, Player> enemies; //list of enemies players
+    private Map<String, Player> enemies; //list of enemies players
 
 
 
@@ -36,8 +36,9 @@ public class AdventurePhaseData extends GamePhaseData {
         state = AdventureState.CHOOSE_MAIN_MENU;
     }
 
-    public void initialize(Player player) {
+    public void initialize(Player player, Map<String, Player> enemies) {
         this.player = player;
+        this.enemies = enemies;
         notifyListener();
     }
 

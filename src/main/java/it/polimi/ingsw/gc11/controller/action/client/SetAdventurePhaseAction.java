@@ -2,17 +2,20 @@ package it.polimi.ingsw.gc11.controller.action.client;
 
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.view.*;
+import java.util.Map;
 
 
 
 public class SetAdventurePhaseAction extends ServerAction {
 
     private final Player player;
+    private final Map<String, Player> enemies;
 
 
 
-    public SetAdventurePhaseAction(Player player) {
+    public SetAdventurePhaseAction(Player player, Map<String, Player> enemies) {
         this.player = player;
+        this.enemies = enemies;
     }
 
 
@@ -24,7 +27,7 @@ public class SetAdventurePhaseAction extends ServerAction {
     @Override public void loadData(CheckPhaseData checkPhaseData) {}
 
     @Override public void loadData(AdventurePhaseData adventurePhaseData) {
-        adventurePhaseData.initialize(player);
+        adventurePhaseData.initialize(player, enemies);
     }
 
     @Override public void loadData(EndPhaseData endPhaseData) {}
