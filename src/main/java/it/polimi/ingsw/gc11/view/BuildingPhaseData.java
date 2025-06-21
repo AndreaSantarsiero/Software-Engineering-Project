@@ -34,6 +34,7 @@ public class  BuildingPhaseData extends GamePhaseData {
     private ArrayList<String> playersUsername;
     private Instant expireTimerInstant;
     private int timersLeft;
+    boolean buildingEnded = false;
 
     //Mutable objects
     private ShipBoard shipBoard;
@@ -89,8 +90,15 @@ public class  BuildingPhaseData extends GamePhaseData {
         if(state == BuildingState.PLACE_SHIPCARD || state == BuildingState.CHOOSE_SHIPCARD_ORIENTATION || state == BuildingState.CHOOSE_RESERVED_SHIPCARD || state == BuildingState.REMOVE_SHIPCARD_SETUP) {
             state = BuildingState.CHOOSE_SHIPCARD_ACTION;
         }
+        else if((state == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP || state == BuildingPhaseData.BuildingState.RESET_TIMER) && buildingEnded){
+            state = BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU;
+        }
         else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.RELEASE_ADVENTURE_DECK || state == BuildingState.RESET_TIMER){
             state = BuildingState.CHOOSE_MAIN_MENU;
+        }
+        else if(state == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
+            buildingEnded = true;
+            state = BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU;
         }
         else if (state.ordinal() < BuildingState.values().length - 1) {
             state = BuildingState.values()[state.ordinal() + 1];

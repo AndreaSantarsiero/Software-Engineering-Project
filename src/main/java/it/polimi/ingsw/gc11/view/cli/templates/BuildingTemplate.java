@@ -189,6 +189,7 @@ public class BuildingTemplate extends CLITemplate {
                 }
                 System.out.println();
             }
+            System.out.println();
             for (int i = 0; i < pressEnterToContinue.size(); i++) {
                 System.out.println(pressEnterToContinue.get(i));
             }

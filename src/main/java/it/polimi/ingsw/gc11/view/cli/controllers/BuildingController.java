@@ -30,7 +30,6 @@ public class BuildingController extends CLIController {
     private int selectedI;
     private int selectedJ;
     private Instant lastTemplateRender;
-    boolean buildingEnded = false;
 
 
 
@@ -261,13 +260,6 @@ public class BuildingController extends CLIController {
                 case 0 -> data.setState(BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP);
                 case 1 -> data.setState(BuildingPhaseData.BuildingState.RESET_TIMER);
             }
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
-            buildingEnded = true;
-            data.setState(BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU);
-        }
-        else if((data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP || data.getState() == BuildingPhaseData.BuildingState.RESET_TIMER) && buildingEnded){
-            data.setState(BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU);
         }
         else {
             data.updateState();
