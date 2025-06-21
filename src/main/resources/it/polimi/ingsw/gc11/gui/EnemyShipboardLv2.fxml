@@ -20,7 +20,7 @@
         <!-- Title -->
         <HBox fx:id="headerContainer" alignment="CENTER">
             <children>
-                <Label styleClass="Text" text="BUILDING PHASE">
+                <Label styleClass="Text">
                     <font>
                         <Font size="58.0" />
                     </font>

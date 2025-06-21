@@ -38,6 +38,7 @@ public class HandleMeteor extends AdventureState {
     //Assumiamo che i comandi siano memorizzati in una coda
     @Override
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon) {
+        gameModel.checkPlayerUsername(username);
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){

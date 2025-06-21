@@ -31,8 +31,7 @@ public class SlaversState extends AdventureState {
 
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
-
-        int sum = 0;
+        gameModel.checkPlayerUsername(username);
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
@@ -45,11 +44,12 @@ public class SlaversState extends AdventureState {
         }
         this.advContext.setResolvingAdvCard(true);
 
-        if(Batteries == null || doubleCannons == null){
+        if(Batteries == null || doubleCannons == null) {
             this.advContext.setResolvingAdvCard(false);
-            throw new NullPointerException();
+            throw new IllegalArgumentException("Batteries and doubleCannons cannot be null");
         }
         else{
+            int sum = 0;
             for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){
                 sum += entry.getValue();
             }
@@ -67,14 +67,15 @@ public class SlaversState extends AdventureState {
         if(playerFirePower > slavers.getFirePower()){
             //VictoryState
             advContext.setAdvState(new WinState(advContext, player));
-        } else if (playerFirePower == slavers.getFirePower()) {
-
+        }
+        else if (playerFirePower == slavers.getFirePower()) {
             //Imposto che la carta non è più giocata da nessun player e passo al prossimo player.
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new SlaversState(advContext));
         }
-        else {//Go LoseState
+        else {
+            //LooseState
             advContext.setAdvState(new LooseState(advContext, player));
         }
 

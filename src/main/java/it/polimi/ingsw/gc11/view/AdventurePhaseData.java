@@ -32,7 +32,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     private AdventureState state;
     private AdventureState previousState;
-    private FlightBoard.Type flightType;
+    private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private final List<AdventureState> adventureCardStates;
     private Hit hit;
@@ -106,12 +106,12 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
 
-    public FlightBoard.Type getFlightType() {
-        return this.flightType;
+    public FlightBoard getFlightBoard() {
+        return flightBoard;
     }
 
-    public void setFlightType(FlightBoard.Type flightType) {
-        this.flightType = flightType;
+    public void setFlightBoard(FlightBoard flightBoard) {
+        this.flightBoard = flightBoard;
     }
 
 
@@ -166,6 +166,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setStates(AbandonedShip abandonedShip) {
         adventureCardStates.add(AdventureState.ACCEPT_CARD_MENU);
         adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
@@ -173,6 +174,7 @@ public class AdventurePhaseData extends GamePhaseData {
         adventureCardStates.add(AdventureState.ACCEPT_CARD_MENU);
         adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
         adventureCardStates.add(AdventureState.ADD_MATERIALS);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
@@ -183,6 +185,7 @@ public class AdventurePhaseData extends GamePhaseData {
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
         adventureCardStates.add(AdventureState.CHOOSE_SHIELD);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
@@ -193,6 +196,7 @@ public class AdventurePhaseData extends GamePhaseData {
         adventureCardStates.add(AdventureState.REMOVE_MATERIALS);
         adventureCardStates.add(AdventureState.CHOOSE_SHIELD);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
@@ -203,23 +207,27 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setStates(MeteorSwarm meteorSwarm) {
         adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNON);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
     public void setStates(OpenSpace openSpace) {
-        setState(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
     public void setStates(Pirates pirates) {
         adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
     public void setStates(PlanetsCard planetsCard) {
         adventureCardStates.add(AdventureState.ACCEPT_CARD_MENU);
         adventureCardStates.add(AdventureState.ADD_MATERIALS);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
@@ -228,6 +236,7 @@ public class AdventurePhaseData extends GamePhaseData {
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
         adventureCardStates.add(AdventureState.ADD_MATERIALS);
         adventureCardStates.add(AdventureState.REMOVE_MATERIALS);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 
@@ -235,6 +244,7 @@ public class AdventurePhaseData extends GamePhaseData {
         adventureCardStates.add(AdventureState.CHOOSE_DOUBLE_CANNONS);
         adventureCardStates.add(AdventureState.CHOOSE_BATTERIES);
         adventureCardStates.add(AdventureState.CHOOSE_MEMBERS);
+        adventureCardStates.add(AdventureState.CHOOSE_MAIN_MENU);
         setState(AdventureState.RESOLVE_ADVENTURE_CARD);
     }
 

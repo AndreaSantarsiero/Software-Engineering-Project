@@ -1,21 +1,38 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv1Controller;
+import it.polimi.ingsw.gc11.view.gui.MainGUI;
+import it.polimi.ingsw.gc11.view.gui.ViewModel;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AdventureController extends Controller {
 
+    @FXML private VBox root;
+    @FXML private HBox playersButtons;
+    @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private ImageView flightBoardImage;
     @FXML private Pane positionOverlayPane;
     @FXML private Rectangle pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
     @FXML private Rectangle pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18;
+    @FXML private Label errorLabel;
 
     // Dimensioni base dell'immagine della flight board
     private static final double BOARD_BASE_WIDTH = 985.0;
@@ -24,9 +41,15 @@ public class AdventureController extends Controller {
     private final Map<Rectangle, double[]> originalPositions = new HashMap<>();
 
     private Stage stage;
+    private VirtualServer virtualServer;
+    private AdventurePhaseData adventurePhaseData;
 
     public void initialize(Stage stage) {
         this.stage = stage;
+        ViewModel viewModel = (ViewModel) stage.getUserData();
+        this.virtualServer = viewModel.getVirtualServer();
+        this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
+
         saveOriginalPositions();
 
         // Listener su dimensioni dell'ImageView
@@ -37,6 +60,16 @@ public class AdventureController extends Controller {
 
         // Primo posizionamento
         updateRectangles();
+
+        root.setSpacing(20);
+
+
+        //Setup buttons to view enemies' shipboard
+        this.setupOthersPlayersButtons();
+
+        playersButtons.setSpacing(10);
+        playersButtons.prefWidthProperty();
+
     }
 
     private void saveOriginalPositions() {
@@ -75,6 +108,59 @@ public class AdventureController extends Controller {
             rect.setWidth(40 * scaleX);
             rect.setHeight(40 * scaleY);
         }
+    }
+
+    //Setup of buttons to see enemies' shipboards
+    private void setupOthersPlayersButtons(){
+        for(String player : adventurePhaseData.getEnemies().keySet()){
+            Button playerButton = new Button();
+            playerButton.setText(player);
+            playerButton.setOnMouseClicked(e -> {
+                try{
+                    virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
+                }
+                catch(Exception exc){
+//                    errorLabel.setVisible(true);
+//                    errorLabel.setText(e.getMessage());
+//                    errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
+                    System.out.println("Network Error:  " + exc.getMessage());
+                }
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv1.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EnemyShipboardLv1Controller controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage, player);
+                    stage.setScene(newScene);
+                    stage.show();
+                }
+                catch (IOException exc) {
+                    throw new RuntimeException(exc);
+                }
+            });
+            playersButtons.getChildren().add(playerButton);
+        }
+    }
+
+    private void setErrorLabel(){
+        errorLabel.setVisible(true);
+        errorLabel.setText(adventurePhaseData.getServerMessage());
+        //Timer, the user can see the error message for an interval of 3s
+        Task<Void> timer = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException _) {}
+                return null;
+            }
+        };
+        timer.setOnSucceeded(event -> {
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+        });
+        new Thread(timer).start();
     }
 
     @FXML private void onPositionClicked1()  { System.out.println("Posizione 1"); }

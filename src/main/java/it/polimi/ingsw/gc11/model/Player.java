@@ -14,10 +14,9 @@ public class Player implements Serializable {
     private final String username;
     private Color color;
     private int coins;
-    private int position; //Player's ranking on the shipboard
+    private int position;
     private boolean abort;
     private ShipBoard shipBoard;
-    private int standing;
 
 
 
@@ -34,7 +33,6 @@ public class Player implements Serializable {
         this.position = -1;
         this.abort = false;
         this.shipBoard = null;
-        this.standing = 0;
     }
 
 
@@ -67,14 +65,6 @@ public class Player implements Serializable {
         }
     }
 
-
-    public void setStanding(int standing) {
-        this.standing = standing;
-    }
-
-    public int getStanding() {
-        return standing;
-    }
 
     public String getUsername() {
         return username;

@@ -70,13 +70,13 @@ public class WinSmugglersState extends AdventureState {
      */
     @Override
     public Player rewardDecision(String username, boolean decision){
+        gameModel.checkPlayerUsername(username);
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
         if(decision){
             gameModel.move(player.getUsername(), smugglers.getLostDays() * -1);
-
             this.advContext.setAdvState(new ChooseMaterialsSmugglers(advContext, player));
         }
         else{
