@@ -447,6 +447,7 @@ public class BuildingController extends CLIController {
         selectedI = data.getShipBoard().adaptY(7);
         selectedJ = data.getShipBoard().adaptX(7);
         mainMenu = 0;
+        advancedMenu = 0;
         shipCardMenu = 0;
         shipCardIndex = 0;
         shipCardActionMenu = 0;
