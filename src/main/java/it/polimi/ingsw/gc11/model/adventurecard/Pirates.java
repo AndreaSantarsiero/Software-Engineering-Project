@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.model.Shot;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class Pirates extends AdventureCard {
     private final int firePower;
     private final int coins;
     public ArrayList<Shot> shots;
+
 
 
     public Pirates(String id, AdventureCard.Type type, int lostDays, int firePower, int coins, ArrayList<Shot> shots) throws IllegalArgumentException{
@@ -33,6 +35,8 @@ public class Pirates extends AdventureCard {
         this.shots = shots;
     }
 
+
+
     public int getLostDays() {return lostDays;}
 
     public int getFirePower() {return firePower;}
@@ -40,6 +44,8 @@ public class Pirates extends AdventureCard {
     public int getCoins() {return coins;}
 
     public ArrayList<Shot> getShots() {return shots;}
+
+
 
     @Override
     public AdventureState getInitialState(AdventurePhase advContext){
@@ -49,5 +55,10 @@ public class Pirates extends AdventureCard {
     @Override
     public void print(AdventureCardCLI adventureCardCLI, int i){
         adventureCardCLI.draw(this, i);
+    }
+
+    @Override
+    public void getStates(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setStates(this);
     }
 }

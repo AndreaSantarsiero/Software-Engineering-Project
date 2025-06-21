@@ -1387,7 +1387,8 @@ public abstract class ShipBoard  implements Serializable {
 
         if(numBatteries > getDoubleEnginesNumber()){
             enginePower += 2*getDoubleEnginesNumber();
-        }else{
+        }
+        else{
             enginePower += 2*numBatteries;
         }
 

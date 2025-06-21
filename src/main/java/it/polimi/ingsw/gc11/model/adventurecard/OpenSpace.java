@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.OpenSpaceStates.OpenSpaceState;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 
 
@@ -12,6 +13,8 @@ public class OpenSpace extends AdventureCard {
     public OpenSpace(String id, AdventureCard.Type type) {
         super(id, type);
     }
+
+
 
     @Override
     public AdventureState getInitialState(AdventurePhase advContext){
@@ -23,5 +26,8 @@ public class OpenSpace extends AdventureCard {
         adventureCardCLI.draw(this, i);
     }
 
-
+    @Override
+    public void getStates(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setStates(this);
+    }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 
 
@@ -26,6 +27,8 @@ public class Slavers extends AdventureCard {
         this.coins = coins;
     }
 
+
+
     public int getLostDays() {return lostDays;}
 
     public int getFirePower() {return firePower;}
@@ -33,6 +36,7 @@ public class Slavers extends AdventureCard {
     public int getLostMembers() {return lostMembers;}
 
     public int getCoins() {return coins;}
+
 
 
     @Override
@@ -43,5 +47,10 @@ public class Slavers extends AdventureCard {
     @Override
     public void print(AdventureCardCLI adventureCardCLI, int i){
         adventureCardCLI.draw(this, i);
+    }
+
+    @Override
+    public void getStates(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setStates(this);
     }
 }

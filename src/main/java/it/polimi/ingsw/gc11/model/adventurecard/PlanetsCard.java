@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.PlanetsState;
 import it.polimi.ingsw.gc11.model.Planet;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import java.util.ArrayList;
 
@@ -11,8 +12,9 @@ import java.util.ArrayList;
 
 public class PlanetsCard extends AdventureCard {
 
-    private ArrayList<Planet> planets;
+    private final ArrayList<Planet> planets;
     private final int lostDays;
+
 
 
     public PlanetsCard(String id, AdventureCard.Type type, int lostDays, ArrayList<Planet> planets){
@@ -25,7 +27,6 @@ public class PlanetsCard extends AdventureCard {
             throw new IllegalArgumentException("number of planets must be beetween 2 and 4.");
         }
 
-        this.lostDays = lostDays;
         for(Planet planet:planets) {
             if (planet == null) {
                 throw new NullPointerException("planet is null.");
@@ -34,8 +35,12 @@ public class PlanetsCard extends AdventureCard {
                 throw new IllegalArgumentException("planet is visited.");
             }
         }
+
+        this.lostDays = lostDays;
         this.planets = planets;
     }
+
+
 
     public ArrayList<Planet> getFreePlanets(){
         ArrayList<Planet> freePlanets = new ArrayList<>();
@@ -46,7 +51,6 @@ public class PlanetsCard extends AdventureCard {
         }
         return freePlanets;
     }
-
 
     public ArrayList<Planet> getPlanets(){
         return planets;
@@ -62,6 +66,7 @@ public class PlanetsCard extends AdventureCard {
     public int getLostDays() { return lostDays;}
 
 
+
     @Override
     public AdventureState getInitialState(AdventurePhase advContext){
         return new PlanetsState(advContext, 0);
@@ -72,6 +77,8 @@ public class PlanetsCard extends AdventureCard {
         adventureCardCLI.draw(this, i);
     }
 
-
-
+    @Override
+    public void getStates(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setStates(this);
+    }
 }

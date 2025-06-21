@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.model.adventurecard;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import java.io.Serializable;
 
@@ -13,15 +14,18 @@ public abstract class AdventureCard implements Serializable {
         TRIAL, LEVEL1, LEVEL2;
     }
 
+
     private final String id;
-    private Type type;
+    private final Type type;
     private boolean used;
+
 
     public AdventureCard(String id, Type type) {
         this.id = id;
         this.type = type;
         this.used = false;
     }
+
 
     public String getId() {return id;}
 
@@ -40,4 +44,6 @@ public abstract class AdventureCard implements Serializable {
     public abstract AdventureState getInitialState(AdventurePhase advContext);
 
     public abstract void print(AdventureCardCLI adventureCardCLI, int i);
+
+    public abstract void getStates(AdventurePhaseData adventurePhaseData);
 }
