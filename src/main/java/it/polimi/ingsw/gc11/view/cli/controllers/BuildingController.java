@@ -9,6 +9,7 @@ import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.templates.BuildingTemplate;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 
 
 
@@ -297,6 +298,7 @@ public class BuildingController extends CLIController {
     @Override
     public void confirmIntegerChoice() {
         if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD){
+            data.getShipBoard().getReservedComponents().removeAll(Collections.singleton(null));
             if (data.getShipBoard().getReservedComponents().size() > reservedShipCardIndex) {
                 data.setReservedShipCard(data.getShipBoard().getReservedComponents().get(reservedShipCardIndex));
                 updateInternalState();
