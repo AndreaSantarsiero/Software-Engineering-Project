@@ -27,6 +27,7 @@ public class MeteorSwarmState extends AdventureState {
 
     @Override
     public Hit getCoordinate(String username){
+        gameModel.checkPlayerUsername(username);
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
@@ -34,7 +35,7 @@ public class MeteorSwarmState extends AdventureState {
         }
 
         //Imposto che il giocatore sta effettivamente giocando la carta
-        if(this.advContext.isResolvingAdvCard() == true){
+        if(this.advContext.isResolvingAdvCard()){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);

@@ -28,8 +28,9 @@ public class  WinState extends AdventureState {
 
     @Override
     public Player rewardDecision(String username, boolean decision){
+        gameModel.checkPlayerUsername(username);
+
         if(!player.getUsername().equals(username)){
-            this.advContext.setResolvingAdvCard(false);
             throw new IllegalArgumentException("It's not your turn to play");
         }
 

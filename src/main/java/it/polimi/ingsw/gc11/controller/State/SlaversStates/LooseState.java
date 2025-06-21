@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.controller.State.SlaversStates;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
+import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Slavers;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
@@ -27,6 +28,9 @@ public class LooseState extends AdventureState {
 
     @Override
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
+        GameModel gameModel = this.advContext.getGameModel();
+        gameModel.checkPlayerUsername(username);
+
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }

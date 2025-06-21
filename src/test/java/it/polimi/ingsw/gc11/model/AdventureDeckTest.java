@@ -1,15 +1,14 @@
 package it.polimi.ingsw.gc11.model;
 
-import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.adventurecard.OpenSpace;
 import it.polimi.ingsw.gc11.model.adventurecard.StarDust;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+
 
 class AdventureDeckTest {
 

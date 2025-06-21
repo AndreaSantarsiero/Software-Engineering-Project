@@ -41,6 +41,7 @@ public class SmugglersState extends AdventureState {
     private final Smugglers smugglers;
     private double playerFirePower;
 
+
     /**
      * Constructs the {@code SmugglersState}, initializing references to the
      * {@link GameModel} and the {@link Smugglers} card drawn for the encounter.
@@ -53,7 +54,6 @@ public class SmugglersState extends AdventureState {
         this.smugglers = (Smugglers) advContext.getDrawnAdvCard();
         this.playerFirePower = 0;
     }
-
 
 
     /**
@@ -83,19 +83,19 @@ public class SmugglersState extends AdventureState {
      */
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
-        int sum = 0;
+        gameModel.checkPlayerUsername(username);
         Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        int sum = 0;
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
-
         if(Batteries == null || doubleCannons == null){
             throw new NullPointerException("Batteries and DoubleCannons cannot be null");
         }
 
         //Imposto che il giorcatore sta effettivamente giocando la carta
-        if(this.advContext.isResolvingAdvCard() == true){
+        if(this.advContext.isResolvingAdvCard()){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);
@@ -117,15 +117,16 @@ public class SmugglersState extends AdventureState {
         if(playerFirePower > smugglers.getFirePower()){
             //VictoryState
             advContext.setAdvState(new WinSmugglersState(advContext, player));
-        } else if (playerFirePower == smugglers.getFirePower()) {
-
+        }
+        else if (playerFirePower == smugglers.getFirePower()) {
             //Imposto che la carta non è più giocata da nessun player e passo al prossimo player.
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new SmugglersState(advContext));
 
         }
-        else {// Gestisco la sconfitta
+        else {
+            //LooseState
             int num = player.getShipBoard().removeMaterials(smugglers.getLostMaterials());
 
             if(num > 0){
@@ -142,7 +143,6 @@ public class SmugglersState extends AdventureState {
                 else {
                     this.advContext.setAdvState(new SmugglersState(advContext));
                 }
-
             }
         }
 

@@ -81,6 +81,7 @@ public class ChooseMaterialsSmugglers extends AdventureState {
      */
     @Override
     public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
+        gameModel.checkPlayerUsername(username);
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
         }
