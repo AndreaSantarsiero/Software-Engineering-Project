@@ -89,6 +89,7 @@ public class BuildingLv2Controller extends Controller {
 
     private boolean clickedEndBuilding = false;
     private boolean placing = false;
+    private boolean endedBuilding = false;
 
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
@@ -900,6 +901,7 @@ public class BuildingLv2Controller extends Controller {
         reservedSlots.getChildren().clear();
         setReservedSlots();
         setTimer();
+        endedBuilding();
     }
 
     private void setErrorLabel(){
@@ -923,9 +925,11 @@ public class BuildingLv2Controller extends Controller {
     }
 
     private void endedBuilding(){
-        mainContainer.setDisable(true);
-        deckButtons.setDisable(true);
-        endBuilding.setDisable(true);
+        if(endedBuilding) {
+            mainContainer.setDisable(true);
+            deckButtons.setDisable(true);
+            endBuilding.setDisable(true);
+        }
     }
 
     @Override
@@ -953,6 +957,7 @@ public class BuildingLv2Controller extends Controller {
 
             if( this.clickedEndBuilding && buildingPhaseData.isActionSuccessful()) {
                 buildingPhaseData.resetActionSuccessful();
+                this.endedBuilding = true;
                 endedBuilding();
             }
 

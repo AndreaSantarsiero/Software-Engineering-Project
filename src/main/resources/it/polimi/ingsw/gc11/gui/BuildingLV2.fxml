@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv2Controller">
@@ -54,7 +53,7 @@
                         <Button fx:id="resetTimer" mnemonicParsing="false" onAction="#onResetTimerClick" text="Reset Timer" />
                      </children>
                   </VBox>
-                   <Label fx:id="timerCountdown" styleClass="Text" text="00:00" alignment="CENTER">
+                   <Label fx:id="timerCountdown" alignment="CENTER" styleClass="Text" text="00:00">
                        <font>
                            <Font size="24.0" />
                        </font>
