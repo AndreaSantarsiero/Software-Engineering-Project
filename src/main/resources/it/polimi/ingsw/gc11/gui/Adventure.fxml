@@ -9,9 +9,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureController">
+<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureController">
 
     <children>
 
@@ -46,7 +47,29 @@
                         <Image url="@../boards/FlightBoard1.png" />
                     </image>
                 </ImageView>
-                <Pane fx:id="positionOverlayPane" mouseTransparent="false" pickOnBounds="false" />
+                <Pane fx:id="positionOverlayPane" mouseTransparent="false" pickOnBounds="false">
+                    <!-- ...all'interno di <Pane fx:id="positionOverlayPane"> ... -->
+                    <children>
+                        <Rectangle fx:id="pos1" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="621.0" layoutY="77.0" onMouseClicked="#onPositionClicked1" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos2" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="530.0" layoutY="59.0" onMouseClicked="#onPositionClicked2" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos3" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="435.0" layoutY="58.0" onMouseClicked="#onPositionClicked3" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos4" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="345.0" layoutY="77.0" onMouseClicked="#onPositionClicked4" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos5" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="256.0" layoutY="104.0" onMouseClicked="#onPositionClicked5" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos6" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="172.0" layoutY="153.0" onMouseClicked="#onPositionClicked6" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos7" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="116.0" layoutY="246.0" onMouseClicked="#onPositionClicked7" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos8" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="160.0" layoutY="350.0" onMouseClicked="#onPositionClicked8" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos9" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="248.0" layoutY="405.0" onMouseClicked="#onPositionClicked9" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos10" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="335.0" layoutY="430.0" onMouseClicked="#onPositionClicked10" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos11" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="427.0" layoutY="451.0" onMouseClicked="#onPositionClicked11" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos12" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="523.0" layoutY="442.0" onMouseClicked="#onPositionClicked12" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos13" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="612.0" layoutY="430.0" onMouseClicked="#onPositionClicked13" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos14" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="700.0" layoutY="405.0" onMouseClicked="#onPositionClicked14" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos15" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="793.0" layoutY="350.0" onMouseClicked="#onPositionClicked15" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos16" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="843.0" layoutY="268.0" onMouseClicked="#onPositionClicked16" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos17" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="793.0" layoutY="163.0" onMouseClicked="#onPositionClicked17" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos18" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="712.0" layoutY="104.0" onMouseClicked="#onPositionClicked18" stroke="yellow" strokeWidth="3" width="40" />
+                    </children>
+                </Pane>
             </StackPane>
 
 
