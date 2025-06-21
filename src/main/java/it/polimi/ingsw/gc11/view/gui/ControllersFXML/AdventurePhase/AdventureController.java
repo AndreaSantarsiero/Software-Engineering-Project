@@ -12,19 +12,18 @@ import java.util.Map;
 
 public class AdventureController extends Controller {
 
-    private Stage stage;
-
-    // Dimensioni base dell'immagine della board (modifica con la dimensione effettiva del file PNG)
-    private static final double BOARD_BASE_WIDTH = 985.0;
-    private static final double BOARD_BASE_HEIGHT = 546.0;
-
     @FXML private ImageView flightBoardImage;
     @FXML private Pane positionOverlayPane;
-
     @FXML private Rectangle pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
     @FXML private Rectangle pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18;
 
+    // Dimensioni base dell'immagine della flight board
+    private static final double BOARD_BASE_WIDTH = 985.0;
+    private static final double BOARD_BASE_HEIGHT = 546.0;
+
     private final Map<Rectangle, double[]> originalPositions = new HashMap<>();
+
+    private Stage stage;
 
     public void initialize(Stage stage) {
         this.stage = stage;
@@ -78,7 +77,6 @@ public class AdventureController extends Controller {
         }
     }
 
-    // I metodi onPositionClickedN() restano invariati
     @FXML private void onPositionClicked1()  { System.out.println("Posizione 1"); }
     @FXML private void onPositionClicked2()  { System.out.println("Posizione 2"); }
     @FXML private void onPositionClicked3()  { System.out.println("Posizione 3"); }
@@ -97,4 +95,6 @@ public class AdventureController extends Controller {
     @FXML private void onPositionClicked16() { System.out.println("Posizione 16"); }
     @FXML private void onPositionClicked17() { System.out.println("Posizione 17"); }
     @FXML private void onPositionClicked18() { System.out.println("Posizione 18"); }
+
+
 }
