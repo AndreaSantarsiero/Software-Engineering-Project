@@ -498,7 +498,6 @@ public class BuildingLv1Controller extends Controller {
         heldShipCardImage.setSmooth(true);
         heldShipCardImage.fitWidthProperty().bind(
                 heldShipCard.widthProperty().multiply(0.4));
-        heldShipCard.setRotate(0);
 
         left.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
         right.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
@@ -829,8 +828,7 @@ public class BuildingLv1Controller extends Controller {
                         reservedShipCardOverlay();
                         for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
                         left.setMouseTransparent(true);
-                        right.setMouseTransparent(true);
-                    }
+                        right.setMouseTransparent(true);}
                     if(previousState == State.PLACING_FREE_SHIPCARD){
                         heldShipCardOverlay();
                         for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }

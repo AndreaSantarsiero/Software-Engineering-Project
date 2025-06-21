@@ -27,7 +27,7 @@
             <children>
                 <Label styleClass="Text" text="BUILDING PHASE">
                     <font>
-                        <Font size="58.0" />
+                        <Font size="40.0" />
                     </font>
                 </Label>
             </children>
@@ -101,7 +101,7 @@
             <VBox fx:id="cardPane" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                 <Label fx:id="FreeShipCardText" styleClass="Text" text="FREE Ship Cards">
                     <font>
-                        <Font size="24.0" />
+                        <Font size="18.0" />
                     </font>
                 </Label>
                 <ScrollPane fx:id="tileScroll">
@@ -126,7 +126,7 @@
                 </VBox>
             <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="Label" visible="false" wrapText="true">
                <font>
-                  <Font size="18.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
                 <!-- Cards added dynamically in controller -->

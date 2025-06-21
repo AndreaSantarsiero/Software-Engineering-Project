@@ -32,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
@@ -77,6 +78,7 @@ public class BuildingLv2Controller extends Controller {
     private State state = State.IDLE;
 
     private boolean clickedEndBuilding = false;
+    private boolean placing = false;
 
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
@@ -169,7 +171,7 @@ public class BuildingLv2Controller extends Controller {
         FreeShipCardText.setAlignment(Pos.TOP_CENTER);
         FreeShipCardText.prefWidthProperty().bind(cardPane.widthProperty());
         FreeShipCardText.maxWidthProperty().bind(cardPane.widthProperty());
-        FreeShipCardText.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.1));
+        FreeShipCardText.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.05));
 
         tileScroll.prefWidthProperty().bind(cardPane.widthProperty());
         tileScroll.maxWidthProperty().bind(cardPane.widthProperty());
@@ -178,16 +180,19 @@ public class BuildingLv2Controller extends Controller {
         heldShipCard.maxWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
         heldShipCard.minWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
         heldShipCard.prefWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
-        heldShipCard.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
-        heldShipCard.minHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
-        heldShipCard.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
+        heldShipCard.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.4).subtract(cardPane.getSpacing() * 3));
+        heldShipCard.minHeightProperty().bind(cardPane.heightProperty().multiply(0.4).subtract(cardPane.getSpacing() * 3));
+        heldShipCard.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.4).subtract(cardPane.getSpacing() * 3));
 
         errorLabel.maxWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
         errorLabel.minWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
         errorLabel.prefWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
-        errorLabel.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.2).subtract(cardPane.getSpacing()));
-        errorLabel.minHeightProperty().bind(cardPane.heightProperty().multiply(0.2).subtract(cardPane.getSpacing()));
-        errorLabel.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.2).subtract(cardPane.getSpacing()));
+        errorLabel.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
+        errorLabel.minHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
+        errorLabel.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
+
+        errorLabel.setWrapText(true);
+        errorLabel.setTextAlignment(TextAlignment.CENTER);
 
 
         slotGrid.prefWidthProperty().bind(gridW);
@@ -510,8 +515,7 @@ public class BuildingLv2Controller extends Controller {
         heldShipCardImage.setPreserveRatio(true);
         heldShipCardImage.setSmooth(true);
         heldShipCardImage.fitWidthProperty().bind(
-                heldShipCard.widthProperty().multiply(0.4));
-        heldShipCardImage.setRotate(0);
+                heldShipCard.heightProperty().multiply(0.35));
 
         left.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
         right.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
@@ -521,7 +525,7 @@ public class BuildingLv2Controller extends Controller {
 
         left.styleProperty().bind(
                 Bindings.concat("-fx-font-size: ",
-                        heldShipCard.widthProperty().divide(10).asString(), "px;")
+                        heldShipCard.widthProperty().divide(12).asString(), "px;")
         );
         right.styleProperty().bind(left.styleProperty());
 
@@ -591,7 +595,7 @@ public class BuildingLv2Controller extends Controller {
         heldShipCardImage.setPreserveRatio(true);
         heldShipCardImage.setSmooth(true);
         heldShipCardImage.fitWidthProperty().bind(
-                heldShipCard.widthProperty().multiply(0.4));
+                heldShipCard.heightProperty().multiply(0.35));
 
         left.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
         right.prefWidthProperty().bind(heldShipCard.widthProperty().divide(2).subtract(30));
@@ -671,31 +675,32 @@ public class BuildingLv2Controller extends Controller {
     }
 
     private void onShipBoardSelected(int x, int y) {
-        if(state == State.PLACING_FREE_SHIPCARD) {
-            try {
-                virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 4, y + 5);
-                previousState = state;
-                state = State.IDLE;
+        if(placing) {
+            if (state == State.PLACING_FREE_SHIPCARD) {
+                try {
+                    virtualServer.placeShipCard(buildingPhaseData.getHeldShipCard(), x + 4, y + 5);
+                    previousState = state;
+                    state = State.IDLE;
+                    placing = false;
+                } catch (NetworkException e) {
+                    System.out.println("Network Error:  " + e.getMessage());
+                }
+            } else if (state == State.PLACING_RESERVED_SHIPCARD) {
+                try {
+                    virtualServer.useReservedShipCard(buildingPhaseData.getReservedShipCard(), x + 4, y + 5);
+                    previousState = state;
+                    state = State.IDLE;
+                    placing = false;
+                } catch (NetworkException e) {
+                    System.out.println("Network Error:  " + e.getMessage());
+                }
             }
-            catch (NetworkException e) {
-                System.out.println("Network Error:  " + e.getMessage());
+            for (Node child : (heldShipCard.getChildren())) {
+                hide(child);
             }
+            hide(left);
+            hide(right);
         }
-        else if(state == State.PLACING_RESERVED_SHIPCARD) {
-            try {
-                virtualServer.useReservedShipCard(buildingPhaseData.getReservedShipCard(), x + 4, y + 5);
-                previousState = state;
-                state = State.IDLE;
-            }
-            catch (NetworkException e) {
-                System.out.println("Network Error:  " + e.getMessage());
-            }
-        }
-        for (Node child : (heldShipCard.getChildren())) {
-            hide(child);
-        }
-        hide(left);
-        hide(right);
     }
 
     private void onReservedShipCardSelected(int index) {
@@ -741,6 +746,7 @@ public class BuildingLv2Controller extends Controller {
     }
 
     private void onPlaceShipCard(double orientation){
+        placing = true;
         if(state == State.PLACING_FREE_SHIPCARD) {
             switch (Math.floorMod((int) orientation, 360)) {
                 case 0:
@@ -904,24 +910,22 @@ public class BuildingLv2Controller extends Controller {
                 this.setErrorLabel();
                 this.clickedEndBuilding = false;
 
-                if (previousState == State.PLACING_RESERVED_SHIPCARD) {
-                    reservedShipCardOverlay();
-                    for (Node child : (heldShipCard.getChildren())) {
-                        child.setMouseTransparent(true);
+                if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.") ||
+                        serverMessage.toUpperCase().equals("CANNOT PLACE A COMPONENT WHERE ANOTHER ONE WAS ALREADY PLACED")) {
+                    if(previousState == State.PLACING_RESERVED_SHIPCARD){
+                        reservedShipCardOverlay();
+                        for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
+                        left.setMouseTransparent(true);
+                        right.setMouseTransparent(true);
                     }
-                    left.setMouseTransparent(true);
-                    right.setMouseTransparent(true);
-                    //state = previousState;
-                }
-
-                if (previousState == State.PLACING_FREE_SHIPCARD) {
-                    heldShipCardOverlay();
-                    for (Node child : (heldShipCard.getChildren())) {
-                        child.setMouseTransparent(true);
+                    if(previousState == State.PLACING_FREE_SHIPCARD){
+                        heldShipCardOverlay();
+                        for (Node child : (heldShipCard.getChildren())) { child.setMouseTransparent(true); }
+                        left.setMouseTransparent(true);
+                        right.setMouseTransparent(true);
                     }
-                    left.setMouseTransparent(true);
-                    right.setMouseTransparent(true);
-                    //state = previousState;
+                    state = previousState;
+                    placing = true;
                 }
 
                 buildingPhaseData.resetServerMessage();
