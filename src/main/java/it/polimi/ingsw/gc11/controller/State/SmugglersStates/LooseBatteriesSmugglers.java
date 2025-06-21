@@ -4,21 +4,25 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import java.util.Map;
 
 
 
 public class LooseBatteriesSmugglers extends AdventureState{
-    private Player player;
-    private int numBatteries;
+
+    private final Player player;
+    private final int numBatteries;
+
+
 
     public LooseBatteriesSmugglers(AdventurePhase advContext, Player player, int numBatteries) {
         super(advContext);
         this.player = player;
         this.numBatteries = numBatteries;
     }
+
+
 
     @Override
     public Player useBatteries(String username, Map<Battery, Integer> batteries) {

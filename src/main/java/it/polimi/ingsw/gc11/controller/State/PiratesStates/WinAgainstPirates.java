@@ -6,14 +6,17 @@ import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
-
 import java.util.List;
 
+
+
 public class WinAgainstPirates extends AdventureState {
-    private Player player;
-    private List<Player> playersDefeated;
-    private GameModel gameModel;
-    private Pirates pirates;
+
+    private final Player player;
+    private final List<Player> playersDefeated;
+    private final GameModel gameModel;
+    private final Pirates pirates;
+
 
 
     public WinAgainstPirates(AdventurePhase advContext, Player player, List<Player> playersDefeated) {
@@ -23,6 +26,8 @@ public class WinAgainstPirates extends AdventureState {
         this.gameModel = this.advContext.getGameModel();
         this.pirates = (Pirates) this.advContext.getDrawnAdvCard();
     }
+
+
 
     @Override
     public Player rewardDecision(String username, boolean decision){

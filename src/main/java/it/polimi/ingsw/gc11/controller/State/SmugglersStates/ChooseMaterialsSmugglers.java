@@ -7,7 +7,6 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Smugglers;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -18,16 +17,20 @@ import java.util.Map;
 
 public class ChooseMaterialsSmugglers extends AdventureState {
 
-    private Smugglers smugglers;
-    private GameModel gameModel;
-    private Player player;
+    private final Smugglers smugglers;
+    private final GameModel gameModel;
+    private final Player player;
+
+
 
     public  ChooseMaterialsSmugglers(AdventurePhase advContext, Player player) {
         super(advContext);
-        this.smugglers = smugglers;
-        this.gameModel = gameModel;
+        this.gameModel = advContext.getGameModel();
+        this.smugglers = (Smugglers) advContext.getDrawnAdvCard();
         this.player = player;
     }
+
+
 
     @Override
     public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){

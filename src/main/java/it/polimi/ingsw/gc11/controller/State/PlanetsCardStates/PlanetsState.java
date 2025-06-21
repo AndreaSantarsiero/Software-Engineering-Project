@@ -6,13 +6,17 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
-
 import java.util.ArrayList;
 
+
+
 public class PlanetsState extends AdventureState {
-    private GameModel gameModel;
-    private PlanetsCard planetsCard;
+
+    private final GameModel gameModel;
+    private final PlanetsCard planetsCard;
     private int numVisited;
+
+
 
     public PlanetsState(AdventurePhase advContext, int numVisited) {
         super(advContext);
@@ -20,6 +24,8 @@ public class PlanetsState extends AdventureState {
         this.planetsCard = (PlanetsCard) this.advContext.getDrawnAdvCard();
         this.numVisited = numVisited;
     }
+
+
 
     @Override
     public Player landOnPlanet(String username, int numPlanet){

@@ -32,17 +32,14 @@ public class AbandonedShipState extends AdventureState {
      * Otherwise, the action is rejected with an exception.
      *
      * @param username the username of the player accepting the card.
-     * @throws IllegalStateException    if the username is null/empty, the card has already been accepted,
+     * @throws IllegalStateException    if the username is invalid, the card has already been accepted,
      *                                  or the player lacks sufficient members.
      * @throws IllegalArgumentException if the player is not the one currently expected to act.
      */
     @Override
     public void acceptAdventureCard(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalStateException("Username cannot be null or empty.");
-        }
-
         GameModel gameModel = this.advContext.getGameModel();
+        gameModel.checkPlayerUsername(username);
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
         AbandonedShip abandonedShip = (AbandonedShip) this.advContext.getDrawnAdvCard();
 
@@ -61,7 +58,6 @@ public class AbandonedShipState extends AdventureState {
         else{
             throw new IllegalStateException("You don't have enough members to accept this adventure card!");
         }
-
     }
 
     /**
@@ -71,16 +67,13 @@ public class AbandonedShipState extends AdventureState {
      * Otherwise, the state remains in {@code AbandonedShipState} and the next player is prompted.
      *
      * @param username the username of the player declining the card.
-     * @throws IllegalStateException    if the username is null or empty.
+     * @throws IllegalStateException    if the username is invalid.
      * @throws IllegalArgumentException if the player is not the one currently expected to act.
      */
     @Override
     public void declineAdventureCard(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalStateException("Username cannot be null or empty.");
-        }
-
         GameModel gameModel = this.advContext.getGameModel();
+        gameModel.checkPlayerUsername(username);
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if(!expectedPlayer.getUsername().equals(username)){

@@ -9,15 +9,21 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.MeteorSwarm;
 
 
+
 public class MeteorSwarmState extends AdventureState {
-    private GameModel gameModel;
-    private int iterationsHit;
+
+    private final GameModel gameModel;
+    private final int iterationsHit;
+
+
 
     public MeteorSwarmState(AdventurePhase advContext, int iterationsHit) {
         super(advContext);
         this.gameModel = this.advContext.getGameModel();
         this.iterationsHit = iterationsHit;
     }
+
+
 
     @Override
     public Hit getCoordinate(String username){

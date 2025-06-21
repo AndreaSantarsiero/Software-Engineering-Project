@@ -2,24 +2,24 @@ package it.polimi.ingsw.gc11.controller.State.PiratesStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
+
 public class PiratesState extends AdventureState {
-    private GameModel gameModel;
-    private Pirates pirates;
-    private List<Player> playersDefeated;
+
+    private final GameModel gameModel;
+    private final Pirates pirates;
+    private final List<Player> playersDefeated;
     private double playerFirePower;
+
 
 
     public PiratesState(AdventurePhase advContext) {
@@ -30,6 +30,8 @@ public class PiratesState extends AdventureState {
         this.playerFirePower = 0;
     }
 
+
+
     public PiratesState(AdventurePhase advContext, List<Player> playersDefeated) {
         super(advContext);
         this.gameModel = this.advContext.getGameModel();
@@ -37,6 +39,7 @@ public class PiratesState extends AdventureState {
         this.playersDefeated = playersDefeated;
         this.playerFirePower = 0;
     }
+
 
 
     @Override

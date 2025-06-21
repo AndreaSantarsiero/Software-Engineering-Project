@@ -2,25 +2,26 @@ package it.polimi.ingsw.gc11.controller.State.PiratesStates;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
-
 import java.util.List;
 import java.util.Map;
 
 
+
 public class HandleHit extends AdventureState {
-    private List<Player> playersDefeated;
-    private List<Boolean> alreadyPlayed;
-    private Pirates pirates;
-    private int coordinates;
+
+    private final List<Player> playersDefeated;
+    private final List<Boolean> alreadyPlayed;
+    private final Pirates pirates;
+    private final int coordinates;
     private int iterationsHit;
     private int iterationsPlayers;
+
+
 
     public HandleHit(AdventurePhase advContext, List<Player> playersDefeated, int coordinates, int iterationsHit, int iterationsPlayers, List<Boolean> alreadyPlayed) {
         super(advContext);
@@ -31,6 +32,8 @@ public class HandleHit extends AdventureState {
         this.iterationsHit = iterationsHit;
         this.iterationsPlayers = iterationsPlayers;
     }
+
+
 
     //Assumiamo che i comandi siano memorizzati in una coda
     @Override

@@ -7,7 +7,6 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Storage;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -17,9 +16,12 @@ import java.util.Map;
 
 
 public class LandedPlanet extends AdventureState {
+
     ArrayList<Material> materials;
     Player player;
     int numVisited;
+
+
 
     public LandedPlanet(AdventurePhase advContext, Player player, ArrayList<Material> materials, int numVisited) {
         super(advContext);
@@ -27,6 +29,8 @@ public class LandedPlanet extends AdventureState {
         this.materials = materials;
         this.numVisited = numVisited;
     }
+
+
 
     @Override
     public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){

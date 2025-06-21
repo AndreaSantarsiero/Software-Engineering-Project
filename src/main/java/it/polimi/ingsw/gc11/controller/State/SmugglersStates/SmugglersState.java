@@ -6,17 +6,20 @@ import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Smugglers;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-
 import java.util.List;
 import java.util.Map;
 
+
+
 public class SmugglersState extends AdventureState {
-    private GameModel gameModel;
-    private Smugglers smugglers;
+
+    private final GameModel gameModel;
+    private final Smugglers smugglers;
     private double playerFirePower;
+
+
 
     public SmugglersState(AdventurePhase advContext){
         super(advContext);
@@ -24,6 +27,8 @@ public class SmugglersState extends AdventureState {
         this.smugglers = (Smugglers) advContext.getDrawnAdvCard();
         this.playerFirePower = 0;
     }
+
+
 
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {

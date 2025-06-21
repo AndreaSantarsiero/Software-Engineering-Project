@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
 
+
+
 /**
  * Represents the state in which a player is presented with an {@link AbandonedStation} adventure card.
  * <p>
@@ -25,6 +27,8 @@ public class AbandonedStationState extends AdventureState {
         super(advContext);
     }
 
+
+
     /**
      * Handles the logic when the current player accepts the {@link AbandonedStation} card.
      * <p>
@@ -33,17 +37,14 @@ public class AbandonedStationState extends AdventureState {
      * Otherwise, an error is raised. Multiple acceptances are not allowed.
      *
      * @param username the username of the player attempting to accept the card.
-     * @throws IllegalStateException    if the username is null/empty, the card is already accepted,
+     * @throws IllegalStateException    if the username is invalid, the card is already accepted,
      *                                  or the player has insufficient members.
      * @throws IllegalArgumentException if it's not the player's turn.
      */
     @Override
     public void acceptAdventureCard(String username){
-        if (username == null || username.isEmpty()) {
-            throw new IllegalStateException("Username cannot be null or empty.");
-        }
-
         GameModel gameModel = this.advContext.getGameModel();
+        gameModel.checkPlayerUsername(username);
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
         AbandonedStation abandonedStation = (AbandonedStation) this.advContext.getDrawnAdvCard();
 
@@ -69,6 +70,8 @@ public class AbandonedStationState extends AdventureState {
         }
     }
 
+
+
     /**
      * Handles the logic when the current player declines the {@link AbandonedStation} card.
      * <p>
@@ -76,16 +79,13 @@ public class AbandonedStationState extends AdventureState {
      * If all players have declined, the game returns to the {@link IdleState}.
      *
      * @param username the username of the player declining the card.
-     * @throws IllegalStateException    if the username is null or empty.
+     * @throws IllegalStateException    if the username is invalid.
      * @throws IllegalArgumentException if it's not the player's turn.
      */
     @Override
     public void declineAdventureCard(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalStateException("Username cannot be null or empty.");
-        }
-
         GameModel gameModel = this.advContext.getGameModel();
+        gameModel.checkPlayerUsername(username);
         Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
 
         if (expectedPlayer.getUsername().equals(username)) {

@@ -7,15 +7,19 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
-
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class CoordinateState extends AdventureState {
-    private GameModel gameModel;
-    private List<Player> playersDefeated;
-    private int iterationsHit;
-    private Pirates pirates;
+
+    private final GameModel gameModel;
+    private final List<Player> playersDefeated;
+    private final int iterationsHit;
+    private final Pirates pirates;
+
+
 
     public CoordinateState(AdventurePhase advContext, List<Player> playersDefeated, int iterationsHit) {
         super(advContext);
@@ -29,9 +33,11 @@ public class CoordinateState extends AdventureState {
         }
     }
 
+
+
     @Override
     public Hit getCoordinate(String username){
-        if(!playersDefeated.get(0).getUsername().equals(username)){
+        if(!playersDefeated.getFirst().getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to roll dices");
         }
 
