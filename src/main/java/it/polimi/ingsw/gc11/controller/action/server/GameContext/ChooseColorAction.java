@@ -49,7 +49,14 @@ public class ChooseColorAction extends ClientGameAction {
                 for (Player p : context.getGameModel().getPlayers()) {
                     ArrayList<String> othersPlayers = new ArrayList<>(allPlayersUsernames);
                     othersPlayers.remove(p.getUsername());
-                    SetBuildingPhaseAction send = new SetBuildingPhaseAction(p.getShipBoard(), gameModel.getFreeShipCardsCount(), gameModel.getFlightBoard().getType(), othersPlayers, Instant.now().plusMillis(90000), context.getTimersLeft());
+                    SetBuildingPhaseAction send = new SetBuildingPhaseAction(
+                            p.getShipBoard(),
+                            gameModel.getFreeShipCardsCount(),
+                            gameModel.getFlightBoard().getType(),
+                            othersPlayers,
+                            Instant.now().plusMillis(90000),
+                            context.getTimersLeft()
+                    );
                     context.sendAction(p.getUsername(), send);
                 }
             }

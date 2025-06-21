@@ -38,6 +38,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 
 
@@ -64,8 +69,10 @@ public class BuildingLv2Controller extends Controller {
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
-    @FXML private VBox buttons;
     @FXML private HBox playersButtons, deckButtons, timer, endBuilding;
+    @FXML private Label timersLeft;
+    @FXML private Button resetTimer;
+    @FXML private Label timerCountdown;
     @FXML private ComboBox<String> choosePosition;
     @FXML private Label FreeShipCardText;
     @FXML private VBox heldShipCard;
@@ -77,6 +84,8 @@ public class BuildingLv2Controller extends Controller {
     private BuildingPhaseData buildingPhaseData;
     private State previousState;
     private State state = State.IDLE;
+
+    private Timeline countdownTimeline;
 
     private boolean clickedEndBuilding = false;
     private boolean placing = false;
@@ -190,7 +199,7 @@ public class BuildingLv2Controller extends Controller {
         errorLabel.prefWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
         errorLabel.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
         errorLabel.minHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
-        errorLabel.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
+        errorLabel.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.15));
 
         errorLabel.setWrapText(true);
         errorLabel.setTextAlignment(TextAlignment.CENTER);
@@ -219,9 +228,6 @@ public class BuildingLv2Controller extends Controller {
 
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
-
-
-
 
 
         firstRendering();
@@ -491,6 +497,34 @@ public class BuildingLv2Controller extends Controller {
             GridPane.setVgrow(btnReservedCard, Priority.ALWAYS);
 
             reservedSlots.getChildren().add(btnReservedCard);
+        }
+    }
+
+    public void setTimer(){
+        timersLeft.setText("Timers left: " + buildingPhaseData.getTimersLeft());
+        startCountdownTimer(buildingPhaseData.getExpireTimerInstant());
+    }
+
+    public void startCountdownTimer(Instant expireAt) {
+//        if (countdownTimeline != null) {
+//            countdownTimeline.stop();
+//        }
+        countdownTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(0), e -> updateCountdown(expireAt)),
+                new KeyFrame(Duration.seconds(1), e -> updateCountdown(expireAt))
+        );
+        countdownTimeline.setCycleCount(Timeline.INDEFINITE);
+        countdownTimeline.play();
+    }
+
+    private void updateCountdown(Instant expireAt) {
+        long secondsLeft = Instant.now().until(expireAt, ChronoUnit.SECONDS);
+        if (secondsLeft < 0) secondsLeft = 0;
+        long min = secondsLeft / 60;
+        long sec = secondsLeft % 60;
+        timerCountdown.setText(String.format("%02d:%02d", min, sec));
+        if (secondsLeft == 0 && countdownTimeline != null) {
+            countdownTimeline.stop();
         }
     }
 
@@ -835,6 +869,16 @@ public class BuildingLv2Controller extends Controller {
     }
 
     @FXML
+    private void onResetTimerClick(ActionEvent event) {
+        try {
+            virtualServer.resetBuildingTimer();
+        }
+        catch (NetworkException e) {
+            System.out.println("Network Error:  " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void onEndBuildingClick(ActionEvent event) {
 
         try {
@@ -855,6 +899,7 @@ public class BuildingLv2Controller extends Controller {
         setShipBoard();
         reservedSlots.getChildren().clear();
         setReservedSlots();
+        setTimer();
     }
 
     private void setErrorLabel(){
@@ -877,6 +922,12 @@ public class BuildingLv2Controller extends Controller {
         new Thread(timer).start();
     }
 
+    private void endedBuilding(){
+        mainContainer.setDisable(true);
+        deckButtons.setDisable(true);
+        endBuilding.setDisable(true);
+    }
+
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
         Platform.runLater(() -> {
@@ -890,6 +941,7 @@ public class BuildingLv2Controller extends Controller {
             reservedSlots.getChildren().clear();
             setReservedSlots();
 
+            setTimer();
 
             if(state == State.PLACING_FREE_SHIPCARD){
                 heldShipCardOverlay();
@@ -901,8 +953,9 @@ public class BuildingLv2Controller extends Controller {
 
             if( this.clickedEndBuilding && buildingPhaseData.isActionSuccessful()) {
                 buildingPhaseData.resetActionSuccessful();
-                root.setDisable(true);
+                endedBuilding();
             }
+
 
             //There is a SERVER EXCEPTION
             String serverMessage = buildingPhaseData.getServerMessage();
