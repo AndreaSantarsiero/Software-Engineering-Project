@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedSta
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import java.util.ArrayList;
 
@@ -15,6 +16,8 @@ public class AbandonedStation extends AdventureCard {
     private final int membersRequired;
     private final ArrayList<Material> materials;
     private boolean resolved;
+
+
 
     public AbandonedStation(String id, AdventureCard.Type type, int lostDays, int membersRequired, int numBlue, int numGreen, int numYellow, int numRed)throws IllegalArgumentException {
         super(id, type);
@@ -33,6 +36,7 @@ public class AbandonedStation extends AdventureCard {
         this.membersRequired = membersRequired;
         this.materials = new ArrayList<>();
         this.resolved = false;
+
         //add materials
         for (int i = 0; i < numBlue; i++)
             materials.add(new Material(Material.Type.BLUE));
@@ -44,6 +48,8 @@ public class AbandonedStation extends AdventureCard {
             materials.add(new Material(Material.Type.RED));
     }
 
+
+
     public int getLostDays() {return lostDays;}
 
     public int getMembersRequired() {return membersRequired;}
@@ -53,6 +59,8 @@ public class AbandonedStation extends AdventureCard {
     public boolean isResolved() {return resolved;}
 
     public void resolveCard() {this.resolved = true;}
+
+
 
     @Override
     public AdventureState getInitialState(AdventurePhase advContext){
@@ -64,18 +72,8 @@ public class AbandonedStation extends AdventureCard {
         adventureCardCLI.draw(this, i);
     }
 
-
-//    //The check if the player has sufficient humans is done by controller
-//    public void handler(GameModel model, String username, List<List<Material>> materialsUserAccepted, List<Storage> storagesUserAccepted) {
-//        //User lose days of flight
-//        model.move(username, lostDays);
-//
-//        //Add materials to user shipboard, DISCUSS THE PLAYER CAN REARRANGE MATERIALS, need method in shipboard or change
-//        for(int i = 0; i < storagesUserAccepted.size(); i++) {
-//            for(int j = 0; j < materialsUserAccepted.get(i).size(); j++) {
-//                storagesUserAccepted.get(i).addMaterial(materialsUserAccepted.get(i).get(j));
-//            }
-//        }
-//    }
-
+    @Override
+    public void getInitialState(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setInitialState(this);
+    }
 }

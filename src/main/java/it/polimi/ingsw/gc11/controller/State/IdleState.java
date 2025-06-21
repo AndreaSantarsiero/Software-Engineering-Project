@@ -41,12 +41,10 @@ public class IdleState extends AdventureState{
      */
     @Override
     public AdventureCard getAdventureCard(String username){
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username can't be null or empty.");
-        }
-
         GameModel gameModel = this.advContext.getGameModel();
-        Player firstPlayer = gameModel.getPlayers().get(0);
+        gameModel.checkPlayerUsername(username);
+
+        Player firstPlayer = gameModel.getPlayers().getFirst();
         if (firstPlayer.getUsername().equals(username) ) { //the player who is calling the method is the first one
             AdventureCard drawnCard = gameModel.getTopAdventureCard();
             this.advContext.setDrawnAdvCard(drawnCard);

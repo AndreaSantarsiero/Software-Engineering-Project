@@ -4,11 +4,14 @@ import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.CheckAndPenalty1Lv1;
 import it.polimi.ingsw.gc11.model.Shot;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
-
 import java.util.ArrayList;
 
+
+
 public class CombatZoneLv1 extends AdventureCard {
+
     private final int lostDays;
     private final int lostMembers;
     private final ArrayList<Shot> shots;
@@ -32,6 +35,7 @@ public class CombatZoneLv1 extends AdventureCard {
     }
 
 
+
     public int getLostDays() {
         return lostDays;
     }
@@ -44,6 +48,8 @@ public class CombatZoneLv1 extends AdventureCard {
         return shots;
     }
 
+
+
     @Override
     public AdventureState getInitialState(AdventurePhase advContext) {
         return new CheckAndPenalty1Lv1(advContext);
@@ -52,5 +58,10 @@ public class CombatZoneLv1 extends AdventureCard {
     @Override
     public void print(AdventureCardCLI adventureCardCLI, int i){
         adventureCardCLI.draw(this, i);
+    }
+
+    @Override
+    public void getInitialState(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setInitialState(this);
     }
 }
