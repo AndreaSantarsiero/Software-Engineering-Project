@@ -70,6 +70,19 @@ public class AdventureController extends CLIController {
                 mainCLI.getVirtualServer().getAdventureCard();
                 return true;
             }
+            else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_SETUP){
+                if(acceptCardMenu == 0){
+                    mainCLI.getVirtualServer().acceptAdventureCard();
+                }
+                else{
+                    mainCLI.getVirtualServer().declineAdventureCard();
+                }
+                return true;
+            }
+            else if(data.getState() == AdventurePhaseData.AdventureState.SEND_RESPONSE){
+                //invio risposta in base ai parametri non empty/null
+                return true;
+            }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
             e.printStackTrace();
@@ -92,9 +105,6 @@ public class AdventureController extends CLIController {
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ADVANCED_ACTION_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getAdvancedActionMenuSize(), advancedActionMenu));
-        }
-        else if(data.getState() == AdventurePhaseData.AdventureState.RESOLVE_ADVENTURE_CARD){
-            mainCLI.addInputRequest(new EnterInput(data, this));
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
             mainCLI.addInputRequest(new EnterInput(data, this));

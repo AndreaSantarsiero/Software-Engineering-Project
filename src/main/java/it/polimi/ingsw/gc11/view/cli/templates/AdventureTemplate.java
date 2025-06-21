@@ -99,17 +99,6 @@ public class AdventureTemplate extends CLITemplate {
             }
             return;
         }
-        else if(data.getState() == AdventurePhaseData.AdventureState.RESOLVE_ADVENTURE_CARD){
-            System.out.println();
-            for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
-                adventureCardCLI.print(data.getAdventureCard(), i);
-                System.out.println();
-            }
-            for (int i = 0; i < pressEnterToContinue.size(); i++) {
-                System.out.println(pressEnterToContinue.get(i));
-            }
-            return;
-        }
 
 
 
@@ -180,6 +169,15 @@ public class AdventureTemplate extends CLITemplate {
                 else {
                     printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
                     menuIndex++;
+                }
+
+
+                //printing adventure card, flight board ecc
+                if (y == 1){
+                    adventureCardCLI.print(data.getAdventureCard(), i);
+                }
+                else if (y == 2){
+                    adventureCardCLI.print(data.getAdventureCard(), i-7);
                 }
 
 

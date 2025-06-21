@@ -52,7 +52,7 @@ public class AdventureCardCLI {
                 }
             }
             else{
-                printInvalid(i);
+                printEmptyAdventureCard(i);
             }
 
             System.out.print("│");
@@ -437,13 +437,8 @@ public class AdventureCardCLI {
 
 
 
-    public static void printInvalid(int i){
-        if (i == 1){
-            System.out.print("    INVALID CARD     ");
-        }
-        else {
-            System.out.print("                     ");
-        }
+    public static void printEmptyAdventureCard(int i){
+        System.out.print("                     ");
     }
 
 

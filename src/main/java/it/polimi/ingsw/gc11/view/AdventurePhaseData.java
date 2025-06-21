@@ -3,12 +3,14 @@ package it.polimi.ingsw.gc11.view;
 import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Hit;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import it.polimi.ingsw.gc11.model.shipcard.Battery;
+import it.polimi.ingsw.gc11.model.shipcard.Cannon;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import it.polimi.ingsw.gc11.model.shipcard.Storage;
+import java.util.*;
 
 
 
@@ -16,8 +18,8 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public enum AdventureState {
         CHOOSE_MAIN_MENU,
-        WAIT_ADVENTURE_CARD, ACCEPT_CARD_MENU, ACCEPT_CARD_SETUP, RESOLVE_ADVENTURE_CARD,
-        CHOOSE_ACTION_MENU, CHOOSE_ADVANCED_ACTION_MENU,
+        WAIT_ADVENTURE_CARD, ACCEPT_CARD_MENU, ACCEPT_CARD_SETUP,
+        CHOOSE_ACTION_MENU, CHOOSE_ADVANCED_ACTION_MENU, SEND_RESPONSE,
         CHOOSE_BATTERIES, SELECT_NUM_BATTERIES,
         CHOOSE_MEMBERS, SELECT_NUM_MEMBERS,
         CHOOSE_DOUBLE_CANNONS,
@@ -39,10 +41,22 @@ public class AdventurePhaseData extends GamePhaseData {
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
 
+    //response parameters
+    private final Map<HousingUnit, Integer> housingUsage;
+    private final Map<Battery, Integer> batteries;
+    private final List<Cannon> doubleCannons;
+    private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
+    private Cannon defensiveCannon;
+
 
 
     public AdventurePhaseData() {
         enemies = new HashMap<>();
+        housingUsage = new HashMap<>();
+        batteries = new HashMap<>();
+        doubleCannons = new ArrayList<>();
+        storageMaterials = new HashMap<>();
+        defensiveCannon = null;
         state = AdventureState.CHOOSE_MAIN_MENU;
     }
 
@@ -71,7 +85,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public void updateState() {
         actualizePreviousState();
 
-        if(state == AdventureState.SHOW_ENEMIES_SHIP) {
+        if(state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.SEND_RESPONSE) {
             state = AdventureState.CHOOSE_MAIN_MENU;
         }
         else if(state == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
@@ -157,22 +171,67 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
+    public Map<HousingUnit, Integer> getHousingUsage() {
+        return housingUsage;
+    }
+
+    public void addHousingUsage(HousingUnit housingUnit, int amount) {
+        housingUsage.put(housingUnit, amount);
+    }
+
+
+    public Map<Battery, Integer> getBatteries() {
+        return batteries;
+    }
+
+    public void addBattery(Battery battery) {
+        batteries.put(battery, batteries.size());
+    }
+
+
+    public List<Cannon> getDoubleCannons() {
+        return doubleCannons;
+    }
+
+    public void addDoubleCannon(Cannon cannon) {
+        doubleCannons.add(cannon);
+    }
+
+
+    public Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> getStorageMaterials() {
+        return storageMaterials;
+    }
+
+    public void addStorageMaterial(Storage storage, AbstractMap.SimpleEntry<List<Material>, List<Material>> materials) {
+        storageMaterials.put(storage, materials);
+    }
+
+
+    public Cannon getDefensiveCannon() {
+        return defensiveCannon;
+    }
+
+    public void setDefensiveCannon(Cannon cannon) {
+        this.defensiveCannon = cannon;
+    }
+
+
 
     //visitor pattern
     public void setStates(AbandonedShip abandonedShip) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.ACCEPT_CARD_MENU);
     }
 
     public void setStates(AbandonedStation abandonedStation) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.ACCEPT_CARD_MENU);
     }
 
     public void setStates(CombatZoneLv1 combatZoneLv1) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.CHOOSE_ACTION_MENU);
     }
 
     public void setStates(CombatZoneLv2 combatZoneLv2) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.CHOOSE_ACTION_MENU);
     }
 
     public void setStates(Epidemic epidemic) {
@@ -180,27 +239,27 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     public void setStates(MeteorSwarm meteorSwarm) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.CHOOSE_ACTION_MENU);
     }
 
     public void setStates(OpenSpace openSpace) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.CHOOSE_ACTION_MENU);
     }
 
     public void setStates(Pirates pirates) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.CHOOSE_ACTION_MENU);
     }
 
     public void setStates(PlanetsCard planetsCard) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.ACCEPT_CARD_MENU);
     }
 
     public void setStates(Smugglers smugglers) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.CHOOSE_ACTION_MENU);
     }
 
     public void setStates(Slavers slavers) {
-        setState(AdventureState.RESOLVE_ADVENTURE_CARD);
+        setState(AdventureState.CHOOSE_ACTION_MENU);
     }
 
     public void setStates(StarDust starDust) {
@@ -210,7 +269,11 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     public void resetResponse(){
-
+        housingUsage.clear();
+        batteries.clear();
+        doubleCannons.clear();
+        storageMaterials.clear();
+        defensiveCannon = null;
     }
 
 
