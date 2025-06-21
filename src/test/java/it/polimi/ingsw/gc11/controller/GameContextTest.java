@@ -691,8 +691,8 @@ public class GameContextTest {
         List<Cannon> doubles = new ArrayList<>();
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("wrongUser", usage, doubles));
-        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", null, doubles));
-        assertThrows(NullPointerException.class, () -> gameContext.chooseFirePower("username1", usage, null));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("username1", null, doubles));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseFirePower("username1", usage, null));
 
 
         Battery fake = new Battery("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Battery.Type.DOUBLE);
@@ -1493,8 +1493,9 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
 
-        assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet("", 0));
-        assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard(""));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard(null));
+        gameContext.acceptAdventureCard("username1");
         assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet("username1", -1));
     }
 
@@ -1513,9 +1514,10 @@ public class GameContextTest {
         advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
 
+        gameContext.acceptAdventureCard("username1");
         List<Material> materials = assertDoesNotThrow(() -> gameContext.landOnPlanet("username1", 0));
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
-        assertThrows(IllegalArgumentException.class, () -> gameContext.landOnPlanet("username2", 0));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("username2"), "It's not username2 turn to play!");
     }
 
     @Test
@@ -1757,60 +1759,33 @@ public class GameContextTest {
 
     @Test
     void testChooseMaterialsWrongUserAndNotEnoughMembers() {
-
-        // porta il contesto nella AdventurePhase con username1 di turno
         goToAdvPhase();
         AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
 
-        AdventureCard advCard = new AbandonedStation(
-                "id",
-                AdventureCard.Type.LEVEL1,
-                1,      // membersRequired
-                2,      // lostDays
-                0, 0, 0, 0);
-
+        AdventureCard advCard = new AbandonedStation("id", AdventureCard.Type.LEVEL1, 1, 2, 0, 0, 0, 0);
         advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new AbandonedStationState(advPhase));
 
         // sistemiamo i posti letto per username1 (basterebbero 4 HousingUnit)
-        ShipBoard sb1 = gameContext.getGameModel()
-                .getPlayer("username1")
-                .getShipBoard();
-        sb1.placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 7, 8);
-        sb1.placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 7, 6);
-        sb1.placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 8, 7);
-        sb1.placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                        ShipCard.Connector.NONE, ShipCard.Connector.NONE, true),
-                ShipCard.Orientation.DEG_0, 8, 8);
+        ShipBoard sb1 = gameContext.getGameModel().getPlayer("username1").getShipBoard();
+        sb1.placeShipCard(new HousingUnit("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 8);
+        sb1.placeShipCard(new HousingUnit("2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 7, 6);
+        sb1.placeShipCard(new HousingUnit("3", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 7);
+        sb1.placeShipCard(new HousingUnit("4", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true), ShipCard.Orientation.DEG_0, 8, 8);
 
         // username1 accetta la carta → ChooseMaterialStation
         gameContext.acceptAdventureCard("username1");
 
         // username2 prova ad interagire → IllegalArgumentException
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseMaterials("username2", new HashMap<>()),
-                "solo il giocatore che ha accettato può scegliere i materiali");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseMaterials("username2", new HashMap<>()), "solo il giocatore che ha accettato può scegliere i materiali");
 
-        AdventureCard hiCrewCard = new AbandonedStation(
-                "hi-crew",
-                AdventureCard.Type.LEVEL1,
-                100,    // membersRequired (di gran lunga > crew disponibile)
-                2,
-                0, 0, 0, 0);
+        AdventureCard hiCrewCard = new AbandonedStation("hi-crew", AdventureCard.Type.LEVEL1, 100, 2, 0, 0, 0, 0);
 
         advPhase.setDrawnAdvCard(hiCrewCard);
         advPhase.setAdvState(new AbandonedStationState(advPhase));
 
         // Tentativo di chooseMaterials con membri insuff. → IllegalStateException
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.chooseMaterials("username1", new HashMap<>()),
-                "deve lanciare IllegalStateException quando i membri sono insufficienti");
+        assertThrows(IllegalStateException.class, () -> gameContext.chooseMaterials("username1", new HashMap<>()), "deve lanciare IllegalStateException quando i membri sono insufficienti");
     }
 
     /*
@@ -1823,10 +1798,7 @@ public class GameContextTest {
         goToAdvPhase();
         AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
 
-        AdventureCard advCard = new AbandonedStation(
-                "resolved-card", AdventureCard.Type.LEVEL1,
-                0, 0,                    // membersRequired, lostDays
-                0, 0, 0, 0);             // nessun materiale
+        AdventureCard advCard = new AbandonedStation("resolved-card", AdventureCard.Type.LEVEL1, 0, 0, 0, 0, 0, 0);
 
         advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new AbandonedStationState(advPhase));
@@ -1835,9 +1807,7 @@ public class GameContextTest {
         advPhase.setResolvingAdvCard(true);                          // forziamo lo stato "già risolto"
         advCard.useCard();
 
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.chooseMaterials("username1", new HashMap<>()),
-                "deve segnalare che la carta è già stata risolta");
+        assertThrows(IllegalStateException.class, () -> gameContext.chooseMaterials("username1", new HashMap<>()), "deve segnalare che la carta è già stata risolta");
     }
 
     /** 2) Membri equipaggio insufficienti → IllegalStateException. */
@@ -1846,20 +1816,13 @@ public class GameContextTest {
         goToAdvPhase();
         AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
 
-        AdventureCard advCard = new AbandonedStation(
-                "need-crew",
-                AdventureCard.Type.LEVEL1,
-                100,           // lostDays
-                2,             // membersRequired  >  membri disponibili (0)
-                0, 0, 0, 0);
+        AdventureCard advCard = new AbandonedStation("need-crew", AdventureCard.Type.LEVEL1, 100, 2, 0, 0, 0, 0);
 
         advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new AbandonedStationState(advPhase));
 
         // È acceptAdventureCard che deve lanciare, non chooseMaterials
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.acceptAdventureCard("username1"),
-                "deve lanciare se l'equipaggio non è sufficiente per accettare la carta");
+        assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"), "deve lanciare se l'equipaggio non è sufficiente per accettare la carta");
     }
 
     /** 3) Materiale richiesto non presente → IllegalArgumentException. */
@@ -1869,10 +1832,7 @@ public class GameContextTest {
         AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
 
         /* Nessun materiale disponibile nella stazione. */
-        AdventureCard advCard = new AbandonedStation(
-                "no-mat", AdventureCard.Type.LEVEL1,
-                0, 0,
-                0, 0, 0, 0);
+        AdventureCard advCard = new AbandonedStation("no-mat", AdventureCard.Type.LEVEL1, 0, 0, 0, 0, 0, 0);
 
         advPhase.setDrawnAdvCard(advCard);
         advPhase.setAdvState(new AbandonedStationState(advPhase));
@@ -1888,9 +1848,7 @@ public class GameContextTest {
                 )
         );
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseMaterials("username1", req),
-                "deve lanciare se i materiali richiesti non sono disponibili");
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseMaterials("username1", req), "deve lanciare se i materiali richiesti non sono disponibili");
     }
 
 
@@ -1901,15 +1859,13 @@ public class GameContextTest {
 
         Planet p1 = new Planet(1,0,0,0);
         Planet p2 = new Planet(0,1,0,0);
-        PlanetsCard card = new PlanetsCard("pc-1", AdventureCard.Type.LEVEL1,
-                0, new ArrayList<>(List.of(p1,p2)));
+        PlanetsCard card = new PlanetsCard("pc-1", AdventureCard.Type.LEVEL1, 0, new ArrayList<>(List.of(p1,p2)));
 
         AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
         phase.setDrawnAdvCard(card);
         phase.setAdvState(card.getInitialState(phase));          // PlanetsState
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.landOnPlanet("wrongUser", 0));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("wrongUser"));
     }
 
     /* ---------- 2. landOnPlanet: pianeta già occupato ---------- */
@@ -1919,19 +1875,18 @@ public class GameContextTest {
 
         Planet p1 = new Planet(1,0,0,0);
         Planet p2 = new Planet(0,1,0,0);
-        PlanetsCard card = new PlanetsCard("pc-2", AdventureCard.Type.LEVEL1,
-                0, new ArrayList<>(List.of(p1,p2)));
+        PlanetsCard card = new PlanetsCard("pc-2", AdventureCard.Type.LEVEL1, 0, new ArrayList<>(List.of(p1,p2)));
 
         AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
         phase.setDrawnAdvCard(card);
         phase.setAdvState(card.getInitialState(phase));   // PlanetsState
 
         /* Primo atterraggio va a buon fine */
+        gameContext.acceptAdventureCard("username1");
         gameContext.landOnPlanet("username1", 0);
 
         /* Secondo tentativo sullo stesso indice deve fallire */
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.landOnPlanet("username1", 0));
+        assertThrows(IllegalStateException.class, () -> gameContext.landOnPlanet("username1", 0));
     }
 
     /* ---------- 3. landOnPlanet: doppia accept ---------- */
@@ -1941,8 +1896,7 @@ public class GameContextTest {
 
         Planet p1 = new Planet(1,0,0,0);
         Planet p2 = new Planet(0,1,0,0);
-        PlanetsCard card = new PlanetsCard("pc-3", AdventureCard.Type.LEVEL1,
-                0, new ArrayList<>(List.of(p1,p2)));
+        PlanetsCard card = new PlanetsCard("pc-3", AdventureCard.Type.LEVEL1, 0, new ArrayList<>(List.of(p1,p2)));
 
         AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
         phase.setDrawnAdvCard(card);
@@ -1951,8 +1905,7 @@ public class GameContextTest {
         /* Metto già la flag a true per simulare carta in risoluzione */
         phase.setResolvingAdvCard(true);
 
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.landOnPlanet("username1", 0));
+        assertThrows(IllegalStateException.class, () -> gameContext.landOnPlanet("username1", 0));
     }
 
     /* ---------- 4. landOnPlanet: flusso corretto → LandedPlanet ---------- */
@@ -1962,13 +1915,14 @@ public class GameContextTest {
 
         Planet p1 = new Planet(1,0,0,0);
         Planet p2 = new Planet(0,1,0,0);
-        PlanetsCard card = new PlanetsCard("pc-4", AdventureCard.Type.LEVEL1,
-                0, new ArrayList<>(List.of(p1,p2)));
+        PlanetsCard card = new PlanetsCard("pc-4", AdventureCard.Type.LEVEL1, 0, new ArrayList<>(List.of(p1,p2)));
 
         AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
         phase.setDrawnAdvCard(card);
         phase.setAdvState(card.getInitialState(phase));   // PlanetsState
 
+        assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("username2"), "username2 has to wait his turn");
+        gameContext.acceptAdventureCard("username1");
         gameContext.landOnPlanet("username1", 0);
 
         assertInstanceOf(LandedPlanet.class, phase.getCurrentAdvState());
@@ -1981,11 +1935,9 @@ public class GameContextTest {
         LandedPlanet landed = prepareLandedPlanetScenario(0);
 
         Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
-        req.put(null, new AbstractMap.SimpleEntry<>(
-                List.of(new Material(Material.Type.BLUE)), List.of()));
+        req.put(null, new AbstractMap.SimpleEntry<>(List.of(new Material(Material.Type.BLUE)), List.of()));
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseMaterials("otherUser", req));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseMaterials("otherUser", req));
     }
 
     /* ---------- 6. chooseMaterials: materiali non disponibili ---------- */
@@ -1994,11 +1946,9 @@ public class GameContextTest {
         LandedPlanet landed = prepareLandedPlanetScenario(0);
 
         Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
-        req.put(null, new AbstractMap.SimpleEntry<>(
-                List.of(new Material(Material.Type.RED)), List.of()));   // RED non in lista
+        req.put(null, new AbstractMap.SimpleEntry<>(List.of(new Material(Material.Type.RED)), List.of()));   // RED non in lista
 
-        assertThrows(IllegalArgumentException.class,
-                () -> gameContext.chooseMaterials("username1", req));
+        assertThrows(IllegalArgumentException.class, () -> gameContext.chooseMaterials("username1", req));
     }
 
     /* ---------- 7a. chooseMaterials OK → ritorna PlanetsState (altri pianeti) ---------- */
@@ -2007,17 +1957,11 @@ public class GameContextTest {
         LandedPlanet landed = prepareLandedPlanetScenario(0);
 
         Player player = gameContext.getGameModel().getPlayer("username1");
-        ShipBoard board  = player.getShipBoard();
 
-        Storage storage = new Storage("S-01",
-                    ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                    ShipCard.Connector.NONE,  ShipCard.Connector.NONE,
-                    Storage.Type.DOUBLE_BLUE);
-
+        Storage storage = new Storage("S-01", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE,  ShipCard.Connector.NONE, Storage.Type.DOUBLE_BLUE);
         player.getShipBoard().placeShipCard(storage,storage.getOrientation(),7,8);
 
         Material blue = new Material(Material.Type.BLUE);
-
         Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
         req.put(
                 storage,
@@ -2039,32 +1983,25 @@ public class GameContextTest {
 
     /* ---------- 7b. chooseMaterials OK → IdleState (ultimo pianeta) ---------- */
     @Test
-    void chooseMaterials_lastPlanet_idle() {
+    void chooseMaterials_lastPlanet_idle() throws InterruptedException {
         goToAdvPhase();
         AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
 
         Planet p0 = new Planet(0,0,0,1);   // RED   (sarà l’ultimo)
         Planet p1 = new Planet(1,0,0,0);   // BLUE  (già “virtualmente” visitato)
 
-        PlanetsCard card = new PlanetsCard("pc-final",
-                AdventureCard.Type.LEVEL1,
-                2, new ArrayList<>(List.of(p0, p1)));
-
+        PlanetsCard card = new PlanetsCard("pc-final", AdventureCard.Type.LEVEL1, 2, new ArrayList<>(List.of(p0, p1)));
         phase.setDrawnAdvCard(card);
 
-        phase.setAdvState(new PlanetsState(phase, /*numVisited=*/1));
-
+        phase.setAdvState(new PlanetsState(phase, 1));
+        gameContext.acceptAdventureCard("username1");
         gameContext.landOnPlanet("username1", 0);   // numVisited diventa 2 == size()
 
         LandedPlanet landed = (LandedPlanet) phase.getCurrentAdvState();
 
-        Player    player  = gameContext.getGameModel().getPlayer("username1");
-        ShipBoard board   = player.getShipBoard();
-        Storage   storage = new Storage(
-                "S-X",
-                ShipCard.Connector.SINGLE, ShipCard.Connector.NONE,
-                ShipCard.Connector.NONE,  ShipCard.Connector.NONE,
-                Storage.Type.SINGLE_RED);
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        ShipBoard board = player.getShipBoard();
+        Storage storage = new Storage("S-X", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE,  ShipCard.Connector.NONE, Storage.Type.SINGLE_RED);
 
         board.addToList(storage, 8, 7);   // registrato fra gli storage
 
@@ -2078,9 +2015,8 @@ public class GameContextTest {
                         ));
 
         gameContext.chooseMaterials("username1", req);
-
-        assertInstanceOf(IdleState.class, phase.getCurrentAdvState(),
-                "Ultimo pianeta → IdleState");
+        Thread.sleep(10);
+        assertInstanceOf(IdleState.class, phase.getCurrentAdvState(), "Ultimo pianeta → IdleState");
     }
 
 
@@ -2093,8 +2029,7 @@ public class GameContextTest {
         Planet p2 = new Planet(0,0,0,1);
         ArrayList<Planet> planets = new ArrayList<>(List.of(p1,p2));
 
-        PlanetsCard card = new PlanetsCard("pc-util", AdventureCard.Type.LEVEL1,
-                2, planets);
+        PlanetsCard card = new PlanetsCard("pc-util", AdventureCard.Type.LEVEL1, 2, planets);
 
         AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
         phase.setDrawnAdvCard(card);
@@ -2103,13 +2038,10 @@ public class GameContextTest {
         phase.setAdvState(card.getInitialState(phase));
 
         /* L’utente atterra sul pianeta desiderato */
+        gameContext.acceptAdventureCard("username1");
         gameContext.landOnPlanet("username1", planetIdx);
 
         /* Ora lo stato è LandedPlanet */
         return (LandedPlanet) phase.getCurrentAdvState();
     }
-
-
-
-
 }

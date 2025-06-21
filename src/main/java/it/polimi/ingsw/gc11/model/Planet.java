@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Planet implements Serializable {
 
     private boolean visited;
-    private ArrayList<Material> materials;
+    private final ArrayList<Material> materials;
     private Player player;
 
 
