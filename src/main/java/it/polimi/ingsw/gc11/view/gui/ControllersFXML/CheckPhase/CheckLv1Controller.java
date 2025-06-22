@@ -32,13 +32,14 @@ import java.util.ArrayList;
 
 public class CheckLv1Controller extends Controller {
 
-    @FXML private Button checkButton;
 
     @FXML private StackPane root;
     @FXML private VBox mainVBox;
-    @FXML private GridPane slotGrid;
-    @FXML private HBox mainContainer;
     @FXML private HBox headerContainer;
+    @FXML private HBox subHeaderContainer;
+    @FXML private Button checkButton;
+    @FXML private HBox mainContainer;
+    @FXML private GridPane slotGrid;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
@@ -48,7 +49,6 @@ public class CheckLv1Controller extends Controller {
 
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
-    private DoubleBinding cellSide;
     private DoubleBinding availW;
     private DoubleBinding availH;
     private DoubleBinding boardW;
@@ -56,7 +56,6 @@ public class CheckLv1Controller extends Controller {
     private DoubleBinding gridW;
     private DoubleBinding gridH;
     private DoubleBinding shipCardSize;
-
 
     private Stage stage;
     private VirtualServer virtualServer;
@@ -88,6 +87,7 @@ public class CheckLv1Controller extends Controller {
         availW  = mainVBox.widthProperty().subtract(mainContainer.spacingProperty());
         availH = mainVBox.heightProperty()
                 .subtract(headerContainer.heightProperty())
+                .subtract(subHeaderContainer.heightProperty())
                 .subtract(mainVBox.spacingProperty().multiply(3));
 
         DoubleBinding wFromH  = availH.multiply(BOARD_RATIO);
@@ -286,7 +286,7 @@ public class CheckLv1Controller extends Controller {
     }
 
     @FXML
-    private void checkShipBoard(){
+    private void onCheckShipBoardClick(){
         try {
             virtualServer.repairShip(xCoordinates, yCoordinates);
             xCoordinates.clear();
