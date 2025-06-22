@@ -89,6 +89,10 @@ public class CheckPhase extends GamePhase {
             if (this.badShipPlayers.isEmpty()) {
                 goToAdventurePhase();//All the players corrected their shipboard
             }
+            else {
+                UpdateShipBoardAction response = new UpdateShipBoardAction(player.getShipBoard());
+                gameContext.sendAction(username, response);    //returns the shipBoard in any case, the client can see by itself if the ship is valid or not calling checkShip()
+            }
         }
         else {
             UpdateShipBoardAction response = new UpdateShipBoardAction(player.getShipBoard());
