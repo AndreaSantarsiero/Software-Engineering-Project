@@ -178,7 +178,7 @@ public class AdventureTemplate extends CLITemplate {
                         System.out.print("Current adventure:");
                     }
                     else {
-                        adventureCardCLI.print(data.getAdventureCard(), i);
+                        adventureCardCLI.print(data.getAdventureCard(), i+1);
                     }
                 }
                 else if (y == 2){
@@ -186,8 +186,10 @@ public class AdventureTemplate extends CLITemplate {
                     adventureCardCLI.print(data.getAdventureCard(), i-6);
                 }
                 else if (y == 3){
-                    System.out.print("                    ");
-                    adventureCardCLI.print(data.getAdventureCard(), i-13);
+                    if(i < 2){
+                        System.out.print("                    ");
+                        adventureCardCLI.print(data.getAdventureCard(), i-13);
+                    }
                 }
 
 
