@@ -22,6 +22,10 @@ public abstract class CLIController extends Controller {
         return active;
     }
 
+    public abstract void updateInternalState();
+
+
+
     public abstract void setMenuChoice(int choice);
 
     public abstract void confirmMenuChoice();

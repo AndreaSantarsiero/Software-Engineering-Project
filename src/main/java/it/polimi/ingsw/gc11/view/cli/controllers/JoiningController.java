@@ -131,6 +131,7 @@ public class JoiningController extends CLIController {
 
 
 
+    @Override
     public void updateInternalState() {
         if(data.getState() == JoiningPhaseData.JoiningState.CREATE_OR_JOIN) {
             if(createOrJoinMenu == 0) {

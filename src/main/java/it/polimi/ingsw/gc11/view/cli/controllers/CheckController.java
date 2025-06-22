@@ -106,6 +106,7 @@ public class CheckController extends CLIController {
 
 
 
+    @Override
     public void updateInternalState() {
         if(data.getState() == CheckPhaseData.CheckState.CHOOSE_MAIN_MENU){
             if(!data.isShipBoardLegal()){

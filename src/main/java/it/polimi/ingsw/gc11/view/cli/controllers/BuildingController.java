@@ -209,6 +209,7 @@ public class BuildingController extends CLIController {
 
 
 
+    @Override
     public void updateInternalState() {
         if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
             switch (mainMenu) {
