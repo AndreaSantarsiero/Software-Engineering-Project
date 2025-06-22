@@ -124,6 +124,7 @@ public class AdventureController extends CLIController {
 
 
 
+    @Override
     public void updateInternalState() {
         if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
             switch (mainMenu) {

@@ -13,6 +13,6 @@ public class EnterInput extends InputRequest {
 
     @Override
     public void execute(InputHandler inputHandler){
-        inputHandler.pressEnterToContinue(gamePhaseData);
+        inputHandler.pressEnterToContinue(gamePhaseData, controller);
     }
 }

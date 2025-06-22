@@ -47,7 +47,7 @@ public class InputHandler {
         keyMap.bind("down", "\033[B", "s", "S");    // Down
         keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
 
-        while (true) {
+        while (controller.isActive()) {
             String key = bindingReader.readBinding(keyMap);
 
             switch (key) {
@@ -82,7 +82,7 @@ public class InputHandler {
         keyMap.bind("right", "\033[C", "d", "D");   // Right
         keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
 
-        while (true) {
+        while (controller.isActive()) {
             String key = bindingReader.readBinding(keyMap);
 
             switch (key) {
@@ -119,7 +119,7 @@ public class InputHandler {
         keyMap.bind("right", "\033[C", "d", "D");   // Right
         keyMap.bind("enter", "\r", "\n");           // Enter (Windows/Linux)
 
-        while (true) {
+        while (controller.isActive()) {
             String key = bindingReader.readBinding(keyMap);
             int i = selected / cols;
             int j = selected % cols;
@@ -179,7 +179,7 @@ public class InputHandler {
         int i = previouslySelectedI;
         int j = previouslySelectedJ;
 
-        while (true) {
+        while (controller.isActive()) {
             String key = bindingReader.readBinding(keyMap);
             int oldI = i;
             int oldJ = j;
@@ -274,7 +274,7 @@ public class InputHandler {
         keyMap.bind("left", "\033[D", "a", "A");        // Decrement by 3
         keyMap.bind("enter", "\r", "\n");               // Enter
 
-        while (true) {
+        while (controller.isActive()) {
             String key = bindingReader.readBinding(keyMap);
 
             switch (key) {
@@ -307,15 +307,30 @@ public class InputHandler {
 
 
     public void readLine(GamePhaseData data, CLIController controller) {
-        if (context.getCurrentPhase().equals(data)) {
-            controller.setStringInput(lineReader.readLine());
+        if (!context.getCurrentPhase().equals(data) || !controller.isActive()){
+            return;
         }
+
+        controller.setStringInput(lineReader.readLine());
     }
 
-    public void pressEnterToContinue(GamePhaseData data) {
-        if (context.getCurrentPhase().equals(data)) {
-            lineReader.readLine();
-            data.updateState();
+
+
+    public void pressEnterToContinue(GamePhaseData data, CLIController controller) {
+        if (!context.getCurrentPhase().equals(data)){
+            return;
+        }
+
+        KeyMap<String> keyMap = new KeyMap<>();
+        keyMap.bind("enter", "\r", "\n");  // Enter
+
+        while (controller.isActive()) {
+            String key = bindingReader.readBinding(keyMap);
+
+            if (key.equals("enter")) {
+                controller.updateInternalState();
+                return;
+            }
         }
     }
 

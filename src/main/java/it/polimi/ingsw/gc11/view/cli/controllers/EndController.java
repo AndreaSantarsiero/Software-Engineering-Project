@@ -38,7 +38,33 @@ public class EndController extends CLIController {
         if (!active) {
             return;
         }
+        if (data.isStateNew()) {
+            if (addServerRequest()) {
+                return;
+            }
+        }
         template.render();
+        if (data.isStateNew()) {
+            addInputRequest();
+        }
+    }
+
+
+    //if it's not necessary to render the template, then return true
+    public boolean addServerRequest(){
+        return false;
+    }
+
+
+    public void addInputRequest() {
+
+    }
+
+
+
+    @Override
+    public void updateInternalState() {
+        data.updateState();
     }
 
 
