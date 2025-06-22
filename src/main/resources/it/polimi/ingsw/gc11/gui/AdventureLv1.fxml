@@ -73,19 +73,20 @@
             </StackPane>
 
 
-            <VBox fx:id="cardPane" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+            <VBox fx:id="cardPane" alignment="TOP_CENTER" HBox.hgrow="ALWAYS" spacing="10">
                 <Label fx:id="adventureCardText" styleClass="Text" text="AdventureCard">
                     <font>
                         <Font size="24.0" />
                     </font>
                 </Label>
-                <VBox fx:id="advCard" alignment="CENTER" style="-fx-background-color: #032b8a;                                                   -fx-background-radius: 20;                                                   -fx-padding: 10;                                                   -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
+                <VBox fx:id="advCard" alignment="CENTER" spacing="10" style="-fx-background-color: #032b8a; -fx-background-radius: 20; -fx-padding: 10; -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
                     <ImageView fx:id="adventureCardImage" preserveRatio="true" visible="false" />
                     <Button fx:id="release" styleClass="Text2" text="Release shipcard" visible="false" />
                     <Button fx:id="place" styleClass="Text2" text="Place shipcard" visible="false" />
                     <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false" />
 
                 </VBox>
+                <Button fx:id="drawButton" text="Draw card" onAction="#onDrawbutton" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css"/>
                 <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="Label" visible="false" wrapText="true">
                     <font>
                         <Font size="18.0" />
