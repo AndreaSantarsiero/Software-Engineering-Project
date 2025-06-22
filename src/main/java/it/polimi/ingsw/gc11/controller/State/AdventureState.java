@@ -46,7 +46,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public AdventureCard getAdventureCard(String username) {
-        throw new IllegalStateException("Can't get an adventure card in the current adventure state.");
+        throw new IllegalStateException("Can't get an adventure card in the current adventure state: " + this.getClass().getName());
     }
 
 
@@ -57,7 +57,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public void acceptAdventureCard(String username){
-        throw new IllegalStateException("Can't accept an adventure card in the current adventure state.");
+        throw new IllegalStateException("Can't accept an adventure card in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public void declineAdventureCard(String username) {
-        throw new IllegalStateException("Can't decline an adventure card in the current adventure state.");
+        throw new IllegalStateException("Can't decline an adventure card in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
-        throw new IllegalStateException("Can't kill members in the current adventure state.");
+        throw new IllegalStateException("Can't kill members in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -91,7 +91,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
-        throw new IllegalStateException("Can't choose material in the current adventure state.");
+        throw new IllegalStateException("Can't choose material in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player chooseFirePower(String username, Map<Battery, Integer> batteries, List<Cannon> doubleCannons){
-        throw new IllegalStateException("Can't choose fire power in the current adventure state.");
+        throw new IllegalStateException("Can't choose fire power in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player rewardDecision(String username, boolean decision){
-        throw new IllegalStateException("Can't make the reward decision in the current adventure state.");
+        throw new IllegalStateException("Can't make the reward decision in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -127,7 +127,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Hit getCoordinate(String username){
-        throw new IllegalStateException("Can't get coordinate in the current adventure state.");
+        throw new IllegalStateException("Can't get coordinate in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -139,7 +139,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player handleShot(String username, Map<Battery, Integer> batteries){
-        throw new IllegalStateException("Can't handle shot in the current adventure state.");
+        throw new IllegalStateException("Can't handle shot in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player useBatteries(String username, Map<Battery, Integer> batteries){
-        throw new IllegalStateException("Can't eliminate batteries in the current adventure state.");
+        throw new IllegalStateException("Can't eliminate batteries in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -163,7 +163,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public List<Material> landOnPlanet(String username, int numPlanet){
-        throw new IllegalStateException("Can't land on a planet in the current adventure state.");
+        throw new IllegalStateException("Can't land on a planet in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){
-        throw new IllegalStateException("Can't choose engine power in the current adventure state.");
+        throw new IllegalStateException("Can't choose engine power in the current adventure state: " + this.getClass().getName());
     }
 
     /**
@@ -188,6 +188,10 @@ public abstract class AdventureState{
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
-        throw new IllegalStateException("Can't meteor hit in the current adventure state.");
+        throw new IllegalStateException("Can't meteor hit in the current adventure state: " + this.getClass().getName());
     }
+
+
+
+    //public abstract String getPhaseName();
 }
