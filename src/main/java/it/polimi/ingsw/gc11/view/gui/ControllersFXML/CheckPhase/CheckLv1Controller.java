@@ -1,13 +1,17 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase;
 
+import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
+import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -226,7 +230,7 @@ public class CheckLv1Controller extends Controller {
 
                         if (alreadyIn(x, y) != -1){
                             ColorInput goldOverlay = new ColorInput();
-                            goldOverlay.setPaint(Color.web("#FFD70080"));
+                            goldOverlay.setPaint(Color.web("#FFD700CC"));
 
                             goldOverlay.widthProperty() .bind(iv.fitWidthProperty());
                             goldOverlay.heightProperty().bind(iv.fitHeightProperty());
@@ -311,9 +315,6 @@ public class CheckLv1Controller extends Controller {
             virtualServer.repairShip(xCoordinates, yCoordinates);
             xCoordinates.clear();
             yCoordinates.clear();
-
-            slotGrid.getChildren().clear();
-            setShipBoard();
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
@@ -361,9 +362,9 @@ public class CheckLv1Controller extends Controller {
                 }
 
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv2.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    EnemyShipboardLv2Controller controller = fxmlLoader.getController();
+                    EnemyShipboardLv1Controller controller = fxmlLoader.getController();
                     checkPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);
@@ -406,11 +407,13 @@ public class CheckLv1Controller extends Controller {
     public void change() {
         Platform.runLater(() -> {
 
+            ViewModel viewModel = (ViewModel) stage.getUserData();
+            AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventureLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdventureControllerLv1 controller = fxmlLoader.getController();
-                checkPhaseData.setListener(controller);
+                adventurePhaseData.setListener(controller);
                 controller.initialize(stage);
                 stage.setScene(newScene);
                 stage.show();

@@ -4,8 +4,10 @@ import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -186,19 +188,6 @@ public class CheckLv2Controller extends Controller {
                         clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
                         btn.setClip(clip);
 
-                        if (alreadyIn(c, r) != -1) {
-                            btn.setStyle(
-                                    "-fx-border-color: gold;" +
-                                            "-fx-border-width: 3;" +
-                                            "-fx-border-radius: 5;");
-
-                            DropShadow glow = new DropShadow();
-                            glow.setColor(Color.web("#FFD700"));
-                            glow.setRadius(15);
-                            glow.setSpread(0.6);
-                            btn.setEffect(glow);
-                        }
-
                         ColorAdjust darken  = new ColorAdjust();
                         darken.setBrightness(-0.2);
 
@@ -238,6 +227,20 @@ public class CheckLv2Controller extends Controller {
 
                         iv.fitWidthProperty().bind(btn.widthProperty());
                         iv.fitHeightProperty().bind(btn.heightProperty());
+
+                        if (alreadyIn(x, y) != -1){
+                            ColorInput goldOverlay = new ColorInput();
+                            goldOverlay.setPaint(Color.web("#FFD700CC"));
+
+                            goldOverlay.widthProperty() .bind(iv.fitWidthProperty());
+                            goldOverlay.heightProperty().bind(iv.fitHeightProperty());
+
+                            Blend highlight = new Blend();
+                            highlight.setMode(BlendMode.OVERLAY);
+                            highlight.setTopInput(goldOverlay);
+
+                            iv.setEffect(highlight);
+                        }
 
                         switch(shipCard.getOrientation()){
                             case DEG_0 -> iv.setRotate(0);
@@ -283,7 +286,7 @@ public class CheckLv2Controller extends Controller {
 
     private int alreadyIn(int x, int y){
         for(int i = 0; i < xCoordinates.size(); i++){
-            if(xCoordinates.get(i) == x &&  yCoordinates.get(i) == y){
+            if(xCoordinates.get(i) == x - checkPhaseData.getShipBoard().adaptX(0) &&  yCoordinates.get(i) == y - checkPhaseData.getShipBoard().adaptY(0)){
                 return i;
             }
         }
@@ -298,9 +301,12 @@ public class CheckLv2Controller extends Controller {
             yCoordinates.remove(currCoord);
         }
         else{
-            xCoordinates.add(x);
-            yCoordinates.add(y);
+            xCoordinates.add(x - checkPhaseData.getShipBoard().adaptX(0));
+            yCoordinates.add(y - checkPhaseData.getShipBoard().adaptY(0));
         }
+
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     @FXML
@@ -386,7 +392,38 @@ public class CheckLv2Controller extends Controller {
                 setWaiting();
             }
 
+            String serverMessage = checkPhaseData.getServerMessage();
+            if(serverMessage != null && !serverMessage.isEmpty()) {
+                System.out.println(serverMessage.toUpperCase());
+
+                checkPhaseData.resetServerMessage();
+            }
+
         });
+    }
+
+    @Override
+    public void change() {
+        Platform.runLater(() -> {
+
+            ViewModel viewModel = (ViewModel) stage.getUserData();
+            AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventureLv2.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdventureControllerLv1 controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage);
+                stage.setScene(newScene);
+                stage.show();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+
+        });
+
+
     }
 
 }

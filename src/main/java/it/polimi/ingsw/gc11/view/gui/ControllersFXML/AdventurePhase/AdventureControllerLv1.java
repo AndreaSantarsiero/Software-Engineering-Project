@@ -330,4 +330,6 @@ public class AdventureControllerLv1 extends Controller {
 
     }
 
+    public void onDrawbuttonClick(ActionEvent actionEvent) {
+    }
 }
