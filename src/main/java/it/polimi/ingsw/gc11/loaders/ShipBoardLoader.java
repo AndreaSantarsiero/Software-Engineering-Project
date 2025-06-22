@@ -147,4 +147,8 @@ public class ShipBoardLoader {
     public ShipBoard getShipBoard() {
         return shipBoard;
     }
+
+    public ShipCardLoader getShipCardLoader() {
+        return shipCardLoader;
+    }
 }

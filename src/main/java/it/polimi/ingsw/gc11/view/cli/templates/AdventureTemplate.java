@@ -4,8 +4,10 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
+import it.polimi.ingsw.gc11.view.cli.utils.FlightBoardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -167,6 +169,33 @@ public class AdventureTemplate extends CLITemplate {
                     "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
     );
 
+    private static final List<List<String>> numBatteriesMenu = List.of(
+            List.of("┌─┐┌─┐┬─┐┌─┐",
+                    "┌─┘├┤ ├┬┘│ │",
+                    "└─┘└─┘┴└─└─┘ "),
+            List.of("┌─┐┌┐┌┌─┐",
+                    "│ ││││├┤ ",
+                    "└─┘┘└┘└─┘"),
+            List.of("┌┬┐┬ ┬┌─┐",
+                    " │ ││││ │",
+                    " ┴ └┴┘└─┘"),
+            List.of("┌┬┐┬ ┬┬─┐┌─┐┌─┐",
+                    " │ ├─┤├┬┘├┤ ├┤ ",
+                    " ┴ ┴ ┴┴└─└─┘└─┘")
+    );
+
+    private static final List<List<String>> numMembersMenu = List.of(
+            List.of("┌─┐┌─┐┬─┐┌─┐",
+                    "┌─┘├┤ ├┬┘│ │",
+                    "└─┘└─┘┴└─└─┘ "),
+            List.of("┌─┐┌┐┌┌─┐",
+                    "│ ││││├┤ ",
+                    "└─┘┘└┘└─┘"),
+            List.of("┌┬┐┬ ┬┌─┐",
+                    " │ ││││ │",
+                    " ┴ └┴┘└─┘")
+    );
+
 
 
     public AdventureTemplate(AdventureController controller) {
@@ -186,7 +215,11 @@ public class AdventureTemplate extends CLITemplate {
                            "╠═╣ ║║╚╗╔╝║╣ ║║║ ║ ║ ║╠╦╝║╣   ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
                            "╩ ╩═╩╝ ╚╝ ╚═╝╝╚╝ ╩ ╚═╝╩╚═╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
         ShipBoard shipBoard = data.getPlayer().getShipBoard();
+        List<Player> players = new ArrayList<>();
+        players.add(data.getPlayer());
+        players.addAll(data.getEnemies().values());
         int menuIndex = 0;
+        int flightIndex = 0;
 
 
         if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
@@ -305,11 +338,17 @@ public class AdventureTemplate extends CLITemplate {
                     else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU){
                         printMenu(shipBoard, menuIndex, defensiveCannonMenu, controller.getDefensiveCannonMenu());
                     }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  || data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES){
+                        printMenu(shipBoard, menuIndex, numBatteriesMenu, controller.getNumBatteries());
+                    }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_MEMBERS){
+                        printMenu(shipBoard, menuIndex, numBatteriesMenu, controller.getNumMembers());
+                    }
                     menuIndex++;
                 }
 
 
-                //printing adventure card, flight board ecc
+                //printing adventure card
                 if (y == 1){
                     System.out.print("                                        ");
                     if(i == 0){
@@ -328,6 +367,9 @@ public class AdventureTemplate extends CLITemplate {
                     if(i < 2){
                         adventureCardCLI.print(data.getAdventureCard(), i+13);
                     }
+                    if(i == 3){
+                        System.out.print("Current state: " + data.getState().toString());
+                    }
                     else if(i == 4){
                         System.out.print("- NumBatteries: " + controller.getNumBatteries());
                     }
@@ -338,6 +380,17 @@ public class AdventureTemplate extends CLITemplate {
                         Player enemy = data.getEnemies().entrySet().iterator().next().getValue();
                         System.out.print("- your position: " + data.getPlayer().getPosition() + ",   " + enemy.getUsername() + " position: " + enemy.getPosition());
                     }
+                }
+                else if (y == 4 && i < 4){
+                    System.out.print(" ");
+                }
+
+
+                //print flight board
+                else {
+                    System.out.print("                                 ");
+                    FlightBoardCLI.print(data.getFlightBoard(), players, flightIndex);
+                    flightIndex++;
                 }
 
 
@@ -394,5 +447,13 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getDefensiveCannonMenuSize(){
         return defensiveCannonMenu.size();
+    }
+
+    public int getNumBatteriesMenuSize(){
+        return numBatteriesMenu.size();
+    }
+
+    public int getNumMembersMenuSize(){
+        return numMembersMenu.size();
     }
 }

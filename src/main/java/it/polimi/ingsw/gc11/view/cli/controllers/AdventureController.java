@@ -161,8 +161,11 @@ public class AdventureController extends CLIController {
         else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getDefensiveCannonMenuSize(), defensiveCannonMenu));
         }
+        else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  || data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES) {
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getNumBatteriesMenuSize(), numBatteries));
+        }
         else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_MEMBERS) {
-            mainCLI.addInputRequest(new IntegerInput(data, this, 0, 2, numMembers));
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getNumMembersMenuSize(), numMembers));
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
             mainCLI.addInputRequest(new EnterInput(data, this));
@@ -179,14 +182,6 @@ public class AdventureController extends CLIController {
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_BATTERIES)
         {
             mainCLI.addInputRequest(new CoordinatesInput(data, this, data.getPlayer().getShipBoard(), selectedI, selectedJ));
-        }
-
-        else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  ||
-                data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES ||
-                data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES ||
-                data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES)
-        {
-            mainCLI.addInputRequest(new IntegerInput(data, this, 0, 3, numBatteries));
         }
     }
 

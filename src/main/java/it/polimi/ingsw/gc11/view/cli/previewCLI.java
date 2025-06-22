@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
+import it.polimi.ingsw.gc11.loaders.ShipCardLoader;
 import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
+import it.polimi.ingsw.gc11.model.shipboard.Level2ShipBoard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.FlightBoardCLI;
@@ -14,6 +16,7 @@ import java.util.List;
 
 
 public class previewCLI {
+
     public static void main(String[] args) {
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard7.json");
         ShipBoard shipBoard = shipBoardLoader.getShipBoard();
@@ -102,15 +105,38 @@ public class previewCLI {
 
 
 
+
+        List<Player> players = new ArrayList<>();
+        players.add(initPlayer("Player1", "red", 6, shipBoardLoader.getShipCardLoader()));
+        players.add(initPlayer("Player2", "yellow", 3, shipBoardLoader.getShipCardLoader()));
+        players.add(initPlayer("Player3", "green", 1, shipBoardLoader.getShipCardLoader()));
+        players.add(initPlayer("Player4", "blue", 0, shipBoardLoader.getShipCardLoader()));
+
+
         System.out.println("\n\n\nExample of a level 1 flight board with one player on it:");
-        FlightBoardCLI.printLevel1();
+        for (int i = 0; i < 9; i++) {
+            FlightBoardCLI.printLevel1(players, i);
+            System.out.println();
+        }
 
 
         System.out.println("\n\n\nExample of a level 2 flight board with two players on it:");
-        FlightBoardCLI.printLevel2();
-
+        for (int i = 0; i < 13; i++) {
+            FlightBoardCLI.printLevel2(players, i);
+            System.out.println();
+        }
 
         System.out.println("\n\n\nExample of a level 3 flight board with one player on it:");
-        FlightBoardCLI.printLevel3();
+        FlightBoardCLI.printLevel3(players);
+    }
+
+
+
+    private static Player initPlayer(String username, String color, int position, ShipCardLoader shipCardLoader) {
+        Player player = new Player(username);
+        player.setACoolShip(new Level2ShipBoard());
+        player.setColor(color, shipCardLoader.getCentralUnits());
+        player.setPosition(position);
+        return player;
     }
 }
