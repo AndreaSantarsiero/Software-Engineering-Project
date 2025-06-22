@@ -383,6 +383,8 @@ public class CheckLv1Controller extends Controller {
     public void update(CheckPhaseData checkPhaseData) {
         Platform.runLater(() -> {
 
+            System.out.println("CheckLv1Controller update called");
+
             slotGrid.getChildren().clear();
             setShipBoard();
             reservedSlots.getChildren().clear();
