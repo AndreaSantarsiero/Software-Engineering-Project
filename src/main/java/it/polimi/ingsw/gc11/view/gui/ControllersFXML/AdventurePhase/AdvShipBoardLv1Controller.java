@@ -282,7 +282,7 @@ public class AdvShipBoardLv1Controller extends Controller {
     @FXML
     protected void onGoBackButtonClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventureLv1.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
             AdventureControllerLv1 controller = fxmlLoader.getController();
             adventurePhaseData.setListener(controller);

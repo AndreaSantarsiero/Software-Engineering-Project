@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller">
+<StackPane fx:id="root" styleClass="Menu" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv2Controller">
     <children>
         <VBox fx:id="mainVBox" spacing="10.0">
 
             <children>
 
-                <!-- Title -->
+                      <!-- Title -->
                 <HBox fx:id="headerContainer" alignment="CENTER">
                     <children>
                         <Label styleClass="Text" text="CHECK PHASE">
@@ -31,8 +31,8 @@
                 </HBox>
             <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
                <children>
-                   <HBox fx:id="playersButtons" />
-                   <Button fx:id="checkButton" onAction="#onCheckShipBoardClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" text="Check your ShipBoard"/>
+                  <HBox fx:id="playersButtons" />
+                  <Button fx:id="checkButton" onAction="#onCheckShipBoardClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Check your ShipBoard" />
                </children>
             </HBox>
 
@@ -43,16 +43,18 @@
                     <StackPane fx:id="boardContainer" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                         <ImageView fx:id="shipBoardImage" preserveRatio="true">
                             <image>
-                                <Image url="@../boards/ShipBoard1.jpg" />
+                                <Image url="@../../boards/ShipBoard2.jpg" />
                             </image>
                         </ImageView>
                         <GridPane fx:id="slotGrid">
                             <columnConstraints>
-                                <ColumnConstraints percentWidth="20" />
-                                <ColumnConstraints percentWidth="20" />
-                                <ColumnConstraints percentWidth="20" />
-                                <ColumnConstraints percentWidth="20" />
-                                <ColumnConstraints percentWidth="20" />
+                                <ColumnConstraints percentWidth="14.286" />
+                                <ColumnConstraints percentWidth="14.286" />
+                                <ColumnConstraints percentWidth="14.286" />
+                                <ColumnConstraints percentWidth="14.286" />
+                                <ColumnConstraints percentWidth="14.286" />
+                                <ColumnConstraints percentWidth="14.286" />
+                                <ColumnConstraints percentWidth="14.286" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints percentHeight="20" />

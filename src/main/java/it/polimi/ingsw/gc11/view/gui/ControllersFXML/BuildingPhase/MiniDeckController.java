@@ -114,7 +114,7 @@ public class MiniDeckController extends Controller {
 
     private void goToBuildingMenu(){
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingLV2.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
             BuildingLv2Controller controller = fxmlLoader.getController();
             buildingPhaseData.setListener(controller);

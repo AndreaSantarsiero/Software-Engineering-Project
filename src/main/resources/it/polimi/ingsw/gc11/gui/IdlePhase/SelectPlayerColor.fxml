@@ -2,30 +2,26 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="640.0" prefWidth="860.0" spacing="50.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase.LoginController">
+<VBox prefHeight="640.0" prefWidth="860.0" spacing="50.0" styleClass="Menu" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase.SelectColorController">
    <children>
       <HBox alignment="CENTER">
          <children>
-            <Label styleClass="Text" text="INSERT USERNAME">
+            <Label styleClass="Text" stylesheets="@../style.css" text="SELECT COLOR">
                <font>
                   <Font size="48.0" />
                </font>
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER">
+      <HBox alignment="CENTER" spacing="100.0" stylesheets="@../style.css">
          <children>
-            <TextField fx:id="usernameText" alignment="CENTER" prefHeight="102.0" prefWidth="531.0" promptText="Username" style="-fx-text-fill: black;" styleClass="Text">
-               <font>
-                  <Font size="48.0" />
-               </font>
-            </TextField>
+            <ComboBox fx:id="availableColors" prefHeight="60.0" prefWidth="300.0" promptText="Available Colors" />
          </children>
       </HBox>
       <HBox alignment="CENTER">
@@ -37,11 +33,11 @@
             </Button>
          </children>
       </HBox>
-      <HBox fx:id="status" alignment="CENTER">
+      <HBox alignment="CENTER" stylesheets="@../style.css">
          <children>
-            <Label fx:id="errorLabel" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="Label" visible="false" wrapText="true">
+            <Label fx:id="label" styleClass="Text" text="error" visible="false">
                <font>
-                  <Font size="24.0" />
+                  <Font size="36.0" />
                </font>
             </Label>
          </children>

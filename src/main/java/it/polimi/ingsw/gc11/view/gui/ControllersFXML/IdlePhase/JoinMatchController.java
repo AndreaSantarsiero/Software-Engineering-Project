@@ -128,7 +128,7 @@ public class JoinMatchController extends Controller {
 
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_COLOR) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectPlayerColor.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/SelectPlayerColor.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     SelectColorController controller = fxmlLoader.getController();
                     stage.setScene(newScene);
@@ -153,7 +153,7 @@ public class JoinMatchController extends Controller {
                 System.out.println("Error:  " + joiningPhaseData.getServerMessage());
 
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateOrJoin.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/CreateOrJoin.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     CreateOrJoinController controller = fxmlLoader.getController();
                     controller.setStage(this.stage);

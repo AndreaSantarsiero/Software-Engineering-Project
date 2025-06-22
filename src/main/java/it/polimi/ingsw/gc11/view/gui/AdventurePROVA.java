@@ -23,7 +23,7 @@ public class AdventurePROVA extends Application {
         stage.setUserData(viewModel);
         stage.setTitle("Galaxy Trucker");
 
-        FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventureLv1.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
         Scene scene = new Scene(loader.load(), 1280, 720);
         viewModel.getPlayerContext().setAdventurePhase();
         AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();

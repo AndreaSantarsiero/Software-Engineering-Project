@@ -8,7 +8,6 @@ import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv2Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -836,9 +835,9 @@ public class BuildingLv2Controller extends Controller {
                 }
 
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv2.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv2.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    EnemyShipboardLv2Controller controller = fxmlLoader.getController();
+                    BuildingEnemyShipboardLv2Controller controller = fxmlLoader.getController();
                     buildingPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);
@@ -858,7 +857,7 @@ public class BuildingLv2Controller extends Controller {
         int index   = Integer.parseInt(btn.getUserData().toString());
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/MiniDeck.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/MiniDeck.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
             MiniDeckController controller = fxmlLoader.getController();
             buildingPhaseData.setListener(controller);
@@ -1003,7 +1002,7 @@ public class BuildingLv2Controller extends Controller {
             ViewModel viewModel = (ViewModel) stage.getUserData();
             CheckPhaseData checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckLV2.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckLV2.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 CheckLv2Controller controller = fxmlLoader.getController();
                 checkPhaseData.setListener(controller);

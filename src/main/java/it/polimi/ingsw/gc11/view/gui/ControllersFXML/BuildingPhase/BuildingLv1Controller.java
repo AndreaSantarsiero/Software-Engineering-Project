@@ -8,7 +8,6 @@ import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -774,9 +773,9 @@ public class BuildingLv1Controller extends Controller {
                 }
 
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv1.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    EnemyShipboardLv1Controller controller = fxmlLoader.getController();
+                    BuildingEnemyShipboardLv1Controller controller = fxmlLoader.getController();
                     buildingPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);
@@ -891,7 +890,7 @@ public class BuildingLv1Controller extends Controller {
             ViewModel viewModel = (ViewModel) stage.getUserData();
             CheckPhaseData checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckLV1.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckLV1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 CheckLv1Controller controller = fxmlLoader.getController();
                 checkPhaseData.setListener(controller);

@@ -1,11 +1,11 @@
-package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
+package it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
+import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class EnemyShipboardLv1Controller extends Controller {
+public class CheckEnemyShipboardLv1Controller extends Controller {
 
     @FXML private Button goBackButton;
     @FXML private Label owner;
@@ -51,7 +51,7 @@ public class EnemyShipboardLv1Controller extends Controller {
 
 
     private Stage stage;
-    private BuildingPhaseData buildingPhaseData;
+    private CheckPhaseData checkPhaseData;
     private String ownerUsername;
 
 
@@ -59,7 +59,7 @@ public class EnemyShipboardLv1Controller extends Controller {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         VirtualServer virtualServer = viewModel.getVirtualServer();
-        this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        this.checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
         this.ownerUsername = ownerUsername;
         this.owner.setText(ownerUsername + "'s Shipboard");
 
@@ -120,17 +120,17 @@ public class EnemyShipboardLv1Controller extends Controller {
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
 
-        update(buildingPhaseData);
+        update(checkPhaseData);
 
     }
 
     @FXML
     protected void onGoBackButtonClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV1.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckLV1.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            BuildingLv1Controller controller = fxmlLoader.getController();
-            buildingPhaseData.setListener(controller);
+            CheckLv1Controller controller = fxmlLoader.getController();
+            checkPhaseData.setListener(controller);
             controller.initialize(stage);
             stage.setScene(newScene);
             stage.show();
@@ -143,7 +143,7 @@ public class EnemyShipboardLv1Controller extends Controller {
 
     public void setShipBoard(){
 
-        ShipBoard shipBoard = buildingPhaseData.getEnemiesShipBoard().get(this.ownerUsername);
+        ShipBoard shipBoard = checkPhaseData.getEnemiesShipBoard().get(this.ownerUsername);
 
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
@@ -182,7 +182,7 @@ public class EnemyShipboardLv1Controller extends Controller {
     }
 
     public void setReservedSlots(){
-        ShipBoard shipBoard = buildingPhaseData.getEnemiesShipBoard().get(this.ownerUsername);
+        ShipBoard shipBoard = checkPhaseData.getEnemiesShipBoard().get(this.ownerUsername);
         for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
 

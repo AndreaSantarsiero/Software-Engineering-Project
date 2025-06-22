@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" spacing="10.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv2Controller">
+<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" spacing="10.0" styleClass="Menu" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckEnemyShipboardLv2Controller">
 
     <children>
 
@@ -27,28 +27,28 @@
                 </Label>
             </children>
         </HBox>
-      <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <HBox fx:id="playersButtons" prefHeight="45.0" prefWidth="1255.0">
-               <children>
-                  <Button fx:id="goBackButton" mnemonicParsing="false" onAction="#onGoBackButtonClick" prefHeight="50.0" prefWidth="209.0" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" text="Go back to your ship">
-                     <font>
-                        <Font size="18.0" />
-                     </font></Button>
-                  <Label fx:id="owner" styleClass="Text" text="&lt;username&gt;'s Shipboard">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets left="300.0" />
-                     </HBox.margin>
-                  </Label>
-               </children></HBox>
-         </children>
-      </HBox>
+        <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <HBox fx:id="playersButtons" prefHeight="45.0" prefWidth="1255.0">
+                    <children>
+                        <Button fx:id="goBackButton" mnemonicParsing="false" onAction="#onGoBackButtonClick" prefHeight="50.0" prefWidth="209.0" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Go back to your ship">
+                            <font>
+                                <Font size="18.0" />
+                            </font></Button>
+                        <Label fx:id="owner" styleClass="Text" text="&lt;username&gt;'s Shipboard">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <HBox.margin>
+                                <Insets left="300.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children></HBox>
+            </children>
+        </HBox>
 
         <!-- Main Game Layout -->
         <HBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="100.0">
@@ -57,7 +57,7 @@
             <StackPane fx:id="boardContainer" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                 <ImageView fx:id="shipBoardImage" preserveRatio="true">
                     <image>
-                        <Image url="@../boards/ShipBoard2.jpg" />
+                        <Image url="@../../boards/ShipBoard2.jpg" />
                     </image>
                 </ImageView>
                 <GridPane fx:id="slotGrid">

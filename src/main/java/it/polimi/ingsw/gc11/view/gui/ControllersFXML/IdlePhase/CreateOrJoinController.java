@@ -61,7 +61,7 @@ public class CreateOrJoinController extends Controller {
             //Create Match
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_NUM_PLAYERS) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateMatch.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/CreateMatch.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     CreateMatchController controller = fxmlLoader.getController();
                     joiningPhaseData.setListener(controller);
@@ -78,7 +78,7 @@ public class CreateOrJoinController extends Controller {
             //Join Match
             else if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CHOOSE_GAME) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/JoinMatch.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/JoinMatch.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     JoinMatchController controller = fxmlLoader.getController();
                     joiningPhaseData.setListener(controller);

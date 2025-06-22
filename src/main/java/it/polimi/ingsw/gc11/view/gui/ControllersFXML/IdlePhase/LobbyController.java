@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import java.io.IOException;
+
 import java.util.Map;
 
 
@@ -87,7 +87,7 @@ public class LobbyController extends Controller {
             while (true) {
                 try {
                     if (buildingPhaseData.getFlightType().equals(FlightBoard.Type.TRIAL)) {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/buildingLV1.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/buildingLV1.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
                         BuildingLv1Controller controller = fxmlLoader.getController();
                         buildingPhaseData.setListener(controller);
@@ -97,7 +97,7 @@ public class LobbyController extends Controller {
                         break;
                     }
                     else if (buildingPhaseData.getFlightType().equals(FlightBoard.Type.LEVEL2)) {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingLV2.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
                         BuildingLv2Controller controller = fxmlLoader.getController();
                         buildingPhaseData.setListener(controller);

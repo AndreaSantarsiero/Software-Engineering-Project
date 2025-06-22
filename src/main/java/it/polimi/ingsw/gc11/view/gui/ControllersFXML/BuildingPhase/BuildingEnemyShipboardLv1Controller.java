@@ -1,17 +1,15 @@
-package it.polimi.ingsw.gc11.view.gui.ControllersFXML;
+package it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +23,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class EnemyShipboardLv2Controller extends Controller {
+public class BuildingEnemyShipboardLv1Controller extends Controller {
 
     @FXML private Button goBackButton;
     @FXML private Label owner;
@@ -86,10 +84,10 @@ public class EnemyShipboardLv2Controller extends Controller {
         );
         boardH  = boardW.divide(BOARD_RATIO);
 
-        gridW = boardW.multiply(0.92);
-        gridH = gridW.subtract(GRID_GAP * (slotGrid.getColumnCount()-1)).multiply(5).divide(7).add(GRID_GAP * (slotGrid.getRowCount() - 1));
+        gridW = boardW.multiply(0.66);
+        gridH = gridW;
 
-        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(7);
+        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(5);
 
         boardContainer.setMinSize(0, 0);
         boardContainer.prefWidthProperty().bind(boardW);
@@ -108,7 +106,6 @@ public class EnemyShipboardLv2Controller extends Controller {
 
         slotGrid.setHgap(GRID_GAP);
         slotGrid.setVgap(GRID_GAP);
-        slotGrid.translateXProperty().bind(new SimpleDoubleProperty(GRID_GAP).divide(3).multiply(-1));
         slotGrid.setPickOnBounds(false);
         slotGrid.toFront();
 
@@ -129,9 +126,9 @@ public class EnemyShipboardLv2Controller extends Controller {
     @FXML
     protected void onGoBackButtonClick(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingLV2.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/buildingLV1.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            BuildingLv2Controller controller = fxmlLoader.getController();
+            BuildingLv1Controller controller = fxmlLoader.getController();
             buildingPhaseData.setListener(controller);
             controller.initialize(stage);
             stage.setScene(newScene);
@@ -148,7 +145,7 @@ public class EnemyShipboardLv2Controller extends Controller {
         ShipBoard shipBoard = buildingPhaseData.getEnemiesShipBoard().get(this.ownerUsername);
 
         for(int r = 0; r < 5; r++){
-            for(int c = 0; c < 7; c++){
+            for(int c = 0; c < 5; c++){
                 if(shipBoard.validateIndexes(c,r)){
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;

@@ -1,12 +1,8 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -126,7 +122,7 @@ public class SelectColorController extends Controller {
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.WAITING) {
 //                    colorSelected = true;
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Lobby.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/Lobby.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     LobbyController controller = fxmlLoader.getController();
                     joiningPhaseData.setListener(controller);

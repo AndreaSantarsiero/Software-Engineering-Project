@@ -97,7 +97,7 @@ public class SelectNetworkController extends Controller {
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.USERNAME_SETUP) {
                 while (true) {
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/Login.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/Login.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load());
                         joiningPhaseData.setListener(fxmlLoader.getController());
 

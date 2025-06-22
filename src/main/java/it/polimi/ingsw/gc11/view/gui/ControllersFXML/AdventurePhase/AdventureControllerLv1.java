@@ -20,7 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -130,7 +129,7 @@ public class AdventureControllerLv1 extends Controller {
             playerButton.setOnMouseClicked(e -> {
 
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventureShipboardLv1.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                     AdvShipBoardLv1Controller controller = fxmlLoader.getController();
                     adventurePhaseData.setListener(controller);
@@ -331,5 +330,6 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     public void onDrawbuttonClick(ActionEvent actionEvent) {
+
     }
 }

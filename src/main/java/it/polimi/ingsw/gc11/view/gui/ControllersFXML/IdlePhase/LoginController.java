@@ -82,7 +82,7 @@ public class LoginController extends Controller {
                 System.out.println("You are logged in as:   " + joiningPhaseData.getUsername());
                 while (true) {
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CreateOrJoin.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/CreateOrJoin.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load());
                         CreateOrJoinController controller = fxmlLoader.getController();
                         controller.setStage(stage);

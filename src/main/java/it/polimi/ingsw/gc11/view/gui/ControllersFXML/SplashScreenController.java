@@ -39,7 +39,7 @@ public class SplashScreenController extends Controller {
         Platform.runLater(() -> {
             if (joiningPhaseData.getState() == JoiningPhaseData.JoiningState.CONNECTION_SETUP) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SelectNetwork.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/SelectNetwork.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     stage.setScene(newScene);
                     stage.show();
