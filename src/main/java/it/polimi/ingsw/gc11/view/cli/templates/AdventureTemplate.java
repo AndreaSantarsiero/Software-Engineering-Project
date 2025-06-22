@@ -349,7 +349,10 @@ public class AdventureTemplate extends CLITemplate {
 
 
                 //printing adventure card
-                if (y == 1){
+                if (y == 0){
+                    continue;
+                }
+                else if (y == 1){
                     System.out.print("                                        ");
                     if(i == 0){
                         System.out.print(" Current adventure:        it's " +data.getCurrentPlayer() + "'s turn to play");
@@ -382,7 +385,7 @@ public class AdventureTemplate extends CLITemplate {
                     }
                 }
                 else if (y == 4 && i < 4){
-                    System.out.print(" ");
+                    continue;
                 }
 
 

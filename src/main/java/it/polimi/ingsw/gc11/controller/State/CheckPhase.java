@@ -113,7 +113,7 @@ public class CheckPhase extends GamePhase {
 
         for (Player player : gameModel.getPlayers()) {
             enemies.remove(player.getUsername());
-            SetAdventurePhaseAction send = new SetAdventurePhaseAction(player, enemies, currentPlayer);
+            SetAdventurePhaseAction send = new SetAdventurePhaseAction(gameModel.getFlightBoard(), player, enemies, currentPlayer);
             gameContext.sendAction(player.getUsername(), send);
             enemies.put(player.getUsername(), player);
         }

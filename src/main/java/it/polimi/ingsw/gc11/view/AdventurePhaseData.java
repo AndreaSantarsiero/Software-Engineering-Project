@@ -59,7 +59,8 @@ public class AdventurePhaseData extends GamePhaseData {
         state = AdventureState.CHOOSE_MAIN_MENU;
     }
 
-    public void initialize(Player player, Map<String, Player> enemies, String currentPlayer) {
+    public void initialize(FlightBoard flightBoard, Player player, Map<String, Player> enemies, String currentPlayer) {
+        this.flightBoard = flightBoard;
         this.player = player;
         this.enemies = enemies;
         this.currentPlayer = currentPlayer;
