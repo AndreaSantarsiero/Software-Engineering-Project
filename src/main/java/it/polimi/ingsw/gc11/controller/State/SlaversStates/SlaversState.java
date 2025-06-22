@@ -11,7 +11,25 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Represents the combat state when a {@link Player} is facing the {@link Slavers}
+ * adventure card during the {@link AdventurePhase}.
+ * <p>
+ * This state allows the player to choose the cannons to use and the required
+ * batteries to power them, calculating the effective firepower and determining the
+ * outcome of the battle: win, lose, or draw.
+ * </p>
+ *
+ * <p>
+ * Depending on the player's firepower compared to the Slavers' value, the next
+ * state is determined:
+ * <ul>
+ *   <li>{@link WinState} if the firepower exceeds the Slavers'</li>
+ *   <li>{@link LooseState} if it's lower</li>
+ *   <li>Remain in {@code SlaversState} if it's equal, moving to the next player</li>
+ * </ul>
+ * </p>
+ */
 public class SlaversState extends AdventureState {
 
     private final GameModel gameModel;
@@ -19,7 +37,13 @@ public class SlaversState extends AdventureState {
     private double playerFirePower;
 
 
-
+    /**
+     * Constructs a new {@code SlaversState}, initializing references to the game model
+     * and the specific {@link Slavers} card drawn.
+     *
+     * @param advContext the adventure phase context for this encounter.
+     * @throws ClassCastException if the drawn card is not of type {@link Slavers}.
+     */
     public SlaversState(AdventurePhase advContext) {
         super(advContext);
         this.gameModel = advContext.getGameModel();
@@ -28,7 +52,26 @@ public class SlaversState extends AdventureState {
     }
 
 
-
+    /**
+     * Allows the player to select the cannons and batteries they want to use to face
+     * the Slavers and calculates the resulting firepower.
+     * <p>
+     * Based on the resulting firepower, the player may win, draw, or lose:
+     * </p>
+     * <ul>
+     *     <li>If firepower is greater than Slavers' firepower, the player wins ({@link WinState})</li>
+     *     <li>If equal, move to the next player and reset the state</li>
+     *     <li>If lower, the player loses ({@link LooseState})</li>
+     * </ul>
+     *
+     * @param username       the username of the player attempting the attack.
+     * @param Batteries      a mapping of {@link Battery} to number of charges used.
+     * @param doubleCannons  a list of {@link Cannon} to be used (assumed double cannons).
+     * @return the {@link Player} object after resolving the attack.
+     * @throws IllegalArgumentException if the username is not correct,
+     *                                  if parameters are null or mismatched.
+     * @throws IllegalStateException if the player already accepted the card (double action attempt).
+     */
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
         gameModel.checkPlayerUsername(username);

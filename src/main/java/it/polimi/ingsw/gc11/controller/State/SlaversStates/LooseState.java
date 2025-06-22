@@ -10,14 +10,36 @@ import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
 import java.util.Map;
 
 
-
+/**
+ * Represents the state where a {@link Player} has lost a combat against the {@link Slavers}
+ * during the {@link AdventurePhase} of the game.
+ * <p>
+ * In this state, the player must pay the penalty by choosing which crew members to sacrifice,
+ * distributing the losses across available {@link HousingUnit}s.
+ * </p>
+ *
+ * <p>
+ * After resolving the crew loss:
+ * <ul>
+ *     <li>If all players have taken their turns, the state transitions to {@link IdleState}.</li>
+ *     <li>Otherwise, the next player will face the Slavers in a new {@link SlaversState}.</li>
+ * </ul>
+ * </p>
+ */
 public class LooseState extends AdventureState {
 
     private final Player player;
     private final Slavers slavers;
 
 
-
+    /**
+     * Constructs a new {@code LooseState}, representing the penalty phase for a player who
+     * lost against the Slavers.
+     *
+     * @param advContext the context of the current adventure phase.
+     * @param player     the player who lost the combat.
+     * @throws ClassCastException if the drawn card is not of type {@link Slavers}.
+     */
     public LooseState(AdventurePhase advContext, Player player) {
         super(advContext);
         this.player = player;
@@ -25,7 +47,23 @@ public class LooseState extends AdventureState {
     }
 
 
-
+    /**
+     * Allows the player to assign losses by selecting which crew members to sacrifice
+     * across their ship's {@link HousingUnit}s.
+     * <p>
+     * Validates the user and ensures that the player does not sacrifice fewer crew members
+     * than required. If this happens, the player is considered eliminated.
+     * </p>
+     * <p>
+     * Once resolved, the game either advances to the next player or ends the current adventure phase.
+     * </p>
+     *
+     * @param username      the username of the player making the sacrifice.
+     * @param housingUsage  a mapping from each {@link HousingUnit} to the number of crew to be killed.
+     * @return the updated {@link Player} object after resolving the losses.
+     * @throws IllegalArgumentException if the username is not correct.
+     * @throws IllegalStateException if the number of crew members killed is not sufficient.
+     */
     @Override
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
         GameModel gameModel = this.advContext.getGameModel();
