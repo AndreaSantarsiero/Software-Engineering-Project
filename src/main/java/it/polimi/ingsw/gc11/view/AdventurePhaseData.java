@@ -175,8 +175,8 @@ public class AdventurePhaseData extends GamePhaseData {
         return housingUsage;
     }
 
-    public void addHousingUsage(HousingUnit housingUnit, int amount) {
-        housingUsage.put(housingUnit, amount);
+    public void addHousingUsage(HousingUnit housingUnit, int numMembers) {
+        housingUsage.put(housingUnit, numMembers);
     }
 
 
@@ -184,8 +184,8 @@ public class AdventurePhaseData extends GamePhaseData {
         return batteries;
     }
 
-    public void addBattery(Battery battery) {
-        batteries.put(battery, batteries.size());
+    public void addBattery(Battery battery, int numBatteries) {
+        batteries.put(battery, numBatteries);
     }
 
 

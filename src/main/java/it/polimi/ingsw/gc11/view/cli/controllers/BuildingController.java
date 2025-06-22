@@ -280,8 +280,6 @@ public class BuildingController extends CLIController {
             case CHOOSE_ADVENTURE_DECK -> setAdventureCardMenu(choice);
             case CHOOSE_POSITION -> setEndBuildingMenu(choice);
             case CHOOSE_WAITING_MENU -> setWaitingMenu(choice);
-            case null, default -> {
-            }
         }
     }
 
@@ -298,11 +296,9 @@ public class BuildingController extends CLIController {
     @Override
     public void setIntegerChoice(int choice) {
         data.actualizePreviousState();
-        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
-            setShipCardIndex(choice);
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD){
-            setReservedShipCardIndex(choice);
+        switch (data.getState()) {
+            case CHOOSE_FREE_SHIPCARD -> setShipCardIndex(choice);
+            case CHOOSE_RESERVED_SHIPCARD -> setReservedShipCardIndex(choice);
         }
     }
 

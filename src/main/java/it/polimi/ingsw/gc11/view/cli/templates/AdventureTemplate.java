@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
-import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
 import java.util.HashMap;
@@ -174,10 +173,21 @@ public class AdventureTemplate extends CLITemplate {
 
                 //printing adventure card, flight board ecc
                 if (y == 1){
-                    adventureCardCLI.print(data.getAdventureCard(), i);
+                    System.out.print("                    ");
+                    if(i == 0){
+                        System.out.print("Current adventure:");
+                    }
+                    else {
+                        adventureCardCLI.print(data.getAdventureCard(), i);
+                    }
                 }
                 else if (y == 2){
-                    adventureCardCLI.print(data.getAdventureCard(), i-7);
+                    System.out.print("                    ");
+                    adventureCardCLI.print(data.getAdventureCard(), i-6);
+                }
+                else if (y == 3){
+                    System.out.print("                    ");
+                    adventureCardCLI.print(data.getAdventureCard(), i-13);
                 }
 
 
