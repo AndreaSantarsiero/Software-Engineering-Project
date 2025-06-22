@@ -206,10 +206,9 @@ public abstract class GamePhase {
      * @param username the player's username
      * @param cardsToEliminateX list of x-coordinates of cards to destroy
      * @param cardsToEliminateY list of y-coordinates of cards to destroy
-     * @return the updated {@link ShipBoard}
      * @throws IllegalStateException if the operation is not permitted in this phase
      */
-    public ShipBoard repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
+    public void repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
         throw new IllegalStateException("Can't repair your ship in the current game phase: " + getPhaseName());
     }
 

@@ -333,10 +333,9 @@ public class GameContext {
      * @param username            The player repairing the ship.
      * @param cardsToEliminateX   X-coordinates of damaged cards.
      * @param cardsToEliminateY   Y-coordinates of damaged cards.
-     * @return The updated ship board.
      */
-    public ShipBoard repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
-        return phase.repairShip(username, cardsToEliminateX, cardsToEliminateY);
+    public void repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
+        phase.repairShip(username, cardsToEliminateX, cardsToEliminateY);
     }
     //Da implementare a livello di rete
     /**

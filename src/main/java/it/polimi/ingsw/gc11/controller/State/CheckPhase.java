@@ -2,9 +2,9 @@ package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.SetAdventurePhaseAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ public class CheckPhase extends GamePhase {
 
     private final GameContext gameContext;
     private final GameModel gameModel;
-    private List<Player> badShipPlayers;
+    private final List<Player> badShipPlayers;
 
     /**
      * Constructs a new CheckPhase. Immediately validates all players' ship boards.
@@ -70,10 +70,9 @@ public class CheckPhase extends GamePhase {
      * @param username the player's username
      * @param cardsToEliminateX list of X coordinates of cards to destroy
      * @param cardsToEliminateY list of Y coordinates of cards to destroy
-     * @return the updated {@link ShipBoard} of the player
      */
     @Override
-    public ShipBoard repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
+    public void repairShip(String username, List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) {
 
         Player player = this.gameModel.getPlayer(username);
         if (!badShipPlayers.contains(player)) {
@@ -91,8 +90,10 @@ public class CheckPhase extends GamePhase {
                 goToAdventurePhase();//All the players corrected their shipboard
             }
         }
-
-        return player.getShipBoard();   //returns the shipBoard in any case, the client can see by itself if the ship is valid or not calling checkShip()
+        else {
+            UpdateShipBoardAction response = new UpdateShipBoardAction(player.getShipBoard());
+            gameContext.sendAction(username, response);    //returns the shipBoard in any case, the client can see by itself if the ship is valid or not calling checkShip()
+        }
     }
 
     private void goToAdventurePhase() {
