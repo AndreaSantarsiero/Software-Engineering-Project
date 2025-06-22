@@ -190,8 +190,4 @@ public abstract class AdventureState{
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
         throw new IllegalStateException("Can't meteor hit in the current adventure state: " + this.getClass().getName());
     }
-
-
-
-    //public abstract String getPhaseName();
 }
