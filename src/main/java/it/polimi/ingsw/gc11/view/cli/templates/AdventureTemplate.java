@@ -45,14 +45,6 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┐ ┌─┐┌┬┐┌┬┐┌─┐┬─┐┬┌─┐┌─┐",
                     "│  ├─┤│ ││ │└─┐├┤   ├┴┐├─┤ │  │ ├┤ ├┬┘│├┤ └─┐",
                     "└─┘┴ ┴└─┘└─┘└─┘└─┘  └─┘┴ ┴ ┴  ┴ └─┘┴└─┴└─┘└─┘"),
-            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
-                    "└─┐├┤ │││ ││  ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
-                    "└─┘└─┘┘└┘─┴┘  ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
-            List.of("┬─┐┌─┐┌─┐┌─┐┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
-                    "├┬┘├┤ └─┐├┤  │   ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
-                    "┴└─└─┘└─┘└─┘ ┴   ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘")
-    );
-    private static final List<List<String>> advancedActionMenu = List.of(
             List.of("┬  ┌─┐┌─┐┌┬┐  ┌┐┌┌─┐┬ ┬  ┌┬┐┌─┐┌┬┐┌─┐┬─┐┬┌─┐┬  ┌─┐",
                     "│  │ │├─┤ ││  │││├┤ │││  │││├─┤ │ ├┤ ├┬┘│├─┤│  └─┐",
                     "┴─┘└─┘┴ ┴─┴┘  ┘└┘└─┘└┴┘  ┴ ┴┴ ┴ ┴ └─┘┴└─┴┴ ┴┴─┘└─┘"),
@@ -62,9 +54,12 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┬┐┌─┐┌─┐┌─┐┌┐┌┌─┐┬┬  ┬┌─┐  ┌─┐┌─┐┌┐┌┌┐┌┌─┐┌┐┌",
                     "│  ├─┤│ ││ │└─┐├┤    ││├┤ ├┤ ├┤ │││└─┐│└┐┌┘├┤   │  ├─┤│││││││ ││││",
                     "└─┘┴ ┴└─┘└─┘└─┘└─┘  ─┴┘└─┘└  └─┘┘└┘└─┘┴ └┘ └─┘  └─┘┴ ┴┘└┘┘└┘└─┘┘└┘"),
-            List.of("┌┐ ┌─┐┌─┐┬┌─  ┌┬┐┌─┐  ┌─┐┬─┐┌─┐┬  ┬┬┌─┐┬ ┬┌─┐  ┌┬┐┌─┐┌┐┌┬ ┬",
-                    "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
-                    "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
+            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "└─┐├┤ │││ ││  ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
+                    "└─┘└─┘┘└┘─┴┘  ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
+            List.of("┬─┐┌─┐┌─┐┌─┐┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "├┬┘├┤ └─┐├┤  │   ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
+                    "┴└─└─┘└─┘└─┘ ┴   ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘")
     );
 
 
@@ -169,7 +164,15 @@ public class AdventureTemplate extends CLITemplate {
 
                 //printing menu
                 else {
-                    printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
+                    if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
+                        printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
+                    }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
+                        printMenu(shipBoard, menuIndex, acceptCardMenu, controller.getAcceptCardMenu());
+                    }
+                    else{
+                        printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
+                    }
                     menuIndex++;
                 }
 
@@ -225,9 +228,5 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getActionMenuSize(){
         return actionMenu.size();
-    }
-
-    public int getAdvancedActionMenuSize(){
-        return advancedActionMenu.size();
     }
 }
