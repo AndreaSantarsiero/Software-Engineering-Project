@@ -55,22 +55,10 @@ public class PlayerContext {
     }
 
     public void setAdventurePhase() {
-        boolean skippingCheckPhase = false;
-        try{
-            CheckPhaseData checkPhaseData = (CheckPhaseData) currentPhase;
-        } catch (ClassCastException e){
-            skippingCheckPhase = true;
-        }
-
         Controller oldListener = currentPhase.getListener();
         this.currentPhase = new AdventurePhaseData();
         if (oldListener != null) {
-            if(skippingCheckPhase){
-                oldListener.change(true);
-            }
-            else {
-                oldListener.change();
-            }
+            oldListener.change();
         }
     }
 
