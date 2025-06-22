@@ -171,6 +171,12 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
+    //cheating methods
+    public void gimmeACoolShip(int num) throws NetworkException{
+        GimmeACoolShipAction action = new GimmeACoolShipAction(username, num);
+        client.sendAction(action);
+    }
+
 
 
     public void repairShip(List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) throws NetworkException{

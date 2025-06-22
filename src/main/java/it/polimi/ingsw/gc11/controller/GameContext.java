@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameActio
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
+import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
@@ -322,6 +323,15 @@ public class GameContext {
      */
     public void endBuildingLevel2(String username, int pos){
         phase.endBuildingLevel2(username, pos);
+    }
+
+    //cheating methods
+    public ShipBoard gimmeACoolShip(String username, int num) {
+        String resourcePath = "src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard" + num + ".json";
+        ShipBoardLoader shipBoardLoader = new ShipBoardLoader(resourcePath);
+        ShipBoard coolShip = shipBoardLoader.getShipBoard();
+        gameModel.getPlayer(username).setACoolShip(coolShip);
+        return coolShip;
     }
 
 

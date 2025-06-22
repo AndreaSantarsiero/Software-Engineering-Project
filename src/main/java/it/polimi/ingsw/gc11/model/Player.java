@@ -106,7 +106,7 @@ public class Player implements Serializable {
 
     public void setAbort() { this.abort = true; }
 
-    public void setShipBoard(FlightBoard.Type flightType) throws NullPointerException, IllegalArgumentException {
+    public void setShipBoard(FlightBoard.Type flightType) {
         if (flightType == null)
             throw new NullPointerException();
         if (flightType == FlightBoard.Type.TRIAL)
@@ -119,5 +119,12 @@ public class Player implements Serializable {
 
     public ShipBoard getShipBoard() {
         return shipBoard;
+    }
+
+
+
+    //cheating methods
+    public void setACoolShip(ShipBoard coolShip) {
+        this.shipBoard = coolShip;
     }
 }

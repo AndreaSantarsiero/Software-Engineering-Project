@@ -30,6 +30,7 @@ public class BuildingController extends CLIController {
     private int selectedI;
     private int selectedJ;
     private Instant lastTemplateRender;
+    private int coolShipIndex = 7;
 
 
 
@@ -155,6 +156,9 @@ public class BuildingController extends CLIController {
                 }
                 return true;
             }
+            else if(data.getState() == BuildingPhaseData.BuildingState.COOL_SHIPBOARD_SETUP){
+                mainCLI.getVirtualServer().gimmeACoolShip(coolShipIndex);
+            }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
             e.printStackTrace();
@@ -167,7 +171,7 @@ public class BuildingController extends CLIController {
 
     public void addInputRequest() {
         if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_MAIN_MENU){
-            mainCLI.addInputRequest(new MenuInput(data, this, template.getMainMenuSize(), mainMenu));
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getMainMenuSize() + 1, mainMenu));  //+1 option is used to cheat
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getAdvancedMenuSize(), advancedMenu));
@@ -217,6 +221,7 @@ public class BuildingController extends CLIController {
                 case 1 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD);
                 case 2 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE);
                 case 3 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU);
+                case 4 -> data.setState(BuildingPhaseData.BuildingState.LOAD_COOL_SHIPBOARD);
             }
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){

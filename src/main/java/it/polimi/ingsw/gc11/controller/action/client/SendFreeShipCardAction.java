@@ -20,10 +20,6 @@ public class SendFreeShipCardAction extends ServerAction{
     }
 
 
-    public ShipCard getShipCard() {
-        return shipCard;
-    }
-
     @Override
     public void loadData(JoiningPhaseData joiningPhaseData) {}
 
