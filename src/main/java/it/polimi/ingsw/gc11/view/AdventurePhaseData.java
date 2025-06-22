@@ -40,6 +40,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private Hit hit;
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
+    private String currentPlayer;
 
     //response parameters
     private final Map<HousingUnit, Integer> housingUsage;
@@ -85,7 +86,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public void updateState() {
         actualizePreviousState();
 
-        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.SEND_RESPONSE) {
+        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.SEND_RESPONSE) {
             state = AdventureState.CHOOSE_MAIN_MENU;
         }
         else if (state.ordinal() < AdventureState.values().length - 1) {
@@ -171,6 +172,15 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public Map<String, Player> getEnemies() {
         return enemies;
+    }
+
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
 
