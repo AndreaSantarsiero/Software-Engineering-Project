@@ -238,22 +238,13 @@ public class AdventureTemplate extends CLITemplate {
                     shipBoardCLI.print(shipBoard, y-2, i, controller.getSelectedJ(), controller.getSelectedI());
                     System.out.print("      ");
                 }
-                else if (y < shipBoard.getLength() + 3){
+                else if (y < shipBoard.getLength() + 3 && i < 3){
                     if (i == 0){
                         shipBoardCLI.printHorizontalCoordinates(shipBoard);
                         System.out.print("      ");
                     }
-                    else if (i < 3){
+                    else {
                         printEmptyShipLine(shipBoard);
-                    }
-                    else{
-                        if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
-                            printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
-                        }
-                        else{
-                            printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
-                        }
-                        menuIndex++;
                     }
                 }
 
@@ -315,6 +306,9 @@ public class AdventureTemplate extends CLITemplate {
                     }
                     else if(i == 5){
                         System.out.print("- NumMembers: " + controller.getNumMembers());
+                    }
+                    else if(i == 6){
+                        System.out.print("- your position: " + data.getPlayer().getPosition() + ", enemy position: " + data.getEnemies().entrySet().iterator().next().getValue());
                     }
                 }
 
