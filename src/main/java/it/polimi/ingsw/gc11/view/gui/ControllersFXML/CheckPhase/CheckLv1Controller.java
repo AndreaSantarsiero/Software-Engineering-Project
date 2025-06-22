@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -32,6 +33,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CheckLv1Controller extends Controller {
 
@@ -182,19 +184,6 @@ public class CheckLv1Controller extends Controller {
                         clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
                         btn.setClip(clip);
 
-                        if (alreadyIn(c, r) != -1) {
-                            btn.setStyle(
-                                    "-fx-border-color: gold;" +
-                                            "-fx-border-width: 3;" +
-                                            "-fx-border-radius: 5;");
-
-                            DropShadow glow = new DropShadow();
-                            glow.setColor(Color.web("#FFD700"));
-                            glow.setRadius(15);
-                            glow.setSpread(0.6);
-                            btn.setEffect(glow);
-                        }
-
                         ColorAdjust darken  = new ColorAdjust();
                         darken.setBrightness(-0.2);
 
@@ -234,6 +223,20 @@ public class CheckLv1Controller extends Controller {
 
                         iv.fitWidthProperty().bind(btn.widthProperty());
                         iv.fitHeightProperty().bind(btn.heightProperty());
+
+                        if (alreadyIn(x, y) != -1){
+                            ColorInput goldOverlay = new ColorInput();
+                            goldOverlay.setPaint(Color.web("#FFD70080"));
+
+                            goldOverlay.widthProperty() .bind(iv.fitWidthProperty());
+                            goldOverlay.heightProperty().bind(iv.fitHeightProperty());
+
+                            Blend highlight = new Blend();
+                            highlight.setMode(BlendMode.OVERLAY);
+                            highlight.setTopInput(goldOverlay);
+
+                            iv.setEffect(highlight);
+                        }
 
                         switch(shipCard.getOrientation()){
                             case DEG_0 -> iv.setRotate(0);
@@ -297,12 +300,20 @@ public class CheckLv1Controller extends Controller {
             xCoordinates.add(x);
             yCoordinates.add(y);
         }
+
+        slotGrid.getChildren().clear();
+        setShipBoard();
+
+        System.out.println("x: " + xCoordinates + " y: " + yCoordinates);
     }
 
     @FXML
     private void onCheckShipBoardClick(){
         try {
-            virtualServer.repairShip(xCoordinates, yCoordinates);
+            virtualServer.repairShip(
+                    List.copyOf(xCoordinates),
+                    List.copyOf(yCoordinates)
+            );
             xCoordinates.clear();
             yCoordinates.clear();
         } catch (NetworkException e) {
@@ -369,7 +380,7 @@ public class CheckLv1Controller extends Controller {
     }
 
     @Override
-    public void update(CheckPhaseData buildingPhaseData) {
+    public void update(CheckPhaseData checkPhaseData) {
         Platform.runLater(() -> {
 
             slotGrid.getChildren().clear();
@@ -377,8 +388,15 @@ public class CheckLv1Controller extends Controller {
             reservedSlots.getChildren().clear();
             setReservedSlots();
 
-            if(checkPhaseData.isShipBoardLegal()){
+            if(this.checkPhaseData.isShipBoardLegal()){
                 setWaiting();
+            }
+
+            String serverMessage = checkPhaseData.getServerMessage();
+            if(serverMessage != null && !serverMessage.isEmpty()) {
+                System.out.println(serverMessage.toUpperCase());
+
+                checkPhaseData.resetServerMessage();
             }
 
         });

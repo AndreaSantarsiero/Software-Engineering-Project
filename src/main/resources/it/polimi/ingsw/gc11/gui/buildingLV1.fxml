@@ -33,15 +33,15 @@
         <HBox fx:id="subHeaderContainer">
             <children>
                 <HBox fx:id="playersButtons" />
-            <HBox fx:id="endBuilding" prefHeight="100.0" prefWidth="299.0">
-               <children>
-                      <Button fx:id="endBuildingButton" mnemonicParsing="false" onAction="#onEndBuildingClick" styleClass="Text2" stylesheets="@style.css" text="End building">
-                          <font>
-                              <Font size="18.0" />
-                          </font>
-                      </Button>
-               </children>
-            </HBox>
+                <HBox fx:id="endBuilding" prefHeight="100.0" prefWidth="299.0">
+                   <children>
+                          <Button fx:id="endBuildingButton" mnemonicParsing="false" onAction="#onEndBuildingClick" styleClass="Text2" stylesheets="@style.css" text="End building">
+                              <font>
+                                  <Font size="18.0" />
+                              </font>
+                          </Button>
+                   </children>
+                </HBox>
             </children>
         </HBox>
 
