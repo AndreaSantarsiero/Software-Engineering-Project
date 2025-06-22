@@ -335,7 +335,8 @@ public class AdventureTemplate extends CLITemplate {
                         System.out.print("- NumMembers: " + controller.getNumMembers());
                     }
                     else if(i == 6){
-                        System.out.print("- your position: " + data.getPlayer().getPosition() + ", enemy position: " + data.getEnemies().entrySet().iterator().next().getValue());
+                        Player enemy = data.getEnemies().entrySet().iterator().next().getValue();
+                        System.out.print("- your position: " + data.getPlayer().getPosition() + ",   " + enemy.getUsername() + " position: " + enemy.getPosition());
                     }
                 }
 
