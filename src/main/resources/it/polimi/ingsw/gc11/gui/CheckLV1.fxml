@@ -13,10 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller">
+<StackPane fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller">
     <children>
-        <VBox fx:id="mainVBox" spacing="10.0" >
+        <VBox fx:id="mainVBox" spacing="10.0">
 
             <children>
 
@@ -30,9 +29,13 @@
                         </Label>
                     </children>
                 </HBox>
-                <Button fx:id="checkButton" text="Check your ShipBoard" onAction="#checkShipBoard" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" >
+            <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                      <Button fx:id="checkButton" onAction="#onCheckShipBoardClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" text="Check your ShipBoard">
 
                 </Button>
+               </children>
+            </HBox>
 
                 <!-- Main Game Layout -->
                 <HBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="100.0">
@@ -60,7 +63,7 @@
                                 <RowConstraints percentHeight="20" />
                             </rowConstraints>
                         </GridPane>
-                        <HBox fx:id="reservedSlots"/>
+                        <HBox fx:id="reservedSlots" />
                     </StackPane>
 
                 </HBox>

@@ -16,13 +16,13 @@ public class CheckPhaseData extends GamePhaseData {
         WAIT_ENEMIES_SHIP, SHOW_ENEMIES_SHIP,
         REMOVE_SHIPCARDS_SETUP
     }
-
-
-
     private CheckState state;
     private CheckState previousState;
+
+
     private ShipBoard shipBoard;
     private boolean shipBoardLegal = false;
+
     private ArrayList<String> playersUsername;
     private final Map<String, ShipBoard> enemiesShipBoard;
 
