@@ -50,6 +50,13 @@ public class AlienUnit extends ShipCard {
     }
 
     /**
+     * @return The presence of the alien, true if the alien is present, false otherwise
+     */
+    public boolean getPresence() {
+        return presence;
+    }
+
+    /**
      * Finalize the connection of the alien unit to a housing unit, setting the presence of the alien to true
      */
     public void connectUnit() {

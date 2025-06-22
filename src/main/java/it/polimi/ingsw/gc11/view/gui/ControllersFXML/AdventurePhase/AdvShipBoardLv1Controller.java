@@ -1,9 +1,9 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
@@ -13,23 +13,28 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.Map;
+import java.util.function.BiConsumer;
+
 public class AdvShipBoardLv1Controller extends Controller {
 
-    @FXML private Button checkButton;
 
-    @FXML private StackPane root;
-    @FXML private VBox mainVBox;
+    @FXML private VBox root;
     @FXML private GridPane slotGrid;
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
+    @FXML private Button goBackButton;
+    @FXML private Label owner;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
@@ -56,6 +61,14 @@ public class AdvShipBoardLv1Controller extends Controller {
     private ShipBoard shipBoard;
 
 
+    private final Map<Class<?>, BiConsumer<ShipCard, StackPane>> detailPrinters = Map.of(
+            Battery.class, (card, stack) -> printBatteryDetails((Battery) card, stack),
+            HousingUnit.class, (card, stack) -> printHousingDetails((HousingUnit) card, stack),
+            Storage.class, (card, stack) -> printStorageDetail((Storage) card, stack),
+            AlienUnit.class, (card, stack) -> printAlienUnitDetails((AlienUnit) card, stack)
+    );
+
+
 
     public void initialize(Stage stage, String ownerUsername) {
         this.stage = stage;
@@ -71,26 +84,25 @@ public class AdvShipBoardLv1Controller extends Controller {
         else {
             this.shipBoard = adventurePhaseData.getEnemies().get(ownerUsername).getShipBoard();
         }
+        this.owner.setText(ownerUsername + "'s Shipboard");
 
 
-        mainVBox.prefWidthProperty().bind(root.widthProperty());
-        mainVBox.prefHeightProperty().bind(root.heightProperty());
-        mainVBox.setSpacing(20);
+        root.setSpacing(20);
 
         headerContainer.minHeightProperty().bind(
-                mainVBox.heightProperty().multiply(0.10)
+                root.heightProperty().multiply(0.10)
         );
         headerContainer.prefHeightProperty().bind(headerContainer.minHeightProperty());
         headerContainer.maxHeightProperty().bind(headerContainer.minHeightProperty());
 
-        availW  = mainVBox.widthProperty().subtract(mainContainer.spacingProperty());
-        availH = mainVBox.heightProperty()
+        availW  = root.widthProperty().subtract(mainContainer.spacingProperty());
+        availH = root.heightProperty()
                 .subtract(headerContainer.heightProperty())
                 .subtract(subHeaderContainer.heightProperty())
-                .subtract(mainVBox.spacingProperty().multiply(3));
+                .subtract(root.spacingProperty().multiply(3));
 
         DoubleBinding wFromH  = availH.multiply(BOARD_RATIO);
-        DoubleBinding maxBoardW = availW.multiply(0.80).subtract(mainVBox.spacingProperty());
+        DoubleBinding maxBoardW = availW.multiply(0.80).subtract(root.spacingProperty());
         boardW = Bindings.createDoubleBinding(
                 () -> Math.min(maxBoardW.get(), wFromH.get()),
                 maxBoardW, wFromH
@@ -147,23 +159,23 @@ public class AdvShipBoardLv1Controller extends Controller {
 
                     if(shipCard != null) {
 
-                        Button btn = new Button();
-                        btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                        Button btnShipCard = new Button();
+                        btnShipCard.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                         final int x = c;
                         final int y = r;
-                        btn.setOnAction(event -> onShipBoardSelected(x, y));
-                        btn.minWidthProperty().bind(shipCardSize);
-                        btn.minHeightProperty().bind(shipCardSize);
-                        btn.prefWidthProperty().bind(shipCardSize);
-                        btn.prefHeightProperty().bind(shipCardSize);
-                        btn.maxWidthProperty().bind(shipCardSize);
+                        btnShipCard.setOnAction(event -> onShipBoardSelected(x, y));
+                        btnShipCard.minWidthProperty().bind(shipCardSize);
+                        btnShipCard.minHeightProperty().bind(shipCardSize);
+                        btnShipCard.prefWidthProperty().bind(shipCardSize);
+                        btnShipCard.prefHeightProperty().bind(shipCardSize);
+                        btnShipCard.maxWidthProperty().bind(shipCardSize);
 
                         Rectangle clip = new Rectangle();
-                        clip.widthProperty().bind(btn.widthProperty());
-                        clip.heightProperty().bind(btn.heightProperty());
+                        clip.widthProperty().bind(btnShipCard.widthProperty());
+                        clip.heightProperty().bind(btnShipCard.heightProperty());
                         clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
                         clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
-                        btn.setClip(clip);
+                        btnShipCard.setClip(clip);
 
                         ColorAdjust darken  = new ColorAdjust();
                         darken.setBrightness(-0.2);
@@ -173,7 +185,7 @@ public class AdvShipBoardLv1Controller extends Controller {
                         rim.setRadius(10);
                         rim.setSpread(0.5);
 
-                        btn.setOnMouseEntered(e -> {
+                        btnShipCard.setOnMouseEntered(e -> {
                             Effect combined = new Blend(
                                     BlendMode.SRC_OVER,
                                     rim,
@@ -183,15 +195,15 @@ public class AdvShipBoardLv1Controller extends Controller {
                                             darken
                                     )
                             );
-                            btn.setEffect(combined);
-                            btn.setScaleX(1.05);
-                            btn.setScaleY(1.05);
+                            btnShipCard.setEffect(combined);
+                            btnShipCard.setScaleX(1.05);
+                            btnShipCard.setScaleY(1.05);
                         });
 
-                        btn.setOnMouseExited(e -> {
-                            btn.setEffect(null);
-                            btn.setScaleX(1.0);
-                            btn.setScaleY(1.0);
+                        btnShipCard.setOnMouseExited(e -> {
+                            btnShipCard.setEffect(null);
+                            btnShipCard.setScaleX(1.0);
+                            btnShipCard.setScaleY(1.0);
                         });
 
                         img = new Image(getClass()
@@ -202,8 +214,8 @@ public class AdvShipBoardLv1Controller extends Controller {
                         ImageView iv = new ImageView(img);
                         iv.setPreserveRatio(true);
 
-                        iv.fitWidthProperty().bind(btn.widthProperty());
-                        iv.fitHeightProperty().bind(btn.heightProperty());
+                        iv.fitWidthProperty().bind(btnShipCard.widthProperty());
+                        iv.fitHeightProperty().bind(btnShipCard.heightProperty());
 
                         switch(shipCard.getOrientation()){
                             case DEG_0 -> iv.setRotate(0);
@@ -212,24 +224,29 @@ public class AdvShipBoardLv1Controller extends Controller {
                             case DEG_270 -> iv.setRotate(270);
                         }
 
-                        btn.setGraphic(iv);
+                        // StackPane per sovrapporre dettagli e immagine
+                        StackPane stack = new StackPane();
+                        stack.setPickOnBounds(false);
+                        stack.prefWidthProperty().bind(btnShipCard.widthProperty());
+                        stack.prefHeightProperty().bind(btnShipCard.heightProperty());
+                        stack.getChildren().add(iv);
 
-                        GridPane.setHgrow(btn, Priority.ALWAYS);
-                        GridPane.setVgrow(btn, Priority.ALWAYS);
+                        // Visualizza dettagli se necessario
+                        printDetails(shipCard, stack);
 
-                        slotGrid.add(btn, c, r);
+                        btnShipCard.setGraphic(stack);
 
-                        if(shipCard instanceof Battery){
-                            for(int i=0; i < ((Battery) shipCard).getAvailableBatteries(); i++){
-                                //aggiungo batterie
-                            }
-                        }
+                        GridPane.setHgrow(btnShipCard, Priority.ALWAYS);
+                        GridPane.setVgrow(btnShipCard, Priority.ALWAYS);
+
+                        slotGrid.add(btnShipCard, c, r);
                     }
                 }
             }
         }
     }
 
+    //Non ci sono piu slot riservati, vanno sostituito con gli scrap
     public void setReservedSlots(){
 
         for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
@@ -268,5 +285,85 @@ public class AdvShipBoardLv1Controller extends Controller {
 
         });
     }
+
+
+    private void printDetails(ShipCard shipCard, StackPane stack) {
+        BiConsumer<ShipCard, StackPane> printer = detailPrinters.get(shipCard.getClass());
+        if (printer != null) {
+            printer.accept(shipCard, stack);
+        }
+        // Se non c'è una funzione associata, non stampa dettagli aggiuntivi
+    }
+
+    private void printBatteryDetails(Battery battery, StackPane stack) {
+        // Questo metodo stampa i dettagli della batteria (numero di batterie disponibili) sullo stack
+        // Crea una label con il numero di batterie e la posiziona sopra
+        Label batteryLabel = new Label(String.valueOf(battery.getAvailableBatteries()));
+        batteryLabel.setTextFill(Color.WHITE);
+        batteryLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-background-color: rgba(0,0,0,0.5); -fx-padding: 2px 6px; -fx-background-radius: 8px;");
+        batteryLabel.setMouseTransparent(true);
+        StackPane.setAlignment(batteryLabel, javafx.geometry.Pos.CENTER);
+        batteryLabel.prefWidthProperty().bind(stack.widthProperty());
+        batteryLabel.prefHeightProperty().bind(stack.heightProperty());
+        stack.getChildren().add(batteryLabel);
+    }
+
+    private void printHousingDetails(HousingUnit housingUnit, StackPane stack) {
+        // Questo metodo stampa i dettagli dell'unità abitativa (numero di membri disponibili) sullo stack
+        Label housingLabel = new Label(String.valueOf(housingUnit.getNumMembers()));
+        housingLabel.setTextFill(Color.WHITE);
+        housingLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-background-color: rgba(0,0,0,0.5); -fx-padding: 2px 6px; -fx-background-radius: 8px;");
+        housingLabel.setMouseTransparent(true);
+        StackPane.setAlignment(housingLabel, javafx.geometry.Pos.CENTER);
+        housingLabel.prefWidthProperty().bind(stack.widthProperty());
+        housingLabel.prefHeightProperty().bind(stack.heightProperty());
+        stack.getChildren().add(housingLabel);
+    }
+
+    private void printStorageDetail(Storage storage, StackPane stack) {
+        HBox materialBox = new HBox(4); // Spaziatura tra i quadratini
+        materialBox.setAlignment(javafx.geometry.Pos.CENTER);
+
+        for (Material material : storage.getMaterials()) {
+            Rectangle rect = new Rectangle(10, 10);
+            // Colore in base al tipo di materiale
+            switch (material.getType()) {
+                case BLUE -> rect.setFill(Color.DODGERBLUE);
+                case GREEN -> rect.setFill(Color.LIMEGREEN);
+                case YELLOW -> rect.setFill(Color.GOLD);
+                case RED -> rect.setFill(Color.CRIMSON);
+            }
+            rect.setArcWidth(6);
+            rect.setArcHeight(6);
+            rect.setStroke(Color.WHITE);
+            rect.setStrokeWidth(1.5);
+            materialBox.getChildren().add(rect);
+        }
+
+        materialBox.setMouseTransparent(true);
+        StackPane.setAlignment(materialBox, javafx.geometry.Pos.BOTTOM_CENTER);
+        materialBox.prefWidthProperty().bind(stack.widthProperty());
+        stack.getChildren().add(materialBox);
+    }
+
+    private void printAlienUnitDetails(AlienUnit alienUnit, StackPane stack) {
+        // Questo metodo stampa i dettagli dell'unità aliena (tipo di unità) sullo stack
+        if( !alienUnit.isPresent() ) {
+            return; // Non stampare nulla se l'alieno non è presente
+        }
+        Circle circle = new javafx.scene.shape.Circle();
+        circle.setRadius(10);
+        // Imposta il colore in base al tipo di alieno
+        switch (alienUnit.getType()) {
+            case BROWN -> circle.setFill(Color.BROWN);
+            case PURPLE -> circle.setFill(Color.PURPLE);
+        }
+        circle.setStroke(Color.WHITE);
+        circle.setStrokeWidth(2);
+        circle.setMouseTransparent(true);
+        StackPane.setAlignment(circle, javafx.geometry.Pos.CENTER);
+        stack.getChildren().add(circle);
+    }
+
 
 }
