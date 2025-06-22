@@ -179,9 +179,9 @@ public class AdventureTemplate extends CLITemplate {
 
                 //printing adventure card, flight board ecc
                 if (y == 1){
-                    System.out.print("                    ");
+                    System.out.print("                                        ");
                     if(i == 0){
-                        System.out.print("Current adventure:");
+                        System.out.print(" Current adventure:");
                     }
                     else {
                         adventureCardCLI.print(data.getAdventureCard(), i-1);
