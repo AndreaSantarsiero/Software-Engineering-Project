@@ -188,12 +188,12 @@ public class AdventureTemplate extends CLITemplate {
                     }
                 }
                 else if (y == 2){
-                    System.out.print("                    ");
+                    System.out.print("                                        ");
                     adventureCardCLI.print(data.getAdventureCard(), i+6);
                 }
                 else if (y == 3){
                     if(i < 2){
-                        System.out.print("                    ");
+                        System.out.print("                                        ");
                         adventureCardCLI.print(data.getAdventureCard(), i+13);
                     }
                 }

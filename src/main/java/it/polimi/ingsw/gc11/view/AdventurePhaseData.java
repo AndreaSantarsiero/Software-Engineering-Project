@@ -117,7 +117,15 @@ public class AdventurePhaseData extends GamePhaseData {
     @Override
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
-        setState(AdventureState.CHOOSE_MAIN_MENU);
+        if(state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.WAIT_ADVENTURE_CARD) {
+            setState(AdventureState.ACCEPT_CARD_MENU);
+        }
+        else if(state == AdventureState.CHOOSE_MAIN_MENU) {
+            setState(AdventureState.CHOOSE_MAIN_MENU);
+        }
+        else {
+            setState(AdventureState.CHOOSE_ACTION_MENU);
+        }
     }
 
 
