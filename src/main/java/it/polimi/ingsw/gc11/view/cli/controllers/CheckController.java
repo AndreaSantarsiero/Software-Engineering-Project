@@ -161,10 +161,11 @@ public class CheckController extends CLIController {
             if(shipCard == null){
                 data.setServerMessage("No ship card found at these coordinates");
             }
-
-            shipCard.destroy();
-            addShipCardToRemove(getSelectedX(), getSelectedY());
-            updateInternalState();
+            else{
+                shipCard.destroy();
+                addShipCardToRemove(getSelectedX(), getSelectedY());
+                updateInternalState();
+            }
         }
     }
 
