@@ -141,4 +141,11 @@ public class CheckPhase extends GamePhase {
     public String getPhaseName(){
         return "CheckPhase";
     }
+
+
+    //visitor pattern
+    @Override
+    public boolean isCheckPhase(){
+        return true;
+    }
 }

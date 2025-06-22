@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * After this phase, the game is considered completed.
  */
-public class EndgamePhase extends GamePhase {
+public class EndGamePhase extends GamePhase {
 
     GameContext gameContext;
 
@@ -30,7 +30,7 @@ public class EndgamePhase extends GamePhase {
      *
      * @param gameContext the global game context containing the game model
      */
-    public EndgamePhase(GameContext gameContext) {
+    public EndGamePhase(GameContext gameContext) {
         this.gameContext = gameContext;
         GameModel gameModel = gameContext.getGameModel();
         ArrayList<Player> players = gameModel.getPlayers();
@@ -78,5 +78,12 @@ public class EndgamePhase extends GamePhase {
     @Override
     public String getPhaseName(){
         return "EndGamePhase";
+    }
+
+
+    //visitor pattern
+    @Override
+    public boolean isEndGamePhase(){
+        return true;
     }
 }

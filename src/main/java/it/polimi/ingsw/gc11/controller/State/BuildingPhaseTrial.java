@@ -165,7 +165,7 @@ public class BuildingPhaseTrial extends GamePhase{
         this.gameContext.setPhase(checkPhase);
         checkPhase.initialize();
 
-        if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
+        if(gameContext.getPhase().isCheckPhase()){
             GameModel gameModel = gameContext.getGameModel();
             ArrayList<String> enemies = new ArrayList<>();
             for (Player player : gameModel.getPlayers()) {
@@ -189,6 +189,13 @@ public class BuildingPhaseTrial extends GamePhase{
     @Override
     public String getPhaseName(){
         return "TrialBuildingPhase";
+    }
+
+
+    //visitor pattern
+    @Override
+    public boolean isBuildingPhase(){
+        return true;
     }
 }
 

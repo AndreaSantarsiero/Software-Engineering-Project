@@ -380,5 +380,24 @@ public abstract class GamePhase {
     }
 
 
+
     public abstract String getPhaseName();
+
+
+    //visitor pattern
+    public boolean isIdlePhase(){
+        return false;
+    }
+    public boolean isBuildingPhase(){
+        return false;
+    }
+    public boolean isCheckPhase(){
+        return false;
+    }
+    public boolean isAdventurePhase(){
+        return false;
+    }
+    public boolean isEndGamePhase(){
+        return false;
+    }
 }

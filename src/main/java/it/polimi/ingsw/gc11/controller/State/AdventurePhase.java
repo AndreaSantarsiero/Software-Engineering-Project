@@ -129,7 +129,7 @@ public class AdventurePhase extends GamePhase {
      * Transitions to the endgame phase.
      */
     public void nextPhase() {
-        this.gameContext.setPhase(new EndgamePhase(this.gameContext));
+        this.gameContext.setPhase(new EndGamePhase(this.gameContext));
 
         SetEndGameAction send = new SetEndGameAction();
         for (Player player : gameModel.getPlayers()) {
@@ -319,5 +319,12 @@ public class AdventurePhase extends GamePhase {
     @Override
     public String getPhaseName(){
         return "AdventurePhase";
+    }
+
+
+    //visitor pattern
+    @Override
+    public boolean isAdventurePhase(){
+        return true;
     }
 }

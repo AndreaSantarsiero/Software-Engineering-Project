@@ -90,4 +90,11 @@ public class IdlePhase extends GamePhase {
     public String getPhaseName(){
         return "IdlePhase";
     }
+
+
+    //visitor pattern
+    @Override
+    public boolean isIdlePhase(){
+        return true;
+    }
 }
