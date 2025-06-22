@@ -39,7 +39,7 @@ public class CheckController extends CLIController {
     @Override
     public void change(){
         active = false;
-        mainCLI.changeController(this);
+        mainCLI.changeController();
     }
 
 

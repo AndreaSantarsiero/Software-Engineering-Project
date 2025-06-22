@@ -9,6 +9,5 @@ public abstract class Controller {
     public void update(AdventurePhaseData adventurePhaseData){}
     public void update(EndPhaseData endPhaseData){}
 
-    public void change(){};
-    public void change(boolean skippingCheckPhase){}
+    public void change(){}
 }

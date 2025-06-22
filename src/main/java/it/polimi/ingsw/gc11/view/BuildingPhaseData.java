@@ -308,4 +308,12 @@ public class  BuildingPhaseData extends GamePhaseData {
     public void handle(ServerAction action) {
         action.loadData(this);
     }
+
+
+
+    //visitor pattern
+    @Override
+    public boolean isBuildingPhase(){
+        return true;
+    }
 }

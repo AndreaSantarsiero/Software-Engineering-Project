@@ -183,33 +183,26 @@ public class MainCLI {
 
 
 
-    public void changeController(JoiningController joiningController) {
-        GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new BuildingController(this, (BuildingPhaseData) data));
-    }
+    public void changeController() {
+        GamePhaseData newPhase = context.getCurrentPhase();
 
-    public void changeController(BuildingController buildingController, boolean skippingCheckPhase) {
-        GamePhaseData data = context.getCurrentPhase();
-        if (skippingCheckPhase) {
-            data.setListener(new AdventureController(this, (AdventurePhaseData) data));
+        if (newPhase.isJoiningPhase()){
+            newPhase.setListener(new JoiningController(this, (JoiningPhaseData) newPhase));
+        }
+        else if (newPhase.isBuildingPhase()){
+            newPhase.setListener(new BuildingController(this, (BuildingPhaseData) newPhase));
+        }
+        else if (newPhase.isCheckPhase()){
+            newPhase.setListener(new CheckController(this, (CheckPhaseData) newPhase));
+        }
+        else if (newPhase.isAdventurePhase()){
+            newPhase.setListener(new AdventureController(this, (AdventurePhaseData) newPhase));
+        }
+        else if (newPhase.isEndPhase()){
+            newPhase.setListener(new EndController(this, (EndPhaseData) newPhase));
         }
         else {
-            data.setListener(new CheckController(this, (CheckPhaseData) data));
+            throw new RuntimeException("Unknown phase type: " + newPhase.getClass().getName());
         }
-    }
-
-    public void changeController(CheckController checkController) {
-        GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new AdventureController(this, (AdventurePhaseData) data));
-    }
-
-    public void changeController(AdventureController adventureController) {
-        GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new EndController(this, (EndPhaseData) data));
-    }
-
-    public void changeController(EndController endController) {
-        GamePhaseData data = context.getCurrentPhase();
-        data.setListener(new JoiningController(this, (JoiningPhaseData) data));
     }
 }

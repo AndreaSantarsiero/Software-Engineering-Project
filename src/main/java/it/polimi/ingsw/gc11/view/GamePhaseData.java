@@ -46,4 +46,23 @@ public abstract class GamePhaseData {
 
 
     public abstract void handle(ServerAction action);
+
+
+
+    //visitor pattern
+    public boolean isJoiningPhase(){
+        return false;
+    }
+    public boolean isBuildingPhase(){
+        return false;
+    }
+    public boolean isCheckPhase(){
+        return false;
+    }
+    public boolean isAdventurePhase(){
+        return false;
+    }
+    public boolean isEndPhase(){
+        return false;
+    }
 }

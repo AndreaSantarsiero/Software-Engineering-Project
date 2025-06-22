@@ -148,4 +148,11 @@ public class JoiningPhaseData extends GamePhaseData {
         action.loadData(this);
     }
 
+
+
+    //visitor pattern
+    @Override
+    public boolean isJoiningPhase(){
+        return true;
+    }
 }

@@ -102,4 +102,12 @@ public class EndPhaseData extends GamePhaseData {
     public void handle(ServerAction action) {
         action.loadData(this);
     }
+
+
+
+    //visitor pattern
+    @Override
+    public boolean isEndPhase(){
+        return true;
+    }
 }
