@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdventureController extends Controller {
+public class AdventureControllerLv1 extends Controller {
 
     @FXML private VBox root;
     @FXML private HBox playersButtons;

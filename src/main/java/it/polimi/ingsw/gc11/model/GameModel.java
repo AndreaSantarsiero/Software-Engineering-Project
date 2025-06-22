@@ -564,9 +564,6 @@ public class GameModel {
                     if (!p.getUsername().equals(username) && !p.isAbort()) {
                         if (Math.floorMod(p.getPosition(), flightBoard.getLength()) == Math.floorMod(i, flightBoard.getLength())) {
                             numDays++;
-
-                            //swap positions in players
-                            Collections.swap(players, players.indexOf(curr), players.indexOf(p));
                             break;
 
                         }
@@ -580,9 +577,6 @@ public class GameModel {
                     if (!p.getUsername().equals(username) && !p.isAbort()) {
                         if (Math.floorMod(p.getPosition(), flightBoard.getLength()) == Math.floorMod(i, flightBoard.getLength())) {
                             numDays--;
-
-                            //swap positions in players
-                            Collections.swap(players, players.indexOf(curr), players.indexOf(p));
                             break;
                         }
                     }
@@ -593,6 +587,9 @@ public class GameModel {
     }
 
     public void checkLapping(){
+
+        players.sort(Comparator.comparingInt(Player::getPosition).reversed());
+
         for(int i = players.size()-1; i >= 0; i--) {
             if (Math.abs(players.getFirst().getPosition() - players.get(i).getPosition()) > flightBoard.getLength()) {
                 players.get(i).setAbort();
