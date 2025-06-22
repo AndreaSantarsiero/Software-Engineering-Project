@@ -22,5 +22,7 @@ module it.polimi.ingsw.gc11 {
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML  to javafx.fxml;
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase to javafx.fxml;
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase to javafx.fxml;
+    opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase to javafx.fxml;
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase to javafx.fxml;
+    opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.EndGamePhase to javafx.fxml;
 }

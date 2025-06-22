@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
@@ -54,6 +56,8 @@ public class BuildingLv1Controller extends Controller {
     @FXML private VBox root;
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
+    @FXML private HBox playersButtons;
+    @FXML private HBox endBuilding;
     @FXML private StackPane boardContainer;
     @FXML private VBox cardPane;
     @FXML private ImageView shipBoardImage;
@@ -61,17 +65,19 @@ public class BuildingLv1Controller extends Controller {
     @FXML private ScrollPane tileScroll;
     @FXML private TilePane cardTile;
     @FXML private GridPane slotGrid;
-    @FXML private HBox playersButtons;
     @FXML private Label FreeShipCardText;
     @FXML private VBox heldShipCard;
     @FXML private ImageView heldShipCardImage;
-    @FXML private Button endBuilding;
+    @FXML private Label errorLabel;
 
     private Stage stage;
     private VirtualServer virtualServer;
     private BuildingPhaseData buildingPhaseData;
     private State previousState;
     private State state = State.IDLE;
+
+    private boolean clickedEndBuilding = false;
+    private boolean endedBuilding = false;
 
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
@@ -128,15 +134,6 @@ public class BuildingLv1Controller extends Controller {
 
         shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(5);
 
-        endBuilding.setBackground(Background.EMPTY);
-        endBuilding.setBorder(Border.EMPTY);
-        endBuilding.setCursor(Cursor.HAND);
-        endBuilding.setTextFill(Color.WHITE);
-        endBuilding.setOnMouseEntered(e -> endBuilding.setTextFill(Color.web("#FFD700")));
-        endBuilding.setOnMouseExited (e -> endBuilding.setTextFill(Color.WHITE));
-        endBuilding.setAlignment(Pos.CENTER_RIGHT);
-        endBuilding.setTranslateX(-20);
-
         this.setupOthersPlayersButtons();
 
         for(Node n : playersButtons.getChildren()) {
@@ -150,12 +147,9 @@ public class BuildingLv1Controller extends Controller {
                 .subtract(root.spacingProperty().multiply(2))
                 .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
 
-//        deckButtons.setSpacing(10);
-//        deckButtons.prefWidthProperty().bind(availW
-//                .subtract(playersButtons.widthProperty())
-//                .subtract(FreeShipCardText.widthProperty())
-//                .subtract(root.spacingProperty().multiply(2))
-//                .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
+        endBuilding.setSpacing(10);
+        endBuilding.prefWidthProperty().bind(availW.multiply(0.25));
+
 
         boardContainer.setMinSize(0, 0);
         boardContainer.prefWidthProperty().bind(boardW);
@@ -174,6 +168,13 @@ public class BuildingLv1Controller extends Controller {
         cardPane.setSpacing(15);
         cardPane.setAlignment(Pos.TOP_CENTER);
 
+
+        FreeShipCardText.setAlignment(Pos.TOP_CENTER);
+        FreeShipCardText.prefWidthProperty().bind(cardPane.widthProperty());
+        FreeShipCardText.maxWidthProperty().bind(cardPane.widthProperty());
+        FreeShipCardText.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.05));
+
+
         tileScroll.prefWidthProperty().bind(cardPane.widthProperty());
         tileScroll.maxWidthProperty().bind(cardPane.widthProperty());
         tileScroll.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.5));
@@ -185,6 +186,17 @@ public class BuildingLv1Controller extends Controller {
         heldShipCard.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
         heldShipCard.minHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
         heldShipCard.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.5).subtract(cardPane.getSpacing()));
+
+
+        errorLabel.maxWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        errorLabel.minWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        errorLabel.prefWidthProperty().bind(cardPane.widthProperty().multiply(0.7));
+        errorLabel.maxHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
+        errorLabel.minHeightProperty().bind(cardPane.heightProperty().multiply(0.15).subtract(cardPane.getSpacing() * 3));
+        errorLabel.prefHeightProperty().bind(cardPane.heightProperty().multiply(0.15));
+
+        errorLabel.setWrapText(true);
+        errorLabel.setTextAlignment(TextAlignment.CENTER);
 
 
         slotGrid.prefWidthProperty().bind(gridW);
@@ -785,21 +797,46 @@ public class BuildingLv1Controller extends Controller {
         }
     }
 
+    private void setErrorLabel(){
+        errorLabel.setVisible(true);
+        errorLabel.setText(buildingPhaseData.getServerMessage());
+        //Timer, the user can see the error message for an interval of 3s
+        Task<Void> timer = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException _) {}
+                return null;
+            }
+        };
+        timer.setOnSucceeded(event -> {
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+        });
+        new Thread(timer).start();
+    }
+
     public void endBuilding(ActionEvent actionEvent) {
         try {
+            this.clickedEndBuilding = true;
+            buildingPhaseData.resetActionSuccessful();
             virtualServer.endBuildingTrial();
-            //scena d'attesa
-        } catch (NetworkException e) {
-            throw new RuntimeException(e);
+        }
+        catch (NetworkException e) {
+            System.out.println("Network Error:  " + e.getMessage());
+        }
+    }
+
+    private void endedBuilding(){
+        if(endedBuilding) {
+            mainContainer.setDisable(true);
+            endBuilding.setDisable(true);
         }
     }
 
     @Override
     public void update(BuildingPhaseData buildingPhaseData) {
-
-//        System.out.println("UPDATE: state = " + buildingPhaseData.getState());
-//        System.out.println("RESERVED-DATA: " +  buildingPhaseData.getReservedShipCard());
-//        System.out.println("RESERVED: " +  buildingPhaseData.getShipBoard().getReservedComponents());
 
         Platform.runLater(() -> {
 
@@ -818,9 +855,18 @@ public class BuildingLv1Controller extends Controller {
                 reservedShipCardOverlay();
             }
 
+            if( this.clickedEndBuilding && buildingPhaseData.isActionSuccessful()) {
+                buildingPhaseData.resetActionSuccessful();
+                this.endedBuilding = true;
+                endedBuilding();
+            }
+
+
             String serverMessage = buildingPhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println(serverMessage.toUpperCase());
+                setErrorLabel();
+                this.clickedEndBuilding = false;
 
                 if(serverMessage.toUpperCase().equals("NO SHIP CARDS WERE ALREADY PLACED CLOSE TO THESE COORDINATES.") ||
                 serverMessage.toUpperCase().equals("CANNOT PLACE A COMPONENT WHERE ANOTHER ONE WAS ALREADY PLACED")) {
