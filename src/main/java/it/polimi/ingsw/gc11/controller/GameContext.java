@@ -351,6 +351,16 @@ public class GameContext {
 
 
     //AdventurePhase (must return Player instance)
+    public Player getCurrentPlayerUsername(){
+        if (phase.isAdventurePhase()){
+            AdventurePhase advPhase = (AdventurePhase) phase;
+            return gameModel.getPlayers().get(advPhase.getIdxCurrentPlayer());
+        }
+        else {
+            throw new IllegalStateException("The current match is not in the adventure phase");
+        }
+    }
+
     /**
      * Allows the first player in the turn order to draw the current adventure card.
      *

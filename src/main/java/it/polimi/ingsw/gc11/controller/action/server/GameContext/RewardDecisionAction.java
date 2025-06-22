@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
+import it.polimi.ingsw.gc11.controller.action.client.UpdateEnemyProfileAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.model.Player;
 
@@ -22,11 +23,15 @@ public class RewardDecisionAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             Player player = context.rewardDecision(username, decision);
+            String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
-            //Invio il cambiamento della posizione sulla flightboard del player che ha giocato la carta a tutti i player
             for(Player p : context.getGameModel().getPlayers()) {
-                if(!p.isAbort()){
-                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player);
+                if(player.getUsername().equals(username)) {
+                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayer);
+                    context.sendAction(username, response);
+                }
+                else {
+                    UpdateEnemyProfileAction response = new UpdateEnemyProfileAction(player, currentPlayer);
                     context.sendAction(p.getUsername(), response);
                 }
             }

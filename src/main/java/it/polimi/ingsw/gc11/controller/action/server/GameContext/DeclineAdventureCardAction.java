@@ -18,14 +18,15 @@ public class DeclineAdventureCardAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             context.declineAdventureCard(getUsername());
+            String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
             for(Player player : context.getGameModel().getPlayers()){
                 if(player.getUsername().equals(username)){
-                    UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(player.getUsername(), true);
+                    UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(currentPlayer, true);
                     context.sendAction(username, response);
                 }
                 else {
-                    UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(player.getUsername(), false);
+                    UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(currentPlayer, false);
                     context.sendAction(username, response);
                 }
             }

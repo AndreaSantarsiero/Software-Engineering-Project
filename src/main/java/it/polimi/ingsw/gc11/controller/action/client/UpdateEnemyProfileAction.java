@@ -5,13 +5,13 @@ import it.polimi.ingsw.gc11.view.*;
 
 
 
-public class UpdatePlayerProfileAction extends ServerAction{
+public class UpdateEnemyProfileAction extends ServerAction{
 
     private final Player player;
     private final String currentPlayer;
 
 
-    public UpdatePlayerProfileAction(Player player, String currentPlayer) {
+    public UpdateEnemyProfileAction(Player player, String currentPlayer) {
         this.player = player;
         this.currentPlayer = currentPlayer;
     }
@@ -34,7 +34,7 @@ public class UpdatePlayerProfileAction extends ServerAction{
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
         adventurePhaseData.setCurrentPlayer(currentPlayer);
-        adventurePhaseData.setPlayer(player);
+        adventurePhaseData.setEnemiesPlayer(player.getUsername(), player);
     }
 
     @Override
