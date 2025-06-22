@@ -2,10 +2,10 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.concurrent.Task;
@@ -23,6 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private Rectangle pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18;
     @FXML private Label errorLabel;
 
-    // Dimensioni base dell'immagine della flight board
+    // Flight board dimensions
     private static final double BOARD_BASE_WIDTH = 985.0;
     private static final double BOARD_BASE_HEIGHT = 546.0;
 
@@ -69,7 +70,7 @@ public class AdventureControllerLv1 extends Controller {
 
 
         //Setup buttons to view enemies' shipboard
-        this.setupOthersPlayersButtons();
+        this.setupPlayersButtons();
 
         playersButtons.setSpacing(10);
         playersButtons.prefWidthProperty();
@@ -114,34 +115,29 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
-    //Setup of buttons to see enemies' shipboards
-    private void setupOthersPlayersButtons(){
-        for(String player : adventurePhaseData.getEnemies().keySet()){
+    //Setup buttons to see all players' shipboards
+    private void setupPlayersButtons(){
+        ArrayList<Player> allPlayers = new ArrayList<>();
+        allPlayers.add(adventurePhaseData.getPlayer());
+        allPlayers.addAll(adventurePhaseData.getEnemies().values());
+        for(Player player : allPlayers) {
             Button playerButton = new Button();
-            playerButton.setText(player);
+            playerButton.setText(player.getUsername());
             playerButton.setOnMouseClicked(e -> {
-                try{
-                    virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
-                }
-                catch(Exception exc){
-//                    errorLabel.setVisible(true);
-//                    errorLabel.setText(e.getMessage());
-//                    errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
-                    System.out.println("Network Error:  " + exc.getMessage());
-                }
 
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv1.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventureShipboardLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    EnemyShipboardLv1Controller controller = fxmlLoader.getController();
+                    AdvShipBoardLv1Controller controller = fxmlLoader.getController();
                     adventurePhaseData.setListener(controller);
-                    controller.initialize(stage, player);
+                    controller.initialize(stage, player.getUsername());
                     stage.setScene(newScene);
                     stage.show();
                 }
                 catch (IOException exc) {
                     throw new RuntimeException(exc);
                 }
+
             });
             playersButtons.getChildren().add(playerButton);
         }
@@ -200,7 +196,8 @@ public class AdventureControllerLv1 extends Controller {
     public void onDrawbutton(ActionEvent actionEvent) {
         try {
             virtualServer.getAdventureCard();
-        } catch (NetworkException e) {
+        }
+        catch (NetworkException e) {
             throw new RuntimeException(e);
         }
     }
@@ -252,4 +249,5 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(StarDust starDust) {
 
     }
+
 }

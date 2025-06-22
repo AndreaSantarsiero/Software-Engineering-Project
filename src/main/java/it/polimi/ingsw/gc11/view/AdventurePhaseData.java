@@ -30,11 +30,11 @@ public class AdventurePhaseData extends GamePhaseData {
         SHOW_ENEMIES_SHIP,
         ABORT_FLIGHT
     }
-
-
-
     private AdventureState state;
     private AdventureState previousState;
+
+
+
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private Hit hit;

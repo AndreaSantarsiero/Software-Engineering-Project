@@ -1,34 +1,27 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
-import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
+import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-
-public class AdventureShipBoardLv1 extends Controller {
+public class AdvShipBoardLv1Controller extends Controller {
 
     @FXML private Button checkButton;
 
@@ -58,15 +51,26 @@ public class AdventureShipBoardLv1 extends Controller {
 
     private Stage stage;
     private VirtualServer virtualServer;
-    private CheckPhaseData checkPhaseData;
+    private AdventurePhaseData adventurePhaseData;
+    private String ownerUsername;
+    private ShipBoard shipBoard;
 
 
 
-    public void initialize(Stage stage) {
+    public void initialize(Stage stage, String ownerUsername) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         virtualServer = viewModel.getVirtualServer();
-        this.checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        this.ownerUsername = ownerUsername;
+        // Set the shipboard to client's shipboard
+        if ( ownerUsername.equals(adventurePhaseData.getPlayer().getUsername()) ) {
+            this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
+        }
+        // Set the shipboard to enemy's shipboard
+        else {
+            this.shipBoard = adventurePhaseData.getEnemies().get(ownerUsername).getShipBoard();
+        }
 
 
         mainVBox.prefWidthProperty().bind(root.widthProperty());
@@ -128,14 +132,12 @@ public class AdventureShipBoardLv1 extends Controller {
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
 
-        update(checkPhaseData);
+        update(adventurePhaseData);
 
     }
 
 
     public void setShipBoard(){
-
-        ShipBoard shipBoard = checkPhaseData.getShipBoard();
 
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
@@ -229,7 +231,7 @@ public class AdventureShipBoardLv1 extends Controller {
     }
 
     public void setReservedSlots(){
-        ShipBoard shipBoard = checkPhaseData.getShipBoard();
+
         for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
             Image img;
 
