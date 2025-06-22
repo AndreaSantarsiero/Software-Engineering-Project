@@ -27,10 +27,10 @@ public class BuildingController extends CLIController {
     private int adventureCardMenu;
     private int endBuildingMenu;
     private int waitingMenu;
+    private int coolShipMenu;
     private int selectedI;
     private int selectedJ;
     private Instant lastTemplateRender;
-    private int coolShipIndex = 7;
 
 
 
@@ -156,8 +156,8 @@ public class BuildingController extends CLIController {
                 }
                 return true;
             }
-            else if(data.getState() == BuildingPhaseData.BuildingState.COOL_SHIPBOARD_SETUP){
-                mainCLI.getVirtualServer().gimmeACoolShip(coolShipIndex);
+            else if(data.getState() == BuildingPhaseData.BuildingState.COOL_SHIP_SETUP){
+                mainCLI.getVirtualServer().gimmeACoolShip(coolShipMenu + 4);
             }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
@@ -209,6 +209,9 @@ public class BuildingController extends CLIController {
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getWaitingMenuSize(), waitingMenu));
         }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_COOL_SHIP){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getCheatingMenuSize(), coolShipMenu));
+        }
     }
 
 
@@ -221,7 +224,7 @@ public class BuildingController extends CLIController {
                 case 1 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD);
                 case 2 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE);
                 case 3 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU);
-                case 4 -> data.setState(BuildingPhaseData.BuildingState.LOAD_COOL_SHIPBOARD);
+                case 4 -> data.setState(BuildingPhaseData.BuildingState.LOAD_COOL_SHIP);
             }
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
@@ -280,6 +283,7 @@ public class BuildingController extends CLIController {
             case CHOOSE_ADVENTURE_DECK -> setAdventureCardMenu(choice);
             case CHOOSE_POSITION -> setEndBuildingMenu(choice);
             case CHOOSE_WAITING_MENU -> setWaitingMenu(choice);
+            case CHOOSE_COOL_SHIP -> setCoolShipMenu(choice);
         }
     }
 
@@ -343,6 +347,7 @@ public class BuildingController extends CLIController {
         template.render();
     }
 
+
     public int getAdvancedMenu(){
         return advancedMenu;
     }
@@ -351,6 +356,7 @@ public class BuildingController extends CLIController {
         this.advancedMenu = advancedMenu;
         template.render();
     }
+
 
     public int getShipCardMenu() {
         return shipCardMenu;
@@ -361,6 +367,7 @@ public class BuildingController extends CLIController {
         template.render();
     }
 
+
     public int getShipCardIndex() {
         return shipCardIndex;
     }
@@ -369,6 +376,7 @@ public class BuildingController extends CLIController {
         this.shipCardIndex = shipCardIndex;
         template.render();
     }
+
 
     public int getReservedShipCardIndex(){
         return reservedShipCardIndex;
@@ -379,6 +387,7 @@ public class BuildingController extends CLIController {
         template.render();
     }
 
+
     public int getShipCardActionMenu(){
         return shipCardActionMenu;
     }
@@ -387,6 +396,7 @@ public class BuildingController extends CLIController {
         this.shipCardActionMenu = shipCardActionMenu;
         template.render();
     }
+
 
     public int getShipCardOrientationMenu(){
         return shipCardOrientationMenu;
@@ -414,6 +424,7 @@ public class BuildingController extends CLIController {
         }
     }
 
+
     public int getAdventureCardMenu() {
         return adventureCardMenu;
     }
@@ -422,6 +433,7 @@ public class BuildingController extends CLIController {
         this.adventureCardMenu = adventureCardMenu;
         template.render();
     }
+
 
     public int getEndBuildingMenu(){
         return endBuildingMenu;
@@ -432,6 +444,7 @@ public class BuildingController extends CLIController {
         template.render();
     }
 
+
     public int getWaitingMenu(){
         return waitingMenu;
     }
@@ -440,6 +453,17 @@ public class BuildingController extends CLIController {
         this.waitingMenu = waitingMenu;
         template.render();
     }
+
+
+    public int getCoolShipMenu(){
+        return coolShipMenu;
+    }
+
+    public void setCoolShipMenu(int coolShipMenu) {
+        this.coolShipMenu = coolShipMenu;
+        template.render();
+    }
+
 
     public int getSelectedI(){
         return selectedI;

@@ -131,6 +131,20 @@ public class BuildingTemplate extends CLITemplate {
                     "├┬┘├┤ └─┐├┤  │    │ ││││├┤ ├┬┘",
                     "┴└─└─┘└─┘└─┘ ┴    ┴ ┴┴ ┴└─┘┴└─")
     );
+    private static final List<List<String>> cheatingMenu = List.of(
+            List.of("┌─┐┬ ┬┬┌─┐  ┌─┐┌─┐┬ ┬┬─┐",
+                    "└─┐├─┤│├─┘  ├┤ │ ││ │├┬┘",
+                    "└─┘┴ ┴┴┴    └  └─┘└─┘┴└─ "),
+            List.of("┌─┐┬ ┬┬┌─┐  ┌─┐┬┬  ┬┌─┐     ┬┬  ┬  ┌─┐┌─┐┌─┐┬  ",
+                    "└─┐├─┤│├─┘  ├┤ │└┐┌┘├┤   ─  ││  │  ├┤ │ ┬├─┤│  ",
+                    "└─┘┴ ┴┴┴    └  ┴ └┘ └─┘     ┴┴─┘┴─┘└─┘└─┘┴ ┴┴─┘"),
+            List.of("┌─┐┬ ┬┬┌─┐  ┌─┐┬─┐ ┬",
+                    "└─┐├─┤│├─┘  └─┐│┌┴┬┘",
+                    "└─┘┴ ┴┴┴    └─┘┴┴ └─"),
+            List.of("┌─┐┬ ┬┬┌─┐  ┌─┐┌─┐┬  ┬┌─┐┌┐┌",
+                    "└─┐├─┤│├─┘  └─┐├┤ └┐┌┘├┤ │││",
+                    "└─┘┴ ┴┴┴    └─┘└─┘ └┘ └─┘┘└┘")
+    );
 
 
 
@@ -357,6 +371,9 @@ public class BuildingTemplate extends CLITemplate {
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){
                         printMenu(shipBoard, menuIndex, advancedMenu, controller.getAdvancedMenu());
                     }
+                    else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_COOL_SHIP){
+                        printMenu(shipBoard, menuIndex, cheatingMenu, controller.getCoolShipMenu());
+                    }
                     else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU){
                         if(menuIndex < 3){
                             printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
@@ -525,5 +542,9 @@ public class BuildingTemplate extends CLITemplate {
 
     public int getWaitingMenuSize(){
         return waitingMenu.size();
+    }
+
+    public int getCheatingMenuSize(){
+        return cheatingMenu.size();
     }
 }

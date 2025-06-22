@@ -23,7 +23,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         RESET_TIMER,
         CHOOSE_POSITION, END_BUILDING_SETUP,
         CHOOSE_WAITING_MENU,
-        LOAD_COOL_SHIPBOARD, COOL_SHIPBOARD_SETUP  //cheat request
+        LOAD_COOL_SHIP, CHOOSE_COOL_SHIP, COOL_SHIP_SETUP  //cheat request
     }
 
 
@@ -94,7 +94,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         else if((state == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP || state == BuildingPhaseData.BuildingState.RESET_TIMER) && buildingEnded){
             state = BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU;
         }
-        else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.RELEASE_ADVENTURE_DECK || state == BuildingState.RESET_TIMER || state == BuildingState.COOL_SHIPBOARD_SETUP){
+        else if(state == BuildingState.RESERVE_SHIPCARD || state == BuildingState.RELEASE_SHIPCARD || state == BuildingState.SHIPCARD_SETUP || state == BuildingState.SHOW_ENEMIES_SHIP || state == BuildingState.RELEASE_ADVENTURE_DECK || state == BuildingState.RESET_TIMER || state == BuildingState.COOL_SHIP_SETUP){
             state = BuildingState.CHOOSE_MAIN_MENU;
         }
         else if(state == BuildingPhaseData.BuildingState.END_BUILDING_SETUP){
