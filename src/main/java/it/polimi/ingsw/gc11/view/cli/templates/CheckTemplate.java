@@ -157,7 +157,7 @@ public class CheckTemplate extends CLITemplate {
                 }
                 else {
                     if(data.isShipBoardLegal()){
-                        printMenu(shipBoard, menuIndex-6, waitingMenu, controller.getMainMenu());
+                        printMenu(shipBoard, menuIndex-4, waitingMenu, controller.getMainMenu());
                     }
                     else {
                         printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());
