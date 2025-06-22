@@ -21,7 +21,7 @@ public class EndBuildingLevel2Action extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             context.endBuildingLevel2(username, pos);
-            if(!context.getPhase().getPhaseName().equals("CheckPhase")){
+            if(!context.getPhase().getPhaseName().equals("CheckPhase") || !context.getPhase().getPhaseName().equals("AdventurePhase")){
                 NotifySuccessAction response = new NotifySuccessAction();
                 context.sendAction(username, response);
             }
