@@ -20,20 +20,21 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌┐┌┌─┐┬ ┬  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   │││├┤ │││  ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
                     " ┴ ┴ ┴┴ ┴└─┘  ┘└┘└─┘└┴┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
+            List.of("┌─┐┌─┐┌─┐┌─┐┌─┐┌┬┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    "├─┤│  │  ├┤ ├─┘ │   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "┴ ┴└─┘└─┘└─┘┴   ┴   ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
+            List.of("┌┬┐┌─┐┌─┐┬  ┬┌┐┌┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    " ││├┤ │  │  ││││├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "─┴┘└─┘└─┘┴─┘┴┘└┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
+            List.of("┬─┐┌─┐┌─┐┌─┐┬ ┬  ┬┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    "├┬┘├┤ └─┐│ ││ └┐┌┘├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "┴└─└─┘└─┘└─┘┴─┘└┘ └─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
             List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
                     "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
                     "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
             List.of("┌─┐┌┐ ┌─┐┬─┐┌┬┐  ┌─┐┬  ┬┌─┐┬ ┬┌┬┐",
                     "├─┤├┴┐│ │├┬┘ │   ├┤ │  ││ ┬├─┤ │ ",
                     "┴ ┴└─┘└─┘┴└─ ┴   └  ┴─┘┴└─┘┴ ┴ ┴ ")
-    );
-    private static final List<List<String>> acceptCardMenu = List.of(
-            List.of("┌─┐┌─┐┌─┐┌─┐┌─┐┌┬┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
-                    "├─┤│  │  ├┤ ├─┘ │   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
-                    "┴ ┴└─┘└─┘└─┘┴   ┴   ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
-            List.of("┌┬┐┌─┐┌─┐┬  ┬┌┐┌┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
-                    " ││├┤ │  │  ││││├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
-                    "─┴┘└─┘└─┘┴─┘┴┘└┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘")
     );
     private static final List<List<String>> actionMenu = List.of(
             List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┬┐┌─┐┬ ┬┌┐ ┬  ┌─┐  ┌─┐┌─┐┌┐┌┌┐┌┌─┐┌┐┌┌─┐",
@@ -167,9 +168,6 @@ public class AdventureTemplate extends CLITemplate {
                     if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
                         printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
-                        printMenu(shipBoard, menuIndex, acceptCardMenu, controller.getAcceptCardMenu());
-                    }
                     else{
                         printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
                     }
@@ -220,10 +218,6 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getMainMenuSize(){
         return mainMenu.size();
-    }
-
-    public int getAcceptCardMenuSize(){
-        return acceptCardMenu.size();
     }
 
     public int getActionMenuSize(){

@@ -18,7 +18,6 @@ public class AdventureController extends CLIController {
     private final AdventureTemplate template;
     private final AdventurePhaseData data;
     private int mainMenu;
-    private int acceptCardMenu;
     private int actionMenu;
     private int selectedI;
     private int selectedJ;
@@ -76,11 +75,14 @@ public class AdventureController extends CLIController {
                 return true;
             }
             else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_SETUP){
-                if(acceptCardMenu == 0){
+                if(mainMenu == 1) {
                     mainCLI.getVirtualServer().acceptAdventureCard();
                 }
-                else{
+                else if(mainMenu == 2) {
                     mainCLI.getVirtualServer().declineAdventureCard();
+                }
+                else {
+                    data.setServerMessage("Invalid menu choice for this state");
                 }
                 return true;
             }
@@ -101,9 +103,6 @@ public class AdventureController extends CLIController {
     public void addInputRequest() {
         if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getMainMenuSize(), mainMenu));
-        }
-        else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
-            mainCLI.addInputRequest(new MenuInput(data, this, template.getAcceptCardMenuSize(), acceptCardMenu));
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getActionMenuSize(), actionMenu));
@@ -129,8 +128,10 @@ public class AdventureController extends CLIController {
         if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
             switch (mainMenu) {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.WAIT_ADVENTURE_CARD);
-                case 1 -> data.setState(AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP);
-                case 2 -> data.setState(AdventurePhaseData.AdventureState.ABORT_FLIGHT);
+                case 1, 2 -> data.setState(AdventurePhaseData.AdventureState.ACCEPT_CARD_SETUP);
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP);
+                case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
+                case 5 -> data.setState(AdventurePhaseData.AdventureState.ABORT_FLIGHT);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
@@ -160,7 +161,6 @@ public class AdventureController extends CLIController {
         data.actualizePreviousState();
         switch (data.getState()) {
             case CHOOSE_MAIN_MENU -> setMainMenu(choice);
-            case ACCEPT_CARD_MENU -> setAcceptCardMenu(choice);
             case CHOOSE_ACTION_MENU -> setActionMenu(choice);
             case null, default -> {
             }
@@ -215,15 +215,6 @@ public class AdventureController extends CLIController {
 
     public void setMainMenu(int mainMenu) {
         this.mainMenu = mainMenu;
-        template.render();
-    }
-
-    public int getAcceptCardMenu() {
-        return acceptCardMenu;
-    }
-
-    public void setAcceptCardMenu(int acceptCardMenu) {
-        this.acceptCardMenu = acceptCardMenu;
         template.render();
     }
 
