@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.controllers;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.*;
@@ -152,11 +153,16 @@ public class CheckController extends CLIController {
 
     @Override
     public void confirmCoordinatesChoice() {
-        if(getSelectedX() == 7 && getSelectedX() == 7){
+        if(getSelectedX() == 7 && getSelectedY() == 7){
             data.setServerMessage("Cannot remove the central unit");
         }
         else {
-            data.getShipBoard().getShipCard(getSelectedX(), getSelectedY()).destroy();
+            ShipCard shipCard = data.getShipBoard().getShipCard(getSelectedX(), getSelectedY());
+            if(shipCard == null){
+                data.setServerMessage("No ship card found at these coordinates");
+            }
+
+            shipCard.destroy();
             addShipCardToRemove(getSelectedX(), getSelectedY());
             updateInternalState();
         }
