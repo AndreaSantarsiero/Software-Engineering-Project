@@ -6,10 +6,7 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
+import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.*;
 
 
@@ -18,15 +15,14 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public enum AdventureState {
         CHOOSE_MAIN_MENU,
-        WAIT_ADVENTURE_CARD, ACCEPT_CARD_SETUP,
-        CHOOSE_ACTION_MENU, SEND_RESPONSE,
-        CHOOSE_BATTERIES, SELECT_NUM_BATTERIES,
-        CHOOSE_MEMBERS, SELECT_NUM_MEMBERS,
-        CHOOSE_DOUBLE_CANNONS,
-        CHOOSE_DOUBLE_CANNON,
-        CHOOSE_SHIELD,
-        ADD_MATERIALS,
-        REMOVE_MATERIALS,
+        WAIT_ADVENTURE_CARD, ACCEPT_CARD_SETUP, CHOOSE_ACTION_MENU,
+        FIRE_POWER_MENU, CHOOSE_DOUBLE_CANNON, CHOOSE_FIRE_BATTERIES, SELECT_FIRE_NUM_BATTERIES, FIRE_POWER_SETUP,
+        ENGINE_POWER_MENU, CHOOSE_ENGINE_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, ENGINE_POWER_SETUP,
+        CREW_MEMBERS_MENU, CHOOSE_HOUSING_UNIT, SELECT_NUM_MEMBERS, CREW_MEMBERS_SETUP,
+        BATTERIES_MENU, CHOOSE_BATTERIES, SELECT_NUM_BATTERIES, BATTERIES_SETUP,
+        LOAD_MATERIALS_MENU, CHOOSE_STORAGE, LOAD_MATERIALS_SETUP,
+        DEFENSIVE_SHIELD_MENU, CHOOSE_DEFENSIVE_SHIELD, DEFENSIVE_SHIELD_SETUP,
+        DEFENSIVE_CANNON_MENU, CHOOSE_DEFENSIVE_CANNON, CHOOSE_DEFENSIVE_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, DEFENSIVE_CANNON_SETUP,
         SHOW_ENEMIES_SHIP,
         ABORT_FLIGHT
     }
@@ -48,6 +44,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private final List<Cannon> doubleCannons;
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
     private Cannon defensiveCannon;
+    private Shield defensiveShield;
 
 
 
@@ -58,6 +55,7 @@ public class AdventurePhaseData extends GamePhaseData {
         doubleCannons = new ArrayList<>();
         storageMaterials = new HashMap<>();
         defensiveCannon = null;
+        defensiveShield = null;
         state = AdventureState.CHOOSE_MAIN_MENU;
     }
 
@@ -87,8 +85,29 @@ public class AdventurePhaseData extends GamePhaseData {
     public void updateState() {
         actualizePreviousState();
 
-        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.SEND_RESPONSE) {
+        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP) {
             state = AdventureState.CHOOSE_MAIN_MENU;
+        }
+        else if(state == AdventureState.CHOOSE_DOUBLE_CANNON || state == AdventureState.SELECT_FIRE_NUM_BATTERIES) {
+            state = AdventureState.FIRE_POWER_MENU;
+        }
+        else if(state == AdventureState.SELECT_ENGINE_NUM_BATTERIES) {
+            state = AdventureState.ENGINE_POWER_MENU;
+        }
+        else if(state == AdventureState.SELECT_NUM_MEMBERS) {
+            state = AdventureState.CREW_MEMBERS_MENU;
+        }
+        else if(state == AdventureState.SELECT_NUM_BATTERIES) {
+            state = AdventureState.BATTERIES_MENU;
+        }
+        else if(state == AdventureState.CHOOSE_STORAGE) {
+            state = AdventureState.LOAD_MATERIALS_MENU;
+        }
+        else if(state == AdventureState.CHOOSE_DEFENSIVE_SHIELD) {
+            state = AdventureState.DEFENSIVE_SHIELD_MENU;
+        }
+        else if(state == AdventureState.CHOOSE_DEFENSIVE_CANNON || state == AdventureState.SELECT_DEFENSE_NUM_BATTERIES) {
+            state = AdventureState.DEFENSIVE_CANNON_MENU;
         }
         else if (state.ordinal() < AdventureState.values().length - 1) {
             state = AdventureState.values()[state.ordinal() + 1];
@@ -230,6 +249,15 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
+    public Shield getDefensiveShield() {
+        return defensiveShield;
+    }
+
+    public void setDefensiveShield(Shield shield) {
+        this.defensiveShield = shield;
+    }
+
+
 
     //visitor pattern
     public void setStates(AbandonedShip abandonedShip) {}
@@ -264,6 +292,7 @@ public class AdventurePhaseData extends GamePhaseData {
         doubleCannons.clear();
         storageMaterials.clear();
         defensiveCannon = null;
+        defensiveShield = null;
     }
 
 

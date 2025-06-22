@@ -22,6 +22,7 @@ public class GetCoordinateAction extends ClientGameAction {
             }
 
             //Invio a tutti i player l'hit in arrivo
+            //risposta da cambiare
             for(Player p : context.getGameModel().getPlayers()) {
                 if(!p.isAbort()){
                     SendHitAction response = new SendHitAction(hit);
