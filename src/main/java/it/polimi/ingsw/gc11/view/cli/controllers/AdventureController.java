@@ -212,6 +212,7 @@ public class AdventureController extends CLIController {
                 case 4 -> data.setState(AdventurePhaseData.AdventureState.LOAD_MATERIALS_MENU);
                 case 5 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU);
                 case 6 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU);
+                case 7 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_MENU){
@@ -220,6 +221,7 @@ public class AdventureController extends CLIController {
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_FIRE_BATTERIES);
                 case 2 -> data.setState(AdventurePhaseData.AdventureState.FIRE_POWER_SETUP);
                 case 3 -> data.resetResponse();
+                case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.ENGINE_POWER_MENU){
@@ -227,6 +229,7 @@ public class AdventureController extends CLIController {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ENGINE_BATTERIES);
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.ENGINE_POWER_SETUP);
                 case 2 -> data.resetResponse();
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.CREW_MEMBERS_MENU){
@@ -234,6 +237,7 @@ public class AdventureController extends CLIController {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_HOUSING_UNIT);
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.CREW_MEMBERS_SETUP);
                 case 2 -> data.resetResponse();
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.BATTERIES_MENU){
@@ -241,6 +245,7 @@ public class AdventureController extends CLIController {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_BATTERIES);
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.BATTERIES_SETUP);
                 case 2 -> data.resetResponse();
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP){
@@ -248,6 +253,7 @@ public class AdventureController extends CLIController {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_STORAGE);
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP);
                 case 2 -> data.resetResponse();
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU){
@@ -255,13 +261,16 @@ public class AdventureController extends CLIController {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_SHIELD);
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_SETUP);
                 case 2 -> data.resetResponse();
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU){
             switch (defensiveCannonMenu) {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_CANNON);
-                case 1 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_SETUP);
-                case 2 -> data.resetResponse();
+                case 1 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_BATTERIES);
+                case 2 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_SETUP);
+                case 3 -> data.resetResponse();
+                case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else {
