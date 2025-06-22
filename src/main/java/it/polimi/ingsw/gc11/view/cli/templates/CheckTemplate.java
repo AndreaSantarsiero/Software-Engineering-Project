@@ -133,12 +133,16 @@ public class CheckTemplate extends CLITemplate {
 
                 //printing menu
                 else if (y < shipBoard.getLength() + 3){
-                    if(i < 2){
+                    if (i == 0){
+                        shipBoardCLI.printHorizontalCoordinates(shipBoard);
+                        System.out.print("      ");
+                    }
+                    else if(i < 3){
                         System.out.println();
                     }
                     else{
                         if (data.isShipBoardLegal()) {
-                            if(i < 5){
+                            if(i < 6){
                                 printMenu(shipBoard, menuIndex, List.of(waitingMessage), -1);
                             }
                             else {
@@ -153,7 +157,7 @@ public class CheckTemplate extends CLITemplate {
                 }
                 else {
                     if(data.isShipBoardLegal()){
-                        printMenu(shipBoard, menuIndex-5, waitingMenu, controller.getMainMenu());
+                        printMenu(shipBoard, menuIndex-6, waitingMenu, controller.getMainMenu());
                     }
                     else {
                         printMenu(shipBoard, menuIndex, repairingMenu, controller.getMainMenu());

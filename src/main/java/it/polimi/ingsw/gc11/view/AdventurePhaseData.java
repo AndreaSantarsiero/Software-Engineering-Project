@@ -18,7 +18,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public enum AdventureState {
         CHOOSE_MAIN_MENU,
-        WAIT_ADVENTURE_CARD, ACCEPT_CARD_MENU, ACCEPT_CARD_SETUP,
+        WAIT_ADVENTURE_CARD, ACCEPT_CARD_SETUP,
         CHOOSE_ACTION_MENU, SEND_RESPONSE,
         CHOOSE_BATTERIES, SELECT_NUM_BATTERIES,
         CHOOSE_MEMBERS, SELECT_NUM_MEMBERS,
@@ -85,11 +85,8 @@ public class AdventurePhaseData extends GamePhaseData {
     public void updateState() {
         actualizePreviousState();
 
-        if(state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.SEND_RESPONSE) {
+        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.SEND_RESPONSE) {
             state = AdventureState.CHOOSE_MAIN_MENU;
-        }
-        else if(state == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
-            state = AdventurePhaseData.AdventureState.ACCEPT_CARD_SETUP;
         }
         else if (state.ordinal() < AdventureState.values().length - 1) {
             state = AdventureState.values()[state.ordinal() + 1];
@@ -117,10 +114,7 @@ public class AdventurePhaseData extends GamePhaseData {
     @Override
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
-        if(state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.WAIT_ADVENTURE_CARD) {
-            setState(AdventureState.ACCEPT_CARD_MENU);
-        }
-        else if(state == AdventureState.CHOOSE_MAIN_MENU) {
+        if(state == AdventureState.CHOOSE_MAIN_MENU || state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP) {
             setState(AdventureState.CHOOSE_MAIN_MENU);
         }
         else {
@@ -156,6 +150,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setAdventureCard(AdventureCard adventureCard) {
         this.adventureCard = adventureCard;
         adventureCard.getStates(this);
+        updateState();
     }
 
 
@@ -226,53 +221,29 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     //visitor pattern
-    public void setStates(AbandonedShip abandonedShip) {
-        setState(AdventureState.ACCEPT_CARD_MENU);
-    }
+    public void setStates(AbandonedShip abandonedShip) {}
 
-    public void setStates(AbandonedStation abandonedStation) {
-        setState(AdventureState.ACCEPT_CARD_MENU);
-    }
+    public void setStates(AbandonedStation abandonedStation) { }
 
-    public void setStates(CombatZoneLv1 combatZoneLv1) {
-        setState(AdventureState.CHOOSE_ACTION_MENU);
-    }
+    public void setStates(CombatZoneLv1 combatZoneLv1) {}
 
-    public void setStates(CombatZoneLv2 combatZoneLv2) {
-        setState(AdventureState.CHOOSE_ACTION_MENU);
-    }
+    public void setStates(CombatZoneLv2 combatZoneLv2) {}
 
-    public void setStates(Epidemic epidemic) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
-    }
+    public void setStates(Epidemic epidemic) {}
 
-    public void setStates(MeteorSwarm meteorSwarm) {
-        setState(AdventureState.CHOOSE_ACTION_MENU);
-    }
+    public void setStates(MeteorSwarm meteorSwarm) {}
 
-    public void setStates(OpenSpace openSpace) {
-        setState(AdventureState.CHOOSE_ACTION_MENU);
-    }
+    public void setStates(OpenSpace openSpace) {}
 
-    public void setStates(Pirates pirates) {
-        setState(AdventureState.CHOOSE_ACTION_MENU);
-    }
+    public void setStates(Pirates pirates) {}
 
-    public void setStates(PlanetsCard planetsCard) {
-        setState(AdventureState.ACCEPT_CARD_MENU);
-    }
+    public void setStates(PlanetsCard planetsCard) {}
 
-    public void setStates(Smugglers smugglers) {
-        setState(AdventureState.CHOOSE_ACTION_MENU);
-    }
+    public void setStates(Smugglers smugglers) {}
 
-    public void setStates(Slavers slavers) {
-        setState(AdventureState.CHOOSE_ACTION_MENU);
-    }
+    public void setStates(Slavers slavers) {}
 
-    public void setStates(StarDust starDust) {
-        setState(AdventureState.CHOOSE_MAIN_MENU);
-    }
+    public void setStates(StarDust starDust) {}
 
 
 

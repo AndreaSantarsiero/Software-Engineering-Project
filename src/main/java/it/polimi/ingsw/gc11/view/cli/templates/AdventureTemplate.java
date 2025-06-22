@@ -20,20 +20,21 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┌┬┐┌─┐┬┌─┌─┐  ┌┐┌┌─┐┬ ┬  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
                     " │ ├─┤├┴┐├┤   │││├┤ │││  ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
                     " ┴ ┴ ┴┴ ┴└─┘  ┘└┘└─┘└┴┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
+            List.of("┌─┐┌─┐┌─┐┌─┐┌─┐┌┬┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    "├─┤│  │  ├┤ ├─┘ │   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "┴ ┴└─┘└─┘└─┘┴   ┴   ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
+            List.of("┌┬┐┌─┐┌─┐┬  ┬┌┐┌┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    " ││├┤ │  │  ││││├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "─┴┘└─┘└─┘┴─┘┴┘└┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
+            List.of("┬─┐┌─┐┌─┐┌─┐┬ ┬  ┬┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
+                    "├┬┘├┤ └─┐│ ││ └┐┌┘├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
+                    "┴└─└─┘└─┘└─┘┴─┘└┘ └─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
             List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
                     "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
                     "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
             List.of("┌─┐┌┐ ┌─┐┬─┐┌┬┐  ┌─┐┬  ┬┌─┐┬ ┬┌┬┐",
                     "├─┤├┴┐│ │├┬┘ │   ├┤ │  ││ ┬├─┤ │ ",
                     "┴ ┴└─┘└─┘┴└─ ┴   └  ┴─┘┴└─┘┴ ┴ ┴ ")
-    );
-    private static final List<List<String>> acceptCardMenu = List.of(
-            List.of("┌─┐┌─┐┌─┐┌─┐┌─┐┌┬┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
-                    "├─┤│  │  ├┤ ├─┘ │   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
-                    "┴ ┴└─┘└─┘└─┘┴   ┴   ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘"),
-            List.of("┌┬┐┌─┐┌─┐┬  ┬┌┐┌┌─┐  ┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌┬┐┬ ┬┬─┐┌─┐  ┌─┐┌─┐┬─┐┌┬┐",
-                    " ││├┤ │  │  ││││├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
-                    "─┴┘└─┘└─┘┴─┘┴┘└┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘")
     );
     private static final List<List<String>> actionMenu = List.of(
             List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┬┐┌─┐┬ ┬┌┐ ┬  ┌─┐  ┌─┐┌─┐┌┐┌┌┐┌┌─┐┌┐┌┌─┐",
@@ -160,15 +161,30 @@ public class AdventureTemplate extends CLITemplate {
                     shipBoardCLI.print(shipBoard, y-2, i, controller.getSelectedJ(), controller.getSelectedI());
                     System.out.print("      ");
                 }
+                else if (y < shipBoard.getLength() + 3){
+                    if (i == 0){
+                        shipBoardCLI.printHorizontalCoordinates(shipBoard);
+                        System.out.print("      ");
+                    }
+                    else if (i < 3){
+                        printEmptyShipLine(shipBoard);
+                    }
+                    else{
+                        if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
+                            printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
+                        }
+                        else{
+                            printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
+                        }
+                        menuIndex++;
+                    }
+                }
 
 
                 //printing menu
                 else {
                     if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
                         printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
-                    }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
-                        printMenu(shipBoard, menuIndex, acceptCardMenu, controller.getAcceptCardMenu());
                     }
                     else{
                         printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
@@ -220,10 +236,6 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getMainMenuSize(){
         return mainMenu.size();
-    }
-
-    public int getAcceptCardMenuSize(){
-        return acceptCardMenu.size();
     }
 
     public int getActionMenuSize(){
