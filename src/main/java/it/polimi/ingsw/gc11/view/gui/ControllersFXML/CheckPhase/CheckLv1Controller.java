@@ -6,13 +6,18 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
+import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.*;
@@ -333,6 +338,28 @@ public class CheckLv1Controller extends Controller {
             }
 
         });
+    }
+
+    @Override
+    public void change() {
+        Platform.runLater(() -> {
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventureLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdventureControllerLv1 controller = fxmlLoader.getController();
+                checkPhaseData.setListener(controller);
+                controller.initialize(stage);
+                stage.setScene(newScene);
+                stage.show();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+
+        });
+
+
     }
 
 }
