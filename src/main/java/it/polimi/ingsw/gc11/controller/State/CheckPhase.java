@@ -98,14 +98,18 @@ public class CheckPhase extends GamePhase {
 
     private void goToAdventurePhase() {
         System.out.println("Going to AdventurePhase...");
-        this.gameContext.setPhase(new AdventurePhase(this.gameContext));
+        AdventurePhase adventurePhase = new AdventurePhase(this.gameContext);
+        this.gameContext.setPhase(adventurePhase);
+        String currentPlayer = gameModel.getPlayers().get(adventurePhase.getIdxCurrentPlayer()).getUsername();
+
         Map<String, Player> enemies = new HashMap<>();
         for (Player player : this.gameModel.getPlayers()) {
             enemies.put(player.getUsername(), player);
         }
+
         for (Player player : gameModel.getPlayers()) {
             enemies.remove(player.getUsername());
-            SetAdventurePhaseAction send = new SetAdventurePhaseAction(player, enemies);
+            SetAdventurePhaseAction send = new SetAdventurePhaseAction(player, enemies, currentPlayer);
             gameContext.sendAction(player.getUsername(), send);
             enemies.put(player.getUsername(), player);
         }
