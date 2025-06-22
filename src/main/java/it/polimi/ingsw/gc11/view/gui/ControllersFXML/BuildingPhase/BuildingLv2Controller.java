@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -996,6 +997,23 @@ public class BuildingLv2Controller extends Controller {
 
     @Override
     public void change() {
+        Platform.runLater(() -> {
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckLV2.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                CheckLv2Controller controller = fxmlLoader.getController();
+                buildingPhaseData.setListener(controller);
+                controller.initialize(stage);
+                stage.setScene(newScene);
+                stage.show();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+
+        });
+
 
     }
 

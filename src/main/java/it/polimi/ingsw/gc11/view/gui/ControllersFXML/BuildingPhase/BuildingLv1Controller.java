@@ -5,7 +5,6 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.BuildingPhaseData;
-import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv1Controller;
@@ -849,20 +848,20 @@ public class BuildingLv1Controller extends Controller {
     @Override
     public void change() {
         Platform.runLater(() -> {
-            ViewModel viewModel = (ViewModel) stage.getUserData();
-            CheckPhaseData checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckLV2.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1400, 780);
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckLV1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 CheckLv1Controller controller = fxmlLoader.getController();
                 buildingPhaseData.setListener(controller);
                 controller.initialize(stage);
                 stage.setScene(newScene);
                 stage.show();
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
             }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+
         });
 
     }
