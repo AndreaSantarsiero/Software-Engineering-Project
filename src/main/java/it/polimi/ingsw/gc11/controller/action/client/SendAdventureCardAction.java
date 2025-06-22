@@ -3,17 +3,20 @@ package it.polimi.ingsw.gc11.controller.action.client;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.view.*;
 
-//Devo implementare suo listener in tutte quante le PhaseData
+
+
 public class SendAdventureCardAction extends ServerAction{
+
     private  final AdventureCard adventureCard;
+    private  final String currentPlayer;
 
-    public SendAdventureCardAction(AdventureCard adventureCard) {
+
+
+    public SendAdventureCardAction(AdventureCard adventureCard, String currentPlayer) {
         this.adventureCard = adventureCard;
+        this.currentPlayer = currentPlayer;
     }
 
-    public AdventureCard getAdventureCard() {
-        return adventureCard;
-    }
 
 
     @Override
@@ -27,6 +30,7 @@ public class SendAdventureCardAction extends ServerAction{
 
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.setCurrentPlayer(currentPlayer);
         adventurePhaseData.setAdventureCard(adventureCard);
     }
 

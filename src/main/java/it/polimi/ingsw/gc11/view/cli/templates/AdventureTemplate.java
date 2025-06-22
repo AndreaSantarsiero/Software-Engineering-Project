@@ -197,7 +197,7 @@ public class AdventureTemplate extends CLITemplate {
                 if (y == 1){
                     System.out.print("                                        ");
                     if(i == 0){
-                        System.out.print(" Current adventure:");
+                        System.out.print(" Current adventure:      | it's " +data.getCurrentPlayer() + "'s turn to play");
                     }
                     else {
                         adventureCardCLI.print(data.getAdventureCard(), i-1);
