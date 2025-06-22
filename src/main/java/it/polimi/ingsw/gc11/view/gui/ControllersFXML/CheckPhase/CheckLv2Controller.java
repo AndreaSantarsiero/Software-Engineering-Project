@@ -36,7 +36,7 @@ public class CheckLv2Controller extends Controller {
     @FXML private VBox mainVBox;
     @FXML private GridPane slotGrid;
     @FXML private HBox mainContainer;
-    @FXML private HBox headerContainer, subHeaderContainer;
+    @FXML private HBox headerContainer;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
@@ -86,7 +86,6 @@ public class CheckLv2Controller extends Controller {
         availW  = mainVBox.widthProperty().subtract(mainContainer.spacingProperty());
         availH = mainVBox.heightProperty()
                 .subtract(headerContainer.heightProperty())
-                .subtract(subHeaderContainer.heightProperty())
                 .subtract(mainVBox.spacingProperty().multiply(3));
 
         DoubleBinding wFromH  = availH.multiply(BOARD_RATIO);
@@ -291,7 +290,8 @@ public class CheckLv2Controller extends Controller {
             virtualServer.repairShip(xCoordinates, yCoordinates);
             xCoordinates.clear();
             yCoordinates.clear();
-        } catch (NetworkException e) {
+        }
+        catch (NetworkException e) {
             throw new RuntimeException(e);
         }
     }

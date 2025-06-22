@@ -92,20 +92,12 @@ public class BuildingLv1Controller extends Controller {
     private DoubleBinding gridH;
     private DoubleBinding shipCardSize;
 
-    private Boolean placeShipCard = false;
-    private Boolean reserveShipCard = false;
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
 
     public void initialize(Stage stage) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) stage.getUserData();
         this.virtualServer = viewModel.getVirtualServer();
         this.buildingPhaseData = (BuildingPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        ShipBoard shipBoard = buildingPhaseData.getShipBoard();
 
         root.setSpacing(20);
 
@@ -817,7 +809,7 @@ public class BuildingLv1Controller extends Controller {
         new Thread(timer).start();
     }
 
-    public void endBuilding(ActionEvent actionEvent) {
+    public void onEndBuildingClick(ActionEvent actionEvent) {
         try {
             this.clickedEndBuilding = true;
             buildingPhaseData.resetActionSuccessful();
