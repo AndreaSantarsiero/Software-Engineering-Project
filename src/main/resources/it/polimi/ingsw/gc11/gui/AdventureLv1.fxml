@@ -12,15 +12,14 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1">
+<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1">
 
     <children>
 
         <!-- Title -->
         <HBox fx:id="headerContainer" alignment="CENTER">
             <children>
-                <Label styleClass="Text" text="BUILDING PHASE">
+                <Label styleClass="Text" text="ADVENTURE PHASE">
                     <font>
                         <Font size="58.0" />
                     </font>
@@ -29,12 +28,11 @@
         </HBox>
         <HBox fx:id="subHeaderContainer">
             <children>
-                <HBox fx:id="playersButtons" />
-                <HBox prefHeight="100.0" prefWidth="299.0">
-                    <children>
-                        <Button fx:id="endBuildingButton" mnemonicParsing="false" text="Button" />
-                    </children>
-                </HBox>
+                <HBox fx:id="playersButtons">
+               <children>
+                  <Label styleClass="Text" stylesheets="@style.css" text="View Shipboards:   " />
+               </children></HBox>
+                  <Button fx:id="abortButton" mnemonicParsing="false" onAction="#onAbortButtonClick" text="Abort" />
             </children>
         </HBox>
 
@@ -74,8 +72,8 @@
             </StackPane>
 
 
-            <VBox fx:id="cardPane" alignment="TOP_CENTER" HBox.hgrow="ALWAYS" spacing="10">
-                <Label fx:id="adventureCardText" styleClass="Text" text="AdventureCard">
+            <VBox fx:id="cardPane" alignment="TOP_CENTER" spacing="10" HBox.hgrow="ALWAYS">
+                <Label fx:id="adventureCardText" styleClass="Text" text="Adventure Card">
                     <font>
                         <Font size="24.0" />
                     </font>
@@ -87,8 +85,8 @@
                     <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false" />
 
                 </VBox>
-                <Button fx:id="drawButton" text="Draw card" onAction="#onDrawbutton" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css"/>
-                <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="Label" visible="false" wrapText="true">
+                <Button fx:id="drawButton" onAction="#onDrawbuttonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" text="Draw card" />
+                <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="error" visible="false" wrapText="true">
                     <font>
                         <Font size="18.0" />
                     </font>

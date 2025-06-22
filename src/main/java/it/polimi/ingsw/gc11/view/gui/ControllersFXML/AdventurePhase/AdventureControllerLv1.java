@@ -29,8 +29,9 @@ import java.util.Map;
 public class AdventureControllerLv1 extends Controller {
 
     @FXML private VBox root;
-    @FXML private HBox playersButtons;
     @FXML private HBox headerContainer, subHeaderContainer;
+    @FXML private HBox playersButtons;
+    @FXML private Button abortButton;
     @FXML private ImageView flightBoardImage;
     @FXML private Pane positionOverlayPane;
     @FXML private Rectangle pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
@@ -184,6 +185,16 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private void onPositionClicked16() { System.out.println("Posizione 16"); }
     @FXML private void onPositionClicked17() { System.out.println("Posizione 17"); }
     @FXML private void onPositionClicked18() { System.out.println("Posizione 18"); }
+
+    @FXML private void onAbortButtonClick(){
+//        try {
+//          virtualServer.abortAdventure();
+//        }
+//        catch (NetworkException e) {
+//            setErrorLabel();
+//            System.out.println("Network Error: " + e.getMessage());
+//        }
+    }
 
 
     public void onDrawbutton(ActionEvent actionEvent) {

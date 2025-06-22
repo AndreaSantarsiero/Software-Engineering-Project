@@ -31,6 +31,7 @@
                 </HBox>
             <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
                <children>
+                  <HBox fx:id="playersButtons" />
                       <Button fx:id="checkButton" onAction="#onCheckShipBoardClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@style.css" text="Check your ShipBoard">
 
                 </Button>
