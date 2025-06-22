@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv2Controller;
+import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -13,7 +15,10 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.*;
@@ -26,6 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CheckLv2Controller extends Controller {
@@ -35,6 +41,7 @@ public class CheckLv2Controller extends Controller {
     @FXML private VBox mainVBox;
     @FXML private HBox headerContainer;
     @FXML private HBox subHeaderContainer;
+    @FXML private HBox playersButtons;
     @FXML private Button checkButton;
     @FXML private HBox mainContainer;
     @FXML private GridPane slotGrid;
@@ -102,6 +109,16 @@ public class CheckLv2Controller extends Controller {
         gridH = gridW.subtract(GRID_GAP * (slotGrid.getColumnCount()-1)).multiply(5).divide(7).add(GRID_GAP * (slotGrid.getRowCount() - 1));
 
         shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(7);
+
+        //Setup buttons to view enemies' shipboard
+        this.setupOthersPlayersButtons();
+
+        for(Node n : playersButtons.getChildren()) {
+            ((Button) n).prefWidthProperty().bind(shipCardSize.multiply(0.75));
+        }
+        playersButtons.setSpacing(10);
+        //playersButtons.setPadding(new Insets(0,0,0,50));
+        playersButtons.prefWidthProperty().bind(availW.multiply(0.25));
 
         boardContainer.setMinSize(0, 0);
         boardContainer.prefWidthProperty().bind(boardW);
@@ -321,6 +338,39 @@ public class CheckLv2Controller extends Controller {
 
         glassPane.getChildren().add(overlay);
         root.getChildren().add(glassPane);
+    }
+
+    //Setup of buttons to see enemies' shipboards
+    private void setupOthersPlayersButtons(){
+        for(String player : checkPhaseData.getPlayersUsername()){
+            Button playerButton = new Button();
+            playerButton.setText(player);
+            playerButton.setOnMouseClicked(e -> {
+                try{
+                    virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
+                }
+                catch(Exception exc){
+//                    errorLabel.setVisible(true);
+//                    errorLabel.setText(e.getMessage());
+//                    errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
+                    System.out.println("Network Error:  " + exc.getMessage());
+                }
+
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/EnemyShipboardLv2.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EnemyShipboardLv2Controller controller = fxmlLoader.getController();
+                    checkPhaseData.setListener(controller);
+                    controller.initialize(stage, player);
+                    stage.setScene(newScene);
+                    stage.show();
+                }
+                catch (IOException exc) {
+                    throw new RuntimeException(exc);
+                }
+            });
+            playersButtons.getChildren().add(playerButton);
+        }
     }
 
     @Override
