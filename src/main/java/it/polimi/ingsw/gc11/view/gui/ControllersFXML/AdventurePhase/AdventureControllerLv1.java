@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +20,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -163,6 +167,49 @@ public class AdventureControllerLv1 extends Controller {
         new Thread(timer).start();
     }
 
+    private void setupPositions() {
+        ArrayList<Player> allPlayers = new ArrayList<>();
+        allPlayers.add(adventurePhaseData.getPlayer());
+        allPlayers.addAll(adventurePhaseData.getEnemies().values());
+
+        for(Player player : allPlayers) {
+            int position = player.getPosition();
+            Rectangle positionRect = switch (position) {
+                case 1 -> pos1;
+                case 2 -> pos2;
+                case 3 -> pos3;
+                case 4 -> pos4;
+                case 5 -> pos5;
+                case 6 -> pos6;
+                case 7 -> pos7;
+                case 8 -> pos8;
+                case 9 -> pos9;
+                case 10 -> pos10;
+                case 11 -> pos11;
+                case 12 -> pos12;
+                case 13 -> pos13;
+                case 14 -> pos14;
+                case 15 -> pos15;
+                case 16 -> pos16;
+                case 17 -> pos17;
+                case 18 -> pos18;
+                default -> null;
+            };
+            if (positionRect != null) {
+                // Calcola il centro del rettangolo
+                double centerX = positionRect.getLayoutX() + positionRect.getWidth() / 2;
+                double centerY = positionRect.getLayoutY() + positionRect.getHeight() / 2;
+                double radius = Math.min(positionRect.getWidth(), positionRect.getHeight()) / 2 - 4;
+
+                Circle circle = new Circle(centerX, centerY, radius);
+                // Sostituisci con il colore del player
+                circle.setFill(Paint.valueOf(player.getColor()));
+                positionOverlayPane.getChildren().add(circle);
+            }
+        }
+
+    }
+
     @FXML private void onPositionClicked1()  { System.out.println("Posizione 1"); }
     @FXML private void onPositionClicked2()  { System.out.println("Posizione 2"); }
     @FXML private void onPositionClicked3()  { System.out.println("Posizione 3"); }
@@ -200,6 +247,39 @@ public class AdventureControllerLv1 extends Controller {
         catch (NetworkException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public  void update(AdventurePhaseData adventurePhaseData) {
+        Platform.runLater(() -> {
+
+            setupPositions();
+
+            if(adventurePhaseData.isStateNew()) {
+                switch (adventurePhaseData.getState()) {
+                    case CHOOSE_MAIN_MENU:
+                        // Handle main menu state
+                        break;
+                    case WAIT_ADVENTURE_CARD:
+                        // Handle waiting for adventure card
+                        break;
+                    case ACCEPT_CARD_SETUP:
+                        // Handle accepting card setup
+                        break;
+                    case CHOOSE_ACTION_MENU:
+                        // Handle action menu state
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if(!adventurePhaseData.getServerMessage().isEmpty() || adventurePhaseData.getServerMessage() != null) {
+                System.out.println("Error: " + adventurePhaseData.getServerMessage());
+                setErrorLabel();
+            }
+
+        });
     }
 
     private void handle(AbandonedShip abandonedShip) {

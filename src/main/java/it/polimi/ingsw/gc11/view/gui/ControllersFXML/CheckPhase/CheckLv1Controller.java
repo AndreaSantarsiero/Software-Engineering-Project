@@ -282,7 +282,7 @@ public class CheckLv1Controller extends Controller {
 
     private int alreadyIn(int x, int y){
         for(int i = 0; i < xCoordinates.size(); i++){
-            if(xCoordinates.get(i) == x &&  yCoordinates.get(i) == y){
+            if(xCoordinates.get(i) == x - checkPhaseData.getShipBoard().adaptX(0) &&  yCoordinates.get(i) == y - checkPhaseData.getShipBoard().adaptY(0)){
                 return i;
             }
         }
@@ -297,25 +297,23 @@ public class CheckLv1Controller extends Controller {
             yCoordinates.remove(currCoord);
         }
         else{
-            xCoordinates.add(x);
-            yCoordinates.add(y);
+            xCoordinates.add(x - checkPhaseData.getShipBoard().adaptX(0));
+            yCoordinates.add(y - checkPhaseData.getShipBoard().adaptY(0));
         }
 
         slotGrid.getChildren().clear();
         setShipBoard();
-
-        System.out.println("x: " + xCoordinates + " y: " + yCoordinates);
     }
 
     @FXML
     private void onCheckShipBoardClick(){
         try {
-            virtualServer.repairShip(
-                    List.copyOf(xCoordinates),
-                    List.copyOf(yCoordinates)
-            );
+            virtualServer.repairShip(xCoordinates, yCoordinates);
             xCoordinates.clear();
             yCoordinates.clear();
+
+            slotGrid.getChildren().clear();
+            setShipBoard();
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
