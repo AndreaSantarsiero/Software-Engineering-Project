@@ -141,6 +141,10 @@ public class BuildingTemplate extends CLITemplate {
 
 
     public void render() {
+        if (!controller.isActive()) {
+            return;
+        }
+
         controller.setLastTemplateRender(Instant.now());
         BuildingPhaseData data = controller.getPhaseData();
         clearView();

@@ -18,6 +18,10 @@ public abstract class CLIController extends Controller {
 
 
 
+    public boolean isActive() {
+        return active;
+    }
+
     public abstract void setMenuChoice(int choice);
 
     public abstract void confirmMenuChoice();

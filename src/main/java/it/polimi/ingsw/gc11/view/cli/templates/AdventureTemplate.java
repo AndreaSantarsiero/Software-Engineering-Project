@@ -76,8 +76,11 @@ public class AdventureTemplate extends CLITemplate {
 
 
     public void render() {
-        AdventurePhaseData data = controller.getPhaseData();
+        if (!controller.isActive()) {
+            return;
+        }
 
+        AdventurePhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("╔═╗╔╦╗╦  ╦╔═╗╔╗╔╔╦╗╦ ╦╦═╗╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
                            "╠═╣ ║║╚╗╔╝║╣ ║║║ ║ ║ ║╠╦╝║╣   ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
@@ -178,17 +181,17 @@ public class AdventureTemplate extends CLITemplate {
                         System.out.print("Current adventure:");
                     }
                     else {
-                        adventureCardCLI.print(data.getAdventureCard(), i+1);
+                        adventureCardCLI.print(data.getAdventureCard(), i-1);
                     }
                 }
                 else if (y == 2){
                     System.out.print("                    ");
-                    adventureCardCLI.print(data.getAdventureCard(), i-6);
+                    adventureCardCLI.print(data.getAdventureCard(), i+6);
                 }
                 else if (y == 3){
                     if(i < 2){
                         System.out.print("                    ");
-                        adventureCardCLI.print(data.getAdventureCard(), i-13);
+                        adventureCardCLI.print(data.getAdventureCard(), i+13);
                     }
                 }
 

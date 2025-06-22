@@ -25,6 +25,10 @@ public class JoiningTemplate extends CLITemplate {
 
 
     public void render() {
+        if (!controller.isActive()) {
+            return;
+        }
+
         JoiningPhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("\n\n");
