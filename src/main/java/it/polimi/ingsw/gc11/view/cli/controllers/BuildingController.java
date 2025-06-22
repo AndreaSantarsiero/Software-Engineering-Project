@@ -224,7 +224,7 @@ public class BuildingController extends CLIController {
                 case 1 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD);
                 case 2 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_TO_REMOVE);
                 case 3 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU);
-                case 4 -> data.setState(BuildingPhaseData.BuildingState.LOAD_COOL_SHIP);
+                case 4 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_COOL_SHIP);
             }
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_ADVANCED_MENU){

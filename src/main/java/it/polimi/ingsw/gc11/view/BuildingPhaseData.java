@@ -23,7 +23,7 @@ public class  BuildingPhaseData extends GamePhaseData {
         RESET_TIMER,
         CHOOSE_POSITION, END_BUILDING_SETUP,
         CHOOSE_WAITING_MENU,
-        LOAD_COOL_SHIP, CHOOSE_COOL_SHIP, COOL_SHIP_SETUP  //cheat request
+        CHOOSE_COOL_SHIP, COOL_SHIP_SETUP  //cheat request
     }
 
 
