@@ -23,17 +23,19 @@ public class KillMembersAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             Player player = context.killMembers(getUsername(), housingUsage);
+            String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
             for(Player p : context.getGameModel().getPlayers()) {
-                if(player.getUsername().equals(p.getUsername())) {
-                    UpdateShipBoardAction response = new UpdateShipBoardAction(player.getShipBoard());
+                if(player.getUsername().equals(username)) {
+                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayer);
                     context.sendAction(username, response);
                 }
-                else if(!p.isAbort()){
-                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player);
+                else {
+                    UpdateEnemyProfileAction response = new UpdateEnemyProfileAction(player, currentPlayer);
                     context.sendAction(p.getUsername(), response);
                 }
             }
+
         } catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
