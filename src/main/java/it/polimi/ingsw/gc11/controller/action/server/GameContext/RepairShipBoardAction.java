@@ -25,7 +25,6 @@ public class RepairShipBoardAction extends ClientGameAction {
             context.repairShip(username, cardsToEliminateX, cardsToEliminateY);
             //success action sent by the controller
         }
-        catch (IllegalArgumentException ignored) {}
         catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
