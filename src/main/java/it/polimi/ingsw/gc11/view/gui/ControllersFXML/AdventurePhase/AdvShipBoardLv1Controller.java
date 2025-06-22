@@ -7,7 +7,6 @@ import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
