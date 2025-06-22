@@ -45,8 +45,11 @@ public class CheckTemplate extends CLITemplate {
 
 
     public void render() {
-        CheckPhaseData data = controller.getPhaseData();
+        if (!controller.isActive()) {
+            return;
+        }
 
+        CheckPhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("╔═╗╦ ╦╔═╗╔═╗╦╔═  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
                            "║  ╠═╣║╣ ║  ╠╩╗  ╠═╝╠═╣╠═╣╚═╗║╣ \n" +

@@ -17,7 +17,7 @@ public class EndBuildingTrialAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             context.endBuildingTrial(username);
-            if(!context.getPhase().getPhaseName().equals("CheckPhase")){
+            if(!context.getPhase().getPhaseName().equals("CheckPhase") || !context.getPhase().getPhaseName().equals("AdventurePhase")){
                 NotifySuccessAction response = new NotifySuccessAction();
                 context.sendAction(username, response);
             }

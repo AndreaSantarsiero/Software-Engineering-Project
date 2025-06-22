@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv2Controller">
@@ -44,17 +43,21 @@
                 </HBox>
             <HBox fx:id="timer" prefHeight="100.0" prefWidth="247.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="100.0" prefWidth="126.0">
                      <children>
-                        <Label styleClass="Text" stylesheets="@style.css" text="Timer:  " wrapText="true">
+                        <Label fx:id="timersLeft" prefHeight="70.0" prefWidth="126.0" styleClass="Text" stylesheets="@style.css" text="Timers left: " wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="startTimer" mnemonicParsing="false" text="Start Timer" />
+                        <Button fx:id="resetTimer" mnemonicParsing="false" onAction="#onResetTimerClick" text="Reset Timer" />
                      </children>
                   </VBox>
-                  <Ellipse fill="DODGERBLUE" radiusX="43.0" radiusY="41.0" stroke="BLACK" strokeType="INSIDE" />
+                   <Label fx:id="timerCountdown" alignment="CENTER" styleClass="Text" text="00:00">
+                       <font>
+                           <Font size="24.0" />
+                       </font>
+                   </Label>
                </children>
             </HBox>
             <HBox fx:id="endBuilding" prefHeight="100.0" prefWidth="299.0">

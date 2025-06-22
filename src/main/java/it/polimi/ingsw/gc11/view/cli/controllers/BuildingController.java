@@ -26,6 +26,7 @@ public class BuildingController extends CLIController {
     private int shipCardOrientationMenu;
     private int adventureCardMenu;
     private int endBuildingMenu;
+    private int waitingMenu;
     private int selectedI;
     private int selectedJ;
     private Instant lastTemplateRender;
@@ -202,10 +203,13 @@ public class BuildingController extends CLIController {
             mainCLI.addInputRequest(new MenuInput(data, this, template.getAdventureDecksMenuSize(), adventureCardMenu));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_POSITION){
-            mainCLI.addInputRequest(new MenuInput(data, this, template.endBuildingMenuSize(), endBuildingMenu));
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getEndBuildingMenuSize(), endBuildingMenu));
         }
         else if(data.getState() == BuildingPhaseData.BuildingState.SHOW_ENEMIES_SHIP || data.getState() == BuildingPhaseData.BuildingState.SHOW_ADVENTURE_DECK){
             mainCLI.addInputRequest(new EnterInput(data, this));
+        }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getWaitingMenuSize(), waitingMenu));
         }
     }
 
@@ -251,6 +255,12 @@ public class BuildingController extends CLIController {
                 case 3 -> data.setState(BuildingPhaseData.BuildingState.CHOOSE_SHIPCARD_MENU);
             }
         }
+        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_WAITING_MENU){
+            switch (waitingMenu) {
+                case 0 -> data.setState(BuildingPhaseData.BuildingState.WAIT_ENEMIES_SHIP);
+                case 1 -> data.setState(BuildingPhaseData.BuildingState.RESET_TIMER);
+            }
+        }
         else {
             data.updateState();
         }
@@ -269,8 +279,7 @@ public class BuildingController extends CLIController {
             case CHOOSE_SHIPCARD_ORIENTATION -> setShipCardOrientationMenu(choice);
             case CHOOSE_ADVENTURE_DECK -> setAdventureCardMenu(choice);
             case CHOOSE_POSITION -> setEndBuildingMenu(choice);
-            case null, default -> {
-            }
+            case CHOOSE_WAITING_MENU -> setWaitingMenu(choice);
         }
     }
 
@@ -287,11 +296,9 @@ public class BuildingController extends CLIController {
     @Override
     public void setIntegerChoice(int choice) {
         data.actualizePreviousState();
-        if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_FREE_SHIPCARD){
-            setShipCardIndex(choice);
-        }
-        else if(data.getState() == BuildingPhaseData.BuildingState.CHOOSE_RESERVED_SHIPCARD){
-            setReservedShipCardIndex(choice);
+        switch (data.getState()) {
+            case CHOOSE_FREE_SHIPCARD -> setShipCardIndex(choice);
+            case CHOOSE_RESERVED_SHIPCARD -> setReservedShipCardIndex(choice);
         }
     }
 
@@ -422,6 +429,15 @@ public class BuildingController extends CLIController {
 
     public void setEndBuildingMenu(int endBuildingMenu) {
         this.endBuildingMenu = endBuildingMenu;
+        template.render();
+    }
+
+    public int getWaitingMenu(){
+        return waitingMenu;
+    }
+
+    public void setWaitingMenu(int waitingMenu) {
+        this.waitingMenu = waitingMenu;
         template.render();
     }
 

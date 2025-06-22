@@ -162,16 +162,16 @@ public class BuildingPhaseTrial extends GamePhase{
 
         if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
             GameModel gameModel = gameContext.getGameModel();
-            ArrayList<String> allPlayersUsernames = new ArrayList<>();
+            ArrayList<String> enemies = new ArrayList<>();
             for (Player player : gameModel.getPlayers()) {
-                allPlayersUsernames.add(player.getUsername());
+                enemies.add(player.getUsername());
             }
 
-            for (Player p : gameContext.getGameModel().getPlayers()) {
-                ArrayList<String> othersPlayers = new ArrayList<>(allPlayersUsernames);
-                othersPlayers.remove(p.getUsername());
-                SetCheckPhaseAction send = new SetCheckPhaseAction(p.getShipBoard(), othersPlayers);
-                gameContext.sendAction(p.getUsername(), send);
+            for (Player player : gameContext.getGameModel().getPlayers()) {
+                enemies.remove(player.getUsername());
+                SetCheckPhaseAction send = new SetCheckPhaseAction(player.getShipBoard(), enemies);
+                gameContext.sendAction(player.getUsername(), send);
+                enemies.add(player.getUsername());
             }
         }
     }

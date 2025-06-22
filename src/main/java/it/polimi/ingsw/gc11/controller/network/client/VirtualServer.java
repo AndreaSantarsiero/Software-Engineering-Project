@@ -235,8 +235,8 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
-    public void chooseEnginePower(Map<Battery, Integer> Batteries) throws NetworkException{
-        ChooseEnginePowerAction action = new ChooseEnginePowerAction(username, Batteries);
+    public void chooseEnginePower(Map<Battery, Integer> batteries) throws NetworkException{
+        ChooseEnginePowerAction action = new ChooseEnginePowerAction(username, batteries);
         client.sendAction(action);
     }
 

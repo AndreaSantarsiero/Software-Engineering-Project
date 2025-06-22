@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
-import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
 import java.util.HashMap;
@@ -36,6 +35,32 @@ public class AdventureTemplate extends CLITemplate {
                     " ││├┤ │  │  ││││├┤   ├─┤ ││└┐┌┘├┤ │││ │ │ │├┬┘├┤   │  ├─┤├┬┘ ││",
                     "─┴┘└─┘└─┘┴─┘┴┘└┘└─┘  ┴ ┴─┴┘ └┘ └─┘┘└┘ ┴ └─┘┴└─└─┘  └─┘┴ ┴┴└──┴┘")
     );
+    private static final List<List<String>> actionMenu = List.of(
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┬┐┌─┐┬ ┬┌┐ ┬  ┌─┐  ┌─┐┌─┐┌┐┌┌┐┌┌─┐┌┐┌┌─┐",
+                    "│  ├─┤│ ││ │└─┐├┤    │││ ││ │├┴┐│  ├┤   │  ├─┤│││││││ ││││└─┐",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  ─┴┘└─┘└─┘└─┘┴─┘└─┘  └─┘┴ ┴┘└┘┘└┘└─┘┘└┘└─┘"),
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┬─┐┌─┐┬ ┬  ┌┬┐┌─┐┌┬┐┌┐ ┌─┐┬─┐┌─┐",
+                    "│  ├─┤│ ││ │└─┐├┤   │  ├┬┘├┤ │││  │││├┤ │││├┴┐├┤ ├┬┘└─┐",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  └─┘┴└─└─┘└┴┘  ┴ ┴└─┘┴ ┴└─┘└─┘┴└─└─┘"),
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┐ ┌─┐┌┬┐┌┬┐┌─┐┬─┐┬┌─┐┌─┐",
+                    "│  ├─┤│ ││ │└─┐├┤   ├┴┐├─┤ │  │ ├┤ ├┬┘│├┤ └─┐",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  └─┘┴ ┴ ┴  ┴ └─┘┴└─┴└─┘└─┘"),
+            List.of("┬  ┌─┐┌─┐┌┬┐  ┌┐┌┌─┐┬ ┬  ┌┬┐┌─┐┌┬┐┌─┐┬─┐┬┌─┐┬  ┌─┐",
+                    "│  │ │├─┤ ││  │││├┤ │││  │││├─┤ │ ├┤ ├┬┘│├─┤│  └─┐",
+                    "┴─┘└─┘┴ ┴─┴┘  ┘└┘└─┘└┴┘  ┴ ┴┴ ┴ ┴ └─┘┴└─┴┴ ┴┴─┘└─┘"),
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐┬  ┌┬┐",
+                    "│  ├─┤│ ││ │└─┐├┤   └─┐├─┤│├┤ │   ││",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  └─┘┴ ┴┴└─┘┴─┘─┴┘"),
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┬┐┌─┐┌─┐┌─┐┌┐┌┌─┐┬┬  ┬┌─┐  ┌─┐┌─┐┌┐┌┌┐┌┌─┐┌┐┌",
+                    "│  ├─┤│ ││ │└─┐├┤    ││├┤ ├┤ ├┤ │││└─┐│└┐┌┘├┤   │  ├─┤│││││││ ││││",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  ─┴┘└─┘└  └─┘┘└┘└─┘┴ └┘ └─┘  └─┘┴ ┴┘└┘┘└┘└─┘┘└┘"),
+            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "└─┐├┤ │││ ││  ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
+                    "└─┘└─┘┘└┘─┴┘  ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
+            List.of("┬─┐┌─┐┌─┐┌─┐┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "├┬┘├┤ └─┐├┤  │   ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
+                    "┴└─└─┘└─┘└─┘ ┴   ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘")
+    );
 
 
 
@@ -46,8 +71,11 @@ public class AdventureTemplate extends CLITemplate {
 
 
     public void render() {
-        AdventurePhaseData data = controller.getPhaseData();
+        if (!controller.isActive()) {
+            return;
+        }
 
+        AdventurePhaseData data = controller.getPhaseData();
         clearView();
         System.out.println("╔═╗╔╦╗╦  ╦╔═╗╔╗╔╔╦╗╦ ╦╦═╗╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
                            "╠═╣ ║║╚╗╔╝║╣ ║║║ ║ ║ ║╠╦╝║╣   ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
@@ -63,17 +91,6 @@ public class AdventureTemplate extends CLITemplate {
             }
 
             printEnemiesShipBoard(enemiesShipBoard);
-            for (int i = 0; i < pressEnterToContinue.size(); i++) {
-                System.out.println(pressEnterToContinue.get(i));
-            }
-            return;
-        }
-        else if(data.getState() == AdventurePhaseData.AdventureState.RESOLVE_ADVENTURE_CARD){
-            System.out.println();
-            for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
-                adventureCardCLI.print(data.getAdventureCard(), i);
-                System.out.println();
-            }
             for (int i = 0; i < pressEnterToContinue.size(); i++) {
                 System.out.println(pressEnterToContinue.get(i));
             }
@@ -147,8 +164,38 @@ public class AdventureTemplate extends CLITemplate {
 
                 //printing menu
                 else {
-                    printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
+                    if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
+                        printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
+                    }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.ACCEPT_CARD_MENU){
+                        printMenu(shipBoard, menuIndex, acceptCardMenu, controller.getAcceptCardMenu());
+                    }
+                    else{
+                        printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
+                    }
                     menuIndex++;
+                }
+
+
+                //printing adventure card, flight board ecc
+                if (y == 1){
+                    System.out.print("                                        ");
+                    if(i == 0){
+                        System.out.print(" Current adventure:");
+                    }
+                    else {
+                        adventureCardCLI.print(data.getAdventureCard(), i-1);
+                    }
+                }
+                else if (y == 2){
+                    System.out.print("                                        ");
+                    adventureCardCLI.print(data.getAdventureCard(), i+6);
+                }
+                else if (y == 3){
+                    if(i < 2){
+                        System.out.print("                                        ");
+                        adventureCardCLI.print(data.getAdventureCard(), i+13);
+                    }
                 }
 
 
@@ -177,5 +224,9 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getAcceptCardMenuSize(){
         return acceptCardMenu.size();
+    }
+
+    public int getActionMenuSize(){
+        return actionMenu.size();
     }
 }

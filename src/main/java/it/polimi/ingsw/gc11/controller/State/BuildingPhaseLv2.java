@@ -203,12 +203,12 @@ public class BuildingPhaseLv2 extends GamePhase {
             throw new IllegalStateException("The current timer is not expired yet");
         }
 
-        timerFinished = false;
         TimerTask newTimerTask;
         if(curNumTimer == maxNumTimer-1){
             //Player has already ended building
             if (this.gameModel.getPlayer(username).getPosition() != -1){
                 //last timer
+                timerFinished = false;
                 newTimerTask = new TimerTask() {
                     @Override
                     public void run() {
@@ -225,6 +225,7 @@ public class BuildingPhaseLv2 extends GamePhase {
         }
         else {
             //other timers
+            timerFinished = false;
             newTimerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -272,16 +273,16 @@ public class BuildingPhaseLv2 extends GamePhase {
 
         if(gameContext.getPhase().getPhaseName().equals("CheckPhase")){
             GameModel gameModel = gameContext.getGameModel();
-            ArrayList<String> allPlayersUsernames = new ArrayList<>();
+            ArrayList<String> enemies = new ArrayList<>();
             for (Player player : gameModel.getPlayers()) {
-                allPlayersUsernames.add(player.getUsername());
+                enemies.add(player.getUsername());
             }
 
-            for (Player p : gameContext.getGameModel().getPlayers()) {
-                ArrayList<String> othersPlayers = new ArrayList<>(allPlayersUsernames);
-                othersPlayers.remove(p.getUsername());
-                SetCheckPhaseAction send = new SetCheckPhaseAction(p.getShipBoard(), othersPlayers);
-                gameContext.sendAction(p.getUsername(), send);
+            for (Player player : gameContext.getGameModel().getPlayers()) {
+                enemies.remove(player.getUsername());
+                SetCheckPhaseAction send = new SetCheckPhaseAction(player.getShipBoard(), enemies);
+                gameContext.sendAction(player.getUsername(), send);
+                enemies.add(player.getUsername());
             }
         }
     }
