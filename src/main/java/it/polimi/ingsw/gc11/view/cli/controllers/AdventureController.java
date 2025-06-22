@@ -129,8 +129,8 @@ public class AdventureController extends CLIController {
             switch (mainMenu) {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.WAIT_ADVENTURE_CARD);
                 case 1, 2 -> data.setState(AdventurePhaseData.AdventureState.ACCEPT_CARD_SETUP);
-                case 3 -> data.setState(AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP);
-                case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
+                case 4 -> data.setState(AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP);
                 case 5 -> data.setState(AdventurePhaseData.AdventureState.ABORT_FLIGHT);
             }
         }

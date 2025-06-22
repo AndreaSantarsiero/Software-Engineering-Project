@@ -161,6 +161,24 @@ public class AdventureTemplate extends CLITemplate {
                     shipBoardCLI.print(shipBoard, y-2, i, controller.getSelectedJ(), controller.getSelectedI());
                     System.out.print("      ");
                 }
+                else if (y < shipBoard.getLength() + 3){
+                    if (i == 0){
+                        shipBoardCLI.printHorizontalCoordinates(shipBoard);
+                        System.out.print("      ");
+                    }
+                    else if (i < 3){
+                        printEmptyShipLine(shipBoard);
+                    }
+                    else{
+                        if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
+                            printMenu(shipBoard, menuIndex, mainMenu, controller.getMainMenu());
+                        }
+                        else{
+                            printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
+                        }
+                        menuIndex++;
+                    }
+                }
 
 
                 //printing menu
