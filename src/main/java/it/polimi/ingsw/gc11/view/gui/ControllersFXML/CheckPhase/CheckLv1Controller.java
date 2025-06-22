@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
-import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -27,7 +26,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class CheckLv1Controller extends Controller {
     @FXML private VBox mainVBox;
     @FXML private GridPane slotGrid;
     @FXML private HBox mainContainer;
-    @FXML private HBox headerContainer, subHeaderContainer;
+    @FXML private HBox headerContainer;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
@@ -90,7 +88,6 @@ public class CheckLv1Controller extends Controller {
         availW  = mainVBox.widthProperty().subtract(mainContainer.spacingProperty());
         availH = mainVBox.heightProperty()
                 .subtract(headerContainer.heightProperty())
-                .subtract(subHeaderContainer.heightProperty())
                 .subtract(mainVBox.spacingProperty().multiply(3));
 
         DoubleBinding wFromH  = availH.multiply(BOARD_RATIO);

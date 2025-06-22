@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="root" styleClass="Menu" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingLv1Controller">
@@ -22,35 +21,27 @@
     <children>
 
         <!-- Title -->
-        <HBox alignment="CENTER" fx:id="headerContainer">
+        <HBox fx:id="headerContainer" alignment="CENTER">
             <children>
                 <Label styleClass="Text" text="BUILDING PHASE">
                     <font>
                         <Font size="58.0" />
                     </font>
                 </Label>
-                <Button fx:id="endBuilding" mnemonicParsing="false" onAction="#endBuilding" styleClass="Text2" stylesheets="@style.css" text="End building phase">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Button>
             </children>
         </HBox>
         <HBox fx:id="subHeaderContainer">
             <children>
                 <HBox fx:id="playersButtons" />
-<!--                <HBox fx:id="deckButtons">-->
-<!--                    <children>-->
-<!--                        <Button text="MiniDeck1" onAction="#handleMiniDeck" userData="0" />-->
-<!--                        <Button text="MiniDeck2" onAction="#handleMiniDeck" userData="1"/>-->
-<!--                        <Button text="MiniDeck3" onAction="#handleMiniDeck" userData="2"/>-->
-<!--                    </children>-->
-<!--                </HBox>-->
-                <Label styleClass="Text" text="FREE Ship Cards" fx:id="FreeShipCardText">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Label>
+            <HBox fx:id="endBuilding" prefHeight="100.0" prefWidth="299.0">
+               <children>
+                      <Button fx:id="endBuildingButton" mnemonicParsing="false" onAction="#onEndBuildingClick" styleClass="Text2" stylesheets="@style.css" text="End building">
+                          <font>
+                              <Font size="18.0" />
+                          </font>
+                      </Button>
+               </children>
+            </HBox>
             </children>
         </HBox>
 
@@ -80,12 +71,24 @@
                         <RowConstraints percentHeight="20" />
                     </rowConstraints>
                 </GridPane>
-                <HBox fx:id="reservedSlots"/>
+                <HBox fx:id="reservedSlots" />
             </StackPane>
 
             <!-- RIGHT: Covered ShipCards -->
             <VBox fx:id="cardPane" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                <ScrollPane fx:id="tileScroll" >
+   <!--                <HBox fx:id="deckButtons">-->
+   <!--                    <children>-->
+   <!--                        <Button text="MiniDeck1" onAction="#handleMiniDeck" userData="0" />-->
+   <!--                        <Button text="MiniDeck2" onAction="#handleMiniDeck" userData="1"/>-->
+   <!--                        <Button text="MiniDeck3" onAction="#handleMiniDeck" userData="2"/>-->
+   <!--                    </children>-->
+   <!--                </HBox>-->
+                <Label fx:id="FreeShipCardText" styleClass="Text" text="FREE Ship Cards">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+                <ScrollPane fx:id="tileScroll">
                     <content>
                         <Pane fx:id="freeShipCards">
                             <children>
@@ -94,20 +97,22 @@
                         </Pane>
                     </content>
                 </ScrollPane>
-                <VBox fx:id="heldShipCard" alignment="CENTER" style="-fx-background-color: #032b8a;
-                                                  -fx-background-radius: 20;
-                                                  -fx-padding: 10;
-                                                  -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);" >
-                    <ImageView fx:id="heldShipCardImage" preserveRatio="true" visible="false"/>
+                <VBox fx:id="heldShipCard" alignment="CENTER" style="-fx-background-color: #032b8a;                                                   -fx-background-radius: 20;                                                   -fx-padding: 10;                                                   -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
+                    <ImageView fx:id="heldShipCardImage" preserveRatio="true" visible="false" />
                     <HBox fx:id="arrows" alignment="CENTER" spacing="10">
-                        <Button fx:id="left" text="⟲" styleClass="Text2" visible="false"/>
-                        <Button fx:id="right" text="⟳" styleClass="Text2" visible="false"/>
+                        <Button fx:id="left" styleClass="Text2" text="⟲" visible="false" />
+                        <Button fx:id="right" styleClass="Text2" text="⟳" visible="false" />
                     </HBox>
-                    <Button fx:id="release" styleClass="Text2" text="Release shipcard" visible="false"/>
-                    <Button fx:id="place" styleClass="Text2" text="Place shipcard" visible="false"/>
-                    <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false"/>
+                    <Button fx:id="release" styleClass="Text2" text="Release shipcard" visible="false" />
+                    <Button fx:id="place" styleClass="Text2" text="Place shipcard" visible="false" />
+                    <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false" />
 
                 </VBox>
+            <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@style.css" text="error" visible="false" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
                 <!-- Cards added dynamically in controller -->
             </VBox>
 
