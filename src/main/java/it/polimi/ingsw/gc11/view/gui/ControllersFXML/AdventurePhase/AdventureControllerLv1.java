@@ -1,12 +1,15 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EnemyShipboardLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -183,4 +186,59 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private void onPositionClicked18() { System.out.println("Posizione 18"); }
 
 
+    public void onDrawbutton(ActionEvent actionEvent) {
+        try {
+            virtualServer.getAdventureCard();
+        } catch (NetworkException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void handle(AbandonedShip abandonedShip) {
+
+    }
+
+    private void handle(AbandonedStation abandonedStation) {
+
+    }
+
+    private void handle(CombatZoneLv1 combatZoneLv1) {
+
+    }
+
+    private void handle(CombatZoneLv2 combatZoneLv2) {
+
+    }
+
+    private void handle(Epidemic epidemic) {
+
+    }
+
+    private void handle(MeteorSwarm meteorSwarm) {
+
+    }
+
+    private void handle(OpenSpace openSpace) {
+
+    }
+
+    private void handle(Pirates pirates) {
+
+    }
+
+    private void handle(PlanetsCard planetsCard) {
+
+    }
+
+    private void handle(Slavers slavers) {
+
+    }
+
+    private void handle(Smugglers smugglers) {
+
+    }
+
+    private void handle(StarDust starDust) {
+
+    }
 }
