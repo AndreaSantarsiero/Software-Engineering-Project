@@ -350,16 +350,13 @@ public class CheckLv1Controller extends Controller {
                     virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
                 }
                 catch(Exception exc){
-//                    errorLabel.setVisible(true);
-//                    errorLabel.setText(e.getMessage());
-//                    errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
                     System.out.println("Network Error:  " + exc.getMessage());
                 }
 
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckEnemyShipboardLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    BuildingEnemyShipboardLv1Controller controller = fxmlLoader.getController();
+                    CheckEnemyShipboardLv1Controller controller = fxmlLoader.getController();
                     checkPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);

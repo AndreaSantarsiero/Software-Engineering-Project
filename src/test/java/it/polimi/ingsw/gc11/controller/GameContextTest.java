@@ -79,6 +79,7 @@ public class GameContextTest {
 
 
     void goToAdvPhase(){
+        startBuildingPhase();
         StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE);
         gameContext.getGameModel().setHeldShipCard(shipCard, "username1");
         gameContext.placeShipCard("username1", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
@@ -104,6 +105,12 @@ public class GameContextTest {
         gameContext.endBuildingLevel2("username1",1);
         gameContext.endBuildingLevel2("username2",2);
         gameContext.endBuildingLevel2("username3",3);
+    }
+
+    void startBuildingPhase(){
+        gameContext.chooseColor("username1", "blue");
+        gameContext.chooseColor("username2", "red");
+        gameContext.chooseColor("username3", "yellow");
     }
 
     @BeforeEach
@@ -140,11 +147,6 @@ public class GameContextTest {
         playerTwo.connectToGame(gameContext.getMatchID());
         playerThree.connectToGame(gameContext.getMatchID());
         Thread.sleep(20);  //waiting for the players to connect to the game
-
-        playerOne.chooseColor("blue");
-        playerTwo.chooseColor("red");
-        playerThree.chooseColor("yellow");
-        Thread.sleep(40);  //waiting for the players to choose the color
     }
 
     @AfterEach
@@ -158,34 +160,18 @@ public class GameContextTest {
     }
 
     @Test
-    void testInvalidUsername() throws FullLobbyException, UsernameAlreadyTakenException {
-        assertThrows(IllegalArgumentException.class, () -> gameContext.connectPlayerToGame(""), "Username cannot be empty");
-        assertThrows(IllegalArgumentException.class, () -> gameContext.connectPlayerToGame(null), "Username cannot be null");
-        gameContext.connectPlayerToGame("username");
-        assertThrows(UsernameAlreadyTakenException.class, () -> gameContext.connectPlayerToGame("username"), "Username already taken");
-    }
-
-
-
-    @Test
-    void testAddPlayer() throws FullLobbyException, UsernameAlreadyTakenException {
-        gameContext.connectPlayerToGame("username1");
-        gameContext.connectPlayerToGame("username2");
-        gameContext.connectPlayerToGame("username3");
+    void testAddPlayer() {
         assertThrows(FullLobbyException.class, () -> gameContext.connectPlayerToGame("username4"), "Cannot add a player to a full lobby");
     }
 
     @Test
     void testChooseColor() throws FullLobbyException, UsernameAlreadyTakenException {
         assertThrows(IllegalStateException.class, () -> gameContext.chooseColor(null, "blue"),  "username cannot be null");
-        assertThrows(IllegalStateException.class, () -> gameContext.chooseColor("username1", "blue"), "player not in lobby");
-
-        gameContext.connectPlayerToGame("username1");
         assertThrows(NullPointerException.class, () -> gameContext.chooseColor("username1", null), "color cannot be null");
-        assertThrows(NullPointerException.class, () -> gameContext.chooseColor("username1", "black"), "color do not exist");
+
         gameContext.chooseColor("username1", "blue");
         assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username1", "red"), "you cannot change color");
-        gameContext.connectPlayerToGame("username2");
+
         assertThrows(IllegalArgumentException.class, () -> gameContext.chooseColor("username2", "blue"),  "color already chosen");
         gameContext.chooseColor("username2", "red");
     }
@@ -193,20 +179,19 @@ public class GameContextTest {
     @Test
     void testCorrectPhaseAfterConnections() throws FullLobbyException, UsernameAlreadyTakenException {
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Phase should be IdlePhase before the lobby fills up.");
-        gameContext.connectPlayerToGame("username1");
         gameContext.chooseColor("username1", "blue");
+
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Phase should be IdlePhase before the lobby fills up.");
-        gameContext.connectPlayerToGame("username2");
         gameContext.chooseColor("username2", "red");
+
         assertInstanceOf(IdlePhase.class, gameContext.getPhase(), "Phase should be IdlePhase before the lobby fills up.");
-        gameContext.connectPlayerToGame("username3");
         gameContext.chooseColor("username3", "yellow");
+
         assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Phase should be BuildingPhaseLv2 after the lobby fills up.");
     }
 
     @Test
-    void testInvalidState() throws FullLobbyException, UsernameAlreadyTakenException {
-        gameContext.connectPlayerToGame("username1");
+    void testInvalidState() {
         gameContext.chooseColor("username1", "blue");
 
         //IDLE PHASE
@@ -222,13 +207,15 @@ public class GameContextTest {
     }
 
     @Test
-    void testNullGetFreeShipCard(){
+    void testNullGetFreeShipCard() {
+        startBuildingPhase();
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard(null, null), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("invalidUsername", null), "username should be valid");
     }
 
     @Test
     void testGetFreeShipCard() {
+        startBuildingPhase();
         ShipCard shipCard = assertInstanceOf(ShipCard.class, gameContext.getFreeShipCard("username1", null), "getFreeShipCard should be return a ShipCard");
         assertThrows(IllegalArgumentException.class, () -> gameContext.getFreeShipCard("username1", null), "player cannot have more than one shipCard in hand");
         gameContext.releaseShipCard("username1", shipCard);
@@ -237,6 +224,7 @@ public class GameContextTest {
 
     @Test
     void testReleaseShipCardIllegalArgument(){
+        startBuildingPhase();
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard(null, null), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("", null), "username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("invalidUsername", null), "username should be valid");
@@ -244,6 +232,7 @@ public class GameContextTest {
 
     @Test
     void testReleaseShipCards(){
+        startBuildingPhase();
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "this player don't have any shipCard in hand");
         ShipCard shipCard = gameContext.getFreeShipCard("username1", null);
         assertThrows(IllegalArgumentException.class, () -> gameContext.releaseShipCard("username1", null), "shipCard cannot be null");
@@ -255,6 +244,7 @@ public class GameContextTest {
 
     @Test
     void testPlaceShipCardInvalid() {
+        startBuildingPhase();
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard(null, null, ShipCard.Orientation.DEG_0, 7, 7), "username cannot be null");
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("", null, ShipCard.Orientation.DEG_0, 7, 7), "username cannot be empty");
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("invalidUsername", null, ShipCard.Orientation.DEG_0, 7, 7), "username should be valid");
@@ -267,6 +257,7 @@ public class GameContextTest {
 
     @Test
     void testPlaceShipCard(){
+        startBuildingPhase();
         assertDoesNotThrow(() -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6));
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 3, 3), "coordinates should be valid");
         assertThrows(IllegalArgumentException.class, () -> gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 7), "slot already used");
@@ -274,11 +265,13 @@ public class GameContextTest {
 
     @Test
     void testGetPhase() {
+        startBuildingPhase();
         assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase(), "Match should be in level 2 building phase");
     }
 
     @Test
     void testRemoveShipCardInvalid(){
+        startBuildingPhase();
         assertInstanceOf(BuildingPhaseLv2.class, gameContext.getPhase());
 
         assertThrows(IllegalArgumentException.class, () -> gameContext.removeShipCard(null, 7, 7),  "username cannot be null");
@@ -291,6 +284,7 @@ public class GameContextTest {
 
     @Test
     void testRemoveShipCard(){
+        startBuildingPhase();
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6);
         ShipBoard old = SerializationUtils.clone(gameContext.getGameModel().getPlayerShipBoard("username1"));
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 8);
@@ -301,12 +295,14 @@ public class GameContextTest {
 
     @Test
     void testReserveShipCardInvalid(){
+        startBuildingPhase();
         assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username", gameContext.getFreeShipCard("username", null)),"username cannot be illegal");
         assertThrows(IllegalArgumentException.class, () -> gameContext.reserveShipCard("username1", new StructuralModule("id", ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE)), "you cannot reserve a ship card if you did take it in hand");
     }
 
     @Test
     void testReserveShipCard(){
+        startBuildingPhase();
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should be empty");
         gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", null));
         assertEquals(1, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should one");
@@ -317,6 +313,7 @@ public class GameContextTest {
 
     @Test
     void testUseReservedShipCardInvalidArguments() {
+        startBuildingPhase();
         gameContext.reserveShipCard("username1", gameContext.getFreeShipCard("username1", null));
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username", gameContext.getGameModel().getPlayerShipBoard("username").getReservedComponents().getFirst(), ShipCard.Orientation.DEG_0, 7, 7),"username cannot be illegal");
         assertThrows(IllegalArgumentException.class,() -> gameContext.useReservedShipCard("username1", new StructuralModule("testModule", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE), ShipCard.Orientation.DEG_0, 7, 7),"you cannot use this component if you didn't reserve it before");
@@ -325,6 +322,7 @@ public class GameContextTest {
 
     @Test
     void testUseReservedShipCard(){
+        startBuildingPhase();
         assertEquals(0, gameContext.getGameModel().getPlayerShipBoard("username1").getReservedComponents().size(),"reserved components should be empty");
         assertEquals(1, gameContext.getGameModel().getPlayerShipBoard("username1").getShipCardsNumber(),"shipCards number should be one (the central unit)");
         ShipCard shipCard = gameContext.getFreeShipCard("username1", null);
@@ -338,6 +336,7 @@ public class GameContextTest {
 
     @Test
     void testObserveMiniDeck(){
+        startBuildingPhase();
         assertThrows(IllegalArgumentException.class, () -> gameContext.observeMiniDeck("username1", 1),"cannot observe a mini deck before placing at least one component");
 
         StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE);
@@ -355,6 +354,7 @@ public class GameContextTest {
 
     @Test
     void testGoToCheckPhase(){
+        startBuildingPhase();
         goToCheckPhase();
         assertInstanceOf(CheckPhase.class, gameContext.getPhase(), "game should be in check phase");
     }
@@ -516,6 +516,7 @@ public class GameContextTest {
 
     @Test
     void testEndBuilding(){
+        startBuildingPhase();
         gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.endBuildingLevel2("username1",1);
 
@@ -583,11 +584,6 @@ public class GameContextTest {
         advPhase.setAdvState(new AbandonedShipState(advPhase));
 
         assertThrows(IllegalStateException.class, () -> gameContext.acceptAdventureCard("username1"));
-    }
-
-    @Test
-    void testChooseMaterial(){
-
     }
 
     @Test

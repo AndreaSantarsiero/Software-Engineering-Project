@@ -81,14 +81,6 @@ public class AdvShipBoardLv1Controller extends Controller {
         virtualServer = viewModel.getVirtualServer();
         this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
         this.ownerUsername = ownerUsername;
-        // Set the shipboard to client's shipboard
-        if ( ownerUsername.equals(adventurePhaseData.getPlayer().getUsername()) ) {
-            this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
-        }
-        // Set the shipboard to enemy's shipboard
-        else {
-            this.shipBoard = adventurePhaseData.getEnemies().get(ownerUsername).getShipBoard();
-        }
         this.owner.setText(ownerUsername + "'s Shipboard");
 
 
@@ -155,6 +147,15 @@ public class AdvShipBoardLv1Controller extends Controller {
 
 
     public void setShipBoard(){
+
+        // Set the shipboard to client's shipboard
+        if ( ownerUsername.equals(adventurePhaseData.getPlayer().getUsername()) ) {
+            this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
+        }
+        // Set the shipboard to enemy's shipboard
+        else {
+            this.shipBoard = adventurePhaseData.getEnemies().get(ownerUsername).getShipBoard();
+        }
 
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
@@ -301,8 +302,8 @@ public class AdvShipBoardLv1Controller extends Controller {
 
             slotGrid.getChildren().clear();
             setShipBoard();
-            reservedSlots.getChildren().clear();
-            setReservedSlots();
+//            reservedSlots.getChildren().clear();
+//            setReservedSlots();
 
         });
     }
