@@ -305,7 +305,7 @@ public class AdvShipBoardLv1Controller extends Controller {
     }
 
     @Override
-    public void update(CheckPhaseData buildingPhaseData) {
+    public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
 
             slotGrid.getChildren().clear();

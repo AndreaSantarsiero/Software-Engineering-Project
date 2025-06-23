@@ -376,7 +376,7 @@ public class CheckLv2Controller extends Controller {
     }
 
     @Override
-    public void update(CheckPhaseData buildingPhaseData) {
+    public void update(CheckPhaseData checkPhaseData) {
         Platform.runLater(() -> {
 
             slotGrid.getChildren().clear();

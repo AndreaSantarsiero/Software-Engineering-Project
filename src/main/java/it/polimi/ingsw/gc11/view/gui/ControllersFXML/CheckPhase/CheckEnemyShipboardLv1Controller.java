@@ -205,7 +205,7 @@ public class CheckEnemyShipboardLv1Controller extends Controller {
     }
 
     @Override
-    public void update(BuildingPhaseData buildingPhaseData) {
+    public void update(CheckPhaseData checkPhaseData) {
         Platform.runLater(() -> {
 
             slotGrid.getChildren().clear();

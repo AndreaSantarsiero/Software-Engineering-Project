@@ -214,6 +214,8 @@ public class AdventureControllerLv1 extends Controller {
 
         for(Player player : allPlayers) {
             int position = player.getPosition();
+            //Debugging
+            System.out.println("Player: " + player.getUsername() + ", Position: " + position);
             Rectangle positionRect = switch (position) {
                 case 0 -> pos1;
                 case 1 -> pos2;
