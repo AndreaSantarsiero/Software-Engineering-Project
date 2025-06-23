@@ -33,7 +33,7 @@ public class EndGamePhase extends GamePhase {
     public EndGamePhase(GameContext gameContext) {
         this.gameContext = gameContext;
         GameModel gameModel = gameContext.getGameModel();
-        ArrayList<Player> players = gameModel.getPlayers();
+        ArrayList<Player> players = gameModel.getAllPlayers();
 
         //Finish Order Rewards
         ArrayList<Integer> finishOrderRewards = gameModel.getFlightBoard().getFinishOrderRewards();

@@ -228,7 +228,7 @@ public class ServerController {
             String gameId = entry.getKey();
             GameContext match = entry.getValue();
             if(!match.getGameModel().isFullLobby() || match.equals(player.getGameContext())) {
-                List<String> usernames = match.getGameModel().getPlayers().stream()
+                List<String> usernames = match.getGameModel().getPlayersNotAbort().stream()
                         .map(Player::getUsername)
                         .collect(Collectors.toList());
                 result.put(gameId, usernames);

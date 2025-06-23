@@ -30,7 +30,7 @@ public class ChooseMaterialsAction extends ClientGameAction {
             Player player = context.chooseMaterials(username, storageMaterials);
             String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
-            for(Player p : context.getGameModel().getPlayers()) {
+            for(Player p : context.getGameModel().getPlayersNotAbort()) {
                 if(player.getUsername().equals(username)) {
                     UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayer);
                     context.sendAction(username, response);

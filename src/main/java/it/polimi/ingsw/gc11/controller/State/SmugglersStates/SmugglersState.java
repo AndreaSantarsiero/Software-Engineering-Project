@@ -84,7 +84,7 @@ public class SmugglersState extends AdventureState {
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
         gameModel.checkPlayerUsername(username);
-        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
         int sum = 0;
 
         if(!player.getUsername().equals(username)){
@@ -137,7 +137,7 @@ public class SmugglersState extends AdventureState {
                 this.advContext.setResolvingAdvCard(false);
                 this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
 
-                if(advContext.getIdxCurrentPlayer() == gameModel.getPlayers().size()){
+                if(advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()){
                     this.advContext.setAdvState(new IdleState(advContext));
                 }
                 else {

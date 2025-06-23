@@ -28,7 +28,7 @@ public class LandOnPlanetAction extends ClientGameAction {
             String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
             //risposta da cambiare
-            for(Player player : context.getGameModel().getPlayers()) {
+            for(Player player : context.getGameModel().getPlayersNotAbort()) {
                 if(player.getUsername().equals(username)) {
                     UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayer);
                     context.sendAction(username, response);

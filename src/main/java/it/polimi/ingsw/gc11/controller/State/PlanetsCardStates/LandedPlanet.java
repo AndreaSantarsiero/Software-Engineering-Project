@@ -75,7 +75,7 @@ public class LandedPlanet extends AdventureState {
         this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer()+1);
 
         //next state
-        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayers().size()  ||
+        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()  ||
             this.numVisited == planetsCard.getPlanets().size()) {
             //NoPlayersLeft or NoPlanetsLeft
             this.advContext.setAdvState(new IdleState(this.advContext));

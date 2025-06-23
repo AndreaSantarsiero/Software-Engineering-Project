@@ -26,7 +26,7 @@ public class OpenSpaceState extends AdventureState {
     @Override
     public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){
         gameModel.checkPlayerUsername(username);
-        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
         int usedBatteries = 0;
 
         if(!player.getUsername().equals(username)){
@@ -55,7 +55,7 @@ public class OpenSpaceState extends AdventureState {
         this.advContext.setResolvingAdvCard(false);
         this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer()+1);
 
-        if(this.advContext.getIdxCurrentPlayer() == gameModel.getPlayers().size()){
+        if(this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()){
             //NoPlayersLeft
             this.advContext.setAdvState(new IdleState(this.advContext));
         }

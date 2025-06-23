@@ -45,7 +45,7 @@ public class PiratesState extends AdventureState {
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
 
-        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
@@ -93,7 +93,7 @@ public class PiratesState extends AdventureState {
             this.playersDefeated.add(player);
             this.advContext.setResolvingAdvCard(false);
 
-            if (this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayers().size() - 1) {
+            if (this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayersNotAbort().size() - 1) {
                 advContext.setAdvState(new CoordinateState(advContext, this.playersDefeated, 0));
             }
             else{

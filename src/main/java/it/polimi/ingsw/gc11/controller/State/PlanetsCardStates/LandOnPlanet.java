@@ -30,7 +30,7 @@ public class LandOnPlanet  extends AdventureState {
     @Override
     public List<Material> landOnPlanet(String username, int numPlanet){
         gameModel.checkPlayerUsername(username);
-        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");

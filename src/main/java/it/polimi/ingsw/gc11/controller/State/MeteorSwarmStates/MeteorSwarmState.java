@@ -28,7 +28,7 @@ public class MeteorSwarmState extends AdventureState {
     @Override
     public Hit getCoordinate(String username){
         gameModel.checkPlayerUsername(username);
-        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");

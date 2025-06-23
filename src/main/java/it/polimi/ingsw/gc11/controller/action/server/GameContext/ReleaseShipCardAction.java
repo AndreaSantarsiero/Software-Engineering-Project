@@ -24,7 +24,7 @@ public class ReleaseShipCardAction extends ClientGameAction {
         try{
             shipCard.setOrientation(ShipCard.Orientation.DEG_0);
             context.releaseShipCard(username, shipCard);
-            for(Player player : context.getGameModel().getPlayers()){
+            for(Player player : context.getGameModel().getPlayersNotAbort()){
                 if(player.getUsername().equals(username)){
                     context.sendAction(player.getUsername(), new UpdateAvailableShipCardsAction(context.getGameModel().getFreeShipCards(), context.getGameModel().getFreeShipCardsCount(), true));
                 }

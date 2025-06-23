@@ -19,7 +19,7 @@ public class ResetBuildingTimerAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             Instant expireTimerInstant = context.resetBuildingTimer(username);
-            for(Player player : context.getGameModel().getPlayers()){
+            for(Player player : context.getGameModel().getPlayersNotAbort()){
                 if(player.getUsername().equals(username)) {
                     SendBuildingTimerAction response = new SendBuildingTimerAction(expireTimerInstant, context.getTimersLeft(), true);
                     context.sendAction(player.getUsername(), response);

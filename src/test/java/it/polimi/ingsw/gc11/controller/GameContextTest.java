@@ -1048,6 +1048,12 @@ public class GameContextTest {
     }
 
     @Test
+    void testAbort() {
+        gameContext.abortFlight("username1");
+
+    }
+
+    @Test
     void testRewardDecisionValidPiratesAccept() {
         AdventureCard advCard;
         AdventurePhase advPhase;

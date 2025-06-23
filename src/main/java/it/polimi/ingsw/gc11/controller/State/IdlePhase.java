@@ -54,7 +54,7 @@ public class IdlePhase extends GamePhase {
 
         this.gameModel.addPlayer(playerUsername);
 
-        if (gameModel.getPlayers().size() == gameModel.getMaxNumPlayers()){
+        if (gameModel.getPlayersNotAbort().size() == gameModel.getMaxNumPlayers()){
             this.isFullLobby = true;
         }
     }
@@ -82,7 +82,7 @@ public class IdlePhase extends GamePhase {
         Player player = this.gameModel.getPlayer(username);
         String color = chosenColor.toLowerCase();
 
-        for (Player p : gameModel.getPlayers()) {
+        for (Player p : gameModel.getPlayersNotAbort()) {
             if (!p.getUsername().equals(username)) {
                 String taken = p.getColorToString();
                 if (taken != null && taken.equalsIgnoreCase(color)) {

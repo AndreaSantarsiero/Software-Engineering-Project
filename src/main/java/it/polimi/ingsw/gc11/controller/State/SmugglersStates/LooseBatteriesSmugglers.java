@@ -121,7 +121,7 @@ public class LooseBatteriesSmugglers extends AdventureState{
                 player.getShipBoard().useBatteries(batteries);
                 this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
 
-                if(advContext.getIdxCurrentPlayer() == advContext.getGameModel().getPlayers().size()){
+                if(advContext.getIdxCurrentPlayer() == advContext.getGameModel().getPlayersNotAbort().size()){
                     this.advContext.setAdvState(new IdleState(advContext));
                 }
                 else{

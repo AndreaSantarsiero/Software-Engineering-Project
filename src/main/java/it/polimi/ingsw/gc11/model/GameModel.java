@@ -223,10 +223,25 @@ public class GameModel {
             }
         }
 
+
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
-    public ArrayList<Player> getPlayers() {return players;}
+    public ArrayList<Player> getPlayersNotAbort() {
+        ArrayList<Player> playersNotAbort = new ArrayList<>();
+
+        for (Player player : players) {
+            if (!player.isAbort()) {
+                playersNotAbort.add(player);
+            }
+        }
+
+        return playersNotAbort;
+    }
+
+    public ArrayList<Player> getAllPlayers() {
+        return players;
+    }
 
     public Player getLastPlayer() {
         return players.getLast();
@@ -645,8 +660,8 @@ public class GameModel {
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
 
-        if(pos < 1 || pos > getPlayers().size()){
-            throw new IllegalArgumentException("pos must be between 1 and " + getPlayers().size());
+        if(pos < 1 || pos > getPlayersNotAbort().size()){
+            throw new IllegalArgumentException("pos must be between 1 and " + getPlayersNotAbort().size());
         }
 
         for(Player player : players){

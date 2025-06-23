@@ -12,7 +12,7 @@ public class EpidemicState extends AdventureState {
     public EpidemicState(AdventurePhase advContext) {
         super(advContext);
 
-        for (Player player : advContext.getGameModel().getPlayers()) {
+        for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
             player.getShipBoard().epidemic();
         }
 

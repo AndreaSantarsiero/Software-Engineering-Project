@@ -39,7 +39,7 @@ public class HandleMeteor extends AdventureState {
     @Override
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon) {
         gameModel.checkPlayerUsername(username);
-        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
         if(!player.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
@@ -109,13 +109,13 @@ public class HandleMeteor extends AdventureState {
         this.iterationsPlayer++;
 
         //next state
-        if(iterationsPlayer == gameModel.getPlayers().size() && iterationsHit < meteorSwarm.getMeteors().size()){
+        if(iterationsPlayer == gameModel.getPlayersNotAbort().size() && iterationsHit < meteorSwarm.getMeteors().size()){
             //No more player left to handle
             this.iterationsHit++;
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setAdvState(new MeteorSwarmState(advContext, iterationsHit));
         }
-        else if(iterationsHit == meteorSwarm.getMeteors().size() && iterationsPlayer == gameModel.getPlayers().size()){
+        else if(iterationsHit == meteorSwarm.getMeteors().size() && iterationsPlayer == gameModel.getPlayersNotAbort().size()){
             this.advContext.setAdvState(new IdleState(advContext));
         }
         else{

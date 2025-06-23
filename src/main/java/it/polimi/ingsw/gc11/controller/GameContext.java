@@ -103,6 +103,10 @@ public class GameContext {
     }
 
 
+    public void abortFlight(String username) {
+        Player player = gameModel.getPlayer(username);
+        player.setAbort();
+    }
 
     /**
      * Returns the game model associated with this match.
@@ -171,7 +175,7 @@ public class GameContext {
      */
     public Map<String, String> getPlayersColor (){
         Map<String, String> playersColor = new HashMap<>();
-        for (Player player : gameModel.getPlayers()) {
+        for (Player player : gameModel.getPlayersNotAbort()) {
             playersColor.put(player.getUsername(), player.getColorToString());
         }
         return playersColor;
@@ -259,7 +263,7 @@ public class GameContext {
      */
     public Map<String, ShipBoard> getPlayersShipBoard() {
         Map<String, ShipBoard> playersShipBoard = new HashMap<>();
-        for (Player player : gameModel.getPlayers()) {
+        for (Player player : gameModel.getPlayersNotAbort()) {
             playersShipBoard.put(player.getUsername(), player.getShipBoard());
         }
         return playersShipBoard;
@@ -367,7 +371,7 @@ public class GameContext {
     public Player getCurrentPlayerUsername(){
         if (phase.isAdventurePhase()){
             AdventurePhase advPhase = (AdventurePhase) phase;
-            return gameModel.getPlayers().get(advPhase.getIdxCurrentPlayer());
+            return gameModel.getPlayersNotAbort().get(advPhase.getIdxCurrentPlayer());
         }
         else {
             throw new IllegalStateException("The current match is not in the adventure phase");

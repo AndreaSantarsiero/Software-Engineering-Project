@@ -89,7 +89,7 @@ public class LooseState extends AdventureState {
         int idx = this.advContext.getIdxCurrentPlayer();
         this.advContext.setIdxCurrentPlayer(idx + 1);
 
-        if(this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayers().size()){
+        if(this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayersNotAbort().size()){
             this.advContext.setAdvState(new IdleState(advContext));
         }
         else{

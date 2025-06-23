@@ -46,7 +46,7 @@ public class StarDustState extends AdventureState {
     public StarDustState(AdventurePhase advContext) {
         super(advContext);
         GameModel gameModel = this.advContext.getGameModel();
-        ArrayList<Player> reverseOrderPlayers = new ArrayList<> (gameModel.getPlayers());
+        ArrayList<Player> reverseOrderPlayers = new ArrayList<> (gameModel.getPlayersNotAbort());
         Collections.reverse(reverseOrderPlayers);
 
         for (Player player : reverseOrderPlayers) {

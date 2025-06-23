@@ -28,7 +28,7 @@ public class GetFreeShipCardAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             ShipCard heldShipCard = context.getFreeShipCard(username, shipCard);
-            for(Player p : context.getGameModel().getPlayers()) {
+            for(Player p : context.getGameModel().getPlayersNotAbort()) {
                 if(p.getUsername().equals(username)) {
                     SendFreeShipCardAction response = new SendFreeShipCardAction(heldShipCard, context.getGameModel().getFreeShipCards(), context.getGameModel().getFreeShipCardsCount());
                     context.sendAction(p.getUsername(), response);

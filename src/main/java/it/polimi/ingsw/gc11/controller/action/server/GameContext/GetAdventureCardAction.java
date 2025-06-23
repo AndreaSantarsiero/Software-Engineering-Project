@@ -21,7 +21,7 @@ public class GetAdventureCardAction extends ClientGameAction {
             AdventureCard card = context.getAdventureCard(username);
             String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
-            for (Player player : context.getGameModel().getPlayers()){
+            for (Player player : context.getGameModel().getPlayersNotAbort()){
                 if (player.getUsername().equals(username)){
                     SendAdventureCardAction response = new SendAdventureCardAction(card, true, currentPlayer);
                     context.sendAction(player.getUsername(), response);

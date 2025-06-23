@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.controller.action.server.GameContext;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdateEnemyProfileAction;
 import it.polimi.ingsw.gc11.controller.action.client.UpdatePlayerProfileAction;
@@ -31,7 +30,7 @@ public class MeteorDefenseAction extends ClientGameAction {
             Player player = context.meteorDefense(getUsername(), batteries, cannon);
             String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
-            for(Player p : context.getGameModel().getPlayers()) {
+            for(Player p : context.getGameModel().getPlayersNotAbort()) {
                 if(player.getUsername().equals(username)) {
                     UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayer);
                     context.sendAction(username, response);

@@ -83,17 +83,17 @@ class GameModelTest {
 
     @Test
     void testGetMaxNumPlayers() throws FullLobbyException, UsernameAlreadyTakenException {
-        assertEquals(0, gameModel.getPlayers().size());
+        assertEquals(0, gameModel.getPlayersNotAbort().size());
         gameModel.addPlayer("Player1");
-        assertEquals(1, gameModel.getPlayers().size());
+        assertEquals(1, gameModel.getPlayersNotAbort().size());
         gameModel.addPlayer("Player2");
-        assertEquals(2, gameModel.getPlayers().size());
+        assertEquals(2, gameModel.getPlayersNotAbort().size());
         gameModel.addPlayer("Player3");
-        assertEquals(3, gameModel.getPlayers().size());
+        assertEquals(3, gameModel.getPlayersNotAbort().size());
         gameModel.addPlayer("Player4");
-        assertEquals(4, gameModel.getPlayers().size());
+        assertEquals(4, gameModel.getPlayersNotAbort().size());
         assertThrows(FullLobbyException.class, () -> gameModel.addPlayer("Player5"));
-        assertEquals(4, gameModel.getPlayers().size());
+        assertEquals(4, gameModel.getPlayersNotAbort().size());
 
     }
 
