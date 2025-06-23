@@ -64,7 +64,7 @@ public class Engine extends ShipCard {
         } catch (ClassCastException e) {
             return false;
         }
-        return super.equals(obj) && this.type == engine.getType();
+        return super.equals(obj) && this.type.equals(engine.getType());
     }
 
     @Override

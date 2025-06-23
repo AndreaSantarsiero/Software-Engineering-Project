@@ -64,7 +64,7 @@ public class Cannon extends ShipCard {
         } catch (ClassCastException e) {
             return false;
         }
-        return super.equals(obj) && this.type == cannon.getType();
+        return super.equals(obj) && this.type.equals(cannon.getType());
     }
 
     @Override

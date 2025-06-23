@@ -223,7 +223,7 @@ public class Storage extends ShipCard {
         } catch (ClassCastException e) {
             return false;
         }
-        return super.equals(obj) && this.type == storage.getType();
+        return super.equals(obj) && this.type.equals(storage.getType());
     }
 
     @Override

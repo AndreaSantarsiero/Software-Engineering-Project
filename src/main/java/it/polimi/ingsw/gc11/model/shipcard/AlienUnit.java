@@ -100,7 +100,7 @@ public class AlienUnit extends ShipCard {
         } catch (ClassCastException e) {
             return false;
         }
-        return super.equals(obj) && this.type == alienUnit.getType() && this.presence == alienUnit.isPresent();
+        return super.equals(obj) && this.type.equals(alienUnit.getType()) && this.presence == alienUnit.isPresent();
     }
 
 
