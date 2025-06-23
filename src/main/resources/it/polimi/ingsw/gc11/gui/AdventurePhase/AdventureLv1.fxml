@@ -88,7 +88,7 @@
                     <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false" />
 
                 </VBox>
-                <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card" />
+                <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card"/>
                 <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@../style.css" text="error" visible="false" wrapText="true">
                     <font>
                         <Font size="18.0" />
