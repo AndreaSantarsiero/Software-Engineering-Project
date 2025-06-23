@@ -53,7 +53,7 @@ public class MeteorSwarmState extends AdventureState {
         }
 
         Hit hit = meteorSwarm.getMeteors().get(iterationsHit);
-        hit.setCoord(coordinates);
+        hit.setCoordinate(coordinates);
 
         return hit;
     }

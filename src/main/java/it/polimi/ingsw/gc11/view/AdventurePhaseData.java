@@ -238,8 +238,9 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     public void setHit(Hit hit) {
+        actualizePreviousState();
         this.hit = hit;
-        updateState();
+        notifyListener();
     }
 
 

@@ -8,12 +8,15 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 
+
+
 public class Penalty3Lv1 extends AdventureState {
 
     private GameModel gameModel;
     private Player playerDefeated;
     private int iterationsHit;
     private CombatZoneLv1 combatZoneLv1;
+
 
     public Penalty3Lv1(AdventurePhase advContext, Player playerDefeated, int iterationsHit) {
         super(advContext);
@@ -27,6 +30,7 @@ public class Penalty3Lv1 extends AdventureState {
             this.advContext.setAdvState(new IdleState(advContext));
         }
     }
+
 
     @Override
     public Hit getCoordinate(String username){
@@ -42,7 +46,7 @@ public class Penalty3Lv1 extends AdventureState {
         this.advContext.setAdvState(new HandleShotLv1(advContext, playerDefeated, coordinate, iterationsHit));
 
         Hit hit = combatZoneLv1.getShots().get(iterationsHit);
-        hit.setCoord(coordinate);
+        hit.setCoordinate(coordinate);
 
         return hit;
     }

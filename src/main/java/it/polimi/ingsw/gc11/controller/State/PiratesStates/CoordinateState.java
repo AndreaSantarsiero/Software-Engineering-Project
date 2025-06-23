@@ -54,7 +54,7 @@ public class CoordinateState extends AdventureState {
                                     0, alreadyPlayed));
 
         Hit hit = pirates.getShots().get(iterationsHit);
-        hit.setCoord(coordinates);
+        hit.setCoordinate(coordinates);
 
         return hit;
     }

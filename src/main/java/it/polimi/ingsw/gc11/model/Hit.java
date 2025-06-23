@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 
 public abstract class Hit implements Serializable {
-    private int coord;
 
     public enum Type {
         BIG, SMALL
@@ -17,12 +16,14 @@ public abstract class Hit implements Serializable {
 
     private final Type type;
     private final Direction direction;
+    private int coordinate;
+
 
 
     public Hit(Type type, Direction direction) {
         this.type = type;
         this.direction = direction;
-        this.coord = -1;
+        this.coordinate = -1;
     }
 
 
@@ -31,12 +32,12 @@ public abstract class Hit implements Serializable {
         return type;
     }
 
-    public int getCoord() {
-        return coord;
+    public int getCoordinate() {
+        return coordinate;
     }
 
-    public void setCoord(int coord) {
-        this.coord = coord;
+    public void setCoordinate(int coordinate) {
+        this.coordinate = coordinate;
     }
 
     public Direction getDirection() {

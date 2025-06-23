@@ -416,7 +416,9 @@ public class AdventureTemplate extends CLITemplate {
                         adventureCardCLI.print(data.getAdventureCard(), i+13);
                     }
                     if(i == 3){
-                        System.out.print("Hint: " + data.getGameHint());
+                        if(data.getGameHint() != null){
+                            System.out.print("Hint: " + data.getGameHint());
+                        }
                     }
                     if(i == 4){
                         System.out.print("Current state: " + data.getState().toString() + ", active: " + controller.isActive() + ", state new: " + data.isStateNew());

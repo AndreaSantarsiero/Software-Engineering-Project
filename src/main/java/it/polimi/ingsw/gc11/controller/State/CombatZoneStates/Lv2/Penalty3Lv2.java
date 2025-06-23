@@ -2,12 +2,13 @@ package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2;
 
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.HandleShotLv1;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
+
+
 
 public class Penalty3Lv2 extends AdventureState {
 
@@ -15,6 +16,7 @@ public class Penalty3Lv2 extends AdventureState {
     private Player playerDefeated;
     private int iterationsHit;
     private CombatZoneLv2 combatZoneLv2;
+
 
     public Penalty3Lv2(AdventurePhase advContext, Player playerDefeated, int iterationsHit) {
         super(advContext);
@@ -28,6 +30,7 @@ public class Penalty3Lv2 extends AdventureState {
             this.advContext.setAdvState(new IdleState(advContext));
         }
     }
+
 
     @Override
     public Hit getCoordinate(String username){
@@ -43,7 +46,7 @@ public class Penalty3Lv2 extends AdventureState {
         this.advContext.setAdvState(new HandleShotLv2(advContext, playerDefeated, coordinate, iterationsHit));
 
         Hit hit = combatZoneLv2.getShots().get(iterationsHit);
-        hit.setCoord(coordinate);
+        hit.setCoordinate(coordinate);
 
         return hit;
     }
