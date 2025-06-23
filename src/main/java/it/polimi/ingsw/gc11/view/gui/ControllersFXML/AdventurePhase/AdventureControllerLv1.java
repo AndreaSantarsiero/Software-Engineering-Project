@@ -152,6 +152,8 @@ public class AdventureControllerLv1 extends Controller {
             rect.setWidth(40 * scaleX);
             rect.setHeight(40 * scaleY);
         }
+
+        setupPositions();
     }
 
     //Setup buttons to see all players' shipboards
@@ -203,6 +205,9 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void setupPositions() {
+        // Rimuovi tutti i cerchi precedenti
+        positionOverlayPane.getChildren().clear();
+
         ArrayList<Player> allPlayers = new ArrayList<>();
         allPlayers.add(adventurePhaseData.getPlayer());
         allPlayers.addAll(adventurePhaseData.getEnemies().values());
@@ -210,7 +215,7 @@ public class AdventureControllerLv1 extends Controller {
         for(Player player : allPlayers) {
             int position = player.getPosition();
             Rectangle positionRect = switch (position) {
-                case 0 -> pos1; // Assuming position 0 is pos1
+                case 0 -> pos1;
                 case 1 -> pos2;
                 case 2 -> pos3;
                 case 3 -> pos4;
@@ -231,18 +236,18 @@ public class AdventureControllerLv1 extends Controller {
                 default -> null;
             };
             if (positionRect != null) {
-                // Calcola il centro del rettangolo
+                // Calcola il centro e il raggio rispetto al Rectangle
                 double centerX = positionRect.getLayoutX() + positionRect.getWidth() / 2;
                 double centerY = positionRect.getLayoutY() + positionRect.getHeight() / 2;
                 double radius = Math.min(positionRect.getWidth(), positionRect.getHeight()) / 2 - 4;
+                if (radius < 0) radius = 2; // Evita valori negativi
 
                 Circle circle = new Circle(centerX, centerY, radius);
-                // Sostituisci con il colore del player
                 circle.setFill(Paint.valueOf(player.getColorToString()));
+                circle.setMouseTransparent(true); // Non blocca i listener del Rectangle
                 positionOverlayPane.getChildren().add(circle);
             }
         }
-
     }
 
     @FXML private void onPositionClicked1()  { System.out.println("Posizione 1"); }
