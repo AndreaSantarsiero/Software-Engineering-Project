@@ -83,9 +83,9 @@
                 </Label>
                 <VBox fx:id="advCard" alignment="CENTER" spacing="10" style="-fx-background-color: #032b8a; -fx-background-radius: 20; -fx-padding: 10; -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
                     <ImageView fx:id="adventureCardImage" preserveRatio="true" visible="false" />
-                    <Button fx:id="release" styleClass="Text2" text="Release shipcard" visible="false" />
-                    <Button fx:id="place" styleClass="Text2" text="Place shipcard" visible="false" />
-                    <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false" />
+                    <Button fx:id="acceptButton" styleClass="Text2" text="Accept" visible="false" />
+                    <Button fx:id="declineButtton" styleClass="Text2" text="Decline" visible="false" />
+                    <Button fx:id="handleButton" styleClass="Text2" text="Handle" visible="false" />
 
                 </VBox>
                 <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card"/>
