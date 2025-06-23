@@ -20,7 +20,15 @@ public class Storage extends ShipCard {
      * Defines the possible types of storage
      */
     public enum Type {
-        DOUBLE_BLUE, TRIPLE_BLUE, SINGLE_RED, DOUBLE_RED
+        DOUBLE_BLUE, TRIPLE_BLUE, SINGLE_RED, DOUBLE_RED;
+
+        public int getCapacity() {
+            return switch (this) {
+                case SINGLE_RED -> 1;
+                case DOUBLE_BLUE, DOUBLE_RED -> 2;
+                case TRIPLE_BLUE -> 3;
+            };
+        }
     }
 
 
