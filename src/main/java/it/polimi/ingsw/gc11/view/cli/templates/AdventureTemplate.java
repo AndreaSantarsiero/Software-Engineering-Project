@@ -54,12 +54,33 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┬  ┌─┐┌─┐┌┬┐  ┌┐┌┌─┐┬ ┬  ┌┬┐┌─┐┌┬┐┌─┐┬─┐┬┌─┐┬  ┌─┐",
                     "│  │ │├─┤ ││  │││├┤ │││  │││├─┤ │ ├┤ ├┬┘│├─┤│  └─┐",
                     "┴─┘└─┘┴ ┴─┴┘  ┘└┘└─┘└┴┘  ┴ ┴┴ ┴ ┴ └─┘┴└─┴┴ ┴┴─┘└─┘"),
-            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┌┬┐┌─┐┌─┐┌─┐┌┐┌┌─┐┬┬  ┬┌─┐  ┌─┐┬ ┬┬┌─┐┬  ┌┬┐",
-                    "└─┐├┤ │││ ││   ││├┤ ├┤ ├┤ │││└─┐│└┐┌┘├┤   └─┐├─┤│├┤ │   ││",
-                    "└─┘└─┘┘└┘─┴┘  ─┴┘└─┘└  └─┘┘└┘└─┘┴ └┘ └─┘  └─┘┴ ┴┴└─┘┴─┘─┴┘"),
-            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┌┬┐┌─┐┌─┐┌─┐┌┐┌┌─┐┬┬  ┬┌─┐  ┌─┐┌─┐┌┐┌┌┐┌┌─┐┌┐┌",
-                    "└─┐├┤ │││ ││   ││├┤ ├┤ ├┤ │││└─┐│└┐┌┘├┤   │  ├─┤│││││││ ││││",
-                    "└─┘└─┘┘└┘─┴┘  ─┴┘└─┘└  └─┘┘└┘└─┘┴ └┘ └─┘  └─┘┴ ┴┘└┘┘└┘└─┘┘└┘"),
+            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┌─┐┬ ┬┌─┐┌┬┐  ┌┬┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "└─┐├┤ │││ ││  └─┐├─┤│ │ │    ││├┤ ├┤ ├┤ │││└─┐├┤ ",
+                    "└─┘└─┘┘└┘─┴┘  └─┘┴ ┴└─┘ ┴   ─┴┘└─┘└  └─┘┘└┘└─┘└─┘"),
+            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┌┬┐┌─┐┌┬┐┌─┐┌─┐┬─┐  ┌┬┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "└─┐├┤ │││ ││  │││├┤  │ ├┤ │ │├┬┘   ││├┤ ├┤ ├┤ │││└─┐├┤ ",
+                    "└─┘└─┘┘└┘─┴┘  ┴ ┴└─┘ ┴ └─┘└─┘┴└─  ─┴┘└─┘└  └─┘┘└┘└─┘└─┘"),
+            List.of("┌─┐┌┬┐┬  ┬┌─┐┌┐┌┌─┐┌─┐┌┬┐  ┌┬┐┌─┐┌┐┌┬ ┬",
+                    "├─┤ ││└┐┌┘├─┤││││  ├┤  ││  │││├┤ ││││ │",
+                    "┴ ┴─┴┘ └┘ ┴ ┴┘└┘└─┘└─┘─┴┘  ┴ ┴└─┘┘└┘└─┘"),
+            List.of("┌┐ ┌─┐┌─┐┬┌─  ┌┬┐┌─┐  ┌─┐┬─┐┌─┐┬  ┬┬┌─┐┬ ┬┌─┐  ┌┬┐┌─┐┌┐┌┬ ┬",
+                    "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
+                    "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
+    );
+
+    private static final List<List<String>> advancedActionMenu = List.of(
+            List.of("┌┬┐┬ ┬┬─┐┌─┐┬ ┬  ┌┬┐┬┌─┐┌─┐┌─┐",
+                    " │ ├─┤├┬┘│ ││││   ││││  ├┤ └─┐",
+                    " ┴ ┴ ┴┴└─└─┘└┴┘  ─┴┘┴└─┘└─┘└─┘"),
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┬  ┌─┐┌┐┌┌─┐┌┬┐",
+                    "│  ├─┤│ ││ │└─┐├┤   ├─┘│  ├─┤│││├┤  │ ",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  ┴  ┴─┘┴ ┴┘└┘└─┘ ┴ "),
+            List.of("┌─┐┌─┐┌─┐┌─┐┌─┐┌┬┐  ┬─┐┌─┐┬ ┬┌─┐┬─┐┌┬┐",
+                    "├─┤│  │  ├┤ ├─┘ │   ├┬┘├┤ │││├─┤├┬┘ ││",
+                    "┴ ┴└─┘└─┘└─┘┴   ┴   ┴└─└─┘└┴┘┴ ┴┴└──┴┘"),
+            List.of("┬─┐┌─┐┌─┐┬ ┬┌─┐┌─┐  ┬─┐┌─┐┬ ┬┌─┐┬─┐┌┬┐",
+                    "├┬┘├┤ ├┤ │ │└─┐├┤   ├┬┘├┤ │││├─┤├┬┘ ││",
+                    "┴└─└─┘└  └─┘└─┘└─┘  ┴└─└─┘└┴┘┴ ┴┴└──┴┘"),
             List.of("┌┐ ┌─┐┌─┐┬┌─  ┌┬┐┌─┐  ┌─┐┬─┐┌─┐┬  ┬┬┌─┐┬ ┬┌─┐  ┌┬┐┌─┐┌┐┌┬ ┬",
                     "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
                     "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
@@ -137,10 +158,10 @@ public class AdventureTemplate extends CLITemplate {
                     "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
                     "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
     );
-    private static final List<List<String>> defensiveShieldMenu = List.of(
-            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌┬┐┌─┐┌─┐┌─┐┌┐┌┌─┐┬┬  ┬┌─┐  ┌─┐┬ ┬┬┌─┐┬  ┌┬┐",
-                    "│  ├─┤│ ││ │└─┐├┤    ││├┤ ├┤ ├┤ │││└─┐│└┐┌┘├┤   └─┐├─┤│├┤ │   ││",
-                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  ─┴┘└─┘└  └─┘┘└┘└─┘┴ └┘ └─┘  └─┘┴ ┴┴└─┘┴─┘─┴┘"),
+    private static final List<List<String>> shotDefenseMenu = List.of(
+            List.of("┌─┐┌┬┐┌┬┐  ┌┐ ┌─┐┌┬┐┌┬┐┌─┐┬─┐┬┌─┐┌─┐",
+                    "├─┤ ││ ││  ├┴┐├─┤ │  │ ├┤ ├┬┘│├┤ └─┐",
+                    "┴ ┴─┴┘─┴┘  └─┘┴ ┴ ┴  ┴ └─┘┴└─┴└─┘└─┘"),
             List.of("┌─┐┌─┐┌┐┌┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
                     "└─┐├┤ │││ ││  ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
                     "└─┘└─┘┘└┘─┴┘  ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
@@ -168,6 +189,20 @@ public class AdventureTemplate extends CLITemplate {
                     "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
                     "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
     );
+    private static final List<List<String>> choosePlanetMenu = List.of(
+            List.of("┌─┐┬┬─┐┌─┐┌┬┐",
+                    "├┤ │├┬┘└─┐ │ ",
+                    "└  ┴┴└─└─┘ ┴ "),
+            List.of("┌─┐┌─┐┌─┐┌─┐┌┐┌┌┬┐",
+                    "└─┐├┤ │  │ ││││ ││",
+                    "└─┘└─┘└─┘└─┘┘└┘─┴┘"),
+            List.of("┌┬┐┬ ┬┬┬─┐┌┬┐",
+                    " │ ├─┤│├┬┘ ││",
+                    " ┴ ┴ ┴┴┴└──┴┘"),
+            List.of("┌─┐┌─┐┬ ┬┬─┐┌┬┐┬ ┬",
+                    "├┤ │ ││ │├┬┘ │ ├─┤",
+                    "└  └─┘└─┘┴└─ ┴ ┴ ┴")
+    );
 
     private static final List<List<String>> numBatteriesMenu = List.of(
             List.of("┌─┐┌─┐┬─┐┌─┐",
@@ -183,7 +218,6 @@ public class AdventureTemplate extends CLITemplate {
                     " │ ├─┤├┬┘├┤ ├┤ ",
                     " ┴ ┴ ┴┴└─└─┘└─┘")
     );
-
     private static final List<List<String>> numMembersMenu = List.of(
             List.of("┌─┐┌─┐┬─┐┌─┐",
                     "┌─┘├┤ ├┬┘│ │",
@@ -317,6 +351,9 @@ public class AdventureTemplate extends CLITemplate {
                     else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
                         printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
                     }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ADVANCED_ACTION_MENU){
+                        printMenu(shipBoard, menuIndex, advancedActionMenu, controller.getAdvancedActionMenu());
+                    }
                     else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DOUBLE_CANNON || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_FIRE_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_SETUP){
                         printMenu(shipBoard, menuIndex, firePowerMenu, controller.getFirePowerMenu());
                     }
@@ -332,13 +369,21 @@ public class AdventureTemplate extends CLITemplate {
                     else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_STORAGE || data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP){
                         printMenu(shipBoard, menuIndex, loadMaterialsMenu, controller.getLoadMaterialsMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_SHIELD || data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_SETUP){
-                        printMenu(shipBoard, menuIndex, defensiveShieldMenu, controller.getDefensiveShieldMenu());
+                    else if(data.getState() == AdventurePhaseData.AdventureState.SHOT_DEFENSE_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_SHOT_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SHOT_DEFENSE_SETUP){
+                        printMenu(shipBoard, menuIndex, shotDefenseMenu, controller.getShotDefenseMenu());
                     }
                     else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_CANNON || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_SETUP){
                         printMenu(shipBoard, menuIndex, defensiveCannonMenu, controller.getDefensiveCannonMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  || data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_PLANET_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_PLANET_SETUP){
+                        printMenu(shipBoard, menuIndex, choosePlanetMenu, controller.getChoosePlanetMenu());
+                    }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  ||
+                            data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES ||
+                            data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES ||
+                            data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES ||
+                            data.getState() == AdventurePhaseData.AdventureState.SELECT_SHOT_NUM_BATTERIES)
+                    {
                         printMenu(shipBoard, menuIndex, numBatteriesMenu, controller.getNumBatteries());
                     }
                     else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_MEMBERS){
@@ -371,13 +416,13 @@ public class AdventureTemplate extends CLITemplate {
                         adventureCardCLI.print(data.getAdventureCard(), i+13);
                     }
                     if(i == 3){
+                        System.out.print("Hint: " + data.getGameHint());
+                    }
+                    if(i == 4){
                         System.out.print("Current state: " + data.getState().toString() + ", active: " + controller.isActive() + ", state new: " + data.isStateNew());
                     }
-                    else if(i == 4){
-                        System.out.print("- NumBatteries: " + controller.getNumBatteries());
-                    }
                     else if(i == 5){
-                        System.out.print("- NumMembers: " + controller.getNumMembers());
+                        System.out.print("NumBatteries: " + controller.getNumBatteries() + ", NumMembers: " + controller.getNumMembers());
                     }
                     else if(i == 6){
                         Player enemy = data.getEnemies().entrySet().iterator().next().getValue();
@@ -424,6 +469,10 @@ public class AdventureTemplate extends CLITemplate {
         return actionMenu.size();
     }
 
+    public int getAdvancedActionMenuSize(){
+        return advancedActionMenu.size();
+    }
+
     public int getFirePowerMenuSize(){
         return firePowerMenu.size();
     }
@@ -444,12 +493,16 @@ public class AdventureTemplate extends CLITemplate {
         return loadMaterialsMenu.size();
     }
 
-    public int getDefensiveShieldMenuSize(){
-        return defensiveShieldMenu.size();
+    public int getShotDefenseMenu(){
+        return shotDefenseMenu.size();
     }
 
     public int getDefensiveCannonMenuSize(){
         return defensiveCannonMenu.size();
+    }
+
+    public int getChoosePlanetMenuSize(){
+        return choosePlanetMenu.size();
     }
 
     public int getNumBatteriesMenuSize(){

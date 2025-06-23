@@ -4,12 +4,10 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.Shield;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.CoordinatesInput;
 import it.polimi.ingsw.gc11.view.cli.input.EnterInput;
-import it.polimi.ingsw.gc11.view.cli.input.IntegerInput;
 import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
 import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
 
@@ -21,13 +19,15 @@ public class AdventureController extends CLIController {
     private final AdventurePhaseData data;
     private int mainMenu;
     private int actionMenu;
+    private int advancedActionMenu;
     private int firePowerMenu;
     private int enginePowerMenu;
     private int crewMembersMenu;
     private int batteriesMenu;
     private int loadMaterialsMenu;
-    private int defensiveShieldMenu;
+    private int shotDefenseMenu;
     private int defensiveCannonMenu;
+    private int choosePlanetMenu;
     private int selectedI;
     private int selectedJ;
     private int numBatteries;
@@ -115,12 +115,28 @@ public class AdventureController extends CLIController {
                 mainCLI.getVirtualServer().chooseMaterials(data.getStorageMaterials());
                 return true;
             }
-            else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_SETUP){
-                //mainCLI.getVirtualServer().
+            else if(data.getState() == AdventurePhaseData.AdventureState.SHOT_DEFENSE_SETUP){
+                mainCLI.getVirtualServer().handleShot(data.getBatteries());
                 return true;
             }
             else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_SETUP){
                 mainCLI.getVirtualServer().meteorDefense(data.getBatteries(), data.getDefensiveCannon());
+                return true;
+            }
+            else if(data.getState() == AdventurePhaseData.AdventureState.WAIT_DICES){
+                mainCLI.getVirtualServer().getCoordinate();
+                return true;
+            }
+            else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_PLANET_SETUP){
+                mainCLI.getVirtualServer().landOnPlanet(choosePlanetMenu);
+                return true;
+            }
+            else if(data.getState() == AdventurePhaseData.AdventureState.WAIT_ACCEPT_REWARD){
+                mainCLI.getVirtualServer().rewardDecision(true);
+                return true;
+            }
+            else if(data.getState() == AdventurePhaseData.AdventureState.WAIT_REFUSE_REWARD){
+                mainCLI.getVirtualServer().rewardDecision(false);
                 return true;
             }
         } catch (NetworkException e) {
@@ -140,6 +156,9 @@ public class AdventureController extends CLIController {
         else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getActionMenuSize(), actionMenu));
         }
+        else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ADVANCED_ACTION_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getAdvancedActionMenuSize(), advancedActionMenu));
+        }
         else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getFirePowerMenuSize(), firePowerMenu));
         }
@@ -155,11 +174,14 @@ public class AdventureController extends CLIController {
         else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getLoadMaterialsMenuSize(), loadMaterialsMenu));
         }
-        else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU){
-            mainCLI.addInputRequest(new MenuInput(data, this, template.getDefensiveShieldMenuSize(), defensiveShieldMenu));
+        else if(data.getState() == AdventurePhaseData.AdventureState.SHOT_DEFENSE_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getShotDefenseMenu(), shotDefenseMenu));
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getDefensiveCannonMenuSize(), defensiveCannonMenu));
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_PLANET_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getChoosePlanetMenuSize(), choosePlanetMenu));
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  || data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES) {
             mainCLI.addInputRequest(new MenuInput(data, this, template.getNumBatteriesMenuSize(), numBatteries));
@@ -177,7 +199,7 @@ public class AdventureController extends CLIController {
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_HOUSING_UNIT ||
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_BATTERIES ||
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_STORAGE ||
-                data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_SHIELD ||
+                data.getState() == AdventurePhaseData.AdventureState.CHOOSE_SHOT_BATTERIES ||
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_CANNON ||
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_BATTERIES)
         {
@@ -205,9 +227,19 @@ public class AdventureController extends CLIController {
                 case 2 -> data.setState(AdventurePhaseData.AdventureState.CREW_MEMBERS_MENU);
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.BATTERIES_MENU);
                 case 4 -> data.setState(AdventurePhaseData.AdventureState.LOAD_MATERIALS_MENU);
-                case 5 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU);
+                case 5 -> data.setState(AdventurePhaseData.AdventureState.SHOT_DEFENSE_MENU);
                 case 6 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU);
-                case 7 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU);
+                case 7 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ADVANCED_ACTION_MENU);
+                case 8 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU);
+            }
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ADVANCED_ACTION_MENU){
+            switch (advancedActionMenu) {
+                case 0 -> data.setState(AdventurePhaseData.AdventureState.WAIT_DICES);
+                case 1 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_PLANET_MENU);
+                case 2 -> data.setState(AdventurePhaseData.AdventureState.WAIT_ACCEPT_REWARD);
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.WAIT_REFUSE_REWARD);
+                case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_MENU){
@@ -266,10 +298,10 @@ public class AdventureController extends CLIController {
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
-        else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU){
-            switch (defensiveShieldMenu) {
-                case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_SHIELD);
-                case 1 -> data.setState(AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_SETUP);
+        else if(data.getState() == AdventurePhaseData.AdventureState.SHOT_DEFENSE_MENU){
+            switch (shotDefenseMenu) {
+                case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_SHOT_BATTERIES);
+                case 1 -> data.setState(AdventurePhaseData.AdventureState.SHOT_DEFENSE_SETUP);
                 case 2 -> {
                     data.resetResponse();
                     addInputRequest();
@@ -302,14 +334,16 @@ public class AdventureController extends CLIController {
         switch (data.getState()) {
             case CHOOSE_MAIN_MENU -> setMainMenu(choice);
             case CHOOSE_ACTION_MENU -> setActionMenu(choice);
+            case CHOOSE_ADVANCED_ACTION_MENU -> setAdvancedActionMenu(choice);
             case FIRE_POWER_MENU -> setFirePowerMenu(choice);
             case ENGINE_POWER_MENU -> setEnginePowerMenu(choice);
             case CREW_MEMBERS_MENU -> setCrewMembersMenu(choice);
             case BATTERIES_MENU -> setBatteriesMenu(choice);
             case LOAD_MATERIALS_MENU -> setLoadMaterialsMenu(choice);
-            case DEFENSIVE_SHIELD_MENU -> setDefensiveShieldMenu(choice);
+            case SHOT_DEFENSE_MENU -> setShotDefenseMenu(choice);
             case DEFENSIVE_CANNON_MENU -> setDefensiveCannonMenu(choice);
-            case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES -> setNumBatteries(choice);
+            case CHOOSE_PLANET_MENU -> setChoosePlanetMenu(choice);
+            case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, SELECT_SHOT_NUM_BATTERIES -> setNumBatteries(choice);
             case SELECT_NUM_MEMBERS -> setNumMembers(choice);
             case null, default -> {
             }
@@ -320,7 +354,7 @@ public class AdventureController extends CLIController {
     public void confirmMenuChoice(){
         try{
             switch (data.getState()) {
-                case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES -> data.addBattery((Battery) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numBatteries);
+                case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, SELECT_SHOT_NUM_BATTERIES -> data.addBattery((Battery) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numBatteries);
                 case SELECT_NUM_MEMBERS -> data.addHousingUsage((HousingUnit) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numMembers);
             }
             updateInternalState();
@@ -342,7 +376,6 @@ public class AdventureController extends CLIController {
         try{
             switch (data.getState()) {
                 case CHOOSE_DOUBLE_CANNON -> data.addDoubleCannon((Cannon) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()));
-                case CHOOSE_DEFENSIVE_SHIELD -> data.setDefensiveShield((Shield) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()));
                 case CHOOSE_DEFENSIVE_CANNON -> data.setDefensiveCannon((Cannon) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()));
             }
             updateInternalState();
@@ -369,6 +402,16 @@ public class AdventureController extends CLIController {
 
     public void setActionMenu(int actionMenu) {
         this.actionMenu = actionMenu;
+        template.render();
+    }
+
+
+    public int getAdvancedActionMenu() {
+        return advancedActionMenu;
+    }
+
+    public void setAdvancedActionMenu(int advancedActionMenu) {
+        this.advancedActionMenu = advancedActionMenu;
         template.render();
     }
 
@@ -423,12 +466,12 @@ public class AdventureController extends CLIController {
     }
 
 
-    public int getDefensiveShieldMenu(){
-        return defensiveShieldMenu;
+    public int getShotDefenseMenu(){
+        return shotDefenseMenu;
     }
 
-    public void setDefensiveShieldMenu(int defensiveShieldMenu){
-        this.defensiveShieldMenu = defensiveShieldMenu;
+    public void setShotDefenseMenu(int shotDefenseMenu){
+        this.shotDefenseMenu = shotDefenseMenu;
         template.render();
     }
 
@@ -439,6 +482,16 @@ public class AdventureController extends CLIController {
 
     public void setDefensiveCannonMenu(int defensiveCannonMenu){
         this.defensiveCannonMenu = defensiveCannonMenu;
+        template.render();
+    }
+
+
+    public int getChoosePlanetMenu(){
+        return choosePlanetMenu;
+    }
+
+    public void setChoosePlanetMenu(int choosePlanetMenu){
+        this.choosePlanetMenu = choosePlanetMenu;
         template.render();
     }
 
