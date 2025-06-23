@@ -4,6 +4,7 @@ import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
+import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
@@ -16,9 +17,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -29,6 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class AdventureControllerLv1 extends Controller {
 
@@ -40,6 +45,11 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private Pane positionOverlayPane;
     @FXML private Rectangle pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
     @FXML private Rectangle pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18;
+    @FXML private ImageView adventureCardImage;
+    @FXML private Button acceptButton;
+    @FXML private Button declineButton;
+    @FXML private Button handleButton;
+    @FXML private Button drawButton;
     @FXML private Label errorLabel;
 
     // Flight board dimensions
@@ -51,6 +61,11 @@ public class AdventureControllerLv1 extends Controller {
     private Stage stage;
     private VirtualServer virtualServer;
     private AdventurePhaseData adventurePhaseData;
+
+    private final Map<Class<?>, Consumer<AdventureCard>> optionsPrinter = Map.of(
+            AbandonedShip.class, (card) -> printAcceptDecline()
+
+    );
 
     public void initialize(Stage stage) {
         this.stage = stage;
@@ -77,6 +92,9 @@ public class AdventureControllerLv1 extends Controller {
 
         playersButtons.setSpacing(10);
         playersButtons.prefWidthProperty();
+
+        drawButton.setVisible(false);
+        drawButton.setDisable(true);
 
         update(adventurePhaseData);
 
@@ -235,17 +253,52 @@ public class AdventureControllerLv1 extends Controller {
 //          virtualServer.abortAdventure();
 //        }
 //        catch (NetworkException e) {
-//            setErrorLabel();
 //            System.out.println("Network Error: " + e.getMessage());
 //        }
     }
 
+
+    private void showDrawButton(){
+        if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
+            drawButton.setVisible(true);
+            drawButton.setDisable(false);
+        }
+    }
+
+    private void showAdventureCard() {
+
+        if (adventurePhaseData.getAdventureCard() != null) {
+            AdventureCard card = adventurePhaseData.getAdventureCard();
+            String basepath = "/it/polimi/ingsw/gc11/adventureCards/";
+            ImageView cardImage = new ImageView(new Image(getClass()
+                    .getResource(basepath + card.getId() + ".jpg")
+                    .toExternalForm()
+            ));
+            adventureCardImage = cardImage;
+
+            showAdvCardOptions(card);
+        }
+
+    }
+
+    private void showAdvCardOptions(AdventureCard card) {
+    }
+
+    private void printAcceptDecline() {
+        acceptButton.setVisible(true);
+        acceptButton.setDisable(false);
+        declineButton.setVisible(true);
+        declineButton.setDisable(false);
+    }
+
+    @FXML
     public void onDrawButtonClick(ActionEvent actionEvent) {
         try {
             virtualServer.getAdventureCard();
+            drawButton.setDisable(true);
         }
         catch (NetworkException e) {
-            throw new RuntimeException(e);
+            System.out.println("Network error: " + e.getMessage());
         }
     }
 
@@ -254,6 +307,8 @@ public class AdventureControllerLv1 extends Controller {
         Platform.runLater(() -> {
 
             setupPositions();
+            showDrawButton();
+            showAdventureCard();
 
             if(adventurePhaseData.isStateNew()) {
                 switch (adventurePhaseData.getState()) {
