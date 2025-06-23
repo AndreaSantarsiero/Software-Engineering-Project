@@ -135,6 +135,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, AbandonedShip card) {
         setup(stage);
 
+        
+
         update(adventurePhaseData);
     }
 
