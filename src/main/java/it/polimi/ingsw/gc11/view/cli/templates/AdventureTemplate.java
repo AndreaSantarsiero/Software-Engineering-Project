@@ -350,7 +350,7 @@ public class AdventureTemplate extends CLITemplate {
 
                 //printing adventure card
                 if (y == 0){
-                    continue;
+                    System.out.print(" ");;
                 }
                 else if (y == 1){
                     System.out.print("                                        ");
@@ -385,7 +385,7 @@ public class AdventureTemplate extends CLITemplate {
                     }
                 }
                 else if (y == 4 && i < 4){
-                    continue;
+                    System.out.print(" ");
                 }
 
 
