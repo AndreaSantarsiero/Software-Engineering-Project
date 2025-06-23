@@ -394,9 +394,18 @@ public class AdventureControllerLv1 extends Controller {
     }
 
 
-    private void setupHandle() {
+    private FXMLLoader setupHandle() {
         handleButton.setVisible(true);
         handleButton.setDisable(false);
+
+        try {
+            return new FXMLLoader(MainGUI.class.
+                    getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+        }
+        catch (Exception e) {
+            System.out.println("FXML Error: " + e.getMessage());
+            return null;
+        }
     }
 
     private void handle(AbandonedShip abandonedShip) {
@@ -411,10 +420,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(CombatZoneLv1 combatZoneLv1) {
         CombatZoneLv1 card = (CombatZoneLv1) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
@@ -432,10 +440,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(CombatZoneLv2 combatZoneLv2) {
         CombatZoneLv2 card = (CombatZoneLv2) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
@@ -456,10 +463,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(MeteorSwarm meteorSwarm) {
         MeteorSwarm card = (MeteorSwarm) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
@@ -476,10 +482,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(OpenSpace openSpace) {
         OpenSpace card = (OpenSpace) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
@@ -496,10 +501,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(Pirates pirates) {
         Pirates card = (Pirates) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
@@ -516,10 +520,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(PlanetsCard planetsCard) {
         PlanetsCard card = (PlanetsCard) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
@@ -536,10 +539,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(Slavers slavers) {
         Slavers card = (Slavers) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
@@ -556,10 +558,9 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(Smugglers smugglers) {
         Smugglers card = (Smugglers) adventurePhaseData.getAdventureCard();
-        setupHandle();
+        FXMLLoader fxmlLoader = setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
