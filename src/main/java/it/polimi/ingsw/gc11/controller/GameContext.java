@@ -172,7 +172,7 @@ public class GameContext {
     public Map<String, String> getPlayersColor (){
         Map<String, String> playersColor = new HashMap<>();
         for (Player player : gameModel.getPlayers()) {
-            playersColor.put(player.getUsername(), player.getColor());
+            playersColor.put(player.getUsername(), player.getColorToString());
         }
         return playersColor;
     }

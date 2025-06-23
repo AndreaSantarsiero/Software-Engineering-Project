@@ -202,7 +202,7 @@ public class AdventureControllerLv1 extends Controller {
 
                 Circle circle = new Circle(centerX, centerY, radius);
                 // Sostituisci con il colore del player
-                circle.setFill(Paint.valueOf(player.getColor()));
+                circle.setFill(Paint.valueOf(player.getColorToString()));
                 positionOverlayPane.getChildren().add(circle);
             }
         }

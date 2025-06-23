@@ -37,11 +37,15 @@ public class Player implements Serializable {
 
 
 
-    public String getColor() {
+    public String getColorToString() {
         if (this.color == null) {
             return null;
         }
         return color.toString().toLowerCase();
+    }
+
+    public Player.Color getColor() {
+        return color;
     }
 
     public void setColor(String color, Map<String, HousingUnit> centralUnits) {

@@ -237,7 +237,7 @@ public class GameModel {
     public void setPlayerColor(String username, String color) {
         checkPlayerUsername(username);
         Player player = getPlayer(username);
-        if (player.getColor() != null) {
+        if (player.getColorToString() != null) {
             throw new IllegalArgumentException("You have already chosen a color");
         }
 

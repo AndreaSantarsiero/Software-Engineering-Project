@@ -110,13 +110,12 @@ public class FlightBoardCLI {
 
 
 
-    private static String getPlayerColor(String color){
-        return switch (color.toLowerCase()) {
-            case "blue" ->  Ansi.ansi().reset().fg(Ansi.Color.BLUE).toString();
-            case "green" -> Ansi.ansi().reset().fg(Ansi.Color.GREEN).toString();
-            case "red" -> Ansi.ansi().reset().fg(Ansi.Color.RED).toString();
-            case "yellow" -> Ansi.ansi().reset().fg(Ansi.Color.YELLOW).toString();
-            default -> Ansi.ansi().reset().toString();
+    private static String getPlayerColor(Player.Color color) {
+        return switch (color) {
+            case BLUE ->  Ansi.ansi().reset().fg(Ansi.Color.BLUE).toString();
+            case GREEN -> Ansi.ansi().reset().fg(Ansi.Color.GREEN).toString();
+            case RED -> Ansi.ansi().reset().fg(Ansi.Color.RED).toString();
+            case YELLOW -> Ansi.ansi().reset().fg(Ansi.Color.YELLOW).toString();
         };
     }
 }

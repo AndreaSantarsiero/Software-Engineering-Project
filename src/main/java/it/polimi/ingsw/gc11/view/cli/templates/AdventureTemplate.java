@@ -350,7 +350,7 @@ public class AdventureTemplate extends CLITemplate {
 
                 //printing adventure card
                 if (y == 0){
-                    System.out.print(" ");;
+                    System.out.print(" ");
                 }
                 else if (y == 1){
                     System.out.print("                                        ");
@@ -371,7 +371,7 @@ public class AdventureTemplate extends CLITemplate {
                         adventureCardCLI.print(data.getAdventureCard(), i+13);
                     }
                     if(i == 3){
-                        System.out.print("Current state: " + data.getState().toString());
+                        System.out.print("Current state: " + data.getState().toString() + ", active: " + controller.isActive() + ", state new: " + data.isStateNew());
                     }
                     else if(i == 4){
                         System.out.print("- NumBatteries: " + controller.getNumBatteries());
