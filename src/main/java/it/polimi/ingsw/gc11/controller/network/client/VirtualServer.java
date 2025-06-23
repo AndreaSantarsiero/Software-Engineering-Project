@@ -79,7 +79,7 @@ public class VirtualServer {
     }
 
 
-
+    //IDLE PHASE
     public void registerSession(String username) throws NetworkException {
         client.registerSession(username);
     }
@@ -110,7 +110,7 @@ public class VirtualServer {
     }
 
 
-
+    //BUILDING PHASE
     public void getFreeShipCard(ShipCard shipCard) throws NetworkException{
         GetFreeShipCardAction action = new GetFreeShipCardAction(username, shipCard);
         client.sendAction(action);
@@ -178,14 +178,14 @@ public class VirtualServer {
     }
 
 
-
+    //CHECK PHASE
     public void repairShip(List<Integer> cardsToEliminateX, List<Integer> cardsToEliminateY) throws NetworkException{
         RepairShipBoardAction action = new RepairShipBoardAction(username, cardsToEliminateX, cardsToEliminateY);
         client.sendAction(action);
     }
 
 
-
+    //ADVENTURE PHASE
     public void getAdventureCard() throws NetworkException{
         GetAdventureCardAction action = new GetAdventureCardAction(username);
         client.sendAction(action);

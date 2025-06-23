@@ -301,47 +301,6 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
-//    public void onAcceptButtonClick(AbandonedShip card) {
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
-//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-//            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-//            adventurePhaseData.setListener(controller);
-//            controller.initialize(stage, card);
-//            stage.setScene(newScene);
-//            stage.show();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    public void onAcceptButtonClick(AbandonedStation card) {
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
-//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-//            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-//            adventurePhaseData.setListener(controller);
-//            controller.initialize(stage, card);
-//            stage.setScene(newScene);
-//            stage.show();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    public void onAcceptButtonClick(CombatZoneLv1 card) {
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
-//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-//            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-//            adventurePhaseData.setListener(controller);
-//            controller.initialize(stage, card);
-//            stage.setScene(newScene);
-//            stage.show();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     @Override
     public  void update(AdventurePhaseData adventurePhaseData) {
@@ -392,7 +351,6 @@ public class AdventureControllerLv1 extends Controller {
             }
         });
     }
-
 
     private FXMLLoader setupHandle() {
         handleButton.setVisible(true);

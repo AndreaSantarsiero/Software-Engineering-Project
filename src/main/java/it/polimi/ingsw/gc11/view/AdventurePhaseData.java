@@ -85,7 +85,7 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     @Override
-    public void updateState() {
+    public void  updateState() {
         actualizePreviousState();
 
         if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP) {
