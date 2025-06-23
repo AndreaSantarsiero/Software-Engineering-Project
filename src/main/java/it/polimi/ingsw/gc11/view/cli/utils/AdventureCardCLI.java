@@ -374,12 +374,12 @@ public class AdventureCardCLI {
             System.out.print("       PLANETS       ");
         }
         else if ((i % 3) == 0){
-            System.out.print(" ");
             try{
                 List<Material> materials = planetsCard.getFreePlanets().get((i/3) - 1).getMaterials();
+                System.out.print(" ( ) ");
                 MaterialCLI.print(materials);
                 setColor(planetsCard);
-                for (int j = 0; j < (10 - materials.size()); j++) {
+                for (int j = 0; j < (8 - materials.size()); j++) {
                     System.out.print("  ");
                 }
             }

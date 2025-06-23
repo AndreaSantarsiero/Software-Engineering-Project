@@ -328,9 +328,12 @@ public class GameContext {
     //cheating methods
     public ShipBoard gimmeACoolShip(String username, int num) {
         String resourcePath = "src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard" + num + ".json";
+        Player player = gameModel.getPlayer(username);
+
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader(resourcePath);
         ShipBoard coolShip = shipBoardLoader.getShipBoard();
-        gameModel.getPlayer(username).setACoolShip(coolShip);
+        player.setColor(player.getColorToString(), shipBoardLoader.getShipCardLoader().getCentralUnits());
+        player.setACoolShip(coolShip);
         return coolShip;
     }
 
