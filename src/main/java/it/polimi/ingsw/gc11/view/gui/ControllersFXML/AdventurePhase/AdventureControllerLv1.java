@@ -40,8 +40,8 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private Button abortButton;
     @FXML private ImageView flightBoardImage;
     @FXML private Pane positionOverlayPane;
-    @FXML private Rectangle pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
-    @FXML private Rectangle pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17, pos18;
+    @FXML private Rectangle pos0, pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
+    @FXML private Rectangle pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17;
     @FXML private ImageView adventureCardImage;
     @FXML private Button acceptButton;
     @FXML private Button declineButton;
@@ -117,24 +117,24 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void saveOriginalPositions() {
-        originalPositions.put(pos1,  new double[]{621, 77});
-        originalPositions.put(pos2,  new double[]{530, 59});
-        originalPositions.put(pos3,  new double[]{435, 58});
-        originalPositions.put(pos4,  new double[]{345, 77});
-        originalPositions.put(pos5,  new double[]{248, 100});
-        originalPositions.put(pos6,  new double[]{172, 149});
-        originalPositions.put(pos7,  new double[]{110, 247});
-        originalPositions.put(pos8,  new double[]{160, 350});
-        originalPositions.put(pos9,  new double[]{229, 408});
-        originalPositions.put(pos10, new double[]{324, 430});
-        originalPositions.put(pos11, new double[]{423, 451});
-        originalPositions.put(pos12, new double[]{509, 450});
-        originalPositions.put(pos13, new double[]{600, 428});
-        originalPositions.put(pos14, new double[]{700, 405});
-        originalPositions.put(pos15, new double[]{779, 351});
-        originalPositions.put(pos16, new double[]{830, 259});
-        originalPositions.put(pos17, new double[]{800, 159});
-        originalPositions.put(pos18, new double[]{712, 104});
+        originalPositions.put(pos0,  new double[]{256, 104});
+        originalPositions.put(pos1,  new double[]{345, 77});
+        originalPositions.put(pos2,  new double[]{435, 58});
+        originalPositions.put(pos3,  new double[]{530, 59});
+        originalPositions.put(pos4,  new double[]{626, 77});
+        originalPositions.put(pos5,  new double[]{712, 104});
+        originalPositions.put(pos6,  new double[]{799, 162});
+        originalPositions.put(pos7,  new double[]{843, 268});
+        originalPositions.put(pos8,  new double[]{793, 350});
+        originalPositions.put(pos9,  new double[]{700, 405});
+        originalPositions.put(pos10, new double[]{612, 430});
+        originalPositions.put(pos11, new double[]{523, 442});
+        originalPositions.put(pos12, new double[]{427, 451});
+        originalPositions.put(pos13, new double[]{335, 430});
+        originalPositions.put(pos14, new double[]{248, 405});
+        originalPositions.put(pos15, new double[]{160, 350});
+        originalPositions.put(pos16, new double[]{116, 246});
+        originalPositions.put(pos17, new double[]{172, 153});
     }
 
     private void updateRectangles() {
@@ -217,24 +217,24 @@ public class AdventureControllerLv1 extends Controller {
             //Debugging
             System.out.println("Player: " + player.getUsername() + ", Position: " + position);
             Rectangle positionRect = switch (position) {
-                case 0 -> pos1;
-                case 1 -> pos2;
-                case 2 -> pos3;
-                case 3 -> pos4;
-                case 4 -> pos5;
-                case 5 -> pos6;
-                case 6 -> pos7;
-                case 7 -> pos8;
-                case 8 -> pos9;
-                case 9 -> pos10;
-                case 10 -> pos11;
-                case 11 -> pos12;
-                case 12 -> pos13;
-                case 13 -> pos14;
-                case 14 -> pos15;
-                case 15 -> pos16;
-                case 16 -> pos17;
-                case 17 -> pos18;
+                case 0 -> pos0;
+                case 1 -> pos1;
+                case 2 -> pos2;
+                case 3 -> pos3;
+                case 4 -> pos4;
+                case 5 -> pos5;
+                case 6 -> pos6;
+                case 7 -> pos7;
+                case 8 -> pos8;
+                case 9 -> pos9;
+                case 10 -> pos10;
+                case 11 -> pos11;
+                case 12 -> pos12;
+                case 13 -> pos13;
+                case 14 -> pos14;
+                case 15 -> pos15;
+                case 16 -> pos16;
+                case 17 -> pos17;
                 default -> null;
             };
             if (positionRect != null) {
@@ -252,24 +252,6 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
-    @FXML private void onPositionClicked1()  { System.out.println("Posizione 1"); }
-    @FXML private void onPositionClicked2()  { System.out.println("Posizione 2"); }
-    @FXML private void onPositionClicked3()  { System.out.println("Posizione 3"); }
-    @FXML private void onPositionClicked4()  { System.out.println("Posizione 4"); }
-    @FXML private void onPositionClicked5()  { System.out.println("Posizione 5"); }
-    @FXML private void onPositionClicked6()  { System.out.println("Posizione 6"); }
-    @FXML private void onPositionClicked7()  { System.out.println("Posizione 7"); }
-    @FXML private void onPositionClicked8()  { System.out.println("Posizione 8"); }
-    @FXML private void onPositionClicked9()  { System.out.println("Posizione 9"); }
-    @FXML private void onPositionClicked10() { System.out.println("Posizione 10"); }
-    @FXML private void onPositionClicked11() { System.out.println("Posizione 11"); }
-    @FXML private void onPositionClicked12() { System.out.println("Posizione 12"); }
-    @FXML private void onPositionClicked13() { System.out.println("Posizione 13"); }
-    @FXML private void onPositionClicked14() { System.out.println("Posizione 14"); }
-    @FXML private void onPositionClicked15() { System.out.println("Posizione 15"); }
-    @FXML private void onPositionClicked16() { System.out.println("Posizione 16"); }
-    @FXML private void onPositionClicked17() { System.out.println("Posizione 17"); }
-    @FXML private void onPositionClicked18() { System.out.println("Posizione 18"); }
 
     @FXML private void onAbortButtonClick(){
 //        try {
