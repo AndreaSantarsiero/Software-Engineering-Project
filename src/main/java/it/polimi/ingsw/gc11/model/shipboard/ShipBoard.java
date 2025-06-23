@@ -1200,80 +1200,7 @@ public abstract class ShipBoard  implements Serializable {
                 throw new IllegalArgumentException("Number of batteries to use cannot be null");
             }
             if (!batteries.contains(battery)) {
-
-                int i = 0;
-                StringBuilder message = new StringBuilder();
-
-                for (Battery actualBattery : batteries) {
-                    if (!battery.equals(actualBattery)) {
-                        message.append("Comparing cannon with key index ").append(i).append(":\n");
-
-                        if (!battery.getId().equals(actualBattery.getId())) {
-                            message.append(" - Mismatch on id: ").append(battery.getId())
-                                    .append(" != ").append(actualBattery.getId()).append("\n");
-                        } else {
-                            message.append(" - Match on id: ").append(battery.getId()).append("\n");
-                        }
-
-                        if (!battery.getOrientation().equals(actualBattery.getOrientation())) {
-                            message.append(" - Mismatch on orientation: ").append(battery.getOrientation())
-                                    .append(" != ").append(actualBattery.getOrientation()).append("\n");
-                        } else {
-                            message.append(" - Match on orientation: ").append(battery.getOrientation()).append("\n");
-                        }
-
-                        if (!battery.getTopConnector().equals(actualBattery.getTopConnector())) {
-                            message.append(" - Mismatch on topConnector: ").append(battery.getTopConnector())
-                                    .append(" != ").append(actualBattery.getTopConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on topConnector: ").append(battery.getTopConnector()).append("\n");
-                        }
-
-                        if (!battery.getRightConnector().equals(actualBattery.getRightConnector())) {
-                            message.append(" - Mismatch on rightConnector: ").append(battery.getRightConnector())
-                                    .append(" != ").append(actualBattery.getRightConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on rightConnector: ").append(battery.getRightConnector()).append("\n");
-                        }
-
-                        if (!battery.getBottomConnector().equals(actualBattery.getBottomConnector())) {
-                            message.append(" - Mismatch on bottomConnector: ").append(battery.getBottomConnector())
-                                    .append(" != ").append(actualBattery.getBottomConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on bottomConnector: ").append(battery.getBottomConnector()).append("\n");
-                        }
-
-                        if (!battery.getLeftConnector().equals(actualBattery.getLeftConnector())) {
-                            message.append(" - Mismatch on leftConnector: ").append(battery.getLeftConnector())
-                                    .append(" != ").append(actualBattery.getLeftConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on leftConnector: ").append(battery.getLeftConnector()).append("\n");
-                        }
-
-                        if (battery.isScrap() != actualBattery.isScrap()) {
-                            message.append(" - Mismatch on scrap flag: ").append(battery.isScrap())
-                                    .append(" != ").append(actualBattery.isScrap()).append("\n");
-                        } else {
-                            message.append(" - Match on scrap flag: ").append(battery.isScrap()).append("\n");
-                        }
-
-                        if (battery.isCovered() != actualBattery.isCovered()) {
-                            message.append(" - Mismatch on covered flag: ").append(battery.isCovered())
-                                    .append(" != ").append(actualBattery.isCovered()).append("\n");
-                        } else {
-                            message.append(" - Match on covered flag: ").append(battery.isCovered()).append("\n");
-                        }
-
-                    } else {
-                        message.append("Exact match (equals == true) with cannon at index ").append(i)
-                                .append(" - id: ").append(battery.getId()).append("\n");
-                    }
-
-                    i++;
-                }
-
-                throw new IllegalArgumentException(message.toString());
-                //throw new IllegalArgumentException("This battery module is not present on the ship");
+                throw new IllegalArgumentException("This battery module is not present on the ship");
             }
             if (battery.isScrap()) {
                 throw new IllegalArgumentException("Scrap batteries cannot be used");
@@ -1514,82 +1441,7 @@ public abstract class ShipBoard  implements Serializable {
 
         for (Cannon cannon : doubleCannons) {
             if (!cannons.containsKey(cannon)){
-                int i = 0;
-                StringBuilder message = new StringBuilder();
-
-                for (Cannon actualCannon : cannons.keySet()) {
-                    if (!cannon.equals(actualCannon)) {
-                        message.append("Comparing cannon with key index ").append(i).append(":\n");
-
-                        if (!cannon.getId().equals(actualCannon.getId())) {
-                            message.append(" - Mismatch on id: ").append(cannon.getId())
-                                    .append(" != ").append(actualCannon.getId()).append("\n");
-                        } else {
-                            message.append(" - Match on id: ").append(cannon.getId()).append("\n");
-                        }
-
-                        if (!cannon.getOrientation().equals(actualCannon.getOrientation())) {
-                            message.append(" - Mismatch on orientation: ").append(cannon.getOrientation())
-                                    .append(" != ").append(actualCannon.getOrientation()).append("\n");
-                        } else {
-                            message.append(" - Match on orientation: ").append(cannon.getOrientation()).append("\n");
-                        }
-
-                        if (!cannon.getTopConnector().equals(actualCannon.getTopConnector())) {
-                            message.append(" - Mismatch on topConnector: ").append(cannon.getTopConnector())
-                                    .append(" != ").append(actualCannon.getTopConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on topConnector: ").append(cannon.getTopConnector()).append("\n");
-                        }
-
-                        if (!cannon.getRightConnector().equals(actualCannon.getRightConnector())) {
-                            message.append(" - Mismatch on rightConnector: ").append(cannon.getRightConnector())
-                                    .append(" != ").append(actualCannon.getRightConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on rightConnector: ").append(cannon.getRightConnector()).append("\n");
-                        }
-
-                        if (!cannon.getBottomConnector().equals(actualCannon.getBottomConnector())) {
-                            message.append(" - Mismatch on bottomConnector: ").append(cannon.getBottomConnector())
-                                    .append(" != ").append(actualCannon.getBottomConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on bottomConnector: ").append(cannon.getBottomConnector()).append("\n");
-                        }
-
-                        if (!cannon.getLeftConnector().equals(actualCannon.getLeftConnector())) {
-                            message.append(" - Mismatch on leftConnector: ").append(cannon.getLeftConnector())
-                                    .append(" != ").append(actualCannon.getLeftConnector()).append("\n");
-                        } else {
-                            message.append(" - Match on leftConnector: ").append(cannon.getLeftConnector()).append("\n");
-                        }
-
-                        if (cannon.isScrap() != actualCannon.isScrap()) {
-                            message.append(" - Mismatch on scrap flag: ").append(cannon.isScrap())
-                                    .append(" != ").append(actualCannon.isScrap()).append("\n");
-                        } else {
-                            message.append(" - Match on scrap flag: ").append(cannon.isScrap()).append("\n");
-                        }
-
-                        if (cannon.isCovered() != actualCannon.isCovered()) {
-                            message.append(" - Mismatch on covered flag: ").append(cannon.isCovered())
-                                    .append(" != ").append(actualCannon.isCovered()).append("\n");
-                        } else {
-                            message.append(" - Match on covered flag: ").append(cannon.isCovered()).append("\n");
-                        }
-
-                    } else {
-                        message.append("Exact match (equals == true) with cannon at index ").append(i)
-                                .append(" - id: ").append(cannon.getId()).append("\n");
-                    }
-
-                    i++;
-                }
-
-                throw new IllegalArgumentException(message.toString());
-                //throw new IllegalArgumentException("This cannon is not present on the ship");
-            }
-            if (cannon.getType() != Cannon.Type.DOUBLE) {
-                throw new IllegalArgumentException("Cannot activate single cannons with batteries");
+                throw new IllegalArgumentException("This cannon is not present on the ship");
             }
             if (cannon.isScrap()) {
                 throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");
@@ -1597,10 +1449,15 @@ public abstract class ShipBoard  implements Serializable {
             if (cannon.getType() == Cannon.Type.SINGLE){
                 throw new IllegalArgumentException("Cannot use batteries on a single cannon");
             }
-            if (cannon.isVisited()) {
+
+            Cannon matchingCannon = cannons.keySet().stream().filter(c -> c.equals(cannon)).findFirst().orElse(null);
+            if (matchingCannon == null) {
+                throw new IllegalArgumentException("Cannot find this cannon on the ship");
+            }
+            if (matchingCannon.isVisited()) {
                 throw new IllegalArgumentException("Cannot activate the same cannon two times");
             }
-            cannon.setVisited(true);
+            matchingCannon.setVisited(true);
         }
         if(doubleCannons.size() > getTotalAvailableBatteries()){
             throw new IllegalArgumentException("numBatteries cannot be greater than the number of available batteries");

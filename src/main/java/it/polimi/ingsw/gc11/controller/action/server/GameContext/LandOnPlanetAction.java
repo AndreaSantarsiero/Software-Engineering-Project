@@ -25,7 +25,7 @@ public class LandOnPlanetAction extends ClientGameAction {
     public void execute(GameContext context) {
         try{
             List<Material> materials = context.landOnPlanet(getUsername(), numPlanet);
-            String currentPlayer = context.getCurrentPlayerUsername().getUsername();
+            String currentPlayer = context.getCurrentPlayer().getUsername();
 
             //risposta da cambiare
             for(Player player : context.getGameModel().getPlayersNotAbort()) {
