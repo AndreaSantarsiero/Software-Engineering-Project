@@ -162,6 +162,19 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         setup(stage);
 
         actionText.setText("Select members to kll.");
+        subHeaderContainer.getChildren().add(
+                new Button("Confirm") {
+                    {
+                        setOnAction(event -> {
+                            try {
+                                virtualServer.killMembers(adventurePhaseData.getHousingUsage());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        });
+                    }
+                }
+        );
 
         state = State.ABANDONED_SHIP;
 
