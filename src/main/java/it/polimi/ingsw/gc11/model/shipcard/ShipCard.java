@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model.shipcard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import java.io.Serializable;
+import java.util.Objects;
 
 
 
@@ -245,6 +246,12 @@ public abstract class ShipCard implements Serializable {
                 this.scrap == shipCard.isScrap() &&
                 this.covered == shipCard.isCovered();
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, orientation, topConnector, rightConnector, bottomConnector, leftConnector, scrap, covered);
+    }
+
 
 
     public abstract void place(ShipBoard shipBoard, int x, int y);

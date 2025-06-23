@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model.shipcard;
 
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
+import java.util.Objects;
 
 
 
@@ -64,8 +65,15 @@ public class Cannon extends ShipCard {
         } catch (ClassCastException e) {
             return false;
         }
-        return super.equals(obj) && this.type.equals(cannon.getType());
+        return super.equals(obj) && this.type == cannon.getType();
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), type);
+    }
+
+
 
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
