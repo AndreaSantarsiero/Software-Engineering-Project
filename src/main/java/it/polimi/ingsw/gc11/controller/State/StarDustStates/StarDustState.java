@@ -1,12 +1,16 @@
 package it.polimi.ingsw.gc11.controller.State.StarDustStates;
 
+import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
+import it.polimi.ingsw.gc11.controller.action.client.UpdateEverybodyProfileAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Concrete state of the {@link AdventurePhase} representing the <strong>"Star Dust"</strong> card.
@@ -46,15 +50,37 @@ public class StarDustState extends AdventureState {
     public StarDustState(AdventurePhase advContext) {
         super(advContext);
         GameModel gameModel = this.advContext.getGameModel();
-        ArrayList<Player> reverseOrderPlayers = new ArrayList<> (gameModel.getPlayersNotAbort());
-        Collections.reverse(reverseOrderPlayers);
+        GameContext context = advContext.getGameContext();
 
-        for (Player player : reverseOrderPlayers) {
-            int numExposedConnectors = player.getShipBoard().getExposedConnectors();
-            String username = player.getUsername();
-            gameModel.move(username, numExposedConnectors);
+        try{
+            ArrayList<Player> reverseOrderPlayers = new ArrayList<> (gameModel.getPlayersNotAbort());
+            Collections.reverse(reverseOrderPlayers);
+
+            for (Player player : reverseOrderPlayers) {
+                int numExposedConnectors = player.getShipBoard().getExposedConnectors() * (-1);
+                String username = player.getUsername();
+                gameModel.move(username, numExposedConnectors);
+            }
+
+
+            //sending updates
+            String currentPlayer = context.getCurrentPlayer().getUsername();
+            Map<String, Player> enemies = new HashMap<>();
+            for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
+                enemies.put(player.getUsername(), player);
+            }
+
+            for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
+                enemies.remove(player.getUsername());
+                UpdateEverybodyProfileAction response = new UpdateEverybodyProfileAction(player, enemies, currentPlayer);
+                context.sendAction(player.getUsername(), response);
+                enemies.put(player.getUsername(), player);
+            }
+
+            this.advContext.setAdvState(new IdleState(advContext));
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        this.advContext.setAdvState(new IdleState(advContext));
     }
 }

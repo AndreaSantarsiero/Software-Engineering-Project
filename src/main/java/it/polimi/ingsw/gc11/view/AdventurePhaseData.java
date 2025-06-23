@@ -254,6 +254,13 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
+    public void setEverybodyProfile(Player player, Map<String, Player> enemies) {
+        this.player = player;
+        this.enemies = enemies;
+        notifyListener();
+    }
+
+
     public String getCurrentPlayer() {
         return currentPlayer;
     }

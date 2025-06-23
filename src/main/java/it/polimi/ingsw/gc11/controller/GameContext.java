@@ -368,7 +368,7 @@ public class GameContext {
 
 
     //AdventurePhase (must return Player instance)
-    public Player getCurrentPlayerUsername(){
+    public Player getCurrentPlayer(){
         if (phase.isAdventurePhase()){
             AdventurePhase advPhase = (AdventurePhase) phase;
             return gameModel.getPlayersNotAbort().get(advPhase.getIdxCurrentPlayer());

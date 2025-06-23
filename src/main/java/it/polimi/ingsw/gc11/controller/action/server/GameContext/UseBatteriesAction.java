@@ -25,7 +25,7 @@ public class UseBatteriesAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             Player player = context.useBatteries(username, batteries);
-            String currentPlayer = context.getCurrentPlayerUsername().getUsername();
+            String currentPlayer = context.getCurrentPlayer().getUsername();
 
             for(Player p : context.getGameModel().getPlayersNotAbort()) {
                 if(player.getUsername().equals(username)) {

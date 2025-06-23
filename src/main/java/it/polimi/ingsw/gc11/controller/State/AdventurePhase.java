@@ -54,6 +54,14 @@ public class AdventurePhase extends GamePhase {
     }
 
     /**
+     * Get game context.
+     * @return the result of this operation.
+     */
+    public GameContext getGameContext() {
+        return gameContext;
+    }
+
+    /**
      * Get current adv state.
      * @return the result of this operation.
      */
