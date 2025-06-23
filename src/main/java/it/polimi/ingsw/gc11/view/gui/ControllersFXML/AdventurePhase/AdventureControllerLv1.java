@@ -4,7 +4,6 @@ import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
-import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
@@ -21,7 +20,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -32,7 +30,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class AdventureControllerLv1 extends Controller {
@@ -62,10 +59,21 @@ public class AdventureControllerLv1 extends Controller {
     private VirtualServer virtualServer;
     private AdventurePhaseData adventurePhaseData;
 
-    private final Map<Class<?>, Consumer<AdventureCard>> optionsPrinter = Map.of(
-            AbandonedShip.class, (card) -> printAcceptDecline()
-
+    private final Map<Class<?>, Consumer<AdventureCard>> handleDispatch = Map.ofEntries(
+            Map.entry(AbandonedShip.class, card -> handle((AbandonedShip) card)),
+            Map.entry(AbandonedStation.class, card -> handle((AbandonedStation) card)),
+            Map.entry(CombatZoneLv1.class, card -> handle((CombatZoneLv1) card)),
+            Map.entry(CombatZoneLv2.class, card -> handle((CombatZoneLv2) card)),
+            Map.entry(Epidemic.class, card -> handle((Epidemic) card)),
+            Map.entry(MeteorSwarm.class, card -> handle((MeteorSwarm) card)),
+            Map.entry(OpenSpace.class, card -> handle((OpenSpace) card)),
+            Map.entry(Pirates.class, card -> handle((Pirates) card)),
+            Map.entry(PlanetsCard.class, card -> handle((PlanetsCard) card)),
+            Map.entry(Slavers.class, card -> handle((Slavers) card)),
+            Map.entry(Smugglers.class, card -> handle((Smugglers) card)),
+            Map.entry(StarDust.class, card -> handle((StarDust) card))
     );
+
 
     public void initialize(Stage stage) {
         this.stage = stage;
@@ -75,7 +83,7 @@ public class AdventureControllerLv1 extends Controller {
 
         saveOriginalPositions();
 
-        // Listener su dimensioni dell'ImageView
+        // Listener on ImageView properties to update rectangles
         flightBoardImage.fitWidthProperty().addListener((obs, oldVal, newVal) -> updateRectangles());
         flightBoardImage.fitHeightProperty().addListener((obs, oldVal, newVal) -> updateRectangles());
         flightBoardImage.layoutXProperty().addListener((obs, oldVal, newVal) -> updateRectangles());
@@ -89,12 +97,20 @@ public class AdventureControllerLv1 extends Controller {
 
         //Setup buttons to view enemies' shipboard
         this.setupPlayersButtons();
-
         playersButtons.setSpacing(10);
         playersButtons.prefWidthProperty();
 
         drawButton.setVisible(false);
         drawButton.setDisable(true);
+
+        acceptButton.setVisible(false);
+        acceptButton.setDisable(true);
+
+        declineButton.setVisible(false);
+        declineButton.setDisable(true);
+
+        handleButton.setVisible(false);
+        handleButton.setDisable(true);
 
         update(adventurePhaseData);
 
@@ -259,7 +275,9 @@ public class AdventureControllerLv1 extends Controller {
 
 
     private void showDrawButton(){
-        if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
+        if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer()) &&
+        !adventurePhaseData.isAdvCardNew()){
+            // Se il giocatore corrente è lo stesso del giocatore che può pescare una carta
             drawButton.setVisible(true);
             drawButton.setDisable(false);
         }
@@ -267,28 +285,21 @@ public class AdventureControllerLv1 extends Controller {
 
     private void showAdventureCard() {
 
-        if (adventurePhaseData.getAdventureCard() != null) {
+        if (adventurePhaseData.getAdventureCard() != null && adventurePhaseData.isAdvCardNew()) {
             AdventureCard card = adventurePhaseData.getAdventureCard();
             String basepath = "/it/polimi/ingsw/gc11/adventureCards/";
             ImageView cardImage = new ImageView(new Image(getClass()
                     .getResource(basepath + card.getId() + ".jpg")
                     .toExternalForm()
             ));
-            adventureCardImage = cardImage;
+            this.adventureCardImage = cardImage;
 
-            showAdvCardOptions(card);
+            //Handle the visibility of advCard buttons
+            handler(card);
+
+            adventurePhaseData.resetAdvCardNew();
         }
 
-    }
-
-    private void showAdvCardOptions(AdventureCard card) {
-    }
-
-    private void printAcceptDecline() {
-        acceptButton.setVisible(true);
-        acceptButton.setDisable(false);
-        declineButton.setVisible(true);
-        declineButton.setDisable(false);
     }
 
     @FXML
@@ -310,24 +321,6 @@ public class AdventureControllerLv1 extends Controller {
             showDrawButton();
             showAdventureCard();
 
-            if(adventurePhaseData.isStateNew()) {
-                switch (adventurePhaseData.getState()) {
-                    case CHOOSE_MAIN_MENU:
-                        // Handle main menu state
-                        break;
-                    case WAIT_ADVENTURE_CARD:
-                        // Handle waiting for adventure card
-                        break;
-                    case ACCEPT_CARD_SETUP:
-                        // Handle accepting card setup
-                        break;
-                    case CHOOSE_ACTION_MENU:
-                        // Handle action menu state
-                        break;
-                    default:
-                        break;
-                }
-            }
 
             if( adventurePhaseData.getServerMessage() != null || !adventurePhaseData.getServerMessage().isEmpty()) {
                 System.out.println("Error: " + adventurePhaseData.getServerMessage());
@@ -338,20 +331,39 @@ public class AdventureControllerLv1 extends Controller {
     }
 
 
-    private void handle(AbandonedShip abandonedShip) {
+    private void handler(AdventureCard card) {
+        Consumer<AdventureCard> consumer = handleDispatch.get(card.getClass());
+        if (consumer != null) {
+            consumer.accept(card);
+        }
+    }
 
+    private void showAcceptDecline() {
+        acceptButton.setVisible(true);
+        acceptButton.setDisable(false);
+        declineButton.setVisible(true);
+        declineButton.setDisable(false);
+    }
+
+    private void showHandle() {
+        handleButton.setVisible(true);
+        handleButton.setDisable(false);
+    }
+
+    private void handle(AbandonedShip abandonedShip) {
+        showAcceptDecline();
     }
 
     private void handle(AbandonedStation abandonedStation) {
-
+        showAcceptDecline();
     }
 
     private void handle(CombatZoneLv1 combatZoneLv1) {
-
+        showHandle();
     }
 
     private void handle(CombatZoneLv2 combatZoneLv2) {
-
+        showHandle();
     }
 
     private void handle(Epidemic epidemic) {
@@ -359,27 +371,27 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void handle(MeteorSwarm meteorSwarm) {
-
+        showHandle();
     }
 
     private void handle(OpenSpace openSpace) {
-
+        showHandle();
     }
 
     private void handle(Pirates pirates) {
-
+        showHandle();
     }
 
     private void handle(PlanetsCard planetsCard) {
-
+        showHandle();
     }
 
     private void handle(Slavers slavers) {
-
+        showHandle();
     }
 
     private void handle(Smugglers smugglers) {
-
+        showHandle();
     }
 
     private void handle(StarDust starDust) {

@@ -33,6 +33,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
+    private boolean isAdvCardNew = false;
     private Hit hit;
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
@@ -172,6 +173,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setAdventureCard(AdventureCard adventureCard, boolean updateState) {
         actualizePreviousState();
         this.adventureCard = adventureCard;
+        this.isAdvCardNew = true;
         adventureCard.getStates(this);
         if(updateState) {
             updateState();
@@ -179,6 +181,14 @@ public class AdventurePhaseData extends GamePhaseData {
         else {
             notifyListener();
         }
+    }
+
+    public boolean isAdvCardNew() {
+        return isAdvCardNew;
+    }
+
+    public void resetAdvCardNew() {
+        this.isAdvCardNew = false;
     }
 
 
