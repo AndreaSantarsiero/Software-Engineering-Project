@@ -148,6 +148,8 @@ public class AdvShipBoardLv1Controller extends Controller {
 
     public void setShipBoard(){
 
+        slotGrid.getChildren().clear(); // Pulisci la griglia prima di aggiungere i bottoni
+
         // Set the shipboard to client's shipboard
         if ( ownerUsername.equals(adventurePhaseData.getPlayer().getUsername()) ) {
             this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
@@ -155,6 +157,12 @@ public class AdvShipBoardLv1Controller extends Controller {
         // Set the shipboard to enemy's shipboard
         else {
             this.shipBoard = adventurePhaseData.getEnemies().get(ownerUsername).getShipBoard();
+        }
+
+        //Debugging
+        if (shipBoard == null) {
+            System.out.println("ShipBoard è null per " + ownerUsername);
+            return;
         }
 
         for(int r = 0; r < 5; r++){
