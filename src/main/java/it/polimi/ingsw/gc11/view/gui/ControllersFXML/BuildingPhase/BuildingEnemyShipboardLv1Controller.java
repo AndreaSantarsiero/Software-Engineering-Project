@@ -25,13 +25,14 @@ import java.io.IOException;
 
 public class BuildingEnemyShipboardLv1Controller extends Controller {
 
-    @FXML private Button goBackButton;
-    @FXML private Label owner;
+
 
     @FXML private VBox root;
     @FXML private GridPane slotGrid;
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
+    @FXML private Button goBackButton;
+    @FXML private Label owner;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
@@ -39,7 +40,6 @@ public class BuildingEnemyShipboardLv1Controller extends Controller {
 
     private static final double GRID_GAP = 3;
     private static final double BOARD_RATIO = 937.0 / 679.0;
-    private DoubleBinding cellSide;
     private DoubleBinding availW;
     private DoubleBinding availH;
     private DoubleBinding boardW;

@@ -355,9 +355,6 @@ public class CheckLv2Controller extends Controller {
                     virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
                 }
                 catch(Exception exc){
-//                    errorLabel.setVisible(true);
-//                    errorLabel.setText(e.getMessage());
-//                    errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
                     System.out.println("Network Error:  " + exc.getMessage());
                 }
 

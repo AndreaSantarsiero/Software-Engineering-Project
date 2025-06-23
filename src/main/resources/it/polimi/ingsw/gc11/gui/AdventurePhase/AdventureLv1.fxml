@@ -32,7 +32,10 @@
                <children>
                   <Label styleClass="Text" stylesheets="@../style.css" text="View Shipboards:   " />
                </children></HBox>
-                  <Button fx:id="abortButton" mnemonicParsing="false" onAction="#onAbortButtonClick" text="Abort" />
+                  <Button fx:id="abortButton" mnemonicParsing="false" onAction="#onAbortButtonClick" text="Abort">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin></Button>
             </children>
         </HBox>
 
@@ -49,7 +52,7 @@
                 <Pane fx:id="positionOverlayPane" mouseTransparent="false" pickOnBounds="false">
                     <!-- ...all'interno di <Pane fx:id="positionOverlayPane"> ... -->
                     <children>
-                        <Rectangle fx:id="pos1" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="621.0" layoutY="77.0" onMouseClicked="#onPositionClicked1" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos1" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="626.0" layoutY="77.0" onMouseClicked="#onPositionClicked1" stroke="yellow" strokeWidth="3" width="40" />
                         <Rectangle fx:id="pos2" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="530.0" layoutY="59.0" onMouseClicked="#onPositionClicked2" stroke="yellow" strokeWidth="3" width="40" />
                         <Rectangle fx:id="pos3" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="435.0" layoutY="58.0" onMouseClicked="#onPositionClicked3" stroke="yellow" strokeWidth="3" width="40" />
                         <Rectangle fx:id="pos4" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="345.0" layoutY="77.0" onMouseClicked="#onPositionClicked4" stroke="yellow" strokeWidth="3" width="40" />
@@ -65,7 +68,7 @@
                         <Rectangle fx:id="pos14" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="700.0" layoutY="405.0" onMouseClicked="#onPositionClicked14" stroke="yellow" strokeWidth="3" width="40" />
                         <Rectangle fx:id="pos15" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="793.0" layoutY="350.0" onMouseClicked="#onPositionClicked15" stroke="yellow" strokeWidth="3" width="40" />
                         <Rectangle fx:id="pos16" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="843.0" layoutY="268.0" onMouseClicked="#onPositionClicked16" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos17" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="793.0" layoutY="163.0" onMouseClicked="#onPositionClicked17" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos17" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="799.0" layoutY="162.0" onMouseClicked="#onPositionClicked17" stroke="yellow" strokeWidth="3" width="40" />
                         <Rectangle fx:id="pos18" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="712.0" layoutY="104.0" onMouseClicked="#onPositionClicked18" stroke="yellow" strokeWidth="3" width="40" />
                     </children>
                 </Pane>
@@ -85,7 +88,7 @@
                     <Button fx:id="reserve" styleClass="Text2" text="Reserve shipcard" visible="false" />
 
                 </VBox>
-                <Button fx:id="drawButton" onAction="#onDrawbuttonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card" />
+                <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card" />
                 <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@../style.css" text="error" visible="false" wrapText="true">
                     <font>
                         <Font size="18.0" />

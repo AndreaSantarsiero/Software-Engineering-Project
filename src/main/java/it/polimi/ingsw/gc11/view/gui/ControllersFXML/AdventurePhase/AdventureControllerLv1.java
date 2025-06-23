@@ -78,6 +78,8 @@ public class AdventureControllerLv1 extends Controller {
         playersButtons.setSpacing(10);
         playersButtons.prefWidthProperty();
 
+        update(adventurePhaseData);
+
     }
 
     private void saveOriginalPositions() {
@@ -138,7 +140,7 @@ public class AdventureControllerLv1 extends Controller {
                     stage.show();
                 }
                 catch (IOException exc) {
-                    throw new RuntimeException(exc);
+                    System.out.println("FXML Error:  " + exc.getMessage());
                 }
 
             });
@@ -248,6 +250,10 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
+    public void onDrawButtonClick(ActionEvent actionEvent) {
+
+    }
+
     @Override
     public  void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
@@ -273,13 +279,14 @@ public class AdventureControllerLv1 extends Controller {
                 }
             }
 
-            if(!adventurePhaseData.getServerMessage().isEmpty() || adventurePhaseData.getServerMessage() != null) {
+            if( adventurePhaseData.getServerMessage() != null || !adventurePhaseData.getServerMessage().isEmpty()) {
                 System.out.println("Error: " + adventurePhaseData.getServerMessage());
                 setErrorLabel();
             }
 
         });
     }
+
 
     private void handle(AbandonedShip abandonedShip) {
 
@@ -329,7 +336,5 @@ public class AdventureControllerLv1 extends Controller {
 
     }
 
-    public void onDrawbuttonClick(ActionEvent actionEvent) {
 
-    }
 }
