@@ -332,7 +332,7 @@ public class GameContext {
 
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader(resourcePath);
         ShipBoard coolShip = shipBoardLoader.getShipBoard();
-        player.setColor(player.getColorToString(), shipBoardLoader.getShipCardLoader().getCentralUnits());
+        coolShip.setCentralUnit(shipBoardLoader.getShipCardLoader().getCentralUnits().get(player.getColorToString()));
         player.setACoolShip(coolShip);
         return coolShip;
     }
