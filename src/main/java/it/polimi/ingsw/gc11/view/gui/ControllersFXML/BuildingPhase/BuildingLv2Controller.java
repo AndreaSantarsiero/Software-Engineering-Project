@@ -4,9 +4,9 @@ import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
-import it.polimi.ingsw.gc11.view.BuildingPhaseData;
-import it.polimi.ingsw.gc11.view.CheckPhaseData;
-import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.*;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv2;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -74,6 +74,8 @@ public class BuildingLv2Controller extends Controller {
     @FXML private Label timersLeft;
     @FXML private Button resetTimer;
     @FXML private Label timerCountdown;
+    @FXML private ComboBox<String> selectCheat;
+    @FXML private Button cheatButton;
     @FXML private ComboBox<String> choosePosition;
     @FXML private Label FreeShipCardText;
     @FXML private VBox heldShipCard;
@@ -152,6 +154,10 @@ public class BuildingLv2Controller extends Controller {
         timer.setSpacing(10);
         timer.prefWidthProperty().bind(availW.multiply(0.25));
 
+        String[] cheats = {"Gimme Cool Ship 4"};
+        selectCheat.getItems().clear();
+        selectCheat.getItems().addAll(cheats);
+
         endBuilding.setSpacing(10);
         endBuilding.prefWidthProperty().bind(availW.multiply(0.25));
 
@@ -159,7 +165,6 @@ public class BuildingLv2Controller extends Controller {
         String[] positions = {"1", "2", "3", "4"};
         choosePosition.getItems().clear();
         choosePosition.getItems().addAll(positions);
-
 
 
         boardContainer.setMinSize(0, 0);
@@ -828,9 +833,6 @@ public class BuildingLv2Controller extends Controller {
                     virtualServer.getPlayersShipBoard(); //Questo metodo aggiorna la navi di tutti gli avversari
                 }
                 catch(Exception exc){
-//                    errorLabel.setVisible(true);
-//                    errorLabel.setText(e.getMessage());
-//                    errorLabel.setStyle("-fx-text-fill: red;" + errorLabel.getStyle());
                     System.out.println("Network Error:  " + exc.getMessage());
                 }
 
@@ -866,7 +868,7 @@ public class BuildingLv2Controller extends Controller {
             stage.show();
         }
         catch (IOException exc) {
-            System.out.println("Error loading fxml:  " + exc.getMessage());
+            System.out.println("FXML error:  " + exc.getMessage());
         }
     }
 
@@ -882,15 +884,33 @@ public class BuildingLv2Controller extends Controller {
 
     @FXML
     private void onEndBuildingClick(ActionEvent event) {
-
-        try {
-            int position = Integer.parseInt(choosePosition.getValue());
-            this.clickedEndBuilding = true;
-            buildingPhaseData.resetActionSuccessful();
-            virtualServer.endBuildingLevel2(position);
+        if (choosePosition.getValue() != null && !choosePosition.getValue().isEmpty()) {
+            try {
+                int position = Integer.parseInt(choosePosition.getValue());
+                this.clickedEndBuilding = true;
+                buildingPhaseData.resetActionSuccessful();
+                virtualServer.endBuildingLevel2(position);
+            } catch (NetworkException e) {
+                System.out.println("Network Error:  " + e.getMessage());
+            }
         }
-        catch (NetworkException e) {
-            System.out.println("Network Error:  " + e.getMessage());
+    }
+
+    @FXML
+    private void onCheatButtonClick(ActionEvent event) {
+        String cheat = selectCheat.getValue();
+        if(cheat != null && !cheat.isEmpty()) {
+            switch (cheat) {
+                case "Gimme Cool Ship 4" -> {
+                    try {
+                        virtualServer.gimmeACoolShip(4);
+                    }
+                    catch (NetworkException e) {
+                        System.out.println("Network Error:  " + e.getMessage());
+                    }
+                }
+                default -> System.out.println("Unknown cheat: " + cheat);
+            }
         }
     }
 
@@ -1000,23 +1020,36 @@ public class BuildingLv2Controller extends Controller {
         Platform.runLater(() -> {
 
             ViewModel viewModel = (ViewModel) stage.getUserData();
-            CheckPhaseData checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckLV2.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                CheckLv2Controller controller = fxmlLoader.getController();
-                checkPhaseData.setListener(controller);
-                controller.initialize(stage);
-                stage.setScene(newScene);
-                stage.show();
+            GamePhaseData gamePhaseData = viewModel.getPlayerContext().getCurrentPhase();
+            if (gamePhaseData.isCheckPhase()) {
+                CheckPhaseData checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckLV2.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    CheckLv2Controller controller = fxmlLoader.getController();
+                    checkPhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
             }
-            catch (Exception e) {
-                System.out.println("FXML Error: " + e.getMessage());
+            else if (gamePhaseData.isAdventurePhase()) {
+                AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLV2.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    AdventureControllerLv2 controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
             }
-
         });
-
-
     }
 
 
