@@ -44,6 +44,14 @@ public class IdlePhase extends GamePhase {
      */
     @Override
     public void connectPlayerToGame(String playerUsername) throws FullLobbyException, UsernameAlreadyTakenException {
+        if (playerUsername == null) {
+            throw new IllegalArgumentException("Username cannot be null");
+        }
+
+        if (playerUsername.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be empty");
+        }
+
         this.gameModel.addPlayer(playerUsername);
 
         if (gameModel.getPlayers().size() == gameModel.getMaxNumPlayers()){
@@ -63,8 +71,26 @@ public class IdlePhase extends GamePhase {
      */
     @Override
     public void chooseColor(String username, String chosenColor) {
+        if (username == null) {
+            throw new IllegalStateException("username cannot be null");
+        }
+
+        if (chosenColor == null) {
+            throw new NullPointerException("color cannot be null");
+        }
+
         Player player = this.gameModel.getPlayer(username);
         String color = chosenColor.toLowerCase();
+
+        for (Player p : gameModel.getPlayers()) {
+            if (!p.getUsername().equals(username)) {
+                String taken = p.getColor();
+                if (taken != null && taken.equalsIgnoreCase(color)) {
+                    throw new IllegalArgumentException("color already chosen");
+                }
+            }
+        }
+
         this.gameModel.setPlayerColor(username, color);
         this.numReadyPlayers++;
 

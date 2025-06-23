@@ -13,7 +13,25 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Represents the state in which a {@link Player} has landed on a planet
+ * (from a {@link PlanetsCard}) and can choose materials to load into
+ * their ship's {@link Storage}.
+ * <p>
+ * This state allows the player to assign materials to specific storage areas,
+ * validating that the materials come from the list of available ones on the planet.
+ * </p>
+ *
+ * <p>
+ * Once the player finishes their material selection:
+ * <ul>
+ *     <li>They are moved forward according to the card's lost days penalty.</li>
+ *     <li>The turn index is incremented.</li>
+ *     <li>The game transitions to either a new {@code PlanetsState} or {@link IdleState}
+ *         depending on whether there are other players or planets remaining.</li>
+ * </ul>
+ * </p>
+ */
 public class LandedPlanet extends AdventureState {
 
     List<Material> materials;
