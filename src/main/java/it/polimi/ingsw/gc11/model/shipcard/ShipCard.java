@@ -236,9 +236,6 @@ public abstract class ShipCard implements Serializable {
 
         ShipCard shipCard = (ShipCard) obj;
 
-        if (!this.id.equals(shipCard.getId())) {
-            throw new IllegalArgumentException("Mismatch on id: " + this.id + " != " + shipCard.getId());
-        }
         if (!this.orientation.equals(shipCard.getOrientation())) {
             throw new IllegalArgumentException("Mismatch on orientation: " + this.orientation + " != " + shipCard.getOrientation());
         }
@@ -261,8 +258,7 @@ public abstract class ShipCard implements Serializable {
             throw new IllegalArgumentException("Mismatch on covered flag: " + this.covered + " != " + shipCard.isCovered());
         }
 
-        return this.id.equals(shipCard.getId()) &&
-                this.orientation.equals(shipCard.getOrientation()) &&
+        return this.orientation.equals(shipCard.getOrientation()) &&
                 this.topConnector.equals(shipCard.getTopConnector()) &&
                 this.rightConnector.equals(shipCard.getRightConnector()) &&
                 this.bottomConnector.equals(shipCard.getBottomConnector()) &&
