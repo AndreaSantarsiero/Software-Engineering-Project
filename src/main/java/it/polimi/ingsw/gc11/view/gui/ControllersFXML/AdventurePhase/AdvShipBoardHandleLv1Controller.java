@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class AdvShipBoardLv1Controller extends Controller {
+public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
     @FXML private VBox root;
@@ -62,7 +62,6 @@ public class AdvShipBoardLv1Controller extends Controller {
     private Stage stage;
     private VirtualServer virtualServer;
     private AdventurePhaseData adventurePhaseData;
-    private String ownerUsername;
     private ShipBoard shipBoard;
 
 
@@ -75,14 +74,11 @@ public class AdvShipBoardLv1Controller extends Controller {
 
 
 
-    public void initialize(Stage stage, String ownerUsername) {
+    public void initialize(Stage stage) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         virtualServer = viewModel.getVirtualServer();
         this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        this.ownerUsername = ownerUsername;
-        this.owner.setText(ownerUsername + "'s Shipboard");
-
 
         root.setSpacing(20);
 
@@ -150,18 +146,11 @@ public class AdvShipBoardLv1Controller extends Controller {
 
         slotGrid.getChildren().clear(); // Pulisci la griglia prima di aggiungere i bottoni
 
-        // Set the shipboard to client's shipboard
-        if ( ownerUsername.equals(adventurePhaseData.getPlayer().getUsername()) ) {
-            this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
-        }
-        // Set the shipboard to enemy's shipboard
-        else {
-            this.shipBoard = adventurePhaseData.getEnemies().get(ownerUsername).getShipBoard();
-        }
+        this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
 
         //Debugging
         if (shipBoard == null) {
-            System.out.println("ShipBoard è null per " + ownerUsername);
+            System.out.println("ShipBoard è null");
             return;
         }
 
@@ -173,6 +162,53 @@ public class AdvShipBoardLv1Controller extends Controller {
 
                     if(shipCard != null) {
 
+                        Button btnShipCard = new Button();
+                        btnShipCard.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                        final int x = c;
+                        final int y = r;
+                        btnShipCard.setOnAction(event -> onShipBoardSelected(x, y));
+                        btnShipCard.minWidthProperty().bind(shipCardSize);
+                        btnShipCard.minHeightProperty().bind(shipCardSize);
+                        btnShipCard.prefWidthProperty().bind(shipCardSize);
+                        btnShipCard.prefHeightProperty().bind(shipCardSize);
+                        btnShipCard.maxWidthProperty().bind(shipCardSize);
+
+                        Rectangle clip = new Rectangle();
+                        clip.widthProperty().bind(btnShipCard.widthProperty());
+                        clip.heightProperty().bind(btnShipCard.heightProperty());
+                        clip.arcWidthProperty().bind(shipCardSize.multiply(0.1));
+                        clip.arcHeightProperty().bind(shipCardSize.multiply(0.1));
+                        btnShipCard.setClip(clip);
+
+                        ColorAdjust darken  = new ColorAdjust();
+                        darken.setBrightness(-0.2);
+
+                        DropShadow rim = new DropShadow();
+                        rim.setColor(Color.web("#ffffffAA"));
+                        rim.setRadius(10);
+                        rim.setSpread(0.5);
+
+                        btnShipCard.setOnMouseEntered(e -> {
+                            Effect combined = new Blend(
+                                    BlendMode.SRC_OVER,
+                                    rim,
+                                    new Blend(
+                                            BlendMode.SRC_OVER,
+                                            null,
+                                            darken
+                                    )
+                            );
+                            btnShipCard.setEffect(combined);
+                            btnShipCard.setScaleX(1.05);
+                            btnShipCard.setScaleY(1.05);
+                        });
+
+                        btnShipCard.setOnMouseExited(e -> {
+                            btnShipCard.setEffect(null);
+                            btnShipCard.setScaleX(1.0);
+                            btnShipCard.setScaleY(1.0);
+                        });
+
                         img = new Image(getClass()
                                 .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipCard.getId() + ".jpg")
                                 .toExternalForm()
@@ -181,8 +217,8 @@ public class AdvShipBoardLv1Controller extends Controller {
                         ImageView iv = new ImageView(img);
                         iv.setPreserveRatio(true);
 
-                        iv.fitWidthProperty().bind(shipCardSize);
-                        iv.fitHeightProperty().bind(shipCardSize);
+                        iv.fitWidthProperty().bind(btnShipCard.widthProperty());
+                        iv.fitHeightProperty().bind(btnShipCard.heightProperty());
 
                         switch(shipCard.getOrientation()){
                             case DEG_0 -> iv.setRotate(0);
@@ -194,17 +230,19 @@ public class AdvShipBoardLv1Controller extends Controller {
                         // StackPane per sovrapporre dettagli e immagine
                         StackPane stack = new StackPane();
                         stack.setPickOnBounds(false);
-                        stack.prefWidthProperty().bind(shipCardSize);
-                        stack.prefHeightProperty().bind(shipCardSize);
+                        stack.prefWidthProperty().bind(btnShipCard.widthProperty());
+                        stack.prefHeightProperty().bind(btnShipCard.heightProperty());
                         stack.getChildren().add(iv);
 
                         // Visualizza dettagli se necessario
                         printDetails(shipCard, stack);
 
-                        GridPane.setHgrow(stack, Priority.ALWAYS);
-                        GridPane.setVgrow(stack, Priority.ALWAYS);
+                        btnShipCard.setGraphic(stack);
 
-                        slotGrid.add(stack, c, r);
+                        GridPane.setHgrow(btnShipCard, Priority.ALWAYS);
+                        GridPane.setVgrow(btnShipCard, Priority.ALWAYS);
+
+                        slotGrid.add(btnShipCard, c, r);
                     }
                 }
             }
@@ -237,22 +275,6 @@ public class AdvShipBoardLv1Controller extends Controller {
 
     private void onShipBoardSelected(int x, int y) {
 
-    }
-
-    @FXML
-    protected void onGoBackButtonClick(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            AdventureControllerLv1 controller = fxmlLoader.getController();
-            adventurePhaseData.setListener(controller);
-            controller.initialize(stage);
-            stage.setScene(newScene);
-            stage.show();
-        }
-        catch (IOException e) {
-            System.out.println("FXML error: " + e.getMessage());
-        }
     }
 
     @Override

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" spacing="10.0" styleClass="Menu" stylesheets="@../style.css"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdvShipBoardHandleLv1Controller">
+
+    <children>
+
+        <!-- Title -->
+        <HBox fx:id="headerContainer" alignment="CENTER">
+            <children>
+                <Label styleClass="Text" text="Adventure Phase">
+                    <font>
+                        <Font size="58.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <HBox fx:id="playersButtons" prefHeight="45.0" prefWidth="1255.0">
+                    <children>
+                        <Label fx:id="owner" styleClass="Text" text="&lt;username&gt;'s Shipboard">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <HBox.margin>
+                                <Insets left="300.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+
+        <!-- Main Game Layout -->
+        <HBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="100.0">
+
+            <!-- CENTER: ShipBoard (background image + grid) -->
+            <StackPane fx:id="boardContainer" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <ImageView fx:id="shipBoardImage" preserveRatio="true">
+                    <image>
+                        <Image url="@../../boards/ShipBoard1.jpg" />
+                    </image>
+                </ImageView>
+                <GridPane fx:id="slotGrid">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="20" />
+                        <ColumnConstraints percentWidth="20" />
+                        <ColumnConstraints percentWidth="20" />
+                        <ColumnConstraints percentWidth="20" />
+                        <ColumnConstraints percentWidth="20" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="20" />
+                        <RowConstraints percentHeight="20" />
+                        <RowConstraints percentHeight="20" />
+                        <RowConstraints percentHeight="20" />
+                        <RowConstraints percentHeight="20" />
+                    </rowConstraints>
+                </GridPane>
+                <HBox fx:id="reservedSlots" />
+            </StackPane>
+
+        </HBox>
+
+    </children>
+
+    <padding>
+        <Insets left="20.0" right="20.0" />
+    </padding>
+
+</VBox>
