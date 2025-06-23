@@ -321,8 +321,8 @@ public class AdventureControllerLv1 extends Controller {
             showDrawButton();
             showAdventureCard();
 
-
-            if( adventurePhaseData.getServerMessage() != null || !adventurePhaseData.getServerMessage().isEmpty()) {
+            String serverMessage = adventurePhaseData.getServerMessage();
+            if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println("Error: " + adventurePhaseData.getServerMessage());
                 setErrorLabel();
             }

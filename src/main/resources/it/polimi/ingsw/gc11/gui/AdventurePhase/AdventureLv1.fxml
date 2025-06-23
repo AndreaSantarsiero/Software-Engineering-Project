@@ -84,11 +84,11 @@
                 <VBox fx:id="advCard" alignment="CENTER" spacing="10" style="-fx-background-color: #032b8a; -fx-background-radius: 20; -fx-padding: 10; -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
                     <ImageView fx:id="adventureCardImage" preserveRatio="true" visible="false" />
                     <Button fx:id="acceptButton" styleClass="Text2" text="Accept" visible="false" />
-                    <Button fx:id="declineButtton" styleClass="Text2" text="Decline" visible="false" />
+                    <Button fx:id="declineButton" styleClass="Text2" text="Decline" visible="false" />
                     <Button fx:id="handleButton" styleClass="Text2" text="Handle" visible="false" />
 
                 </VBox>
-                <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card"/>
+                <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card" />
                 <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@../style.css" text="error" visible="false" wrapText="true">
                     <font>
                         <Font size="18.0" />
