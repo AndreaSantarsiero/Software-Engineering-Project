@@ -26,10 +26,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 public class AdvShipBoardHandleLv1Controller extends Controller {
 
@@ -183,6 +182,23 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, AbandonedStation card) {
         setup(stage);
+
+        actionText.setText("Select slot to place or replace materials.");
+        subHeaderContainer.getChildren().add(
+                new Button("Confirm") {
+                    {
+                        setOnAction(event -> {
+                            try {
+                                virtualServer.chooseMaterials(adventurePhaseData.getStorageMaterials());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        });
+                    }
+                }
+        );
+
+        state = State.ABANDONED_STATION;
 
         update(adventurePhaseData);
     }
@@ -426,6 +442,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         return result.map(Integer::valueOf).orElse(null);
     }
 
+
+
     private void housingMemberNumber(HousingUnit hu) {
         int max = hu.getNumMembers();
         Integer num = askForCrewNumber(root.getScene().getWindow(), max);
@@ -434,11 +452,123 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
+    public List<Material> askForMaterials(Window owner, Storage storage) {
+
+        int capacity = storage.getType().getCapacity();
+
+        List<Material> current = new ArrayList<>(storage.getMaterials());
+        while (current.size() < capacity) current.add(null);
+
+        Dialog<List<Material>> dlg = new Dialog<>();
+        dlg.initOwner(owner);
+        dlg.setTitle("Assegna materiali");
+        dlg.setHeaderText("Clicca sugli slot per ciclare fra vuoto/materiali");
+
+        dlg.getDialogPane().getButtonTypes()
+                .addAll(ButtonType.OK, ButtonType.CANCEL);
+
+
+        List<Integer> selected = new ArrayList<>();
+
+        HBox box = new HBox(10);
+        box.setAlignment(Pos.CENTER);
+
+        List<Rectangle> rects = new ArrayList<>(capacity);
+        List<Material> state  = new ArrayList<>(current);
+
+        for (int i = 0; i < capacity; i++) {
+            Rectangle r = new Rectangle(34, 34);
+            r.setArcWidth(6); r.setArcHeight(6);
+            r.setStroke(Color.GREY); r.setStrokeWidth(2);
+            setFill(r, state.get(i));
+            final int idx = i;
+
+            r.setOnMouseClicked(e -> {
+                if (selected.contains(idx)) {
+                    selected.remove(idx);
+
+                    r.setEffect(null);
+                } else {
+                    selected.add(idx);
+
+                    ColorInput goldOverlay = new ColorInput();
+                    goldOverlay.setPaint(Color.web("#FFD700CC"));
+
+                    goldOverlay.widthProperty() .bind(r.widthProperty());
+                    goldOverlay.heightProperty().bind(r.heightProperty());
+
+                    Blend highlight = new Blend();
+                    highlight.setMode(BlendMode.OVERLAY);
+                    highlight.setTopInput(goldOverlay);
+
+                    r.setEffect(highlight);
+                }
+            });
+
+            rects.add(r);
+            box.getChildren().add(r);
+        }
+
+        dlg.getDialogPane().setContent(box);
+
+
+        dlg.setResultConverter(bt -> {
+            if (bt != ButtonType.OK) return null;
+
+            List<Material> oldM = new ArrayList<>();
+
+            for (Integer idx : selected) {
+                if(idx < storage.getMaterials().size()) {
+                    oldM.add(storage.getMaterials().get(idx));
+                }else{
+                    oldM.add(null);
+                }
+            };
+            return oldM;
+        });
+
+        return dlg.showAndWait().orElse(null);
+    }
+
+    private static void setFill(Rectangle r, Material m) {
+        r.setFill(m == null ? Color.TRANSPARENT : materialColor(m));
+    }
+
+    private static Color materialColor(Material m) {
+        return switch (m.getType()) {
+            case BLUE   -> Color.DODGERBLUE;
+            case GREEN  -> Color.LIMEGREEN;
+            case YELLOW -> Color.GOLD;
+            case RED    -> Color.CRIMSON;
+        };
+    }
+
     private void onShipBoardSelected(int x, int y) {
         if( state == State.ABANDONED_SHIP) {
             try {
                 housingMemberNumber((HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
                 selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if( state == State.ABANDONED_STATION) {
+            try {
+                List<Material> avail = ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))).getMaterials();
+
+                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
+                if (oldM != null) {
+                    List<Material> newM;
+                    if(oldM.size() < avail.size()) {
+                        newM = new ArrayList<>(avail.subList(0, oldM.size()));
+                        avail.removeAll(newM);
+                    }else{
+                        newM = new ArrayList<>(avail);
+                    }
+
+                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(oldM, newM));
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
