@@ -169,10 +169,16 @@ public class AdventurePhaseData extends GamePhaseData {
         return adventureCard;
     }
 
-    public void setAdventureCard(AdventureCard adventureCard) {
+    public void setAdventureCard(AdventureCard adventureCard, boolean updateState) {
+        actualizePreviousState();
         this.adventureCard = adventureCard;
         adventureCard.getStates(this);
-        updateState();
+        if(updateState) {
+            updateState();
+        }
+        else {
+            notifyListener();
+        }
     }
 
 
@@ -201,8 +207,15 @@ public class AdventurePhaseData extends GamePhaseData {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(String currentPlayer) {
+    public void setCurrentPlayer(String currentPlayer, boolean updateState) {
+        actualizePreviousState();
         this.currentPlayer = currentPlayer;
+        if(updateState) {
+            updateState();
+        }
+        else {
+            notifyListener();
+        }
     }
 
 

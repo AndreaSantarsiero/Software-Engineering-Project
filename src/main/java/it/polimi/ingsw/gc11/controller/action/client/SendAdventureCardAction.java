@@ -8,12 +8,14 @@ import it.polimi.ingsw.gc11.view.*;
 public class SendAdventureCardAction extends ServerAction{
 
     private  final AdventureCard adventureCard;
+    private final boolean updateState;
     private  final String currentPlayer;
 
 
 
-    public SendAdventureCardAction(AdventureCard adventureCard, String currentPlayer) {
+    public SendAdventureCardAction(AdventureCard adventureCard, boolean updateState, String currentPlayer) {
         this.adventureCard = adventureCard;
+        this.updateState = updateState;
         this.currentPlayer = currentPlayer;
     }
 
@@ -30,8 +32,8 @@ public class SendAdventureCardAction extends ServerAction{
 
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
-        adventurePhaseData.setCurrentPlayer(currentPlayer);
-        adventurePhaseData.setAdventureCard(adventureCard);
+        adventurePhaseData.setCurrentPlayer(currentPlayer, false);
+        adventurePhaseData.setAdventureCard(adventureCard, updateState);
     }
 
     @Override
