@@ -359,7 +359,7 @@ public class CheckLv1Controller extends Controller {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckEnemyShipboardLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    BuildingEnemyShipboardLv1Controller controller = fxmlLoader.getController();
+                    CheckEnemyShipboardLv1Controller controller = fxmlLoader.getController();
                     checkPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);
