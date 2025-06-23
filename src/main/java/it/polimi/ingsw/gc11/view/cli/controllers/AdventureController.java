@@ -140,7 +140,7 @@ public class AdventureController extends CLIController {
         else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getActionMenuSize(), actionMenu));
         }
-        else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_SETUP){
+        else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getFirePowerMenuSize(), firePowerMenu));
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.ENGINE_POWER_MENU){

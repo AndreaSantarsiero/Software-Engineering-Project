@@ -187,6 +187,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     public void setEnemiesPlayer(String username, Player player) {
+        actualizePreviousState();
         enemies.put(username, player);
         notifyListener();
     }
