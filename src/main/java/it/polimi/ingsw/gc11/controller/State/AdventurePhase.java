@@ -132,7 +132,7 @@ public class AdventurePhase extends GamePhase {
         this.gameContext.setPhase(new EndGamePhase(this.gameContext));
 
         SetEndGameAction send = new SetEndGameAction();
-        for (Player player : gameModel.getPlayers()) {
+        for (Player player : gameModel.getPlayersNotAbort()) {
             gameContext.sendAction(player.getUsername(), send);
         }
     }
@@ -165,7 +165,7 @@ public class AdventurePhase extends GamePhase {
     @Override
     public void acceptAdventureCard(String username) {
         //this.advState.getAdventureCard(username);//è sbagliato?? uguale al metodo sopra?
-        Player expectedPlayer = gameModel.getPlayers().get(idxCurrentPlayer);
+        Player expectedPlayer = gameModel.getPlayersNotAbort().get(idxCurrentPlayer);
         if (expectedPlayer.getUsername().equals(username)) {
             advState.acceptAdventureCard(username);
         }
@@ -182,7 +182,7 @@ public class AdventurePhase extends GamePhase {
      */
     @Override
     public void declineAdventureCard(String username) {
-        Player expectedPlayer = gameModel.getPlayers().get(idxCurrentPlayer);
+        Player expectedPlayer = gameModel.getPlayersNotAbort().get(idxCurrentPlayer);
         if (expectedPlayer.getUsername().equals(username)) {
             advState.declineAdventureCard(username);
         }

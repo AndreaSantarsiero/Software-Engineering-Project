@@ -20,7 +20,7 @@ public class AcceptAdventureCardAction extends ClientGameAction {
             context.acceptAdventureCard(getUsername());
             String currentPlayer = context.getCurrentPlayerUsername().getUsername();
 
-            for(Player player : context.getGameModel().getPlayers()){
+            for(Player player : context.getGameModel().getPlayersNotAbort()){
                 if(player.getUsername().equals(username)){
                     UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(currentPlayer, true);
                     context.sendAction(username, response);

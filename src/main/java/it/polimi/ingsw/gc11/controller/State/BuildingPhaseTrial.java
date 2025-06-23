@@ -150,7 +150,7 @@ public class BuildingPhaseTrial extends GamePhase{
 
         gameModel.endBuildingTrial(username);
         this.playersFinished.add(gameModel.getPlayer(username));
-        if (this.playersFinished.size() == gameModel.getPlayers().size()) {
+        if (this.playersFinished.size() == gameModel.getPlayersNotAbort().size()) {
             goToCheckPhase();
         }
         else {
@@ -168,11 +168,11 @@ public class BuildingPhaseTrial extends GamePhase{
         if(gameContext.getPhase().isCheckPhase()){
             GameModel gameModel = gameContext.getGameModel();
             ArrayList<String> enemies = new ArrayList<>();
-            for (Player player : gameModel.getPlayers()) {
+            for (Player player : gameModel.getPlayersNotAbort()) {
                 enemies.add(player.getUsername());
             }
 
-            for (Player player : gameContext.getGameModel().getPlayers()) {
+            for (Player player : gameContext.getGameModel().getPlayersNotAbort()) {
                 enemies.remove(player.getUsername());
                 SetCheckPhaseAction send = new SetCheckPhaseAction(player.getShipBoard(), enemies);
                 gameContext.sendAction(player.getUsername(), send);

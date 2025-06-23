@@ -48,7 +48,7 @@ public class CheckPhase extends GamePhase {
     }
 
     public void initialize() {
-        List<Player> players = gameModel.getPlayers();
+        List<Player> players = gameModel.getPlayersNotAbort();
         for (Player player : players) {
             if(!player.getShipBoard().checkShip()){
                 player.setPosition(-1); //Player is removed from the ranking (position)
@@ -104,14 +104,14 @@ public class CheckPhase extends GamePhase {
         System.out.println("Going to AdventurePhase...");
         AdventurePhase adventurePhase = new AdventurePhase(this.gameContext);
         this.gameContext.setPhase(adventurePhase);
-        String currentPlayer = gameModel.getPlayers().get(adventurePhase.getIdxCurrentPlayer()).getUsername();
+        String currentPlayer = gameModel.getPlayersNotAbort().get(adventurePhase.getIdxCurrentPlayer()).getUsername();
 
         Map<String, Player> enemies = new HashMap<>();
-        for (Player player : this.gameModel.getPlayers()) {
+        for (Player player : this.gameModel.getPlayersNotAbort()) {
             enemies.put(player.getUsername(), player);
         }
 
-        for (Player player : gameModel.getPlayers()) {
+        for (Player player : gameModel.getPlayersNotAbort()) {
             enemies.remove(player.getUsername());
             SetAdventurePhaseAction send = new SetAdventurePhaseAction(gameModel.getFlightBoard(), player, enemies, currentPlayer);
             gameContext.sendAction(player.getUsername(), send);

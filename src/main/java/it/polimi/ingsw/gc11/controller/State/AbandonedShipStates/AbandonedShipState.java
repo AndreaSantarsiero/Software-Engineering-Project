@@ -40,7 +40,7 @@ public class AbandonedShipState extends AdventureState {
     public void acceptAdventureCard(String username) {
         GameModel gameModel = this.advContext.getGameModel();
         gameModel.checkPlayerUsername(username);
-        Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player expectedPlayer = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
         AbandonedShip abandonedShip = (AbandonedShip) this.advContext.getDrawnAdvCard();
 
         if (!expectedPlayer.getUsername().equals(username)) {
@@ -74,7 +74,7 @@ public class AbandonedShipState extends AdventureState {
     public void declineAdventureCard(String username) {
         GameModel gameModel = this.advContext.getGameModel();
         gameModel.checkPlayerUsername(username);
-        Player expectedPlayer = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player expectedPlayer = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
         if(!expectedPlayer.getUsername().equals(username)){
             throw new IllegalArgumentException("It's not your turn to play");
@@ -83,7 +83,7 @@ public class AbandonedShipState extends AdventureState {
         int idx = this.advContext.getIdxCurrentPlayer();
         this.advContext.setIdxCurrentPlayer(idx+1);
 
-        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayers().size()) {
+        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()) {
             //There are no players that must decide
             this.advContext.setAdvState(new IdleState(this.advContext));
         }

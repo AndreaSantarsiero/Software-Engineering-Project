@@ -14,7 +14,7 @@ public class Check3Lv2 extends AdventureState {
         int min = 100000;
         Player minPlayer = null;
         //Trova il player con il minor num di equipaggio in ordine di rotta
-        for (Player player : gameModel.getPlayers()) {
+        for (Player player : gameModel.getPlayersNotAbort()) {
             if (player.getShipBoard().getMembers() < min){
                 min = player.getShipBoard().getMembers();
                 minPlayer = player;

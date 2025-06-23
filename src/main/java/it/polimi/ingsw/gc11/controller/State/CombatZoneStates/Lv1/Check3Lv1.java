@@ -5,7 +5,6 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 
@@ -27,7 +26,7 @@ public class Check3Lv1 extends AdventureState {
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
 
-        Player player = gameModel.getPlayers().get(advContext.getIdxCurrentPlayer());
+        Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
         CombatZoneLv1 combatZoneLv1 = (CombatZoneLv1) this.advContext.getDrawnAdvCard();
 
         if(Batteries == null || doubleCannons == null){
@@ -58,7 +57,7 @@ public class Check3Lv1 extends AdventureState {
 
         this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer() + 1);
 
-        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayers().size()) {
+        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()) {
             //NoPlayersLeft
             this.advContext.setAdvState(new Penalty3Lv1(this.advContext, this.minPlayer, 0));
         }

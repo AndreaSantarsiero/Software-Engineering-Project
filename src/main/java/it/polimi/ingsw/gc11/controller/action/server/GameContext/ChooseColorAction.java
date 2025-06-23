@@ -35,18 +35,18 @@ public class ChooseColorAction extends ClientGameAction {
 
             Map<String, String> playersColor = context.getPlayersColor();
             UpdatePlayersColorAction response = new UpdatePlayersColorAction(playersColor);
-            for (Player player : context.getGameModel().getPlayers()) {
+            for (Player player : context.getGameModel().getPlayersNotAbort()) {
                 context.sendAction(player.getUsername(), response);
             }
 
             if (context.getGameModel().isGameStarted()) {
                 GameModel gameModel = context.getGameModel();
                 ArrayList<String> allPlayersUsernames = new ArrayList<>();
-                for (Player player : gameModel.getPlayers()) {
+                for (Player player : gameModel.getPlayersNotAbort()) {
                     allPlayersUsernames.add(player.getUsername());
                 }
 
-                for (Player p : context.getGameModel().getPlayers()) {
+                for (Player p : context.getGameModel().getPlayersNotAbort()) {
                     ArrayList<String> othersPlayers = new ArrayList<>(allPlayersUsernames);
                     othersPlayers.remove(p.getUsername());
                     SetBuildingPhaseAction send = new SetBuildingPhaseAction(
