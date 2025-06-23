@@ -29,22 +29,15 @@
                 </Label>
             </children>
         </HBox>
+        <HBox>
+            <Label fx:id="actionText" styleClass="Text">
+                <Font size="10"/>
+            </Label>
+        </HBox>
         <HBox fx:id="subHeaderContainer" prefHeight="100.0" prefWidth="200.0">
             <children>
                 <HBox fx:id="playersButtons" prefHeight="45.0" prefWidth="1255.0">
-                    <children>
-                        <Label fx:id="owner" styleClass="Text" text="&lt;username&gt;'s Shipboard">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                            <HBox.margin>
-                                <Insets left="300.0" />
-                            </HBox.margin>
-                        </Label>
-                    </children>
+
                 </HBox>
             </children>
         </HBox>

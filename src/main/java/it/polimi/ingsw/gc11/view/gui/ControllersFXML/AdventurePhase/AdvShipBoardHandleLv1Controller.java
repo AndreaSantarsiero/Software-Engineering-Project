@@ -11,9 +11,10 @@ import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,14 +22,34 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class AdvShipBoardHandleLv1Controller extends Controller {
 
+    private enum State{
+        ABANDONED_SHIP,
+        ABANDONED_STATION,
+        COMBAT_ZONE_LV1,
+        COMBAT_ZONE_LV2,
+        EPIDEMIC,
+        METEOR_SWARM,
+        OPEN_SPACE,
+        PIRATES,
+        PLANETS,
+        SLAVERS,
+        SMUGGLERS,
+        STAR_DUST
+    }
 
+    @FXML private Label actionText;
+    @FXML private HBox playersButtons;
     @FXML private VBox root;
     @FXML private GridPane slotGrid;
     @FXML private HBox mainContainer;
@@ -58,7 +79,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private VirtualServer virtualServer;
     private AdventurePhaseData adventurePhaseData;
     private ShipBoard shipBoard;
+    private State state;
 
+    private ArrayList<ShipCard> selected = new ArrayList<>();
 
     private final Map<Class<?>, BiConsumer<ShipCard, StackPane>> detailPrinters = Map.of(
             Battery.class, (card, stack) -> printBatteryDetails((Battery) card, stack),
@@ -130,12 +153,17 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
+
+        actionText.setTextAlignment(TextAlignment.CENTER);
+        actionText.setAlignment(Pos.CENTER);
     }
 
     public void initialize(Stage stage, AbandonedShip card) {
         setup(stage);
 
-        
+        actionText.setText("Select members to kll.");
+
+        state = State.ABANDONED_SHIP;
 
         update(adventurePhaseData);
     }
@@ -303,6 +331,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                         // Visualizza dettagli se necessario
                         printDetails(shipCard, stack);
 
+                        if (selected.contains(shipCard)){
+                            ColorInput goldOverlay = new ColorInput();
+                            goldOverlay.setPaint(Color.web("#FFD700CC"));
+
+                            goldOverlay.widthProperty() .bind(iv.fitWidthProperty());
+                            goldOverlay.heightProperty().bind(iv.fitHeightProperty());
+
+                            Blend highlight = new Blend();
+                            highlight.setMode(BlendMode.OVERLAY);
+                            highlight.setTopInput(goldOverlay);
+
+                            stack.setEffect(highlight);
+                        }
+
                         btnShipCard.setGraphic(stack);
 
                         GridPane.setHgrow(btnShipCard, Priority.ALWAYS);
@@ -339,8 +381,55 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
-    private void onShipBoardSelected(int x, int y) {
+    private Integer askForCrewNumber(Window owner, int max) {
 
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.initOwner(owner);
+        dialog.setTitle("Numero membri");
+        dialog.setHeaderText("Inserisci il numero di membri da spostare");
+        dialog.setContentText("0 - " + max + ":");
+
+        TextField editor = dialog.getEditor();
+        editor.setTextFormatter(new TextFormatter<Integer>(change -> {
+            return change.getControlNewText().matches("\\d*") ? change : null;
+        }));
+
+        Button ok = (Button) dialog.getDialogPane()
+                .lookupButton(ButtonType.OK);
+        ok.addEventFilter(ActionEvent.ACTION, evt -> {
+            String t = editor.getText();
+            if (t.isEmpty()) {
+                evt.consume();
+                return;
+            }
+            int val = Integer.parseInt(t);
+            if (val < 0 || val > max) {
+                editor.setStyle("-fx-border-color: crimson;");
+                evt.consume();
+            }
+        });
+
+        Optional<String> result = dialog.showAndWait();
+        return result.map(Integer::valueOf).orElse(null);
+    }
+
+    private void housingMemberNumber(HousingUnit hu) {
+        int max = hu.getNumMembers();
+        Integer num = askForCrewNumber(root.getScene().getWindow(), max);
+        if (num != null) {
+            adventurePhaseData.addHousingUsage(hu, num);
+        }
+    }
+
+    private void onShipBoardSelected(int x, int y) {
+        if( state == State.ABANDONED_SHIP) {
+            try {
+                housingMemberNumber((HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+                selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
@@ -349,8 +438,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
             slotGrid.getChildren().clear();
             setShipBoard();
-//            reservedSlots.getChildren().clear();
-//            setReservedSlots();
 
         });
     }
