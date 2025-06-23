@@ -317,25 +317,25 @@ public class AdventureTemplate extends CLITemplate {
                     else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
                         printMenu(shipBoard, menuIndex, actionMenu, controller.getActionMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_MENU){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DOUBLE_CANNON || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_FIRE_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.FIRE_POWER_SETUP){
                         printMenu(shipBoard, menuIndex, firePowerMenu, controller.getFirePowerMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.ENGINE_POWER_MENU){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.ENGINE_POWER_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ENGINE_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.ENGINE_POWER_SETUP){
                         printMenu(shipBoard, menuIndex, enginePowerMenu, controller.getEnginePowerMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.CREW_MEMBERS_MENU){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.CREW_MEMBERS_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_HOUSING_UNIT || data.getState() == AdventurePhaseData.AdventureState.CREW_MEMBERS_SETUP){
                         printMenu(shipBoard, menuIndex, crewMembersMenu, controller.getCrewMembersMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.BATTERIES_MENU){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.BATTERIES_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.BATTERIES_SETUP){
                         printMenu(shipBoard, menuIndex, batteriesMenu, controller.getBatteriesMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_MENU){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_STORAGE || data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP){
                         printMenu(shipBoard, menuIndex, loadMaterialsMenu, controller.getLoadMaterialsMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_SHIELD || data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_SHIELD_SETUP){
                         printMenu(shipBoard, menuIndex, defensiveShieldMenu, controller.getDefensiveShieldMenu());
                     }
-                    else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU){
+                    else if(data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_CANNON || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.DEFENSIVE_CANNON_SETUP){
                         printMenu(shipBoard, menuIndex, defensiveCannonMenu, controller.getDefensiveCannonMenu());
                     }
                     else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  || data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES){

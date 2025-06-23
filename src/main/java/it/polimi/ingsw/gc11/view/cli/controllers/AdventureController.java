@@ -288,6 +288,8 @@ public class AdventureController extends CLIController {
             case LOAD_MATERIALS_MENU -> setLoadMaterialsMenu(choice);
             case DEFENSIVE_SHIELD_MENU -> setDefensiveShieldMenu(choice);
             case DEFENSIVE_CANNON_MENU -> setDefensiveCannonMenu(choice);
+            case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES -> setNumBatteries(choice);
+            case SELECT_NUM_MEMBERS -> setNumMembers(choice);
             case null, default -> {
             }
         }
@@ -295,20 +297,6 @@ public class AdventureController extends CLIController {
 
     @Override
     public void confirmMenuChoice(){
-        updateInternalState();
-    }
-
-    @Override
-    public void setIntegerChoice(int choice) {
-        data.actualizePreviousState();
-        switch (data.getState()) {
-            case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES -> setNumBatteries(choice);
-            case SELECT_NUM_MEMBERS -> setNumMembers(choice);
-        }
-    }
-
-    @Override
-    public void confirmIntegerChoice() {
         try{
             switch (data.getState()) {
                 case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES -> data.addBattery((Battery) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numBatteries);
