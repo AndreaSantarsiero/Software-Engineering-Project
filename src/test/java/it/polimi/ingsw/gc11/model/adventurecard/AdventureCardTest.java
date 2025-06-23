@@ -25,7 +25,7 @@ public class AdventureCardTest {
         public void print(AdventureCardCLI adventureCardCLI, int i){}
 
         @Override
-        public void getStates(AdventurePhaseData adventurePhaseData){}
+        public void getHintMessage(AdventurePhaseData adventurePhaseData){}
     }
 
 

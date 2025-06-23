@@ -11,27 +11,27 @@ public class FlightBoardCLI {
 
     public static void print(FlightBoard flightBoard, List<Player> players, int i) {
         switch (flightBoard.getType()){
-            case FlightBoard.Type.TRIAL -> printLevel1(players, i);
-            case FlightBoard.Type.LEVEL2 -> printLevel2(players, i);
+            case FlightBoard.Type.TRIAL -> printLevel1(flightBoard, players, i);
+            case FlightBoard.Type.LEVEL2 -> printLevel2(flightBoard, players, i);
             default -> System.out.println("Error: Unknown FlightBoard type");
         }
     }
 
 
 
-    public static void printLevel1(List<Player> players, int i) {
+    public static void printLevel1(FlightBoard flightBoard, List<Player> players, int i) {
         String boardColor = Ansi.ansi().reset().fg(Ansi.Color.BLUE).toString();
 
         switch (i) {
-            case 0 -> System.out.print(boardColor + "          " + printSingleCell(players, ">", 1, boardColor) + "  " + printSingleCell(players, ">", 2, boardColor) + "  " + printSingleCell(players, ">", 3, boardColor) + "  " + printSingleCell(players, ">", 4, boardColor) + "          ");
-            case 1 -> System.out.print(boardColor + "      " + printSingleCell(players, ">", 0, boardColor) + "                    " + printSingleCell(players, ">", 5, boardColor) + "      ");
-            case 2 -> System.out.print(boardColor + "   " + printSingleCell(players, ">", 17, boardColor) + "                          " + printSingleCell(players, ">", 6, boardColor) + "   ");
+            case 0 -> System.out.print(boardColor + "          " + printSingleCell(flightBoard, players, ">", 1, boardColor) + "  " + printSingleCell(flightBoard, players, ">", 2, boardColor) + "  " + printSingleCell(flightBoard, players, ">", 3, boardColor) + "  " + printSingleCell(flightBoard, players, ">", 4, boardColor) + "          ");
+            case 1 -> System.out.print(boardColor + "      " + printSingleCell(flightBoard, players, ">", 0, boardColor) + "                    " + printSingleCell(flightBoard, players, ">", 5, boardColor) + "      ");
+            case 2 -> System.out.print(boardColor + "   " + printSingleCell(flightBoard, players, ">", 17, boardColor) + "                          " + printSingleCell(flightBoard, players, ">", 6, boardColor) + "   ");
             case 3 -> System.out.print(boardColor + "                                      \n");
-            case 4 -> System.out.print(boardColor + " " + printSingleCell(players, "∧", 16, boardColor) + "                              " + printSingleCell(players, "∨", 7, boardColor) + " ");
+            case 4 -> System.out.print(boardColor + " " + printSingleCell(flightBoard, players, "∧", 16, boardColor) + "                              " + printSingleCell(flightBoard, players, "∨", 7, boardColor) + " ");
             case 5 -> System.out.print(boardColor + "                                      \n");
-            case 6 -> System.out.print(boardColor + "   " + printSingleCell(players, "<", 15, boardColor) + "                          " + printSingleCell(players, "<", 8, boardColor) + "   ");
-            case 7 -> System.out.print(boardColor + "      " + printSingleCell(players, "<", 14, boardColor) + "                    " + printSingleCell(players, "<", 9, boardColor) + "      ");
-            case 8 -> System.out.print(boardColor + "          " + printSingleCell(players, "<", 13, boardColor) + "  " + printSingleCell(players, "<", 12, boardColor) + "  " + printSingleCell(players, "<", 11, boardColor) + "  " + printSingleCell(players, "<", 10, boardColor) + "          ");
+            case 6 -> System.out.print(boardColor + "   " + printSingleCell(flightBoard, players, "<", 15, boardColor) + "                          " + printSingleCell(flightBoard, players, "<", 8, boardColor) + "   ");
+            case 7 -> System.out.print(boardColor + "      " + printSingleCell(flightBoard, players, "<", 14, boardColor) + "                    " + printSingleCell(flightBoard, players, "<", 9, boardColor) + "      ");
+            case 8 -> System.out.print(boardColor + "          " + printSingleCell(flightBoard, players, "<", 13, boardColor) + "  " + printSingleCell(flightBoard, players, "<", 12, boardColor) + "  " + printSingleCell(flightBoard, players, "<", 11, boardColor) + "  " + printSingleCell(flightBoard, players, "<", 10, boardColor) + "          ");
         }
 
         System.out.print(Ansi.ansi().reset());
@@ -39,23 +39,23 @@ public class FlightBoardCLI {
 
 
 
-    public static void printLevel2(List<Player> players, int i) {
+    public static void printLevel2(FlightBoard flightBoard, List<Player> players, int i) {
         String boardColor = Ansi.ansi().reset().fg(Ansi.Color.MAGENTA).toString();
 
         switch (i) {
-            case  0 -> System.out.print(boardColor + "               " + printSingleCell(players, ">", 2, boardColor) + "  " + printSingleCell(players, ">", 3, boardColor) + "  " + printSingleCell(players, ">", 4, boardColor) + "  " + printSingleCell(players, ">", 5, boardColor) + "  " + printSingleCell(players, ">", 6, boardColor) + "               ");
-            case  1 -> System.out.print(boardColor + "          " + printSingleCell(players, ">", 1, boardColor) + "                           " + printSingleCell(players, ">", 7, boardColor) + "          ");
-            case  2 -> System.out.print(boardColor + "      " + printSingleCell(players, ">", 0, boardColor) + "                                   " + printSingleCell(players, ">", 8, boardColor) + "      ");
+            case  0 -> System.out.print(boardColor + "               " + printSingleCell(flightBoard, players, ">", 2, boardColor) + "  " + printSingleCell(flightBoard, players, ">", 3, boardColor) + "  " + printSingleCell(flightBoard, players, ">", 4, boardColor) + "  " + printSingleCell(flightBoard, players, ">", 5, boardColor) + "  " + printSingleCell(flightBoard, players, ">", 6, boardColor) + "               ");
+            case  1 -> System.out.print(boardColor + "          " + printSingleCell(flightBoard, players, ">", 1, boardColor) + "                           " + printSingleCell(flightBoard, players, ">", 7, boardColor) + "          ");
+            case  2 -> System.out.print(boardColor + "      " + printSingleCell(flightBoard, players, ">", 0, boardColor) + "                                   " + printSingleCell(flightBoard, players, ">", 8, boardColor) + "      ");
             case  3 -> System.out.print(boardColor + "                                                     ");
-            case  4 -> System.out.print(boardColor + "   " + printSingleCell(players, "∧", 23, boardColor) + "                                         " + printSingleCell(players, "∨", 9, boardColor) + "   ");
+            case  4 -> System.out.print(boardColor + "   " + printSingleCell(flightBoard, players, "∧", 23, boardColor) + "                                         " + printSingleCell(flightBoard, players, "∨", 9, boardColor) + "   ");
             case  5 -> System.out.print(boardColor + "                                                     ");
-            case  6 -> System.out.print(boardColor + " " + printSingleCell(players, "∧", 22, boardColor) + "                                             " + printSingleCell(players, "∨", 10, boardColor) + " ");
+            case  6 -> System.out.print(boardColor + " " + printSingleCell(flightBoard, players, "∧", 22, boardColor) + "                                             " + printSingleCell(flightBoard, players, "∨", 10, boardColor) + " ");
             case  7 -> System.out.print(boardColor + "                                                     ");
-            case  8 -> System.out.print(boardColor + "   " + printSingleCell(players, "∧", 21, boardColor) + "                                         " + printSingleCell(players, "∨", 11, boardColor) + "   ");
+            case  8 -> System.out.print(boardColor + "   " + printSingleCell(flightBoard, players, "∧", 21, boardColor) + "                                         " + printSingleCell(flightBoard, players, "∨", 11, boardColor) + "   ");
             case  9 -> System.out.print(boardColor + "                                                     ");
-            case 10 -> System.out.print(boardColor + "      " + printSingleCell(players, "<", 20, boardColor) + "                                   " + printSingleCell(players, "<", 12, boardColor) + "      ");
-            case 11 -> System.out.print(boardColor + "          " + printSingleCell(players, "<", 19, boardColor) + "                           " + printSingleCell(players, "<", 13, boardColor) + "          ");
-            case 12 -> System.out.print(boardColor + "               " + printSingleCell(players, "<", 18, boardColor) + "  " + printSingleCell(players, "<", 17, boardColor) + "  " + printSingleCell(players, "<", 16, boardColor) + "  " + printSingleCell(players, "<", 15, boardColor) + "  " + printSingleCell(players, "<", 14, boardColor) + "               ");
+            case 10 -> System.out.print(boardColor + "      " + printSingleCell(flightBoard, players, "<", 20, boardColor) + "                                   " + printSingleCell(flightBoard, players, "<", 12, boardColor) + "      ");
+            case 11 -> System.out.print(boardColor + "          " + printSingleCell(flightBoard, players, "<", 19, boardColor) + "                           " + printSingleCell(flightBoard, players, "<", 13, boardColor) + "          ");
+            case 12 -> System.out.print(boardColor + "               " + printSingleCell(flightBoard, players, "<", 18, boardColor) + "  " + printSingleCell(flightBoard, players, "<", 17, boardColor) + "  " + printSingleCell(flightBoard, players, "<", 16, boardColor) + "  " + printSingleCell(flightBoard, players, "<", 15, boardColor) + "  " + printSingleCell(flightBoard, players, "<", 14, boardColor) + "               ");
         }
 
         System.out.print(Ansi.ansi().reset());
@@ -88,13 +88,13 @@ public class FlightBoardCLI {
 
 
 
-    private static String printSingleCell(List<Player> players, String ship, int position, String boardColor) {
+    private static String printSingleCell(FlightBoard flightBoard, List<Player> players, String ship, int position, String boardColor) {
         StringBuilder result = new StringBuilder();
         boolean match = false;
         result.append("(");
 
         for(Player player : players) {
-            if(player.getPosition() == position) {
+            if(getPlayerPosition(flightBoard, player) == position) {
                 result.append(getPlayerColor(player.getColor()));
                 result.append(ship).append(boardColor);
                 match = true;
@@ -117,5 +117,10 @@ public class FlightBoardCLI {
             case RED -> Ansi.ansi().reset().fg(Ansi.Color.RED).toString();
             case YELLOW -> Ansi.ansi().reset().fg(Ansi.Color.YELLOW).toString();
         };
+    }
+
+
+    private static int getPlayerPosition(FlightBoard flightBoard, Player player) {
+        return Math.floorMod(player.getPosition(), flightBoard.getLength());
     }
 }

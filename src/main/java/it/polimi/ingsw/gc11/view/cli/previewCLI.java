@@ -114,15 +114,17 @@ public class previewCLI {
 
 
         System.out.println("\n\n\nExample of a level 1 flight board with one player on it:");
+        FlightBoard trialFlightBoard = new FlightBoard(FlightBoard.Type.TRIAL);
         for (int i = 0; i < 9; i++) {
-            FlightBoardCLI.printLevel1(players, i);
+            FlightBoardCLI.printLevel1(trialFlightBoard, players, i);
             System.out.println();
         }
 
 
         System.out.println("\n\n\nExample of a level 2 flight board with two players on it:");
+        FlightBoard level2FlightBoard = new FlightBoard(FlightBoard.Type.LEVEL2);
         for (int i = 0; i < 13; i++) {
-            FlightBoardCLI.printLevel2(players, i);
+            FlightBoardCLI.printLevel2(level2FlightBoard, players, i);
             System.out.println();
         }
 

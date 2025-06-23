@@ -38,6 +38,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private Player player;
     private Map<String, Player> enemies; //list of enemies players
     private String currentPlayer;
+    private String gameHint;
 
     //response parameters
     private final Map<HousingUnit, Integer> housingUsage;
@@ -174,7 +175,7 @@ public class AdventurePhaseData extends GamePhaseData {
         actualizePreviousState();
         this.adventureCard = adventureCard;
         this.isAdvCardNew = true;
-        adventureCard.getStates(this);
+        adventureCard.getHintMessage(this);
         if(updateState) {
             updateState();
         }
@@ -226,6 +227,11 @@ public class AdventurePhaseData extends GamePhaseData {
         else {
             notifyListener();
         }
+    }
+
+
+    public String getGameHint(){
+        return gameHint;
     }
 
 
@@ -285,29 +291,53 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     //visitor pattern
-    public void setStates(AbandonedShip abandonedShip) {}
+    public void setHintMessage(AbandonedShip abandonedShip) {
+        gameHint = "Choose if you want to accept or decline this card, then eventually send crew members to collect your coins";
+    }
 
-    public void setStates(AbandonedStation abandonedStation) { }
+    public void setHintMessage(AbandonedStation abandonedStation) {
+        gameHint = "Choose if you want to accept or decline this card, then eventually load the materials gained";
+    }
 
-    public void setStates(CombatZoneLv1 combatZoneLv1) {}
+    public void setHintMessage(CombatZoneLv1 combatZoneLv1) {
+        gameHint = "First, send your engine power, then if you've lost send the crew members you want to loose, and finally send your fire power, if you loose defend yourself against every shot";
+    }
 
-    public void setStates(CombatZoneLv2 combatZoneLv2) {}
+    public void setHintMessage(CombatZoneLv2 combatZoneLv2) {
+        gameHint = "First, send your fire power, then your engine power and finally, if you're the player with less crew members, defend yourself against every shot";
+    }
 
-    public void setStates(Epidemic epidemic) {}
+    public void setHintMessage(Epidemic epidemic) {
+        gameHint = "An epidemic is happening! You can't do anything to stop it :(";
+    }
 
-    public void setStates(MeteorSwarm meteorSwarm) {}
+    public void setHintMessage(MeteorSwarm meteorSwarm) {
+        gameHint = "For every meteor, the leader has to throw the dices, and then everyone has to send his meteor defense strategy";
+    }
 
-    public void setStates(OpenSpace openSpace) {}
+    public void setHintMessage(OpenSpace openSpace) {
+        gameHint = "Choose and send your engine power";
+    }
 
-    public void setStates(Pirates pirates) {}
+    public void setHintMessage(Pirates pirates) {
+        gameHint = "Send your fire power. In case you win, choose if you want to collect the reward. Otherwise defend your ship against their shots";
+    }
 
-    public void setStates(PlanetsCard planetsCard) {}
+    public void setHintMessage(PlanetsCard planetsCard) {
+        gameHint = "Choose if you want to accept or decline this card, then choose your planet and load the new materials";
+    }
 
-    public void setStates(Smugglers smugglers) {}
+    public void setHintMessage(Smugglers smugglers) {
+        gameHint = "Send your fire power. In case you win, choose if you want to collect new materials. Otherwise you'll loose some materials";
+    }
 
-    public void setStates(Slavers slavers) {}
+    public void setHintMessage(Slavers slavers) {
+        gameHint = "Send your fire power. In case you win, choose if you want to collect the reward. Otherwise choose which crew members to loose";
+    }
 
-    public void setStates(StarDust starDust) {}
+    public void setHintMessage(StarDust starDust) {
+        gameHint = "Oh no, it's full of star dust! You can't do anything against it :(";
+    }
 
 
 

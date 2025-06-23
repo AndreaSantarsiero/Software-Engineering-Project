@@ -73,7 +73,7 @@ public class AbandonedStation extends AdventureCard {
     }
 
     @Override
-    public void getStates(AdventurePhaseData adventurePhaseData){
-        adventurePhaseData.setStates(this);
+    public void getHintMessage(AdventurePhaseData adventurePhaseData){
+        adventurePhaseData.setHintMessage(this);
     }
 }
