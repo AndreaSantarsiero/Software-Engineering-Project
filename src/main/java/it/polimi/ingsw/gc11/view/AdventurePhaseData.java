@@ -32,6 +32,12 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureState previousState;
 
 
+    public enum AdventureStateGUI{
+        FLIGHT_MENU, CARD_DECLINED, CARD_ACCEPTED, HANDLE_CARD_MENU
+    }
+    private AdventureStateGUI GUIState;
+    private AdventureStateGUI previousGUIState;
+
 
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
@@ -59,6 +65,8 @@ public class AdventurePhaseData extends GamePhaseData {
         storageMaterials = new HashMap<>();
         defensiveCannon = null;
         state = AdventureState.CHOOSE_MAIN_MENU;
+        GUIState = AdventureStateGUI.FLIGHT_MENU;
+        previousGUIState = AdventureStateGUI.FLIGHT_MENU;
     }
 
     public void initialize(FlightBoard flightBoard, Player player, Map<String, Player> enemies, String currentPlayer) {
@@ -79,11 +87,7 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
-
-    public AdventureState getState() {
-        return state;
-    }
-
+    //CLI state management
     @Override
     public void  updateState() {
         actualizePreviousState();
@@ -133,6 +137,42 @@ public class AdventurePhaseData extends GamePhaseData {
         return !state.equals(previousState);
     }
 
+    public AdventureState getState() {
+        return state;
+    }
+
+
+    // GUI state management
+    public void  updateGUIState() {
+        actualizePreviousGUIState();
+
+        if (GUIState == AdventureStateGUI.CARD_DECLINED){
+            GUIState = AdventureStateGUI.FLIGHT_MENU;
+        }
+        else if (GUIState == AdventureStateGUI.CARD_ACCEPTED) {
+            GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
+        }
+
+        notifyListener();
+    }
+
+    public void setGUIState(AdventureStateGUI state) {
+        actualizePreviousState();
+        this.GUIState = state;
+        notifyListener();
+    }
+
+    public void actualizePreviousGUIState() {
+        previousState = state;
+    }
+
+    public boolean isGUIStateNew() {
+        return !GUIState.equals(previousGUIState);
+    }
+
+    public AdventureStateGUI getGUIState() {
+        return GUIState;
+    }
 
 
     @Override
