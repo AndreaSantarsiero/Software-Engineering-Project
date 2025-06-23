@@ -235,10 +235,6 @@ public class AdvShipBoardLv1Controller extends Controller {
         }
     }
 
-    private void onShipBoardSelected(int x, int y) {
-
-    }
-
     @FXML
     protected void onGoBackButtonClick(ActionEvent event) {
         try {
