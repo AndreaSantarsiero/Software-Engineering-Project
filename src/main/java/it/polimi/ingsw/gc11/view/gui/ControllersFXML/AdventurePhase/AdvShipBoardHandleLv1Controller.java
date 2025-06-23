@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
@@ -73,8 +74,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     );
 
 
-
-    public void initialize(Stage stage) {
+    private void setup(Stage stage){
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         virtualServer = viewModel.getVirtualServer();
@@ -136,10 +136,80 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
+    }
+
+    public void initialize(Stage stage, AbandonedShip card) {
+        setup(stage);
 
         update(adventurePhaseData);
-
     }
+
+    public void initialize(Stage stage, AbandonedStation card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, CombatZoneLv1 card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, CombatZoneLv2 card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, Epidemic card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, MeteorSwarm card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, OpenSpace card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, Pirates card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, PlanetsCard card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, Slavers card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, Smugglers card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
+    public void initialize(Stage stage, StarDust card) {
+        setup(stage);
+
+        update(adventurePhaseData);
+    }
+
 
 
     public void setShipBoard(){

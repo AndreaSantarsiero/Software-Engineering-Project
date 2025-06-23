@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingEnemyShipboardLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -302,6 +303,48 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
+    public void onAcceptButtonClick(AbandonedShip card) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+            adventurePhaseData.setListener(controller);
+            controller.initialize(stage, card);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void onAcceptButtonClick(AbandonedStation card) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+            adventurePhaseData.setListener(controller);
+            controller.initialize(stage, card);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void onAcceptButtonClick(CombatZoneLv1 card) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+            adventurePhaseData.setListener(controller);
+            controller.initialize(stage, card);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public  void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
@@ -341,14 +384,17 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(AbandonedShip abandonedShip) {
         showAcceptDecline();
+        acceptButton.setOnAction(event -> {onAcceptButtonClick(abandonedShip);});
     }
 
     private void handle(AbandonedStation abandonedStation) {
         showAcceptDecline();
+        acceptButton.setOnAction(event -> {onAcceptButtonClick(abandonedStation);});
     }
 
     private void handle(CombatZoneLv1 combatZoneLv1) {
         showHandle();
+        handleButton.setOnAction(event -> {onAcceptButtonClick(combatZoneLv1);});
     }
 
     private void handle(CombatZoneLv2 combatZoneLv2) {
