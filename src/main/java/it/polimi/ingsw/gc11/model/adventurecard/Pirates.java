@@ -6,7 +6,7 @@ import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.utils.AdventureCardCLI;
-import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -15,11 +15,11 @@ public class Pirates extends AdventureCard {
     private final int lostDays;
     private final int firePower;
     private final int coins;
-    public ArrayList<Shot> shots;
+    public List<Shot> shots;
 
 
 
-    public Pirates(String id, AdventureCard.Type type, int lostDays, int firePower, int coins, ArrayList<Shot> shots) throws IllegalArgumentException{
+    public Pirates(String id, AdventureCard.Type type, int lostDays, int firePower, int coins, List<Shot> shots) throws IllegalArgumentException{
         super(id, type);
         if (shots == null || shots.isEmpty()|| lostDays < 0 || firePower < 0 || coins < 0){
             throw new IllegalArgumentException();
@@ -43,7 +43,7 @@ public class Pirates extends AdventureCard {
 
     public int getCoins() {return coins;}
 
-    public ArrayList<Shot> getShots() {return shots;}
+    public List<Shot> getShots() {return shots;}
 
 
 

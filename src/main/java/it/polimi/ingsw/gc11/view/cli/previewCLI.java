@@ -46,7 +46,7 @@ public class previewCLI {
         List<AdventureCard> adventureCards = new ArrayList<>();
         adventureCards.add(new StarDust("id", AdventureCard.Type.TRIAL));
         adventureCards.add(new StarDust("id", AdventureCard.Type.LEVEL2));
-        Pirates pirates = new Pirates("id", AdventureCard.Type.TRIAL, 1, 1, 1, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        Pirates pirates = new Pirates("id", AdventureCard.Type.TRIAL, 1, 1, 1, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT))));
         OpenSpace openSpace = new OpenSpace("id", AdventureCard.Type.TRIAL);
         pirates.useCard();
         openSpace.useCard();
@@ -63,7 +63,7 @@ public class previewCLI {
         PlanetsCard planetsCard = new PlanetsCard("id", AdventureCard.Type.LEVEL2, 5, planets);
         planetsCard.useCard();
         adventureCards.add(planetsCard);
-        MeteorSwarm meteorSwarm = new MeteorSwarm("id", AdventureCard.Type.TRIAL, new ArrayList<>(List.of(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP))));
+        MeteorSwarm meteorSwarm = new MeteorSwarm("id", AdventureCard.Type.TRIAL, new ArrayList<>(List.of(new Meteor(Hit.Type.SMALL, Hit.Direction.TOP), new Meteor(Hit.Type.BIG, Hit.Direction.BOTTOM), new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT))));
         meteorSwarm.useCard();
         adventureCards.add(meteorSwarm);
         for (int i = 0; i < AdventureCardCLI.cardLength; i++) {
@@ -83,10 +83,10 @@ public class previewCLI {
         AbandonedStation abandonedStation = new AbandonedStation("id", AdventureCard.Type.TRIAL, 3, 2, 1, 1, 1, 1);
         abandonedStation.useCard();
         adventureCards.add(abandonedStation);
-        CombatZoneLv1 combatZoneLv1 = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        CombatZoneLv1 combatZoneLv1 = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM))));
         combatZoneLv1.useCard();
         adventureCards.add(combatZoneLv1);
-        CombatZoneLv2 combatZoneLv2 = new CombatZoneLv2("id", AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.SMALL, Hit.Direction.TOP))));
+        CombatZoneLv2 combatZoneLv2 = new CombatZoneLv2("id", AdventureCard.Type.TRIAL, 3, 2, new ArrayList<>(List.of(new Shot(Hit.Type.BIG, Hit.Direction.LEFT))));
         combatZoneLv2.useCard();
         adventureCards.add(combatZoneLv2);
         Slavers slavers = new Slavers("id", AdventureCard.Type.LEVEL2, 3, 7, 4, 8);

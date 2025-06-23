@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc11.view.cli.utils;
 
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.Meteor;
+import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import org.fusesource.jansi.Ansi;
 import java.util.List;
@@ -198,6 +201,9 @@ public class AdventureCardCLI {
         else if (i == 10){
             System.out.print(" Shots:              ");
         }
+        else if (i == 11 || i == 12 || i == 13){
+            printShots(combatZone.getShots(), i - 11);
+        }
         else {
             System.out.print("                     ");
         }
@@ -230,6 +236,9 @@ public class AdventureCardCLI {
         }
         else if (i == 10){
             System.out.print(" Shots:              ");
+        }
+        else if (i == 11 || i == 12 || i == 13){
+            printShots(combatZone.getShots(), i - 11);
         }
         else {
             System.out.print("                     ");
@@ -282,6 +291,9 @@ public class AdventureCardCLI {
         }
         else if (i == 9){
             System.out.print(" Meteors:            ");
+        }
+        else if (i == 10 || i == 11 || i == 12){
+            printMeteors(meteorSwarm.getMeteors(), i - 10);
         }
         else {
             System.out.print("                     ");
@@ -346,6 +358,9 @@ public class AdventureCardCLI {
         }
         else if (i == 10){
             System.out.print(" Shots:              ");
+        }
+        else if (i == 11 || i == 12 || i == 13){
+            printShots(pirates.getShots(), i - 11);
         }
         else {
             System.out.print("                     ");
@@ -465,5 +480,69 @@ public class AdventureCardCLI {
         catch (Exception ignored){
             System.out.print("                    ");
         }
+    }
+
+
+    public void printShots(List<Shot> shots, int i){
+        System.out.print("   ");
+        for (Hit hit : shots){
+            printHit(hit, i);
+        }
+        for (int j = 0; j < 6 - shots.size(); j++) {
+            System.out.print("   ");
+        }
+    }
+
+
+    public void printMeteors(List<Meteor> meteors, int i){
+        System.out.print("   ");
+        for (Hit hit : meteors){
+            printHit(hit, i);
+        }
+        for (int j = 0; j < 6 - meteors.size(); j++) {
+            System.out.print("   ");
+        }
+    }
+
+
+    public void printHit(Hit hit, int i){
+        switch (i){
+            case 0, 2 -> {
+                switch (hit.getDirection()){
+                    case TOP -> {
+                        switch (hit.getType()){
+                            case BIG -> System.out.print(" ∨ ");
+                            case SMALL -> System.out.print("   ");
+                        }
+                    }
+                    case BOTTOM -> {
+                        switch (hit.getType()){
+                            case BIG -> System.out.print(" ∧ ");
+                            case SMALL -> System.out.print("   ");
+                        }
+                    }
+                    case RIGHT, LEFT -> System.out.print("   ");
+                }
+            }
+            case 1 -> {
+                switch (hit.getDirection()){
+                    case TOP -> System.out.print(" ∨ ");
+                    case BOTTOM -> System.out.print(" ∧ ");
+                    case RIGHT -> {
+                        switch (hit.getType()){
+                            case BIG -> System.out.print("<<<");
+                            case SMALL -> System.out.print(" < ");
+                        }
+                    }
+                    case LEFT -> {
+                        switch (hit.getType()){
+                            case BIG -> System.out.print(">>>");
+                            case SMALL -> System.out.print(" > ");
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
