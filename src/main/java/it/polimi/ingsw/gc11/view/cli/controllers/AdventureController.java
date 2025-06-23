@@ -380,6 +380,7 @@ public class AdventureController extends CLIController {
 
     public void setEnginePowerMenu(int enginePowerMenu){
         this.enginePowerMenu = enginePowerMenu;
+        template.render();
     }
 
 
