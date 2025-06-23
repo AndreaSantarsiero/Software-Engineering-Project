@@ -6,9 +6,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv2;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv2Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -26,6 +24,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
@@ -58,6 +57,8 @@ public class BuildingLv1Controller extends Controller {
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private HBox playersButtons;
+    @FXML private ComboBox<String> selectCheat;
+    @FXML private Button cheatButton;
     @FXML private HBox endBuilding;
     @FXML private StackPane boardContainer;
     @FXML private VBox cardPane;
@@ -139,6 +140,10 @@ public class BuildingLv1Controller extends Controller {
                 .subtract(20)
                 .subtract(root.spacingProperty().multiply(2))
                 .subtract(cardPane.widthProperty().divide(2).subtract(FreeShipCardText.widthProperty().divide(2))));
+
+        String[] cheats = {"Gimme Cool Ship 1"};
+        selectCheat.getItems().clear();
+        selectCheat.getItems().addAll(cheats);
 
         endBuilding.setSpacing(10);
         endBuilding.prefWidthProperty().bind(availW.multiply(0.25));
@@ -825,6 +830,24 @@ public class BuildingLv1Controller extends Controller {
         if(endedBuilding) {
             mainContainer.setDisable(true);
             endBuilding.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void onCheatButtonClick(ActionEvent event) {
+        String cheat = selectCheat.getValue();
+        if(cheat != null && !cheat.isEmpty()) {
+            switch (cheat) {
+                case "Gimme Cool Ship 1" -> {
+                    try {
+                        virtualServer.gimmeACoolShip(1);
+                    }
+                    catch (NetworkException e) {
+                        System.out.println("Network Error:  " + e.getMessage());
+                    }
+                }
+                default -> System.out.println("Unknown cheat: " + cheat);
+            }
         }
     }
 
