@@ -236,29 +236,8 @@ public abstract class ShipCard implements Serializable {
 
         ShipCard shipCard = (ShipCard) obj;
 
-        if (!this.orientation.equals(shipCard.getOrientation())) {
-            throw new IllegalArgumentException("Mismatch on orientation: " + this.orientation + " != " + shipCard.getOrientation());
-        }
-        if (!this.topConnector.equals(shipCard.getTopConnector())) {
-            throw new IllegalArgumentException("Mismatch on topConnector: " + this.topConnector + " != " + shipCard.getTopConnector());
-        }
-        if (!this.rightConnector.equals(shipCard.getRightConnector())) {
-            throw new IllegalArgumentException("Mismatch on rightConnector: " + this.rightConnector + " != " + shipCard.getRightConnector());
-        }
-        if (!this.bottomConnector.equals(shipCard.getBottomConnector())) {
-            throw new IllegalArgumentException("Mismatch on bottomConnector: " + this.bottomConnector + " != " + shipCard.getBottomConnector());
-        }
-        if (!this.leftConnector.equals(shipCard.getLeftConnector())) {
-            throw new IllegalArgumentException("Mismatch on leftConnector: " + this.leftConnector + " != " + shipCard.getLeftConnector());
-        }
-        if (this.scrap != shipCard.isScrap()) {
-            throw new IllegalArgumentException("Mismatch on scrap flag: " + this.scrap + " != " + shipCard.isScrap());
-        }
-        if (this.covered != shipCard.isCovered()) {
-            throw new IllegalArgumentException("Mismatch on covered flag: " + this.covered + " != " + shipCard.isCovered());
-        }
-
-        return this.orientation.equals(shipCard.getOrientation()) &&
+        return this.id.equals(shipCard.getId()) &&
+                this.orientation.equals(shipCard.getOrientation()) &&
                 this.topConnector.equals(shipCard.getTopConnector()) &&
                 this.rightConnector.equals(shipCard.getRightConnector()) &&
                 this.bottomConnector.equals(shipCard.getBottomConnector()) &&
