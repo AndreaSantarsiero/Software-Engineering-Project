@@ -240,18 +240,13 @@ public class AdventureControllerLv1 extends Controller {
 //        }
     }
 
-
-    public void onDrawbutton(ActionEvent actionEvent) {
+    public void onDrawButtonClick(ActionEvent actionEvent) {
         try {
             virtualServer.getAdventureCard();
         }
         catch (NetworkException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void onDrawButtonClick(ActionEvent actionEvent) {
-
     }
 
     @Override
