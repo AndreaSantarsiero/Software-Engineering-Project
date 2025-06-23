@@ -84,7 +84,7 @@ public class IdlePhase extends GamePhase {
 
         for (Player p : gameModel.getPlayers()) {
             if (!p.getUsername().equals(username)) {
-                String taken = p.getColor();
+                String taken = p.getColorToString();
                 if (taken != null && taken.equalsIgnoreCase(color)) {
                     throw new IllegalArgumentException("color already chosen");
                 }

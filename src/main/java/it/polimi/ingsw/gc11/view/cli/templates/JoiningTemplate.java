@@ -14,7 +14,7 @@ public class JoiningTemplate extends CLITemplate {
     private static final List<String> connectionTypes = List.of("Remote Method Invocation", "Socket");
     private static final List<String> gameOptions = List.of("create a new match", "join an existing match", "exit");
     private static final List<String> gameLevels = List.of("Trial", "Level II");
-    private static final List<String> colorOptions = List.of("blue", "green", "red", "yellow");
+    private static final List<String> colorOptions = List.of("BLUE", "GREEN", "RED", "YELLOW");
 
 
 
