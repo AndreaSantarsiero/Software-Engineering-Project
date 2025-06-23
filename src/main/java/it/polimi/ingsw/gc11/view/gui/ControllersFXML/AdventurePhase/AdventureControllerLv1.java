@@ -6,7 +6,6 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
-import it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase.BuildingEnemyShipboardLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -278,16 +277,15 @@ public class AdventureControllerLv1 extends Controller {
         if (adventurePhaseData.getAdventureCard() != null && adventurePhaseData.isAdvCardNew()) {
             AdventureCard card = adventurePhaseData.getAdventureCard();
             String basepath = "/it/polimi/ingsw/gc11/adventureCards/";
-            ImageView cardImage = new ImageView(new Image(getClass()
+            Image image = new Image(getClass()
                     .getResource(basepath + card.getId() + ".jpg")
                     .toExternalForm()
-            ));
-            this.adventureCardImage = cardImage;
+            );
+            adventureCardImage.setImage(image);
+            adventureCardImage.setVisible(true);
 
             //Handle the visibility of advCard buttons
             handler(card);
-
-            adventurePhaseData.resetAdvCardNew();
         }
 
     }
@@ -303,47 +301,47 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
-    public void onAcceptButtonClick(AbandonedShip card) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-            adventurePhaseData.setListener(controller);
-            controller.initialize(stage, card);
-            stage.setScene(newScene);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void onAcceptButtonClick(AbandonedStation card) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-            adventurePhaseData.setListener(controller);
-            controller.initialize(stage, card);
-            stage.setScene(newScene);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void onAcceptButtonClick(CombatZoneLv1 card) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-            adventurePhaseData.setListener(controller);
-            controller.initialize(stage, card);
-            stage.setScene(newScene);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void onAcceptButtonClick(AbandonedShip card) {
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
+//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+//            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+//            adventurePhaseData.setListener(controller);
+//            controller.initialize(stage, card);
+//            stage.setScene(newScene);
+//            stage.show();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    public void onAcceptButtonClick(AbandonedStation card) {
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
+//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+//            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+//            adventurePhaseData.setListener(controller);
+//            controller.initialize(stage, card);
+//            stage.setScene(newScene);
+//            stage.show();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    public void onAcceptButtonClick(CombatZoneLv1 card) {
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/BuildingPhase/BuildingEnemyShipboardLv1.fxml"));
+//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+//            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+//            adventurePhaseData.setListener(controller);
+//            controller.initialize(stage, card);
+//            stage.setScene(newScene);
+//            stage.show();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Override
     public  void update(AdventurePhaseData adventurePhaseData) {
@@ -370,35 +368,86 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
-    private void showAcceptDecline() {
+    private void setupAcceptDecline() {
         acceptButton.setVisible(true);
         acceptButton.setDisable(false);
+        acceptButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                virtualServer.acceptAdventureCard();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (NetworkException e) {
+                System.out.println("Network Error: " + e.getMessage());
+            }
+        });
         declineButton.setVisible(true);
         declineButton.setDisable(false);
+        declineButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                virtualServer.declineAdventureCard();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (NetworkException e) {
+                System.out.println("Network Error: " + e.getMessage());
+            }
+        });
     }
 
-    private void showHandle() {
+
+    private void setupHandle() {
         handleButton.setVisible(true);
         handleButton.setDisable(false);
     }
 
     private void handle(AbandonedShip abandonedShip) {
-        showAcceptDecline();
-        acceptButton.setOnAction(event -> {onAcceptButtonClick(abandonedShip);});
+        setupAcceptDecline();
+//        acceptButton.setOnAction(event -> {onAcceptButtonClick(abandonedShip);});
     }
 
     private void handle(AbandonedStation abandonedStation) {
-        showAcceptDecline();
-        acceptButton.setOnAction(event -> {onAcceptButtonClick(abandonedStation);});
+        setupAcceptDecline();
+//        acceptButton.setOnAction(event -> {onAcceptButtonClick(abandonedStation);});
     }
 
     private void handle(CombatZoneLv1 combatZoneLv1) {
-        showHandle();
-        handleButton.setOnAction(event -> {onAcceptButtonClick(combatZoneLv1);});
+        CombatZoneLv1 card = (CombatZoneLv1) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
+
     }
 
     private void handle(CombatZoneLv2 combatZoneLv2) {
-        showHandle();
+        CombatZoneLv2 card = (CombatZoneLv2) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(Epidemic epidemic) {
@@ -406,27 +455,123 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void handle(MeteorSwarm meteorSwarm) {
-        showHandle();
+        MeteorSwarm card = (MeteorSwarm) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(OpenSpace openSpace) {
-        showHandle();
+        OpenSpace card = (OpenSpace) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(Pirates pirates) {
-        showHandle();
+        Pirates card = (Pirates) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(PlanetsCard planetsCard) {
-        showHandle();
+        PlanetsCard card = (PlanetsCard) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(Slavers slavers) {
-        showHandle();
+        Slavers card = (Slavers) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(Smugglers smugglers) {
-        showHandle();
+        Smugglers card = (Smugglers) adventurePhaseData.getAdventureCard();
+        setupHandle();
+        handleButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(StarDust starDust) {
