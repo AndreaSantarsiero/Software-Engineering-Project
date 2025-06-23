@@ -210,24 +210,24 @@ public class AdventureControllerLv1 extends Controller {
         for(Player player : allPlayers) {
             int position = player.getPosition();
             Rectangle positionRect = switch (position) {
-                case 1 -> pos1;
-                case 2 -> pos2;
-                case 3 -> pos3;
-                case 4 -> pos4;
-                case 5 -> pos5;
-                case 6 -> pos6;
-                case 7 -> pos7;
-                case 8 -> pos8;
-                case 9 -> pos9;
-                case 10 -> pos10;
-                case 11 -> pos11;
-                case 12 -> pos12;
-                case 13 -> pos13;
-                case 14 -> pos14;
-                case 15 -> pos15;
-                case 16 -> pos16;
-                case 17 -> pos17;
-                case 18 -> pos18;
+                case 0 -> pos1; // Assuming position 0 is pos1
+                case 1 -> pos2;
+                case 2 -> pos3;
+                case 3 -> pos4;
+                case 4 -> pos5;
+                case 5 -> pos6;
+                case 6 -> pos7;
+                case 7 -> pos8;
+                case 8 -> pos9;
+                case 9 -> pos10;
+                case 10 -> pos11;
+                case 11 -> pos12;
+                case 12 -> pos13;
+                case 13 -> pos14;
+                case 14 -> pos15;
+                case 15 -> pos16;
+                case 16 -> pos17;
+                case 17 -> pos18;
                 default -> null;
             };
             if (positionRect != null) {
