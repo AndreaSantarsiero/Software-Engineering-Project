@@ -3,6 +3,7 @@ package it.polimi.ingsw.gc11.model.shipcard;
 
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
+import java.util.Objects;
 
 
 
@@ -168,6 +169,13 @@ public class HousingUnit extends ShipCard {
             return super.equals(obj) && this.central == housingUnit.isCentral() && this.alienUnit.equals(housingUnit.getAlienUnit()) && this.numMembers == housingUnit.numMembers;
         }
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), central, alienUnit, numMembers);
+    }
+
+
 
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
