@@ -223,6 +223,20 @@ public class CheckLv1Controller extends Controller {
                         iv.fitWidthProperty().bind(btn.widthProperty());
                         iv.fitHeightProperty().bind(btn.heightProperty());
 
+                        if(shipCard.isIllegal()){
+                            ColorInput redOverlay = new ColorInput();
+                            redOverlay.setPaint(Color.web("#FF0000CC"));
+
+                            redOverlay.widthProperty().bind(iv.fitWidthProperty());
+                            redOverlay.heightProperty().bind(iv.fitHeightProperty());
+
+                            Blend highlight = new Blend();
+                            highlight.setMode(BlendMode.OVERLAY);
+                            highlight.setTopInput(redOverlay);
+
+                            iv.setEffect(highlight);
+                        }
+
                         if (alreadyIn(x, y) != -1){
                             ColorInput goldOverlay = new ColorInput();
                             goldOverlay.setPaint(Color.web("#FFD700CC"));

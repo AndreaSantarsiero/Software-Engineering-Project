@@ -15,6 +15,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -213,7 +214,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, CombatZoneLv1 card, int stageNum) {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_1);
-
 
         if(stageNum == 2){
             actionText.setText("Select members to kill.");
@@ -770,6 +770,10 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
+    private void handleMaterialClick(Material material) {
+
+    }
+
     private void goBackToFlightMenu() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
@@ -840,27 +844,42 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     }
 
     private void printStorageDetail(Storage storage, StackPane stack) {
-        HBox materialBox = new HBox(4); // Spaziatura tra i quadratini
-        materialBox.setAlignment(javafx.geometry.Pos.CENTER);
+
+        HBox materialBox = new HBox(4);                 // Spaziatura tra i bottoni
+        materialBox.setAlignment(Pos.CENTER);
 
         for (Material material : storage.getMaterials()) {
-            Rectangle rect = new Rectangle(10, 10);
-            // Colore in base al tipo di materiale
-            switch (material.getType()) {
-                case BLUE -> rect.setFill(Color.DODGERBLUE);
-                case GREEN -> rect.setFill(Color.LIMEGREEN);
-                case YELLOW -> rect.setFill(Color.GOLD);
-                case RED -> rect.setFill(Color.CRIMSON);
-            }
-            rect.setArcWidth(6);
-            rect.setArcHeight(6);
-            rect.setStroke(Color.WHITE);
-            rect.setStrokeWidth(1.5);
-            materialBox.getChildren().add(rect);
+
+            /* 1.  Crea il bottone “quadratino” */
+            Button btn = new Button();
+
+            /* 2.  Misure fisse 10×10  */
+            btn.setMinSize(10, 10);
+            btn.setPrefSize(10, 10);
+            btn.setMaxSize(10, 10);
+
+            /* 3.  Colore di riempimento + angoli tondeggianti + bordo bianco */
+            Color fill   = materialColor(material);
+            CornerRadii r = new CornerRadii(6);
+
+            btn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+
+            btn.setBorder(new Border(new BorderStroke(
+                    Color.WHITE,
+                    BorderStrokeStyle.SOLID,
+                    r,
+                    new BorderWidths(1)
+            )));
+
+            /* 4.  (opzionale) handler di click sul materiale specifico */
+            btn.setOnAction(e -> handleMaterialClick(material));
+
+            /* 5.  Aggiungi al contenitore */
+            materialBox.getChildren().add(btn);
         }
 
-        materialBox.setMouseTransparent(true);
-        StackPane.setAlignment(materialBox, javafx.geometry.Pos.BOTTOM_CENTER);
+        materialBox.setMouseTransparent(false);
+        StackPane.setAlignment(materialBox, Pos.BOTTOM_CENTER);
         materialBox.prefWidthProperty().bind(stack.widthProperty());
         stack.getChildren().add(materialBox);
     }
