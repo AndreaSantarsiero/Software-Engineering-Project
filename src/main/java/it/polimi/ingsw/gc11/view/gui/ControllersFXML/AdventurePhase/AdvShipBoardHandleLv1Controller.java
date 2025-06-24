@@ -778,8 +778,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     controller.initialize(stage);
                     stage.setScene(newScene);
                     stage.show();
-                    adventurePhaseData.resetAdvCardNew();
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     System.out.println("FXML Error: " + e.getMessage());
                 }
             }

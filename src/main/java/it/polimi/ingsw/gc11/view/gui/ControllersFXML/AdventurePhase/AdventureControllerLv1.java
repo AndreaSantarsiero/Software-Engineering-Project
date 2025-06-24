@@ -280,8 +280,7 @@ public class AdventureControllerLv1 extends Controller {
 
 
     private void showDrawButton(){
-        if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer()) &&
-        !adventurePhaseData.isAdvCardNew()){
+        if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
             // Se il giocatore corrente è lo stesso del giocatore che può pescare una carta
             drawButton.setVisible(true);
             drawButton.setDisable(false);
@@ -290,7 +289,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void showAdventureCard() {
 
-        if (adventurePhaseData.getAdventureCard() != null && adventurePhaseData.isAdvCardNew()) {
+        if (adventurePhaseData.getAdventureCard() != null ) {
             AdventureCard card = adventurePhaseData.getAdventureCard();
             String basepath = "/it/polimi/ingsw/gc11/adventureCards/";
             Image image = new Image(getClass()
@@ -357,6 +356,7 @@ public class AdventureControllerLv1 extends Controller {
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println("Error: " + adventurePhaseData.getServerMessage());
                 setErrorLabel();
+                adventurePhaseData.resetServerMessage();
             }
 
         });
@@ -422,7 +422,6 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
             }
             catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
@@ -456,7 +455,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+                
             }
             catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
@@ -489,7 +488,6 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
             }
             catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
@@ -508,7 +506,6 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
             }
             catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
@@ -527,7 +524,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+
             }
             catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
@@ -546,7 +543,6 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
@@ -564,7 +560,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+                
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
@@ -582,7 +578,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+                
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
@@ -600,7 +596,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+                
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
@@ -618,7 +614,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+                
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
@@ -636,7 +632,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+                
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
@@ -654,7 +650,7 @@ public class AdventureControllerLv1 extends Controller {
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
                 stage.show();
-                adventurePhaseData.resetAdvCardNew();
+                
             }
             catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
