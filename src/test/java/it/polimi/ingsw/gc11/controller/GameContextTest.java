@@ -51,6 +51,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -2209,6 +2210,181 @@ public class GameContextTest {
         assertInstanceOf(IdleState.class,
                 ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(),
                 "dopo initialize() deve passare a IdleState");
+    }
+
+    // ===== Tests for BuildingPhaseTrial =====
+
+    @Test
+    void testBuildingPhaseTrialBasics() {
+        // install the trial building phase
+        gameContext.setPhase(new BuildingPhaseTrial(gameContext));
+
+        // it should report as a building phase
+        assertTrue(gameContext.getPhase().isBuildingPhase(), "should be in a building phase");
+        // and the name should match
+        assertEquals("TrialBuildingPhase", gameContext.getPhase().getPhaseName(), "phase name should be TrialBuildingPhase");
+    }
+
+    @Test
+    void testBuildingPhaseTrialEndFlowAndErrors() {
+        gameContext.setPhase(new BuildingPhaseTrial(gameContext));
+
+        // first player finishes
+        gameContext.endBuildingTrial("username1");
+        // cannot finish twice
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.endBuildingTrial("username1"),
+                "cannot end building more than once");
+
+        // second player finishes
+        gameContext.endBuildingTrial("username2");
+        // still in trial until all have finished
+        assertInstanceOf(BuildingPhaseTrial.class,
+                gameContext.getPhase(),
+                "must stay in TrialBuildingPhase until the last player finishes");
+
+        // third (last) player finishes senza componenti → deve esplodere IllegalStateException
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.endBuildingTrial("username3"),
+                "cannot transition to CheckPhase without any ship component");
+
+        // invalid username should still throw IllegalArgumentException
+        gameContext.setPhase(new BuildingPhaseTrial(gameContext));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.endBuildingTrial("nonexistent"),
+                "ending building with invalid username must throw");
+    }
+
+    @Test
+    void testBuildingPhaseTrialInvalidArguments() {
+        gameContext.setPhase(new BuildingPhaseTrial(gameContext));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.getFreeShipCard(null, null),
+                "getFreeShipCard must reject null username");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.releaseShipCard("", null),
+                "releaseShipCard must reject empty username or null card");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.placeShipCard("username1", null, ShipCard.Orientation.DEG_0, 0, 0),
+                "placeShipCard must reject null card");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.useReservedShipCard("username1", null, ShipCard.Orientation.DEG_0, 0, 0),
+                "useReservedShipCard must reject null card");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.removeShipCard(null, 0, 0),
+                "removeShipCard must reject null username");
+    }
+
+    @Test
+    void testEndGamePhaseRewardsAndPenalties() {
+        GameModel model = gameContext.getGameModel();
+        FlightBoard flightBoard = model.getFlightBoard();
+        List<Player> players = model.getAllPlayers();
+        int playerCount = players.size();
+
+        // salva i gettoni iniziali
+        int[] beforeCoins = new int[playerCount];
+        for (int i = 0; i < playerCount; i++) {
+            beforeCoins[i] = players.get(i).getCoins();
+        }
+
+        // premi e penalità
+        List<Integer> finishRewards = flightBoard.getFinishOrderRewards();
+        int best_lookingReward = flightBoard.getBestLookingReward();
+
+        gameContext.setPhase(new EndGamePhase(gameContext));
+
+        // controllo per ciascun giocatore
+        for (int i = 0; i < playerCount; i++) {
+            Player p = players.get(i);
+            int saleValue = p.getShipBoard().getTotalMaterialsValue();
+            int losses    = p.getShipBoard().getScrapedCardsNumber();
+
+            int expected = beforeCoins[i]
+                    + finishRewards.get(i)
+                    + best_lookingReward
+                    + saleValue
+                    - losses;
+
+            assertEquals(expected,
+                    p.getCoins(),
+                    "player " + i + " should have correct final coin total");
+        }
+    }
+
+    @Test
+    void testEndGamePhaseNameAndType() {
+        EndGamePhase phase = new EndGamePhase(gameContext);
+        assertEquals("EndGamePhase", phase.getPhaseName());
+        assertTrue(phase.isEndGamePhase());
+    }
+
+
+    @Test
+    void testSelectAlienUnitStateSelectInvalidArgs() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        SelectAlienUnitState state = new SelectAlienUnitState(advPhase);
+        advPhase.setAdvState(state);
+
+        // null or empty username
+        assertThrows(IllegalArgumentException.class,
+                () -> advPhase.selectAliens(null, null, null),
+                "selectAliens should reject null username");
+        assertThrows(IllegalArgumentException.class,
+                () -> advPhase.selectAliens("", null, null),
+                "selectAliens should reject empty username");
+
+        // null alienUnit or housingUnit
+        assertThrows(IllegalArgumentException.class,
+                () -> advPhase.selectAliens("username1", null, null),
+                "selectAliens should reject null units");
+    }
+
+    @Test
+    void testSelectAlienUnitStateEndFlowAndErrors() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        SelectAlienUnitState state = new SelectAlienUnitState(advPhase);
+        advPhase.setAdvState(state);
+
+        // first player finishes selection
+        advPhase.completedAlienSelection("username1");
+        // cannot finish twice
+        assertThrows(IllegalArgumentException.class,
+                () -> advPhase.completedAlienSelection("username1"),
+                "cannot complete alien selection twice for the same player");
+
+        // second player finishes
+        advPhase.completedAlienSelection("username2");
+        // still in selection state until all have finished
+        assertInstanceOf(SelectAlienUnitState.class,
+                ((AdventurePhase)gameContext.getPhase()).getCurrentAdvState(),
+                "must remain in SelectAlienUnitState until last player finishes");
+
+        // third (last) player finishes → should transition to final adventure state
+        advPhase.completedAlienSelection("username3");
+        assertInstanceOf(IdleState.class,
+                ((AdventurePhase)gameContext.getPhase()).getCurrentAdvState(),
+                "after all completedAlienSelection calls, state must be IdleState");
+
+        // invalid usernames
+        state = new SelectAlienUnitState(advPhase);
+        advPhase.setAdvState(state);
+        assertThrows(IllegalArgumentException.class,
+                () -> advPhase.completedAlienSelection(null),
+                "completedAlienSelection should reject null username");
+        assertThrows(IllegalArgumentException.class,
+                () -> advPhase.completedAlienSelection(""),
+                "completedAlienSelection should reject empty username");
+        assertThrows(IllegalArgumentException.class,
+                () -> advPhase.completedAlienSelection("nonexistent"),
+                "completedAlienSelection should reject unknown username");
     }
 
 
