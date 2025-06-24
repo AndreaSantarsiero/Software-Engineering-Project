@@ -57,6 +57,7 @@ public class BuildingLv1Controller extends Controller {
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private HBox playersButtons;
+    @FXML private HBox cheat;
     @FXML private ComboBox<String> selectCheat;
     @FXML private Button cheatButton;
     @FXML private HBox endBuilding;
@@ -144,6 +145,11 @@ public class BuildingLv1Controller extends Controller {
         String[] cheats = {"Gimme Cool Ship 1"};
         selectCheat.getItems().clear();
         selectCheat.getItems().addAll(cheats);
+        Button export = new Button("Export ShipBoard");
+        export.setOnAction((ActionEvent e) -> {
+            exportShipBoardToJson(buildingPhaseData.getShipBoard());
+        });
+        cheat.getChildren().add(export);
 
         endBuilding.setSpacing(10);
         endBuilding.prefWidthProperty().bind(availW.multiply(0.25));
@@ -840,7 +846,7 @@ public class BuildingLv1Controller extends Controller {
             switch (cheat) {
                 case "Gimme Cool Ship 1" -> {
                     try {
-                        virtualServer.gimmeACoolShip(1);
+                        virtualServer.gimmeACoolShip(11);
                     }
                     catch (NetworkException e) {
                         System.out.println("Network Error:  " + e.getMessage());
@@ -944,5 +950,48 @@ public class BuildingLv1Controller extends Controller {
         });
     }
 
+
+
+    private void exportShipBoardToJson(ShipBoard shipBoard) {
+        String filePath = "src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard11.json"; // Specify the path where you want to save the JSON file
+        try (java.io.PrintWriter out = new java.io.PrintWriter(filePath)) {
+            out.println("{");
+            out.println("  \"shipboard\": {");
+            out.println("    \"level\": " + "1" + ",");
+            out.println("    \"components\": [");
+
+            boolean first = true;
+            for (int r = 0; r < 5; r++) {
+                for (int c = 0; c < 5; c++) {
+                    if (shipBoard.validateIndexes(c, r)) {
+                        ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
+                        if (shipCard != null) {
+                            int orientation = switch (shipCard.getOrientation()) {
+                                case DEG_0 -> 0;
+                                case DEG_90 -> 90;
+                                case DEG_180 -> 180;
+                                case DEG_270 -> 270;
+                            };
+                            if (!first) out.println(",");
+                            out.print("      {");
+                            out.print("\"id\": \"" + shipCard.getId() + "\", ");
+                            out.print("\"x\": " + (c+5) + ", ");
+                            out.print("\"y\": " + (r+5) + ", ");
+                            out.print("\"orientation\": " + orientation);
+                            out.print("}");
+                            first = false;
+                        }
+                    }
+                }
+            }
+            out.println();
+            out.println("    ],");
+            out.println("    \"reservedComponents\": null");
+            out.println("  }");
+            out.println("}");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

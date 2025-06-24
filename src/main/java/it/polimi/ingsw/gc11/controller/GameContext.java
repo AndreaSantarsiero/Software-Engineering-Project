@@ -8,9 +8,7 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.model.*;
-import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
-import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
-import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.time.Instant;
@@ -543,17 +541,39 @@ public class GameContext {
                 )
         );
         testDeck.addCard(
-                new AbandonedStation(
-                        "Level1AbandonedStation",
-                        AdventureCard.Type.LEVEL1,
-                        1,
-                        6,
-                        0,
-                        0,
-                        0,
-                        2
+                new OpenSpace(
+                        "TrialOpenSpace",
+                        AdventureCard.Type.TRIAL
                 )
         );
+        testDeck.addCard(
+                new AbandonedStation(
+                    "TrialAbandonedStation",
+                    AdventureCard.Type.TRIAL,
+                    1,
+                    5,
+                    0,
+                    1,
+                    1,
+                    0
+                )
+        );
+        testDeck.addCard(
+                new PlanetsCard(
+                        "TrialPlanets",
+                        AdventureCard.Type.TRIAL,
+                        2,
+                        new ArrayList<Planet>(List.of(
+                                new Planet(0,0,0,2),
+                                new Planet(2,0,0,0),
+                                new Planet(0,0,1,0)
+                                )
+                        )
+                )
+        );
+
+
+
         this.getGameModel().setTestDeck(testDeck);
     }
 
