@@ -100,6 +100,7 @@
                     <Button fx:id="acceptButton" styleClass="Text2" text="Accept" visible="false" />
                     <Button fx:id="declineButton" styleClass="Text2" text="Decline" visible="false" />
                     <Button fx:id="handleButton" styleClass="Text2" text="Handle" visible="false" />
+               <Button fx:id="seeEffectsButton" styleClass="Text2" text="See Effects" visible="false" />
 
                 </VBox>
                 <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card" />
