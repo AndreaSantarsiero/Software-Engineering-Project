@@ -23,11 +23,11 @@ public class DeclineAdventureCardAction extends ClientGameAction {
             for(Player player : context.getGameModel().getPlayersNotAbort()){
                 if(player.getUsername().equals(username)){
                     UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(currentPlayer, true);
-                    context.sendAction(username, response);
+                    context.sendAction(player.getUsername(), response);
                 }
                 else {
                     UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(currentPlayer, false);
-                    context.sendAction(username, response);
+                    context.sendAction(player.getUsername(), response);
                 }
             }
         } catch (Exception e){

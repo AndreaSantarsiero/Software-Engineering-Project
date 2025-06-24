@@ -280,7 +280,6 @@ public class AdventureControllerLv1 extends Controller {
 
     private void showDrawButton(){
         if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
-            // Se il giocatore corrente è lo stesso del giocatore che può pescare una carta
             drawButton.setVisible(true);
             drawButton.setDisable(false);
         }
@@ -344,7 +343,7 @@ public class AdventureControllerLv1 extends Controller {
     public  void update(AdventurePhaseData adventurePhaseData)  {
         Platform.runLater(() -> {
 
-            System.out.println("GUIState: " + adventurePhaseData.getGUIState());
+            //System.out.println("GUIState: " + adventurePhaseData.getGUIState());
 
             setupPositions();
             showDrawButton();
@@ -410,6 +409,8 @@ public class AdventureControllerLv1 extends Controller {
     // Handle AdventureCard
     private void handle(AbandonedShip card) {
         System.out.println("AbandonedShip");
+        System.out.println("State: "+adventurePhaseData.getGUIState());
+        System.out.println("PreviousState: "+adventurePhaseData.getPreviousGUIState());
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
             System.out.println("successfully accepted the card");
@@ -430,6 +431,7 @@ public class AdventureControllerLv1 extends Controller {
                 (adventurePhaseData.getServerMessage() == null || adventurePhaseData.getServerMessage().isEmpty()) &&
                 adventurePhaseData.getPreviousGUIState() == AdventurePhaseData.AdventureStateGUI.CARD_DECLINED ) {
                     // Decline successful
+                    System.out.println("successfully declined the card");
                     acceptButton.setDisable(true);
                     acceptButton.setVisible(false);
                     declineButton.setDisable(true);
