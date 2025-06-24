@@ -16,6 +16,12 @@ public class EpidemicState extends AdventureState {
 
     public EpidemicState(AdventurePhase advContext) {
         super(advContext);
+
+    }
+
+
+    @Override
+    public void initialize() {
         GameContext context = advContext.getGameContext();
 
         try{
@@ -47,5 +53,4 @@ public class EpidemicState extends AdventureState {
             }
         }
     }
-
 }

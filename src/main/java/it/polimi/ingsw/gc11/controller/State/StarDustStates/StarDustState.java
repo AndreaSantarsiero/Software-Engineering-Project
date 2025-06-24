@@ -49,6 +49,11 @@ public class StarDustState extends AdventureState {
      */
     public StarDustState(AdventurePhase advContext) {
         super(advContext);
+    }
+
+
+    @Override
+    public void initialize(){
         GameModel gameModel = this.advContext.getGameModel();
         GameContext context = advContext.getGameContext();
 

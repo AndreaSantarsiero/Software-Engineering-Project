@@ -29,6 +29,8 @@ public abstract class AdventureState{
 
 
 
+    public void initialize(){}
+
     /**
      * Constructs a new AdventureState with a reference to its AdventurePhase context.
      *

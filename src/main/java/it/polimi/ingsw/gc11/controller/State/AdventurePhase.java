@@ -103,6 +103,7 @@ public class AdventurePhase extends GamePhase {
      */
     public void setAdvState(AdventureState adventureState) {
         this.advState = adventureState;
+        advState.initialize();
     }
 
     /**
