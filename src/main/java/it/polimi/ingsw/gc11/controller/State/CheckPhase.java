@@ -47,14 +47,23 @@ public class CheckPhase extends GamePhase {
         this.badShipPlayers = new ArrayList<>();
     }
 
+
+
     public void initialize() {
         List<Player> players = gameModel.getPlayersNotAbort();
+        List<Player> toMove = new ArrayList<>();
         for (Player player : players) {
             if(!player.getShipBoard().checkShip()){
+                for(int i = players.indexOf(player); i < players.size() - 1; i++){
+                    players.get(i+1).setPosition(players.get(i).getPosition());
+                }
+                toMove.add(player);
                 player.setPosition(-1); //Player is removed from the ranking (position)
                 this.badShipPlayers.add(player);
             }
         }
+        players.removeAll(toMove);
+        players.addAll(toMove);
 
         //All the players have a correct shipboard
         if (this.badShipPlayers.isEmpty()) {
