@@ -81,6 +81,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private State state;
 
     private ArrayList<ShipCard> selected = new ArrayList<>();
+    private int planetIdx = -1;
 
     private final Map<Class<?>, BiConsumer<ShipCard, StackPane>> detailPrinters = Map.of(
             Battery.class, (card, stack) -> printBatteryDetails((Battery) card, stack),
@@ -254,8 +255,26 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         update(adventurePhaseData);
     }
 
-    public void initialize(Stage stage, PlanetsCard card) {
+    public void initialize(Stage stage, PlanetsCard card, int idx) {
         setup(stage);
+
+        actionText.setText("Select slot to place or replace materials.");
+        subHeaderContainer.getChildren().add(
+                new Button("Confirm") {
+                    {
+                        setOnAction(event -> {
+                            try {
+                                virtualServer.chooseMaterials(adventurePhaseData.getStorageMaterials());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        });
+                    }
+                }
+        );
+        planetIdx = idx;
+
+        state = State.PLANETS;
 
         update(adventurePhaseData);
     }
@@ -629,6 +648,27 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 }
 
                 selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if(state == State.PLANETS){
+            try {
+                List<Material> cardMaterials = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getPlanet(planetIdx).getMaterials();
+
+                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
+                if (oldM != null) {
+                    List<Material> newM;
+                    if(oldM.size() < cardMaterials.size()) {
+                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
+                        cardMaterials.removeAll(newM);
+                    }else{
+                        newM = new ArrayList<>(cardMaterials);
+                    }
+
+                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(oldM, newM));
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
