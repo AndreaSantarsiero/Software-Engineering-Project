@@ -158,8 +158,6 @@ public class AdventurePhaseData extends GamePhaseData {
         else if (GUIState == AdventureStateGUI.CARD_ACCEPTED) {
             GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
         }
-
-        notifyListener();
     }
 
     public void setGUIState(AdventureStateGUI state) {
@@ -169,7 +167,7 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     public void actualizePreviousGUIState() {
-        previousState = state;
+        previousGUIState = GUIState;
     }
 
     public boolean isGUIStateNew() {
@@ -297,8 +295,8 @@ public class AdventurePhaseData extends GamePhaseData {
         actualizePreviousState();
         this.currentPlayer = currentPlayer;
         if(updateState) {
-            updateState();
             updateGUIState();
+            updateState();
         }
         else {
             notifyListener();
