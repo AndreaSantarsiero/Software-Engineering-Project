@@ -281,6 +281,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setEnemiesPlayer(String username, Player player) {
         actualizePreviousState();
+        enemies.remove(username);
         enemies.put(username, player);
         notifyListener();
     }
@@ -305,7 +306,6 @@ public class AdventurePhaseData extends GamePhaseData {
         actualizePreviousState();
         this.currentPlayer = currentPlayer;
         if(updateState) {
-            updateGUIState();
             updateState();
         }
         else {

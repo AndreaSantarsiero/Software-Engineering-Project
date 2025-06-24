@@ -33,9 +33,9 @@ public class UpdatePlayerProfileAction extends ServerAction{
 
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.updateGUIState();
         adventurePhaseData.setCurrentPlayer(currentPlayer, false);
         adventurePhaseData.setPlayer(player);
-        adventurePhaseData.updateGUIState();
     }
 
     @Override

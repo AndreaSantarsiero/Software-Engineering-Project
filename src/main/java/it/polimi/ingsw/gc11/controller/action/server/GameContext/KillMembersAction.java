@@ -26,7 +26,7 @@ public class KillMembersAction extends ClientGameAction {
 
             String newCurrentPlayer = context.getCurrentPlayer().getUsername();
             for(Player p : context.getGameModel().getPlayersNotAbort()) {
-                if(player.getUsername().equals(username)) {
+                if(p.getUsername().equals(username)) {
                     UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, newCurrentPlayer);
                     context.sendAction(username, response);
                 }
