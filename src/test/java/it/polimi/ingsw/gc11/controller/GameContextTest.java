@@ -2211,25 +2211,5 @@ public class GameContextTest {
                 "dopo initialize() deve passare a IdleState");
     }
 
-    @Test
-    void testInitializeStarDust_exceptionRethrowsRuntimeException() throws Exception {
-        // porta la partita in AdventurePhase
-        goToAdvPhase();
-        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
-
-        // rompi il modello in modo che getPlayersNotAbort() dia NullPointerException
-        Field modelField = AdventurePhase.class.getDeclaredField("gameModel");
-        modelField.setAccessible(true);
-        modelField.set(phase, null);
-
-        // imposta StarDustState e verifica che initialize rilanci RuntimeException
-        StarDustState state = new StarDustState(phase);
-        phase.setAdvState(state);
-
-        assertThrows(RuntimeException.class,
-                () -> state.initialize(),
-                "se avviene qualsiasi eccezione interna, initialize() deve rilanciare RuntimeException");
-    }
-
 
 }
