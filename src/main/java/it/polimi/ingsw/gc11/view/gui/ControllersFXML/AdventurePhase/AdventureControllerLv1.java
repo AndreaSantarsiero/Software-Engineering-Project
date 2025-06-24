@@ -131,7 +131,6 @@ public class AdventureControllerLv1 extends Controller {
 
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU);
         update(adventurePhaseData);
-
     }
 
     private void saveOriginalPositions() {
