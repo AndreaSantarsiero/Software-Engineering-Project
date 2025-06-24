@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +39,8 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private VBox root;
     @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private HBox playersButtons;
+    @FXML private ComboBox<String> selectCheat;
+    @FXML private Button cheatButton;
     @FXML private Button abortButton;
     @FXML private ImageView flightBoardImage;
     @FXML private Pane positionOverlayPane;
@@ -104,6 +107,10 @@ public class AdventureControllerLv1 extends Controller {
         this.setupPlayersButtons();
         playersButtons.setSpacing(10);
         playersButtons.prefWidthProperty();
+
+        String[] cheats = {"Test Deck"};
+        selectCheat.getItems().clear();
+        selectCheat.getItems().addAll(cheats);
 
         drawButton.setVisible(false);
         drawButton.setDisable(true);
@@ -307,10 +314,31 @@ public class AdventureControllerLv1 extends Controller {
         }
     }
 
+    @FXML
+    private void onCheatButtonClick(ActionEvent event) {
+        String cheat = selectCheat.getValue();
+        if(cheat != null && !cheat.isEmpty()) {
+            switch (cheat) {
+                case "Test Deck" -> {
+                    try {
+                        virtualServer.setTestDeck();
+                        System.out.println("Test Deck activated");
+                    }
+                    catch (NetworkException e) {
+                        System.out.println("Network Error:  " + e.getMessage());
+                    }
+                }
+                default -> System.out.println("Unknown cheat: " + cheat);
+            }
+        }
+    }
+
 
     @Override
     public  void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
+
+            System.out.println(adventurePhaseData.getGUIState());
 
             setupPositions();
             showDrawButton();

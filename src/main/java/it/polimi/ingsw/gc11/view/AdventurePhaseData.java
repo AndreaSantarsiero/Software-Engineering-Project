@@ -160,7 +160,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setGUIState(AdventureStateGUI state) {
         actualizePreviousState();
         this.GUIState = state;
-        notifyListener();
+        //notifyListener();
     }
 
     public void actualizePreviousGUIState() {

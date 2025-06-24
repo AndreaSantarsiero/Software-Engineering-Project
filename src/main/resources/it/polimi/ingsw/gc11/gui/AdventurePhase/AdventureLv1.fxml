@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -32,6 +33,16 @@
                <children>
                   <Label styleClass="Text" stylesheets="@../style.css" text="View Shipboards:   " />
                </children></HBox>
+            <HBox fx:id="cheat" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <ComboBox fx:id="selectCheat" prefWidth="150.0" />
+                        <Button fx:id="cheatButton" mnemonicParsing="false" onAction="#onCheatButtonClick" text="CHEAT" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
                   <Button fx:id="abortButton" mnemonicParsing="false" onAction="#onAbortButtonClick" text="Abort">
                <HBox.margin>
                   <Insets left="20.0" />
