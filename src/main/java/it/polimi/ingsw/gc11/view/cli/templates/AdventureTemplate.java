@@ -387,7 +387,7 @@ public class AdventureTemplate extends CLITemplate {
                         printMenu(shipBoard, menuIndex, numBatteriesMenu, controller.getNumBatteries());
                     }
                     else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_MEMBERS){
-                        printMenu(shipBoard, menuIndex, numBatteriesMenu, controller.getNumMembers());
+                        printMenu(shipBoard, menuIndex, numMembersMenu, controller.getNumMembers());
                     }
                     menuIndex++;
                 }
