@@ -13,6 +13,7 @@ import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check2Lv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.HandleShotLv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Penalty3Lv2;
+import it.polimi.ingsw.gc11.controller.State.EpidemicStates.EpidemicState;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.HandleMeteor;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.MeteorSwarmState;
 import it.polimi.ingsw.gc11.controller.State.OpenSpaceStates.OpenSpaceState;
@@ -28,6 +29,7 @@ import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.LooseBatteriesSmugglers;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
+import it.polimi.ingsw.gc11.controller.State.StarDustStates.StarDustState;
 import it.polimi.ingsw.gc11.controller.dumbClient.DumbPlayerContext;
 import it.polimi.ingsw.gc11.controller.network.Utils;
 import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
@@ -47,6 +49,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -2153,5 +2156,80 @@ public class GameContextTest {
         Player result = gameContext.killMembers("username1", usage);
         assertInstanceOf(IdleState.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
     }
+
+
+    @Test
+    void testEpidemicState_normal_initializesAndTransitionsToIdle() {
+        // porta in AdventurePhase
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        // imposta EpidemicState
+        phase.setAdvState(new EpidemicState(phase));
+        // esegue initialize: non deve lanciare, e alla fine deve transizionare in IdleState
+        assertDoesNotThrow(() -> phase.getCurrentAdvState().initialize());
+        assertInstanceOf(IdleState.class, phase.getCurrentAdvState(),
+                "Dopo initialize normale deve passare a IdleState");
+    }
+
+    @Test
+    void testEpidemicState_exception_sendsNotify_and_staysInEpidemicState() throws Exception {
+        // porta in AdventurePhase
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        // forza NullPointerException in epidemic() azzerando il shipBoard del primo giocatore
+        Player broken = gameContext.getGameModel().getPlayer("username1");
+        Field sbField = Player.class.getDeclaredField("shipBoard");
+        sbField.setAccessible(true);
+        sbField.set(broken, null);
+
+        // imposta EpidemicState e chiama initialize: finisce nel catch
+        phase.setAdvState(new EpidemicState(phase));
+        assertDoesNotThrow(() -> phase.getCurrentAdvState().initialize());
+
+        // lo stato non deve cambiare (rimane EpidemicState)
+        assertInstanceOf(EpidemicState.class, phase.getCurrentAdvState(),
+                "In caso di eccezione deve rimanere in EpidemicState");
+    }
+
+    @Test
+    void testInitializeStarDust_valid_transitionsToIdleState() throws Exception {
+        // porta la partita in AdventurePhase
+        goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        // imposta StarDustState come stato corrente
+        StarDustState state = new StarDustState(phase);
+        phase.setAdvState(state);
+
+        // chiama initialize(): deve distribuirе star dust, inviare gli UpdateEverybodyProfileAction e tornare in IdleState
+        state.initialize();
+
+        assertInstanceOf(IdleState.class,
+                ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(),
+                "dopo initialize() deve passare a IdleState");
+    }
+
+    @Test
+    void testInitializeStarDust_exceptionRethrowsRuntimeException() throws Exception {
+        // porta la partita in AdventurePhase
+        goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        // rompi il modello in modo che getPlayersNotAbort() dia NullPointerException
+        Field modelField = AdventurePhase.class.getDeclaredField("gameModel");
+        modelField.setAccessible(true);
+        modelField.set(phase, null);
+
+        // imposta StarDustState e verifica che initialize rilanci RuntimeException
+        StarDustState state = new StarDustState(phase);
+        phase.setAdvState(state);
+
+        assertThrows(RuntimeException.class,
+                () -> state.initialize(),
+                "se avviene qualsiasi eccezione interna, initialize() deve rilanciare RuntimeException");
+    }
+
 
 }
