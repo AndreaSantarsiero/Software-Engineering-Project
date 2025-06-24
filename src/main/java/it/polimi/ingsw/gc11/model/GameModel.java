@@ -2,6 +2,7 @@ package it.polimi.ingsw.gc11.model;
 
 import it.polimi.ingsw.gc11.exceptions.*;
 import it.polimi.ingsw.gc11.loaders.*;
+import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
@@ -379,6 +380,11 @@ public class GameModel {
             }
         }
         this.definitiveDeck.shuffle();
+    }
+
+    //Cheat for testing
+    public void setTestDeck(AdventureDeck testDeck){
+        this.definitiveDeck = testDeck;
     }
 
     public AdventureDeck getDefinitiveDeck() {

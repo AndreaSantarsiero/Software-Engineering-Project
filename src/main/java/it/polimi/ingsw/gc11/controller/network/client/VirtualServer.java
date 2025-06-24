@@ -251,6 +251,12 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
+    //Cheating methods
+    public void setTestDeck() throws NetworkException {
+        SetTestDeckAction action = new SetTestDeckAction(username);
+        client.sendAction(action);
+    }
+
 
 
     public void receiveAction(ServerAction action){

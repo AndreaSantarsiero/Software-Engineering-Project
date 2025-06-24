@@ -8,6 +8,8 @@ import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.model.*;
+import it.polimi.ingsw.gc11.model.adventurecard.AbandonedShip;
+import it.polimi.ingsw.gc11.model.adventurecard.AbandonedStation;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
@@ -329,7 +331,8 @@ public class GameContext {
         phase.endBuildingLevel2(username, pos);
     }
 
-    //cheating methods
+
+    //Cheating methods
     public ShipBoard gimmeACoolShip(String username, int num) {
         String resourcePath = "src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard" + num + ".json";
         Player player = gameModel.getPlayer(username);
@@ -518,4 +521,33 @@ public class GameContext {
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
         return phase.meteorDefense(username, batteries, cannon);
     }
+
+    //Cheating methods
+    public void setTestDeck(String username) {
+        AdventureDeck testDeck = new AdventureDeck(false);
+        testDeck.addCard(
+                new AbandonedShip(
+                    "Level1AbandonedShip",
+                    AdventureCard.Type.LEVEL1,
+                    1,
+                    2,
+                    3
+                )
+        );
+        testDeck.addCard(
+                new AbandonedStation(
+                        "Level1AbandonedStation",
+                        AdventureCard.Type.LEVEL1,
+                        1,
+                        6,
+                        0,
+                        0,
+                        0,
+                        2
+                )
+        );
+        this.getGameModel().setTestDeck(testDeck);
+    }
+
+
 }
