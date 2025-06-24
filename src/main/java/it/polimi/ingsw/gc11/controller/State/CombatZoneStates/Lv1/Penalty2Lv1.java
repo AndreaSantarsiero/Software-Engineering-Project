@@ -28,6 +28,7 @@ public class Penalty2Lv1 extends AdventureState {
 
         if(player.getShipBoard().getMembers() < lostMembers){
             //Il giocatore va eliminato dalla partita
+            player.setAbort();
             throw new IllegalStateException("You don't have enough members... Game over");
         }
 
