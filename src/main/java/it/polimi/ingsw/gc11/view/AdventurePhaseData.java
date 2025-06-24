@@ -127,8 +127,6 @@ public class AdventurePhaseData extends GamePhaseData {
             state = AdventureState.values()[state.ordinal() + 1];
         }
 
-        updateGUIState();
-
         notifyListener();
     }
 
@@ -161,13 +159,13 @@ public class AdventurePhaseData extends GamePhaseData {
             GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
         }
 
-        //notifyListener();
+        notifyListener();
     }
 
     public void setGUIState(AdventureStateGUI state) {
         actualizePreviousGUIState();
         this.GUIState = state;
-        //notifyListener();
+        notifyListener();
     }
 
     public void actualizePreviousGUIState() {
@@ -300,6 +298,7 @@ public class AdventurePhaseData extends GamePhaseData {
         this.currentPlayer = currentPlayer;
         if(updateState) {
             updateState();
+            updateGUIState();
         }
         else {
             notifyListener();
