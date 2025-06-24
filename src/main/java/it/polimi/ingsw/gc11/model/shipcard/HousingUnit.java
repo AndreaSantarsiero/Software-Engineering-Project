@@ -156,23 +156,23 @@ public class HousingUnit extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        HousingUnit housingUnit;
-        try{
-            housingUnit = (HousingUnit) obj;
-        }catch(ClassCastException e){
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if(this.alienUnit == null){
-            return super.equals(obj) && this.central == housingUnit.isCentral() && this.numMembers == housingUnit.numMembers;
+
+        HousingUnit other = (HousingUnit) obj;
+        if (this.central != other.central || this.numMembers != other.numMembers) {
+            return false;
         }
-        else{
-            return super.equals(obj) && this.central == housingUnit.isCentral() && this.alienUnit.equals(housingUnit.getAlienUnit()) && this.numMembers == housingUnit.numMembers;
-        }
+        return super.equals(obj) && Objects.equals(this.alienUnit, other.alienUnit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), central, alienUnit, numMembers);
+        return Objects.hash(super.hashCode(), central, numMembers, alienUnit);
     }
 
 

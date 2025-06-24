@@ -93,13 +93,15 @@ public class Battery extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        Battery battery;
-        try {
-            battery = (Battery) obj;
-        } catch (ClassCastException e) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        return super.equals(obj) && this.type == battery.getType() && this.availableBatteries == battery.getAvailableBatteries();
+
+        Battery other = (Battery) obj;
+        return super.equals(obj) && this.type == other.getType() && this.availableBatteries == other.getAvailableBatteries();
     }
 
     @Override

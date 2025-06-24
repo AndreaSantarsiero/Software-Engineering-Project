@@ -95,13 +95,15 @@ public class AlienUnit extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        AlienUnit alienUnit;
-        try {
-            alienUnit = (AlienUnit) obj;
-        } catch (ClassCastException e) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        return super.equals(obj) && this.type == alienUnit.getType() && this.presence == alienUnit.isPresent();
+
+        AlienUnit other = (AlienUnit) obj;
+        return super.equals(obj) && this.type == other.type && this.presence == other.presence;
     }
 
     @Override

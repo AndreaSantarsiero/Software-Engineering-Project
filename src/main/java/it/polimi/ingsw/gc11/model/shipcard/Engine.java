@@ -59,13 +59,15 @@ public class Engine extends ShipCard {
      */
     @Override
     public boolean equals(Object obj) {
-        Engine engine;
-        try {
-            engine = (Engine) obj;
-        } catch (ClassCastException e) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        return super.equals(obj) && this.type == engine.getType();
+
+        Engine other = (Engine) obj;
+        return super.equals(obj) && this.type == other.getType();
     }
 
     @Override

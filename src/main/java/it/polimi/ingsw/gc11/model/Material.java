@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 
 
@@ -75,5 +76,10 @@ public class Material implements Serializable {
 
         Material material = (Material) obj;
         return this.type.equals(material.getType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type);
     }
 }

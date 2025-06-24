@@ -21,13 +21,18 @@ public abstract class ShipBoard  implements Serializable {
     private final ShipCard[][] components;
     private final List<ShipCard> reservedComponents;
 
-    private final Map<AlienUnit, Point> alienUnits;
+    private final List<AlienUnit> alienUnits;
     private final List<Battery> batteries;
-    private final Map<Cannon, Point> cannons;
-    private final Map<Engine, Point> engines;
-    private final Map<HousingUnit, Point> housingUnits;
+    private final List<Cannon> cannons;
+    private final List<Engine> engines;
+    private final List<HousingUnit> housingUnits;
     private final List<Shield> shields;
     private final List<Storage> storages;
+
+    private final Map<String, Point> alienUnitCoordinates;
+    private final Map<String, Point> cannonCoordinates;
+    private final Map<String, Point> engineCoordinates;
+    private final Map<String, Point> housingUnitCoordinates;
 
     private int lastModifiedI;
     private int lastModifiedJ;
@@ -44,13 +49,17 @@ public abstract class ShipBoard  implements Serializable {
     public ShipBoard(int X_MAX, int Y_MAX) {
         this.components = new ShipCard[Y_MAX][X_MAX];
         this.reservedComponents = new ArrayList<>();
-        this.alienUnits = new HashMap<>();
+        this.alienUnits = new ArrayList<>();
         this.batteries = new ArrayList<>();
-        this.cannons = new HashMap<>();
-        this.engines = new HashMap<>();
-        this.housingUnits = new HashMap<>();
+        this.cannons = new ArrayList<>();
+        this.engines = new ArrayList<>();
+        this.housingUnits = new ArrayList<>();
         this.shields = new ArrayList<>();
         this.storages = new ArrayList<>();
+        this.alienUnitCoordinates = new HashMap<>();
+        this.cannonCoordinates = new HashMap<>();
+        this.engineCoordinates = new HashMap<>();
+        this.housingUnitCoordinates = new HashMap<>();
         this.lastModifiedI = -1;
         this.lastModifiedJ = -1;
         this.brownActiveUnit = null;
@@ -59,7 +68,8 @@ public abstract class ShipBoard  implements Serializable {
 
 
     public void addToList(AlienUnit alienUnit, int x, int y) {
-        alienUnits.putIfAbsent(alienUnit, new Point(x, y));
+        alienUnits.add(alienUnit);
+        alienUnitCoordinates.putIfAbsent(alienUnit.getId(), new Point(x, y));
     }
 
     public void addToList(Battery battery, int x, int y) {
@@ -67,15 +77,18 @@ public abstract class ShipBoard  implements Serializable {
     }
 
     public void addToList(Cannon cannon, int x, int y) {
-        cannons.putIfAbsent(cannon, new Point(x, y));
+        cannons.add(cannon);
+        cannonCoordinates.putIfAbsent(cannon.getId(), new Point(x, y));
     }
 
     public void addToList(Engine engine, int x, int y) {
-        engines.putIfAbsent(engine, new Point(x, y));
+        engines.add(engine);
+        engineCoordinates.putIfAbsent(engine.getId(), new Point(x, y));
     }
 
     public void addToList(HousingUnit housingUnit, int x, int y) {
-        housingUnits.putIfAbsent(housingUnit, new Point(x, y));
+        housingUnits.add(housingUnit);
+        housingUnitCoordinates.putIfAbsent(housingUnit.getId(), new Point(x, y));
     }
 
     public void addToList(Shield shield, int x, int y) {
@@ -86,9 +99,7 @@ public abstract class ShipBoard  implements Serializable {
         storages.add(storage);
     }
 
-    public void addToList(StructuralModule structuralModule, int x, int y) {
-
-    }
+    public void addToList(StructuralModule structuralModule, int x, int y) {}
 
 
 
@@ -813,10 +824,9 @@ public abstract class ShipBoard  implements Serializable {
     private boolean checkOtherRestrictions(){
         boolean status = true;
 
-        for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
-            Cannon cannon = entry.getKey();
-            int i = adaptY((int )entry.getValue().getY());
-            int j = adaptX((int )entry.getValue().getX());
+        for (Cannon cannon : cannons) {
+            int i = adaptY(cannonCoordinates.get(cannon.getId()).y);
+            int j = adaptX(cannonCoordinates.get(cannon.getId()).x);
 
             if(!cannon.isScrap()){
                 if (cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
@@ -870,10 +880,9 @@ public abstract class ShipBoard  implements Serializable {
             }
         }
 
-        for (Map.Entry<Engine, Point> entry : engines.entrySet()) {
-            Engine engine = entry.getKey();
-            int i = adaptY((int )entry.getValue().getY());
-            int j = adaptX((int )entry.getValue().getX());
+        for (Engine engine : engines) {
+            int i = adaptY( (int) engineCoordinates.get(engine.getId()).getY());
+            int j = adaptX( (int) engineCoordinates.get(engine.getId()).getX());
 
 
             if(!engine.isScrap()){
@@ -921,10 +930,10 @@ public abstract class ShipBoard  implements Serializable {
      * @throws IllegalArgumentException if not all conditions are met
      */
     public void connectAlienUnit(AlienUnit alienUnit, HousingUnit housingUnit) {
-        if(!alienUnits.containsKey(alienUnit)){
+        if(!alienUnits.contains(alienUnit)){
             throw new IllegalArgumentException("this alien unit is not present on the ship");
         }
-        if(!housingUnits.containsKey(housingUnit)){
+        if(!housingUnits.contains(housingUnit)){
             throw new IllegalArgumentException("This housing unit is not present on the ship");
         }
         if(alienUnit.getType() == AlienUnit.Type.BROWN && brownActiveUnit != null) {
@@ -937,32 +946,42 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("Cannot connect an AlienUnit to a central HousingUnit");
         }
 
-        int alienX = alienUnits.get(alienUnit).x;
-        int alienY = alienUnits.get(alienUnit).y;
-        int housingX = housingUnits.get(housingUnit).x;
-        int housingY = housingUnits.get(housingUnit).y;
+        HousingUnit matchingHousingUnit = housingUnits.stream().filter(h -> h.equals(housingUnit)).findFirst().orElse(null);
+        AlienUnit matchingAlienUnit = alienUnits.stream().filter(a -> a.equals(alienUnit)).findFirst().orElse(null);
+        if(matchingHousingUnit == null){
+            throw new IllegalArgumentException("Cannot find this housing unit on the ship");
+        }
+        if(matchingAlienUnit == null){
+            throw new IllegalArgumentException("Cannot find this alien unit on the ship");
+        }
 
-        if(alienX == housingX && alienY == housingY+1 && alienUnit.getTopConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getTopConnector(), housingUnit.getBottomConnector())){
-            housingUnit.setAlienUnit(alienUnit);
+
+        int alienX = alienUnitCoordinates.get(alienUnit.getId()).x;
+        int alienY = alienUnitCoordinates.get(alienUnit.getId()).y;
+        int housingX = housingUnitCoordinates.get(housingUnit.getId()).x;
+        int housingY = housingUnitCoordinates.get(housingUnit.getId()).y;
+
+        if(alienX == housingX && alienY == housingY+1 && alienUnit.getTopConnector() != ShipCard.Connector.NONE && checkConnection(matchingAlienUnit.getTopConnector(), matchingHousingUnit.getBottomConnector())){
+            matchingHousingUnit.setAlienUnit(matchingAlienUnit);
         }
-        else if(alienX == housingX-1 && alienY == housingY && alienUnit.getRightConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getRightConnector(), housingUnit.getLeftConnector())){
-            housingUnit.setAlienUnit(alienUnit);
+        else if(alienX == housingX-1 && alienY == housingY && alienUnit.getRightConnector() != ShipCard.Connector.NONE && checkConnection(matchingAlienUnit.getRightConnector(), matchingHousingUnit.getLeftConnector())){
+            matchingHousingUnit.setAlienUnit(matchingAlienUnit);
         }
-        else if(alienX == housingX && alienY == housingY-1 && alienUnit.getBottomConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getBottomConnector(), housingUnit.getTopConnector())){
-            housingUnit.setAlienUnit(alienUnit);
+        else if(alienX == housingX && alienY == housingY-1 && alienUnit.getBottomConnector() != ShipCard.Connector.NONE && checkConnection(matchingAlienUnit.getBottomConnector(), matchingHousingUnit.getTopConnector())){
+            matchingHousingUnit.setAlienUnit(matchingAlienUnit);
         }
-        else if(alienX == housingX+1 && alienY == housingY && alienUnit.getLeftConnector() != ShipCard.Connector.NONE && checkConnection(alienUnit.getLeftConnector(), housingUnit.getRightConnector())) {
-            housingUnit.setAlienUnit(alienUnit);
+        else if(alienX == housingX+1 && alienY == housingY && alienUnit.getLeftConnector() != ShipCard.Connector.NONE && checkConnection(matchingAlienUnit.getLeftConnector(), matchingHousingUnit.getRightConnector())) {
+            matchingHousingUnit.setAlienUnit(matchingAlienUnit);
         }
         else{
             throw new IllegalArgumentException("AlienUnit and CentralUnit are not directly connected");
         }
 
-        if(alienUnit.getType() == AlienUnit.Type.BROWN){
-            brownActiveUnit = alienUnit;
+        if(matchingAlienUnit.getType() == AlienUnit.Type.BROWN){
+            brownActiveUnit = matchingAlienUnit;
         }
         else{
-            purpleActiveUnit = alienUnit;
+            purpleActiveUnit = matchingAlienUnit;
         }
     }
 
@@ -1018,7 +1037,7 @@ public abstract class ShipBoard  implements Serializable {
     public int getMembers(){
         int members = 0;
 
-        for(HousingUnit housingUnit : housingUnits.keySet()){
+        for(HousingUnit housingUnit : housingUnits){
             if(!housingUnit.isScrap()){
                 members += housingUnit.getNumMembers();
             }
@@ -1048,19 +1067,27 @@ public abstract class ShipBoard  implements Serializable {
             if (numMembers == null) {
                 throw new IllegalArgumentException("Number of members to remove cannot be null");
             }
-            if (!housingUnits.containsKey(housingUnit)) {
+            if (!housingUnits.contains(housingUnit)) {
                 throw new IllegalArgumentException("This housing unit is not present on the ship");
             }
             if (housingUnit.isScrap()) {
                 throw new IllegalArgumentException("Scrap housing units cannot be used");
             }
+            if (numMembers > housingUnit.getNumMembers()) {
+                throw new IllegalArgumentException("Too many crew members selected for this housing unit");
+            }
         }
 
         for (Map.Entry<HousingUnit, Integer> entry : housingUsage.entrySet()) {
+            System.out.println("Killing " + entry.getValue() + " members on housing unit: " + entry.getKey().getId());
             HousingUnit housingUnit = entry.getKey();
-            Integer numMembers = entry.getValue();
+            HousingUnit matchingHousingUnit = housingUnits.stream().filter(h -> h.equals(housingUnit)).findFirst().orElse(null);
+            if(matchingHousingUnit == null){
+                throw new IllegalArgumentException("Cannot find this housing unit on the ship");
+            }
 
-            housingUnit.killMembers(numMembers);
+            Integer numMembers = entry.getValue();
+            matchingHousingUnit.killMembers(numMembers);
         }
     }
 
@@ -1071,19 +1098,19 @@ public abstract class ShipBoard  implements Serializable {
     public void epidemic(){
         this.visitedInitialization();
 
-        for (Map.Entry<HousingUnit, Point> entry : housingUnits.entrySet()) {
-            HousingUnit housingUnit = entry.getKey();
-
+        for (HousingUnit housingUnit : housingUnits) {
             if (!housingUnit.isScrap()) {
-                int x = (int) entry.getValue().getX();
-                int y = (int) entry.getValue().getY();
+                int x = housingUnitCoordinates.get(housingUnit.getId()).x;
+                int y = housingUnitCoordinates.get(housingUnit.getId()).y;
 
                 if(housingUnit.getTopConnector() != ShipCard.Connector.NONE){
                     Point topPoint = new Point(x, y-1);
 
-                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
-                        if (entry2.getValue().equals(topPoint)) {
-                            HousingUnit housingUnitTop = entry2.getKey();
+                    for (HousingUnit housingUnitTop : housingUnits) {
+                        int topX = housingUnitCoordinates.get(housingUnitTop.getId()).x;
+                        int topY = housingUnitCoordinates.get(housingUnitTop.getId()).y;
+
+                        if (topPoint.x == topX && topPoint.y == topY) {
                             if(!housingUnitTop.isScrap() && checkConnection(housingUnit.getTopConnector(), housingUnitTop.getBottomConnector())){
                                 if(!housingUnitTop.isVisited()){
                                     housingUnitTop.epidemic();
@@ -1100,9 +1127,11 @@ public abstract class ShipBoard  implements Serializable {
                 if(housingUnit.getRightConnector() != ShipCard.Connector.NONE){
                     Point rightPoint = new Point(x+1, y);
 
-                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
-                        if (entry2.getValue().equals(rightPoint)) {
-                            HousingUnit housingUnitRight = entry2.getKey();
+                    for (HousingUnit housingUnitRight : housingUnits) {
+                        int rightX = housingUnitCoordinates.get(housingUnitRight.getId()).x;
+                        int rightY = housingUnitCoordinates.get(housingUnitRight.getId()).y;
+
+                        if (rightPoint.x == rightX && rightPoint.y == rightY) {
                             if(!housingUnitRight.isScrap() && checkConnection(housingUnit.getRightConnector(), housingUnitRight.getLeftConnector())){
                                 if(!housingUnitRight.isVisited()){
                                     housingUnitRight.epidemic();
@@ -1119,9 +1148,11 @@ public abstract class ShipBoard  implements Serializable {
                 if(housingUnit.getBottomConnector() != ShipCard.Connector.NONE){
                     Point bottomPoint = new Point(x, y+1);
 
-                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
-                        if (entry2.getValue().equals(bottomPoint)) {
-                            HousingUnit housingUnitBottom = entry2.getKey();
+                    for (HousingUnit housingUnitBottom : housingUnits) {
+                        int bottomX = housingUnitCoordinates.get(housingUnitBottom.getId()).x;
+                        int bottomY = housingUnitCoordinates.get(housingUnitBottom.getId()).y;
+
+                        if (bottomPoint.x == bottomX && bottomPoint.y == bottomY) {
                             if(!housingUnitBottom.isScrap() && checkConnection(housingUnit.getBottomConnector(), housingUnitBottom.getTopConnector())){
                                 if(!housingUnitBottom.isVisited()){
                                     housingUnitBottom.epidemic();
@@ -1138,9 +1169,11 @@ public abstract class ShipBoard  implements Serializable {
                 if(housingUnit.getLeftConnector() != ShipCard.Connector.NONE){
                     Point leftPoint = new Point(x-1, y);
 
-                    for (Map.Entry<HousingUnit, Point> entry2 : housingUnits.entrySet()) {
-                        if (entry2.getValue().equals(leftPoint)) {
-                            HousingUnit housingUnitLeft = entry2.getKey();
+                    for (HousingUnit housingUnitLeft : housingUnits) {
+                        int leftX = housingUnitCoordinates.get(housingUnitLeft.getId()).x;
+                        int leftY = housingUnitCoordinates.get(housingUnitLeft.getId()).y;
+
+                        if (leftPoint.x == leftX && leftPoint.y == leftY) {
                             if(!housingUnitLeft.isScrap() && checkConnection(housingUnit.getLeftConnector(), housingUnitLeft.getRightConnector())){
                                 if(!housingUnitLeft.isVisited()){
                                     housingUnitLeft.epidemic();
@@ -1205,13 +1238,21 @@ public abstract class ShipBoard  implements Serializable {
             if (battery.isScrap()) {
                 throw new IllegalArgumentException("Scrap batteries cannot be used");
             }
+            if (numBatteries > battery.getAvailableBatteries()) {
+                throw new IllegalArgumentException("too many batteries selected for this battery module");
+            }
         }
 
         for (Map.Entry<Battery, Integer> entry : batteryUsage.entrySet()) {
             Battery battery = entry.getKey();
-            Integer numBatteries = entry.getValue();
+            Battery matchingBattery = batteries.stream().filter(b -> b.equals(battery)).findFirst().orElse(null);
 
-            battery.useBatteries(numBatteries);
+            if (matchingBattery == null) {
+                throw new IllegalArgumentException("Cannot find this battery module on the ship");
+            }
+
+            Integer numBatteries = entry.getValue();
+            matchingBattery.useBatteries(numBatteries);
         }
     }
 
@@ -1281,19 +1322,28 @@ public abstract class ShipBoard  implements Serializable {
             if (newMaterials.size() != oldMaterials.size()) {
                 throw new IllegalArgumentException("New and old materials lists do not match in size for storage: " + storage);
             }
+
+            //missing cheating check (too many materials ecc)
         }
+
 
         for (Map.Entry<Storage, SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
             Storage storage = entry.getKey();
+            Storage matchingStorage = storages.stream().filter(s -> s.equals(storage)).findFirst().orElse(null);
+
+            if (matchingStorage == null) {
+                throw new IllegalArgumentException("Cannot find this battery module on the ship");
+            }
+
             SimpleEntry<List<Material>, List<Material>> materialsPair = entry.getValue();
             List<Material> newMaterials = materialsPair.getKey();
             List<Material> oldMaterials = materialsPair.getValue();
 
             for (int i = 0; i < newMaterials.size(); i++) {
                 if (oldMaterials.get(i) == null) {
-                    storage.addMaterial(newMaterials.get(i));
+                    matchingStorage.addMaterial(newMaterials.get(i));
                 } else {
-                    storage.replaceMaterial(newMaterials.get(i), oldMaterials.get(i));
+                    matchingStorage.replaceMaterial(newMaterials.get(i), oldMaterials.get(i));
                 }
             }
         }
@@ -1354,7 +1404,7 @@ public abstract class ShipBoard  implements Serializable {
     public int getDoubleEnginesNumber(){
         int doubleEngines = 0;
 
-        for(Engine engine : engines.keySet()){
+        for(Engine engine : engines){
             if(!engine.isScrap() && engine.getType() == Engine.Type.DOUBLE){
                 doubleEngines++;
             }
@@ -1379,7 +1429,7 @@ public abstract class ShipBoard  implements Serializable {
         }
 
         int enginePower = 0;
-        for(Engine engine : engines.keySet()){
+        for(Engine engine : engines){
             if(!engine.isScrap() && engine.getType() == Engine.Type.SINGLE){
                 enginePower++;
             }
@@ -1411,7 +1461,7 @@ public abstract class ShipBoard  implements Serializable {
     public int getDoubleCannonsNumber(){
         int doubleCannons = 0;
 
-        for (Cannon cannon : cannons.keySet()) {
+        for (Cannon cannon : cannons) {
             if (!cannon.isScrap() && cannon.getType() == Cannon.Type.DOUBLE) {
                 doubleCannons++;
             }
@@ -1434,13 +1484,13 @@ public abstract class ShipBoard  implements Serializable {
             throw new IllegalArgumentException("Double cannons list cannot be null");
         }
 
-        for (Cannon cannon : cannons.keySet()) {
+        for (Cannon cannon : cannons) {
             cannon.setVisited(false);
         }
 
 
         for (Cannon cannon : doubleCannons) {
-            if (!cannons.containsKey(cannon)){
+            if (!cannons.contains(cannon)){
                 throw new IllegalArgumentException("This cannon is not present on the ship");
             }
             if (cannon.isScrap()) {
@@ -1450,7 +1500,7 @@ public abstract class ShipBoard  implements Serializable {
                 throw new IllegalArgumentException("Cannot use batteries on a single cannon");
             }
 
-            Cannon matchingCannon = cannons.keySet().stream().filter(c -> c.equals(cannon)).findFirst().orElse(null);
+            Cannon matchingCannon = cannons.stream().filter(c -> c.equals(cannon)).findFirst().orElse(null);
             if (matchingCannon == null) {
                 throw new IllegalArgumentException("Cannot find this cannon on the ship");
             }
@@ -1475,7 +1525,7 @@ public abstract class ShipBoard  implements Serializable {
             }
         }
 
-        for (Cannon cannon : cannons.keySet()) {
+        for (Cannon cannon : cannons) {
             if (!cannon.isScrap() && cannon.getType() == Cannon.Type.SINGLE) {
                 if(cannon.getOrientation() == ShipCard.Orientation.DEG_0){
                     cannonPower++;
@@ -1526,9 +1576,11 @@ public abstract class ShipBoard  implements Serializable {
                 for (int j = 0; j < components[0].length; j++) {
                     Point point = new Point(j - adaptX(0), coordinate + offset);
 
-                    for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
-                        if (entry.getValue().equals(point)) {
-                            Cannon cannon = entry.getKey();
+                    for (Cannon cannon : cannons) {
+                        int cannonX = cannonCoordinates.get(cannon.getId()).x;
+                        int cannonY = cannonCoordinates.get(cannon.getId()).y;
+
+                        if (cannonX == point.x && cannonY == point.y) {
                             if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_270) {
                                 availableCannons.add(cannon);
                             }
@@ -1543,9 +1595,11 @@ public abstract class ShipBoard  implements Serializable {
                 for (int j = 0; j < components[0].length; j++) {
                     Point point = new Point(components[0].length - j - adaptX(0), coordinate + offset);
 
-                    for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
-                        if (entry.getValue().equals(point)) {
-                            Cannon cannon = entry.getKey();
+                    for (Cannon cannon : cannons) {
+                        int cannonX = cannonCoordinates.get(cannon.getId()).x;
+                        int cannonY = cannonCoordinates.get(cannon.getId()).y;
+
+                        if (cannonX == point.x && cannonY == point.y) {
                             if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_90) {
                                 availableCannons.add(cannon);
                             }
@@ -1559,9 +1613,11 @@ public abstract class ShipBoard  implements Serializable {
             for (int i = 0; i < components.length; i++) {
                 Point point = new Point(coordinate, i - adaptY(0));
 
-                for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
-                    if (entry.getValue().equals(point)) {
-                        Cannon cannon = entry.getKey();
+                for (Cannon cannon : cannons) {
+                    int cannonX = cannonCoordinates.get(cannon.getId()).x;
+                    int cannonY = cannonCoordinates.get(cannon.getId()).y;
+
+                    if (cannonX == point.x && cannonY == point.y) {
                         if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_0) {
                             availableCannons.add(cannon);
                         }
@@ -1575,9 +1631,11 @@ public abstract class ShipBoard  implements Serializable {
                 for (int i = 0; i < components.length; i++) {
                     Point point = new Point(coordinate + offset, components.length - i - adaptY(0));
 
-                    for (Map.Entry<Cannon, Point> entry : cannons.entrySet()) {
-                        if (entry.getValue().equals(point)) {
-                            Cannon cannon = entry.getKey();
+                    for (Cannon cannon : cannons) {
+                        int cannonX = cannonCoordinates.get(cannon.getId()).x;
+                        int cannonY = cannonCoordinates.get(cannon.getId()).y;
+
+                        if (cannonX == point.x && cannonY == point.y) {
                             if (!cannon.isScrap() && cannon.getOrientation() == ShipCard.Orientation.DEG_180) {
                                 availableCannons.add(cannon);
                             }

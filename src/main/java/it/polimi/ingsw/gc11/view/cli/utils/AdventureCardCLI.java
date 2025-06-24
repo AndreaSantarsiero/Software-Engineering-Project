@@ -384,7 +384,7 @@ public class AdventureCardCLI {
                 }
             }
             catch (Exception ignored){
-                System.out.print("                    ");
+                System.out.print("                     ");
             }
         }
         else{
