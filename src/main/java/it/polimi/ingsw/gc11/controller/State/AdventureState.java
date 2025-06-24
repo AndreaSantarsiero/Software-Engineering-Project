@@ -4,10 +4,8 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
+import it.polimi.ingsw.gc11.model.shipcard.*;
+
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -191,5 +189,13 @@ public abstract class AdventureState{
      */
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon){
         throw new IllegalStateException("Can't meteor hit in the current adventure state: " + this.getClass().getName());
+    }
+
+    public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
+        throw new IllegalStateException("Can't select aliens in the current adventure state: " + this.getClass().getName());
+    }
+
+    public void completedAlienSelection(String username){
+        throw new IllegalStateException("Can't completed aliens in the current adventure state: " + this.getClass().getName());
     }
 }

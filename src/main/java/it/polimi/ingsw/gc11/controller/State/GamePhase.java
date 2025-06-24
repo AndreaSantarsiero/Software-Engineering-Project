@@ -379,7 +379,13 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't meteor hit in the current game phase: " + getPhaseName());
     }
 
+    public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
+        throw new IllegalStateException("Can't select aliens in the current game phase: " + getPhaseName());
+    }
 
+    public void completedAlienSelection(String username){
+        throw new IllegalStateException("Can't completed aliens in the current game phase: " + getPhaseName());
+    }
 
     public abstract String getPhaseName();
 

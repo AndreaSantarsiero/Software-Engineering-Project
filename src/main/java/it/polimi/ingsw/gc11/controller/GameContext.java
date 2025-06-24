@@ -522,6 +522,14 @@ public class GameContext {
         return phase.meteorDefense(username, batteries, cannon);
     }
 
+    public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
+        phase.selectAliens(username, alienUnit, housingUnit);
+    }
+
+    public void completedAlienSelection(String username){
+        phase.completedAlienSelection(username);
+    }
+
     //Cheating methods
     public void setTestDeck(String username) {
         AdventureDeck testDeck = new AdventureDeck(false);
