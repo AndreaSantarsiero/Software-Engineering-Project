@@ -93,7 +93,14 @@ public class AdventurePhaseData extends GamePhaseData {
         updateGUIState();
         actualizePreviousState();
 
-        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP || state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD) {
+        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP ||
+                state == AdventureState.FIRE_POWER_SETUP || state == AdventureState.ENGINE_POWER_SETUP ||
+                state == AdventureState.CREW_MEMBERS_SETUP || state == AdventureState.BATTERIES_SETUP ||
+                state == AdventureState.LOAD_MATERIALS_MENU || state == AdventureState.SHOT_DEFENSE_SETUP ||
+                state == AdventureState.DEFENSIVE_CANNON_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP ||
+                state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
+                state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD)
+        {
             state = AdventureState.CHOOSE_MAIN_MENU;
         }
         else if(state == AdventureState.CHOOSE_DOUBLE_CANNON || state == AdventureState.SELECT_FIRE_NUM_BATTERIES) {
