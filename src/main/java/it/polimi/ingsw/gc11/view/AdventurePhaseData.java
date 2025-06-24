@@ -33,7 +33,8 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     public enum AdventureStateGUI{
-        FLIGHT_MENU, CARD_DECLINED, CARD_ACCEPTED, HANDLE_CARD_MENU
+        FLIGHT_MENU, CARD_DECLINED, CARD_ACCEPTED, HANDLE_CARD_MENU,
+        ABANDONED_SHIP_1, ABANDONED_SHIP_2,
     }
     private AdventureStateGUI GUIState;
     private AdventureStateGUI previousGUIState;
@@ -156,6 +157,9 @@ public class AdventurePhaseData extends GamePhaseData {
         }
         else if (GUIState == AdventureStateGUI.CARD_ACCEPTED) {
             GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
+        }
+        else if (GUIState == AdventureStateGUI.ABANDONED_SHIP_1) {
+            GUIState = AdventureStateGUI.ABANDONED_SHIP_2;
         }
     }
 

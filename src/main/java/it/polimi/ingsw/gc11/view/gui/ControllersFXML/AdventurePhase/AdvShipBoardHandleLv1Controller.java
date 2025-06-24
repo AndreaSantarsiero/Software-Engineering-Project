@@ -163,6 +163,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, AbandonedShip card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_1);
 
         actionText.setText("Select members to kill.");
         subHeaderContainer.getChildren().add(
