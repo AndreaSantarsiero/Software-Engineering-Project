@@ -35,8 +35,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private enum State{
         ABANDONED_SHIP,
         ABANDONED_STATION,
-        COMBAT_ZONE_LV1,
-        COMBAT_ZONE_LV2,
+        COMBAT_ZONE_LV1_STAGE_2, COMBAT_ZONE_LV1_STAGE_3,
+        COMBAT_ZONE_LV2_STAGE_2, COMBAT_ZONE_LV2_STAGE_3,
         EPIDEMIC,
         METEOR_SWARM,
         OPEN_SPACE,
@@ -204,13 +204,32 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         update(adventurePhaseData);
     }
 
-    public void initialize(Stage stage, CombatZoneLv1 card) {
+    public void initialize(Stage stage, CombatZoneLv1 card, int stageNum) {
         setup(stage);
+
+        if(stageNum == 2){
+            actionText.setText("Select members to kill.");
+            subHeaderContainer.getChildren().add(
+                    new Button("Confirm") {
+                        {
+                            setOnAction(event -> {
+                                try {
+                                    virtualServer.killMembers(adventurePhaseData.getHousingUsage());
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                        }
+                    }
+            );
+
+            state = State.COMBAT_ZONE_LV1_STAGE_2;
+        }
 
         update(adventurePhaseData);
     }
 
-    public void initialize(Stage stage, CombatZoneLv2 card) {
+    public void initialize(Stage stage, CombatZoneLv2 card, int stageNum) {
         setup(stage);
 
         update(adventurePhaseData);
@@ -620,7 +639,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     }
 
     private void onShipBoardSelected(int x, int y) {
-        if( state == State.ABANDONED_SHIP) {
+        if( state == State.ABANDONED_SHIP || state == State.COMBAT_ZONE_LV1_STAGE_2) {
             try {
                 HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
 
