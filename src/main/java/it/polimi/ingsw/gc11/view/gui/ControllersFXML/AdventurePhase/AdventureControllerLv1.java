@@ -51,6 +51,7 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private Button acceptButton;
     @FXML private Button declineButton;
     @FXML private Button handleButton;
+    @FXML private Button seeEffectsButton;
     @FXML private Button drawButton;
     @FXML private Label errorLabel;
 
@@ -124,6 +125,9 @@ public class AdventureControllerLv1 extends Controller {
 
         handleButton.setVisible(false);
         handleButton.setDisable(true);
+
+        seeEffectsButton.setVisible(false);
+        seeEffectsButton.setDisable(true);
 
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU);
         update(adventurePhaseData);
@@ -397,6 +401,12 @@ public class AdventureControllerLv1 extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
     }
 
+    private void setupSeeEffects() {
+        seeEffectsButton.setVisible(true);
+        seeEffectsButton.setDisable(false);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
+    }
+
 
     // Handle AdventureCard
     private void handle(AbandonedShip card) {
@@ -435,10 +445,9 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void handle(AbandonedStation card) {
-        setupAcceptDecline();
-        //The state of the adventure card has changed because of accept/decline action
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
-            //Accept successful
+            // Accept successful
+            System.out.println("successfully accepted the card");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -453,20 +462,19 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         }
-        else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU) {
-            String serverMessage = adventurePhaseData.getServerMessage();
-            if (serverMessage != null && !serverMessage.isEmpty()) {
-                //Exception occurred
-            }
-            else {
-                //Decline successful
-                acceptButton.setDisable(true);
-                acceptButton.setVisible(false);
-                declineButton.setDisable(true);
-                declineButton.setVisible(false);
-                drawButton.setDisable(true);
-                drawButton.setVisible(false);
-            }
+        else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU &&
+                (adventurePhaseData.getServerMessage() == null || adventurePhaseData.getServerMessage().isEmpty()) &&
+                adventurePhaseData.getPreviousGUIState() == AdventurePhaseData.AdventureStateGUI.CARD_DECLINED ) {
+            // Decline successful
+            acceptButton.setDisable(true);
+            acceptButton.setVisible(false);
+            declineButton.setDisable(true);
+            declineButton.setVisible(false);
+            drawButton.setDisable(true);
+            drawButton.setVisible(false);
+        }
+        else {
+            setupAcceptDecline();
         }
     }
 
@@ -509,7 +517,22 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void handle(Epidemic card) {
-
+        setupSeeEffects();
+        seeEffectsButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
     private void handle(MeteorSwarm card) {
@@ -621,7 +644,22 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void handle(StarDust card) {
-
+        setupSeeEffects();
+        seeEffectsButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, card);
+                stage.setScene(newScene);
+                stage.show();
+                adventurePhaseData.resetAdvCardNew();
+            }
+            catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        });
     }
 
 
