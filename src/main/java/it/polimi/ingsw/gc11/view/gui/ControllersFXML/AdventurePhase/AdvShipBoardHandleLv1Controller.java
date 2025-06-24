@@ -760,6 +760,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
+    private void goBackToFlightMenu() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            AdventureControllerLv1 controller = fxmlLoader.getController();
+            adventurePhaseData.setListener(controller);
+            controller.initialize(stage);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("FXML Error: " + e.getMessage());
+        }
+    }
+
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
@@ -770,20 +784,24 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             System.out.println("Player: " + adventurePhaseData.getPlayer().getUsername());
             System.out.println("current Player: " + adventurePhaseData.getCurrentPlayer());
 
-            if(!adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    AdventureControllerLv1 controller = fxmlLoader.getController();
-                    adventurePhaseData.setListener(controller);
-                    controller.initialize(stage);
-                    stage.setScene(newScene);
-                    stage.show();
-                }
-                catch (Exception e) {
-                    System.out.println("FXML Error: " + e.getMessage());
-                }
+            if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_2) {
+                goBackToFlightMenu();
             }
+
+//            if(!adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
+//                try {
+//                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
+//                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+//                    AdventureControllerLv1 controller = fxmlLoader.getController();
+//                    adventurePhaseData.setListener(controller);
+//                    controller.initialize(stage);
+//                    stage.setScene(newScene);
+//                    stage.show();
+//                }
+//                catch (Exception e) {
+//                    System.out.println("FXML Error: " + e.getMessage());
+//                }
+//            }
 
         });
     }
