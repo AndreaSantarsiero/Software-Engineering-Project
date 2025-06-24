@@ -163,7 +163,6 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setGUIState(AdventureStateGUI state) {
         actualizePreviousGUIState();
         this.GUIState = state;
-        notifyListener();
     }
 
     public void actualizePreviousGUIState() {
@@ -187,6 +186,14 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
 
+        //GUI state management
+        if(GUIState == AdventureStateGUI.FLIGHT_MENU || GUIState == AdventureStateGUI.CARD_DECLINED || GUIState == AdventureStateGUI.CARD_ACCEPTED) {
+            setGUIState(AdventureStateGUI.FLIGHT_MENU);
+        }
+        else {
+            setGUIState(AdventureStateGUI.HANDLE_CARD_MENU);
+        }
+
         //Cli state management
         if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP ||
                 state == AdventureState.FIRE_POWER_SETUP || state == AdventureState.ENGINE_POWER_SETUP ||
@@ -200,14 +207,6 @@ public class AdventurePhaseData extends GamePhaseData {
         }
         else {
             setState(AdventureState.CHOOSE_ACTION_MENU);
-        }
-
-        //GUI state management
-        if(GUIState == AdventureStateGUI.FLIGHT_MENU || GUIState == AdventureStateGUI.CARD_DECLINED || GUIState == AdventureStateGUI.CARD_ACCEPTED) {
-            setGUIState(AdventureStateGUI.FLIGHT_MENU);
-        }
-        else {
-            setGUIState(AdventureStateGUI.HANDLE_CARD_MENU);
         }
     }
 
