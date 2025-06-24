@@ -160,7 +160,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, AbandonedShip card) {
         setup(stage);
 
-        actionText.setText("Select members to kll.");
+        actionText.setText("Select members to kill.");
         subHeaderContainer.getChildren().add(
                 new Button("Confirm") {
                     {

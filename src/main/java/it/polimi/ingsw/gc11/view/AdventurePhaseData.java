@@ -178,11 +178,19 @@ public class AdventurePhaseData extends GamePhaseData {
     @Override
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
+        //Cli state management
         if(state == AdventureState.CHOOSE_MAIN_MENU || state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP) {
             setState(AdventureState.CHOOSE_MAIN_MENU);
         }
         else {
             setState(AdventureState.CHOOSE_ACTION_MENU);
+        }
+        //GUI state management
+        if(GUIState == AdventureStateGUI.FLIGHT_MENU || GUIState == AdventureStateGUI.CARD_DECLINED || GUIState == AdventureStateGUI.CARD_ACCEPTED) {
+            setGUIState(AdventureStateGUI.FLIGHT_MENU);
+        }
+        else {
+            setGUIState(AdventureStateGUI.HANDLE_CARD_MENU);
         }
     }
 
