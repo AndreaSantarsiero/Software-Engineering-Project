@@ -1,0 +1,58 @@
+package it.polimi.ingsw.gc11.controller.State;
+
+import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
+import it.polimi.ingsw.gc11.model.shipcard.AlienUnit;
+import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SelectAlienUnitState extends AdventureState{
+    private List<Player> playerFinished;
+
+    public SelectAlienUnitState(AdventurePhase advContext) {
+        super(advContext);
+        this.playerFinished = new ArrayList<>();
+    }
+
+
+    @Override
+    public void completedAlienSelection(String username){
+        if(username == null){
+            throw new IllegalArgumentException();
+        }
+
+        Player player = advContext.getGameModel().getPlayer(username);
+
+        if(!playerFinished.contains(player)){
+            playerFinished.add(player);
+        }
+        else{
+            throw new IllegalArgumentException("You have already finished the alien's selection");
+        }
+
+        if(playerFinished.size() == advContext.getGameModel().getPlayersNotAbort().size()){
+            advContext.setAdvState(new IdleState(advContext));
+        }
+    }
+
+
+    @Override
+    public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null");
+        }
+
+        Player player = advContext.getGameModel().getPlayer(username);
+        ShipBoard shipBoard = player.getShipBoard();
+
+        if (playerFinished.contains(player)) {
+            throw new IllegalArgumentException("Player's Aliens selection is already finished");
+        }
+        shipBoard.connectAlienUnit(alienUnit, housingUnit);
+    }
+
+}
+
+

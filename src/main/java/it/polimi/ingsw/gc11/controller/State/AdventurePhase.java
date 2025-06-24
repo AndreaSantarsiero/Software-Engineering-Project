@@ -7,10 +7,8 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-import it.polimi.ingsw.gc11.model.shipcard.Storage;
+import it.polimi.ingsw.gc11.model.shipcard.*;
+
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +36,7 @@ public class AdventurePhase extends GamePhase {
         this.gameContext = gameContext;
         this.gameModel = gameContext.getGameModel();
         gameModel.createDefinitiveDeck();
-        this.advState = new IdleState(this);
+        this.advState = new SelectAlienUnitState(this);
         this.drawnAdvCard = null;
         this.idxCurrentPlayer = 0;
         this.resolvingAdvCard = false;
@@ -330,6 +328,15 @@ public class AdventurePhase extends GamePhase {
         return "AdventurePhase";
     }
 
+    @Override
+    public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
+        advState.selectAliens(username, alienUnit, housingUnit);
+    }
+
+    @Override
+    public void completedAlienSelection(String username){
+        advState.completedAlienSelection(username);
+    }
 
     //visitor pattern
     @Override
