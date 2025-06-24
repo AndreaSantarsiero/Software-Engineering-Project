@@ -50,6 +50,7 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private Button drawButton;
     @FXML private Label errorLabel;
 
+
     public static final URL handleFXML = MainGUI.class.
             getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml");
 
