@@ -26,7 +26,7 @@ public class RewardDecisionAction extends ClientGameAction {
             String currentPlayer = context.getCurrentPlayer().getUsername();
 
             for(Player p : context.getGameModel().getPlayersNotAbort()) {
-                if(player.getUsername().equals(username)) {
+                if(p.getUsername().equals(username)) {
                     UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayer);
                     context.sendAction(username, response);
                 }
