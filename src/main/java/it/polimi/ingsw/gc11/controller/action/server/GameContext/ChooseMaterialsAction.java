@@ -28,20 +28,21 @@ public class ChooseMaterialsAction extends ClientGameAction {
     public void execute(GameContext context) {
         try {
             Player player = context.chooseMaterials(username, storageMaterials);
-            String currentPlayer = context.getCurrentPlayer().getUsername();
 
+            String newCurrentPlayer = context.getCurrentPlayer().getUsername();
             for(Player p : context.getGameModel().getPlayersNotAbort()) {
                 if(player.getUsername().equals(username)) {
-                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayer);
+                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, newCurrentPlayer);
                     context.sendAction(username, response);
                 }
                 else {
-                    UpdateEnemyProfileAction response = new UpdateEnemyProfileAction(player, currentPlayer);
+                    UpdateEnemyProfileAction response = new UpdateEnemyProfileAction(player, newCurrentPlayer);
                     context.sendAction(p.getUsername(), response);
                 }
             }
 
-        } catch (Exception e){
+        }
+        catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
         }
