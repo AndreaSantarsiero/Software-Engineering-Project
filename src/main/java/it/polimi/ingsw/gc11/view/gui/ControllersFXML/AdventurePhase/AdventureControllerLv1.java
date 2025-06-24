@@ -27,6 +27,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,9 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private Button handleButton;
     @FXML private Button drawButton;
     @FXML private Label errorLabel;
+
+    public static final URL handleFXML = MainGUI.class.
+            getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml");
 
     // Flight board dimensions
     private static final double BOARD_BASE_WIDTH = 985.0;
@@ -362,14 +366,6 @@ public class AdventureControllerLv1 extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
     }
 
-    private FXMLLoader getHandleFXMLLoader() {
-        return new FXMLLoader(MainGUI.class.
-                getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
-    }
-    private Scene getHandleNewScene() throws IOException {
-        FXMLLoader fxmlLoader = getHandleFXMLLoader();
-        return new Scene(fxmlLoader.load(), 1280, 720);
-    }
 
     // Handle AdventureCard
     private void handle(AbandonedShip card) {
@@ -378,10 +374,12 @@ public class AdventureControllerLv1 extends Controller {
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             //Accept successful
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             }
@@ -412,10 +410,12 @@ public class AdventureControllerLv1 extends Controller {
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             //Accept successful
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             }
@@ -444,10 +444,12 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             }
@@ -461,13 +463,16 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
@@ -481,10 +486,12 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             } catch (Exception e) {
@@ -497,10 +504,12 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             } catch (Exception e) {
@@ -513,10 +522,12 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             } catch (Exception e) {
@@ -529,10 +540,12 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             } catch (Exception e) {
@@ -545,10 +558,12 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             } catch (Exception e) {
@@ -561,10 +576,12 @@ public class AdventureControllerLv1 extends Controller {
         setupHandle();
         handleButton.setOnMouseClicked(mouseEvent -> {
             try {
-                AdvShipBoardHandleLv1Controller controller = getHandleFXMLLoader().getController();
+                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
-                stage.setScene(getHandleNewScene());
+                stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
             } catch (Exception e) {
