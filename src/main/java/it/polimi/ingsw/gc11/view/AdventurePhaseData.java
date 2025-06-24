@@ -182,6 +182,10 @@ public class AdventurePhaseData extends GamePhaseData {
         return GUIState;
     }
 
+    public AdventureStateGUI getPreviousGUIState() {
+        return GUIState;
+    }
+
 
     @Override
     public void setServerMessage(String serverMessage) {
@@ -296,7 +300,6 @@ public class AdventurePhaseData extends GamePhaseData {
         this.currentPlayer = currentPlayer;
         if(updateState) {
             updateState();
-            updateGUIState();
         }
         else {
             notifyListener();

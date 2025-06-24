@@ -42,6 +42,9 @@
                      </children>
                   </VBox>
                </children>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
             </HBox>
                   <Button fx:id="abortButton" mnemonicParsing="false" onAction="#onAbortButtonClick" text="Abort">
                <HBox.margin>

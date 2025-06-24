@@ -125,6 +125,7 @@ public class AdventureControllerLv1 extends Controller {
         handleButton.setVisible(false);
         handleButton.setDisable(true);
 
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU);
         update(adventurePhaseData);
 
     }
@@ -295,6 +296,8 @@ public class AdventureControllerLv1 extends Controller {
             adventureCardImage.setImage(image);
             adventureCardImage.setVisible(true);
 
+            System.out.println("Current player: " + adventurePhaseData.getCurrentPlayer());
+
             //Handle the visibility of advCard buttons
             if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())) {
                 handler(card);
@@ -339,7 +342,7 @@ public class AdventureControllerLv1 extends Controller {
     public  void update(AdventurePhaseData adventurePhaseData)  {
         Platform.runLater(() -> {
 
-            System.out.println(adventurePhaseData.getGUIState());
+            System.out.println("GUIState: " + adventurePhaseData.getGUIState());
 
             setupPositions();
             showDrawButton();
@@ -370,7 +373,6 @@ public class AdventureControllerLv1 extends Controller {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.CARD_ACCEPTED);
             try {
                 virtualServer.acceptAdventureCard();
-                adventurePhaseData.resetAdvCardNew();
             }
             catch (NetworkException e) {
                 System.out.println("Network Error: " + e.getMessage());
@@ -382,7 +384,6 @@ public class AdventureControllerLv1 extends Controller {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.CARD_DECLINED);
             try {
                 virtualServer.declineAdventureCard();
-                adventurePhaseData.resetAdvCardNew();
             }
             catch (NetworkException e) {
                 System.out.println("Network Error: " + e.getMessage());
@@ -399,10 +400,10 @@ public class AdventureControllerLv1 extends Controller {
 
     // Handle AdventureCard
     private void handle(AbandonedShip card) {
-        setupAcceptDecline();
-        //The state of the adventure card has changed because of accept/decline action
+        System.out.println("AbandonedShip");
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
-            //Accept successful
+            // Accept successful
+            System.out.println("successfully accepted the card");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -417,20 +418,19 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         }
-        else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU) {
-            String serverMessage = adventurePhaseData.getServerMessage();
-            if (serverMessage != null && !serverMessage.isEmpty()) {
-                //Exception occurred
-            }
-            else {
-                //Decline successful
-                acceptButton.setDisable(true);
-                acceptButton.setVisible(false);
-                declineButton.setDisable(true);
-                declineButton.setVisible(false);
-                drawButton.setDisable(true);
-                drawButton.setVisible(false);
-            }
+        else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU &&
+                (adventurePhaseData.getServerMessage() == null || adventurePhaseData.getServerMessage().isEmpty()) &&
+                adventurePhaseData.getPreviousGUIState() == AdventurePhaseData.AdventureStateGUI.CARD_DECLINED ) {
+                    // Decline successful
+                    acceptButton.setDisable(true);
+                    acceptButton.setVisible(false);
+                    declineButton.setDisable(true);
+                    declineButton.setVisible(false);
+                    drawButton.setDisable(true);
+                    drawButton.setVisible(false);
+        }
+        else {
+            setupAcceptDecline();
         }
     }
 
