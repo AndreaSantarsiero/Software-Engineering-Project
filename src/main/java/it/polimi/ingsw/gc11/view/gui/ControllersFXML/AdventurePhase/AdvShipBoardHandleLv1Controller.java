@@ -230,6 +230,21 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, OpenSpace card) {
         setup(stage);
 
+        actionText.setText("Select batteries to use for the double engines.");
+        subHeaderContainer.getChildren().add(
+                new Button("Confirm") {
+                    {
+                        setOnAction(event -> {
+                            try {
+                                virtualServer.chooseEnginePower(adventurePhaseData.getBatteries());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        });
+                    }
+                }
+        );
+
         update(adventurePhaseData);
     }
 
@@ -442,14 +457,36 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         return result.map(Integer::valueOf).orElse(null);
     }
 
+    public int askForBatteries(Window owner, int max) {
 
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.initOwner(owner);
+        dialog.setTitle("Numero membri");
+        dialog.setHeaderText("Inserisci il numero di membri da spostare");
+        dialog.setContentText("0 - " + max + ":");
 
-    private void housingMemberNumber(HousingUnit hu) {
-        int max = hu.getNumMembers();
-        Integer num = askForCrewNumber(root.getScene().getWindow(), max);
-        if (num != null) {
-            adventurePhaseData.addHousingUsage(hu, num);
-        }
+        TextField editor = dialog.getEditor();
+        editor.setTextFormatter(new TextFormatter<Integer>(change -> {
+            return change.getControlNewText().matches("\\d*") ? change : null;
+        }));
+
+        Button ok = (Button) dialog.getDialogPane()
+                .lookupButton(ButtonType.OK);
+        ok.addEventFilter(ActionEvent.ACTION, evt -> {
+            String t = editor.getText();
+            if (t.isEmpty()) {
+                evt.consume();
+                return;
+            }
+            int val = Integer.parseInt(t);
+            if (val < 0 || val > max) {
+                editor.setStyle("-fx-border-color: crimson;");
+                evt.consume();
+            }
+        });
+
+        Optional<String> result = dialog.showAndWait();
+        return result.map(Integer::valueOf).orElse(null);
     }
 
     public List<Material> askForMaterials(Window owner, Storage storage) {
@@ -546,7 +583,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private void onShipBoardSelected(int x, int y) {
         if( state == State.ABANDONED_SHIP) {
             try {
-                housingMemberNumber((HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+                HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = housingUnit.getNumMembers();
+                Integer num = askForCrewNumber(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addHousingUsage(housingUnit, num);
+                }
+
                 selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -569,6 +613,22 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
                     adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(oldM, newM));
                 }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if(state == State.OPEN_SPACE){
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                }
+
+                selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
