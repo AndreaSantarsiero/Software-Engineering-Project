@@ -79,7 +79,8 @@ public class LooseState extends AdventureState {
         }
 
         if(sum <= slavers.getLostMembers()){
-            throw new IllegalStateException("You are out of the game");
+            player.setAbort();
+            throw new IllegalStateException("You are out of the game, you have lost all members");
             //Il giocatore va eliminato dalla partita
         }
 
