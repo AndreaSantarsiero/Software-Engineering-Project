@@ -37,13 +37,6 @@ public class OpenSpaceState extends AdventureState {
             throw new IllegalArgumentException("batteries is null");
         }
 
-        //Sets that the player is currently playing this card
-        if(this.advContext.isResolvingAdvCard()){
-            throw new IllegalStateException("You have already accepted this adventure card!");
-        }
-        this.advContext.setResolvingAdvCard(true);
-
-
         for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){
             usedBatteries += entry.getValue();
         }
@@ -52,7 +45,6 @@ public class OpenSpaceState extends AdventureState {
         player.getShipBoard().useBatteries(Batteries);
 
         this.gameModel.move(username, enginePower);
-        this.advContext.setResolvingAdvCard(false);
         this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer()+1);
 
         if(this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()){

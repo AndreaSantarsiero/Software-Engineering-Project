@@ -94,12 +94,6 @@ public class SmugglersState extends AdventureState {
             throw new NullPointerException("Batteries and DoubleCannons cannot be null");
         }
 
-        //Imposto che il giorcatore sta effettivamente giocando la carta
-        if(this.advContext.isResolvingAdvCard()){
-            throw new IllegalStateException("You are already accepted this adventure card!");
-        }
-        this.advContext.setResolvingAdvCard(true);
-
 
         for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){
             sum += entry.getValue();

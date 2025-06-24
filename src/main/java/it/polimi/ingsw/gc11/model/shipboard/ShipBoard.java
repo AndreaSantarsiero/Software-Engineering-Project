@@ -1068,7 +1068,7 @@ public abstract class ShipBoard  implements Serializable {
                 throw new IllegalArgumentException("Number of members to remove cannot be null");
             }
             if (!housingUnits.contains(housingUnit)) {
-                throw new IllegalArgumentException("This housing unit is not present on the ship");
+                throw new IllegalArgumentException("This housing unit is not present on the ship. Housing units number: " + housingUnits.size());
             }
             if (housingUnit.isScrap()) {
                 throw new IllegalArgumentException("Scrap housing units cannot be used");
@@ -1079,7 +1079,6 @@ public abstract class ShipBoard  implements Serializable {
         }
 
         for (Map.Entry<HousingUnit, Integer> entry : housingUsage.entrySet()) {
-            System.out.println("Killing " + entry.getValue() + " members on housing unit: " + entry.getKey().getId());
             HousingUnit housingUnit = entry.getKey();
             HousingUnit matchingHousingUnit = housingUnits.stream().filter(h -> h.equals(housingUnit)).findFirst().orElse(null);
             if(matchingHousingUnit == null){
@@ -1233,7 +1232,7 @@ public abstract class ShipBoard  implements Serializable {
                 throw new IllegalArgumentException("Number of batteries to use cannot be null");
             }
             if (!batteries.contains(battery)) {
-                throw new IllegalArgumentException("This battery module is not present on the ship");
+                throw new IllegalArgumentException("This battery module is not present on the ship. Battery modules number: " + batteries.size());
             }
             if (battery.isScrap()) {
                 throw new IllegalArgumentException("Scrap batteries cannot be used");
@@ -1491,7 +1490,7 @@ public abstract class ShipBoard  implements Serializable {
 
         for (Cannon cannon : doubleCannons) {
             if (!cannons.contains(cannon)){
-                throw new IllegalArgumentException("This cannon is not present on the ship");
+                throw new IllegalArgumentException("This cannon is not present on the ship. Cannons number: " + cannons.size());
             }
             if (cannon.isScrap()) {
                 throw new IllegalArgumentException("Cannot activate a cannon that was previously destroyed");

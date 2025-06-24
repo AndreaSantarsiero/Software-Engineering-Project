@@ -335,7 +335,7 @@ public class AdventureControllerLv1 extends Controller {
 
 
     @Override
-    public  void update(AdventurePhaseData adventurePhaseData) {
+    public  void update(AdventurePhaseData adventurePhaseData)  {
         Platform.runLater(() -> {
 
             System.out.println(adventurePhaseData.getGUIState());

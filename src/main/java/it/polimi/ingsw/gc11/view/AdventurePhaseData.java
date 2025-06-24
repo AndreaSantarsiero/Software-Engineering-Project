@@ -90,10 +90,16 @@ public class AdventurePhaseData extends GamePhaseData {
     //CLI state management
     @Override
     public void  updateState() {
-        updateGUIState();
         actualizePreviousState();
 
-        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP || state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD) {
+        if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP ||
+                state == AdventureState.FIRE_POWER_SETUP || state == AdventureState.ENGINE_POWER_SETUP ||
+                state == AdventureState.CREW_MEMBERS_SETUP || state == AdventureState.BATTERIES_SETUP ||
+                state == AdventureState.LOAD_MATERIALS_MENU || state == AdventureState.SHOT_DEFENSE_SETUP ||
+                state == AdventureState.DEFENSIVE_CANNON_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP ||
+                state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
+                state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD)
+        {
             state = AdventureState.CHOOSE_MAIN_MENU;
         }
         else if(state == AdventureState.CHOOSE_DOUBLE_CANNON || state == AdventureState.SELECT_FIRE_NUM_BATTERIES) {
@@ -120,6 +126,8 @@ public class AdventurePhaseData extends GamePhaseData {
         else if (state.ordinal() < AdventureState.values().length - 1) {
             state = AdventureState.values()[state.ordinal() + 1];
         }
+
+        updateGUIState();
 
         notifyListener();
     }
@@ -154,7 +162,7 @@ public class AdventurePhaseData extends GamePhaseData {
             GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
         }
 
-        notifyListener();
+        //notifyListener();
     }
 
     public void setGUIState(AdventureStateGUI state) {
@@ -179,6 +187,7 @@ public class AdventurePhaseData extends GamePhaseData {
     @Override
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;
+
         //Cli state management
         if(state == AdventureState.CHOOSE_MAIN_MENU || state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP) {
             setState(AdventureState.CHOOSE_MAIN_MENU);
@@ -186,6 +195,7 @@ public class AdventurePhaseData extends GamePhaseData {
         else {
             setState(AdventureState.CHOOSE_ACTION_MENU);
         }
+
         //GUI state management
         if(GUIState == AdventureStateGUI.FLIGHT_MENU || GUIState == AdventureStateGUI.CARD_DECLINED || GUIState == AdventureStateGUI.CARD_ACCEPTED) {
             setGUIState(AdventureStateGUI.FLIGHT_MENU);
