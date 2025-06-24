@@ -243,13 +243,12 @@ public abstract class ShipCard implements Serializable {
                 this.rightConnector.equals(shipCard.getRightConnector()) &&
                 this.bottomConnector.equals(shipCard.getBottomConnector()) &&
                 this.leftConnector.equals(shipCard.getLeftConnector()) &&
-                this.scrap == shipCard.isScrap() &&
-                this.covered == shipCard.isCovered();
+                this.scrap == shipCard.isScrap();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orientation, topConnector, rightConnector, bottomConnector, leftConnector, scrap, covered);
+        return Objects.hash(id, orientation, topConnector, rightConnector, bottomConnector, leftConnector, scrap);
     }
 
 

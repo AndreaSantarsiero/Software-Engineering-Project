@@ -162,7 +162,43 @@ public class ShipBoard6Test {
         assertEquals(10, shipBoard.getMembers(), "Members number not calculated correctly after destroying a housing unit");
 
         Map<HousingUnit, Integer> housingUsage = new HashMap<>();
-        housingUsage.put((HousingUnit) shipBoard.getShipCard(7, 7), 1);
+        HousingUnit originalHousingUnit = (HousingUnit) shipBoard.getShipCard(7, 7);
+        HousingUnit copiedHousing = new HousingUnit("YellowCentralUnit", ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, ShipCard.Connector.UNIVERSAL, true);
+        copiedHousing.discover();
+
+
+        System.out.println("==== DEBUG HousingUnit EQUALS ====");
+        System.out.println("Comparing copiedHousing [" + copiedHousing.getId() + "] with originalHousingUnit [" + originalHousingUnit.getId() + "]");
+
+        System.out.println("ID: " + copiedHousing.getId() + " vs " + originalHousingUnit.getId());
+        System.out.println("Orientation: " + copiedHousing.getOrientation() + " vs " + originalHousingUnit.getOrientation());
+
+        System.out.println("Top Connector: " + copiedHousing.getTopConnector() + " vs " + originalHousingUnit.getTopConnector());
+        System.out.println("Right Connector: " + copiedHousing.getRightConnector() + " vs " + originalHousingUnit.getRightConnector());
+        System.out.println("Bottom Connector: " + copiedHousing.getBottomConnector() + " vs " + originalHousingUnit.getBottomConnector());
+        System.out.println("Left Connector: " + copiedHousing.getLeftConnector() + " vs " + originalHousingUnit.getLeftConnector());
+
+        System.out.println("Scrap: " + copiedHousing.isScrap() + " vs " + originalHousingUnit.isScrap());
+        System.out.println("Covered: " + copiedHousing.isCovered() + " vs " + originalHousingUnit.isCovered());
+
+        System.out.println("Central: " + copiedHousing.isCentral() + " vs " + originalHousingUnit.isCentral());
+        System.out.println("NumMembers: " + copiedHousing.getNumMembers() + " vs " + originalHousingUnit.getNumMembers());
+
+        if (copiedHousing.getAlienUnit() == null && originalHousingUnit.getAlienUnit() == null) {
+            System.out.println("AlienUnit: both null");
+        } else if (copiedHousing.getAlienUnit() == null || originalHousingUnit.getAlienUnit() == null) {
+            System.out.println("AlienUnit: one is null, the other is not");
+        } else {
+            System.out.println("AlienUnit equals: " + copiedHousing.getAlienUnit().equals(originalHousingUnit.getAlienUnit()));
+        }
+        System.out.println("Equals result: " + copiedHousing.equals(originalHousingUnit));
+        System.out.println("HashCodes: " + copiedHousing.hashCode() + " vs " + originalHousingUnit.hashCode());
+        System.out.println("=================================");
+
+
+
+        assertEquals(copiedHousing, originalHousingUnit, "The copy of " + originalHousingUnit.getId() + " should be considered equal to the original");
+        housingUsage.put(copiedHousing, 1);
         housingUsage.put((HousingUnit) shipBoard.getShipCard(5, 7), 2);
         shipBoard.killMembers(housingUsage);
         assertEquals(7, shipBoard.getMembers(), "Members number not calculated correctly after killing some members");
