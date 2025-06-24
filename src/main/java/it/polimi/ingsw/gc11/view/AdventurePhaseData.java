@@ -153,8 +153,6 @@ public class AdventurePhaseData extends GamePhaseData {
 
     // GUI state management
     public void  updateGUIState() {
-        actualizePreviousGUIState();
-
         if (GUIState == AdventureStateGUI.CARD_DECLINED){
             GUIState = AdventureStateGUI.FLIGHT_MENU;
         }
