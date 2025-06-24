@@ -187,6 +187,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, AbandonedStation card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_STATION_1);
+
 
         actionText.setText("Select slot to place or replace materials.");
         subHeaderContainer.getChildren().add(
@@ -210,6 +212,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, CombatZoneLv1 card, int stageNum) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_1);
+
 
         if(stageNum == 2){
             actionText.setText("Select members to kill.");
@@ -253,6 +257,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, OpenSpace card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.OPEN_SPACE_1);
+
 
         actionText.setText("Select batteries to use for the double engines.");
         subHeaderContainer.getChildren().add(
@@ -282,6 +288,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, PlanetsCard card, int idx) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PLANETS_CARD_1);
+
 
         actionText.setText("Select slot to place or replace materials.");
         subHeaderContainer.getChildren().add(
@@ -312,6 +320,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, Smugglers card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SMUGGLERS_1);
+
 
         actionText.setText("Select double cannons to use.");
         subHeaderContainer.getChildren().add(
@@ -673,7 +683,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                         newM = new ArrayList<>(cardMaterials);
                     }
 
-                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(oldM, newM));
+                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -710,7 +720,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                         newM = new ArrayList<>(cardMaterials);
                     }
 
-                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(oldM, newM));
+                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -781,8 +791,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             slotGrid.getChildren().clear();
             setShipBoard();
 
-            System.out.println("Player: " + adventurePhaseData.getPlayer().getUsername());
-            System.out.println("current Player: " + adventurePhaseData.getCurrentPlayer());
+            System.out.println("State: " + adventurePhaseData.getGUIState());
 
             if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_2 ||
                 adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_STATION_2 ||
