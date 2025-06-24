@@ -7,13 +7,16 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
@@ -762,6 +765,24 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
             slotGrid.getChildren().clear();
             setShipBoard();
+
+            System.out.println("Player: " + adventurePhaseData.getPlayer().getUsername());
+            System.out.println("current Player: " + adventurePhaseData.getCurrentPlayer());
+
+            if(!adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    AdventureControllerLv1 controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                    adventurePhaseData.resetAdvCardNew();
+                } catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }
 
         });
     }
