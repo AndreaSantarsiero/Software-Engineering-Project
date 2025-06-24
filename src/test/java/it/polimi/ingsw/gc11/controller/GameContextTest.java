@@ -22,6 +22,7 @@ import it.polimi.ingsw.gc11.controller.State.PiratesStates.PiratesState;
 import it.polimi.ingsw.gc11.controller.State.PiratesStates.WinAgainstPirates;
 import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.LandedPlanet;
 import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.PlanetsState;
+import it.polimi.ingsw.gc11.controller.State.SlaversStates.LooseState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.LooseBatteriesSmugglers;
@@ -2046,4 +2047,111 @@ public class GameContextTest {
         /* Ora lo stato è LandedPlanet */
         return (LandedPlanet) phase.getCurrentAdvState();
     }
+
+
+    // ====== LooseState tests for GameContextTest.java ======
+
+    @Test
+    void testKillMembersLoose_wrongState_throws() {
+        // Prepara AdventurePhase diverso
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        // Imposta IdleState invece di LooseState
+        phase.setAdvState(new IdleState(phase));
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.killMembers("username1", new HashMap<>()));
+    }
+
+    @Test
+    void testKillMembersLoose_invalidUsername_throws() {
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        // Passa a LooseState
+        phase.setDrawnAdvCard(new Slavers("test", Slavers.Type.LEVEL2, 2, 0, 0, 0));
+        phase.setIdxCurrentPlayer(0);
+        phase.setAdvState(new LooseState(phase, player));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers(null, new HashMap<>()));
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers("invalidUser", new HashMap<>()));
+    }
+
+    @Test
+    void testKillMembersLoose_notYourTurn_throws() {
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        phase.setDrawnAdvCard(new Slavers("test", Slavers.Type.LEVEL2, 2, 0, 0, 0));
+        phase.setIdxCurrentPlayer(0);
+        phase.setAdvState(new LooseState(phase, player));
+        // cambia turno
+        phase.setIdxCurrentPlayer(1);
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.killMembers("username1", new HashMap<>()));
+    }
+
+    @Test
+    void testKillMembersLoose_notEnoughSacrifice_throws() {
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        phase.setDrawnAdvCard(new Slavers("test", Slavers.Type.LEVEL2, 2, 0, 0, 0));
+        phase.setIdxCurrentPlayer(0);
+        phase.setAdvState(new LooseState(phase, player));
+        // posiziona solo un HousingUnit
+        ShipBoard board = player.getShipBoard();
+        HousingUnit h = new HousingUnit("h1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true);
+        board.placeShipCard(h, ShipCard.Orientation.DEG_0, 6, 6);
+        Map<HousingUnit,Integer> usage = new HashMap<>();
+        usage.put(h, 1);
+        // sacrificio insufficiente: si avanza comunque a SlaversState
+        Player result = assertDoesNotThrow(() -> gameContext.killMembers("username1", usage));
+        assertEquals("username1", result.getUsername());
+        assertInstanceOf(SlaversState.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
+        assertEquals(1, ((AdventurePhase) gameContext.getPhase()).getIdxCurrentPlayer());
+    }
+
+    @Test
+    void testKillMembersLoose_valid_advancesToSlaversState() {
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        phase.setDrawnAdvCard(new Slavers("test", Slavers.Type.LEVEL2, 2, 0, 0, 0));
+        phase.setIdxCurrentPlayer(0);
+        phase.setAdvState(new LooseState(phase, player));
+        // posiziona due HousingUnit
+        ShipBoard board = player.getShipBoard();
+        HousingUnit h1 = new HousingUnit("h1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true);
+        HousingUnit h2 = new HousingUnit("h2", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true);
+        board.placeShipCard(h1, ShipCard.Orientation.DEG_0, 7, 6);
+        board.placeShipCard(h2, ShipCard.Orientation.DEG_0, 7, 8);
+        Map<HousingUnit,Integer> usage = new HashMap<>();
+        usage.put(h1, 2);
+        usage.put(h2, 2);
+        Player result = gameContext.killMembers("username1", usage);
+        assertEquals("username1", result.getUsername());
+        assertInstanceOf(SlaversState.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
+        assertEquals(1, ((AdventurePhase) gameContext.getPhase()).getIdxCurrentPlayer());
+    }
+
+    @Test
+    void testKillMembersLoose_lastPlayer_transitionsToIdleState() {
+        GameContextTest.this.goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        phase.setDrawnAdvCard(new Slavers("test", Slavers.Type.LEVEL2, 2, 0, 0, 0));
+        // setta ultimo giocatore nel turno
+        phase.setIdxCurrentPlayer(gameContext.getGameModel().getPlayersNotAbort().size() - 1);
+        phase.setAdvState(new LooseState(phase, player));
+        ShipBoard board = player.getShipBoard();
+        HousingUnit h = new HousingUnit("h1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, true);
+        board.placeShipCard(h, ShipCard.Orientation.DEG_0, 6, 6);
+        Map<HousingUnit,Integer> usage = new HashMap<>();
+        // usa esattamente il numero di membri presenti nell'unità
+        usage.put(h, 2);
+        Player result = gameContext.killMembers("username1", usage);
+        assertInstanceOf(IdleState.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
+    }
+
 }
