@@ -43,7 +43,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         PIRATES,
         PLANETS,
         SLAVERS,
-        SMUGGLERS,
+        SMUGGLERS_CANNONS, SMUGGLERS_BATTERIES,
         STAR_DUST
     }
 
@@ -246,6 +246,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 }
         );
 
+        state = State.OPEN_SPACE;
+
         update(adventurePhaseData);
     }
 
@@ -287,6 +289,24 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, Smugglers card) {
         setup(stage);
+
+        actionText.setText("Select double cannons to use.");
+        subHeaderContainer.getChildren().add(
+                new Button("Confirm") {
+                    {
+                        setOnAction(event -> {
+                            for(ShipCard s : selected) {
+                                Cannon c = (Cannon) s;
+                                adventurePhaseData.addDoubleCannon(c);
+                            }
+                            selected.clear();
+                            state = State.SMUGGLERS_BATTERIES;
+                        });
+                    }
+                }
+        );
+
+        state = State.SMUGGLERS_CANNONS;
 
         update(adventurePhaseData);
     }
@@ -669,6 +689,48 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
                     adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(oldM, newM));
                 }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if(state == State.SMUGGLERS_CANNONS){
+            Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+            if(selected.contains(cannon)){
+                selected.remove(cannon);
+            }
+            else{
+                selected.add(cannon);
+            }
+        }
+
+        if(state == State.SMUGGLERS_BATTERIES){
+
+            actionText.setText("Select batteries to use for the double cannons.");
+            subHeaderContainer.getChildren().add(
+                    new Button("Confirm") {
+                        {
+                            setOnAction(event -> {
+                                try {
+                                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                        }
+                    }
+            );
+
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                }
+
+                selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
