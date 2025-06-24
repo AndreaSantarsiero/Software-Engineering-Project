@@ -39,6 +39,8 @@ public class AdventurePhaseData extends GamePhaseData {
         PLANETS_CARD_1, PLANETS_CARD_2,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
+        COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_2,
+        COMBAT_ZONE_LV2_1, COMBAT_ZONE_LV2_2,
     }
     private AdventureStateGUI GUIState;
     private AdventureStateGUI previousGUIState;
@@ -176,6 +178,12 @@ public class AdventurePhaseData extends GamePhaseData {
         }
         else if (GUIState == AdventureStateGUI.SMUGGLERS_1) {
             GUIState = AdventureStateGUI.SMUGGLERS_2;
+        }
+        else if (GUIState == AdventureStateGUI.COMBAT_ZONE_LV1_1) {
+            GUIState = AdventureStateGUI.COMBAT_ZONE_LV1_2;
+        }
+        else if (GUIState == AdventureStateGUI.COMBAT_ZONE_LV2_1) {
+            GUIState = AdventureStateGUI.COMBAT_ZONE_LV2_2;
         }
     }
 
