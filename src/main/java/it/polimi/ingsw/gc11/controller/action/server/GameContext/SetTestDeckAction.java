@@ -15,8 +15,6 @@ public class SetTestDeckAction extends ClientGameAction {
     public void execute(GameContext context) {
         try{
             context.setTestDeck(username);
-            NotifySuccessAction response = new NotifySuccessAction();
-            context.sendAction(username, response);
         }
         catch (Exception e){
             NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());

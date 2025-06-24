@@ -90,6 +90,7 @@ public class AdventurePhaseData extends GamePhaseData {
     //CLI state management
     @Override
     public void  updateState() {
+        updateGUIState();
         actualizePreviousState();
 
         if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP || state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP || state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD) {
@@ -279,6 +280,7 @@ public class AdventurePhaseData extends GamePhaseData {
         this.currentPlayer = currentPlayer;
         if(updateState) {
             updateState();
+            updateGUIState();
         }
         else {
             notifyListener();
