@@ -430,7 +430,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         TextInputDialog dialog = new TextInputDialog();
         dialog.initOwner(owner);
         dialog.setTitle("Numero membri");
-        dialog.setHeaderText("Inserisci il numero di membri da spostare");
+        dialog.setHeaderText("Inserisci il numero di membri da eliminare");
         dialog.setContentText("0 - " + max + ":");
 
         TextField editor = dialog.getEditor();
@@ -461,8 +461,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         TextInputDialog dialog = new TextInputDialog();
         dialog.initOwner(owner);
-        dialog.setTitle("Numero membri");
-        dialog.setHeaderText("Inserisci il numero di membri da spostare");
+        dialog.setTitle("Numero batterie");
+        dialog.setHeaderText("Inserisci il numero di batterie da utilizzare");
         dialog.setContentText("0 - " + max + ":");
 
         TextField editor = dialog.getEditor();
