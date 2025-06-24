@@ -59,12 +59,6 @@ public class PiratesState extends AdventureState {
             throw new NullPointerException();
         }
 
-        //Imposto che il giorcatore sta effettivamente giocando la carta
-        if(this.advContext.isResolvingAdvCard() == true){
-            throw new IllegalStateException("You are already accepted this adventure card!");
-        }
-        this.advContext.setResolvingAdvCard(true);
-
 
         int sum = 0;
         for(Map.Entry<Battery, Integer> entry : Batteries.entrySet()){

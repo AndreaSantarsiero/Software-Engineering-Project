@@ -81,12 +81,6 @@ public class SlaversState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
-        //Imposto che il giorcatore sta effettivamente giocando la carta
-        if(this.advContext.isResolvingAdvCard()){
-            throw new IllegalStateException("You are already accepted this adventure card!");
-        }
-        this.advContext.setResolvingAdvCard(true);
-
         if(Batteries == null || doubleCannons == null) {
             this.advContext.setResolvingAdvCard(false);
             throw new IllegalArgumentException("Batteries and doubleCannons cannot be null");

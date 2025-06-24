@@ -1079,7 +1079,6 @@ public abstract class ShipBoard  implements Serializable {
         }
 
         for (Map.Entry<HousingUnit, Integer> entry : housingUsage.entrySet()) {
-            System.out.println("Killing " + entry.getValue() + " members on housing unit: " + entry.getKey().getId());
             HousingUnit housingUnit = entry.getKey();
             HousingUnit matchingHousingUnit = housingUnits.stream().filter(h -> h.equals(housingUnit)).findFirst().orElse(null);
             if(matchingHousingUnit == null){
