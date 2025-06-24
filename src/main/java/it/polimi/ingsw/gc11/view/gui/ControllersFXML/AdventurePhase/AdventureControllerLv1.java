@@ -478,7 +478,7 @@ public class AdventureControllerLv1 extends Controller {
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
-                controller.initialize(stage, card);
+                controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
@@ -497,7 +497,7 @@ public class AdventureControllerLv1 extends Controller {
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
-                controller.initialize(stage, card);
+                controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
                 stage.show();
                 adventurePhaseData.resetAdvCardNew();
