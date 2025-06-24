@@ -35,6 +35,10 @@ public class AdventurePhaseData extends GamePhaseData {
     public enum AdventureStateGUI{
         FLIGHT_MENU, CARD_DECLINED, CARD_ACCEPTED, HANDLE_CARD_MENU,
         ABANDONED_SHIP_1, ABANDONED_SHIP_2,
+        ABANDONED_STATION_1, ABANDONED_STATION_2,
+        PLANETS_CARD_1, PLANETS_CARD_2,
+        OPEN_SPACE_1, OPEN_SPACE_2,
+        SMUGGLERS_1, SMUGGLERS_2,
     }
     private AdventureStateGUI GUIState;
     private AdventureStateGUI previousGUIState;
@@ -160,6 +164,18 @@ public class AdventurePhaseData extends GamePhaseData {
         }
         else if (GUIState == AdventureStateGUI.ABANDONED_SHIP_1) {
             GUIState = AdventureStateGUI.ABANDONED_SHIP_2;
+        }
+        else if( GUIState == AdventureStateGUI.ABANDONED_STATION_1) {
+            GUIState = AdventureStateGUI.ABANDONED_STATION_2;
+        }
+        else if (GUIState == AdventureStateGUI.PLANETS_CARD_1) {
+            GUIState = AdventureStateGUI.PLANETS_CARD_2;
+        }
+        else if (GUIState == AdventureStateGUI.OPEN_SPACE_1) {
+            GUIState = AdventureStateGUI.OPEN_SPACE_2;
+        }
+        else if (GUIState == AdventureStateGUI.SMUGGLERS_1) {
+            GUIState = AdventureStateGUI.SMUGGLERS_2;
         }
     }
 

@@ -784,24 +784,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             System.out.println("Player: " + adventurePhaseData.getPlayer().getUsername());
             System.out.println("current Player: " + adventurePhaseData.getCurrentPlayer());
 
-            if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_2) {
+            if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_2 ||
+                adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_STATION_2 ||
+                adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PLANETS_CARD_2 ||
+                adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SMUGGLERS_2 ||
+                adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.OPEN_SPACE_2) {
+
                 goBackToFlightMenu();
             }
-
-//            if(!adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())){
-//                try {
-//                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
-//                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-//                    AdventureControllerLv1 controller = fxmlLoader.getController();
-//                    adventurePhaseData.setListener(controller);
-//                    controller.initialize(stage);
-//                    stage.setScene(newScene);
-//                    stage.show();
-//                }
-//                catch (Exception e) {
-//                    System.out.println("FXML Error: " + e.getMessage());
-//                }
-//            }
 
         });
     }
