@@ -209,8 +209,8 @@ public class AdventurePhaseData extends GamePhaseData {
         if(GUIState == AdventureStateGUI.FLIGHT_MENU || GUIState == AdventureStateGUI.CARD_DECLINED || GUIState == AdventureStateGUI.CARD_ACCEPTED) {
             setGUIState(AdventureStateGUI.FLIGHT_MENU);
         }
-        else {
-            setGUIState(AdventureStateGUI.HANDLE_CARD_MENU);
+        else if( GUIState == AdventureStateGUI.ABANDONED_SHIP_1) {
+            setGUIState(AdventureStateGUI.ABANDONED_SHIP_1);
         }
 
         //Cli state management
