@@ -555,16 +555,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         if( state == State.ABANDONED_STATION) {
             try {
-                List<Material> avail = ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))).getMaterials();
+                List<Material> cardMaterials = ((AbandonedStation) adventurePhaseData.getAdventureCard()).getMaterials();
 
                 List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
                 if (oldM != null) {
                     List<Material> newM;
-                    if(oldM.size() < avail.size()) {
-                        newM = new ArrayList<>(avail.subList(0, oldM.size()));
-                        avail.removeAll(newM);
+                    if(oldM.size() < cardMaterials.size()) {
+                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
+                        cardMaterials.removeAll(newM);
                     }else{
-                        newM = new ArrayList<>(avail);
+                        newM = new ArrayList<>(cardMaterials);
                     }
 
                     adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(oldM, newM));
