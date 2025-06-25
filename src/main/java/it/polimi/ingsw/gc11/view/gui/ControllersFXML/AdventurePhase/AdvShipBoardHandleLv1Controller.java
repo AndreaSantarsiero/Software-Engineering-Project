@@ -819,13 +819,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             realTimeMaterials.get(dest).set(m, realTimeMaterials.get(sourceStorage).get(selectedMat));
             realTimeMaterials.get(sourceStorage).set(selectedMat, null);
 
-            int finalI1 = selectedMat;
-            int finalI2 = m;
+            Button  originBtn     = selectedBtn;   // A
+            Storage originStorage = sourceStorage; // storage di A
+            int     originIdx     = selectedMat;       // indice di A (se ti serve)
 
-            selectedBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
-            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
-            selectedBtn.setContextMenu(null);
-            selectedBtn.setOnAction(ev -> handleLeftClick(finalI1, sourceStorage, selectedBtn));
+            originBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+            originBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+            originBtn.setContextMenu(null);
+            originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
 
             Color fill = materialColor(realTimeMaterials.get(dest).get(m));
             CornerRadii r = new CornerRadii(6);
@@ -847,19 +848,23 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             realTimeMaterials.get(sourceStorage).set(selectedMat, realTimeMaterials.get(dest).get(m));
             realTimeMaterials.get(dest).set(m, tmp);
 
-            int finalI1 = selectedMat;
+
+            Button  originBtn     = selectedBtn;   // A
+            Storage originStorage = sourceStorage; // storage di A
+            int     originIdx     = selectedMat;
+
             Color fill = materialColor(realTimeMaterials.get(sourceStorage).get(selectedMat));
             CornerRadii r = new CornerRadii(6);
-            selectedBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
-            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
+            originBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+            originBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
                     BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
 
-            selectedBtn.setOnAction(ev -> handleLeftClick(finalI1, sourceStorage, selectedBtn));
+            originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
 
             MenuItem del = new MenuItem("Elimina");
-            del.setOnAction(ev -> deleteMaterial(finalI1, sourceStorage, selectedBtn));
+            del.setOnAction(ev -> deleteMaterial(originIdx, sourceStorage, selectedBtn));
             ContextMenu cm = new ContextMenu(del);
-            selectedBtn.setContextMenu(cm);
+            originBtn.setContextMenu(cm);
 
             int finalI2 = m;
             Color fill2 = materialColor(realTimeMaterials.get(dest).get(m));
