@@ -14,6 +14,8 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -296,11 +298,15 @@ public class AdvShipBoardLv1Controller extends Controller {
     }
 
     private void printStorageDetail(Storage storage, StackPane stack) {
-        HBox materialBox = new HBox(4); // Spaziatura tra i quadratini
-        materialBox.setAlignment(javafx.geometry.Pos.CENTER);
+        FlowPane materialBox = new FlowPane();
+        materialBox.setOrientation(Orientation.HORIZONTAL);
+        materialBox.setHgap(4); // spazio orizzontale tra nodi
+        materialBox.setVgap(4); // spazio verticale tra righe
+        materialBox.setPrefWrapLength(shipCardSize.doubleValue());
+        materialBox.setAlignment(Pos.CENTER);
 
         for (Material material : storage.getMaterials()) {
-            Rectangle rect = new Rectangle(10, 10);
+            Rectangle rect = new Rectangle(30, 30);
             // Colore in base al tipo di materiale
             switch (material.getType()) {
                 case BLUE -> rect.setFill(Color.DODGERBLUE);

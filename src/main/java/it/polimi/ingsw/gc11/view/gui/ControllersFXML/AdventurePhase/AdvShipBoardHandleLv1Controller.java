@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,6 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.controlsfx.dialog.Wizard;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -975,7 +977,11 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     private void printStorageDetail(Storage storage, StackPane stack) {
 
-        HBox materialBox = new HBox(4);                 // Spaziatura tra i bottoni
+        FlowPane materialBox = new FlowPane();
+        materialBox.setOrientation(Orientation.HORIZONTAL);
+        materialBox.setHgap(4); // spazio orizzontale tra nodi
+        materialBox.setVgap(4); // spazio verticale tra righe
+        materialBox.setPrefWrapLength(shipCardSize.doubleValue());
         materialBox.setAlignment(Pos.CENTER);
 
         realTimeMaterials.put(storage, new ArrayList<>());
