@@ -1,6 +1,6 @@
 package it.polimi.ingsw.gc11.view;
 
-import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
+import it.polimi.ingsw.gc11.action.client.ServerAction;
 
 
 

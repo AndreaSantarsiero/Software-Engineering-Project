@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc11.view;
 
-import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.action.client.ServerAction;
+import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

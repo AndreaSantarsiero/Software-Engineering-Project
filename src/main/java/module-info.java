@@ -13,12 +13,12 @@ module it.polimi.ingsw.gc11 {
 
     opens it.polimi.ingsw.gc11 to javafx.fxml;
     exports it.polimi.ingsw.gc11;
-    exports it.polimi.ingsw.gc11.controller.network.server.rmi to java.rmi;
+    exports it.polimi.ingsw.gc11.network.server.rmi to java.rmi;
     exports it.polimi.ingsw.gc11.exceptions to java.rmi;
-    exports it.polimi.ingsw.gc11.controller.network.client.rmi;
+    exports it.polimi.ingsw.gc11.network.client.rmi;
     exports it.polimi.ingsw.gc11.view.gui;
     exports it.polimi.ingsw.gc11.model;
-    exports it.polimi.ingsw.gc11.controller.network;
+    exports it.polimi.ingsw.gc11.network;
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML  to javafx.fxml;
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase to javafx.fxml;
     opens it.polimi.ingsw.gc11.view.gui.ControllersFXML.BuildingPhase to javafx.fxml;

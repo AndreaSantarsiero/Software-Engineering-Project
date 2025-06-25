@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.action.client.NotifySuccessAction;
-import it.polimi.ingsw.gc11.controller.action.client.SetCheckPhaseAction;
+import it.polimi.ingsw.gc11.action.client.NotifySuccessAction;
+import it.polimi.ingsw.gc11.action.client.SetCheckPhaseAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;

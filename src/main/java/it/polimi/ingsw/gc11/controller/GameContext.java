@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gc11.controller;
 
 import it.polimi.ingsw.gc11.controller.State.*;
-import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
+import it.polimi.ingsw.gc11.action.client.ServerAction;
+import it.polimi.ingsw.gc11.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;

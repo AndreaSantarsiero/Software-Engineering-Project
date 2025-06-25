@@ -4,7 +4,7 @@ import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
-import it.polimi.ingsw.gc11.controller.action.client.UpdateEverybodyProfileAction;
+import it.polimi.ingsw.gc11.action.client.UpdateEverybodyProfileAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import java.util.ArrayList;

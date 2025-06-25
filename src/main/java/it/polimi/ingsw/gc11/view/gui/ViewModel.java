@@ -1,7 +1,7 @@
 package it.polimi.ingsw.gc11.view.gui;
 
-import it.polimi.ingsw.gc11.controller.network.Utils;
-import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.network.Utils;
+import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;

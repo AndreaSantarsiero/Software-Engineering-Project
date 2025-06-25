@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gc11.controller.State;
 
 import it.polimi.ingsw.gc11.controller.GameContext;
-import it.polimi.ingsw.gc11.controller.action.client.SetAdventurePhaseAction;
-import it.polimi.ingsw.gc11.controller.action.client.UpdateShipBoardAction;
+import it.polimi.ingsw.gc11.action.client.SetAdventurePhaseAction;
+import it.polimi.ingsw.gc11.action.client.UpdateShipBoardAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import java.util.ArrayList;

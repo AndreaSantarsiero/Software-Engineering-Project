@@ -1,8 +1,8 @@
 package it.polimi.ingsw.gc11.view.cli;
 
 import it.polimi.ingsw.gc11.controller.ServerMAIN;
-import it.polimi.ingsw.gc11.controller.network.Utils;
-import it.polimi.ingsw.gc11.controller.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.network.Utils;
+import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.cli.controllers.*;

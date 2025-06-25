@@ -1,17 +1,21 @@
 package it.polimi.ingsw.gc11.controller;
 
-import it.polimi.ingsw.gc11.controller.action.client.ServerAction;
-import it.polimi.ingsw.gc11.controller.action.server.GameContext.ClientGameAction;
-import it.polimi.ingsw.gc11.controller.action.server.ServerController.ClientControllerAction;
-import it.polimi.ingsw.gc11.controller.network.client.rmi.ClientInterface;
-import it.polimi.ingsw.gc11.controller.network.server.*;
-import it.polimi.ingsw.gc11.controller.network.server.rmi.*;
-import it.polimi.ingsw.gc11.controller.network.server.socket.*;
+import it.polimi.ingsw.gc11.action.client.ServerAction;
+import it.polimi.ingsw.gc11.action.server.GameContext.ClientGameAction;
+import it.polimi.ingsw.gc11.action.server.ServerController.ClientControllerAction;
+import it.polimi.ingsw.gc11.network.client.rmi.ClientInterface;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.exceptions.UsernameAlreadyTakenException;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.network.server.ClientSession;
+import it.polimi.ingsw.gc11.network.server.VirtualClient;
+import it.polimi.ingsw.gc11.network.server.rmi.ServerRMI;
+import it.polimi.ingsw.gc11.network.server.rmi.VirtualRMIClient;
+import it.polimi.ingsw.gc11.network.server.socket.ServerSocket;
+import it.polimi.ingsw.gc11.network.server.socket.VirtualSocketClient;
+
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
