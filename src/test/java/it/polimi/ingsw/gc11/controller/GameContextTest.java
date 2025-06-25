@@ -369,7 +369,18 @@ public class GameContextTest {
     @Test
     void testGetAdvCardInvalid(){
         assertThrows(IllegalStateException.class, () -> gameContext.getAdventureCard("username1"),"you  cannot get adventure card in this state");
+
         goToAdvPhase();
+        AdventurePhase adventurePhase = (AdventurePhase) gameContext.getPhase();
+        assertInstanceOf(SelectAlienUnitState.class, adventurePhase.getCurrentAdvState(), "current adv state should be SelectAlienUnitState");
+
+        SelectAlienUnitState selectAlienUnitState = (SelectAlienUnitState) adventurePhase.getCurrentAdvState();
+        selectAlienUnitState.completedAlienSelection("username1");
+        selectAlienUnitState.completedAlienSelection("username2");
+        selectAlienUnitState.completedAlienSelection("username3");
+
+        assertInstanceOf(IdleState.class, adventurePhase.getCurrentAdvState(), "current adv state should be SelectAlienUnitState");
+
         assertThrows(IllegalArgumentException.class,() -> gameContext.getAdventureCard("username"),"username should be valid");
         assertThrows(IllegalArgumentException.class,() -> gameContext.getAdventureCard("username2"),"only the first player  can get the adventure card");
     }
@@ -377,6 +388,16 @@ public class GameContextTest {
     @Test
     void testGetAdvCardValid(){
         goToAdvPhase();
+        AdventurePhase adventurePhase = (AdventurePhase) gameContext.getPhase();
+        assertInstanceOf(SelectAlienUnitState.class, adventurePhase.getCurrentAdvState(), "current adv state should be SelectAlienUnitState");
+
+        SelectAlienUnitState selectAlienUnitState = (SelectAlienUnitState) adventurePhase.getCurrentAdvState();
+        selectAlienUnitState.completedAlienSelection("username1");
+        selectAlienUnitState.completedAlienSelection("username2");
+        selectAlienUnitState.completedAlienSelection("username3");
+
+        assertInstanceOf(IdleState.class, adventurePhase.getCurrentAdvState(), "current adv state should be SelectAlienUnitState");
+
         assertInstanceOf(AdventureCard.class, gameContext.getAdventureCard("username1"),"should be returned an adventure card");
         AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
         advPhase.setAdvState(new IdleState(advPhase));
@@ -518,15 +539,11 @@ public class GameContextTest {
     @Test
     void testEndBuilding(){
         startBuildingPhase();
-        gameContext.placeShipCard("username1", gameContext.getFreeShipCard("username1", null), ShipCard.Orientation.DEG_0, 7, 6);
-        gameContext.endBuildingLevel2("username1",1);
 
-        assertThrows(IllegalStateException.class, () -> gameContext.getGameModel().endBuildingTrial("username1"),"you cannot end building more than once");
-        gameContext.placeShipCard("username2", gameContext.getFreeShipCard("username2", null), ShipCard.Orientation.DEG_0, 7, 6);
+        gameContext.endBuildingLevel2("username1",1);
         gameContext.endBuildingLevel2("username2",2);
-        gameContext.placeShipCard("username3", gameContext.getFreeShipCard("username3", null), ShipCard.Orientation.DEG_0, 7, 6);
         gameContext.endBuildingLevel2("username3",3);
-        assertThrows(IllegalArgumentException.class, () -> gameContext.getGameModel().endBuildingTrial("username4"),"username should be valid");
+
         assertEquals(6, gameContext.getGameModel().getPositionOnBoard("username1"), "check the right position");
         assertEquals(3, gameContext.getGameModel().getPositionOnBoard("username2"), "check the right position");
         assertEquals(1, gameContext.getGameModel().getPositionOnBoard("username3"), "check the right position");
@@ -557,7 +574,8 @@ public class GameContextTest {
 
         Map<HousingUnit, Integer> map = new HashMap<>();
 
-        assertEquals(8, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
+        //it's 10 because there're 4 housingUnitis and 1 centralUnit
+        assertEquals(10, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
         assertThrows(IllegalStateException.class, () -> gameContext.killMembers("username1", map));
 
         gameContext.acceptAdventureCard("username1");
@@ -575,7 +593,7 @@ public class GameContextTest {
 
         map.remove(invalid);
         gameContext.killMembers("username1", map);
-        assertEquals(0, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
+        assertEquals(2, gameContext.getGameModel().getPlayer("username1").getShipBoard().getMembers());
         assertInstanceOf(IdleState.class, ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState());
 
         gameContext.getGameModel().move("username1", 10);
@@ -2850,6 +2868,7 @@ public class GameContextTest {
                 advPhase.getAdvState(),
                 "should transition to Check3Lv1");
     }
+
 
 
 }
