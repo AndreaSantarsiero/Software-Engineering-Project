@@ -580,6 +580,18 @@ public class GameContext {
                         AdventureCard.Type.TRIAL
                 )
         );
+        testDeck.addCard(
+                new CombatZoneLv1(
+                        "TrialWarZone",
+                        AdventureCard.Type.TRIAL,
+                        3,
+                        2,
+                        new ArrayList<Shot>(List.of(
+                                new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM),
+                                new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM)
+                        ))
+                )
+        );
         testDeck.addCard(new Epidemic("Level2Epidemic"));
         testDeck.addCard(new Smugglers(
                 "TrialSmugglers",
