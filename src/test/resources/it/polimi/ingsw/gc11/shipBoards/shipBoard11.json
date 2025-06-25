@@ -6,7 +6,6 @@
       {"id": "Shield7", "x": 6, "y": 6, "orientation": 270},
       {"id": "HousingUnit9", "x": 7, "y": 6, "orientation": 180},
       {"id": "DoubleCannon8", "x": 8, "y": 6, "orientation": 0},
-      {"id": "TripleBattery2", "x": 5, "y": 7, "orientation": 0},
       {"id": "HousingUnit2", "x": 6, "y": 7, "orientation": 0},
       {"id": "RedCentralUnit", "x": 7, "y": 7, "orientation": 0},
       {"id": "RedSingleStorage5", "x": 8, "y": 7, "orientation": 180},
