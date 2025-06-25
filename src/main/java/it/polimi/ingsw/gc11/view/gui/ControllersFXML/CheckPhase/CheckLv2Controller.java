@@ -240,6 +240,19 @@ public class CheckLv2Controller extends Controller {
 
                             iv.setEffect(highlight);
                         }
+                        else if(shipCard.isIllegal()){
+                            ColorInput redOverlay = new ColorInput();
+                            redOverlay.setPaint(Color.web("#FF0000CC"));
+
+                            redOverlay.widthProperty().bind(iv.fitWidthProperty());
+                            redOverlay.heightProperty().bind(iv.fitHeightProperty());
+
+                            Blend highlight = new Blend();
+                            highlight.setMode(BlendMode.OVERLAY);
+                            highlight.setTopInput(redOverlay);
+
+                            iv.setEffect(highlight);
+                        }
 
                         switch(shipCard.getOrientation()){
                             case DEG_0 -> iv.setRotate(0);
