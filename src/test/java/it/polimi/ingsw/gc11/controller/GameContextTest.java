@@ -5,10 +5,7 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.AbandonedShipSt
 import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedStationState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check2Lv1;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Check3Lv1;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.HandleShotLv1;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.Penalty3Lv1;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.*;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check2Lv2;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.HandleShotLv2;
@@ -2532,6 +2529,176 @@ public class GameContextTest {
                 ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(),
                 "after killMembers the phase should be IdleState"
         );
+    }
+
+    // ---------- CheckAndPenalty1Lv1 tests ----------
+
+    @Test
+    void checkAndPenalty1Lv1_allTie_shouldMoveFirstPlayerAndAdvanceState() {
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+        }
+
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 3, 2, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        int pos1 = gameContext.getGameModel().getPositionOnBoard("username1");
+        int pos2 = gameContext.getGameModel().getPositionOnBoard("username2");
+        int pos3 = gameContext.getGameModel().getPositionOnBoard("username3");
+
+        new CheckAndPenalty1Lv1(advPhase);
+
+        assertEquals(pos1 + advCard.getLostDays(),
+                gameContext.getGameModel().getPositionOnBoard("username1"),
+                "first player should be moved on tie");
+        assertEquals(pos2,
+                gameContext.getGameModel().getPositionOnBoard("username2"),
+                "second player should not be moved on tie");
+        assertEquals(pos3,
+                gameContext.getGameModel().getPositionOnBoard("username3"),
+                "third player should not be moved on tie");
+        assertInstanceOf(Check2Lv1.class,
+                advPhase.getAdvState(),
+                "should transition to Check2Lv1");
+    }
+
+    @Test
+    void checkAndPenalty1Lv1_secondHasMin_shouldMoveSecondPlayerOnly() {
+        goToAdvPhase();
+
+        ArrayList<Shot> shots = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+        }
+
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 1, 1, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        // give player2 fewer crew than player1 and player3
+        ShipBoard shipBoard3 = gameContext.getGameModel().getPlayer("username3").getShipBoard();
+        ShipBoard shipBoard2 = gameContext.getGameModel().getPlayer("username2").getShipBoard();
+        ShipBoard shipBoard1 = gameContext.getGameModel().getPlayer("username1").getShipBoard();
+
+        HousingUnit h1 = new HousingUnit("h1",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+
+        shipBoard1.placeShipCard(h1, ShipCard.Orientation.DEG_0, 7, 8);
+
+        HousingUnit h3 = new HousingUnit("h1",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+
+        shipBoard3.placeShipCard(h3, ShipCard.Orientation.DEG_0, 7, 8);
+
+        int pos1 = gameContext.getGameModel().getPositionOnBoard("username1");
+        int pos2 = gameContext.getGameModel().getPositionOnBoard("username2");
+        int pos3 = gameContext.getGameModel().getPositionOnBoard("username3");
+
+        new CheckAndPenalty1Lv1(advPhase);
+
+        assertEquals(pos2 + advCard.getLostDays(),
+                gameContext.getGameModel().getPositionOnBoard("username2"),
+                "second (min) player should be moved");
+        assertEquals(pos1,
+                gameContext.getGameModel().getPositionOnBoard("username1"),
+                "first player should not be moved");
+        assertEquals(pos3,
+                gameContext.getGameModel().getPositionOnBoard("username3"),
+                "third player should not be moved");
+        assertInstanceOf(Check2Lv1.class,
+                advPhase.getAdvState(),
+                "should transition to Check2Lv1");
+    }
+
+    @Test
+    void checkAndPenalty1Lv1_thirdHasMin_shouldMoveThirdPlayerOnly() {
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        CombatZoneLv1 advCard = new CombatZoneLv1(
+                "id",
+                AdventureCard.Type.TRIAL,
+                3,              // numero totale di round (non usato qui)
+                1,              // lostDays
+                shots
+        );
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setDrawnAdvCard(advCard);
+
+        // imposto a username3 il crew più basso
+        ShipBoard shipBoard3 = gameContext.getGameModel().getPlayer("username3").getShipBoard();
+        ShipBoard shipBoard2 = gameContext.getGameModel().getPlayer("username2").getShipBoard();
+        ShipBoard shipBoard1 = gameContext.getGameModel().getPlayer("username1").getShipBoard();
+
+        HousingUnit h1 = new HousingUnit("h1",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+
+        shipBoard1.placeShipCard(h1, ShipCard.Orientation.DEG_0, 7, 8);
+
+        HousingUnit h2 = new HousingUnit("h1",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+
+        shipBoard2.placeShipCard(h2, ShipCard.Orientation.DEG_0, 7, 8);
+
+        int pos1 = gameContext.getGameModel().getPositionOnBoard("username1");
+        int pos2 = gameContext.getGameModel().getPositionOnBoard("username2");
+
+        // invoco lo stato: deve muovere solo il terzo player
+        new CheckAndPenalty1Lv1(advPhase);
+
+        int pos3 = gameContext.getGameModel().getPositionOnBoard("username3");
+
+        assertEquals(pos3,
+                gameContext.getGameModel().getPositionOnBoard("username3"),
+                "third (min) player should be moved"
+        );
+        assertEquals(
+                pos1,
+                gameContext.getGameModel().getPositionOnBoard("username1"),
+                "first player should not be moved"
+        );
+        assertEquals(
+                pos2,
+                gameContext.getGameModel().getPositionOnBoard("username2"),
+                "second player should not be moved"
+        );
+        assertInstanceOf(
+                Check2Lv1.class,
+                advPhase.getAdvState(),
+                "should transition to Check2Lv1"
+        );
+    }
+
+
+    @Test
+    void checkAndPenalty1Lv1_invalidCard_shouldThrowClassCastException() {
+        goToAdvPhase();
+        AdventureCard wrong = new AbandonedShip("x", AdventureCard.Type.LEVEL2, 1, 2, 3);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(wrong);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        assertThrows(ClassCastException.class,
+                () -> new CheckAndPenalty1Lv1(advPhase),
+                "should throw if drawn card is not CombatZoneLv1");
     }
 
 

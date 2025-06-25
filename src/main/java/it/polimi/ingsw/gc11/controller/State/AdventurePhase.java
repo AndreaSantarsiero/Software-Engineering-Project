@@ -339,6 +339,11 @@ public class AdventurePhase extends GamePhase {
         advState.completedAlienSelection(username);
     }
 
+    //for testing
+    public AdventureState getAdvState() {
+        return advState;
+    }
+
     //visitor pattern
     @Override
     public boolean isAdventurePhase(){
