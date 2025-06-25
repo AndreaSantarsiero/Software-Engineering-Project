@@ -296,8 +296,6 @@ public class AdventureControllerLv1 extends Controller {
             adventureCardImage.setImage(image);
             adventureCardImage.setVisible(true);
 
-            System.out.println("Current player: " + adventurePhaseData.getCurrentPlayer());
-
             //Handle the visibility of advCard buttons
             if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())) {
                 handler(card);
@@ -343,7 +341,7 @@ public class AdventureControllerLv1 extends Controller {
         Platform.runLater(() -> {
 
             //System.out.println("GUIState: " + adventurePhaseData.getGUIState());
-
+            System.out.println("Current player: " + adventurePhaseData.getCurrentPlayer());
             setupPositions();
             showDrawButton();
             showAdventureCard();
