@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.Material;
@@ -45,7 +46,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         COMBAT_ZONE_LV1_STAGE_2, COMBAT_ZONE_LV1_STAGE_3,
         COMBAT_ZONE_LV2_STAGE_2, COMBAT_ZONE_LV2_STAGE_3,
         EPIDEMIC,
-        METEOR_SWARM,
+        METEOR_SWARM_BATTERIES, METEOR_SWARM_CANNONS, METEOR_SWARM_CAN_BATT,
         OPEN_SPACE,
         PIRATES,
         PLANETS,
@@ -100,6 +101,10 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private Map<Storage, List<Material>> originalMaterials = new HashMap<>();
     private Map<Storage, List<Material>> realTimeMaterials = new HashMap<>();
     private Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> pending = new HashMap<>();
+
+    private int shotIdx = 0;
+    private int numShots;
+    private Cannon defensiveCannon;
 
 
     private final Map<Class<?>, BiConsumer<ShipCard, StackPane>> detailPrinters = Map.of(
@@ -285,6 +290,37 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, MeteorSwarm card) {
         setup(stage);
+        //adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.METEOR);
+
+        numShots = card.getMeteors().size();
+
+        if(card.getMeteors().getFirst().getType() == Hit.Type.SMALL){
+            actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getMeteors().getFirst().getDirection().toString()+ " at coordinate " + card.getMeteors().getFirst().getCoordinate());
+            confirmButton.setVisible(true);
+            confirmButton.setDisable(false);
+            confirmButton.setOnAction(event -> {
+                try {
+                    virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
+                }
+                catch (Exception e) {
+                    System.out.println("Network error:" + e.getMessage());
+                }
+            });
+
+            state = State.METEOR_SWARM_BATTERIES;
+        }
+
+        if(card.getMeteors().getFirst().getType() == Hit.Type.BIG){
+            actionTextLabel.setText("Select cannon to protect from a big meteor from " + card.getMeteors().getFirst().getDirection().toString() + " at coordinate " + card.getMeteors().getFirst().getCoordinate());
+            confirmButton.setVisible(true);
+            confirmButton.setDisable(false);
+            confirmButton.setOnAction(event -> {
+                adventurePhaseData.setDefensiveCannon(defensiveCannon);
+                state = State.METEOR_SWARM_CAN_BATT;
+            });
+
+            state = State.METEOR_SWARM_CANNONS;
+        }
 
         update(adventurePhaseData);
     }
@@ -536,35 +572,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 if (num != null) {
                     adventurePhaseData.addHousingUsage(housingUnit, num);
                 }
-
-                selectedShipCards.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
             }
             catch (Exception e) {
                 System.out.println("The card clicked is not a Housing Unit");
                 setErrorLabel("The card clicked is not a Housing Unit");
             }
         }
-
-//        if( state == State.ABANDONED_STATION) {
-//            try {
-//                List<Material> cardMaterials = ((AbandonedStation) adventurePhaseData.getAdventureCard()).getMaterials();
-//
-//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
-//                if (oldM != null) {
-//                    List<Material> newM;
-//                    if(oldM.size() < cardMaterials.size()) {
-//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
-//                        cardMaterials.removeAll(newM);
-//                    }else{
-//                        newM = new ArrayList<>(cardMaterials);
-//                    }
-//
-//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
-//                }
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
 
         if(state == State.OPEN_SPACE){
             try {
@@ -575,35 +588,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 if (num != null) {
                     adventurePhaseData.addBattery(battery, num);
                 }
-
-                selectedShipCards.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
             }
             catch (Exception e) {
                 System.out.println("The card clicked is not a Battery");
                 setErrorLabel("The card clicked is not a Battery");
             }
         }
-
-//        if(state == State.PLANETS){
-//            try {
-//                List<Material> cardMaterials = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getPlanet(planetIdx).getMaterials();
-//
-//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
-//                if (oldM != null) {
-//                    List<Material> newM;
-//                    if(oldM.size() < cardMaterials.size()) {
-//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
-//                        cardMaterials.removeAll(newM);
-//                    }else{
-//                        newM = new ArrayList<>(cardMaterials);
-//                    }
-//
-//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
-//                }
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
 
         if(state == State.SMUGGLERS_CANNONS){
             Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
@@ -641,9 +631,67 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     adventurePhaseData.addBattery(battery, num);
                 }
 
-                selectedShipCards.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
+            }
+        }
+
+        if(state == State.METEOR_SWARM_BATTERIES){
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                }
+            }
+            catch (Exception e) {
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
+            }
+        }
+
+        if(state == State.METEOR_SWARM_CANNONS){
+            try{
+                Cannon cannon = (Cannon) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+                defensiveCannon = cannon;
+            }
+            catch (Exception e) {
+                System.out.println("The card clicked is not a Cannon");
+                setErrorLabel("The card clicked is not a Cannon");
+            }
+        }
+
+        if(state == State.METEOR_SWARM_CAN_BATT){
+            actionTextLabel.setText("Select batteries if you need it to activate double cannon or click confirm.");
+            subHeaderContainer.getChildren().add(
+                    new Button("Confirm") {
+                        {
+                            setOnAction(event -> {
+                                try {
+                                    virtualServer.meteorDefense(adventurePhaseData.getBatteries(), adventurePhaseData.getDefensiveCannon());
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                        }
+                    }
+            );
+
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                }
+
+            } catch (Exception e) {
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
             }
         }
     }
