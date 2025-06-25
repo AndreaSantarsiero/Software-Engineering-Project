@@ -760,17 +760,23 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private void moveMaterial(int m, Storage dest, Button btn) {
         /* coda le operazioni nella mappa */
         if (realTimeMaterials.get(dest).get(m) == null) {
-            realTimeMaterials.get(dest).set(m, realTimeMaterials.get(sourceStorage).get(selectedMat));
-            realTimeMaterials.get(sourceStorage).set(selectedMat, null);
+            if(sourceStorage == null){
+                realTimeMaterials.get(dest).set(m, cardMats.get(selectedMat));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setMouseTransparent(true);
+            }else{
+                realTimeMaterials.get(dest).set(m, realTimeMaterials.get(sourceStorage).get(selectedMat));
+                realTimeMaterials.get(sourceStorage).set(selectedMat, null);
+                Button  originBtn     = selectedBtn;   // A
+                Storage originStorage = sourceStorage; // storage di A
+                int     originIdx     = selectedMat;       // indice di A (se ti serve)
 
-            Button  originBtn     = selectedBtn;   // A
-            Storage originStorage = sourceStorage; // storage di A
-            int     originIdx     = selectedMat;       // indice di A (se ti serve)
-
-            originBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
-            originBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
-            originBtn.setContextMenu(null);
-            originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
+                originBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+                originBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+                originBtn.setContextMenu(null);
+                originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
+            }
 
             Color fill = materialColor(realTimeMaterials.get(dest).get(m));
             CornerRadii r = new CornerRadii(6);
@@ -789,6 +795,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }else{
             if(sourceStorage == null){
                 realTimeMaterials.get(dest).set(m, cardMats.get(selectedMat));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setMouseTransparent(true);
             }
             else{
                 Material tmp = realTimeMaterials.get(sourceStorage).get(selectedMat);
