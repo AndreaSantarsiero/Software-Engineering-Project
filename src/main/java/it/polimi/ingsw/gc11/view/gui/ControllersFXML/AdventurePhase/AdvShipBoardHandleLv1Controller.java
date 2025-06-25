@@ -90,7 +90,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private Button   selectedBtn;
     private final Map<Storage,
             AbstractMap.SimpleEntry<List<Material>, List<Material>>> pending = new HashMap<>();
-    private final Map<Storage, StackPane> renderCache = new HashMap<>();
 
 
     private final Map<Class<?>, BiConsumer<ShipCard, StackPane>> detailPrinters = Map.of(
@@ -779,7 +778,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private void handleLeftClick(Material m, Storage s, Button btn) {
 
         /* 1° clic → seleziona */
-        if (selectedMat == null) {
+        if (selectedMat == null && m != null) {
             selectedMat   = m;
             sourceStorage = s;
             selectedBtn   = btn;
@@ -790,8 +789,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
 
         /* 2° clic su storage diverso (e non pieno) → MOVE */
-        if (s != sourceStorage && !isFull(s)) {
-            moveMaterial(s);
+        if (btn != selectedBtn) {
+            moveMaterial(m, s, btn);
             return;
         }
 
@@ -799,21 +798,66 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         resetSelection();
     }
 
-    private void moveMaterial(Storage dest) {
+    private void moveMaterial(Material m, Storage dest, Button btn) {
         /* coda le operazioni nella mappa */
-        queueRemove(sourceStorage, selectedMat);
-        queueAdd(dest, selectedMat);
+        if (m == null) {
+            queueRemove(sourceStorage, selectedMat);
+            queueAdd(dest, selectedMat);
 
-        /* aggiorna il modello immediatamente (se vuoi applicare dopo, togli queste 3 righe) */
-        sourceStorage.getMaterials().remove(selectedMat);
-        dest.getMaterials().add(selectedMat);
+            selectedBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+            selectedBtn.setContextMenu(null);
+            selectedBtn.setOnAction(ev -> handleLeftClick(null, sourceStorage, selectedBtn ));
 
-        refreshStorage(sourceStorage);
-        refreshStorage(dest);
+            Color fill = materialColor(selectedMat);
+            CornerRadii r = new CornerRadii(6);
+            btn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+            btn.setOnAction(ev -> handleLeftClick(selectedMat, dest, btn));
+
+            MenuItem del = new MenuItem("Elimina");
+            del.setOnAction(ev -> deleteMaterial(selectedMat, dest, btn));
+            ContextMenu cm = new ContextMenu(del);
+            btn.setContextMenu(cm);
+
+        }else{
+            queueRemove(sourceStorage, selectedMat);
+            queueRemove(dest, m);
+            queueAdd(dest, selectedMat);
+            queueAdd(sourceStorage, m);
+
+            Color fill = materialColor(m);
+            CornerRadii r = new CornerRadii(6);
+            selectedBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+            selectedBtn.setOnAction(ev -> handleLeftClick(m, sourceStorage, selectedBtn));
+
+            MenuItem del = new MenuItem("Elimina");
+            del.setOnAction(ev -> deleteMaterial(m, sourceStorage, selectedBtn));
+            ContextMenu cm = new ContextMenu(del);
+            selectedBtn.setContextMenu(cm);
+
+            Color fill2 = materialColor(selectedMat);
+            btn.setBackground(new Background(new BackgroundFill(fill2, r, Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+            btn.setOnAction(ev -> handleLeftClick(selectedMat, dest, btn));
+
+            MenuItem del2 = new MenuItem("Elimina");
+            del2.setOnAction(ev -> deleteMaterial(selectedMat, dest, btn));
+            ContextMenu cm2 = new ContextMenu(del2);
+            btn.setContextMenu(cm2);
+        }
+
         resetSelection();
     }
 
-    private void deleteMaterial(Material m, Storage s) {
+    private void deleteMaterial(Material m, Storage s, Button btn) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                 "Eliminare definitivamente il materiale?",
                 ButtonType.YES, ButtonType.NO);
@@ -824,10 +868,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             /* coda nella mappa */
             queueRemove(s, m);
 
-            /* rimuovi subito dal modello (facoltativo) */
-            s.getMaterials().remove(m);
+            btn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+            btn.setContextMenu(null);
+            btn.setOnAction(ev -> handleLeftClick(null, s, btn));
 
-            refreshStorage(s);
+            //refreshStorage(s);
             resetSelection();
         }
     }
@@ -851,20 +897,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         selectedMat = null;
         sourceStorage = null;
         selectedBtn = null;
-    }
-
-    private boolean isFull(Storage st) {
-        return st.getMaterials().size() >= st.getType().getCapacity();
-    }
-
-    private void refreshStorage(Storage st) {
-        StackPane pane = renderCache.get(st);
-        if (pane == null) {                 // protezione se dimentichi il put
-            System.err.println("No pane for storage " + st);
-            return;
-        }
-        pane.getChildren().clear();
-        printStorageDetail(st, pane);
     }
 
     private void goBackToFlightMenu() {
@@ -940,7 +972,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         HBox materialBox = new HBox(4);                 // Spaziatura tra i bottoni
         materialBox.setAlignment(Pos.CENTER);
-        renderCache.put(storage, stack);
 
         for (Material mat : storage.getMaterials()) {
             Button btn = new Button();
@@ -962,10 +993,21 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
             /* menù contestuale → Elimina */
             MenuItem del = new MenuItem("Elimina");
-            del.setOnAction(ev -> deleteMaterial(mat, storage));
+            del.setOnAction(ev -> deleteMaterial(mat, storage, btn));
             ContextMenu cm = new ContextMenu(del);
             btn.setContextMenu(cm);
 
+            materialBox.getChildren().add(btn);
+        }
+        for(int i = storage.getMaterials().size(); i < storage.getType().getCapacity(); i++) {
+            Button btn = new Button();
+            btn.setMinSize(10, 10);
+            btn.setPrefSize(10, 10);
+            btn.setMaxSize(10, 10);
+            btn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+            btn.setOnAction(ev -> handleLeftClick(null, storage, btn));
             materialBox.getChildren().add(btn);
         }
 
