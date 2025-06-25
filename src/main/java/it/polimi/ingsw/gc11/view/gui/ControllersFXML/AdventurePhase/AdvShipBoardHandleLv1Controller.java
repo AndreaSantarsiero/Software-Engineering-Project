@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
@@ -17,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,6 +32,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.controlsfx.dialog.Wizard;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -219,12 +222,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         mainContainer.getChildren().add(cardMaterialsBox);
 
-        actionTextLabel.setText("Select slot to place or replace materials.");
+        actionTextLabel.setText("Select slot to place or replace materials. (right click per rimuovere materiale)");
         confirmButton.setVisible(true);
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
-                                virtualServer.chooseMaterials(pending);
+                                virtualServer.chooseMaterials(buildPending(originalMaterials, realTimeMaterials, pending));
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -319,12 +322,26 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         pending.clear();
 
-        actionTextLabel.setText("Select slot to place or replace materials.");
+        cardMaterialsBox = new VBox(4);
+        cardMaterialsBox.setAlignment(Pos.CENTER);
+
+        cardMaterialsBox.getChildren().clear();
+
+        cardMats = new ArrayList<> (((PlanetsCard) card).getPlanet(idx).getMaterials());
+
+        for (int i = 0; i < cardMats.size(); i++) {
+            Button b = buildMaterialButton(i);
+            cardMaterialsBox.getChildren().add(b);
+        }
+
+        mainContainer.getChildren().add(cardMaterialsBox);
+
+        actionTextLabel.setText("Select slot to place or replace materials. (right click per rimuovere materiale)");
         confirmButton.setVisible(true);
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
-                                virtualServer.chooseMaterials(pending);
+                                virtualServer.chooseMaterials(buildPending(originalMaterials, realTimeMaterials, pending));
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -334,6 +351,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         state = State.PLANETS;
 
+        slotGrid.getChildren().clear();
+        setShipBoard();
         update(adventurePhaseData);
     }
 
@@ -760,17 +779,23 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private void moveMaterial(int m, Storage dest, Button btn) {
         /* coda le operazioni nella mappa */
         if (realTimeMaterials.get(dest).get(m) == null) {
-            realTimeMaterials.get(dest).set(m, realTimeMaterials.get(sourceStorage).get(selectedMat));
-            realTimeMaterials.get(sourceStorage).set(selectedMat, null);
+            if(sourceStorage == null){
+                realTimeMaterials.get(dest).set(m, cardMats.get(selectedMat));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setMouseTransparent(true);
+            }else{
+                realTimeMaterials.get(dest).set(m, realTimeMaterials.get(sourceStorage).get(selectedMat));
+                realTimeMaterials.get(sourceStorage).set(selectedMat, null);
+                Button  originBtn     = selectedBtn;   // A
+                Storage originStorage = sourceStorage; // storage di A
+                int     originIdx     = selectedMat;       // indice di A (se ti serve)
 
-            Button  originBtn     = selectedBtn;   // A
-            Storage originStorage = sourceStorage; // storage di A
-            int     originIdx     = selectedMat;       // indice di A (se ti serve)
-
-            originBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
-            originBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
-            originBtn.setContextMenu(null);
-            originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
+                originBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+                originBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+                originBtn.setContextMenu(null);
+                originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
+            }
 
             Color fill = materialColor(realTimeMaterials.get(dest).get(m));
             CornerRadii r = new CornerRadii(6);
@@ -789,6 +814,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }else{
             if(sourceStorage == null){
                 realTimeMaterials.get(dest).set(m, cardMats.get(selectedMat));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+                ((Button)cardMaterialsBox.getChildren().get(selectedMat)).setMouseTransparent(true);
             }
             else{
                 Material tmp = realTimeMaterials.get(sourceStorage).get(selectedMat);
@@ -860,6 +888,47 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         selectedMat = -1;
         sourceStorage = null;
         selectedBtn = null;
+    }
+
+    private Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> buildPending(Map<Storage, List<Material>> originalMaterials, Map<Storage, List<Material>> realTimeMaterials, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> pending) {
+
+        pending.clear();
+
+        for (Storage storage : originalMaterials.keySet()) {
+
+            List<Material> start  = originalMaterials.get(storage);
+            List<Material> end    = realTimeMaterials.get(storage);
+
+            if (start == null || end == null || start.size() != end.size()) {
+                throw new IllegalStateException("Liste incoerenti per lo storage " + storage);
+            }
+
+            List<Material> toAdd    = new ArrayList<>();
+            List<Material> toRemove = new ArrayList<>();
+
+            for (int i = 0; i < start.size(); i++) {
+                Material before = start.get(i);
+                Material after  = end.get(i);
+
+                if (before == null && after != null) {
+                    toAdd.add(after);
+                    toRemove.add(null);
+                }
+                else if (before != null && after == null) {
+                    toAdd.add(null);
+                    toRemove.add(before);
+                }
+                else if (before != null && after != null && !before.equals(after)) {
+                    toRemove.add(before);
+                    toAdd.add(after);
+                }
+            }
+
+            pending.put(storage, new AbstractMap.SimpleEntry<>(toAdd, toRemove));
+
+        }
+
+        return pending;
     }
 
     private void goBackToFlightMenu() {
@@ -966,7 +1035,11 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     private void printStorageDetail(Storage storage, StackPane stack) {
 
-        HBox materialBox = new HBox(4);                 // Spaziatura tra i bottoni
+        FlowPane materialBox = new FlowPane();
+        materialBox.setOrientation(Orientation.HORIZONTAL);
+        materialBox.setHgap(4); // spazio orizzontale tra nodi
+        materialBox.setVgap(4); // spazio verticale tra righe
+        materialBox.setPrefWrapLength(shipCardSize.doubleValue());
         materialBox.setAlignment(Pos.CENTER);
 
         realTimeMaterials.put(storage, new ArrayList<>());
