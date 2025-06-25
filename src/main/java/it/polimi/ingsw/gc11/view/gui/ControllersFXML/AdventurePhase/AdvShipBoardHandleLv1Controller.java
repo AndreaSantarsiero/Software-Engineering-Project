@@ -86,6 +86,13 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     private ArrayList<ShipCard> selected = new ArrayList<>();
     private int planetIdx = -1;
+    private Material selectedMat;           // materiale cliccato
+    private Storage  sourceStorage;         // storage di provenienza
+    private Button   selectedBtn;
+    private final Map<Storage,
+            AbstractMap.SimpleEntry<List<Material>, List<Material>>> pending = new HashMap<>();
+    private final Map<Storage, StackPane> renderCache = new HashMap<>();
+
 
     private final Map<Class<?>, BiConsumer<ShipCard, StackPane>> detailPrinters = Map.of(
             Battery.class, (card, stack) -> printBatteryDetails((Battery) card, stack),
@@ -770,8 +777,95 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
-    private void handleMaterialClick(Material material) {
+    private void handleLeftClick(Material m, Storage s, Button btn) {
 
+        /* 1° clic → seleziona */
+        if (selectedMat == null) {
+            selectedMat   = m;
+            sourceStorage = s;
+            selectedBtn   = btn;
+
+            /* highlight giallo */
+            btn.setEffect(new DropShadow(10, Color.GOLD));
+            return;
+        }
+
+        /* 2° clic su storage diverso (e non pieno) → MOVE */
+        if (s != sourceStorage && !isFull(s)) {
+            moveMaterial(s);
+            return;
+        }
+
+        /* Altri casi: stessa cella o storage pieno → reset */
+        resetSelection();
+    }
+
+    private void moveMaterial(Storage dest) {
+        /* coda le operazioni nella mappa */
+        queueRemove(sourceStorage, selectedMat);
+        queueAdd(dest, selectedMat);
+
+        /* aggiorna il modello immediatamente (se vuoi applicare dopo, togli queste 3 righe) */
+        sourceStorage.getMaterials().remove(selectedMat);
+        dest.getMaterials().add(selectedMat);
+
+        refreshStorage(sourceStorage);
+        refreshStorage(dest);
+        resetSelection();
+    }
+
+    private void deleteMaterial(Material m, Storage s) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Eliminare definitivamente il materiale?",
+                ButtonType.YES, ButtonType.NO);
+        confirm.setHeaderText(null);
+
+        if (confirm.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+
+            /* coda nella mappa */
+            queueRemove(s, m);
+
+            /* rimuovi subito dal modello (facoltativo) */
+            s.getMaterials().remove(m);
+
+            refreshStorage(s);
+            resetSelection();
+        }
+    }
+
+    private AbstractMap.SimpleEntry<List<Material>, List<Material>> entry(Storage s) {
+        return pending.computeIfAbsent(
+                s,
+                k -> new AbstractMap.SimpleEntry<>(new ArrayList<>(), new ArrayList<>()));
+    }
+
+    private void queueRemove(Storage s, Material m) {
+        entry(s).getKey().add(m);
+    }
+
+    private void queueAdd(Storage s, Material m) {
+        entry(s).getValue().add(m);
+    }
+
+    private void resetSelection() {
+        if (selectedBtn != null) selectedBtn.setEffect(null);
+        selectedMat = null;
+        sourceStorage = null;
+        selectedBtn = null;
+    }
+
+    private boolean isFull(Storage st) {
+        return st.getMaterials().size() >= st.getType().getCapacity();
+    }
+
+    private void refreshStorage(Storage st) {
+        StackPane pane = renderCache.get(st);
+        if (pane == null) {                 // protezione se dimentichi il put
+            System.err.println("No pane for storage " + st);
+            return;
+        }
+        pane.getChildren().clear();
+        printStorageDetail(st, pane);
     }
 
     private void goBackToFlightMenu() {
@@ -847,34 +941,32 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         HBox materialBox = new HBox(4);                 // Spaziatura tra i bottoni
         materialBox.setAlignment(Pos.CENTER);
+        renderCache.put(storage, stack);
 
-        for (Material material : storage.getMaterials()) {
-
-            /* 1.  Crea il bottone “quadratino” */
+        for (Material mat : storage.getMaterials()) {
             Button btn = new Button();
 
-            /* 2.  Misure fisse 10×10  */
+            /* --- stile 10×10 (come i vecchi rettangoli) --------------------- */
             btn.setMinSize(10, 10);
             btn.setPrefSize(10, 10);
             btn.setMaxSize(10, 10);
 
-            /* 3.  Colore di riempimento + angoli tondeggianti + bordo bianco */
-            Color fill   = materialColor(material);
+            Color fill = materialColor(mat);
             CornerRadii r = new CornerRadii(6);
-
             btn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+            /* ---------------------------------------------------------------- */
 
-            btn.setBorder(new Border(new BorderStroke(
-                    Color.WHITE,
-                    BorderStrokeStyle.SOLID,
-                    r,
-                    new BorderWidths(1)
-            )));
+            /* click sinistro = seleziona / sposta */
+            btn.setOnAction(ev -> handleLeftClick(mat, storage, btn));
 
-            /* 4.  (opzionale) handler di click sul materiale specifico */
-            btn.setOnAction(e -> handleMaterialClick(material));
+            /* menù contestuale → Elimina */
+            MenuItem del = new MenuItem("Elimina");
+            del.setOnAction(ev -> deleteMaterial(mat, storage));
+            ContextMenu cm = new ContextMenu(del);
+            btn.setContextMenu(cm);
 
-            /* 5.  Aggiungi al contenitore */
             materialBox.getChildren().add(btn);
         }
 
