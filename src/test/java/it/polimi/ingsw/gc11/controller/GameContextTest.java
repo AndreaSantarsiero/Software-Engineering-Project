@@ -7,10 +7,7 @@ import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.AbandonedStationState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedStationStates.ChooseMaterialStation;
 import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1.*;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check1Lv2;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Check2Lv2;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.HandleShotLv2;
-import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.Penalty3Lv2;
+import it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv2.*;
 import it.polimi.ingsw.gc11.controller.State.EpidemicStates.EpidemicState;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.HandleMeteor;
 import it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates.MeteorSwarmState;
@@ -3032,6 +3029,87 @@ public class GameContextTest {
     }
 
 
+    @Test
+    void check3Lv2_shouldTransitionToPenalty3Lv2() {
+        // Preparazione: porto la partita in AdventurePhase e preparo la lista di colpi
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.LEFT));  // almeno uno per evitare che iterationsHit==shots.size()
+        CombatZoneLv2 advCard = new CombatZoneLv2(
+                "test", AdventureCard.Type.LEVEL2, 2, 1, shots
+        );
+        // metto la carta appena creata come drawnAdvCard
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        // Azione: istanzio Check3Lv2, che nel costruttore esegue tutto il controllo
+        new Check3Lv2(advPhase);
+
+        // Verifica: Check3Lv2 deve aver fatto il setAdvState su Penalty3Lv2
+        assertInstanceOf(Penalty3Lv2.class,
+                advPhase.getCurrentAdvState(),
+                "dovrebbe transitare in Penalty3Lv2");
+    }
+
+    @Test
+    void penalty1Lv2_shouldMoveCurrentPlayerAndTransitionToCheck2Lv2() {
+        goToAdvPhase();
+
+        int lostDays = 3;
+        ArrayList<Shot> shots = new ArrayList<>(); // qui i colpi non contano per Penalty1
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        CombatZoneLv2 advCard = new CombatZoneLv2(
+                "test", AdventureCard.Type.LEVEL2, lostDays, 1, shots
+        );
+
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+
+        Player player = gameContext.getGameModel().getPlayersNotAbort().get(0);
+        int initialPos = gameContext.getGameModel().getPositionOnBoard(player.getUsername());
+
+        new Penalty1Lv2(advPhase, player);
+
+        assertEquals(
+                initialPos + lostDays,
+                gameContext.getGameModel().getPositionOnBoard(player.getUsername()),
+                "il giocatore corrente dovrebbe essere mosso di lostDays"
+        );
+
+        assertInstanceOf(
+                Check2Lv2.class,
+                advPhase.getCurrentAdvState(),
+                "dovrebbe transitare in Check2Lv2"
+        );
+    }
+
+
+    @Test
+    void penalty2Lv2_shouldTransitionToCheck3Lv2_withoutException() {
+        goToAdvPhase();
+
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+        CombatZoneLv2 advCard = new CombatZoneLv2(
+                "test", AdventureCard.Type.LEVEL2,
+                /* lostDays= */ 0,
+                /* lostMaterials= */ 2,
+                shots
+        );
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        advPhase.setDrawnAdvCard(advCard);
+
+        assertDoesNotThrow(() -> new Penalty2Lv2(advPhase, player),
+                "Penalty2Lv2 non dovrebbe sollevare eccezioni");
+
+        assertInstanceOf(
+                Check3Lv2.class,
+                advPhase.getCurrentAdvState(),
+                "dovrebbe transitare in Check3Lv2"
+        );
+    }
 
 
 }
