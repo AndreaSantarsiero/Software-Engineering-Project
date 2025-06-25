@@ -86,6 +86,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private ShipBoard shipBoard;
     private State state;
 
+    private List<Material> cardMats = new ArrayList<>();
     private ArrayList<ShipCard> selected = new ArrayList<>();
     private int planetIdx = -1;
 
@@ -207,12 +208,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         cardMaterialsBox = new VBox(4);
         cardMaterialsBox.setAlignment(Pos.CENTER);
 
-        cardMaterialsBox.getChildren().clear();          // reset
+        cardMaterialsBox.getChildren().clear();
 
-        List<Material> cardMats = ((AbandonedStation) card).getMaterials();  // adatta al tuo API
+        List<Material> cardMats = ((AbandonedStation) card).getMaterials();
 
-        for (Material m : cardMats) {
-            Button b = buildMaterialButton(m);           // stesso stile/handler
+        for (int i = 0; i < cardMats.size(); i++) {
+            Button b = buildMaterialButton(i);
             cardMaterialsBox.getChildren().add(b);
         }
 
@@ -624,14 +625,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 //        r.setFill(m == null ? Color.TRANSPARENT : materialColor(m));
 //    }
 
-    private Button buildMaterialButton(Material m) {
+    private Button buildMaterialButton(int m) {
 
         Button btn = new Button();
         btn.setMinSize(50, 50);
         btn.setPrefSize(50, 50);
         btn.setMaxSize(50, 50);
 
-        Color fill = materialColor(m);
+        Color fill = materialColor(cardMats.get(m));
         CornerRadii r = new CornerRadii(6);
 
         btn.setBackground(new Background(
@@ -639,16 +640,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         btn.setBorder(new Border(new BorderStroke(
                 Color.WHITE, BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
 
-//        btn.setOnAction(ev -> {
-//            if (selectedMat == null) {
-//                selectedMat = m;
-//                btn.setEffect(new DropShadow(10, Color.GOLD));
-//            }
-//            else if (selectedMat.equals(m)) {
-//                selectedMat = null;
-//                btn.setEffect(null);
-//            }
-//        });
+        btn.setOnAction(ev -> {
+            if (selectedMat == -1 && sourceStorage == null) {
+                selectedMat = m;
+                btn.setEffect(new DropShadow(10, Color.GOLD));
+            }
+            else if (selectedMat == m && sourceStorage == null) {
+                selectedMat = -1;
+                btn.setEffect(null);
+            }
+        });
 
         return btn;
     }
@@ -843,31 +844,37 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
         }else{
+            if(sourceStorage == null){
+                realTimeMaterials.get(dest).set(m, cardMats.get(selectedMat));
+            }
+            else{
+                Material tmp = realTimeMaterials.get(sourceStorage).get(selectedMat);
+                realTimeMaterials.get(sourceStorage).set(selectedMat, realTimeMaterials.get(dest).get(m));
+                realTimeMaterials.get(dest).set(m, tmp);
 
-            Material tmp = realTimeMaterials.get(sourceStorage).get(selectedMat);
-            realTimeMaterials.get(sourceStorage).set(selectedMat, realTimeMaterials.get(dest).get(m));
-            realTimeMaterials.get(dest).set(m, tmp);
+                Button  originBtn     = selectedBtn;   // A
+                Storage originStorage = sourceStorage; // storage di A
+                int     originIdx     = selectedMat;
+
+                Color fill = materialColor(realTimeMaterials.get(sourceStorage).get(selectedMat));
+                CornerRadii r = new CornerRadii(6);
+                originBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+                originBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                        BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+                originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
+
+                MenuItem del = new MenuItem("Elimina");
+                del.setOnAction(ev -> deleteMaterial(originIdx, originStorage, selectedBtn));
+                ContextMenu cm = new ContextMenu(del);
+                originBtn.setContextMenu(cm);
+            }
 
 
-            Button  originBtn     = selectedBtn;   // A
-            Storage originStorage = sourceStorage; // storage di A
-            int     originIdx     = selectedMat;
-
-            Color fill = materialColor(realTimeMaterials.get(sourceStorage).get(selectedMat));
-            CornerRadii r = new CornerRadii(6);
-            originBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
-            originBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
-                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
-
-            originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
-
-            MenuItem del = new MenuItem("Elimina");
-            del.setOnAction(ev -> deleteMaterial(originIdx, sourceStorage, selectedBtn));
-            ContextMenu cm = new ContextMenu(del);
-            originBtn.setContextMenu(cm);
 
             int finalI2 = m;
             Color fill2 = materialColor(realTimeMaterials.get(dest).get(m));
+            CornerRadii r = new CornerRadii(6);
             btn.setBackground(new Background(new BackgroundFill(fill2, r, Insets.EMPTY)));
             btn.setBorder(new Border(new BorderStroke(Color.WHITE,
                     BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
