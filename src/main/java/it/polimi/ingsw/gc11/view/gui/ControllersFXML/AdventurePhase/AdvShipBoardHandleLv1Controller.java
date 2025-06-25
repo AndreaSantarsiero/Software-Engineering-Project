@@ -644,9 +644,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private Button buildMaterialButton(Material m) {
 
         Button btn = new Button();
-        btn.setMinSize(10, 10);
-        btn.setPrefSize(10, 10);
-        btn.setMaxSize(10, 10);
+        btn.setMinSize(50, 50);
+        btn.setPrefSize(50, 50);
+        btn.setMaxSize(50, 50);
 
         Color fill = materialColor(m);
         CornerRadii r = new CornerRadii(6);
@@ -1002,9 +1002,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             Button btn = new Button();
 
             /* --- stile 10×10 (come i vecchi rettangoli) --------------------- */
-            btn.setMinSize(10, 10);
-            btn.setPrefSize(10, 10);
-            btn.setMaxSize(10, 10);
+            btn.setMinSize(30, 30);
+            btn.setPrefSize(30, 30);
+            btn.setMaxSize(30, 30);
 
             Color fill = materialColor(mat);
             CornerRadii r = new CornerRadii(6);
@@ -1026,9 +1026,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
         for(int i = storage.getMaterials().size(); i < storage.getType().getCapacity(); i++) {
             Button btn = new Button();
-            btn.setMinSize(10, 10);
-            btn.setPrefSize(10, 10);
-            btn.setMaxSize(10, 10);
+            btn.setMinSize(30, 30);
+            btn.setPrefSize(30, 30);
+            btn.setMaxSize(30, 30);
             btn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
             btn.setBorder(new Border(new BorderStroke(Color.WHITE,
                     BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
