@@ -90,7 +90,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private Button   selectedBtn;
     private final Map<Storage,
             AbstractMap.SimpleEntry<List<Material>, List<Material>>> pending = new HashMap<>();
-    private final Map<Storage, StackPane> renderCache = new HashMap<>();
 
 
     private final Map<Class<?>, BiConsumer<ShipCard, StackPane>> detailPrinters = Map.of(
@@ -196,6 +195,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_STATION_1);
 
+        pending.clear();
 
         actionText.setText("Select slot to place or replace materials.");
         subHeaderContainer.getChildren().add(
@@ -203,7 +203,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     {
                         setOnAction(event -> {
                             try {
-                                virtualServer.chooseMaterials(adventurePhaseData.getStorageMaterials());
+                                virtualServer.chooseMaterials(pending);
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -296,6 +296,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PLANETS_CARD_1);
 
+        pending.clear();
 
         actionText.setText("Select slot to place or replace materials.");
         subHeaderContainer.getChildren().add(
@@ -303,7 +304,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     {
                         setOnAction(event -> {
                             try {
-                                virtualServer.chooseMaterials(adventurePhaseData.getStorageMaterials());
+                                virtualServer.chooseMaterials(pending);
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -479,30 +480,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
-    //Non ci sono piu slot riservati, vanno sostituito con gli scrap
-    public void setReservedSlots(){
-
-        for(int i = 0; i < shipBoard.getReservedComponents().size(); i++){
-            Image img;
-
-            img = new Image(getClass()
-                    .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipBoard.getReservedComponents().get(i).getId() + ".jpg")
-                    .toExternalForm()
-            );
-
-            ImageView iv = new ImageView(img);
-            iv.setPreserveRatio(true);
-
-            iv.fitWidthProperty().bind(shipCardSize);
-            iv.fitHeightProperty().bind(shipCardSize);
-
-            GridPane.setHgrow(iv, Priority.ALWAYS);
-            GridPane.setVgrow(iv, Priority.ALWAYS);
-
-            reservedSlots.getChildren().add(iv);
-        }
-    }
-
     private Integer askForCrewNumber(Window owner, int max) {
 
         TextInputDialog dialog = new TextInputDialog();
@@ -567,87 +544,87 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         return result.map(Integer::valueOf).orElse(null);
     }
 
-    public List<Material> askForMaterials(Window owner, Storage storage) {
+//    public List<Material> askForMaterials(Window owner, Storage storage) {
+//
+//        int capacity = storage.getType().getCapacity();
+//
+//        List<Material> current = new ArrayList<>(storage.getMaterials());
+//        while (current.size() < capacity) current.add(null);
+//
+//        Dialog<List<Material>> dlg = new Dialog<>();
+//        dlg.initOwner(owner);
+//        dlg.setTitle("Assegna materiali");
+//        dlg.setHeaderText("Clicca sugli slot per ciclare fra vuoto/materiali");
+//
+//        dlg.getDialogPane().getButtonTypes()
+//                .addAll(ButtonType.OK, ButtonType.CANCEL);
+//
+//
+//        List<Integer> selected = new ArrayList<>();
+//
+//        HBox box = new HBox(10);
+//        box.setAlignment(Pos.CENTER);
+//
+//        List<Rectangle> rects = new ArrayList<>(capacity);
+//        List<Material> state  = new ArrayList<>(current);
+//
+//        for (int i = 0; i < capacity; i++) {
+//            Rectangle r = new Rectangle(34, 34);
+//            r.setArcWidth(6); r.setArcHeight(6);
+//            r.setStroke(Color.GREY); r.setStrokeWidth(2);
+//            setFill(r, state.get(i));
+//            final int idx = i;
+//
+//            r.setOnMouseClicked(e -> {
+//                if (selected.contains(idx)) {
+//                    selected.remove(idx);
+//
+//                    r.setEffect(null);
+//                } else {
+//                    selected.add(idx);
+//
+//                    ColorInput goldOverlay = new ColorInput();
+//                    goldOverlay.setPaint(Color.web("#FFD700CC"));
+//
+//                    goldOverlay.widthProperty() .bind(r.widthProperty());
+//                    goldOverlay.heightProperty().bind(r.heightProperty());
+//
+//                    Blend highlight = new Blend();
+//                    highlight.setMode(BlendMode.OVERLAY);
+//                    highlight.setTopInput(goldOverlay);
+//
+//                    r.setEffect(highlight);
+//                }
+//            });
+//
+//            rects.add(r);
+//            box.getChildren().add(r);
+//        }
+//
+//        dlg.getDialogPane().setContent(box);
+//
+//
+//        dlg.setResultConverter(bt -> {
+//            if (bt != ButtonType.OK) return null;
+//
+//            List<Material> oldM = new ArrayList<>();
+//
+//            for (Integer idx : selected) {
+//                if(idx < storage.getMaterials().size()) {
+//                    oldM.add(storage.getMaterials().get(idx));
+//                }else{
+//                    oldM.add(null);
+//                }
+//            };
+//            return oldM;
+//        });
+//
+//        return dlg.showAndWait().orElse(null);
+//    }
 
-        int capacity = storage.getType().getCapacity();
-
-        List<Material> current = new ArrayList<>(storage.getMaterials());
-        while (current.size() < capacity) current.add(null);
-
-        Dialog<List<Material>> dlg = new Dialog<>();
-        dlg.initOwner(owner);
-        dlg.setTitle("Assegna materiali");
-        dlg.setHeaderText("Clicca sugli slot per ciclare fra vuoto/materiali");
-
-        dlg.getDialogPane().getButtonTypes()
-                .addAll(ButtonType.OK, ButtonType.CANCEL);
-
-
-        List<Integer> selected = new ArrayList<>();
-
-        HBox box = new HBox(10);
-        box.setAlignment(Pos.CENTER);
-
-        List<Rectangle> rects = new ArrayList<>(capacity);
-        List<Material> state  = new ArrayList<>(current);
-
-        for (int i = 0; i < capacity; i++) {
-            Rectangle r = new Rectangle(34, 34);
-            r.setArcWidth(6); r.setArcHeight(6);
-            r.setStroke(Color.GREY); r.setStrokeWidth(2);
-            setFill(r, state.get(i));
-            final int idx = i;
-
-            r.setOnMouseClicked(e -> {
-                if (selected.contains(idx)) {
-                    selected.remove(idx);
-
-                    r.setEffect(null);
-                } else {
-                    selected.add(idx);
-
-                    ColorInput goldOverlay = new ColorInput();
-                    goldOverlay.setPaint(Color.web("#FFD700CC"));
-
-                    goldOverlay.widthProperty() .bind(r.widthProperty());
-                    goldOverlay.heightProperty().bind(r.heightProperty());
-
-                    Blend highlight = new Blend();
-                    highlight.setMode(BlendMode.OVERLAY);
-                    highlight.setTopInput(goldOverlay);
-
-                    r.setEffect(highlight);
-                }
-            });
-
-            rects.add(r);
-            box.getChildren().add(r);
-        }
-
-        dlg.getDialogPane().setContent(box);
-
-
-        dlg.setResultConverter(bt -> {
-            if (bt != ButtonType.OK) return null;
-
-            List<Material> oldM = new ArrayList<>();
-
-            for (Integer idx : selected) {
-                if(idx < storage.getMaterials().size()) {
-                    oldM.add(storage.getMaterials().get(idx));
-                }else{
-                    oldM.add(null);
-                }
-            };
-            return oldM;
-        });
-
-        return dlg.showAndWait().orElse(null);
-    }
-
-    private static void setFill(Rectangle r, Material m) {
-        r.setFill(m == null ? Color.TRANSPARENT : materialColor(m));
-    }
+//    private static void setFill(Rectangle r, Material m) {
+//        r.setFill(m == null ? Color.TRANSPARENT : materialColor(m));
+//    }
 
     private static Color materialColor(Material m) {
         return switch (m.getType()) {
@@ -675,26 +652,26 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
         }
 
-        if( state == State.ABANDONED_STATION) {
-            try {
-                List<Material> cardMaterials = ((AbandonedStation) adventurePhaseData.getAdventureCard()).getMaterials();
-
-                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
-                if (oldM != null) {
-                    List<Material> newM;
-                    if(oldM.size() < cardMaterials.size()) {
-                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
-                        cardMaterials.removeAll(newM);
-                    }else{
-                        newM = new ArrayList<>(cardMaterials);
-                    }
-
-                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if( state == State.ABANDONED_STATION) {
+//            try {
+//                List<Material> cardMaterials = ((AbandonedStation) adventurePhaseData.getAdventureCard()).getMaterials();
+//
+//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
+//                if (oldM != null) {
+//                    List<Material> newM;
+//                    if(oldM.size() < cardMaterials.size()) {
+//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
+//                        cardMaterials.removeAll(newM);
+//                    }else{
+//                        newM = new ArrayList<>(cardMaterials);
+//                    }
+//
+//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
+//                }
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
         if(state == State.OPEN_SPACE){
             try {
@@ -712,26 +689,26 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
         }
 
-        if(state == State.PLANETS){
-            try {
-                List<Material> cardMaterials = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getPlanet(planetIdx).getMaterials();
-
-                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
-                if (oldM != null) {
-                    List<Material> newM;
-                    if(oldM.size() < cardMaterials.size()) {
-                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
-                        cardMaterials.removeAll(newM);
-                    }else{
-                        newM = new ArrayList<>(cardMaterials);
-                    }
-
-                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if(state == State.PLANETS){
+//            try {
+//                List<Material> cardMaterials = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getPlanet(planetIdx).getMaterials();
+//
+//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
+//                if (oldM != null) {
+//                    List<Material> newM;
+//                    if(oldM.size() < cardMaterials.size()) {
+//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
+//                        cardMaterials.removeAll(newM);
+//                    }else{
+//                        newM = new ArrayList<>(cardMaterials);
+//                    }
+//
+//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
+//                }
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
         if(state == State.SMUGGLERS_CANNONS){
             Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
@@ -778,57 +755,108 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     private void handleLeftClick(Material m, Storage s, Button btn) {
 
-        /* 1° clic → seleziona */
-        if (selectedMat == null) {
-            selectedMat   = m;
-            sourceStorage = s;
-            selectedBtn   = btn;
+        if (state == State.ABANDONED_STATION || state == State.PLANETS) {
+            /* 1° clic → seleziona */
+            if (selectedMat == null && m != null) {
+                selectedMat   = m;
+                sourceStorage = s;
+                selectedBtn   = btn;
 
-            /* highlight giallo */
-            btn.setEffect(new DropShadow(10, Color.GOLD));
-            return;
-        }
+                /* highlight giallo */
+                btn.setEffect(new DropShadow(10, Color.GOLD));
+                return;
+            }
 
-        /* 2° clic su storage diverso (e non pieno) → MOVE */
-        if (s != sourceStorage && !isFull(s)) {
-            moveMaterial(s);
-            return;
-        }
+            /* 2° clic su storage diverso (e non pieno) → MOVE */
+            if (btn != selectedBtn) {
+                moveMaterial(m, s, btn);
+                return;
+            }
 
-        /* Altri casi: stessa cella o storage pieno → reset */
-        resetSelection();
-    }
-
-    private void moveMaterial(Storage dest) {
-        /* coda le operazioni nella mappa */
-        queueRemove(sourceStorage, selectedMat);
-        queueAdd(dest, selectedMat);
-
-        /* aggiorna il modello immediatamente (se vuoi applicare dopo, togli queste 3 righe) */
-        sourceStorage.getMaterials().remove(selectedMat);
-        dest.getMaterials().add(selectedMat);
-
-        refreshStorage(sourceStorage);
-        refreshStorage(dest);
-        resetSelection();
-    }
-
-    private void deleteMaterial(Material m, Storage s) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "Eliminare definitivamente il materiale?",
-                ButtonType.YES, ButtonType.NO);
-        confirm.setHeaderText(null);
-
-        if (confirm.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-
-            /* coda nella mappa */
-            queueRemove(s, m);
-
-            /* rimuovi subito dal modello (facoltativo) */
-            s.getMaterials().remove(m);
-
-            refreshStorage(s);
+            /* Altri casi: stessa cella o storage pieno → reset */
             resetSelection();
+        }
+    }
+
+    private void moveMaterial(Material m, Storage dest, Button btn) {
+        /* coda le operazioni nella mappa */
+        if (m == null) {
+            queueRemove(sourceStorage, selectedMat);
+            queueAdd(dest, selectedMat);
+
+            selectedBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+            selectedBtn.setContextMenu(null);
+            selectedBtn.setOnAction(ev -> handleLeftClick(null, sourceStorage, selectedBtn ));
+
+            Color fill = materialColor(selectedMat);
+            CornerRadii r = new CornerRadii(6);
+            btn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+            btn.setOnAction(ev -> handleLeftClick(selectedMat, dest, btn));
+
+            MenuItem del = new MenuItem("Elimina");
+            del.setOnAction(ev -> deleteMaterial(selectedMat, dest, btn));
+            ContextMenu cm = new ContextMenu(del);
+            btn.setContextMenu(cm);
+
+        }else{
+            queueRemove(sourceStorage, selectedMat);
+            queueRemove(dest, m);
+            queueAdd(dest, selectedMat);
+            queueAdd(sourceStorage, m);
+
+            Color fill = materialColor(m);
+            CornerRadii r = new CornerRadii(6);
+            selectedBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+            selectedBtn.setOnAction(ev -> handleLeftClick(m, sourceStorage, selectedBtn));
+
+            MenuItem del = new MenuItem("Elimina");
+            del.setOnAction(ev -> deleteMaterial(m, sourceStorage, selectedBtn));
+            ContextMenu cm = new ContextMenu(del);
+            selectedBtn.setContextMenu(cm);
+
+            Color fill2 = materialColor(selectedMat);
+            btn.setBackground(new Background(new BackgroundFill(fill2, r, Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+            btn.setOnAction(ev -> handleLeftClick(selectedMat, dest, btn));
+
+            MenuItem del2 = new MenuItem("Elimina");
+            del2.setOnAction(ev -> deleteMaterial(selectedMat, dest, btn));
+            ContextMenu cm2 = new ContextMenu(del2);
+            btn.setContextMenu(cm2);
+        }
+
+        resetSelection();
+    }
+
+    private void deleteMaterial(Material m, Storage s, Button btn) {
+        if (state == State.ABANDONED_STATION || state == State.PLANETS) {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Eliminare definitivamente il materiale?",
+                    ButtonType.YES, ButtonType.NO);
+            confirm.setHeaderText(null);
+
+            if (confirm.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+
+                /* coda nella mappa */
+                queueRemove(s, m);
+
+                btn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+                btn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+                btn.setContextMenu(null);
+                btn.setOnAction(ev -> handleLeftClick(null, s, btn));
+
+                //refreshStorage(s);
+                resetSelection();
+            }
         }
     }
 
@@ -851,20 +879,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         selectedMat = null;
         sourceStorage = null;
         selectedBtn = null;
-    }
-
-    private boolean isFull(Storage st) {
-        return st.getMaterials().size() >= st.getType().getCapacity();
-    }
-
-    private void refreshStorage(Storage st) {
-        StackPane pane = renderCache.get(st);
-        if (pane == null) {                 // protezione se dimentichi il put
-            System.err.println("No pane for storage " + st);
-            return;
-        }
-        pane.getChildren().clear();
-        printStorageDetail(st, pane);
     }
 
     private void goBackToFlightMenu() {
@@ -940,7 +954,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         HBox materialBox = new HBox(4);                 // Spaziatura tra i bottoni
         materialBox.setAlignment(Pos.CENTER);
-        renderCache.put(storage, stack);
 
         for (Material mat : storage.getMaterials()) {
             Button btn = new Button();
@@ -962,10 +975,21 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
             /* menù contestuale → Elimina */
             MenuItem del = new MenuItem("Elimina");
-            del.setOnAction(ev -> deleteMaterial(mat, storage));
+            del.setOnAction(ev -> deleteMaterial(mat, storage, btn));
             ContextMenu cm = new ContextMenu(del);
             btn.setContextMenu(cm);
 
+            materialBox.getChildren().add(btn);
+        }
+        for(int i = storage.getMaterials().size(); i < storage.getType().getCapacity(); i++) {
+            Button btn = new Button();
+            btn.setMinSize(10, 10);
+            btn.setPrefSize(10, 10);
+            btn.setMaxSize(10, 10);
+            btn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+            btn.setBorder(new Border(new BorderStroke(Color.WHITE,
+                    BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+            btn.setOnAction(ev -> handleLeftClick(null, storage, btn));
             materialBox.getChildren().add(btn);
         }
 
