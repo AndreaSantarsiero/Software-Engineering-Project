@@ -2386,5 +2386,154 @@ public class GameContextTest {
                 "completedAlienSelection should reject unknown username");
     }
 
+    // ---------- ChooseHousing.killMembers tests ----------
+
+    @Test
+    void killMembers_nullUsername_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        AdventureCard advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2, 1, 0, 6);
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.initAdventureState();
+        gameContext.acceptAdventureCard("username1");
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers(null, usage),
+                "killMembers should reject null username");
+    }
+
+    @Test
+    void killMembers_emptyUsername_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        AdventureCard advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2, 1, 0, 6);
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.initAdventureState();
+        gameContext.acceptAdventureCard("username1");
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers("", usage),
+                "killMembers should reject empty username");
+    }
+
+    @Test
+    void killMembers_unknownUsername_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        AdventureCard advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2, 1, 0, 6);
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.initAdventureState();
+        gameContext.acceptAdventureCard("username1");
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers("nonexistent", usage),
+                "killMembers should reject unknown username");
+    }
+
+    @Test
+    void killMembers_notYourTurn_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        AdventureCard advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2, 1, 0, 6);
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.initAdventureState();
+        gameContext.acceptAdventureCard("username1");
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers("username2", usage),
+                "killMembers should reject non-turn username");
+    }
+
+    @Test
+    void killMembers_sumTooLow_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        AdventureCard advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2, 2, 2, 6);
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.initAdventureState();
+
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        ShipBoard shipBoard = player.getShipBoard();
+
+        HousingUnit h1 = new HousingUnit("h1",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+
+        shipBoard.placeShipCard(h1,ShipCard.Orientation.DEG_0, 7, 8);
+
+        gameContext.acceptAdventureCard("username1");
+
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers("username1", usage),
+                "killMembers should reject insufficient selected members");
+    }
+
+    @Test
+    void killMembers_invalidHousingUnit_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        AdventureCard advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2, 1, 0, 6);
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.initAdventureState();
+        gameContext.acceptAdventureCard("username1");
+        HousingUnit invalid = new HousingUnit("invalid",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        usage.put(invalid, 1);
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.killMembers("username1", usage),
+                "killMembers should reject invalid housing unit");
+    }
+
+    @Test
+    void killMembers_successful_shouldKillMembersAndTransitionToIdle() {
+        goToAdvPhase();
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        AbandonedShip advCard = new AbandonedShip("id", AdventureCard.Type.LEVEL2, 2, 1, 6);
+        advPhase.setDrawnAdvCard(advCard);
+        advPhase.initAdventureState();
+
+        // prima di accettare la carta, assicuriamoci che il giocatore abbia abbastanza membri
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        ShipBoard sb = player.getShipBoard();
+
+        gameContext.acceptAdventureCard("username1");
+
+        HousingUnit h1 = new HousingUnit("h1",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+
+        sb.placeShipCard(h1, ShipCard.Orientation.DEG_0, 7, 8);
+
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        usage.put(h1, 1);
+
+        int before = sb.getMembers();
+        gameContext.killMembers("username1", usage);
+
+        assertEquals(
+                before - advCard.getLostMembers(),
+                sb.getMembers(),
+                "killMembers should reduce crew by the required number"
+        );
+        assertInstanceOf(
+                IdleState.class,
+                ((AdventurePhase) gameContext.getPhase()).getCurrentAdvState(),
+                "after killMembers the phase should be IdleState"
+        );
+    }
+
+
 
 }
