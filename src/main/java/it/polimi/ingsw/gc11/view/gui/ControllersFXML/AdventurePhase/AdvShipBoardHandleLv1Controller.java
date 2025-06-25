@@ -184,7 +184,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_1);
 
-        actionTextLabel.setText("Select members to kill.");
+        actionTextLabel.setText("Select housing units and members to kill");
         confirmButton.setVisible(true);
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
@@ -265,6 +265,17 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, Epidemic card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.EPIDEMIC_1);
+
+        actionTextLabel.setText("See the effects of the epidemic");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
+        confirmButton.setText("Go back");
+        confirmButton.setOnAction(event -> {
+            goBackToFlightMenu();
+        });
+
+        state = State.ABANDONED_SHIP;
 
         update(adventurePhaseData);
     }
@@ -356,6 +367,17 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, StarDust card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.STAR_DUST_1);
+
+        actionTextLabel.setText("See the effects of the stardust");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
+        confirmButton.setText("Go back");
+        confirmButton.setOnAction(event -> {
+            goBackToFlightMenu();
+        });
+
+        state = State.STAR_DUST;
 
         update(adventurePhaseData);
     }
