@@ -108,6 +108,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         virtualServer = viewModel.getVirtualServer();
         this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
+        adventurePhaseData.resetResponse();
 
         root.setSpacing(20);
 
@@ -341,8 +343,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void setShipBoard(){
 
         slotGrid.getChildren().clear(); // Pulisci la griglia prima di aggiungere i bottoni
-
-        this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
 
         //Debugging
         if (shipBoard == null) {
@@ -688,13 +688,17 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 int max = battery.getAvailableBatteries();
                 Integer num = askForBatteries(root.getScene().getWindow(), max);
                 if (num != null) {
-                    adventurePhaseData.resetResponse();
                     adventurePhaseData.addBattery(battery, num);
+                    shipBoard.useBatteries(new HashMap<Battery, Integer>(Map.of(battery, num)));
+                    setShipBoard();
                 }
 
                 selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            }
+            catch (Exception e) {
+                //The card clicked is not a Battery
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
             }
         }
 
@@ -903,9 +907,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
-    private void setErrorLabel(){
+    private void setErrorLabel(String error) {
         errorLabel.setVisible(true);
-        errorLabel.setText(adventurePhaseData.getServerMessage());
+        errorLabel.setText(error);
         //Timer, the user can see the error message for an interval of 3s
         Task<Void> timer = new Task<>() {
             @Override
@@ -944,8 +948,11 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println("Error: " + adventurePhaseData.getServerMessage());
-                setErrorLabel();
+                setErrorLabel(serverMessage);
                 adventurePhaseData.resetServerMessage();
+
+                shipBoard = adventurePhaseData.getPlayer().getShipBoard(); // Ripristina il vecchio shipBoard
+                setShipBoard();
             }
 
         });
