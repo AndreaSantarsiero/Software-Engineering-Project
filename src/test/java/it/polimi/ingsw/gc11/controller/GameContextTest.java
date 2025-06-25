@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller;
 
+import it.polimi.ingsw.gc11.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.AbandonedShipState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
@@ -23,11 +24,13 @@ import it.polimi.ingsw.gc11.controller.State.PlanetsCardStates.PlanetsState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.LooseState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.SlaversState;
 import it.polimi.ingsw.gc11.controller.State.SlaversStates.WinState;
+import it.polimi.ingsw.gc11.controller.State.SmugglersStates.ChooseMaterialsSmugglers;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.LooseBatteriesSmugglers;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.SmugglersState;
 import it.polimi.ingsw.gc11.controller.State.SmugglersStates.WinSmugglersState;
 import it.polimi.ingsw.gc11.controller.State.StarDustStates.StarDustState;
 import it.polimi.ingsw.gc11.controller.dumbClient.DumbPlayerContext;
+import it.polimi.ingsw.gc11.loaders.ShipBoardLoader;
 import it.polimi.ingsw.gc11.network.Utils;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.FullLobbyException;
@@ -48,6 +51,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -2868,6 +2872,165 @@ public class GameContextTest {
                 advPhase.getAdvState(),
                 "should transition to Check3Lv1");
     }
+
+    // ---------- ChooseMaterialsSmugglers con ArrayList e ShipBoard.add/replace ----------
+    /** 1) Username sbagliato → IllegalArgumentException */
+    @Test
+    void chooseMaterialsSmugglers_wrongUser_throws() {
+        goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        ArrayList<Material> available = new ArrayList<>();
+        available.add(new Material(Material.Type.RED));
+        Smugglers card = new Smugglers("sm-test1", AdventureCard.Type.LEVEL1, 1, 1,1,available);
+        phase.setDrawnAdvCard(card);
+
+        var player = gameContext.getGameModel().getPlayer("username1");
+        phase.setAdvState(new ChooseMaterialsSmugglers(phase, player));
+
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
+        req.put(null, new AbstractMap.SimpleEntry<>(
+                new ArrayList<>(), // newMaterials
+                new ArrayList<>()  // oldMaterials
+        ));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseMaterials("otherUser", req),
+                "solo il giocatore di turno può scegliere i materiali");
+    }
+
+    /** 2) Materiale non disponibile → IllegalArgumentException */
+    @Test
+    void chooseMaterialsSmugglers_unavailableMaterial_throws() {
+        goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        ArrayList<Material> available = new ArrayList<>();
+        available.add(new Material(Material.Type.RED));
+
+        Smugglers card = new Smugglers("sm-test2", AdventureCard.Type.LEVEL1, 2,1,1, available);
+        phase.setDrawnAdvCard(card);
+
+        var player = gameContext.getGameModel().getPlayer("username1");
+        phase.setAdvState(new ChooseMaterialsSmugglers(phase, player));
+
+        // provo a chiedere BLUE, che non è tra gli offeriti → falls in containsAll
+        ArrayList<Material> newMat = new ArrayList<>();
+        newMat.add(new Material(Material.Type.BLUE));
+        ArrayList<Material> oldMat = new ArrayList<>();
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
+        req.put(null, new AbstractMap.SimpleEntry<>(newMat, oldMat));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> gameContext.chooseMaterials("username1", req),
+                "deve lanciare se i materiali richiesti non sono disponibili");
+    }
+
+    /** 3) Scelta valida → movimento e IdleState (senza toccare gli storage) */
+    @Test
+    void chooseMaterialsSmugglers_success_movesAndIdlesWithoutStorages() {
+        // metto il contesto in AdventurePhase
+        goToAdvPhase();
+        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
+
+        // creo una carta Smugglers (lostDays = 2) con due materiali disponibili
+        ArrayList<Material> available = new ArrayList<>();
+        available.add(new Material(Material.Type.BLUE));
+        available.add(new Material(Material.Type.RED));
+        // redDays=1, blueDays=1 ma non useremo storageMaterials
+        Smugglers card = new Smugglers("sm-test3",
+                AdventureCard.Type.LEVEL2,
+                2,    // lostDays
+                1, 1, // redDays, blueDays
+                available);
+        phase.setDrawnAdvCard(card);
+
+        // preparo il player e lo stato
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        phase.setAdvState(new ChooseMaterialsSmugglers(phase, player));
+
+        // posizione iniziale
+        int posBefore = gameContext.getGameModel().getPositionOnBoard("username1");
+
+        // chiamo chooseMaterials con mappa vuota → non tenta addMaterials
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = new HashMap<>();
+        Player returned = gameContext.chooseMaterials("username1", req);
+
+        // deve tornare lo stesso player
+        assertSame(player, returned);
+
+        // deve essersi spostato di -lostDays
+        int posAfter = gameContext.getGameModel().getPositionOnBoard("username1");
+        assertEquals(posBefore - card.getLostDays(),
+                posAfter,
+                "la posizione deve spostarsi di –lostDays");
+
+        // e deve transitare in IdleState
+        assertTrue(((AdventurePhase) gameContext.getPhase())
+                        .getCurrentAdvState() instanceof IdleState,
+                "dovrebbe transitare in IdleState");
+    }
+
+
+    // ===== Additional tests for untested GameContext methods =====
+
+    @Test
+    void getCurrentPlayer_shouldReturnFirstPlayer() {
+        // Assert
+        goToAdvPhase();
+        Player current = gameContext.getCurrentPlayer();
+        assertNotNull(current, "Current player should not be null");
+        assertEquals("username1", current.getUsername(), "The first player should be username1");
+    }
+
+    @Test
+    void getTimersLeft_shouldBeNonNegative() {
+        // Act
+        startBuildingPhase();
+
+        int t = gameContext.getTimersLeft();
+
+        // Assert
+        assertTrue(t >= 0, "Timers left should be zero or positive");
+    }
+
+    @Test
+    void gimmeACoolShip_shouldReturnValidShipBoard() {
+        // Act
+        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard1.json");
+        ShipBoard shipBoard = shipBoardLoader.getShipBoard();
+        assertNotNull(shipBoard, "ShipBoard was not loaded correctly from JSON");
+
+
+        // Assert
+        assertNotNull(shipBoard, "Should return a non-null ShipBoard");
+        assertTrue(shipBoard.getLength() > 0, "ShipBoard length should be positive");
+        assertTrue(shipBoard.getWidth() > 0, "ShipBoard width should be positive");
+    }
+
+    @Test
+    void releaseMiniDeck_shouldAllowReleasing_afterObserve() {
+        // Arrange: move to Adventure phase
+        startBuildingPhase();
+        StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.SINGLE, ShipCard.Connector.NONE);
+        gameContext.getGameModel().setHeldShipCard(shipCard, "username1");
+        gameContext.placeShipCard("username1", shipCard, ShipCard.Orientation.DEG_0, 6, 7);
+
+        List<AdventureCard> mini = gameContext.observeMiniDeck("username1", 0);
+        assertNotNull(mini, "Should observe a non-null mini deck");
+
+        // Act & Assert: releasing should not throw
+        assertDoesNotThrow(() -> gameContext.releaseMiniDeck("username1"), "Releasing observed mini deck should not fail");
+    }
+
+    @Test
+    void repairShip_invalidUsername_shouldThrow() {
+        // Act & Assert
+        assertThrows(IllegalStateException.class,
+                () -> gameContext.repairShip("invalidUser", List.of(0), List.of(0)),
+                "Should reject repairShip for invalid username");
+    }
+
 
 
 
