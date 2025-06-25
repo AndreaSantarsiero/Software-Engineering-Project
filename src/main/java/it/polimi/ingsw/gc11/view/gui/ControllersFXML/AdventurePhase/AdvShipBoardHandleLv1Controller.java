@@ -921,8 +921,10 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
 
-            slotGrid.getChildren().clear();
-            setShipBoard();
+            if(state != State.ABANDONED_STATION && state != State.PLANETS) {
+                slotGrid.getChildren().clear();
+                setShipBoard();
+            }
 
             System.out.println("State: " + adventurePhaseData.getGUIState());
 
