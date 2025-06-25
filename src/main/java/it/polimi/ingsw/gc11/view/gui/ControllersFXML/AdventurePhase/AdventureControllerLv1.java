@@ -419,7 +419,13 @@ public class AdventureControllerLv1 extends Controller {
     private void setupSeeEffects() {
         seeEffectsButton.setVisible(true);
         seeEffectsButton.setDisable(false);
-        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
+        acceptButton.setVisible(false);
+        acceptButton.setDisable(true);
+        declineButton.setVisible(false);
+        declineButton.setDisable(true);
+        acceptButton.setOnAction(null);
+        declineButton.setOnAction(null);
+        handleButton.setOnAction(null);
     }
 
 

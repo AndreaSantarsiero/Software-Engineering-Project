@@ -581,16 +581,15 @@ public class GameContext {
                 )
         );
         testDeck.addCard(
-                new PlanetsCard(
-                        "TrialPlanets",
+                new CombatZoneLv1(
+                        "TrialWarZone",
                         AdventureCard.Type.TRIAL,
+                        3,
                         2,
-                        new ArrayList<Planet>(List.of(
-                                new Planet(0,0,0,2),
-                                new Planet(2,0,0,0),
-                                new Planet(0,0,1,0)
-                                )
-                        )
+                        new ArrayList<Shot>(List.of(
+                                new Shot(Hit.Type.SMALL, Hit.Direction.BOTTOM),
+                                new Shot(Hit.Type.BIG, Hit.Direction.BOTTOM)
+                        ))
                 )
         );
         testDeck.addCard(new Epidemic("Level2Epidemic"));
@@ -616,6 +615,19 @@ public class GameContext {
                         new Shot(Hit.Type.BIG, Hit.Direction.TOP),
                         new Shot(Hit.Type.SMALL, Hit.Direction.TOP)
                 ))
+                )
+        );
+        testDeck.addCard(
+                new PlanetsCard(
+                        "TrialPlanets",
+                        AdventureCard.Type.TRIAL,
+                        2,
+                        new ArrayList<Planet>(List.of(
+                                new Planet(0,0,0,2),
+                                new Planet(2,0,0,0),
+                                new Planet(0,0,1,0)
+                        )
+                        )
                 )
         );
 
