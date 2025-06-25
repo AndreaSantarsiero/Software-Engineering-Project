@@ -390,11 +390,17 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("Network Error: " + e.getMessage());
             }
         });
+        handleButton.setVisible(false);
+        handleButton.setDisable(true);
     }
 
     private void setupHandle() {
         handleButton.setVisible(true);
         handleButton.setDisable(false);
+        acceptButton.setVisible(false);
+        acceptButton.setDisable(true);
+        declineButton.setVisible(false);
+        declineButton.setDisable(true);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
     }
 
