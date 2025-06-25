@@ -33,6 +33,7 @@ public class UpdateEverybodyProfileAction extends ServerAction {
 
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.updateGUIState();
         adventurePhaseData.setCurrentPlayer(currentPlayer, false);
         adventurePhaseData.setEverybodyProfile(player, enemies);
     }

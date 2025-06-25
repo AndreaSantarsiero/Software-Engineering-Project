@@ -25,10 +25,18 @@ public class Penalty3Lv1 extends AdventureState {
         this.iterationsHit = iterationsHit;
 
         this.combatZoneLv1 = (CombatZoneLv1) this.advContext.getDrawnAdvCard();
+
+    }
+
+    @Override
+    public void initialize() {
         //No Hit left to handle
         if(iterationsHit == combatZoneLv1.getShots().size()){
             this.advContext.setAdvState(new IdleState(advContext));
         }
+        //Notificare che non ci sono più colpi da gestire
+
+
     }
 
 
