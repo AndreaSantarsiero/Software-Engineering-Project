@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
@@ -221,12 +222,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         mainContainer.getChildren().add(cardMaterialsBox);
 
-        actionTextLabel.setText("Select slot to place or replace materials.");
+        actionTextLabel.setText("Select slot to place or replace materials. (right click per rimuovere materiale)");
         confirmButton.setVisible(true);
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
-                                virtualServer.chooseMaterials(pending);
+                                virtualServer.chooseMaterials(buildPending(originalMaterials, realTimeMaterials, pending));
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -321,12 +322,26 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         pending.clear();
 
-        actionTextLabel.setText("Select slot to place or replace materials.");
+        cardMaterialsBox = new VBox(4);
+        cardMaterialsBox.setAlignment(Pos.CENTER);
+
+        cardMaterialsBox.getChildren().clear();
+
+        cardMats = new ArrayList<> (((PlanetsCard) card).getPlanet(idx).getMaterials());
+
+        for (int i = 0; i < cardMats.size(); i++) {
+            Button b = buildMaterialButton(i);
+            cardMaterialsBox.getChildren().add(b);
+        }
+
+        mainContainer.getChildren().add(cardMaterialsBox);
+
+        actionTextLabel.setText("Select slot to place or replace materials. (right click per rimuovere materiale)");
         confirmButton.setVisible(true);
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
-                                virtualServer.chooseMaterials(pending);
+                                virtualServer.chooseMaterials(buildPending(originalMaterials, realTimeMaterials, pending));
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -336,6 +351,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         state = State.PLANETS;
 
+        slotGrid.getChildren().clear();
+        setShipBoard();
         update(adventurePhaseData);
     }
 
@@ -871,6 +888,47 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         selectedMat = -1;
         sourceStorage = null;
         selectedBtn = null;
+    }
+
+    private Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> buildPending(Map<Storage, List<Material>> originalMaterials, Map<Storage, List<Material>> realTimeMaterials, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> pending) {
+
+        pending.clear();
+
+        for (Storage storage : originalMaterials.keySet()) {
+
+            List<Material> start  = originalMaterials.get(storage);
+            List<Material> end    = realTimeMaterials.get(storage);
+
+            if (start == null || end == null || start.size() != end.size()) {
+                throw new IllegalStateException("Liste incoerenti per lo storage " + storage);
+            }
+
+            List<Material> toAdd    = new ArrayList<>();
+            List<Material> toRemove = new ArrayList<>();
+
+            for (int i = 0; i < start.size(); i++) {
+                Material before = start.get(i);
+                Material after  = end.get(i);
+
+                if (before == null && after != null) {
+                    toAdd.add(after);
+                    toRemove.add(null);
+                }
+                else if (before != null && after == null) {
+                    toAdd.add(null);
+                    toRemove.add(before);
+                }
+                else if (before != null && after != null && !before.equals(after)) {
+                    toRemove.add(before);
+                    toAdd.add(after);
+                }
+            }
+
+            pending.put(storage, new AbstractMap.SimpleEntry<>(toAdd, toRemove));
+
+        }
+
+        return pending;
     }
 
     private void goBackToFlightMenu() {
