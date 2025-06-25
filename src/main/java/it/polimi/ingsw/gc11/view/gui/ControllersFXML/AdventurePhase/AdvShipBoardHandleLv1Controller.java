@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.*;
@@ -589,6 +590,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForCrewNumber(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addHousingUsage(housingUnit, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(housingUnit.getNumMembers() - num));
                 }
             }
             catch (Exception e) {
@@ -605,6 +607,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForBatteries(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addBattery(battery, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
                 }
             }
             catch (Exception e) {
@@ -658,6 +661,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForBatteries(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addBattery(battery, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
                 }
 
             } catch (Exception e) {
@@ -674,6 +678,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForBatteries(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addBattery(battery, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
                 }
             }
             catch (Exception e) {
@@ -716,6 +721,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForBatteries(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addBattery(battery, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
                 }
 
             } catch (Exception e) {
@@ -768,6 +774,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForBatteries(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addBattery(battery, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
                 }
 
             } catch (Exception e) {
@@ -784,6 +791,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForCrewNumber(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addHousingUsage(housingUnit, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(housingUnit.getNumMembers() - num));
                 }
             }
             catch (Exception e) {
@@ -1275,5 +1283,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         stack.getChildren().add(circle);
     }
 
+    public static Node getNode(GridPane grid, int col, int row) {
+        for (Node n : grid.getChildren()) {
+            Integer c = GridPane.getColumnIndex(n);
+            Integer r = GridPane.getRowIndex(n);
+
+            // In JavaFX, null = indice 0
+            int colIndex = (c == null) ? 0 : c;
+            int rowIndex = (r == null) ? 0 : r;
+
+            if (colIndex == col && rowIndex == row) {
+                return n;
+            }
+        }
+        return null;
+    }
 
 }

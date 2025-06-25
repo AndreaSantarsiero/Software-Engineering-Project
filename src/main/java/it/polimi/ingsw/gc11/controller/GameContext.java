@@ -553,6 +553,15 @@ public class GameContext {
     public void setTestDeck(String username) {
         AdventureDeck testDeck = new AdventureDeck(false);
         testDeck.addCard(
+                new AbandonedShip(
+                        "Level1AbandonedShip",
+                        AdventureCard.Type.LEVEL1,
+                        1,
+                        2,
+                        3
+                )
+        );
+        testDeck.addCard(
                 new AbandonedStation(
                         "TrialAbandonedStation",
                         AdventureCard.Type.TRIAL,
@@ -565,15 +574,6 @@ public class GameContext {
                 )
         );
         testDeck.addCard(new StarDust("TrialStarDust", AdventureCard.Type.TRIAL));
-        testDeck.addCard(
-                new AbandonedShip(
-                    "Level1AbandonedShip",
-                    AdventureCard.Type.LEVEL1,
-                    1,
-                    2,
-                    3
-                )
-        );
         testDeck.addCard(
                 new OpenSpace(
                         "TrialOpenSpace",
