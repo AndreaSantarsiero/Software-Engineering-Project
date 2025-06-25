@@ -63,6 +63,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     @FXML private HBox reservedSlots;
 
     private Pane glassPane;
+    private VBox cardMaterialsBox;
 
 
     private static final double GRID_GAP = 3;
@@ -196,6 +197,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_STATION_1);
 
         pending.clear();
+
+        cardMaterialsBox = new VBox(4);
+        cardMaterialsBox.setAlignment(Pos.CENTER);
+
+        cardMaterialsBox.getChildren().clear();          // reset
+
+        List<Material> cardMats = ((AbandonedStation) card).getMaterials();  // adatta al tuo API
+
+        for (Material m : cardMats) {
+            Button b = buildMaterialButton(m);           // stesso stile/handler
+            cardMaterialsBox.getChildren().add(b);
+        }
+
+        mainContainer.getChildren().add(cardMaterialsBox);
 
         actionText.setText("Select slot to place or replace materials.");
         subHeaderContainer.getChildren().add(
@@ -626,6 +641,35 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 //        r.setFill(m == null ? Color.TRANSPARENT : materialColor(m));
 //    }
 
+    private Button buildMaterialButton(Material m) {
+
+        Button btn = new Button();
+        btn.setMinSize(10, 10);
+        btn.setPrefSize(10, 10);
+        btn.setMaxSize(10, 10);
+
+        Color fill = materialColor(m);
+        CornerRadii r = new CornerRadii(6);
+
+        btn.setBackground(new Background(
+                new BackgroundFill(fill, r, Insets.EMPTY)));
+        btn.setBorder(new Border(new BorderStroke(
+                Color.WHITE, BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
+
+        btn.setOnAction(ev -> {
+            if (selectedMat == null) {
+                selectedMat = m;
+                btn.setEffect(new DropShadow(10, Color.GOLD));
+            }
+            else if (selectedMat.equals(m)) {
+                selectedMat = null;
+                btn.setEffect(null);
+            }
+        });
+
+        return btn;
+    }
+
     private static Color materialColor(Material m) {
         return switch (m.getType()) {
             case BLUE   -> Color.DODGERBLUE;
@@ -762,7 +806,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 sourceStorage = s;
                 selectedBtn   = btn;
 
-                /* highlight giallo */
                 btn.setEffect(new DropShadow(10, Color.GOLD));
                 return;
             }
