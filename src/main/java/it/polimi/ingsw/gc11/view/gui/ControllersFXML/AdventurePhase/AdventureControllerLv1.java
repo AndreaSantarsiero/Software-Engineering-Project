@@ -89,6 +89,7 @@ public class AdventureControllerLv1 extends Controller {
         ViewModel viewModel = (ViewModel) stage.getUserData();
         this.virtualServer = viewModel.getVirtualServer();
         this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU);
 
         saveOriginalPositions();
 
@@ -118,17 +119,20 @@ public class AdventureControllerLv1 extends Controller {
 
         acceptButton.setVisible(false);
         acceptButton.setDisable(true);
+        acceptButton.setOnAction(null);
 
         declineButton.setVisible(false);
         declineButton.setDisable(true);
+        declineButton.setOnAction(null);
 
         handleButton.setVisible(false);
         handleButton.setDisable(true);
+        handleButton.setOnAction(null);
 
         seeEffectsButton.setVisible(false);
         seeEffectsButton.setDisable(true);
+        seeEffectsButton.setOnAction(null);
 
-        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.FLIGHT_MENU);
         update(adventurePhaseData);
     }
 
@@ -369,6 +373,7 @@ public class AdventureControllerLv1 extends Controller {
     private void setupAcceptDecline() {
         acceptButton.setVisible(true);
         acceptButton.setDisable(false);
+        acceptButton.setOnAction(null);
         acceptButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.CARD_ACCEPTED);
             try {
@@ -380,6 +385,7 @@ public class AdventureControllerLv1 extends Controller {
         });
         declineButton.setVisible(true);
         declineButton.setDisable(false);
+        declineButton.setOnAction(null);
         declineButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.CARD_DECLINED);
             try {
@@ -391,6 +397,7 @@ public class AdventureControllerLv1 extends Controller {
         });
         handleButton.setVisible(false);
         handleButton.setDisable(true);
+        handleButton.setOnAction(null);
     }
 
     private void setupHandle() {
@@ -400,7 +407,9 @@ public class AdventureControllerLv1 extends Controller {
         acceptButton.setDisable(true);
         declineButton.setVisible(false);
         declineButton.setDisable(true);
-        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
+        acceptButton.setOnAction(null);
+        declineButton.setOnAction(null);
+        handleButton.setOnAction(null);
     }
 
     private void setupSeeEffects() {
@@ -445,6 +454,8 @@ public class AdventureControllerLv1 extends Controller {
     }
 
     private void handle(AbandonedStation card) {
+        System.out.println("Abandoned Station");
+        System.out.println("State GUI: " + adventurePhaseData.getGUIState());
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
             try {
@@ -480,6 +491,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(CombatZoneLv1 card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -498,6 +510,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(CombatZoneLv2 card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -516,6 +529,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(Epidemic card) {
         setupSeeEffects();
         seeEffectsButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -535,6 +549,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(MeteorSwarm card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -552,6 +567,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(OpenSpace card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -571,6 +587,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(Pirates card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -589,6 +606,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(PlanetsCard card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/ChoosePlanet.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -607,6 +625,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(Slavers card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -625,6 +644,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(Smugglers card) {
         setupHandle();
         handleButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -643,6 +663,7 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(StarDust card) {
         setupSeeEffects();
         seeEffectsButton.setOnAction(mouseEvent -> {
+            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
