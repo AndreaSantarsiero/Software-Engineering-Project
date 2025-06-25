@@ -50,7 +50,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         OPEN_SPACE,
         PIRATES,
         PLANETS,
-        SLAVERS,
+        SLAVERS_CANNONS, SLAVERS_BATTERIES, SLAVERS_MEMBERS,
         SMUGGLERS_CANNONS, SMUGGLERS_BATTERIES,
         STAR_DUST
     }
@@ -395,6 +395,38 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, Slavers card) {
         setup(stage);
 
+        //if(CHOOSE_CANNONS_STATE){
+            actionTextLabel.setText("Select double cannons to use.");
+            confirmButton.setVisible(true);
+            confirmButton.setDisable(false);
+            confirmButton.setOnAction(event -> {
+                for(ShipCard s : selectedShipCards) {
+                    Cannon c = (Cannon) s;
+                    adventurePhaseData.addDoubleCannon(c);
+                }
+                selectedShipCards.clear();
+                state = State.SLAVERS_BATTERIES;
+            });
+
+            state = State.SLAVERS_CANNONS;
+        //}
+
+        //if(LOSE_STATE){
+            actionTextLabel.setText("Select housing units and members to kill");
+            confirmButton.setVisible(true);
+            confirmButton.setDisable(false);
+            confirmButton.setOnAction(event -> {
+                try {
+                    virtualServer.killMembers(adventurePhaseData.getHousingUsage());
+                }
+                catch (Exception e) {
+                    System.out.println("Network error:" + e.getMessage());
+                }
+            });
+
+            state = State.SLAVERS_MEMBERS;
+        //}
+
         update(adventurePhaseData);
     }
 
@@ -596,12 +628,23 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
 
         if(state == State.SMUGGLERS_CANNONS){
-            Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-            if(selectedShipCards.contains(cannon)){
-                selectedShipCards.remove(cannon);
-            }
-            else{
-                selectedShipCards.add(cannon);
+            try {
+                Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+                if (cannon.getType() == Cannon.Type.DOUBLE) {
+                    if(selectedShipCards.contains(cannon)){
+                        selectedShipCards.remove(cannon);
+                    }
+                    else{
+                        selectedShipCards.add(cannon);
+                    }
+                }
+                else{
+                    System.out.println("The card clicked is not a Double Cannon");
+                    setErrorLabel("The card clicked is not a Double Cannon");
+                }
+            } catch (Exception e) {
+                System.out.println("The card clicked is not a Double Cannon");
+                setErrorLabel("The card clicked is not a Double Cannon");
             }
         }
 
@@ -694,6 +737,28 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 setErrorLabel("The card clicked is not a Battery");
             }
         }
+
+        if(state == State.SLAVERS_CANNONS){
+            try {
+                Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+                if (cannon.getType() == Cannon.Type.DOUBLE) {
+                    if(selectedShipCards.contains(cannon)){
+                        selectedShipCards.remove(cannon);
+                    }
+                    else{
+                        selectedShipCards.add(cannon);
+                    }
+                }
+                else{
+                    System.out.println("The card clicked is not a Double Cannon");
+                    setErrorLabel("The card clicked is not a Double Cannon");
+                }
+            } catch (Exception e) {
+                System.out.println("The card clicked is not a Double Cannon");
+                setErrorLabel("The card clicked is not a Double Cannon");
+            }
+        }
+
     }
 
 
