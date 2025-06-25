@@ -340,8 +340,9 @@ public class AdventureControllerLv1 extends Controller {
     public  void update(AdventurePhaseData adventurePhaseData)  {
         Platform.runLater(() -> {
 
-            //System.out.println("GUIState: " + adventurePhaseData.getGUIState());
+            System.out.println("GUIState: " + adventurePhaseData.getGUIState());
             System.out.println("Current player: " + adventurePhaseData.getCurrentPlayer());
+
             setupPositions();
             showDrawButton();
             showAdventureCard();
@@ -411,12 +412,8 @@ public class AdventureControllerLv1 extends Controller {
 
     // Handle AdventureCard
     private void handle(AbandonedShip card) {
-        System.out.println("AbandonedShip");
-        System.out.println("State: "+adventurePhaseData.getGUIState());
-        System.out.println("PreviousState: "+adventurePhaseData.getPreviousGUIState());
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
-            System.out.println("successfully accepted the card");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -450,7 +447,6 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(AbandonedStation card) {
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
-            System.out.println("successfully accepted the card");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -565,7 +561,8 @@ public class AdventureControllerLv1 extends Controller {
                 stage.setScene(newScene);
                 stage.show();
                 
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
