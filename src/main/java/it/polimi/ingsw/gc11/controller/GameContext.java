@@ -564,6 +564,7 @@ public class GameContext {
                         0
                 )
         );
+        testDeck.addCard(new StarDust("TrialStarDust", AdventureCard.Type.TRIAL));
         testDeck.addCard(
                 new AbandonedShip(
                     "Level1AbandonedShip",
@@ -592,7 +593,31 @@ public class GameContext {
                         )
                 )
         );
-
+        testDeck.addCard(new Epidemic("Level2Epidemic"));
+        testDeck.addCard(new Smugglers(
+                "TrialSmugglers",
+                AdventureCard.Type.TRIAL,
+                1,
+                4,
+                2,
+                new ArrayList<Material>(List.of(new Material(Material.Type.BLUE),
+                                                new Material(Material.Type.GREEN),
+                                                new Material(Material.Type.YELLOW)))
+            )
+        );
+        testDeck.addCard(new Pirates(
+                "Level1Pirates",
+                AdventureCard.Type.LEVEL1,
+                1,
+                5,
+                4,
+                new ArrayList<Shot>(List.of(
+                        new Shot(Hit.Type.SMALL, Hit.Direction.TOP),
+                        new Shot(Hit.Type.BIG, Hit.Direction.TOP),
+                        new Shot(Hit.Type.SMALL, Hit.Direction.TOP)
+                ))
+                )
+        );
 
 
         this.getGameModel().setTestDeck(testDeck);
