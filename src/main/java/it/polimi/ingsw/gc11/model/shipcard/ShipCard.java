@@ -235,20 +235,21 @@ public abstract class ShipCard implements Serializable {
             return false;
         }
 
-        ShipCard shipCard = (ShipCard) obj;
+        ShipCard other = (ShipCard) obj;
 
-        return this.id.equals(shipCard.getId()) &&
-            this.getOrientation().equals(shipCard.getOrientation()) &&
-            this.getTopConnector().equals(shipCard.getTopConnector()) &&
-            this.getRightConnector().equals(shipCard.getRightConnector()) &&
-            this.getBottomConnector().equals(shipCard.getBottomConnector()) &&
-            this.getLeftConnector().equals(shipCard.getLeftConnector()) &&
-            this.scrap == shipCard.isScrap();
+        return  this.id.equals(other.getId()) &&
+                this.getOrientation() == other.getOrientation() &&
+                this.getTopConnector() == other.getTopConnector() &&
+                this.getRightConnector() == other.getRightConnector() &&
+                this.getBottomConnector() == other.getBottomConnector() &&
+                this.getLeftConnector() == other.getLeftConnector() &&
+                this.scrap == other.isScrap() &&
+                this.covered == other.isCovered();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orientation, topConnector, rightConnector, bottomConnector, leftConnector, scrap);
+        return Objects.hash(id, orientation, topConnector, rightConnector, bottomConnector, leftConnector, scrap, covered);
     }
 
 

@@ -455,7 +455,7 @@ public class AdventureControllerLv1 extends Controller {
         else {
             setupAcceptDecline();
         }
-    }
+    } //ok
 
     private void handle(AbandonedStation card) {
         System.out.println("Abandoned Station");
@@ -490,7 +490,7 @@ public class AdventureControllerLv1 extends Controller {
         else {
             setupAcceptDecline();
         }
-    }
+    } // fatta ma da controllare materiali
 
     private void handle(CombatZoneLv1 card) {
         setupHandle();
@@ -548,7 +548,7 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }
+    } //ok
 
     private void handle(MeteorSwarm card) {
         setupHandle();
@@ -586,7 +586,7 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }
+    } //ok
 
     private void handle(Pirates card) {
         setupHandle();
@@ -682,7 +682,7 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }
+    } //ok
 
 
 }
