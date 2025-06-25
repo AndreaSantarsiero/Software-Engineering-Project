@@ -580,19 +580,6 @@ public class GameContext {
                         AdventureCard.Type.TRIAL
                 )
         );
-        testDeck.addCard(
-                new PlanetsCard(
-                        "TrialPlanets",
-                        AdventureCard.Type.TRIAL,
-                        2,
-                        new ArrayList<Planet>(List.of(
-                                new Planet(0,0,0,2),
-                                new Planet(2,0,0,0),
-                                new Planet(0,0,1,0)
-                                )
-                        )
-                )
-        );
         testDeck.addCard(new Epidemic("Level2Epidemic"));
         testDeck.addCard(new Smugglers(
                 "TrialSmugglers",
@@ -616,6 +603,19 @@ public class GameContext {
                         new Shot(Hit.Type.BIG, Hit.Direction.TOP),
                         new Shot(Hit.Type.SMALL, Hit.Direction.TOP)
                 ))
+                )
+        );
+        testDeck.addCard(
+                new PlanetsCard(
+                        "TrialPlanets",
+                        AdventureCard.Type.TRIAL,
+                        2,
+                        new ArrayList<Planet>(List.of(
+                                new Planet(0,0,0,2),
+                                new Planet(2,0,0,0),
+                                new Planet(0,0,1,0)
+                        )
+                        )
                 )
         );
 
