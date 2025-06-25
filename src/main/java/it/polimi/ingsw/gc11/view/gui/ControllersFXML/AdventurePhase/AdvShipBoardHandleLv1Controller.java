@@ -168,6 +168,10 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         actionTextLabel.setTextAlignment(TextAlignment.CENTER);
         actionTextLabel.setAlignment(Pos.CENTER);
+
+        confirmButton.setVisible(false);
+        confirmButton.setDisable(true);
+
     }
 
     public void initialize(Stage stage, AbandonedShip card) {
@@ -175,6 +179,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_1);
 
         actionTextLabel.setText("Select members to kill.");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.killMembers(adventurePhaseData.getHousingUsage());
@@ -210,6 +216,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         mainContainer.getChildren().add(cardMaterialsBox);
 
         actionTextLabel.setText("Select slot to place or replace materials.");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.chooseMaterials(pending);
@@ -229,6 +237,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         if(stageNum == 2){
             actionTextLabel.setText("Select members to kill.");
+            confirmButton.setVisible(true);
+            confirmButton.setDisable(false);
             confirmButton.setOnAction(event -> {
                                 try {
                                     virtualServer.killMembers(adventurePhaseData.getHousingUsage());
@@ -264,6 +274,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.OPEN_SPACE_1);
 
         actionTextLabel.setText("Select batteries to use for the double engines.");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.chooseEnginePower(adventurePhaseData.getBatteries());
@@ -291,6 +303,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         pending.clear();
 
         actionTextLabel.setText("Select slot to place or replace materials.");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.chooseMaterials(pending);
@@ -318,6 +332,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
         actionTextLabel.setText("Select double cannons to use.");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             for(ShipCard s : selected) {
                                 Cannon c = (Cannon) s;
@@ -644,6 +660,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     }
 
     private void onShipBoardSelected(int x, int y) {
+
         if( state == State.ABANDONED_SHIP || state == State.COMBAT_ZONE_LV1_STAGE_2) {
             try {
                 HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
@@ -652,11 +669,15 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 Integer num = askForCrewNumber(root.getScene().getWindow(), max);
                 if (num != null) {
                     adventurePhaseData.addHousingUsage(housingUnit, num);
+                    shipBoard.killMembers(new HashMap<HousingUnit, Integer>(Map.of(housingUnit, num)));
+                    setShipBoard();
                 }
 
                 selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            }
+            catch (Exception e) {
+                System.out.println("The card clicked is not a Housing Unit");
+                setErrorLabel("The card clicked is not a Housing Unit");
             }
         }
 
@@ -696,7 +717,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
             }
             catch (Exception e) {
-                //The card clicked is not a Battery
                 System.out.println("The card clicked is not a Battery");
                 setErrorLabel("The card clicked is not a Battery");
             }
