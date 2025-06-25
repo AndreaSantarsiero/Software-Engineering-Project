@@ -13,12 +13,14 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" styleClass="Menu" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1">
+<VBox fx:id="root" prefHeight="720.0" prefWidth="1280.0" styleClass="Menu" stylesheets="@../style.css"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1">
 
     <children>
 
         <!-- Title -->
-        <HBox fx:id="headerContainer" alignment="CENTER">
+        <HBox fx:id="headerContainer" alignment="CENTER" VBox.vgrow="ALWAYS">
             <children>
                 <Label styleClass="Text" text="ADVENTURE PHASE">
                     <font>
@@ -27,15 +29,16 @@
                 </Label>
             </children>
         </HBox>
-        <HBox fx:id="subHeaderContainer">
+        <HBox fx:id="subHeaderContainer" VBox.vgrow="ALWAYS">
             <children>
-                <HBox fx:id="playersButtons">
+                <HBox fx:id="playersButtons" VBox.vgrow="ALWAYS">
                <children>
                   <Label styleClass="Text" stylesheets="@../style.css" text="View Shipboards:   " />
-               </children></HBox>
-            <HBox fx:id="cheat" prefHeight="100.0" prefWidth="200.0">
+               </children>
+                </HBox>
+            <HBox fx:id="cheat" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
                         <ComboBox fx:id="selectCheat" prefWidth="150.0" />
                         <Button fx:id="cheatButton" mnemonicParsing="false" onAction="#onCheatButtonClick" text="CHEAT" />
@@ -54,11 +57,11 @@
         </HBox>
 
         <!-- Main Game Layout -->
-        <HBox fx:id="mainContainer">
+        <HBox fx:id="mainContainer" VBox.vgrow="ALWAYS">
 
             <!-- CENTER: FlightBoard (background image ) -->
             <StackPane fx:id="boardContainer" HBox.hgrow="ALWAYS">
-                <ImageView fx:id="flightBoardImage" preserveRatio="true">
+                <ImageView fx:id="flightBoardImage" preserveRatio="true" fitWidth="985.0" fitHeight="546.0">
                     <image>
                         <Image url="@../../boards/FlightBoard1.png" />
                     </image>
@@ -96,7 +99,8 @@
                     </font>
                 </Label>
                 <VBox fx:id="advCard" alignment="CENTER" spacing="10" style="-fx-background-color: #032b8a; -fx-background-radius: 20; -fx-padding: 10; -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
-                    <ImageView fx:id="adventureCardImage" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="adventureCardImage" preserveRatio="true" visible="false"
+                               fitWidth="160" fitHeight="250" pickOnBounds="true"/>
                     <Button fx:id="acceptButton" styleClass="Text2" text="Accept" visible="false" />
                     <Button fx:id="declineButton" styleClass="Text2" text="Decline" visible="false" />
                     <Button fx:id="handleButton" styleClass="Text2" text="Handle" visible="false" />
@@ -121,3 +125,4 @@
     </padding>
 
 </VBox>
+
