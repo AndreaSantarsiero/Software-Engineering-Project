@@ -759,6 +759,38 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
         }
 
+        if(state == State.SLAVERS_BATTERIES){
+            actionTextLabel.setText("Select batteries to use for the double cannons.");
+            subHeaderContainer.getChildren().add(
+                    new Button("Confirm") {
+                        {
+                            setOnAction(event -> {
+                                try {
+                                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                        }
+                    }
+            );
+
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                }
+
+            } catch (Exception e) {
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
+            }
+        }
+
+
     }
 
 
