@@ -1811,31 +1811,22 @@ public abstract class ShipBoard  implements Serializable {
             return false;
         }
 
-        ShipBoard shipBoard = (ShipBoard) obj;
+        ShipBoard other = (ShipBoard) obj;
 
         for(int i = 0; i < components.length; i++) {
             for(int j = 0; j < components[0].length; j++) {
-                if(!(this.components[i][j] == shipBoard.components[i][j])) {
-                    if(this.components[i][j] == null || shipBoard.components[i][j] == null) {
+                if(!(this.components[i][j] == other.components[i][j])) {
+                    if(this.components[i][j] == null || other.components[i][j] == null) {
                         return false;
                     }
-                    if(!this.components[i][j].equals(shipBoard.components[i][j])) {
+                    if(!this.components[i][j].equals(other.components[i][j])) {
                         return false;
                     }
                 }
             }
         }
 
-        if(this.reservedComponents.size() != shipBoard.reservedComponents.size()) {
-            return false;
-        }
-        for (ShipCard shipCard : this.reservedComponents){
-            if(!shipBoard.reservedComponents.contains(shipCard)) {
-                return false;
-            }
-        }
-
-        return true;
+        return Objects.equals(reservedComponents, other.getReservedComponents());
     }
 
 }
