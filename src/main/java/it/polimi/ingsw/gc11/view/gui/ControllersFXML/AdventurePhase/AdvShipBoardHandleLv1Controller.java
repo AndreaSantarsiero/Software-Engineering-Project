@@ -86,7 +86,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private ShipBoard shipBoard;
     private State state;
 
-    private List<Material> cardMats = new ArrayList<>();
+    private ArrayList<Material> cardMats = new ArrayList<>();
     private ArrayList<ShipCard> selectedShipCards = new ArrayList<>();
     private int planetIdx = -1;
 
@@ -210,7 +210,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         cardMaterialsBox.getChildren().clear();
 
-        List<Material> cardMats = ((AbandonedStation) card).getMaterials();
+        cardMats = new ArrayList<> (((AbandonedStation) card).getMaterials());
 
         for (int i = 0; i < cardMats.size(); i++) {
             Button b = buildMaterialButton(i);
@@ -232,6 +232,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         state = State.ABANDONED_STATION;
 
+        slotGrid.getChildren().clear();
+        setShipBoard();
         update(adventurePhaseData);
     }
 
@@ -853,28 +855,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
-    private AbstractMap.SimpleEntry<List<Material>, List<Material>> entry(Storage s) {
-        return pending.computeIfAbsent(
-                s,
-                k -> new AbstractMap.SimpleEntry<>(new ArrayList<>(), new ArrayList<>()));
-    }
-
-    private void queueRemove(Storage s, Material m) {
-        entry(s).getKey().add(m);
-    }
-
-    private void queueAdd(Storage s, Material m) {
-        entry(s).getValue().add(m);
-    }
-
-    private void dequeueRemove(Storage s, Material m) {
-        entry(s).getKey().remove(m);
-    }
-
-    private void dequeueAdd(Storage s, Material m) {
-        entry(s).getValue().remove(m);
-    }
-
     private void resetSelection() {
         if (selectedBtn != null) selectedBtn.setEffect(null);
         selectedMat = -1;
@@ -921,8 +901,10 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
 
-            slotGrid.getChildren().clear();
-            setShipBoard();
+            if(state != State.ABANDONED_STATION && state != State.PLANETS) {
+                slotGrid.getChildren().clear();
+                setShipBoard();
+            }
 
             System.out.println("State: " + adventurePhaseData.getGUIState());
 
