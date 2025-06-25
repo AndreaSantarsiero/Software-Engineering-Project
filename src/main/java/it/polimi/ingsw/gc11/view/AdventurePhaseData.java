@@ -36,11 +36,13 @@ public class AdventurePhaseData extends GamePhaseData {
         FLIGHT_MENU, CARD_DECLINED, CARD_ACCEPTED, HANDLE_CARD_MENU,
         ABANDONED_SHIP_1, ABANDONED_SHIP_2,
         ABANDONED_STATION_1, ABANDONED_STATION_2,
+        EPIDEMIC_1,
         PLANETS_CARD_1, PLANETS_CARD_2,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
         COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_2,
         COMBAT_ZONE_LV2_1, COMBAT_ZONE_LV2_2,
+        STAR_DUST_1,
     }
     private AdventureStateGUI GUIState;
     private AdventureStateGUI previousGUIState;

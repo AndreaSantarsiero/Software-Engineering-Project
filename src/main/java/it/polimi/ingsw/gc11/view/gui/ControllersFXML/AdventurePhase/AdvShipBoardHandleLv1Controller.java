@@ -58,6 +58,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private Label actionTextLabel;
     @FXML private Label errorLabel;
+    @FXML private Button resetButton;
     @FXML private Button confirmButton;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
@@ -86,7 +87,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private ShipBoard shipBoard;
     private State state;
 
-    private ArrayList<ShipCard> selected = new ArrayList<>();
+    private ArrayList<ShipCard> selectedShipCards = new ArrayList<>();
     private int planetIdx = -1;
 
     private int selectedMat = -1;           // materiale cliccato
@@ -112,6 +113,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         virtualServer = viewModel.getVirtualServer();
         this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
         this.shipBoard = adventurePhaseData.getPlayer().getShipBoard();
+
         adventurePhaseData.resetResponse();
 
         root.setSpacing(20);
@@ -175,13 +177,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         confirmButton.setVisible(false);
         confirmButton.setDisable(true);
 
+
     }
 
     public void initialize(Stage stage, AbandonedShip card) {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_1);
 
-        actionTextLabel.setText("Select members to kill.");
+        actionTextLabel.setText("Select housing units and members to kill");
         confirmButton.setVisible(true);
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
@@ -262,6 +265,17 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, Epidemic card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.EPIDEMIC_1);
+
+        actionTextLabel.setText("See the effects of the epidemic");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
+        confirmButton.setText("Go back");
+        confirmButton.setOnAction(event -> {
+            goBackToFlightMenu();
+        });
+
+        state = State.ABANDONED_SHIP;
 
         update(adventurePhaseData);
     }
@@ -338,11 +352,11 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         confirmButton.setVisible(true);
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
-                            for(ShipCard s : selected) {
+                            for(ShipCard s : selectedShipCards) {
                                 Cannon c = (Cannon) s;
                                 adventurePhaseData.addDoubleCannon(c);
                             }
-                            selected.clear();
+                            selectedShipCards.clear();
                             state = State.SMUGGLERS_BATTERIES;
                         });
 
@@ -353,11 +367,25 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, StarDust card) {
         setup(stage);
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.STAR_DUST_1);
+
+        actionTextLabel.setText("See the effects of the stardust");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
+        confirmButton.setText("Go back");
+        confirmButton.setOnAction(event -> {
+            goBackToFlightMenu();
+        });
+
+        state = State.STAR_DUST;
 
         update(adventurePhaseData);
     }
 
 
+    @FXML private void onResetChoiceButtonClicked(){
+        adventurePhaseData.resetResponse();
+    }
 
     public void setShipBoard(){
 
@@ -452,7 +480,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                         // Visualizza dettagli se necessario
                         printDetails(shipCard, stack);
 
-//                        if (selected.contains(shipCard)){
+//                        if (selectedShipCards.contains(shipCard)){
 //                            ColorInput goldOverlay = new ColorInput();
 //                            goldOverlay.setPaint(Color.web("#FFD700CC"));
 //
@@ -477,6 +505,130 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
         }
     }
+
+    private void onShipBoardSelected(int x, int y) {
+
+        if( state == State.ABANDONED_SHIP || state == State.COMBAT_ZONE_LV1_STAGE_2) {
+            try {
+                HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = housingUnit.getNumMembers();
+                Integer num = askForCrewNumber(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addHousingUsage(housingUnit, num);
+                }
+
+                selectedShipCards.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+            }
+            catch (Exception e) {
+                System.out.println("The card clicked is not a Housing Unit");
+                setErrorLabel("The card clicked is not a Housing Unit");
+            }
+        }
+
+//        if( state == State.ABANDONED_STATION) {
+//            try {
+//                List<Material> cardMaterials = ((AbandonedStation) adventurePhaseData.getAdventureCard()).getMaterials();
+//
+//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
+//                if (oldM != null) {
+//                    List<Material> newM;
+//                    if(oldM.size() < cardMaterials.size()) {
+//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
+//                        cardMaterials.removeAll(newM);
+//                    }else{
+//                        newM = new ArrayList<>(cardMaterials);
+//                    }
+//
+//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
+//                }
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
+        if(state == State.OPEN_SPACE){
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                }
+
+                selectedShipCards.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+            }
+            catch (Exception e) {
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
+            }
+        }
+
+//        if(state == State.PLANETS){
+//            try {
+//                List<Material> cardMaterials = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getPlanet(planetIdx).getMaterials();
+//
+//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
+//                if (oldM != null) {
+//                    List<Material> newM;
+//                    if(oldM.size() < cardMaterials.size()) {
+//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
+//                        cardMaterials.removeAll(newM);
+//                    }else{
+//                        newM = new ArrayList<>(cardMaterials);
+//                    }
+//
+//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
+//                }
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
+        if(state == State.SMUGGLERS_CANNONS){
+            Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+            if(selectedShipCards.contains(cannon)){
+                selectedShipCards.remove(cannon);
+            }
+            else{
+                selectedShipCards.add(cannon);
+            }
+        }
+
+        if(state == State.SMUGGLERS_BATTERIES){
+
+            actionTextLabel.setText("Select batteries to use for the double cannons.");
+            subHeaderContainer.getChildren().add(
+                    new Button("Confirm") {
+                        {
+                            setOnAction(event -> {
+                                try {
+                                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                        }
+                    }
+            );
+
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                }
+
+                selectedShipCards.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 
     private Integer askForCrewNumber(Window owner, int max) {
 
@@ -558,7 +710,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 //                .addAll(ButtonType.OK, ButtonType.CANCEL);
 //
 //
-//        List<Integer> selected = new ArrayList<>();
+//        List<Integer> selectedShipCards = new ArrayList<>();
 //
 //        HBox box = new HBox(10);
 //        box.setAlignment(Pos.CENTER);
@@ -574,12 +726,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 //            final int idx = i;
 //
 //            r.setOnMouseClicked(e -> {
-//                if (selected.contains(idx)) {
-//                    selected.remove(idx);
+//                if (selectedShipCards.contains(idx)) {
+//                    selectedShipCards.remove(idx);
 //
 //                    r.setEffect(null);
 //                } else {
-//                    selected.add(idx);
+//                    selectedShipCards.add(idx);
 //
 //                    ColorInput goldOverlay = new ColorInput();
 //                    goldOverlay.setPaint(Color.web("#FFD700CC"));
@@ -607,7 +759,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 //
 //            List<Material> oldM = new ArrayList<>();
 //
-//            for (Integer idx : selected) {
+//            for (Integer idx : selectedShipCards) {
 //                if(idx < storage.getMaterials().size()) {
 //                    oldM.add(storage.getMaterials().get(idx));
 //                }else{
@@ -662,132 +814,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         };
     }
 
-    private void onShipBoardSelected(int x, int y) {
-
-        if( state == State.ABANDONED_SHIP || state == State.COMBAT_ZONE_LV1_STAGE_2) {
-            try {
-                HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-
-                int max = housingUnit.getNumMembers();
-                Integer num = askForCrewNumber(root.getScene().getWindow(), max);
-                if (num != null) {
-                    adventurePhaseData.addHousingUsage(housingUnit, num);
-                    shipBoard.killMembers(new HashMap<HousingUnit, Integer>(Map.of(housingUnit, num)));
-                    setShipBoard();
-                }
-
-                selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
-            }
-            catch (Exception e) {
-                System.out.println("The card clicked is not a Housing Unit");
-                setErrorLabel("The card clicked is not a Housing Unit");
-            }
-        }
-
-//        if( state == State.ABANDONED_STATION) {
-//            try {
-//                List<Material> cardMaterials = ((AbandonedStation) adventurePhaseData.getAdventureCard()).getMaterials();
-//
-//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
-//                if (oldM != null) {
-//                    List<Material> newM;
-//                    if(oldM.size() < cardMaterials.size()) {
-//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
-//                        cardMaterials.removeAll(newM);
-//                    }else{
-//                        newM = new ArrayList<>(cardMaterials);
-//                    }
-//
-//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
-//                }
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-
-        if(state == State.OPEN_SPACE){
-            try {
-                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-
-                int max = battery.getAvailableBatteries();
-                Integer num = askForBatteries(root.getScene().getWindow(), max);
-                if (num != null) {
-                    adventurePhaseData.addBattery(battery, num);
-                    shipBoard.useBatteries(new HashMap<Battery, Integer>(Map.of(battery, num)));
-                    setShipBoard();
-                }
-
-                selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
-            }
-            catch (Exception e) {
-                System.out.println("The card clicked is not a Battery");
-                setErrorLabel("The card clicked is not a Battery");
-            }
-        }
-
-//        if(state == State.PLANETS){
-//            try {
-//                List<Material> cardMaterials = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getPlanet(planetIdx).getMaterials();
-//
-//                List<Material> oldM = askForMaterials(stage, ((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0))));
-//                if (oldM != null) {
-//                    List<Material> newM;
-//                    if(oldM.size() < cardMaterials.size()) {
-//                        newM = new ArrayList<>(cardMaterials.subList(0, oldM.size()));
-//                        cardMaterials.removeAll(newM);
-//                    }else{
-//                        newM = new ArrayList<>(cardMaterials);
-//                    }
-//
-//                    adventurePhaseData.addStorageMaterial((Storage) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)), new AbstractMap.SimpleEntry<List<Material>, List<Material>>(newM, oldM));
-//                }
-//            } catch (Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-
-        if(state == State.SMUGGLERS_CANNONS){
-            Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-            if(selected.contains(cannon)){
-                selected.remove(cannon);
-            }
-            else{
-                selected.add(cannon);
-            }
-        }
-
-        if(state == State.SMUGGLERS_BATTERIES){
-
-            actionTextLabel.setText("Select batteries to use for the double cannons.");
-            subHeaderContainer.getChildren().add(
-                    new Button("Confirm") {
-                        {
-                            setOnAction(event -> {
-                                try {
-                                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
-                                }
-                            });
-                        }
-                    }
-            );
-
-            try {
-                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
-
-                int max = battery.getAvailableBatteries();
-                Integer num = askForBatteries(root.getScene().getWindow(), max);
-                if (num != null) {
-                    adventurePhaseData.addBattery(battery, num);
-                }
-
-                selected.add(shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0)));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
     private void handleLeftClick(int m, Storage s, Button btn) {
 
@@ -819,13 +845,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             realTimeMaterials.get(dest).set(m, realTimeMaterials.get(sourceStorage).get(selectedMat));
             realTimeMaterials.get(sourceStorage).set(selectedMat, null);
 
-            int finalI1 = selectedMat;
-            int finalI2 = m;
+            Button  originBtn     = selectedBtn;   // A
+            Storage originStorage = sourceStorage; // storage di A
+            int     originIdx     = selectedMat;       // indice di A (se ti serve)
 
-            selectedBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
-            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
-            selectedBtn.setContextMenu(null);
-            selectedBtn.setOnAction(ev -> handleLeftClick(finalI1, sourceStorage, selectedBtn));
+            originBtn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(6), Insets.EMPTY)));
+            originBtn.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(6), new BorderWidths(1))));
+            originBtn.setContextMenu(null);
+            originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
 
             Color fill = materialColor(realTimeMaterials.get(dest).get(m));
             CornerRadii r = new CornerRadii(6);
@@ -847,19 +874,23 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             realTimeMaterials.get(sourceStorage).set(selectedMat, realTimeMaterials.get(dest).get(m));
             realTimeMaterials.get(dest).set(m, tmp);
 
-            int finalI1 = selectedMat;
+
+            Button  originBtn     = selectedBtn;   // A
+            Storage originStorage = sourceStorage; // storage di A
+            int     originIdx     = selectedMat;
+
             Color fill = materialColor(realTimeMaterials.get(sourceStorage).get(selectedMat));
             CornerRadii r = new CornerRadii(6);
-            selectedBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
-            selectedBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
+            originBtn.setBackground(new Background(new BackgroundFill(fill, r, Insets.EMPTY)));
+            originBtn.setBorder(new Border(new BorderStroke(Color.WHITE,
                     BorderStrokeStyle.SOLID, r, new BorderWidths(1))));
 
-            selectedBtn.setOnAction(ev -> handleLeftClick(finalI1, sourceStorage, selectedBtn));
+            originBtn.setOnAction(ev -> handleLeftClick(originIdx, originStorage, originBtn));
 
             MenuItem del = new MenuItem("Elimina");
-            del.setOnAction(ev -> deleteMaterial(finalI1, sourceStorage, selectedBtn));
+            del.setOnAction(ev -> deleteMaterial(originIdx, sourceStorage, selectedBtn));
             ContextMenu cm = new ContextMenu(del);
-            selectedBtn.setContextMenu(cm);
+            originBtn.setContextMenu(cm);
 
             int finalI2 = m;
             Color fill2 = materialColor(realTimeMaterials.get(dest).get(m));
@@ -963,6 +994,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         new Thread(timer).start();
     }
 
+
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
@@ -983,16 +1015,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
-                System.out.println("Error: " + adventurePhaseData.getServerMessage());
+                System.out.println("Server Error: " + adventurePhaseData.getServerMessage());
                 setErrorLabel(serverMessage);
                 adventurePhaseData.resetServerMessage();
-
-                shipBoard = adventurePhaseData.getPlayer().getShipBoard(); // Ripristina il vecchio shipBoard
-                setShipBoard();
+                adventurePhaseData.resetResponse();
             }
 
         });
     }
+
+
 
 
     private void printDetails(ShipCard shipCard, StackPane stack) {
