@@ -58,8 +58,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     @FXML private HBox headerContainer, subHeaderContainer;
     @FXML private Label actionTextLabel;
     @FXML private Label errorLabel;
-    @FXML private Button goBackButton;
-    @FXML private Label owner;
+    @FXML private Button confirmButton;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
@@ -112,9 +111,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         root.setSpacing(20);
 
-        headerContainer.minHeightProperty().bind(
-                root.heightProperty().multiply(0.10)
-        );
+        headerContainer.minHeightProperty().bind(root.heightProperty().multiply(0.10));
         headerContainer.prefHeightProperty().bind(headerContainer.minHeightProperty());
         headerContainer.maxHeightProperty().bind(headerContainer.minHeightProperty());
 
@@ -176,10 +173,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_1);
 
         actionTextLabel.setText("Select members to kill.");
-        subHeaderContainer.getChildren().add(
-                new Button("Confirm") {
-                    {
-                        setOnAction(event -> {
+        confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.killMembers(adventurePhaseData.getHousingUsage());
                             }
@@ -187,9 +181,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                                 System.out.println("Network error:" + e.getMessage());
                             }
                         });
-                    }
-                }
-        );
 
         state = State.ABANDONED_SHIP;
 
@@ -217,19 +208,13 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         mainContainer.getChildren().add(cardMaterialsBox);
 
         actionTextLabel.setText("Select slot to place or replace materials.");
-        subHeaderContainer.getChildren().add(
-                new Button("Confirm") {
-                    {
-                        setOnAction(event -> {
+        confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.chooseMaterials(pending);
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
                         });
-                    }
-                }
-        );
 
         state = State.ABANDONED_STATION;
 
@@ -285,10 +270,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.OPEN_SPACE_1);
 
         actionTextLabel.setText("Select batteries to use for the double engines.");
-        subHeaderContainer.getChildren().add(
-                new Button("Confirm") {
-                    {
-                        setOnAction(event -> {
+        confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.chooseEnginePower(adventurePhaseData.getBatteries());
                             }
@@ -296,9 +278,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                                 System.out.println("Network error:" + e.getMessage());
                             }
                         });
-                    }
-                }
-        );
 
         state = State.OPEN_SPACE;
 
@@ -984,7 +963,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println("Error: " + adventurePhaseData.getServerMessage());
-                //setErrorLabel();
+                setErrorLabel();
                 adventurePhaseData.resetServerMessage();
             }
 

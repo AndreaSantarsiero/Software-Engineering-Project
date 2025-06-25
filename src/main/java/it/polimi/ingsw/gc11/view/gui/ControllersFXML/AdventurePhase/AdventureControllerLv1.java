@@ -46,6 +46,7 @@ public class AdventureControllerLv1 extends Controller {
     @FXML private Pane positionOverlayPane;
     @FXML private Rectangle pos0, pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9;
     @FXML private Rectangle pos10, pos11, pos12, pos13, pos14, pos15, pos16, pos17;
+    @FXML private VBox cardPane;
     @FXML private ImageView adventureCardImage;
     @FXML private Button acceptButton;
     @FXML private Button declineButton;
@@ -98,6 +99,9 @@ public class AdventureControllerLv1 extends Controller {
         flightBoardImage.fitHeightProperty().addListener((obs, oldVal, newVal) -> updateRectangles());
         flightBoardImage.layoutXProperty().addListener((obs, oldVal, newVal) -> updateRectangles());
         flightBoardImage.layoutYProperty().addListener((obs, oldVal, newVal) -> updateRectangles());
+
+        errorLabel.setWrapText(true);
+        errorLabel.prefWidthProperty().bind(cardPane.widthProperty());
 
         // Primo posizionamento
         updateRectangles();
@@ -419,7 +423,7 @@ public class AdventureControllerLv1 extends Controller {
     }
 
 
-    // Handle AdventureCard
+    // Handle AdventureCard buttons
     private void handle(AbandonedShip card) {
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
