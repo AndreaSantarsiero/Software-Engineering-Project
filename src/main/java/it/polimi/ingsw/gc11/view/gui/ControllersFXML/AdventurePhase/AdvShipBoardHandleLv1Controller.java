@@ -227,10 +227,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         if(stageNum == 2){
             actionTextLabel.setText("Select members to kill.");
-            subHeaderContainer.getChildren().add(
-                    new Button("Confirm") {
-                        {
-                            setOnAction(event -> {
+            confirmButton.setOnAction(event -> {
                                 try {
                                     virtualServer.killMembers(adventurePhaseData.getHousingUsage());
                                 } catch (Exception e) {
@@ -238,11 +235,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                                 }
                             });
                         }
-                    }
-            );
-
-            state = State.COMBAT_ZONE_LV1_STAGE_2;
-        }
 
         update(adventurePhaseData);
     }
@@ -297,19 +289,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         pending.clear();
 
         actionTextLabel.setText("Select slot to place or replace materials.");
-        subHeaderContainer.getChildren().add(
-                new Button("Confirm") {
-                    {
-                        setOnAction(event -> {
+        confirmButton.setOnAction(event -> {
                             try {
                                 virtualServer.chooseMaterials(pending);
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
                         });
-                    }
-                }
-        );
+
         planetIdx = idx;
 
         state = State.PLANETS;
@@ -329,10 +316,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
         actionTextLabel.setText("Select double cannons to use.");
-        subHeaderContainer.getChildren().add(
-                new Button("Confirm") {
-                    {
-                        setOnAction(event -> {
+        confirmButton.setOnAction(event -> {
                             for(ShipCard s : selected) {
                                 Cannon c = (Cannon) s;
                                 adventurePhaseData.addDoubleCannon(c);
@@ -340,9 +324,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                             selected.clear();
                             state = State.SMUGGLERS_BATTERIES;
                         });
-                    }
-                }
-        );
 
         state = State.SMUGGLERS_CANNONS;
 
