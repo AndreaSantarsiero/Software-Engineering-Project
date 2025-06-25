@@ -19,6 +19,8 @@ public class Check2Lv1 extends AdventureState {
         this.gameModel = advContext.getGameModel();
         this.minEnginePower = minEnginePower;
         this.minPlayer = minPlayer;
+
+
     }
 
     @Override

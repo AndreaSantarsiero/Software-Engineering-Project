@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1;
 
+import it.polimi.ingsw.gc11.action.client.UpdateCurrentPlayerAction;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -59,7 +60,22 @@ public class Check3Lv1 extends AdventureState {
 
         if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()) {
             //NoPlayersLeft
+
+            //Notify the player with less fire powers that he has to get coordinate
+            String newCurrentPlayer = minPlayer.getUsername();
+            for(Player p : advContext.getGameModel().getPlayersNotAbort()){
+                if(p.getUsername().equals(newCurrentPlayer)){
+                    UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(newCurrentPlayer, true);
+                    advContext.getGameContext().sendAction(player.getUsername(), response);
+                }
+                else {
+                    UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(newCurrentPlayer, false);
+                    advContext.getGameContext().sendAction(player.getUsername(), response);
+                }
+            }
+
             this.advContext.setAdvState(new Penalty3Lv1(this.advContext, this.minPlayer, 0));
+            this.advContext.getCurrentAdvState().initialize();
         }
         //Rimane nello stato corrente
 
