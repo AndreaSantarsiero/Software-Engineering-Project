@@ -12,6 +12,7 @@ import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,18 +50,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         SMUGGLERS_CANNONS, SMUGGLERS_BATTERIES,
         STAR_DUST
     }
-
-    @FXML private Label actionText;
-    @FXML private HBox playersButtons;
+    
+    
     @FXML private VBox root;
     @FXML private GridPane slotGrid;
     @FXML private HBox mainContainer;
     @FXML private HBox headerContainer, subHeaderContainer;
+    @FXML private Label actionTextLabel;
+    @FXML private Label errorLabel;
     @FXML private Button goBackButton;
     @FXML private Label owner;
     @FXML private StackPane boardContainer;
     @FXML private ImageView shipBoardImage;
     @FXML private HBox reservedSlots;
+    
 
     private Pane glassPane;
     private VBox cardMaterialsBox;
@@ -164,23 +167,24 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         reservedSlots.setPickOnBounds(false);
         reservedSlots.toFront();
 
-        actionText.setTextAlignment(TextAlignment.CENTER);
-        actionText.setAlignment(Pos.CENTER);
+        actionTextLabel.setTextAlignment(TextAlignment.CENTER);
+        actionTextLabel.setAlignment(Pos.CENTER);
     }
 
     public void initialize(Stage stage, AbandonedShip card) {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_1);
 
-        actionText.setText("Select members to kill.");
+        actionTextLabel.setText("Select members to kill.");
         subHeaderContainer.getChildren().add(
                 new Button("Confirm") {
                     {
                         setOnAction(event -> {
                             try {
                                 virtualServer.killMembers(adventurePhaseData.getHousingUsage());
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
+                            }
+                            catch (Exception e) {
+                                System.out.println("Network error:" + e.getMessage());
                             }
                         });
                     }
@@ -212,7 +216,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         mainContainer.getChildren().add(cardMaterialsBox);
 
-        actionText.setText("Select slot to place or replace materials.");
+        actionTextLabel.setText("Select slot to place or replace materials.");
         subHeaderContainer.getChildren().add(
                 new Button("Confirm") {
                     {
@@ -237,7 +241,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_1);
 
         if(stageNum == 2){
-            actionText.setText("Select members to kill.");
+            actionTextLabel.setText("Select members to kill.");
             subHeaderContainer.getChildren().add(
                     new Button("Confirm") {
                         {
@@ -280,16 +284,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.OPEN_SPACE_1);
 
-
-        actionText.setText("Select batteries to use for the double engines.");
+        actionTextLabel.setText("Select batteries to use for the double engines.");
         subHeaderContainer.getChildren().add(
                 new Button("Confirm") {
                     {
                         setOnAction(event -> {
                             try {
                                 virtualServer.chooseEnginePower(adventurePhaseData.getBatteries());
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
+                            }
+                            catch (Exception e) {
+                                System.out.println("Network error:" + e.getMessage());
                             }
                         });
                     }
@@ -313,7 +317,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         pending.clear();
 
-        actionText.setText("Select slot to place or replace materials.");
+        actionTextLabel.setText("Select slot to place or replace materials.");
         subHeaderContainer.getChildren().add(
                 new Button("Confirm") {
                     {
@@ -345,7 +349,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SMUGGLERS_1);
 
 
-        actionText.setText("Select double cannons to use.");
+        actionTextLabel.setText("Select double cannons to use.");
         subHeaderContainer.getChildren().add(
                 new Button("Confirm") {
                     {
@@ -724,6 +728,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 int max = battery.getAvailableBatteries();
                 Integer num = askForBatteries(root.getScene().getWindow(), max);
                 if (num != null) {
+                    adventurePhaseData.resetResponse();
                     adventurePhaseData.addBattery(battery, num);
                 }
 
@@ -766,7 +771,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         if(state == State.SMUGGLERS_BATTERIES){
 
-            actionText.setText("Select batteries to use for the double cannons.");
+            actionTextLabel.setText("Select batteries to use for the double cannons.");
             subHeaderContainer.getChildren().add(
                     new Button("Confirm") {
                         {
@@ -938,6 +943,26 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
     }
 
+    private void setErrorLabel(){
+        errorLabel.setVisible(true);
+        errorLabel.setText(adventurePhaseData.getServerMessage());
+        //Timer, the user can see the error message for an interval of 3s
+        Task<Void> timer = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException _) {}
+                return null;
+            }
+        };
+        timer.setOnSucceeded(event -> {
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+        });
+        new Thread(timer).start();
+    }
+
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
@@ -954,6 +979,13 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.OPEN_SPACE_2) {
 
                 goBackToFlightMenu();
+            }
+
+            String serverMessage = adventurePhaseData.getServerMessage();
+            if(serverMessage != null && !serverMessage.isEmpty()) {
+                System.out.println("Error: " + adventurePhaseData.getServerMessage());
+                //setErrorLabel();
+                adventurePhaseData.resetServerMessage();
             }
 
         });

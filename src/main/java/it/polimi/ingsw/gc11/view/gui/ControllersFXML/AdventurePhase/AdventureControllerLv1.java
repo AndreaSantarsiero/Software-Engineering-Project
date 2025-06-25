@@ -180,7 +180,7 @@ public class AdventureControllerLv1 extends Controller {
         for(Player player : allPlayers) {
             Button playerButton = new Button();
             playerButton.setText(player.getUsername());
-            playerButton.setOnMouseClicked(e -> {
+            playerButton.setOnAction(e -> {
 
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardLv1.fxml"));
@@ -296,8 +296,6 @@ public class AdventureControllerLv1 extends Controller {
             adventureCardImage.setImage(image);
             adventureCardImage.setVisible(true);
 
-            System.out.println("Current player: " + adventurePhaseData.getCurrentPlayer());
-
             //Handle the visibility of advCard buttons
             if (adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())) {
                 handler(card);
@@ -342,7 +340,8 @@ public class AdventureControllerLv1 extends Controller {
     public  void update(AdventurePhaseData adventurePhaseData)  {
         Platform.runLater(() -> {
 
-            //System.out.println("GUIState: " + adventurePhaseData.getGUIState());
+            System.out.println("GUIState: " + adventurePhaseData.getGUIState());
+            System.out.println("Current player: " + adventurePhaseData.getCurrentPlayer());
 
             setupPositions();
             showDrawButton();
@@ -370,7 +369,7 @@ public class AdventureControllerLv1 extends Controller {
     private void setupAcceptDecline() {
         acceptButton.setVisible(true);
         acceptButton.setDisable(false);
-        acceptButton.setOnMouseClicked(mouseEvent -> {
+        acceptButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.CARD_ACCEPTED);
             try {
                 virtualServer.acceptAdventureCard();
@@ -381,7 +380,7 @@ public class AdventureControllerLv1 extends Controller {
         });
         declineButton.setVisible(true);
         declineButton.setDisable(false);
-        declineButton.setOnMouseClicked(mouseEvent -> {
+        declineButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.CARD_DECLINED);
             try {
                 virtualServer.declineAdventureCard();
@@ -413,12 +412,8 @@ public class AdventureControllerLv1 extends Controller {
 
     // Handle AdventureCard
     private void handle(AbandonedShip card) {
-        System.out.println("AbandonedShip");
-        System.out.println("State: "+adventurePhaseData.getGUIState());
-        System.out.println("PreviousState: "+adventurePhaseData.getPreviousGUIState());
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
-            System.out.println("successfully accepted the card");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -452,7 +447,6 @@ public class AdventureControllerLv1 extends Controller {
     private void handle(AbandonedStation card) {
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
-            System.out.println("successfully accepted the card");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -485,7 +479,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(CombatZoneLv1 card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -503,7 +497,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(CombatZoneLv2 card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -521,7 +515,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(Epidemic card) {
         setupSeeEffects();
-        seeEffectsButton.setOnMouseClicked(mouseEvent -> {
+        seeEffectsButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -540,7 +534,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(MeteorSwarm card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -557,7 +551,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(OpenSpace card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -567,7 +561,8 @@ public class AdventureControllerLv1 extends Controller {
                 stage.setScene(newScene);
                 stage.show();
                 
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
@@ -575,7 +570,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(Pirates card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -593,7 +588,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(PlanetsCard card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/ChoosePlanet.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -611,7 +606,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(Slavers card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -629,7 +624,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(Smugglers card) {
         setupHandle();
-        handleButton.setOnMouseClicked(mouseEvent -> {
+        handleButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -647,7 +642,7 @@ public class AdventureControllerLv1 extends Controller {
 
     private void handle(StarDust card) {
         setupSeeEffects();
-        seeEffectsButton.setOnMouseClicked(mouseEvent -> {
+        seeEffectsButton.setOnAction(mouseEvent -> {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
