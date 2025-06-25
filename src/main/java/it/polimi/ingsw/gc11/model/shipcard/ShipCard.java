@@ -237,13 +237,13 @@ public abstract class ShipCard implements Serializable {
 
         ShipCard shipCard = (ShipCard) obj;
 
-        return this.id.equals(shipCard.getId()) &&
-                this.orientation.equals(shipCard.getOrientation()) &&
-                this.topConnector.equals(shipCard.getTopConnector()) &&
-                this.rightConnector.equals(shipCard.getRightConnector()) &&
-                this.bottomConnector.equals(shipCard.getBottomConnector()) &&
-                this.leftConnector.equals(shipCard.getLeftConnector()) &&
-                this.scrap == shipCard.isScrap();
+        return this.id.equals(shipCard.getId());
+//                && this.orientation.equals(shipCard.getOrientation()) &&
+//                this.topConnector.equals(shipCard.getTopConnector()) &&
+//                this.rightConnector.equals(shipCard.getRightConnector()) &&
+//                this.bottomConnector.equals(shipCard.getBottomConnector()) &&
+//                this.leftConnector.equals(shipCard.getLeftConnector()) &&
+//                this.scrap == shipCard.isScrap();
     }
 
     @Override
