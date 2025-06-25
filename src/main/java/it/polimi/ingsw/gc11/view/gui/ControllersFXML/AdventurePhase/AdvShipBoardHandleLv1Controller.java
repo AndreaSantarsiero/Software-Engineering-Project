@@ -567,20 +567,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                         // Visualizza dettagli se necessario
                         printDetails(shipCard, stack);
 
-//                        if (selectedShipCards.contains(shipCard)){
-//                            ColorInput goldOverlay = new ColorInput();
-//                            goldOverlay.setPaint(Color.web("#FFD700CC"));
-//
-//                            goldOverlay.widthProperty() .bind(iv.fitWidthProperty());
-//                            goldOverlay.heightProperty().bind(iv.fitHeightProperty());
-//
-//                            Blend highlight = new Blend();
-//                            highlight.setMode(BlendMode.OVERLAY);
-//                            highlight.setTopInput(goldOverlay);
-//
-//                            stack.setEffect(highlight);
-//                        }
-
                         btnShipCard.setGraphic(stack);
 
                         GridPane.setHgrow(btnShipCard, Priority.ALWAYS);
@@ -595,7 +581,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     private void onShipBoardSelected(int x, int y) {
 
-        if( state == State.ABANDONED_SHIP || state == State.COMBAT_ZONE_LV1_STAGE_2) {
+        if(state == State.ABANDONED_SHIP) {
             try {
                 HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
 
@@ -790,6 +776,21 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
         }
 
+        if(state == State.SLAVERS_MEMBERS){
+            try {
+                HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = housingUnit.getNumMembers();
+                Integer num = askForCrewNumber(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addHousingUsage(housingUnit, num);
+                }
+            }
+            catch (Exception e) {
+                System.out.println("The card clicked is not a Housing Unit");
+                setErrorLabel("The card clicked is not a Housing Unit");
+            }
+        }
 
     }
 
