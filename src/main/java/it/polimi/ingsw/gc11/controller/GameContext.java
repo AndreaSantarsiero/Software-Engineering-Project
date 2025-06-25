@@ -338,6 +338,27 @@ public class GameContext {
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader(resourcePath);
         ShipBoard coolShip = shipBoardLoader.getShipBoard();
         coolShip.setCentralUnit(shipBoardLoader.getShipCardLoader().getCentralUnits().get(player.getColorToString()));
+        // Aggiungi i materiali agli storage della nave di level 1
+        for (int i = 0; i < coolShip.getLength(); i++) {
+            for (int j = 0; j < coolShip.getWidth(); j++) {
+                if (coolShip.validateIndexes(j, i)) {
+                    ShipCard card = coolShip.getShipCard(j - coolShip.adaptX(0), i - coolShip.adaptY(0));
+                    if (card != null && card instanceof Storage storage) {
+                        if (((Storage) card).getType() == Storage.Type.SINGLE_RED) {
+                            storage.addMaterial(new Material(Material.Type.RED));
+                        } else if (((Storage) card).getType() == Storage.Type.DOUBLE_BLUE) {
+                            storage.addMaterial(new Material(Material.Type.BLUE));
+                        } else if (((Storage) card).getType() == Storage.Type.DOUBLE_RED) {
+                            storage.addMaterial(new Material(Material.Type.RED));
+                            storage.addMaterial(new Material(Material.Type.RED));
+                        } else if (((Storage) card).getType() == Storage.Type.TRIPLE_BLUE) {
+                            storage.addMaterial(new Material(Material.Type.BLUE));
+                            storage.addMaterial(new Material(Material.Type.GREEN));
+                        }
+                    }
+                }
+            }
+        }
         player.setACoolShip(coolShip);
         return coolShip;
     }

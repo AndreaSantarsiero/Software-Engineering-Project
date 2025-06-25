@@ -953,7 +953,7 @@ public class BuildingLv1Controller extends Controller {
 
 
     private void exportShipBoardToJson(ShipBoard shipBoard) {
-        String filePath = "src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard11.json"; // Specify the path where you want to save the JSON file
+        String filePath = "src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoardTEST.json"; // Specify the path where you want to save the JSON file
         try (java.io.PrintWriter out = new java.io.PrintWriter(filePath)) {
             out.println("{");
             out.println("  \"shipboard\": {");
