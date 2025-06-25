@@ -37,7 +37,7 @@ public class Penalty2Lv1 extends AdventureState {
             sum += housingUsage.get(housingUnit);
         }
 
-        if(sum <= lostMembers) {
+        if(sum < lostMembers) {
             throw new IllegalStateException("You must select enough members to play");
         }
 

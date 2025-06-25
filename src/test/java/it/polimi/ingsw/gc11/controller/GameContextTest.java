@@ -2702,5 +2702,154 @@ public class GameContextTest {
     }
 
 
+    // ---------- Penalty2Lv1.killMembers tests ----------
+
+    @Test
+    void penalty2Lv1_nullUsername_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        // preparo un CombatZoneLv1
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 1, 1, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        Penalty2Lv1 state = new Penalty2Lv1(advPhase, player);
+
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> state.killMembers(null, usage),
+                "should reject null username");
+    }
+
+    @Test
+    void penalty2Lv1_wrongUsername_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 1, 1, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        Penalty2Lv1 state = new Penalty2Lv1(advPhase, player);
+
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> state.killMembers("username2", usage),
+                "should reject calls from non-turn player");
+    }
+
+    @Test
+    void penalty2Lv1_insufficientCrew_shouldAbortAndThrowIllegalStateException() {
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 1, 2, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        // metto l'equipaggio sotto la soglia
+
+        Penalty2Lv1 state = new Penalty2Lv1(advPhase, player);
+
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalStateException.class,
+                () -> state.killMembers("username1", usage),
+                "should abort game if crew < requiredMembers");
+    }
+
+    @Test
+    void penalty2Lv1_sumTooLow_shouldThrowIllegalStateException() {
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 1, 2, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+        // assegno equipaggio sufficiente
+
+        Penalty2Lv1 state = new Penalty2Lv1(advPhase, player);
+
+        // non seleziono abbastanza membri: somma = 0 ≤ 2
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        assertThrows(IllegalStateException.class,
+                () -> state.killMembers("username1", usage),
+                "should reject sum ≤ requiredMembers");
+    }
+
+    @Test
+    void penalty2Lv1_invalidHousingUnit_shouldThrowIllegalArgumentException() {
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        // lostDays = 1 → richiede 1 membro
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 1, 0, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+
+        Penalty2Lv1 state = new Penalty2Lv1(advPhase, player);
+
+        // uso un HousingUnit mai piazzato sulla plancia
+        HousingUnit invalid = new HousingUnit("x",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        usage.put(invalid, 2);  // somma = 2 > 1
+        assertThrows(IllegalArgumentException.class,
+                () -> state.killMembers("username1", usage),
+                "should reject invalid housing unit");
+    }
+
+    @Test
+    void penalty2Lv1_successful_shouldKillMembersAndTransitionToCheck3Lv1() {
+        goToAdvPhase();
+        ArrayList<Shot> shots = new ArrayList<>();
+        shots.add(new Shot(Hit.Type.SMALL, Hit.Direction.RIGHT));
+
+        // lostDays = 1 → richiede 1 membro
+        CombatZoneLv1 advCard = new CombatZoneLv1("id", AdventureCard.Type.TRIAL, 1, 1, shots);
+        ((AdventurePhase) gameContext.getPhase()).setDrawnAdvCard(advCard);
+        AdventurePhase advPhase = (AdventurePhase) gameContext.getPhase();
+        Player player = gameContext.getGameModel().getPlayer("username1");
+
+        ShipBoard sb = player.getShipBoard();
+        // aggiungo una HousingUnit valida e la piazzo a coordinate legali
+        HousingUnit h = new HousingUnit("h",
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                ShipCard.Connector.UNIVERSAL,
+                false);
+        sb.placeShipCard(h, ShipCard.Orientation.DEG_0, 7, 8);
+
+        // assicuro equipaggio sufficiente
+
+        Penalty2Lv1 state = new Penalty2Lv1(advPhase, player);
+
+        Map<HousingUnit, Integer> usage = new HashMap<>();
+        usage.put(h, 1);
+
+        int before = sb.getMembers();
+        Player returned = state.killMembers("username1", usage);
+        assertSame(player, returned, "should return the penalized player");
+        assertEquals(before - 1,
+                sb.getMembers(),
+                "should reduce crew by sum of selected members");
+        assertInstanceOf(Check3Lv1.class,
+                advPhase.getAdvState(),
+                "should transition to Check3Lv1");
+    }
+
 
 }
