@@ -159,10 +159,9 @@ public abstract class AdventureState{
      *
      * @param username the player's username
      * @param numPlanet the index of the chosen planet
-     * @return the list of materials available on the chosen planet
      * @throws IllegalStateException if this operation is not allowed in the current state
      */
-    public List<Material> landOnPlanet(String username, int numPlanet){
+    public void landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current adventure state: " + this.getClass().getName());
     }
 

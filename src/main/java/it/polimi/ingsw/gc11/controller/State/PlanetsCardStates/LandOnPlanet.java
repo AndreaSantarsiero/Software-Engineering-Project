@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.PlanetsCardStates;
 
+import it.polimi.ingsw.gc11.action.client.SendMaterialsAction;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -28,7 +29,7 @@ public class LandOnPlanet  extends AdventureState {
 
 
     @Override
-    public List<Material> landOnPlanet(String username, int numPlanet){
+    public void landOnPlanet(String username, int numPlanet){
         gameModel.checkPlayerUsername(username);
         Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
@@ -49,6 +50,7 @@ public class LandOnPlanet  extends AdventureState {
         //next state
         this.advContext.setAdvState(new LandedPlanet(this.advContext, player, materials, numVisited+1));
 
-        return materials;
+        SendMaterialsAction action = new SendMaterialsAction(materials);
+        advContext.getGameContext().sendAction(player.getUsername(), action);
     }
 }
