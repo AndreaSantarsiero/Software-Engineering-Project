@@ -36,6 +36,13 @@ public class CoordinateState extends AdventureState {
         //No Hit left to handle
         if(iterationsHit == pirates.getShots().size()){
             this.advContext.setAdvState(new IdleState(advContext));
+            //Notify all the player that there are no more hits to handle
+            for(Player p : advContext.getGameModel().getPlayersNotAbort()) {
+                advContext.getGameContext().sendAction(
+                        p.getUsername(),
+                        new NotifyNewHit(false) //false because there are no more hits to handle
+                );
+            }
         }
         else {
             //there are still Hit to handle

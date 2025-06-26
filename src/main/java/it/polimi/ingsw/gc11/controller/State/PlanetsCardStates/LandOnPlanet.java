@@ -47,7 +47,7 @@ public class LandOnPlanet  extends AdventureState {
         List<Material> materials = planetsCard.getPlanet(numPlanet).getMaterials();
 
         //next state
-        this.advContext.setAdvState(new LandedPlanet(this.advContext, player, materials, numVisited));
+        this.advContext.setAdvState(new LandedPlanet(this.advContext, player, materials, numVisited+1));
 
         return materials;
     }

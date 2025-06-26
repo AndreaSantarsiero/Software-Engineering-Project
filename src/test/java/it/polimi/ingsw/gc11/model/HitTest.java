@@ -16,8 +16,11 @@ public class HitTest {
         public TestHit(Hit.Type type, Hit.Direction direction) {
             super(type, direction);
         }
+
         @Override
-        public void print(AdventureTemplate adventureTemplate) {}
+        public void print(AdventureTemplate adventureTemplate) {
+
+        }
     }
 
 
