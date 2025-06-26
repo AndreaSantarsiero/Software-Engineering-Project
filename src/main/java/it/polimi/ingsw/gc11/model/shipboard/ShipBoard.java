@@ -465,9 +465,7 @@ public abstract class ShipBoard  implements Serializable {
                         numComponents++;
                     }
                 }
-                catch (Exception ignored) {
-
-                }
+                catch (Exception ignored) {}
             }
         }
 
@@ -490,9 +488,7 @@ public abstract class ShipBoard  implements Serializable {
                         numComponents++;
                     }
                 }
-                catch (Exception ignored) {
-
-                }
+                catch (Exception ignored) {}
             }
         }
 
@@ -629,7 +625,7 @@ public abstract class ShipBoard  implements Serializable {
      *
      * @return True if all connections are valid, false otherwise
      */
-    private boolean checkShipConnections() {
+    public boolean checkShipConnections() {
         boolean status = true;
 
         for (int i = 0; i < components.length; i++) {
@@ -641,12 +637,11 @@ public abstract class ShipBoard  implements Serializable {
                                 components[i][j].setIllegal(true);
                                 components[i][j-1].setIllegal(true);
                                 status = false;
+                                //System.out.println("Illegal connection between " + components[i][j].getLeftConnector() + " and " + components[i][j-1].getRightConnector() + " at indexes (" + i + ", " + j + "), (" + i + ", " + (j-1) + ")");
                             }
                         }
                     }
-                    catch (Exception ignored) {
-
-                    }
+                    catch (Exception ignored) {}
 
                     try {
                         if(components[i][j+1] != null && !components[i][j+1].isScrap()) {
@@ -654,12 +649,11 @@ public abstract class ShipBoard  implements Serializable {
                                 components[i][j].setIllegal(true);
                                 components[i][j+1].setIllegal(true);
                                 status = false;
+                                //System.out.println("Illegal connection between " + components[i][j].getRightConnector() + " and " + components[i][j+1].getLeftConnector() + " at indexes (" + i + ", " + j + "), (" + i + ", " + (j+1) + ")");
                             }
                         }
                     }
-                    catch (Exception ignored) {
-
-                    }
+                    catch (Exception ignored) {}
 
                     try {
                         if(components[i-1][j] != null && !components[i-1][j].isScrap()) {
@@ -667,12 +661,11 @@ public abstract class ShipBoard  implements Serializable {
                                 components[i][j].setIllegal(true);
                                 components[i-1][j].setIllegal(true);
                                 status = false;
+                                //System.out.println("Illegal connection between " + components[i][j].getTopConnector() + " and " + components[i-1][j].getBottomConnector() + " at indexes (" + i + ", " + j + "), (" + (i-1) + ", " + j + ")");
                             }
                         }
                     }
-                    catch (Exception ignored) {
-
-                    }
+                    catch (Exception ignored) {}
 
                     try {
                         if(components[i+1][j] != null && !components[i+1][j].isScrap()) {
@@ -680,12 +673,11 @@ public abstract class ShipBoard  implements Serializable {
                                 components[i][j].setIllegal(true);
                                 components[i+1][j].setIllegal(true);
                                 status = false;
+                                //System.out.println("Illegal connection between " + components[i][j].getBottomConnector() + " and " + components[i+1][j].getTopConnector() + " at indexes (" + i + ", " + j + "), (" + (i+1) + ", " + j + ")");
                             }
                         }
                     }
-                    catch (Exception ignored) {
-
-                    }
+                    catch (Exception ignored) {}
                 }
             }
         }
@@ -759,9 +751,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x, y-1);   /* inductive step */
                     }
                 }
-                catch (Exception ignored) {
-
-                }
+                catch (Exception ignored) {}
             }
             if (shipCard.getRightConnector() != ShipCard.Connector.NONE) {
                 try {
@@ -771,9 +761,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x+1, y);   /* inductive step */
                     }
                 }
-                    catch (Exception ignored) {
-
-                }
+                catch (Exception ignored) {}
             }
             if (shipCard.getBottomConnector() != ShipCard.Connector.NONE) {
                 try {
@@ -783,9 +771,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x, y+1);   /* inductive step */
                     }
                 }
-                catch (Exception ignored) {
-
-                }
+                catch (Exception ignored) {}
             }
             if (shipCard.getLeftConnector() != ShipCard.Connector.NONE) {
                 try {
@@ -795,9 +781,7 @@ public abstract class ShipBoard  implements Serializable {
                         connectedComponents += integrityVerifier(x-1, y);   /* inductive step */
                     }
                 }
-                catch (Exception ignored) {
-
-                }
+                catch (Exception ignored) {}
             }
 
             if (finalComponent) {
@@ -822,7 +806,7 @@ public abstract class ShipBoard  implements Serializable {
      *
      * @return {@code false} if any restriction is violated, {@code true} otherwise
      */
-    private boolean checkOtherRestrictions(){
+    public boolean checkOtherRestrictions(){
         boolean status = true;
 
         for (Cannon cannon : cannons) {
@@ -838,9 +822,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i-1][j].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception ignored) {
-
-                    }
+                    } catch (Exception ignored) {}
                 }
                 else if (cannon.getOrientation() == ShipCard.Orientation.DEG_90) {
                     try {
@@ -850,9 +832,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i][j+1].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception ignored) {
-
-                    }
+                    } catch (Exception ignored) {}
                 }
                 else if (cannon.getOrientation() == ShipCard.Orientation.DEG_180) {
                     try {
@@ -862,9 +842,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i+1][j].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception ignored) {
-
-                    }
+                    } catch (Exception ignored) {}
                 }
                 else if (cannon.getOrientation() == ShipCard.Orientation.DEG_270) {
                     try {
@@ -874,9 +852,7 @@ public abstract class ShipBoard  implements Serializable {
                             components[i][j-1].setIllegal(true);
                             status = false;
                         }
-                    } catch (Exception ignored) {
-
-                    }
+                    } catch (Exception ignored) {}
                 }
             }
         }
@@ -898,9 +874,7 @@ public abstract class ShipBoard  implements Serializable {
                         components[i+1][j].setIllegal(true);
                         status = false;
                     }
-                } catch (Exception ignored) {
-
-                }
+                } catch (Exception ignored) {}
             }
         }
 
@@ -1724,9 +1698,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
         else if (direction == Hit.Direction.RIGHT) {
@@ -1742,9 +1714,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
         else if (direction == Hit.Direction.TOP) {
@@ -1760,9 +1730,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
         else if (direction == Hit.Direction.BOTTOM) {
@@ -1778,9 +1746,7 @@ public abstract class ShipBoard  implements Serializable {
                         }
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
 
@@ -1804,9 +1770,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
         else if (direction == Hit.Direction.RIGHT) {
@@ -1818,9 +1782,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
         else if (direction == Hit.Direction.TOP) {
@@ -1832,9 +1794,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
         else if (direction == Hit.Direction.BOTTOM) {
@@ -1846,9 +1806,7 @@ public abstract class ShipBoard  implements Serializable {
                         return true;
                     }
                 }
-                catch(Exception ignored){
-
-                }
+                catch(Exception ignored){}
             }
         }
 
