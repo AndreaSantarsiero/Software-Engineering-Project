@@ -496,10 +496,13 @@ public class AdventureControllerLv1 extends Controller {
         else {
             setupAcceptDecline();
         }
-    } // fatta ma da controllare materiali
+    } //ok
 
     private void handle(CombatZoneLv1 card) {
         setupHandle();
+        subHeaderContainer.getChildren().add(
+                new Label("The player with the least crew members lost " + card.getLostDays() + " days")
+        );
         handleButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
@@ -515,7 +518,7 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }
+    } //da finire stati
 
     private void handle(CombatZoneLv2 card) {
         setupHandle();
@@ -572,7 +575,7 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }
+    }//manca stati
 
     private void handle(OpenSpace card) {
         setupHandle();
@@ -611,7 +614,7 @@ public class AdventureControllerLv1 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }
+    }// manca stati
 
     private void handle(PlanetsCard card) {
         setupHandle();
