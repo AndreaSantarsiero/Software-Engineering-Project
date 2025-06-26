@@ -561,11 +561,11 @@ public class GameContext {
                         "Level1Pirates",
                         AdventureCard.Type.LEVEL1,
                         1,
-                        5,
+                        2,
                         4,
                         new ArrayList<Shot>(List.of(
-                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP),
                                 new Shot(Hit.Type.BIG, Hit.Direction.TOP),
+                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP),
                                 new Shot(Hit.Type.SMALL, Hit.Direction.TOP)
                         ))
                 )
@@ -580,6 +580,8 @@ public class GameContext {
                         8
                 )
         );
+
+
 
         testDeck.addCard(
                 new AbandonedShip(
