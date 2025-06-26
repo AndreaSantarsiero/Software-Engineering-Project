@@ -389,8 +389,14 @@ public class AdventureController extends CLIController {
     public void confirmMenuChoice(){
         try{
             switch (data.getState()) {
-                case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, SELECT_SHOT_NUM_BATTERIES -> data.addBattery((Battery) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numBatteries);
-                case SELECT_NUM_MEMBERS -> data.addHousingUsage((HousingUnit) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numMembers);
+                case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, SELECT_SHOT_NUM_BATTERIES -> {
+                    ((Battery) data.getCopiedShipBoard().getShipCard(getSelectedX(), getSelectedY())).useBatteries(numBatteries);
+                    data.addBattery((Battery) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numBatteries);
+                }
+                case SELECT_NUM_MEMBERS -> {
+                    ((HousingUnit) data.getCopiedShipBoard().getShipCard(getSelectedX(), getSelectedY())).killMembers(numMembers);
+                    data.addHousingUsage((HousingUnit) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numMembers);
+                }
             }
             updateInternalState();
         } catch (Exception e){

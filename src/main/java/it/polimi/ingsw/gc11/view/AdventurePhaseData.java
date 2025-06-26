@@ -1,11 +1,13 @@
 package it.polimi.ingsw.gc11.view;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.gc11.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
+import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.*;
 
@@ -53,10 +55,12 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureStateGUI previousGUIState;
 
 
+    private final ObjectMapper mapper = new ObjectMapper();
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private Hit hit;
     private Player player;
+    private ShipBoard copiedShipBoard;
     private Map<String, Player> enemies; //list of enemies players
     private String currentPlayer;
     private String gameHint;
@@ -261,6 +265,22 @@ public class AdventurePhaseData extends GamePhaseData {
     public void setPlayer(Player player) {
         this.player = player;
         updateState();
+    }
+
+
+    public ShipBoard getCopiedShipBoard(){
+        return copiedShipBoard;
+    }
+
+    public void resetCopiedShipBoard() {
+        try{
+            byte[] json = mapper.writeValueAsBytes(player.getShipBoard());
+            copiedShipBoard = mapper.readValue(json, ShipBoard.class);
+        } catch (Exception e) {
+            System.out.println("Couldn't serialize your ship board: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -480,6 +500,7 @@ public class AdventurePhaseData extends GamePhaseData {
         activateAlienUnit = null;
         hostingHousingUnit = null;
         hit = null;
+        resetCopiedShipBoard();
     }
 
 
