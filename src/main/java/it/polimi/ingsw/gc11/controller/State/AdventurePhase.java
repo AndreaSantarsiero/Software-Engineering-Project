@@ -122,10 +122,10 @@ public class AdventurePhase extends GamePhase {
      * @param idxCurrentPlayer the index of the current player
      */
     public void setIdxCurrentPlayer(int idxCurrentPlayer) {
-        this.idxCurrentPlayer = idxCurrentPlayer;
         System.out.println("Setting player index: " + idxCurrentPlayer + " - Player: " +
                 gameModel.getPlayersNotAbort().get(idxCurrentPlayer).getUsername());
         Thread.dumpStack();
+        this.idxCurrentPlayer = idxCurrentPlayer;
     }
 
     /**
