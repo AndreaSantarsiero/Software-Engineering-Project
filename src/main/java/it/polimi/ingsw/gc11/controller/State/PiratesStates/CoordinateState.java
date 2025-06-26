@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State.PiratesStates;
 
+import it.polimi.ingsw.gc11.action.client.NotifyNewHit;
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -27,9 +29,21 @@ public class CoordinateState extends AdventureState {
         this.gameModel = advContext.getGameModel();
         this.iterationsHit = iterationsHit;
         pirates = (Pirates) this.advContext.getDrawnAdvCard();
+    }
+
+    @Override
+    public void initialize() {
         //No Hit left to handle
         if(iterationsHit == pirates.getShots().size()){
             this.advContext.setAdvState(new IdleState(advContext));
+        }
+        else {
+            //there are still Hit to handle
+            //Notify the first player defeated that it's his turn to roll dices
+            advContext.getGameContext().sendAction(
+                    playersDefeated.getFirst().getUsername(),
+                    new NotifyNewHit(true)
+            );
         }
     }
 
