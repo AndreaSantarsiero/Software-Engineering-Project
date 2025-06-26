@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,7 +18,7 @@
     <children>
 
         <!-- Title -->
-        <HBox fx:id="headerContainer" alignment="CENTER">
+        <HBox fx:id="headerContainer" alignment="CENTER" VBox.vgrow="ALWAYS">
             <children>
                 <Label styleClass="Text" text="ADVENTURE PHASE">
                     <font>
@@ -26,50 +27,70 @@
                 </Label>
             </children>
         </HBox>
-        <HBox fx:id="subHeaderContainer">
+        <HBox fx:id="subHeaderContainer" VBox.vgrow="ALWAYS">
             <children>
-                <HBox fx:id="playersButtons">
-               <children>
-                  <Label styleClass="Text" stylesheets="@../style.css" text="View Shipboards:   " />
-               </children></HBox>
-                  <Button fx:id="abortButton" mnemonicParsing="false" onAction="#onAbortButtonClick" text="Abort">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin></Button>
+                <HBox fx:id="playersButtons" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="Text" stylesheets="@../style.css" text="View Shipboards:   " />
+                    </children>
+                </HBox>
+                <HBox fx:id="cheat" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <ComboBox fx:id="selectCheat" prefWidth="150.0" />
+                                <Button fx:id="cheatButton" mnemonicParsing="false" onAction="#onCheatButtonClick" text="CHEAT" />
+                            </children>
+                        </VBox>
+                    </children>
+                    <HBox.margin>
+                        <Insets left="20.0" />
+                    </HBox.margin>
+                </HBox>
+                <Button fx:id="abortButton" mnemonicParsing="false" onAction="#onAbortButtonClick" text="Abort">
+                    <HBox.margin>
+                        <Insets left="20.0" />
+                    </HBox.margin></Button>
             </children>
         </HBox>
 
         <!-- Main Game Layout -->
-        <HBox fx:id="mainContainer">
+        <HBox fx:id="mainContainer" VBox.vgrow="ALWAYS">
 
             <!-- CENTER: FlightBoard (background image ) -->
             <StackPane fx:id="boardContainer" HBox.hgrow="ALWAYS">
-                <ImageView fx:id="flightBoardImage" preserveRatio="true">
+                <ImageView fx:id="flightBoardImage" fitHeight="546.0" fitWidth="985.0" preserveRatio="true">
                     <image>
-                        <Image url="@../../boards/FlightBoard1.png" />
+                        <Image url="@../../boards/FlightBoard2.png" />
                     </image>
                 </ImageView>
                 <Pane fx:id="positionOverlayPane" mouseTransparent="false" pickOnBounds="false">
                     <!-- ...all'interno di <Pane fx:id="positionOverlayPane"> ... -->
                     <children>
-                        <Rectangle fx:id="pos1" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="626.0" layoutY="77.0" onMouseClicked="#onPositionClicked1" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos2" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="530.0" layoutY="59.0" onMouseClicked="#onPositionClicked2" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos3" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="435.0" layoutY="58.0" onMouseClicked="#onPositionClicked3" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos4" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="345.0" layoutY="77.0" onMouseClicked="#onPositionClicked4" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos5" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="256.0" layoutY="104.0" onMouseClicked="#onPositionClicked5" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos6" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="172.0" layoutY="153.0" onMouseClicked="#onPositionClicked6" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos7" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="116.0" layoutY="246.0" onMouseClicked="#onPositionClicked7" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos8" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="160.0" layoutY="350.0" onMouseClicked="#onPositionClicked8" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos9" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="248.0" layoutY="405.0" onMouseClicked="#onPositionClicked9" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos10" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="335.0" layoutY="430.0" onMouseClicked="#onPositionClicked10" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos11" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="427.0" layoutY="451.0" onMouseClicked="#onPositionClicked11" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos12" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="523.0" layoutY="442.0" onMouseClicked="#onPositionClicked12" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos13" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="612.0" layoutY="430.0" onMouseClicked="#onPositionClicked13" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos14" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="700.0" layoutY="405.0" onMouseClicked="#onPositionClicked14" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos15" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="793.0" layoutY="350.0" onMouseClicked="#onPositionClicked15" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos16" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="843.0" layoutY="268.0" onMouseClicked="#onPositionClicked16" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos17" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="799.0" layoutY="162.0" onMouseClicked="#onPositionClicked17" stroke="yellow" strokeWidth="3" width="40" />
-                        <Rectangle fx:id="pos18" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="712.0" layoutY="104.0" onMouseClicked="#onPositionClicked18" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos4" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="501.0" layoutY="76.0" stroke="yellow" strokeWidth="3" width="40" />
+                  <Rectangle fx:id="pos19" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="212.0" layoutY="408.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos3" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="433.0" layoutY="76.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos2" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="363.0" layoutY="82.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos1" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="300.0" layoutY="98.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos0" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="234.0" layoutY="125.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos17" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="341.0" layoutY="450.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos16" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="411.0" layoutY="450.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos15" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="485.0" layoutY="450.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos14" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="552.0" layoutY="450.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos13" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="621.0" layoutY="429.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos12" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="685.0" layoutY="408.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos11" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="744.0" layoutY="371.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos10" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="788.0" layoutY="312.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos9" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="799.0" layoutY="235.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos8" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="756.0" layoutY="174.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos7" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="692.0" layoutY="131.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos6" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="633.0" layoutY="103.0" stroke="yellow" strokeWidth="3" width="40" />
+                        <Rectangle fx:id="pos5" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="566.0" layoutY="82.0" stroke="yellow" strokeWidth="3" width="40" />
+                  <Rectangle fx:id="pos18" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="278.0" layoutY="429.0" stroke="yellow" strokeWidth="3" width="40" />
+                  <Rectangle fx:id="pos20" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="160.0" layoutY="364.0" stroke="yellow" strokeWidth="3" width="40" />
+                  <Rectangle fx:id="pos21" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="116.0" layoutY="290.0" stroke="yellow" strokeWidth="3" width="40" />
+                  <Rectangle fx:id="pos22" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="122.0" layoutY="213.0" stroke="yellow" strokeWidth="3" width="40" />
+                  <Rectangle fx:id="pos23" arcHeight="10" arcWidth="10" fill="#ffff0055" height="40" layoutX="165.0" layoutY="161.0" stroke="yellow" strokeWidth="3" width="40" />
                     </children>
                 </Pane>
             </StackPane>
@@ -82,13 +103,14 @@
                     </font>
                 </Label>
                 <VBox fx:id="advCard" alignment="CENTER" spacing="10" style="-fx-background-color: #032b8a; -fx-background-radius: 20; -fx-padding: 10; -fx-effect: dropshadow(gaussian, black, 10, 0.1, 2, 2);">
-                    <ImageView fx:id="adventureCardImage" preserveRatio="true" visible="false" />
+                    <ImageView fx:id="adventureCardImage" fitHeight="250" fitWidth="160" pickOnBounds="true" preserveRatio="true" visible="false" />
                     <Button fx:id="acceptButton" styleClass="Text2" text="Accept" visible="false" />
-                    <Button fx:id="declineButtton" styleClass="Text2" text="Decline" visible="false" />
+                    <Button fx:id="declineButton" styleClass="Text2" text="Decline" visible="false" />
                     <Button fx:id="handleButton" styleClass="Text2" text="Handle" visible="false" />
+                    <Button fx:id="seeEffectsButton" styleClass="Text2" text="See Effects" visible="false" />
 
                 </VBox>
-                <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card"/>
+                <Button fx:id="drawButton" onAction="#onDrawButtonClick" style="-fx-text-fill: black;" styleClass="Text" stylesheets="@../style.css" text="Draw card" />
                 <Label fx:id="errorLabel" prefHeight="145.0" prefWidth="134.0" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@../style.css" text="error" visible="false" wrapText="true">
                     <font>
                         <Font size="18.0" />
