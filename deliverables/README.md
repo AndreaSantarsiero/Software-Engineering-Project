@@ -53,7 +53,7 @@ java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar -s
 
 ## 📌 Notes
 - The JAR must be run using Java 17 or later (adjust based on your requirements).
-- The `-cli` flag must always be the first argument if used.
+- The `-cli` flag can be placed before or after the ip, but not between ip and port!
 - If provided, the IP and port must be valid and reachable from the client machine.
 
 ---
