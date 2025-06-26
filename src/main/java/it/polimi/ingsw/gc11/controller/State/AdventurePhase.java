@@ -293,10 +293,11 @@ public class AdventurePhase extends GamePhase {
      *
      * @param username the player's username
      * @param numPlanet the index of the selected planet
+     * @return the list of materials available on the chosen planet
      */
     @Override
-    public void landOnPlanet(String username, int numPlanet){
-        advState.landOnPlanet(username, numPlanet);
+    public List<Material> landOnPlanet(String username, int numPlanet){
+        return advState.landOnPlanet(username, numPlanet);
     }
 
     /**
