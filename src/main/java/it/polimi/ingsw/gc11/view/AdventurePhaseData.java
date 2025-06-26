@@ -43,7 +43,8 @@ public class AdventurePhaseData extends GamePhaseData {
         PIRATES_1, PIRATES_2,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
-        COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_2, COMBAT_ZONE_LV1_3, COMBAT_ZONE_LV1_4, COMBAT_ZONE_LV1_5,
+        COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_1_1, COMBAT_ZONE_LV1_2, COMBAT_ZONE_LV1_2_1,
+            COMBAT_ZONE_LV1_3, COMBAT_ZONE_LV1_3_1, COMBAT_ZONE_LV1_4, COMBAT_ZONE_LV1_4_1,
         COMBAT_ZONE_LV2_1, COMBAT_ZONE_LV2_2,
         STAR_DUST_1,
     }
@@ -216,12 +217,11 @@ public class AdventurePhaseData extends GamePhaseData {
         this.serverMessage = serverMessage;
 
         //GUI state management
-        if(GUIState == AdventureStateGUI.FLIGHT_MENU || GUIState == AdventureStateGUI.CARD_DECLINED || GUIState == AdventureStateGUI.CARD_ACCEPTED) {
+        if(GUIState == AdventureStateGUI.FLIGHT_MENU || GUIState == AdventureStateGUI.CARD_DECLINED ||
+                GUIState == AdventureStateGUI.CARD_ACCEPTED) {
             setGUIState(AdventureStateGUI.FLIGHT_MENU);
         }
-        else if( GUIState == AdventureStateGUI.ABANDONED_SHIP_1) {
-            setGUIState(AdventureStateGUI.ABANDONED_SHIP_1);
-        }
+
 
         //Cli state management
         if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP ||
@@ -402,7 +402,6 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     public void setYouWon(Boolean youWon) {
-
         this.youWon = youWon;
     }
 
