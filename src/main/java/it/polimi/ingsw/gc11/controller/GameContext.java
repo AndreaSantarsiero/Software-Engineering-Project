@@ -553,6 +553,19 @@ public class GameContext {
     public void setTestDeck(String username) {
         AdventureDeck testDeck = new AdventureDeck(false);
         testDeck.addCard(
+                new PlanetsCard(
+                        "TrialPlanets",
+                        AdventureCard.Type.TRIAL,
+                        2,
+                        new ArrayList<Planet>(List.of(
+                                new Planet(0,0,0,2),
+                                new Planet(2,0,0,0),
+                                new Planet(0,0,1,0)
+                        )
+                        )
+                )
+        );
+        testDeck.addCard(
                 new AbandonedShip(
                         "Level1AbandonedShip",
                         AdventureCard.Type.LEVEL1,
@@ -617,19 +630,7 @@ public class GameContext {
                 ))
                 )
         );
-        testDeck.addCard(
-                new PlanetsCard(
-                        "TrialPlanets",
-                        AdventureCard.Type.TRIAL,
-                        2,
-                        new ArrayList<Planet>(List.of(
-                                new Planet(0,0,0,2),
-                                new Planet(2,0,0,0),
-                                new Planet(0,0,1,0)
-                        )
-                        )
-                )
-        );
+
 
 
         this.getGameModel().setTestDeck(testDeck);
