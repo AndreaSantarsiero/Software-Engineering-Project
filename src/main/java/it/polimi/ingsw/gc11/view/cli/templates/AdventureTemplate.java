@@ -1,6 +1,9 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.model.Hit;
+import it.polimi.ingsw.gc11.model.Meteor;
 import it.polimi.ingsw.gc11.model.Player;
+import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
@@ -426,12 +429,42 @@ public class AdventureTemplate extends CLITemplate {
                     else if(i == 5){
                         System.out.print("NumBatteries: " + controller.getNumBatteries() + ", NumMembers: " + controller.getNumMembers());
                     }
-                    else if(i == 6){
-                        Player enemy = data.getEnemies().entrySet().iterator().next().getValue();
-                        System.out.print("- your position: " + data.getPlayer().getPosition() + ",   " + enemy.getUsername() + " position: " + enemy.getPosition());
-                    }
                 }
-                else if (y == 4 && i < 4){
+                else if (y == 4){
+                    Hit hit = data.getHit();
+                    if(hit != null){
+                        if(i == 1){
+                            System.out.print("Current ");
+                            hit.print(this);
+                            System.out.print(" to handle:");
+                        }
+                        else if(i == 2){
+                            System.out.print("- Size: " + data.getHit().getType().toString().toLowerCase());
+                        }
+                        else if(i == 3){
+                            System.out.print("- Direction: " + data.getHit().getDirection().toString().toLowerCase());
+                        }
+                        else if(i == 4){
+                            System.out.print("- Coordinate: " + data.getHit().getCoordinate());
+                        }
+                    }
+                    else {
+                        if(i == 1){
+                            System.out.print("No hit to handle");
+                        }
+                        else if(i == 2){
+                            System.out.print("- Size: ");
+                        }
+                        else if(i == 3){
+                            System.out.print("- Direction: ");
+                        }
+                        else if(i == 4){
+                            System.out.print("- Coordinate: ");
+                        }
+                    }
+
+                }
+                else if (y == 5 && i < 4){
                     System.out.print(" ");
                 }
 
@@ -513,5 +546,15 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getNumMembersMenuSize(){
         return numMembersMenu.size();
+    }
+
+
+
+    public void setHitType(Meteor meteor){
+        System.out.print("meteor");
+    }
+
+    public void setHitType(Shot shot){
+        System.out.print("shot");
     }
 }

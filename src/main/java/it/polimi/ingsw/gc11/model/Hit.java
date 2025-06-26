@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.model;
 
+import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
 import java.io.Serializable;
 
 
@@ -43,4 +44,8 @@ public abstract class Hit implements Serializable {
     public Direction getDirection() {
         return direction;
     }
+
+
+
+    public abstract void print(AdventureTemplate adventureTemplate);
 }
