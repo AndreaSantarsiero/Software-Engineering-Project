@@ -77,6 +77,7 @@ public class AdventureController extends CLIController {
         try{
             if (data.getState() == AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU){
                 resetViewData();
+                data.resetResponse();
                 return false;
             }
             else if(data.getState() == AdventurePhaseData.AdventureState.WAIT_ADVENTURE_CARD){
@@ -536,5 +537,17 @@ public class AdventureController extends CLIController {
         selectedI = data.getPlayer().getShipBoard().adaptY(7);
         selectedJ = data.getPlayer().getShipBoard().adaptX(7);
         mainMenu = 0;
+        actionMenu = 0;
+        advancedActionMenu = 0;
+        firePowerMenu = 0;
+        enginePowerMenu = 0;
+        crewMembersMenu = 0;
+        batteriesMenu = 0;
+        loadMaterialsMenu = 0;
+        shotDefenseMenu = 0;
+        defensiveCannonMenu = 0;
+        choosePlanetMenu = 0;
+        numBatteries = 0;
+        numMembers = 0;
     }
 }

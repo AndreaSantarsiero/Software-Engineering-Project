@@ -63,6 +63,8 @@ public class AdventurePhaseData extends GamePhaseData {
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
     private Cannon defensiveCannon;
 
+    private Boolean youWon; //True if the player won, false if the player lost
+    private Boolean newHit; //True if the player has a new hit to get coordinates, false otherwise
 
 
     public AdventurePhaseData() {
@@ -221,6 +223,7 @@ public class AdventurePhaseData extends GamePhaseData {
                 state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
                 state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD)
         {
+            resetResponse();
             setState(AdventureState.CHOOSE_MAIN_MENU);
         }
         else {
@@ -258,6 +261,7 @@ public class AdventurePhaseData extends GamePhaseData {
         this.adventureCard = adventureCard;
         adventureCard.getHintMessage(this);
         if(updateState) {
+            resetResponse();
             updateState();
         }
         else {
@@ -363,6 +367,29 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
+    public Boolean getYouWon() {
+        Boolean value = youWon;
+        youWon = null; //reset the value after reading it
+        return value;
+    }
+
+    public void setYouWon(Boolean youWon) {
+
+        this.youWon = youWon;
+    }
+
+
+    public Boolean getNewHit() {
+        Boolean value = newHit;
+        newHit = null; //reset the value after reading it
+        return value;
+    }
+
+    public void setNewHit(Boolean newHit) {
+        this.newHit = newHit;
+    }
+
+
 
     //visitor pattern
     public void setHintMessage(AbandonedShip abandonedShip) {
@@ -421,6 +448,7 @@ public class AdventurePhaseData extends GamePhaseData {
         doubleCannons.clear();
         storageMaterials.clear();
         defensiveCannon = null;
+        hit = null;
     }
 
 

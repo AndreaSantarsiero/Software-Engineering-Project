@@ -1,10 +1,18 @@
 package it.polimi.ingsw.gc11.model;
 
+import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
+
 
 
 public class Shot extends Hit {
 
     public Shot(Hit.Type type, Hit.Direction direction) {
         super(type, direction);
+    }
+
+
+    @Override
+    public void print(AdventureTemplate adventureTemplate){
+        adventureTemplate.setHitType(this);
     }
 }
