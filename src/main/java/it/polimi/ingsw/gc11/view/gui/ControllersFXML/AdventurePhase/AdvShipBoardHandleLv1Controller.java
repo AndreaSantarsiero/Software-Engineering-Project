@@ -1236,6 +1236,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 setShipBoard();
             }
 
+            NotifyWinLose.Response response = adventurePhaseData.getYouWon();
+
 
             System.out.println("State: " + adventurePhaseData.getGUIState());
 
@@ -1253,21 +1255,30 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
             try {
                 if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                        && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE) {
+                        && response == NotifyWinLose.Response.LOSE) {
                     adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS);
                     initialize(stage, (Slavers) adventurePhaseData.getAdventureCard());
-                }else{
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Slavers.fxml"));
-                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                        SlaversController controller = fxmlLoader.getController();
-                        adventurePhaseData.setListener(controller);
-                        controller.initialize(stage);
-                        stage.setScene(newScene);
-                        stage.show();
-                    } catch (Exception e) {
-                        System.out.println("FXML Error: " + e.getMessage());
-                    }
+                }else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                        && response == NotifyWinLose.Response.DRAW) {
+                    goBackToFlightMenu();
+                }else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                        && response == NotifyWinLose.Response.WIN){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Victory!");
+                    alert.setHeaderText("You won against the Slavers!");
+                    alert.setContentText("Do you want to claim your rewards?");
+
+                    ButtonType yesBtn = new ButtonType("Yes, claim rewards");
+                    ButtonType noBtn = new ButtonType("No, skip");
+
+                    alert.getButtonTypes().setAll(yesBtn, noBtn);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    boolean takeReward = result.isPresent() && result.get() == yesBtn;
+                    virtualServer.rewardDecision(takeReward);
+
+                    goBackToFlightMenu();
                 }
             } catch (Exception e) {
 
@@ -1276,7 +1287,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
             try {
                 if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
-                        && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE) {
+                        && response == NotifyWinLose.Response.LOSE) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
@@ -1288,6 +1299,39 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     } catch (Exception e) {
                         System.out.println("FXML Error: " + e.getMessage());
                     }
+                }
+                else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
+                        && response == NotifyWinLose.Response.DRAW) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                        PiratesController controller = fxmlLoader.getController();
+                        adventurePhaseData.setListener(controller);
+                        controller.initialize(stage);
+                        stage.setScene(newScene);
+                        stage.show();
+                    } catch (Exception e) {
+                        System.out.println("FXML Error: " + e.getMessage());
+                    }
+                }
+                else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
+                        && response == NotifyWinLose.Response.WIN){
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Victory!");
+                    alert.setHeaderText("You won against the Pirates!");
+                    alert.setContentText("Do you want to claim your rewards?");
+
+                    ButtonType yesBtn = new ButtonType("Yes, claim rewards");
+                    ButtonType noBtn = new ButtonType("No, skip");
+
+                    alert.getButtonTypes().setAll(yesBtn, noBtn);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    boolean takeReward = result.isPresent() && result.get() == yesBtn;
+                    virtualServer.rewardDecision(takeReward);
+
+                    goBackToFlightMenu();
                 }
             } catch (Exception e) {
 

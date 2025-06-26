@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.SmugglersStates;
 
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -111,30 +112,35 @@ public class SmugglersState extends AdventureState {
         if(playerFirePower > smugglers.getFirePower()){
             //VictoryState
             advContext.setAdvState(new WinSmugglersState(advContext, player));
+            // Notify the player that he won
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.WIN));
         }
         else if (playerFirePower == smugglers.getFirePower()) {
             //Imposto che la carta non è più giocata da nessun player e passo al prossimo player.
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new SmugglersState(advContext));
-
+            // Notify the player that he drew
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.DRAW));
         }
         else {
             //LooseState
             int num = player.getShipBoard().removeMaterials(smugglers.getLostMaterials());
+            // Notify the player that he lost
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.LOSE));
 
-            if(num > 0){
+            if(num > 0){ //Can't remove materials
                 this.advContext.setResolvingAdvCard(false);
                 this.advContext.setAdvState(new LooseBatteriesSmugglers(advContext, player, num));
             }
             else{
                 this.advContext.setResolvingAdvCard(false);
-                this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
 
                 if(advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()){
                     this.advContext.setAdvState(new IdleState(advContext));
                 }
                 else {
+                    this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
                     this.advContext.setAdvState(new SmugglersState(advContext));
                 }
             }

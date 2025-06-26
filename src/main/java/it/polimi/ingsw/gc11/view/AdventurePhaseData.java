@@ -68,6 +68,8 @@ public class AdventurePhaseData extends GamePhaseData {
     private String currentPlayer;
     private String gameHint;
 
+    private String handleMessage = null;
+
     //response parameters
     private final Map<HousingUnit, Integer> housingUsage;
     private final Map<Battery, Integer> batteries;
@@ -77,8 +79,8 @@ public class AdventurePhaseData extends GamePhaseData {
     public AlienUnit activateAlienUnit;
     public HousingUnit hostingHousingUnit;
 
-    private NotifyWinLose.Response youWon; //True if the player won, false if the player lost
-    private Boolean newHit; //True if the player has a new hit to get coordinates, false otherwise
+    private NotifyWinLose.Response youWon = null; //True if the player won, false if the player lost
+    private Boolean newHit = null; //True if the player has a new hit to get coordinates, false otherwise
 
 
     public AdventurePhaseData() {
@@ -445,6 +447,17 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setNewHit(Boolean newHit) {
         this.newHit = newHit;
+    }
+
+
+    public String getHandleMessage() {
+        String message = handleMessage;
+        handleMessage = null; //reset the value after reading it
+        return message;
+    }
+
+    public void setHandleMessage(String handleMessage) {
+        this.handleMessage = handleMessage;
     }
 
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.SmugglersStates;
 
+import it.polimi.ingsw.gc11.action.client.SendHandleMessageAction;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -44,6 +45,14 @@ public class LooseBatteriesSmugglers extends AdventureState{
         super(advContext);
         this.player = player;
         this.numBatteries = numBatteries;
+    }
+
+    @Override
+    public void initialize() {
+        advContext.getGameContext().sendAction(
+                player.getUsername(),
+                new SendHandleMessageAction("handle batteries loss")
+        );
     }
 
     /**
