@@ -514,9 +514,14 @@ public class AdventureTemplate extends CLITemplate {
                     }
 
                     List<Material> bufferMaterials = data.getMaterialsBuffer();
-                    if(bufferMaterials != null && !bufferMaterials.isEmpty()){
-                        System.out.print("Available materials: ");
-                        MaterialCLI.printBuffer(bufferMaterials, controller.getMaterialsBufferIndex());
+                    if(i == 6){
+                        if(bufferMaterials != null && !bufferMaterials.isEmpty()){
+                            System.out.print("Available materials: ");
+                            MaterialCLI.printBuffer(bufferMaterials, controller.getMaterialsBufferIndex());
+                        }
+                        else {
+                            System.out.print("No available materials");
+                        }
                     }
 
                 }
