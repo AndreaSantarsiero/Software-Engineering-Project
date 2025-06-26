@@ -14,6 +14,6 @@ public class PingAction extends ClientControllerAction {
 
     @Override
     public void execute(ServerController serverController) throws NetworkException {
-
+        serverController.ping(username, token);
     }
 }

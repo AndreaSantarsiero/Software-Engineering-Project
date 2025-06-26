@@ -94,10 +94,12 @@ public class MainCLI {
     public void virtualServerSetup(JoiningPhaseData joiningPhaseData, int connectionChoice) throws NetworkException {
         Utils.ConnectionType connectionType = connectionTypeSetup(connectionChoice);
         boolean defaultAddress = false;
+        int pingInterval;
 
         try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(input);
+            pingInterval = Integer.parseInt(prop.getProperty("pingInterval"));
 
             if (serverIp == null) {
                 serverIp = prop.getProperty("serverIp");
@@ -120,7 +122,7 @@ public class MainCLI {
             System.out.println("Using custom address " + serverIp + ":" + serverPort);
         }
 
-        virtualServer = new VirtualServer(context);
+        virtualServer = new VirtualServer(context, pingInterval);
         joiningPhaseData.setVirtualServer(virtualServer);
         virtualServer.initializeConnection(connectionType, serverIp, serverPort);
     }

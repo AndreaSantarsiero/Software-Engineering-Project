@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller;
 
+import it.polimi.ingsw.gc11.action.client.PongAction;
 import it.polimi.ingsw.gc11.action.client.ServerAction;
 import it.polimi.ingsw.gc11.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.action.server.ServerController.ClientControllerAction;
@@ -15,7 +16,8 @@ import it.polimi.ingsw.gc11.network.server.rmi.ServerRMI;
 import it.polimi.ingsw.gc11.network.server.rmi.VirtualRMIClient;
 import it.polimi.ingsw.gc11.network.server.socket.ServerSocket;
 import it.polimi.ingsw.gc11.network.server.socket.VirtualSocketClient;
-
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +43,7 @@ public class ServerController {
     /**
      * Constructs a new {@code ServerController} with empty session and match registries
      */
-    public ServerController(int RMIPort, int SocketPort) throws NetworkException, UsernameAlreadyTakenException {
+    public ServerController(int RMIPort, int SocketPort, int connectionTimeout) throws NetworkException, UsernameAlreadyTakenException {
         clientControllerActions = new LinkedBlockingQueue<>();
         this.playerSessions = new ConcurrentHashMap<>();
         this.availableMatches = new ConcurrentHashMap<>();
@@ -49,6 +51,7 @@ public class ServerController {
         this.serverSocket = new ServerSocket(this, SocketPort);
 
         startCommandListener();
+        startPingChecker(connectionTimeout);
     }
 
 
@@ -59,11 +62,33 @@ public class ServerController {
                     ClientControllerAction action = clientControllerActions.take(); // blocca se la coda è vuota
                     action.execute(this); // esegue il comando nel contesto del gioco
                 } catch (Exception e) {
-                    System.err.println("[GameContext] Errore durante l'esecuzione di una ClientAction:");
+                    System.err.println("[GameContext] Error during ClientAction execution: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
-        }, "ServerControllerCommandExecutor-");
+        }, "ServerControllerCommandExecutor");
+
+        listener.setDaemon(true); // si chiude con il programma
+        listener.start();
+    }
+
+
+    private void startPingChecker(int connectionTimeout) {
+        Thread listener = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(connectionTimeout/6);
+                    for (ClientSession clientSession : playerSessions.values()) {
+                        if(Duration.between(clientSession.getLastPingInstant(), Instant.now()).toMillis() > connectionTimeout) {
+                            clientSession.getVirtualClient().getGameContext().abortFlight(clientSession.getUsername());
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("[GameContext] Error during ClientAction execution: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }, "ServerControllerPingChecker");
 
         listener.setDaemon(true); // si chiude con il programma
         listener.start();
@@ -169,6 +194,14 @@ public class ServerController {
         ClientSession clientSession = new ClientSession(username, virtualSocketClient);
         playerSessions.put(username, clientSession);
         return clientSession.getToken();
+    }
+
+
+    public void ping(String username, UUID token) throws NetworkException {
+        ClientSession session = getPlayerSession(username, token);
+        session.actualizeLastPingInstant();
+        PongAction response = new PongAction();
+        sendAction(username, response);
     }
 
 
