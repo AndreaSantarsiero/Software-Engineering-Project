@@ -118,7 +118,7 @@ public class SlaversState extends AdventureState {
         else {
             //LooseState
             advContext.setAdvState(new LooseState(advContext, player));
-            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.WIN));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.LOSE));
         }
 
         return player;
