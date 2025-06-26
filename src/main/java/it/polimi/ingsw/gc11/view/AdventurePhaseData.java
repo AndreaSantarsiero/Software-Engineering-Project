@@ -46,7 +46,9 @@ public class AdventurePhaseData extends GamePhaseData {
         ABANDONED_STATION_1, ABANDONED_STATION_2,
         EPIDEMIC_1,
         PLANETS_CARD_1, PLANETS_CARD_2,
-        PIRATES_1, PIRATES_2, PIRATES_SHOT,
+        PIRATES_1, PIRATES_2,
+        PIRATES_WIN_1, PIRATES_WIN_2,
+        PIRATES_LOSE_1, PIRATES_LOSE_2,
         SLAVERS_1, SLAVERS_2, SLAVERS_MEMBERS,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
@@ -190,6 +192,9 @@ public class AdventurePhaseData extends GamePhaseData {
             case ABANDONED_STATION_1 -> GUIState = AdventureStateGUI.ABANDONED_STATION_2;
             case PLANETS_CARD_1 -> GUIState = AdventureStateGUI.PLANETS_CARD_2;
             case PIRATES_1 ->  GUIState = AdventureStateGUI.PIRATES_2;
+            case PIRATES_WIN_1 -> GUIState = AdventureStateGUI.PIRATES_WIN_2;
+            case PIRATES_LOSE_1 -> GUIState = AdventureStateGUI.PIRATES_LOSE_2;
+            case PIRATES_LOSE_2 -> GUIState = AdventureStateGUI.PIRATES_1;
             case SLAVERS_1 ->  GUIState = AdventureStateGUI.SLAVERS_2;
             case OPEN_SPACE_1 -> GUIState = AdventureStateGUI.OPEN_SPACE_2;
             case SMUGGLERS_1 -> GUIState = AdventureStateGUI.SMUGGLERS_2;

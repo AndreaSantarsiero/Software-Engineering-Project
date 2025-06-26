@@ -557,6 +557,30 @@ public class GameContext {
     //Cheating methods
     public void setTestDeck(String username) {
         AdventureDeck testDeck = new AdventureDeck(false);
+        testDeck.addCard(new Pirates(
+                        "Level1Pirates",
+                        AdventureCard.Type.LEVEL1,
+                        1,
+                        5,
+                        4,
+                        new ArrayList<Shot>(List.of(
+                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP),
+                                new Shot(Hit.Type.BIG, Hit.Direction.TOP),
+                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP)
+                        ))
+                )
+        );
+        testDeck.addCard(
+                new Slavers(
+                        "Level2Slavers",
+                        AdventureCard.Type.LEVEL2,
+                        2,
+                        7,
+                        4,
+                        8
+                )
+        );
+
         testDeck.addCard(
                 new AbandonedShip(
                         "Level1AbandonedShip",
@@ -578,19 +602,7 @@ public class GameContext {
                         0
                 )
         );
-        testDeck.addCard(new Pirates(
-                        "Level1Pirates",
-                        AdventureCard.Type.LEVEL1,
-                        1,
-                        5,
-                        4,
-                        new ArrayList<Shot>(List.of(
-                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP),
-                                new Shot(Hit.Type.BIG, Hit.Direction.TOP),
-                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP)
-                        ))
-                )
-        );
+
         testDeck.addCard(
                 new PlanetsCard(
                         "TrialPlanets",
@@ -604,7 +616,15 @@ public class GameContext {
                         )
                 )
         );
-
+        testDeck.addCard(
+                new AbandonedShip(
+                        "Level1AbandonedShip",
+                        AdventureCard.Type.LEVEL1,
+                        1,
+                        2,
+                        3
+                )
+        );
         testDeck.addCard(new StarDust("TrialStarDust", AdventureCard.Type.TRIAL));
         testDeck.addCard(
                 new OpenSpace(
