@@ -846,7 +846,7 @@ public class BuildingLv1Controller extends Controller {
             switch (cheat) {
                 case "Gimme Cool Ship 1" -> {
                     try {
-                        virtualServer.gimmeACoolShip(11);
+                        virtualServer.gimmeACoolShip(8);
                     }
                     catch (NetworkException e) {
                         System.out.println("Network Error:  " + e.getMessage());

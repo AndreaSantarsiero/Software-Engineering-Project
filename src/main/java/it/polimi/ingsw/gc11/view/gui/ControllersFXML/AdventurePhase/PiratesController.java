@@ -1,7 +1,9 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
+import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Planet;
@@ -31,6 +33,10 @@ import java.util.Objects;
 
 public class PiratesController extends Controller {
 
+    private enum State{
+        HAS_COORDINATES, WAIT_COORDINATES
+    }
+
     @FXML private ImageView PiratesImage;
     @FXML private Label title;
     @FXML private VBox root;
@@ -43,16 +49,16 @@ public class PiratesController extends Controller {
     private Stage stage;
     private VirtualServer virtualServer;
     private AdventurePhaseData adventurePhaseData;
+    private State state;
 
     public void initialize(Stage stage) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         this.virtualServer = viewModel.getVirtualServer();
         this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
-
+        state = state.WAIT_COORDINATES;
 
         title.setAlignment(Pos.CENTER);
-
 
         errorLabel.prefWidthProperty().bind(subHeader.widthProperty().multiply(0.4));
         errorLabel.prefHeightProperty().bind(subHeader.heightProperty().multiply(0.2));
@@ -92,12 +98,60 @@ public class PiratesController extends Controller {
         new Thread(timer).start();
     }
 
+    private void goBackToFlightMenu() {
+        if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdventureControllerLv1 controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage);
+                stage.setScene(newScene);
+                stage.show();
+            } catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        }
+    }
+
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
 
             cards.getChildren().clear();
             setCard();
+
+
+            if (state == State.WAIT_COORDINATES) {
+                if(adventurePhaseData.getNewHit() != null){
+                    if(adventurePhaseData.getNewHit() == false){
+                        goBackToFlightMenu();
+                    }
+                    if(adventurePhaseData.getNewHit() == true){
+                        try {
+                            virtualServer.getCoordinate();
+                            state = State.HAS_COORDINATES;
+                        } catch (NetworkException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+            if(state == State.HAS_COORDINATES){
+                try {
+                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_SHOT);
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage, (Pirates) adventurePhaseData.getAdventureCard());
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }
+
 
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {

@@ -360,9 +360,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, Pirates card) {
         setup(stage);
 
-        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_1);
 
-        //if(CHOOSE_CANNONS_STATE){
+        if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_1) {
             actionTextLabel.setText("Select double cannons to use.");
             confirmButton.setVisible(true);
             confirmButton.setDisable(false);
@@ -386,31 +385,30 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             });
 
             state = State.PIRATES_CANNONS;
-        //}
+        }
 
-        /** NON CANCELLARE **/
-        //if(LOSE_STATE){
-//            numShots = card.getShots().size();
-//
-//            if(card.getShots().getFirst().getType() == Hit.Type.SMALL){
-//                actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getShots().getFirst().getDirection().toString()+ " at coordinate " + card.getShots().getFirst().getCoordinate());
-//                confirmButton.setVisible(true);
-//                confirmButton.setDisable(false);
-//                confirmButton.setOnAction(event -> {
-//                    try {
-//                        virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
-//                    }
-//                    catch (Exception e) {
-//                        System.out.println("Network error:" + e.getMessage());
-//                    }
-//                });
-//
-//                state = State.PIRATES_SHOTS;
-//            }
-//            if(card.getShots().getFirst().getType() == Hit.Type.BIG){
-//                //shotIdx++; NESSUNA SCELTA PER BIG HITS
-//            }
-        //}
+        else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_SHOT){
+            numShots = card.getShots().size();
+
+            if(card.getShots().getFirst().getType() == Hit.Type.SMALL){
+                actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getShots().getFirst().getDirection().toString()+ " at coordinate " + card.getShots().getFirst().getCoordinate());
+                confirmButton.setVisible(true);
+                confirmButton.setDisable(false);
+                confirmButton.setOnAction(event -> {
+                    try {
+                        virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
+                    }
+                    catch (Exception e) {
+                        System.out.println("Network error:" + e.getMessage());
+                    }
+                });
+
+                state = State.PIRATES_SHOTS;
+            }
+            if(card.getShots().getFirst().getType() == Hit.Type.BIG){
+                //shotIdx++; NESSUNA SCELTA PER BIG HITS
+            }
+        }
 
         update(adventurePhaseData);
     }
