@@ -360,6 +360,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, Pirates card) {
         setup(stage);
 
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_1);
+
         //if(CHOOSE_CANNONS_STATE){
             actionTextLabel.setText("Select double cannons to use.");
             confirmButton.setVisible(true);
