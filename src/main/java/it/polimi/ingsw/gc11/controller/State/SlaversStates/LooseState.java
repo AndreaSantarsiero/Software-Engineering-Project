@@ -83,7 +83,7 @@ public class LooseState extends AdventureState {
         for(HousingUnit housingUnit : housingUsage.keySet()){
             sum += housingUsage.get(housingUnit);
         }
-        if(sum <= slavers.getLostMembers()){
+        if(sum < slavers.getLostMembers()){
             throw new IllegalStateException("You must sacrifice at least " + slavers.getLostMembers() + " crew members");
         }
 

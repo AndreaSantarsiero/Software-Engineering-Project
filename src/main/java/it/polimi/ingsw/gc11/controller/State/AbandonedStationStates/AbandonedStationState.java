@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.AbandonedStationStates;
 
+import it.polimi.ingsw.gc11.action.client.SendMaterialsAction;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -58,6 +59,9 @@ public class AbandonedStationState extends AdventureState {
                 if(expectedPlayer.getShipBoard().getMembers() >= abandonedStation.getMembersRequired()){
                     advContext.setResolvingAdvCard(true);
                     advContext.setAdvState(new ChooseMaterialStation(this.advContext, expectedPlayer));
+
+                    SendMaterialsAction action = new SendMaterialsAction(abandonedStation.getMaterials());
+                    advContext.getGameContext().sendAction(expectedPlayer.getUsername(), action);
                 }
                 else{
                     throw new IllegalStateException("You don't have enough members to accept this adventure card!");

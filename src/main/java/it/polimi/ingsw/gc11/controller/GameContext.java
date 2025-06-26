@@ -512,10 +512,9 @@ public class GameContext {
      *
      * @param username  the player landing on the planet.
      * @param numPlanet the index of the planet.
-     * @return the list of materials available on the chosen planet
      */
-    public List<Material> landOnPlanet(String username, int numPlanet){
-        return phase.landOnPlanet(username, numPlanet);
+    public void landOnPlanet(String username, int numPlanet){
+        phase.landOnPlanet(username, numPlanet);
     }
 
     /**
@@ -561,11 +560,11 @@ public class GameContext {
                         "Level1Pirates",
                         AdventureCard.Type.LEVEL1,
                         1,
-                        5,
+                        2,
                         4,
                         new ArrayList<Shot>(List.of(
-                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP),
                                 new Shot(Hit.Type.BIG, Hit.Direction.TOP),
+                                new Shot(Hit.Type.SMALL, Hit.Direction.TOP),
                                 new Shot(Hit.Type.SMALL, Hit.Direction.TOP)
                         ))
                 )
@@ -580,6 +579,8 @@ public class GameContext {
                         8
                 )
         );
+
+
 
         testDeck.addCard(
                 new AbandonedShip(
