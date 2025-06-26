@@ -558,6 +558,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     @FXML private void onResetChoiceButtonClicked(){
         adventurePhaseData.resetResponse();
         setShipBoard();
+        if(cardMaterialsBox.getChildren().size()>0){
+            cardMaterialsBox.getChildren().clear();
+
+            for (int i = 0; i < cardMats.size(); i++) {
+                Button b = buildMaterialButton(i);
+                cardMaterialsBox.getChildren().add(b);
+            }
+
+            mainContainer.getChildren().add(cardMaterialsBox);
+        }
     }
 
     public void setShipBoard(){

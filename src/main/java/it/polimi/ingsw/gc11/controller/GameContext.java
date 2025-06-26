@@ -557,6 +557,18 @@ public class GameContext {
     //Cheating methods
     public void setTestDeck(String username) {
         AdventureDeck testDeck = new AdventureDeck(false);
+        testDeck.addCard(
+                new AbandonedStation(
+                        "TrialAbandonedStation",
+                        AdventureCard.Type.TRIAL,
+                        1,
+                        5,
+                        0,
+                        1,
+                        1,
+                        0
+                )
+        );
         testDeck.addCard(new Pirates(
                         "Level1Pirates",
                         AdventureCard.Type.LEVEL1,
@@ -590,18 +602,6 @@ public class GameContext {
                         1,
                         2,
                         3
-                )
-        );
-        testDeck.addCard(
-                new AbandonedStation(
-                        "TrialAbandonedStation",
-                        AdventureCard.Type.TRIAL,
-                        1,
-                        5,
-                        0,
-                        1,
-                        1,
-                        0
                 )
         );
         testDeck.addCard(new StarDust("TrialStarDust", AdventureCard.Type.TRIAL));
