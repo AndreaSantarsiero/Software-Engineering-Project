@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.action.client.UpdateCurrentPlayerAction;
 import it.polimi.ingsw.gc11.model.Player;
 
+import java.util.Arrays;
 
 
 public class DeclineAdventureCardAction extends ClientGameAction {
@@ -31,7 +32,7 @@ public class DeclineAdventureCardAction extends ClientGameAction {
                 }
             }
         } catch (Exception e){
-            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + e.getStackTrace());
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
             context.sendAction(username, exception);
         }
     }

@@ -7,6 +7,8 @@ import it.polimi.ingsw.gc11.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +45,7 @@ public class ChooseFirePowerAction extends ClientGameAction {
             }
 
         } catch (Exception e){
-            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + e.getStackTrace());
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
             context.sendAction(username, exception);
         }
     }
