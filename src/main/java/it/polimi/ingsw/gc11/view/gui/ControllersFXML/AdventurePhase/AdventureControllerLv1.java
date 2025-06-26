@@ -13,6 +13,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -32,6 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class AdventureControllerLv1 extends Controller {
@@ -621,14 +623,20 @@ public class AdventureControllerLv1 extends Controller {
         handleButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/ChoosePlanet.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                ChoosePlanetController controller = fxmlLoader.getController();
+                URL url = getClass().getResource(
+                        "/it/polimi/ingsw/gc11/gui/AdventurePhase/ChoosePlanet.fxml");
+                Objects.requireNonNull(url, "FXML non trovato!");
+
+                FXMLLoader loader = new FXMLLoader(url);
+                Parent root = loader.load();                       // unica load()
+
+                ChoosePlanetController controller = loader.getController(); // ora ≠ null
+                controller.initialize(stage, card);               // tuo init custom
                 adventurePhaseData.setListener(controller);
-                controller.initialize(stage, card);
-                stage.setScene(newScene);
+
+                Scene scene = new Scene(root, 1280, 720);
+                stage.setScene(scene);
                 stage.show();
-                
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }

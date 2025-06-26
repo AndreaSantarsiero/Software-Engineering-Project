@@ -6,11 +6,14 @@ import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -20,7 +23,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 public class ChoosePlanetController extends Controller {
 
@@ -58,10 +63,13 @@ public class ChoosePlanetController extends Controller {
     }
 
     public void setCard(){
-        String basepath = "/it/polimi/ingsw/gc11/adventureCards/";
-        if (((PlanetsCard)adventurePhaseData.getAdventureCard()).getFreePlanets() != null) {
-            planetCardImage.setImage(new Image(basepath + adventurePhaseData.getAdventureCard().getId() + ".jpg"));
-        }
+        String basePath = "/it/polimi/ingsw/gc11/adventureCards/";
+        String fileName = adventurePhaseData.getAdventureCard().getId() + ".jpg";
+
+        URL url = getClass().getResource(basePath + fileName);
+        Objects.requireNonNull(url, "Immagine non trovata: " + basePath + fileName);
+
+        planetCardImage.setImage(new Image(url.toExternalForm()));
     }
 
     public void populatePlanetButtons() {
@@ -89,19 +97,18 @@ public class ChoosePlanetController extends Controller {
             throw new RuntimeException(e);
         }
 
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.
-//                    getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
-//            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-//            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-//            adventurePhaseData.setListener(controller);
-//            controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
-//            stage.setScene(newScene);
-//            stage.show();
-//            adventurePhaseData.resetAdvCardNew();
-//        } catch (Exception e) {
-//            System.out.println("FXML Error: " + e.getMessage());
-//        }
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.
+                    getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+            adventurePhaseData.setListener(controller);
+            controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("FXML Error: " + e.getMessage());
+        }
     }
 
     private void setErrorLabel(){
