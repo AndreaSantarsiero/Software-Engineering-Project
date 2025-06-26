@@ -26,16 +26,16 @@ public class MaterialCLI {
 
         for(Material material : materials) {
             if (material.getType().equals(Material.Type.BLUE)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + "■ ");
+                System.out.print(Ansi.ansi().fg(Ansi.Color.BLUE) + "■ ");
             }
             else if (material.getType().equals(Material.Type.GREEN)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.GREEN) + "■ ");
+                System.out.print(Ansi.ansi().fg(Ansi.Color.GREEN) + "■ ");
             }
             else if (material.getType().equals(Material.Type.YELLOW)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.YELLOW) + "■ ");
+                System.out.print(Ansi.ansi().fg(Ansi.Color.YELLOW) + "■ ");
             }
             else if (material.getType().equals(Material.Type.RED)) {
-                System.out.print(Ansi.ansi().reset().fg(Ansi.Color.RED) + "■ ");
+                System.out.print(Ansi.ansi().fg(Ansi.Color.RED) + "■ ");
             }
         }
     }
