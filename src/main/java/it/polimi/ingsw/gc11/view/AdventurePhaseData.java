@@ -40,7 +40,7 @@ public class AdventurePhaseData extends GamePhaseData {
         PLANETS_CARD_1, PLANETS_CARD_2,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
-        COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_2,
+        COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_2, COMBAT_ZONE_LV1_3, COMBAT_ZONE_LV1_4, COMBAT_ZONE_LV1_5,
         COMBAT_ZONE_LV2_1, COMBAT_ZONE_LV2_2,
         STAR_DUST_1,
     }
@@ -63,6 +63,8 @@ public class AdventurePhaseData extends GamePhaseData {
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
     private Cannon defensiveCannon;
 
+    private Boolean youWon; //True if the player won, false if the player lost
+    private Boolean newHit; //True if the player has a new hit to get coordinates, false otherwise
 
 
     public AdventurePhaseData() {
@@ -161,33 +163,22 @@ public class AdventurePhaseData extends GamePhaseData {
     // GUI state management
     public void  updateGUIState() {
         actualizePreviousGUIState();
-        if (GUIState == AdventureStateGUI.CARD_DECLINED){
-            GUIState = AdventureStateGUI.FLIGHT_MENU;
+
+        switch (GUIState) {
+            case CARD_DECLINED -> GUIState = AdventureStateGUI.FLIGHT_MENU;
+            case CARD_ACCEPTED -> GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
+            case ABANDONED_SHIP_1 -> GUIState = AdventureStateGUI.ABANDONED_SHIP_2;
+            case ABANDONED_STATION_1 -> GUIState = AdventureStateGUI.ABANDONED_STATION_2;
+            case PLANETS_CARD_1 -> GUIState = AdventureStateGUI.PLANETS_CARD_2;
+            case OPEN_SPACE_1 -> GUIState = AdventureStateGUI.OPEN_SPACE_2;
+            case SMUGGLERS_1 -> GUIState = AdventureStateGUI.SMUGGLERS_2;
+            //Combat zone Lv1 states
+            case COMBAT_ZONE_LV1_1 -> GUIState = AdventureStateGUI.COMBAT_ZONE_LV1_2;
+            case COMBAT_ZONE_LV1_2 -> GUIState = AdventureStateGUI.COMBAT_ZONE_LV1_3;
+
+            case COMBAT_ZONE_LV2_1 -> GUIState = AdventureStateGUI.COMBAT_ZONE_LV2_2;
         }
-        else if (GUIState == AdventureStateGUI.CARD_ACCEPTED) {
-            GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
-        }
-        else if (GUIState == AdventureStateGUI.ABANDONED_SHIP_1) {
-            GUIState = AdventureStateGUI.ABANDONED_SHIP_2;
-        }
-        else if( GUIState == AdventureStateGUI.ABANDONED_STATION_1) {
-            GUIState = AdventureStateGUI.ABANDONED_STATION_2;
-        }
-        else if (GUIState == AdventureStateGUI.PLANETS_CARD_1) {
-            GUIState = AdventureStateGUI.PLANETS_CARD_2;
-        }
-        else if (GUIState == AdventureStateGUI.OPEN_SPACE_1) {
-            GUIState = AdventureStateGUI.OPEN_SPACE_2;
-        }
-        else if (GUIState == AdventureStateGUI.SMUGGLERS_1) {
-            GUIState = AdventureStateGUI.SMUGGLERS_2;
-        }
-        else if (GUIState == AdventureStateGUI.COMBAT_ZONE_LV1_1) {
-            GUIState = AdventureStateGUI.COMBAT_ZONE_LV1_2;
-        }
-        else if (GUIState == AdventureStateGUI.COMBAT_ZONE_LV2_1) {
-            GUIState = AdventureStateGUI.COMBAT_ZONE_LV2_2;
-        }
+
     }
 
     public void setGUIState(AdventureStateGUI state) {
@@ -374,6 +365,29 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setDefensiveCannon(Cannon cannon) {
         this.defensiveCannon = cannon;
+    }
+
+
+    public Boolean getYouWon() {
+        Boolean value = youWon;
+        youWon = null; //reset the value after reading it
+        return value;
+    }
+
+    public void setYouWon(Boolean youWon) {
+
+        this.youWon = youWon;
+    }
+
+
+    public Boolean getNewHit() {
+        Boolean value = newHit;
+        newHit = null; //reset the value after reading it
+        return value;
+    }
+
+    public void setNewHit(Boolean newHit) {
+        this.newHit = newHit;
     }
 
 

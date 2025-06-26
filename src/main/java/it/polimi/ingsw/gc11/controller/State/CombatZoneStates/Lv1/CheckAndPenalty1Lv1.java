@@ -41,6 +41,8 @@ public class CheckAndPenalty1Lv1 extends AdventureState {
 
             gameModel.move(minPlayer.getUsername(), combatZoneLv1.getLostDays());
 
+            advContext.setIdxCurrentPlayer(0);
+
 
             //sending updates
             String currentPlayer = context.getCurrentPlayer().getUsername();

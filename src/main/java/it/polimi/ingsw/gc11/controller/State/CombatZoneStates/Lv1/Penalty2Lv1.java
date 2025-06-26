@@ -19,11 +19,21 @@ public class Penalty2Lv1 extends AdventureState {
         super(advContext);
         this.player = player;
 
+    }
+
+    @Override
+    public void initialize() {
         //Notify the player with less engine powers that he has to kill members
         String newCurrentPlayer = player.getUsername();
         for(Player p : advContext.getGameModel().getPlayersNotAbort()){
             if(p.getUsername().equals(newCurrentPlayer)){
-                UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(newCurrentPlayer, true);
+                int idx = advContext.getGameModel().getPlayersNotAbort().indexOf(p);
+                advContext.setIdxCurrentPlayer(idx);
+            }
+        }
+        for(Player p : advContext.getGameModel().getPlayersNotAbort()){
+            if(p.getUsername().equals(newCurrentPlayer)){
+                UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(newCurrentPlayer, false); //controllare per cli
                 advContext.getGameContext().sendAction(player.getUsername(), response);
             }
             else {
@@ -31,7 +41,6 @@ public class Penalty2Lv1 extends AdventureState {
                 advContext.getGameContext().sendAction(player.getUsername(), response);
             }
         }
-
     }
 
     @Override
@@ -62,19 +71,19 @@ public class Penalty2Lv1 extends AdventureState {
         player.getShipBoard().killMembers(housingUsage);
 
 
-        //sending updates
-        String currentPlayer = advContext.getGameContext().getCurrentPlayer().getUsername();
-        Map<String, Player> enemies = new HashMap<>();
-        for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
-            enemies.put(player.getUsername(), player);
-        }
-
-        for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
-            enemies.remove(player.getUsername());
-            UpdateEverybodyProfileAction response = new UpdateEverybodyProfileAction(player, enemies, currentPlayer);
-            advContext.getGameContext().sendAction(player.getUsername(), response);
-            enemies.put(player.getUsername(), player);
-        }
+//        //sending updates
+//        String currentPlayer = advContext.getGameContext().getCurrentPlayer().getUsername();
+//        Map<String, Player> enemies = new HashMap<>();
+//        for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
+//            enemies.put(player.getUsername(), player);
+//        }
+//
+//        for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
+//            enemies.remove(player.getUsername());
+//            UpdateEverybodyProfileAction response = new UpdateEverybodyProfileAction(player, enemies, currentPlayer);
+//            advContext.getGameContext().sendAction(player.getUsername(), response);
+//            enemies.put(player.getUsername(), player);
+//        }
 
         //go to next state
         this.advContext.setAdvState(new Check3Lv1(advContext, 10000, null));
