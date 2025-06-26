@@ -86,7 +86,7 @@ public class PiratesState extends AdventureState {
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new PiratesState(advContext, playersDefeated));
-            // Notify the player that he won
+            // Notify the player that he drew
             advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.DRAW));
         }
         else {  // < pirates.getFirePower()
