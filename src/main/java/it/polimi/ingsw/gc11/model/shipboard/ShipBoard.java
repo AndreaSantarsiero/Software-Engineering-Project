@@ -1297,11 +1297,20 @@ public abstract class ShipBoard  implements Serializable {
      *     <li>or the sizes of the new and old material lists do not match for a given storage unit</li>
      * </ul>
      */
-    public void addMaterials(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
+    public void addMaterials(Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials, List<Material> gainedMaterials) {
         if (storageMaterials == null) {
             throw new IllegalArgumentException("Storage materials map cannot be null");
         }
+        if (gainedMaterials == null) {
+            throw new IllegalArgumentException("Gained materials list cannot be null");
+        }
+        for (Material gainedMaterial : gainedMaterials) {
+            if (gainedMaterial == null) {
+                throw new IllegalArgumentException("Gained material cannot be null");
+            }
+        }
 
+        //anti-cheating check on single storages
         for (Map.Entry<Storage, SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
             Storage storage = entry.getKey();
             SimpleEntry<List<Material>, List<Material>> materialsPair = entry.getValue();
@@ -1319,20 +1328,59 @@ public abstract class ShipBoard  implements Serializable {
             List<Material> newMaterials = materialsPair.getKey();
             List<Material> oldMaterials = materialsPair.getValue();
 
-            if (newMaterials.size() != oldMaterials.size()) {
-                throw new IllegalArgumentException("New and old materials lists do not match in size for storage: " + storage);
-            }
-
-            //missing cheating check (too many materials ecc)
+            storage.checkChooseMaterialsRestrictions(newMaterials, oldMaterials);
         }
 
 
+        //general anti-cheating check
+        for (Map.Entry<Storage, SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
+            SimpleEntry<List<Material>, List<Material>> materialsPair = entry.getValue();
+            List<Material> newMaterials = materialsPair.getKey();
+            List<Material> oldMaterials = materialsPair.getValue();
+            int blueCount = 0, greenCount = 0, yellowCount = 0, redCount = 0;
+
+            for (Material newMaterial : newMaterials) {
+                if (newMaterial != null) {
+                    switch (newMaterial.getType()) {
+                        case BLUE -> blueCount++;
+                        case GREEN -> greenCount++;
+                        case YELLOW -> yellowCount++;
+                        case RED -> redCount++;
+                    }
+                }
+            }
+            for (Material oldMaterial : oldMaterials) {
+                if (oldMaterial != null) {
+                    switch (oldMaterial.getType()) {
+                        case BLUE -> blueCount--;
+                        case GREEN -> greenCount--;
+                        case YELLOW -> yellowCount--;
+                        case RED -> redCount--;
+                    }
+                }
+            }
+            for (Material gainedMaterial : gainedMaterials) {
+                switch (gainedMaterial.getType()) {
+                    case BLUE -> blueCount--;
+                    case GREEN -> greenCount--;
+                    case YELLOW -> yellowCount--;
+                    case RED -> redCount--;
+                }
+            }
+
+            if(blueCount > 0 || greenCount > 0 || yellowCount > 0 || redCount > 0){
+                throw new IllegalArgumentException("Illegal material map: trying to add more materials than the ones that you gained");
+            }
+        }
+
+
+        //updating the storages
         for (Map.Entry<Storage, SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
             Storage storage = entry.getKey();
             Storage matchingStorage = storages.stream().filter(s -> s.equals(storage)).findFirst().orElse(null);
 
             if (matchingStorage == null) {
-                throw new IllegalArgumentException("Cannot find this battery module on the ship");
+                throw new IllegalArgumentException("Cannot find this storage on the ship");
             }
 
             SimpleEntry<List<Material>, List<Material>> materialsPair = entry.getValue();
@@ -1340,10 +1388,17 @@ public abstract class ShipBoard  implements Serializable {
             List<Material> oldMaterials = materialsPair.getValue();
 
             for (int i = 0; i < newMaterials.size(); i++) {
-                if (oldMaterials.get(i) == null) {
-                    matchingStorage.addMaterial(newMaterials.get(i));
-                } else {
-                    matchingStorage.replaceMaterial(newMaterials.get(i), oldMaterials.get(i));
+                Material newMaterial = newMaterials.get(i);
+                Material oldMaterial = oldMaterials.get(i);
+
+                if (newMaterial != null && oldMaterial == null) {
+                    matchingStorage.addMaterial(newMaterial);
+                }
+                else if (newMaterial != null) {
+                    matchingStorage.replaceMaterial(newMaterial, oldMaterial);
+                }
+                else if (oldMaterial != null) {
+                    matchingStorage.removeMaterial(oldMaterial);
                 }
             }
         }

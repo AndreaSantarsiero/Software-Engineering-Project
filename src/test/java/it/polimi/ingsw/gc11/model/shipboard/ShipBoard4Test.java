@@ -182,7 +182,11 @@ public class ShipBoard4Test {
         oldMaterials2.add(null);
         storageMaterials.put(storage2, new AbstractMap.SimpleEntry<>(newMaterials2, oldMaterials2));
 
-        shipBoard.addMaterials(storageMaterials);
+        List<Material> gainedMaterials = new ArrayList<>();
+        gainedMaterials.addAll(newMaterials1);
+        gainedMaterials.addAll(newMaterials2);
+
+        shipBoard.addMaterials(storageMaterials, gainedMaterials);
         assertEquals(8, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly");
         assertEquals(0, shipBoard.removeMaterials(2), "Materials not removed correctly");
         assertEquals(1, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after removing materials");
@@ -194,7 +198,10 @@ public class ShipBoard4Test {
         oldMaterials1.add(blueMaterial);
         storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
 
-        shipBoard.addMaterials(storageMaterials);
+        gainedMaterials.clear();
+        gainedMaterials.addAll(newMaterials1);
+
+        shipBoard.addMaterials(storageMaterials, gainedMaterials);
         assertEquals(2, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after replacing materials");
         assertEquals(3, shipBoard.removeMaterials(4), "Materials not removed correctly when exceeding the number of available materials on the ship");
     }

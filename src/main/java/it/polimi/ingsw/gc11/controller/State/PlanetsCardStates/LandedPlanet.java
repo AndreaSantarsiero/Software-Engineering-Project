@@ -58,15 +58,7 @@ public class LandedPlanet extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
-        //cosa fa?
-        for (Map.Entry<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
-            if(!materials.containsAll(entry.getValue().getKey())){
-                throw new IllegalArgumentException("Materials not available");
-            }
-            materials.remove(entry.getValue().getKey());
-        }
-        //+controlli sulla mappa
-        player.getShipBoard().addMaterials(storageMaterials);
+        player.getShipBoard().addMaterials(storageMaterials, materials);
 
         PlanetsCard planetsCard = (PlanetsCard) this.advContext.getDrawnAdvCard();
         gameModel.move(player.getUsername(), planetsCard.getLostDays() * -1);

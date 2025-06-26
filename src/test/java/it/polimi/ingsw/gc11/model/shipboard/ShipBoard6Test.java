@@ -262,7 +262,11 @@ public class ShipBoard6Test {
         oldMaterials2.add(null);
         storageMaterials.put(storage2, new AbstractMap.SimpleEntry<>(newMaterials2, oldMaterials2));
 
-        shipBoard.addMaterials(storageMaterials);
+        List<Material> gainedMaterials = new ArrayList<>();
+        gainedMaterials.addAll(newMaterials1);
+        gainedMaterials.addAll(newMaterials2);
+
+        shipBoard.addMaterials(storageMaterials, gainedMaterials);
         assertEquals(6, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly");
         assertEquals(0, shipBoard.removeMaterials(2), "Materials not removed correctly");
         assertEquals(1, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after removing materials");
@@ -275,13 +279,18 @@ public class ShipBoard6Test {
         storage1 = (Storage) shipBoard.getShipCard(6, 5);
         storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
 
-        shipBoard.addMaterials(storageMaterials);
+        gainedMaterials.clear();
+        gainedMaterials.addAll(newMaterials1);
+
+        shipBoard.addMaterials(storageMaterials, gainedMaterials);
         assertEquals(5, shipBoard.getTotalMaterialsValue(), "Total materials value not calculated correctly after replacing materials");
 
         storageMaterials.clear();
         storage1 = (Storage) shipBoard.getShipCard(8, 9);
         storageMaterials.put(storage1, new AbstractMap.SimpleEntry<>(newMaterials1, oldMaterials1));
-        assertThrows(IllegalArgumentException.class, () -> shipBoard.addMaterials(storageMaterials), "Cannot add red materials to a blue storage");
+        gainedMaterials.clear();
+        gainedMaterials.addAll(newMaterials1);
+        assertThrows(IllegalArgumentException.class, () -> shipBoard.addMaterials(storageMaterials, gainedMaterials), "Cannot add red materials to a blue storage");
     }
 
 
