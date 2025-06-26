@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc11.action.client.UpdatePlayerProfileAction;
 import it.polimi.ingsw.gc11.controller.GameContext;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+
+import java.util.Arrays;
 import java.util.Map;
 
 
@@ -40,7 +42,7 @@ public class KillMembersAction extends ClientGameAction {
 
         }
         catch (Exception e){
-            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
             context.sendAction(username, exception);
         }
     }
