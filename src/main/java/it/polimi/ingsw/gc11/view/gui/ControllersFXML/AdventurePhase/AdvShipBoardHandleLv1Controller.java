@@ -49,7 +49,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         EPIDEMIC,
         METEOR_SWARM_BATTERIES, METEOR_SWARM_CANNONS, METEOR_SWARM_CAN_BATT,
         OPEN_SPACE,
-        PIRATES,
+        PIRATES_CANNONS, PIRATES_BATTERIES, PIRATES_SHOTS,
         PLANETS,
         SLAVERS_CANNONS, SLAVERS_BATTERIES, SLAVERS_MEMBERS,
         SMUGGLERS_CANNONS, SMUGGLERS_BATTERIES,
@@ -349,6 +349,45 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, Pirates card) {
         setup(stage);
+
+        //if(CHOOSE_CANNONS_STATE){
+            actionTextLabel.setText("Select double cannons to use.");
+            confirmButton.setVisible(true);
+            confirmButton.setDisable(false);
+            confirmButton.setOnAction(event -> {
+                for(ShipCard s : selectedShipCards) {
+                    Cannon c = (Cannon) s;
+                    adventurePhaseData.addDoubleCannon(c);
+                }
+                selectedShipCards.clear();
+                state = State.PIRATES_BATTERIES;
+            });
+
+            state = State.PIRATES_CANNONS;
+        //}
+
+        //if(LOSE_STATE){
+            numShots = card.getShots().size();
+
+            if(card.getShots().getFirst().getType() == Hit.Type.SMALL){
+                actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getShots().getFirst().getDirection().toString()+ " at coordinate " + card.getShots().getFirst().getCoordinate());
+                confirmButton.setVisible(true);
+                confirmButton.setDisable(false);
+                confirmButton.setOnAction(event -> {
+                    try {
+                        virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
+                    }
+                    catch (Exception e) {
+                        System.out.println("Network error:" + e.getMessage());
+                    }
+                });
+
+                state = State.PIRATES_SHOTS;
+            }
+            if(card.getShots().getFirst().getType() == Hit.Type.BIG){
+                //shotIdx++; NESSUNA SCELTA PER BIG HITS
+            }
+        //}
 
         update(adventurePhaseData);
     }
@@ -784,6 +823,52 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
         }
 
+        if(state == State.PIRATES_CANNONS){
+            try {
+                Cannon cannon = (Cannon)  shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+                if (cannon.getType() == Cannon.Type.DOUBLE) {
+                    if(selectedShipCards.contains(cannon)){
+                        selectedShipCards.remove(cannon);
+                    }
+                    else{
+                        selectedShipCards.add(cannon);
+                    }
+                }
+                else{
+                    System.out.println("The card clicked is not a Double Cannon");
+                    setErrorLabel("The card clicked is not a Double Cannon");
+                }
+            } catch (Exception e) {
+                System.out.println("The card clicked is not a Double Cannon");
+                setErrorLabel("The card clicked is not a Double Cannon");
+            }
+        }
+
+        if(state == State.PIRATES_BATTERIES){
+            actionTextLabel.setText("Select batteries to use for the double cannons.");
+            confirmButton.setOnAction(event -> {
+                try {
+                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
+                }
+
+            } catch (Exception e) {
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
+            }
+        }
     }
 
 
