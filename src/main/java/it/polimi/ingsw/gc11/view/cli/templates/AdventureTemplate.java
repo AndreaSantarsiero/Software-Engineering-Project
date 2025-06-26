@@ -397,11 +397,12 @@ public class AdventureTemplate extends CLITemplate {
 
 
                 //printing adventure card
+                System.out.print("                                 ");
                 if (y == 0){
-                    System.out.print(" ");
+                    System.out.print("       ");
                 }
                 else if (y == 1){
-                    System.out.print("                                        ");
+                    System.out.print("       ");
                     if(i == 0){
                         System.out.print(" Current adventure:        it's " +data.getCurrentPlayer() + "'s turn to play");
                     }
@@ -410,11 +411,11 @@ public class AdventureTemplate extends CLITemplate {
                     }
                 }
                 else if (y == 2){
-                    System.out.print("                                        ");
+                    System.out.print("       ");
                     adventureCardCLI.print(data.getAdventureCard(), i+6);
                 }
                 else if (y == 3){
-                    System.out.print("                                        ");
+                    System.out.print("       ");
                     if(i < 2){
                         adventureCardCLI.print(data.getAdventureCard(), i+13);
                     }
@@ -431,6 +432,7 @@ public class AdventureTemplate extends CLITemplate {
                     }
                 }
                 else if (y == 4){
+                    System.out.print("       ");
                     Hit hit = data.getHit();
                     if(hit != null){
                         if(i == 1){
@@ -465,13 +467,12 @@ public class AdventureTemplate extends CLITemplate {
 
                 }
                 else if (y == 5 && i < 4){
-                    System.out.print(" ");
+                    System.out.print("       ");
                 }
 
 
                 //print flight board
                 else {
-                    System.out.print("                                 ");
                     FlightBoardCLI.print(data.getFlightBoard(), players, flightIndex);
                     flightIndex++;
                 }
