@@ -81,12 +81,14 @@ public class AbandonedShipState extends AdventureState {
         }
 
         int idx = this.advContext.getIdxCurrentPlayer();
-        this.advContext.setIdxCurrentPlayer(idx+1);
 
-        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()) {
+        if (idx + 1 == gameModel.getPlayersNotAbort().size()) {
             //There are no players that must decide
             this.advContext.setAdvState(new IdleState(this.advContext));
         }
-        //The advState remains the same as before
+        else{
+            //The advState remains the same as before
+            this.advContext.setIdxCurrentPlayer(idx+1);
+        }
     }
 }
