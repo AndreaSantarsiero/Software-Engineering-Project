@@ -30,16 +30,16 @@
 
         <HBox fx:id="subHeaderContainer" VBox.vgrow="ALWAYS">
          <children>
-            <HBox fx:id="actionText" prefHeight="51.0" prefWidth="318.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="actionText"  VBox.vgrow="ALWAYS">
                <children>
-                  <Label fx:id="actionTextLabel" prefHeight="51.0" prefWidth="322.0" style="-fx-text-fill: green;" styleClass="Text" stylesheets="@../style.css" text="Action Text" wrapText="true">
+                  <Label fx:id="actionTextLabel" style="-fx-text-fill: green;" styleClass="Text" stylesheets="@../style.css" text="Action Text" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <HBox fx:id="error" prefHeight="51.0" prefWidth="317.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="error" VBox.vgrow="ALWAYS">
                <children>
                   <Label fx:id="errorLabel" style="-fx-text-fill: red;" styleClass="Text" stylesheets="@../style.css" text="Error" visible="false" wrapText="true">
                      <font>
