@@ -619,29 +619,6 @@ public class AdventureControllerLv1 extends Controller {
     }// manca stati
 
     private void handle(PlanetsCard card) {
-//        setupHandle();
-//        handleButton.setOnAction(mouseEvent -> {
-//            adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
-//            try {
-//                URL url = getClass().getResource(
-//                        "/it/polimi/ingsw/gc11/gui/AdventurePhase/ChoosePlanet.fxml");
-//                Objects.requireNonNull(url, "FXML non trovato!");
-//
-//                FXMLLoader loader = new FXMLLoader(url);
-//                Parent root = loader.load();                       // unica load()
-//
-//                ChoosePlanetController controller = loader.getController(); // ora ≠ null
-//                controller.initialize(stage, card);               // tuo init custom
-//                adventurePhaseData.setListener(controller);
-//
-//                Scene scene = new Scene(root, 1280, 720);
-//                stage.setScene(scene);
-//                stage.show();
-//            } catch (Exception e) {
-//                System.out.println("FXML Error: " + e.getMessage());
-//            }
-//        });
-
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
             // Accept successful
             try {
