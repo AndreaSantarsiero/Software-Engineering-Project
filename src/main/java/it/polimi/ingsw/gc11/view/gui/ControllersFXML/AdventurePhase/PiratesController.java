@@ -121,13 +121,13 @@ public class PiratesController extends Controller {
             cards.getChildren().clear();
             setCard();
 
-
+            Boolean newHit = adventurePhaseData.getNewHit();
             if (state == State.WAIT_COORDINATES) {
-                if(adventurePhaseData.getNewHit() != null){
-                    if(adventurePhaseData.getNewHit() == false){
+                if(newHit != null){
+                    if(newHit == false){
                         goBackToFlightMenu();
                     }
-                    if(adventurePhaseData.getNewHit() == true){
+                    if(newHit == true){
                         try {
                             virtualServer.getCoordinate();
                             state = State.HAS_COORDINATES;
