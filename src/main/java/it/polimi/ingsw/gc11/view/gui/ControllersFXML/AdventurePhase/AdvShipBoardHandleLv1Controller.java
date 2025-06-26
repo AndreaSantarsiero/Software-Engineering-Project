@@ -319,6 +319,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             confirmButton.setDisable(false);
             confirmButton.setOnAction(event -> {
                 adventurePhaseData.setDefensiveCannon(defensiveCannon);
+                actionTextLabel.setText("Select batteries if you need it to activate double cannon or click confirm.");
+                confirmButton.setOnAction(event2 -> {
+                    try {
+                        virtualServer.meteorDefense(adventurePhaseData.getBatteries(), adventurePhaseData.getDefensiveCannon());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
                 state = State.METEOR_SWARM_CAN_BATT;
             });
 
@@ -362,6 +370,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     adventurePhaseData.addDoubleCannon(c);
                 }
                 selectedShipCards.clear();
+
+                actionTextLabel.setText("Select batteries to use for the double cannons.");
+                confirmButton.setOnAction(event2 -> {
+                    try {
+                        virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
+
                 state = State.PIRATES_BATTERIES;
             });
 
@@ -447,6 +465,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     adventurePhaseData.addDoubleCannon(c);
                 }
                 selectedShipCards.clear();
+
+                actionTextLabel.setText("Select batteries to use for the double cannons.");
+                confirmButton.setOnAction(event2 -> {
+                    try {
+                        virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                });
+
                 state = State.SLAVERS_BATTERIES;
             });
 
@@ -486,6 +514,16 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                                 adventurePhaseData.addDoubleCannon(c);
                             }
                             selectedShipCards.clear();
+
+                            actionTextLabel.setText("Select batteries to use for the double cannons.");
+                            confirmButton.setOnAction(event2 -> {
+                                try {
+                                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+
                             state = State.SMUGGLERS_BATTERIES;
                         });
 
@@ -682,16 +720,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         if(state == State.SMUGGLERS_BATTERIES){
 
-            actionTextLabel.setText("Select batteries to use for the double cannons.");
-            confirmButton.setOnAction(event -> {
-                try {
-                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            });
-
-
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
 
@@ -737,15 +765,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
 
         if(state == State.METEOR_SWARM_CAN_BATT){
-            actionTextLabel.setText("Select batteries if you need it to activate double cannon or click confirm.");
-            confirmButton.setOnAction(event -> {
-                try {
-                    virtualServer.meteorDefense(adventurePhaseData.getBatteries(), adventurePhaseData.getDefensiveCannon());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            });
-
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
 
@@ -784,14 +803,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
 
         if(state == State.SLAVERS_BATTERIES){
-            actionTextLabel.setText("Select batteries to use for the double cannons.");
-            confirmButton.setOnAction(event -> {
-                try {
-                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            });
 
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
@@ -848,15 +859,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
 
         if(state == State.PIRATES_BATTERIES){
-            actionTextLabel.setText("Select batteries to use for the double cannons.");
-            confirmButton.setOnAction(event -> {
-                try {
-                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            });
-
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
 
