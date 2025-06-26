@@ -647,6 +647,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                         iv.fitWidthProperty().bind(btnShipCard.widthProperty());
                         iv.fitHeightProperty().bind(btnShipCard.heightProperty());
 
+                        if (selectedShipCards.contains(shipCard)){
+                            ColorInput goldOverlay = new ColorInput();
+                            goldOverlay.setPaint(Color.web("#FFD700CC"));
+
+                            goldOverlay.widthProperty() .bind(iv.fitWidthProperty());
+                            goldOverlay.heightProperty().bind(iv.fitHeightProperty());
+
+                            Blend highlight = new Blend();
+                            highlight.setMode(BlendMode.OVERLAY);
+                            highlight.setTopInput(goldOverlay);
+
+                            iv.setEffect(highlight);
+                        }
+
                         switch(shipCard.getOrientation()){
                             case DEG_0 -> iv.setRotate(0);
                             case DEG_90 -> iv.setRotate(90);
