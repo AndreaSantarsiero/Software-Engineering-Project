@@ -40,6 +40,7 @@ public class AdventurePhaseData extends GamePhaseData {
         ABANDONED_STATION_1, ABANDONED_STATION_2,
         EPIDEMIC_1,
         PLANETS_CARD_1, PLANETS_CARD_2,
+        PIRATES_1, PIRATES_2,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
         COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_2, COMBAT_ZONE_LV1_3, COMBAT_ZONE_LV1_4, COMBAT_ZONE_LV1_5,
@@ -176,6 +177,7 @@ public class AdventurePhaseData extends GamePhaseData {
             case ABANDONED_SHIP_1 -> GUIState = AdventureStateGUI.ABANDONED_SHIP_2;
             case ABANDONED_STATION_1 -> GUIState = AdventureStateGUI.ABANDONED_STATION_2;
             case PLANETS_CARD_1 -> GUIState = AdventureStateGUI.PLANETS_CARD_2;
+            case PIRATES_1 ->  GUIState = AdventureStateGUI.PIRATES_2;
             case OPEN_SPACE_1 -> GUIState = AdventureStateGUI.OPEN_SPACE_2;
             case SMUGGLERS_1 -> GUIState = AdventureStateGUI.SMUGGLERS_2;
             //Combat zone Lv1 states

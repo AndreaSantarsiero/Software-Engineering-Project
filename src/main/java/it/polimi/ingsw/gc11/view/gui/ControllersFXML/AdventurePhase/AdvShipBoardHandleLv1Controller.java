@@ -386,27 +386,28 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             state = State.PIRATES_CANNONS;
         //}
 
+        /** NON CANCELLARE **/
         //if(LOSE_STATE){
-            numShots = card.getShots().size();
-
-            if(card.getShots().getFirst().getType() == Hit.Type.SMALL){
-                actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getShots().getFirst().getDirection().toString()+ " at coordinate " + card.getShots().getFirst().getCoordinate());
-                confirmButton.setVisible(true);
-                confirmButton.setDisable(false);
-                confirmButton.setOnAction(event -> {
-                    try {
-                        virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
-                    }
-                    catch (Exception e) {
-                        System.out.println("Network error:" + e.getMessage());
-                    }
-                });
-
-                state = State.PIRATES_SHOTS;
-            }
-            if(card.getShots().getFirst().getType() == Hit.Type.BIG){
-                //shotIdx++; NESSUNA SCELTA PER BIG HITS
-            }
+//            numShots = card.getShots().size();
+//
+//            if(card.getShots().getFirst().getType() == Hit.Type.SMALL){
+//                actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getShots().getFirst().getDirection().toString()+ " at coordinate " + card.getShots().getFirst().getCoordinate());
+//                confirmButton.setVisible(true);
+//                confirmButton.setDisable(false);
+//                confirmButton.setOnAction(event -> {
+//                    try {
+//                        virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
+//                    }
+//                    catch (Exception e) {
+//                        System.out.println("Network error:" + e.getMessage());
+//                    }
+//                });
+//
+//                state = State.PIRATES_SHOTS;
+//            }
+//            if(card.getShots().getFirst().getType() == Hit.Type.BIG){
+//                //shotIdx++; NESSUNA SCELTA PER BIG HITS
+//            }
         //}
 
         update(adventurePhaseData);
@@ -1218,6 +1219,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 //fare
             }
 
+            if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2 && !adventurePhaseData.getYouWon()){
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    PiratesController controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }
+
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println("Server Error: " + adventurePhaseData.getServerMessage());
@@ -1292,8 +1307,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 originalMaterials.get(storage).add(null);
             }
         }
-
-        System.out.println("Original: " + originalMaterials.get(storage));
 
         for (int i = 0; i < storage.getMaterials().size(); i++) {
             Button btn = new Button();
