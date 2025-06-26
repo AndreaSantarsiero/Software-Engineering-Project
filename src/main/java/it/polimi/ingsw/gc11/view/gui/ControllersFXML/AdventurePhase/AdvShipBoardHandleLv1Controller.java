@@ -44,7 +44,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     private enum State{
         ABANDONED_SHIP,
         ABANDONED_STATION,
-        COMBAT_ZONE_LV1_STAGE_2, COMBAT_ZONE_LV1_STAGE_3,
+        COMBAT_ZONE_LV1, COMBAT_ZONE_LV1_CANNONS, COMBAT_ZONE_LV1_BATTERIES,
         COMBAT_ZONE_LV2_STAGE_2, COMBAT_ZONE_LV2_STAGE_3,
         EPIDEMIC,
         METEOR_SWARM_BATTERIES, METEOR_SWARM_CANNONS, METEOR_SWARM_CAN_BATT,
@@ -250,18 +250,20 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         setup(stage);
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_1);
 
-        if(stageNum == 2){
-            actionTextLabel.setText("Select members to kill.");
-            confirmButton.setVisible(true);
-            confirmButton.setDisable(false);
-            confirmButton.setOnAction(event -> {
+        actionTextLabel.setText("Choose your engine power by selecting \nbatteries to use for the double engines");
+        confirmButton.setVisible(true);
+        confirmButton.setDisable(false);
+        confirmButton.setOnAction(null);
+        confirmButton.setOnAction(event -> {
                                 try {
-                                    virtualServer.killMembers(adventurePhaseData.getHousingUsage());
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
+                                    virtualServer.chooseEnginePower(adventurePhaseData.getBatteries());
+                                }
+                                catch (Exception e) {
+                                    System.out.println("Network error:" + e.getMessage());
                                 }
                             });
-                        }
+
+        state = State.COMBAT_ZONE_LV1;
 
         update(adventurePhaseData);
     }
@@ -638,6 +640,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 setErrorLabel("The card clicked is not a Housing Unit");
             }
         }
+
 
         if(state == State.OPEN_SPACE){
             try {
@@ -1198,6 +1201,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 setShipBoard();
             }
 
+
             System.out.println("State: " + adventurePhaseData.getGUIState());
 
             if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_2 ||
@@ -1207,6 +1211,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.OPEN_SPACE_2) {
 
                 goBackToFlightMenu();
+            }
+            else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_2) {
+                //fare
             }
 
             String serverMessage = adventurePhaseData.getServerMessage();
@@ -1369,3 +1376,81 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     }
 
 }
+
+
+
+
+
+//if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_1) {
+//        try {
+//Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+//
+//int max = battery.getAvailableBatteries();
+//Integer num = askForBatteries(root.getScene().getWindow(), max);
+//                if (num != null) {
+//        adventurePhaseData.addBattery(battery, num);
+//                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
+//        }
+//        }
+//        catch (Exception e) {
+//        System.out.println("The card clicked is not a Battery");
+//setErrorLabel("The card clicked is not a Battery");
+//            }
+//                    }
+//
+//                    if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_2){
+//        //Se so sono io il current player con meno engine power devo scegliere i membri da killare
+//        if(adventurePhaseData.getPlayer().getUsername().equals(adventurePhaseData.getCurrentPlayer())) {
+//        try {
+//HousingUnit housingUnit = (HousingUnit) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+//
+//int max = housingUnit.getNumMembers();
+//Integer num = askForCrewNumber(root.getScene().getWindow(), max);
+//                    if (num != null) {
+//        adventurePhaseData.addHousingUsage(housingUnit, num);
+//                        ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(housingUnit.getNumMembers() - num));
+//        }
+//        } catch (Exception e) {
+//        System.out.println("The card clicked is not a Housing Unit");
+//setErrorLabel("The card clicked is not a Housing Unit");
+//                }
+//                        }
+//                        else {
+//                        actionTextLabel.setText("Wait for the player with less engine power to choose members to kill");
+//            }
+//                    }
+//
+//                    if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_3){
+//        //Gestire fire power
+//        if(state == State.COMBAT_ZONE_LV1){
+//state = State.COMBAT_ZONE_LV1_CANNONS;
+//            }
+//                    else if (state == State.COMBAT_ZONE_LV1_BATTERIES) {
+//
+//        }
+//        if(state == State.COMBAT_ZONE_LV1_CANNONS){
+//        try {
+//Cannon cannon = (Cannon) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+//                    if (cannon.getType() == Cannon.Type.DOUBLE) {
+//        if(selectedShipCards.contains(cannon)){
+//        selectedShipCards.remove(cannon);
+//                        }
+//                                else{
+//                                selectedShipCards.add(cannon);
+//                        }
+//                                }
+//                                else{
+//                                System.out.println("The card clicked is not a Double Cannon");
+//setErrorLabel("The card clicked is not a Double Cannon");
+//                    }
+//                            }
+//                            catch (Exception e) {
+//        System.out.println("The card clicked is not a Cannon");
+//setErrorLabel("The card clicked is not a Cannon");
+//                }
+//                        }
+//                        else if (state == State.COMBAT_ZONE_LV1_BATTERIES) {
+//
+//        }
+//
+//        }
