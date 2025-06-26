@@ -33,9 +33,9 @@ import java.util.Objects;
 
 public class PiratesController extends Controller {
 
-    private enum State{
-        HAS_COORDINATES, WAIT_COORDINATES
-    }
+//    private enum State{
+//        HAS_COORDINATES, WAIT_COORDINATES
+//    }
 
     @FXML private ImageView PiratesImage;
     @FXML private Label title;
@@ -49,14 +49,14 @@ public class PiratesController extends Controller {
     private Stage stage;
     private VirtualServer virtualServer;
     private AdventurePhaseData adventurePhaseData;
-    private State state;
+    //private State state;
 
     public void initialize(Stage stage) {
         this.stage = stage;
         ViewModel viewModel = (ViewModel) this.stage.getUserData();
         this.virtualServer = viewModel.getVirtualServer();
         this.adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
-        state = state.WAIT_COORDINATES;
+        //state = state.WAIT_COORDINATES;
 
         title.setAlignment(Pos.CENTER);
 
@@ -122,24 +122,30 @@ public class PiratesController extends Controller {
             setCard();
 
             Boolean newHit = adventurePhaseData.getNewHit();
-            if (state == State.WAIT_COORDINATES) {
-                if(newHit != null){
-                    if(newHit == false){
-                        goBackToFlightMenu();
-                    }
-                    if(newHit == true){
-                        try {
-                            virtualServer.getCoordinate();
-                            state = State.HAS_COORDINATES;
-                        } catch (NetworkException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
+
+            if(newHit != null){
+                if(newHit == false){
+                    goBackToFlightMenu();
+                }
+                if(newHit == true){
+                    subHeader.getChildren().add(
+                            new Button("roll dices") {{
+                                getStyleClass().add("Text");
+                                setOnAction(event -> {
+                                    try {
+                                        virtualServer.getCoordinate();
+                                    } catch (NetworkException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }}
+                    );
                 }
             }
-            if(state == State.HAS_COORDINATES){
+
+            if(adventurePhaseData.getHit() != null){
                 try {
-                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_SHOT);
+                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                     AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
