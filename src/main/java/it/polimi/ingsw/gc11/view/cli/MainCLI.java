@@ -122,7 +122,7 @@ public class MainCLI {
             System.out.println("Using custom address " + serverIp + ":" + serverPort);
         }
 
-        virtualServer = new VirtualServer(context, pingInterval);
+        virtualServer = new VirtualServer(context, pingInterval, true);
         joiningPhaseData.setVirtualServer(virtualServer);
         virtualServer.initializeConnection(connectionType, serverIp, serverPort);
     }

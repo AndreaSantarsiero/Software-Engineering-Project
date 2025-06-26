@@ -20,6 +20,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class VirtualServer {
 
     private final int pingInterval;
+    private final boolean startPingExecutor;
     private Client client;
     private final PlayerContext playerContext;
     private String username;
@@ -27,9 +28,10 @@ public class VirtualServer {
 
 
 
-    public VirtualServer(PlayerContext playerContext, int pingInterval) {
+    public VirtualServer(PlayerContext playerContext, int pingInterval, boolean startPingExecutor) {
         this.playerContext = playerContext;
         this.pingInterval = pingInterval;
+        this.startPingExecutor = startPingExecutor;
         serverActions = new LinkedBlockingQueue<>();
         startCommandListener();
     }
@@ -87,7 +89,9 @@ public class VirtualServer {
     public void setSessionData(String username, UUID token) {
         this.username = username;
         client.setClientSessionToken(token);
-        startPing();
+        if(startPingExecutor){
+            startPing();
+        }
     }
 
     public UUID getSessionToken() {

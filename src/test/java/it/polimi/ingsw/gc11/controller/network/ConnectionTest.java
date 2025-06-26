@@ -45,7 +45,7 @@ public class ConnectionTest {
     @Test
     void testCreateMatch() throws NetworkException, InterruptedException {
         DumbPlayerContext playerOneContext = new DumbPlayerContext();
-        VirtualServer playerOne   = new VirtualServer(playerOneContext, 10000);
+        VirtualServer playerOne   = new VirtualServer(playerOneContext, 10000, false);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
         dataOne.setVirtualServer(playerOne);
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
@@ -54,7 +54,7 @@ public class ConnectionTest {
         playerOne.createMatch(FlightBoard.Type.LEVEL2, 4);
 
         DumbPlayerContext playerTwoContext = new DumbPlayerContext();
-        VirtualServer playerTwo   = new VirtualServer(playerTwoContext, 10000);
+        VirtualServer playerTwo   = new VirtualServer(playerTwoContext, 10000, false);
         JoiningPhaseData dataTwo = (JoiningPhaseData) playerTwoContext.getCurrentPhase();
         dataTwo.setVirtualServer(playerTwo);
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
@@ -68,28 +68,28 @@ public class ConnectionTest {
     @Test
     void testFullLobby() throws NetworkException, InterruptedException {
         DumbPlayerContext playerOneContext = new DumbPlayerContext();
-        VirtualServer playerOne   = new VirtualServer(playerOneContext, 10000);
+        VirtualServer playerOne   = new VirtualServer(playerOneContext, 10000, false);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
         dataOne.setVirtualServer(playerOne);
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("playerOne");
 
         DumbPlayerContext playerTwoContext = new DumbPlayerContext();
-        VirtualServer playerTwo   = new VirtualServer(playerTwoContext, 10000);
+        VirtualServer playerTwo   = new VirtualServer(playerTwoContext, 10000, false);
         JoiningPhaseData dataTwo = (JoiningPhaseData) playerTwoContext.getCurrentPhase();
         dataTwo.setVirtualServer(playerTwo);
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("playerTwo");
 
         DumbPlayerContext playerThreeContext = new DumbPlayerContext();
-        VirtualServer playerThree = new VirtualServer(playerThreeContext, 10000);
+        VirtualServer playerThree = new VirtualServer(playerThreeContext, 10000, false);
         JoiningPhaseData dataThree = (JoiningPhaseData) playerThreeContext.getCurrentPhase();
         dataThree.setVirtualServer(playerThree);
         playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerThree.registerSession("playerThree");
 
         DumbPlayerContext playerFourContext = new DumbPlayerContext();
-        VirtualServer playerFour = new VirtualServer(playerFourContext, 10000);
+        VirtualServer playerFour = new VirtualServer(playerFourContext, 10000, false);
         JoiningPhaseData dataFour = (JoiningPhaseData) playerFourContext.getCurrentPhase();
         dataFour.setVirtualServer(playerFour);
         playerFour.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
