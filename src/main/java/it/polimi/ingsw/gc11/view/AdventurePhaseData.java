@@ -26,6 +26,8 @@ public class AdventurePhaseData extends GamePhaseData {
         CHOOSE_PLANET_MENU, CHOOSE_PLANET_SETUP,
         WAIT_DICES, WAIT_ACCEPT_REWARD, WAIT_REFUSE_REWARD,
         SHOW_ENEMIES_SHIP,
+        ACTIVATE_ALIEN_MENU, CHOOSE_ALIEN, CHOOSE_HOSTING_HU, ACTIVATE_ALIEN_SETUP,
+        FINALIZE_SHIP_SETUP,
         ABORT_FLIGHT
     }
     private AdventureState state;
@@ -62,6 +64,8 @@ public class AdventurePhaseData extends GamePhaseData {
     private final List<Cannon> doubleCannons;
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
     private Cannon defensiveCannon;
+    public AlienUnit activateAlienUnit;
+    public HousingUnit hostingHousingUnit;
 
     private Boolean youWon; //True if the player won, false if the player lost
     private Boolean newHit; //True if the player has a new hit to get coordinates, false otherwise
@@ -74,6 +78,8 @@ public class AdventurePhaseData extends GamePhaseData {
         doubleCannons = new ArrayList<>();
         storageMaterials = new HashMap<>();
         defensiveCannon = null;
+        activateAlienUnit = null;
+        hostingHousingUnit = null;
         state = AdventureState.CHOOSE_MAIN_MENU;
         GUIState = AdventureStateGUI.FLIGHT_MENU;
         previousGUIState = AdventureStateGUI.FLIGHT_MENU;
@@ -108,7 +114,8 @@ public class AdventurePhaseData extends GamePhaseData {
                 state == AdventureState.LOAD_MATERIALS_MENU || state == AdventureState.SHOT_DEFENSE_SETUP ||
                 state == AdventureState.DEFENSIVE_CANNON_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP ||
                 state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
-                state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD)
+                state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD ||
+                state == AdventureState.ACTIVATE_ALIEN_SETUP || state == AdventureState.FINALIZE_SHIP_SETUP)
         {
             state = AdventureState.CHOOSE_MAIN_MENU;
         }
@@ -221,7 +228,8 @@ public class AdventurePhaseData extends GamePhaseData {
                 state == AdventureState.LOAD_MATERIALS_MENU || state == AdventureState.SHOT_DEFENSE_SETUP ||
                 state == AdventureState.DEFENSIVE_CANNON_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP ||
                 state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
-                state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD)
+                state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD ||
+                state == AdventureState.ACTIVATE_ALIEN_SETUP || state == AdventureState.FINALIZE_SHIP_SETUP)
         {
             resetResponse();
             setState(AdventureState.CHOOSE_MAIN_MENU);
@@ -367,6 +375,24 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
+    public AlienUnit getActivateAlienUnit() {
+        return activateAlienUnit;
+    }
+
+    public void setActivateAlienUnit(AlienUnit activateAlienUnit) {
+        this.activateAlienUnit = activateAlienUnit;
+    }
+
+
+    public HousingUnit getHostingHousingUnit(){
+        return hostingHousingUnit;
+    }
+
+    public void setHostingHousingUnit(HousingUnit hostingHousingUnit) {
+        this.hostingHousingUnit = hostingHousingUnit;
+    }
+
+
     public Boolean getYouWon() {
         Boolean value = youWon;
         youWon = null; //reset the value after reading it
@@ -448,6 +474,8 @@ public class AdventurePhaseData extends GamePhaseData {
         doubleCannons.clear();
         storageMaterials.clear();
         defensiveCannon = null;
+        activateAlienUnit = null;
+        hostingHousingUnit = null;
         hit = null;
     }
 

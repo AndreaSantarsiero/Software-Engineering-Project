@@ -37,6 +37,12 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┌─┐┌─┐┌─┐  ┌─┐┌┐┌┌─┐┌┬┐┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
                     "└─┐├┤ ├┤   ├┤ │││├┤ ││││├┤ └─┐  └─┐├─┤│├─┘",
                     "└─┘└─┘└─┘  └─┘┘└┘└─┘┴ ┴┴└─┘└─┘  └─┘┴ ┴┴┴  "),
+            List.of("┌─┐┌─┐┌┬┐┬┬  ┬┌─┐┌┬┐┌─┐  ┌─┐┬  ┬┌─┐┌┐┌  ┬ ┬┌┐┌┬┌┬┐",
+                    "├─┤│   │ │└┐┌┘├─┤ │ ├┤   ├─┤│  │├┤ │││  │ │││││ │ ",
+                    "┴ ┴└─┘ ┴ ┴ └┘ ┴ ┴ ┴ └─┘  ┴ ┴┴─┘┴└─┘┘└┘  └─┘┘└┘┴ ┴ "),
+            List.of("┌─┐┬┌┐┌┌─┐┬  ┬┌─┐┌─┐  ┌─┐┬ ┬┬┌─┐",
+                    "├┤ ││││├─┤│  │┌─┘├┤   └─┐├─┤│├─┘",
+                    "└  ┴┘└┘┴ ┴┴─┘┴└─┘└─┘  └─┘┴ ┴┴┴ "),
             List.of("┌─┐┌┐ ┌─┐┬─┐┌┬┐  ┌─┐┬  ┬┌─┐┬ ┬┌┬┐",
                     "├─┤├┴┐│ │├┬┘ │   ├┤ │  ││ ┬├─┤ │ ",
                     "┴ ┴└─┘└─┘┴└─ ┴   └  ┴─┘┴└─┘┴ ┴ ┴ ")
@@ -205,6 +211,23 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┌─┐┌─┐┬ ┬┬─┐┌┬┐┬ ┬",
                     "├┤ │ ││ │├┬┘ │ ├─┤",
                     "└  └─┘└─┘┴└─ ┴ ┴ ┴")
+    );
+    private static final List<List<String>> activateAlienMenu = List.of(
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┬  ┬┌─┐┌┐┌  ┬ ┬┌┐┌┬┌┬┐",
+                    "│  ├─┤│ ││ │└─┐├┤   ├─┤│  │├┤ │││  │ │││││ │ ",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  ┴ ┴┴─┘┴└─┘┘└┘  └─┘┘└┘┴ ┴ "),
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┬ ┬┌─┐┬ ┬┌─┐┬┌┐┌┌─┐  ┬ ┬┌┐┌┬┌┬┐",
+                    "│  ├─┤│ ││ │└─┐├┤   ├─┤│ ││ │└─┐│││││ ┬  │ │││││ │ ",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  ┴ ┴└─┘└─┘└─┘┴┘└┘└─┘  └─┘┘└┘┴ ┴ "),
+            List.of("┌─┐┌─┐┌┐┌┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "└─┐├┤ │││ ││  ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
+                    "└─┘└─┘┘└┘─┴┘  ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
+            List.of("┬─┐┌─┐┌─┐┌─┐┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
+                    "├┬┘├┤ └─┐├┤  │   ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
+                    "┴└─└─┘└─┘└─┘ ┴   ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
+            List.of("┌┐ ┌─┐┌─┐┬┌─  ┌┬┐┌─┐  ┌─┐┬─┐┌─┐┬  ┬┬┌─┐┬ ┬┌─┐  ┌┬┐┌─┐┌┐┌┬ ┬",
+                    "├┴┐├─┤│  ├┴┐   │ │ │  ├─┘├┬┘├┤ └┐┌┘││ ││ │└─┐  │││├┤ ││││ │",
+                    "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
     );
 
     private static final List<List<String>> numBatteriesMenu = List.of(
@@ -381,6 +404,9 @@ public class AdventureTemplate extends CLITemplate {
                     else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_PLANET_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_PLANET_SETUP){
                         printMenu(shipBoard, menuIndex, choosePlanetMenu, controller.getChoosePlanetMenu());
                     }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.ACTIVATE_ALIEN_MENU || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ALIEN || data.getState() == AdventurePhaseData.AdventureState.CHOOSE_HOSTING_HU || data.getState() == AdventurePhaseData.AdventureState.ACTIVATE_ALIEN_SETUP){
+                        printMenu(shipBoard, menuIndex, activateAlienMenu, controller.getActivateAlienMenu());
+                    }
                     else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  ||
                             data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES ||
                             data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES ||
@@ -539,6 +565,10 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getChoosePlanetMenuSize(){
         return choosePlanetMenu.size();
+    }
+
+    public int getActivateAlienMenuSize(){
+        return activateAlienMenu.size();
     }
 
     public int getNumBatteriesMenuSize(){

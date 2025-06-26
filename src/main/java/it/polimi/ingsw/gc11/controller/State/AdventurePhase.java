@@ -319,16 +319,9 @@ public class AdventurePhase extends GamePhase {
         return advState.meteorDefense(username, batteries, cannon);
     }
 
-    /**
-     * Returns the name of this game phase.
-     *
-     * @return "AdventurePhase"
-     */
-    @Override
-    public String getPhaseName(){
-        return "AdventurePhase";
-    }
 
+
+    //pre AdventurePhase methods
     @Override
     public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
         advState.selectAliens(username, alienUnit, housingUnit);
@@ -337,6 +330,18 @@ public class AdventurePhase extends GamePhase {
     @Override
     public void completedAlienSelection(String username){
         advState.completedAlienSelection(username);
+    }
+
+
+
+    /**
+     * Returns the name of this game phase.
+     *
+     * @return "AdventurePhase"
+     */
+    @Override
+    public String getPhaseName(){
+        return "AdventurePhase";
     }
 
     //for testing
