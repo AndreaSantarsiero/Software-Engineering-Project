@@ -110,6 +110,7 @@ public class AdventurePhaseData extends GamePhaseData {
                 state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
                 state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD)
         {
+            resetResponse();
             state = AdventureState.CHOOSE_MAIN_MENU;
         }
         else if(state == AdventureState.CHOOSE_DOUBLE_CANNON || state == AdventureState.SELECT_FIRE_NUM_BATTERIES) {
@@ -223,6 +224,7 @@ public class AdventurePhaseData extends GamePhaseData {
                 state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
                 state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD)
         {
+            resetResponse();
             setState(AdventureState.CHOOSE_MAIN_MENU);
         }
         else {
@@ -260,6 +262,7 @@ public class AdventurePhaseData extends GamePhaseData {
         this.adventureCard = adventureCard;
         adventureCard.getHintMessage(this);
         if(updateState) {
+            resetResponse();
             updateState();
         }
         else {
