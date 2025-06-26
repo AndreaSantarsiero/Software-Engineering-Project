@@ -7,7 +7,6 @@ public class NotifyWinLose extends ServerAction{
     public enum Response{
         WIN, LOSE, DRAW,
     }
-
     private final Response youWon; //True if the player won, false if the player lost
 
     public NotifyWinLose(Response youWon) {
