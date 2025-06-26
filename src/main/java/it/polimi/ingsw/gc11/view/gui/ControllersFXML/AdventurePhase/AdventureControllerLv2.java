@@ -201,7 +201,7 @@ public class AdventureControllerLv2 extends Controller {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardLv2.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    AdvShipBoardLv1Controller controller = fxmlLoader.getController();
+                    AdvShipBoardLv2Controller controller = fxmlLoader.getController();
                     adventurePhaseData.setListener(controller);
                     controller.initialize(stage, player.getUsername());
                     stage.setScene(newScene);
