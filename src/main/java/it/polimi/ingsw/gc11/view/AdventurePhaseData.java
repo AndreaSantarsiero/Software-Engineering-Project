@@ -97,6 +97,7 @@ public class AdventurePhaseData extends GamePhaseData {
         this.player = player;
         this.enemies = enemies;
         this.currentPlayer = currentPlayer;
+        resetCopiedShipBoard();
         notifyListener();
     }
 
