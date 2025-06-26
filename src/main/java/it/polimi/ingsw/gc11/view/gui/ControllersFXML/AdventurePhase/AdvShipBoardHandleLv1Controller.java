@@ -737,6 +737,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     else{
                         selectedShipCards.add(cannon);
                     }
+                    slotGrid.getChildren().clear();
+                    setShipBoard();
                 }
                 else{
                     System.out.println("The card clicked is not a Double Cannon");
@@ -821,6 +823,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     else{
                         selectedShipCards.add(cannon);
                     }
+                    slotGrid.getChildren().clear();
+                    setShipBoard();
                 }
                 else{
                     System.out.println("The card clicked is not a Double Cannon");
@@ -877,6 +881,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     else{
                         selectedShipCards.add(cannon);
                     }
+                    slotGrid.getChildren().clear();
+                    setShipBoard();
                 }
                 else{
                     System.out.println("The card clicked is not a Double Cannon");
