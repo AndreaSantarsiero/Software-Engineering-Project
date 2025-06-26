@@ -473,6 +473,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     @FXML private void onResetChoiceButtonClicked(){
         adventurePhaseData.resetResponse();
+        setShipBoard();
     }
 
     public void setShipBoard(){
@@ -640,19 +641,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         if(state == State.SMUGGLERS_BATTERIES){
 
             actionTextLabel.setText("Select batteries to use for the double cannons.");
-            subHeaderContainer.getChildren().add(
-                    new Button("Confirm") {
-                        {
-                            setOnAction(event -> {
-                                try {
-                                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
-                                }
-                            });
-                        }
-                    }
-            );
+            confirmButton.setOnAction(event -> {
+                try {
+                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+
 
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
@@ -700,19 +696,13 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         if(state == State.METEOR_SWARM_CAN_BATT){
             actionTextLabel.setText("Select batteries if you need it to activate double cannon or click confirm.");
-            subHeaderContainer.getChildren().add(
-                    new Button("Confirm") {
-                        {
-                            setOnAction(event -> {
-                                try {
-                                    virtualServer.meteorDefense(adventurePhaseData.getBatteries(), adventurePhaseData.getDefensiveCannon());
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
-                                }
-                            });
-                        }
-                    }
-            );
+            confirmButton.setOnAction(event -> {
+                try {
+                    virtualServer.meteorDefense(adventurePhaseData.getBatteries(), adventurePhaseData.getDefensiveCannon());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
 
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
@@ -753,19 +743,13 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         if(state == State.SLAVERS_BATTERIES){
             actionTextLabel.setText("Select batteries to use for the double cannons.");
-            subHeaderContainer.getChildren().add(
-                    new Button("Confirm") {
-                        {
-                            setOnAction(event -> {
-                                try {
-                                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
-                                }
-                            });
-                        }
-                    }
-            );
+            confirmButton.setOnAction(event -> {
+                try {
+                    virtualServer.chooseFirePower(adventurePhaseData.getBatteries(), adventurePhaseData.getDoubleCannons());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
 
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
