@@ -144,28 +144,33 @@ public class AdventureControllerLv2 extends Controller {
     }
 
     private void saveOriginalPositions() {
-        originalPositions.put(pos0,  new double[]{256, 104});
-        originalPositions.put(pos1,  new double[]{345, 77});
-        originalPositions.put(pos2,  new double[]{435, 58});
-        originalPositions.put(pos3,  new double[]{530, 59});
-        originalPositions.put(pos4,  new double[]{626, 77});
-        originalPositions.put(pos5,  new double[]{712, 104});
-        originalPositions.put(pos6,  new double[]{799, 162});
-        originalPositions.put(pos7,  new double[]{843, 268});
-        originalPositions.put(pos8,  new double[]{793, 350});
-        originalPositions.put(pos9,  new double[]{700, 405});
-        originalPositions.put(pos10, new double[]{612, 430});
-        originalPositions.put(pos11, new double[]{523, 442});
-        originalPositions.put(pos12, new double[]{427, 451});
-        originalPositions.put(pos13, new double[]{335, 430});
-        originalPositions.put(pos14, new double[]{248, 405});
-        originalPositions.put(pos15, new double[]{160, 350});
-        originalPositions.put(pos16, new double[]{116, 246});
-        originalPositions.put(pos17, new double[]{172, 153});
+        originalPositions.put(pos0,  new double[]{234, 125});
+        originalPositions.put(pos1,  new double[]{300, 98});
+        originalPositions.put(pos2,  new double[]{363, 82});
+        originalPositions.put(pos3,  new double[]{433, 76});
+        originalPositions.put(pos4,  new double[]{501, 76});
+        originalPositions.put(pos5,  new double[]{566, 82});
+        originalPositions.put(pos6,  new double[]{633, 103});
+        originalPositions.put(pos7,  new double[]{692, 131});
+        originalPositions.put(pos8,  new double[]{756, 174});
+        originalPositions.put(pos9,  new double[]{799, 235});
+        originalPositions.put(pos10, new double[]{788, 312});
+        originalPositions.put(pos11, new double[]{744, 371});
+        originalPositions.put(pos12, new double[]{685, 408});
+        originalPositions.put(pos13, new double[]{621, 429});
+        originalPositions.put(pos14, new double[]{552, 450});
+        originalPositions.put(pos15, new double[]{485, 450});
+        originalPositions.put(pos16, new double[]{411, 450});
+        originalPositions.put(pos17, new double[]{341, 450});
+        originalPositions.put(pos18, new double[]{278, 429});
+        originalPositions.put(pos19, new double[]{212, 408});
+        originalPositions.put(pos20, new double[]{160, 364});
+        originalPositions.put(pos21, new double[]{116, 290});
+        originalPositions.put(pos22, new double[]{122, 213});
+        originalPositions.put(pos23, new double[]{165, 161});
     }
 
     private void updateRectangles() {
-        // Calcola la posizione e la scala rispetto all'immagine della board
         double scaleX = flightBoardImage.getBoundsInParent().getWidth() / BOARD_BASE_WIDTH;
         double scaleY = flightBoardImage.getBoundsInParent().getHeight() / BOARD_BASE_HEIGHT;
         double offsetX = flightBoardImage.getLayoutX();
