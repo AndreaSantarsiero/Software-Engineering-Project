@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.model;
 
+import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,6 +16,8 @@ public class HitTest {
         public TestHit(Hit.Type type, Hit.Direction direction) {
             super(type, direction);
         }
+        @Override
+        public void print(AdventureTemplate adventureTemplate) {}
     }
 
 
