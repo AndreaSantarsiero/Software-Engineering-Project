@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view;
 
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
 import it.polimi.ingsw.gc11.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Hit;
@@ -70,7 +71,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public AlienUnit activateAlienUnit;
     public HousingUnit hostingHousingUnit;
 
-    private Boolean youWon; //True if the player won, false if the player lost
+    private NotifyWinLose.Response youWon; //True if the player won, false if the player lost
     private Boolean newHit; //True if the player has a new hit to get coordinates, false otherwise
 
 
@@ -397,13 +398,13 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
-    public Boolean getYouWon() {
-        Boolean value = youWon;
+    public NotifyWinLose.Response getYouWon() {
+        NotifyWinLose.Response value = youWon;
         youWon = null; //reset the value after reading it
         return value;
     }
 
-    public void setYouWon(Boolean youWon) {
+    public void setYouWon(NotifyWinLose.Response youWon) {
         this.youWon = youWon;
     }
 

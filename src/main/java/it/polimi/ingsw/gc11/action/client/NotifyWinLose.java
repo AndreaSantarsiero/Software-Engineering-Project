@@ -4,11 +4,13 @@ import it.polimi.ingsw.gc11.view.*;
 
 
 public class NotifyWinLose extends ServerAction{
+    public enum Response{
+        WIN, LOSE, DRAW,
+    }
 
-    private final Boolean youWon; //True if the player won, false if the player lost
+    private final Response youWon; //True if the player won, false if the player lost
 
-
-    public NotifyWinLose(Boolean youWon) {
+    public NotifyWinLose(Response youWon) {
         this.youWon = youWon;
     }
 
@@ -24,7 +26,6 @@ public class NotifyWinLose extends ServerAction{
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
         adventurePhaseData.setYouWon(youWon);
-
     }
 
     @Override

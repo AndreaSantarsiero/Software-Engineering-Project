@@ -51,7 +51,7 @@ public class Penalty3Lv1 extends AdventureState {
                 if (p.getUsername().equals(lostPlayerUsername)) {
                     advContext.getGameContext().sendAction(
                             lostPlayerUsername,
-                            new NotifyWinLose(false) //false because the player lost and now has to get coordinates
+                            new NotifyWinLose(NotifyWinLose.Response.LOSE) //false because the player lost and now has to get coordinates
                     );
                     advContext.getGameContext().sendAction(
                             lostPlayerUsername,
@@ -60,7 +60,7 @@ public class Penalty3Lv1 extends AdventureState {
                 } else {
                     advContext.getGameContext().sendAction(
                             p.getUsername(),
-                            new NotifyWinLose(false)
+                            new NotifyWinLose(NotifyWinLose.Response.LOSE)
                     );
                 }
             }

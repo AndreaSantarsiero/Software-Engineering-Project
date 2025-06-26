@@ -105,20 +105,20 @@ public class SlaversState extends AdventureState {
         if(playerFirePower > slavers.getFirePower()){
             //VictoryState
             advContext.setAdvState(new WinState(advContext, player));
-            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(true));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.WIN));
         }
         else if (playerFirePower == slavers.getFirePower()) {
             //Imposto che la carta non è più giocata da nessun player e passo al prossimo player.
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new SlaversState(advContext));
-            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(true));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.DRAW));
 
         }
         else {
             //LooseState
             advContext.setAdvState(new LooseState(advContext, player));
-            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(false));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.WIN));
         }
 
         return player;

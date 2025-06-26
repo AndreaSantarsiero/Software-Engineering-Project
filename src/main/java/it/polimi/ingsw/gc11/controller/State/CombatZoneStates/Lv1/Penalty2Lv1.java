@@ -29,13 +29,13 @@ public class Penalty2Lv1 extends AdventureState {
             if(p.getUsername().equals(lostPlayerUsername)){
                 advContext.getGameContext().sendAction(
                         lostPlayerUsername,
-                        new NotifyWinLose(false) //false because the player lost and now has to kill members
+                        new NotifyWinLose(NotifyWinLose.Response.LOSE) //false because the player lost and now has to kill members
                 );
             }
             else {
                 advContext.getGameContext().sendAction(
                         p.getUsername(),
-                        new NotifyWinLose(true) //true because the player didn't lose
+                        new NotifyWinLose(NotifyWinLose.Response.WIN) //true because the player didn't lose
                 );
             }
         }
