@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.SlaversStates;
 
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -104,16 +105,20 @@ public class SlaversState extends AdventureState {
         if(playerFirePower > slavers.getFirePower()){
             //VictoryState
             advContext.setAdvState(new WinState(advContext, player));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(true));
         }
         else if (playerFirePower == slavers.getFirePower()) {
             //Imposto che la carta non è più giocata da nessun player e passo al prossimo player.
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new SlaversState(advContext));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(true));
+
         }
         else {
             //LooseState
             advContext.setAdvState(new LooseState(advContext, player));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(false));
         }
 
         return player;
