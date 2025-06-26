@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.SmugglersStates;
 
+import it.polimi.ingsw.gc11.action.client.SendMaterialsAction;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -78,6 +79,9 @@ public class WinSmugglersState extends AdventureState {
         if(decision){
             gameModel.move(player.getUsername(), smugglers.getLostDays() * -1);
             this.advContext.setAdvState(new ChooseMaterialsSmugglers(advContext, player));
+
+            SendMaterialsAction action = new SendMaterialsAction(smugglers.getMaterials());
+            advContext.getGameContext().sendAction(player.getUsername(), action);
         }
         else{
             this.advContext.setAdvState(new IdleState(advContext));

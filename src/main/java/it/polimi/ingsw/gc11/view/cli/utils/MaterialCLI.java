@@ -42,6 +42,34 @@ public class MaterialCLI {
 
 
 
+    public static void printBuffer(List<Material> materials, int selected) {
+        int index = 0;
+
+        for(Material material : materials) {
+            if(index == selected){
+                System.out.print("\033[48;5;235m");
+            }
+
+            if (material.getType().equals(Material.Type.BLUE)) {
+                System.out.print(Ansi.ansi().fg(Ansi.Color.BLUE) + "■");
+            }
+            else if (material.getType().equals(Material.Type.GREEN)) {
+                System.out.print(Ansi.ansi().fg(Ansi.Color.GREEN) + "■");
+            }
+            else if (material.getType().equals(Material.Type.YELLOW)) {
+                System.out.print(Ansi.ansi().fg(Ansi.Color.YELLOW) + "■");
+            }
+            else if (material.getType().equals(Material.Type.RED)) {
+                System.out.print(Ansi.ansi().fg(Ansi.Color.RED) + "■");
+            }
+
+            System.out.print(Ansi.ansi().reset() + " ");
+            index++;
+        }
+    }
+
+
+
     /**
      * Prints an empty material slot using the "□" symbol
      */

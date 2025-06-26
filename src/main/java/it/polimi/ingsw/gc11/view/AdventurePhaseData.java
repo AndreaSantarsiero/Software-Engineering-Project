@@ -26,7 +26,7 @@ public class AdventurePhaseData extends GamePhaseData {
         ENGINE_POWER_MENU, CHOOSE_ENGINE_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, ENGINE_POWER_SETUP,
         CREW_MEMBERS_MENU, CHOOSE_HOUSING_UNIT, SELECT_NUM_MEMBERS, CREW_MEMBERS_SETUP,
         BATTERIES_MENU, CHOOSE_BATTERIES, SELECT_NUM_BATTERIES, BATTERIES_SETUP,
-        LOAD_MATERIALS_MENU, CHOOSE_STORAGE, LOAD_MATERIALS_SETUP,
+        LOAD_MATERIALS_MENU, CHOOSE_STORAGE, ADD_MATERIAL, REMOVE_MATERIAL, LOAD_MATERIALS_SETUP,
         SHOT_DEFENSE_MENU, CHOOSE_SHOT_BATTERIES, SELECT_SHOT_NUM_BATTERIES, SHOT_DEFENSE_SETUP,
         DEFENSIVE_CANNON_MENU, CHOOSE_DEFENSIVE_CANNON, CHOOSE_DEFENSIVE_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, DEFENSIVE_CANNON_SETUP,
         CHOOSE_PLANET_MENU, CHOOSE_PLANET_SETUP,
@@ -64,6 +64,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private Hit hit;
+    private final List<Material> materialsBuffer;
     private Player player;
     private ShipBoard copiedShipBoard;
     private Map<String, Player> enemies; //list of enemies players
@@ -86,6 +87,8 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     public AdventurePhaseData() {
+        hit = null;
+        materialsBuffer = new ArrayList<>();
         enemies = new HashMap<>();
         housingUsage = new HashMap<>();
         batteries = new HashMap<>();
@@ -146,7 +149,7 @@ public class AdventurePhaseData extends GamePhaseData {
         else if(state == AdventureState.SELECT_NUM_BATTERIES) {
             state = AdventureState.BATTERIES_MENU;
         }
-        else if(state == AdventureState.CHOOSE_STORAGE) {
+        else if(state == AdventureState.CHOOSE_STORAGE || state == AdventureState.ADD_MATERIAL || state == AdventureState.REMOVE_MATERIAL) {
             state = AdventureState.LOAD_MATERIALS_MENU;
         }
         else if(state == AdventureState.SELECT_SHOT_NUM_BATTERIES) {
@@ -154,6 +157,9 @@ public class AdventurePhaseData extends GamePhaseData {
         }
         else if(state == AdventureState.CHOOSE_DEFENSIVE_CANNON || state == AdventureState.SELECT_DEFENSE_NUM_BATTERIES) {
             state = AdventureState.DEFENSIVE_CANNON_MENU;
+        }
+        else if(state == AdventureState.CHOOSE_ALIEN || state == AdventureState.CHOOSE_HOSTING_HU){
+            state = AdventureState.ACTIVATE_ALIEN_MENU;
         }
         else if (state.ordinal() < AdventureState.values().length - 1) {
             state = AdventureState.values()[state.ordinal() + 1];
@@ -308,6 +314,7 @@ public class AdventurePhaseData extends GamePhaseData {
         this.adventureCard = adventureCard;
         adventureCard.getHintMessage(this);
         hit = null;
+        materialsBuffer.clear();
         if(updateState) {
             resetResponse();
             updateState();
@@ -327,6 +334,15 @@ public class AdventurePhaseData extends GamePhaseData {
         actualizePreviousState();
         this.hit = hit;
         notifyListener();
+    }
+
+
+    public List<Material> getMaterialsBuffer(){
+        return materialsBuffer;
+    }
+
+    public void setMaterialsBuffer(List<Material> materialsBuffer){
+        this.materialsBuffer.addAll(materialsBuffer);
     }
 
 
