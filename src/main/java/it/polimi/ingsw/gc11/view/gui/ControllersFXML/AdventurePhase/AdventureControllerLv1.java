@@ -664,6 +664,7 @@ public class AdventureControllerLv1 extends Controller {
         handleButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
+                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_1);
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();

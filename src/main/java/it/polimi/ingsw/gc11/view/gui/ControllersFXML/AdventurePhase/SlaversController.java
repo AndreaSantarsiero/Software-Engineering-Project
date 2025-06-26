@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
@@ -92,12 +93,31 @@ public class SlaversController extends Controller {
         new Thread(timer).start();
     }
 
+    private void goBackToFlightMenu() {
+        if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdventureControllerLv1 controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage);
+                stage.setScene(newScene);
+                stage.show();
+            } catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        }
+    }
+
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
 
             cards.getChildren().clear();
             setCard();
+
+            //if STATO WIN
+            //goBackToFlightMenu();
 
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {

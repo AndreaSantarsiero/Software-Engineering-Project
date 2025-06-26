@@ -460,7 +460,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void initialize(Stage stage, Slavers card) {
         setup(stage);
 
-        //if(CHOOSE_CANNONS_STATE){
+        if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_1) {
             actionTextLabel.setText("Select double cannons to use.");
             confirmButton.setVisible(true);
             confirmButton.setDisable(false);
@@ -484,9 +484,9 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             });
 
             state = State.SLAVERS_CANNONS;
-        //}
+        }
 
-        //if(LOSE_STATE){
+        if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS) {
             actionTextLabel.setText("Select housing units and members to kill");
             confirmButton.setVisible(true);
             confirmButton.setDisable(false);
@@ -500,7 +500,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             });
 
             state = State.SLAVERS_MEMBERS;
-        //}
+        }
 
         update(adventurePhaseData);
     }
@@ -1249,6 +1249,28 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.COMBAT_ZONE_LV1_2) {
                 //fare
             }
+
+            try {
+                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2 && !adventurePhaseData.getYouWon()) {
+                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS);
+                    initialize(stage, (Slavers) adventurePhaseData.getAdventureCard());
+                }else{
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Slavers.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                        SlaversController controller = fxmlLoader.getController();
+                        adventurePhaseData.setListener(controller);
+                        controller.initialize(stage);
+                        stage.setScene(newScene);
+                        stage.show();
+                    } catch (Exception e) {
+                        System.out.println("FXML Error: " + e.getMessage());
+                    }
+                }
+            } catch (Exception e) {
+
+            }
+
 
             try {
                 if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2 && !adventurePhaseData.getYouWon()){
