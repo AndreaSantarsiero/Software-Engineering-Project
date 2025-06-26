@@ -45,7 +45,7 @@ public class ViewModel {
             int serverRMIPort = Integer.parseInt(config.getProperty("serverRMIPort"));
             int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
 
-            this.virtualServer = new VirtualServer(playerContext, pingInterval);
+            this.virtualServer = new VirtualServer(playerContext, pingInterval, true);
             this.virtualServer.initializeConnection(Utils.ConnectionType.RMI, serverIp, serverRMIPort);
             JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
             joiningPhaseData.setVirtualServer(virtualServer);
@@ -66,7 +66,7 @@ public class ViewModel {
             int serverSocketPort = Integer.parseInt(config.getProperty("serverSocketPort"));
             int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
 
-            this.virtualServer = new VirtualServer(playerContext, pingInterval);
+            this.virtualServer = new VirtualServer(playerContext, pingInterval, true);
             virtualServer.initializeConnection(Utils.ConnectionType.SOCKET, serverIp, serverSocketPort);
             JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
             joiningPhaseData.setVirtualServer(virtualServer);

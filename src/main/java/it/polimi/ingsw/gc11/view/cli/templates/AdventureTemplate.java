@@ -154,9 +154,9 @@ public class AdventureTemplate extends CLITemplate {
                     "└─┘┴ ┴└─┘┴ ┴   ┴ └─┘  ┴  ┴└─└─┘ └┘ ┴└─┘└─┘└─┘  ┴ ┴└─┘┘└┘└─┘")
     );
     private static final List<List<String>> loadMaterialsMenu = List.of(
-            List.of("┌─┐┬ ┬┌─┐┌─┐  ┌┬┐┌─┐┌┬┐┌─┐┬─┐┬┌─┐┬  ",
-                    "└─┐│││├─┤├─┘  │││├─┤ │ ├┤ ├┬┘│├─┤│  ",
-                    "└─┘└┴┘┴ ┴┴    ┴ ┴┴ ┴ ┴ └─┘┴└─┴┴ ┴┴─┘"),
+            List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┌┬┐┌─┐┬─┐┌─┐┌─┐┌─┐",
+                    "│  ├─┤│ ││ │└─┐├┤   └─┐ │ │ │├┬┘├─┤│ ┬├┤ ",
+                    "└─┘┴ ┴└─┘└─┘└─┘└─┘  └─┘ ┴ └─┘┴└─┴ ┴└─┘└─┘"),
             List.of("┌─┐┌─┐┌┐┌┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
                     "└─┐├┤ │││ ││  ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
                     "└─┘└─┘┘└┘─┴┘  ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
@@ -274,7 +274,7 @@ public class AdventureTemplate extends CLITemplate {
         System.out.println("╔═╗╔╦╗╦  ╦╔═╗╔╗╔╔╦╗╦ ╦╦═╗╔═╗  ╔═╗╦ ╦╔═╗╔═╗╔═╗\n" +
                            "╠═╣ ║║╚╗╔╝║╣ ║║║ ║ ║ ║╠╦╝║╣   ╠═╝╠═╣╠═╣╚═╗║╣ \n" +
                            "╩ ╩═╩╝ ╚╝ ╚═╝╝╚╝ ╩ ╚═╝╩╚═╚═╝  ╩  ╩ ╩╩ ╩╚═╝╚═╝");
-        ShipBoard shipBoard = data.getPlayer().getShipBoard();
+        ShipBoard shipBoard = data.getCopiedShipBoard();
         List<Player> players = new ArrayList<>();
         players.add(data.getPlayer());
         players.addAll(data.getEnemies().values());

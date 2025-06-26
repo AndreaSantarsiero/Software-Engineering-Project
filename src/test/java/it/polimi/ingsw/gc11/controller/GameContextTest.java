@@ -122,21 +122,21 @@ public class GameContextTest {
 
 
         DumbPlayerContext playerOneContext = new DumbPlayerContext();
-        VirtualServer playerOne = new VirtualServer(playerOneContext, 10000);
+        VirtualServer playerOne = new VirtualServer(playerOneContext, 10000, false);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
         dataOne.setVirtualServer(playerOne);
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
 
         DumbPlayerContext playerTwoContext = new DumbPlayerContext();
-        VirtualServer playerTwo = new VirtualServer(playerTwoContext, 10000);
+        VirtualServer playerTwo = new VirtualServer(playerTwoContext, 10000, false);
         JoiningPhaseData dataTwo = (JoiningPhaseData) playerTwoContext.getCurrentPhase();
         dataTwo.setVirtualServer(playerTwo);
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("username2");
 
         DumbPlayerContext playerThreeContext = new DumbPlayerContext();
-        VirtualServer playerThree = new VirtualServer(playerThreeContext, 10000);
+        VirtualServer playerThree = new VirtualServer(playerThreeContext, 10000, false);
         JoiningPhaseData dataThree = (JoiningPhaseData) playerThreeContext.getCurrentPhase();
         dataThree.setVirtualServer(playerThree);
         playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
