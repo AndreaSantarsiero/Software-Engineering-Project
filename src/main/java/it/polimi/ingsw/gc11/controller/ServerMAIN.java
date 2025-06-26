@@ -46,7 +46,7 @@ public class ServerMAIN {
         }
 
         try {
-            ServerController serverController = new ServerController(RMIPort, SocketPort);
+            ServerController serverController = new ServerController(RMIPort, SocketPort, connectionTimeout);
             System.out.println("Server started on RMI port: " + RMIPort + ", Socket port: " + SocketPort);
         } catch (NetworkException e) {
             System.out.println("FATAL ERROR: " + e.getMessage());

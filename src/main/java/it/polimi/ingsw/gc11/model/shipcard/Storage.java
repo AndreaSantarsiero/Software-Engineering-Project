@@ -73,6 +73,73 @@ public class Storage extends ShipCard {
     }
 
 
+    public void checkChooseMaterialsRestrictions(List<Material> newMaterials, List<Material> oldMaterials) {
+        int blueCount = 0, greenCount = 0, yellowCount = 0, redCount = 0, maximumCount = 0;
+
+        if (newMaterials.size() != oldMaterials.size()) {
+            throw new IllegalArgumentException("New material list size does not match old material list size");
+        }
+
+        if (type == Type.DOUBLE_BLUE || type == Type.TRIPLE_BLUE) {
+            for (int i = 0; i < newMaterials.size(); i++) {
+                Material newMaterial = newMaterials.get(i);
+                Material oldMaterial = oldMaterials.get(i);
+
+                if((newMaterial != null && newMaterial.getType() == Material.Type.RED) || (oldMaterial != null && oldMaterial.getType() == Material.Type.RED)) {
+                    throw new IllegalArgumentException("Cannot add or remove red materials in a blue storage");
+                }
+            }
+        }
+
+        switch (type) {
+            case SINGLE_RED -> maximumCount = 1;
+            case DOUBLE_RED, DOUBLE_BLUE -> maximumCount = 2;
+            case TRIPLE_BLUE -> maximumCount = 3;
+        }
+
+        for (Material material : materials) {
+            if(material != null){
+                switch (material.getType()) {
+                    case BLUE -> blueCount++;
+                    case GREEN -> greenCount++;
+                    case YELLOW -> yellowCount++;
+                    case RED -> redCount++;
+                }
+            }
+        }
+
+        for (int i = 0; i < newMaterials.size(); i++) {
+            Material newMaterial = newMaterials.get(i);
+            Material oldMaterial = oldMaterials.get(i);
+
+            if(newMaterial != null){
+                switch (newMaterial.getType()) {
+                    case BLUE -> blueCount++;
+                    case GREEN -> greenCount++;
+                    case YELLOW -> yellowCount++;
+                    case RED -> redCount++;
+                }
+            }
+
+            if(oldMaterial != null){
+                switch (oldMaterial.getType()) {
+                    case BLUE -> blueCount--;
+                    case GREEN -> greenCount--;
+                    case YELLOW -> yellowCount--;
+                    case RED -> redCount--;
+                }
+            }
+
+            if(blueCount < 0 || greenCount < 0 || yellowCount < 0 || redCount < 0){
+                throw new IllegalArgumentException("Trying to remove a material that is not present on this storage");
+            }
+            if((blueCount + greenCount + yellowCount + redCount) > maximumCount){
+                throw new IllegalArgumentException("Too many materials on this storage at the same time");
+            }
+        }
+    }
+
+
     /**
      * Adds a new material to the storage.
      * Throws an exception if the storage is full or the material type is incompatible with the storage type

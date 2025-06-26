@@ -117,26 +117,26 @@ public class GameContextTest {
 
     @BeforeEach
     void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException {
-        serverController = new ServerController(RMIPort, socketPort);
+        serverController = new ServerController(RMIPort, socketPort, 100000);
         Thread.sleep(20);  //waiting for the server to start up
 
 
         DumbPlayerContext playerOneContext = new DumbPlayerContext();
-        VirtualServer playerOne = new VirtualServer(playerOneContext);
+        VirtualServer playerOne = new VirtualServer(playerOneContext, 10000);
         JoiningPhaseData dataOne = (JoiningPhaseData) playerOneContext.getCurrentPhase();
         dataOne.setVirtualServer(playerOne);
         playerOne.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerOne.registerSession("username1");
 
         DumbPlayerContext playerTwoContext = new DumbPlayerContext();
-        VirtualServer playerTwo = new VirtualServer(playerTwoContext);
+        VirtualServer playerTwo = new VirtualServer(playerTwoContext, 10000);
         JoiningPhaseData dataTwo = (JoiningPhaseData) playerTwoContext.getCurrentPhase();
         dataTwo.setVirtualServer(playerTwo);
         playerTwo.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);
         playerTwo.registerSession("username2");
 
         DumbPlayerContext playerThreeContext = new DumbPlayerContext();
-        VirtualServer playerThree = new VirtualServer(playerThreeContext);
+        VirtualServer playerThree = new VirtualServer(playerThreeContext, 10000);
         JoiningPhaseData dataThree = (JoiningPhaseData) playerThreeContext.getCurrentPhase();
         dataThree.setVirtualServer(playerThree);
         playerThree.initializeConnection(Utils.ConnectionType.RMI, serverIp, RMIPort);

@@ -36,8 +36,6 @@ public class ViewModel {
 
     public void setRMIVirtualServer() throws NetworkException {
 
-        this.virtualServer = new VirtualServer(playerContext);
-
         Properties config = new Properties();
         try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
             config.load(fis);
@@ -47,6 +45,7 @@ public class ViewModel {
             int serverRMIPort = Integer.parseInt(config.getProperty("serverRMIPort"));
             int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
 
+            this.virtualServer = new VirtualServer(playerContext, pingInterval);
             this.virtualServer.initializeConnection(Utils.ConnectionType.RMI, serverIp, serverRMIPort);
             JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
             joiningPhaseData.setVirtualServer(virtualServer);
@@ -54,12 +53,9 @@ public class ViewModel {
         catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void setSOCKETVirtualServer() throws NetworkException {
-
-        this.virtualServer = new VirtualServer(playerContext);
 
         Properties config = new Properties();
         try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
@@ -70,6 +66,7 @@ public class ViewModel {
             int serverSocketPort = Integer.parseInt(config.getProperty("serverSocketPort"));
             int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
 
+            this.virtualServer = new VirtualServer(playerContext, pingInterval);
             virtualServer.initializeConnection(Utils.ConnectionType.SOCKET, serverIp, serverSocketPort);
             JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
             joiningPhaseData.setVirtualServer(virtualServer);
@@ -77,6 +74,5 @@ public class ViewModel {
         catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

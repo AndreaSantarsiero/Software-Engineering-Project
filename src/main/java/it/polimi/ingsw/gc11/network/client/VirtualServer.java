@@ -2,9 +2,7 @@ package it.polimi.ingsw.gc11.network.client;
 
 import it.polimi.ingsw.gc11.action.client.ServerAction;
 import it.polimi.ingsw.gc11.action.server.GameContext.*;
-import it.polimi.ingsw.gc11.action.server.ServerController.ConnectToGameAction;
-import it.polimi.ingsw.gc11.action.server.ServerController.CreateMatchAction;
-import it.polimi.ingsw.gc11.action.server.ServerController.GetAvailableMatchesAction;
+import it.polimi.ingsw.gc11.action.server.ServerController.*;
 import it.polimi.ingsw.gc11.network.Utils;
 import it.polimi.ingsw.gc11.network.client.rmi.ClientRMI;
 import it.polimi.ingsw.gc11.network.client.socket.ClientSocket;
@@ -21,6 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class VirtualServer {
 
+    private final int pingInterval;
     private Client client;
     private final PlayerContext playerContext;
     private String username;
@@ -28,8 +27,9 @@ public class VirtualServer {
 
 
 
-    public VirtualServer(PlayerContext playerContext) {
+    public VirtualServer(PlayerContext playerContext, int pingInterval) {
         this.playerContext = playerContext;
+        this.pingInterval = pingInterval;
         serverActions = new LinkedBlockingQueue<>();
         startCommandListener();
     }
@@ -64,13 +64,30 @@ public class VirtualServer {
         commandExecutor.start();
     }
 
-    public void addServerAction(ServerAction serverAction) {
-        serverActions.add(serverAction);
+    private void startPing() {
+        Thread pingExecutor = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(pingInterval);
+                    PingAction action = new PingAction(username);
+                    client.sendAction(action);
+                } catch (Exception e) {
+                    System.err.println("[VirtualServer] Ping failed: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }, "ClientPingExecutor");
+
+        pingExecutor.setDaemon(true); // si chiude con il programma
+        pingExecutor.start();
     }
+
+
 
     public void setSessionData(String username, UUID token) {
         this.username = username;
         client.setClientSessionToken(token);
+        startPing();
     }
 
     public UUID getSessionToken() {

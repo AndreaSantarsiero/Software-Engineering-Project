@@ -377,7 +377,7 @@ public class AdventureCardCLI {
             try{
                 List<Material> materials = planetsCard.getFreePlanets().get((i/3) - 1).getMaterials();
                 System.out.print(" ( ) ");
-                MaterialCLI.print(materials);
+                MaterialCLI.print(materials, false);
                 setColor(planetsCard);
                 for (int j = 0; j < (8 - materials.size()); j++) {
                     System.out.print("  ");
@@ -471,7 +471,7 @@ public class AdventureCardCLI {
     public void printMaterials(List<Material> materials){
         try{
             System.out.print(" Materials: ");
-            MaterialCLI.print(materials);
+            MaterialCLI.print(materials, false);
             for (int j = 0; j < (4 - materials.size()); j++) {
                 System.out.print("  ");
             }

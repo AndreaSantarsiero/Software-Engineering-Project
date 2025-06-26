@@ -46,14 +46,7 @@ public class ChooseMaterialStation extends AdventureState {
             throw new IllegalStateException("Player does not have enough members");
         }
 
-        ArrayList<Material> availableMaterials = abandonedStation.getMaterials();
-        for (Map.Entry<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
-            if(!availableMaterials.containsAll(entry.getValue().getKey())){
-                throw new IllegalArgumentException("Materials not available");
-            }
-            availableMaterials.remove(entry.getValue().getKey());
-        }
-        player.getShipBoard().addMaterials(storageMaterials);
+        player.getShipBoard().addMaterials(storageMaterials, abandonedStation.getMaterials());
 
         abandonedStation.resolveCard();
         gameModel.move(player.getUsername(), abandonedStation.getLostDays() * -1);

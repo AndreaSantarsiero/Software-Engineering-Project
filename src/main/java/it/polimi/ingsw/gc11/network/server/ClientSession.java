@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.network.server;
 
+import java.time.Instant;
 import java.util.UUID;
 
 
@@ -12,9 +13,11 @@ import java.util.UUID;
  * channel (e.g., RMI or Socket).
  */
 public class ClientSession {
+
     private final String username;
     private final UUID token;
     private final VirtualClient virtualClient;
+    private Instant lastPingInstant;
 
 
     /**
@@ -29,6 +32,7 @@ public class ClientSession {
         this.username = username;
         this.token = UUID.randomUUID();
         this.virtualClient = virtualClient;
+        this.lastPingInstant = Instant.now();
     }
 
 
@@ -70,6 +74,15 @@ public class ClientSession {
      */
     public boolean checkToken(UUID token) {
         return this.token.equals(token);
+    }
+
+
+    public Instant getLastPingInstant() {
+        return lastPingInstant;
+    }
+
+    public void actualizeLastPingInstant() {
+        lastPingInstant = Instant.now();
     }
 }
 

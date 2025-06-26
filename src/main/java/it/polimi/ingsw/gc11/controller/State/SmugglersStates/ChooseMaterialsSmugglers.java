@@ -86,15 +86,7 @@ public class ChooseMaterialsSmugglers extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
-        ArrayList<Material> availableMaterials = smugglers.getMaterials();
-        for (Map.Entry<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
-            if(!availableMaterials.containsAll(entry.getValue().getKey())){
-                throw new IllegalArgumentException("Materials not available");
-            }
-            availableMaterials.remove(entry.getValue().getKey());
-        }
-        player.getShipBoard().addMaterials(storageMaterials);
-
+        player.getShipBoard().addMaterials(storageMaterials, smugglers.getMaterials());
         gameModel.move(player.getUsername(), smugglers.getLostDays() * -1);
 
         //next state
