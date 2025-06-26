@@ -63,6 +63,8 @@ public class AdventurePhaseData extends GamePhaseData {
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
     private Cannon defensiveCannon;
 
+    private Boolean youWon; //True if the player won, false if the player lost
+    private Boolean newHit; //True if the player has a new hit to get coordinates, false otherwise
 
 
     public AdventurePhaseData() {
@@ -360,6 +362,29 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public void setDefensiveCannon(Cannon cannon) {
         this.defensiveCannon = cannon;
+    }
+
+
+    public Boolean getYouWon() {
+        Boolean value = youWon;
+        youWon = null; //reset the value after reading it
+        return value;
+    }
+
+    public void setYouWon(Boolean youWon) {
+
+        this.youWon = youWon;
+    }
+
+
+    public Boolean getNewHit() {
+        Boolean value = newHit;
+        newHit = null; //reset the value after reading it
+        return value;
+    }
+
+    public void setNewHit(Boolean newHit) {
+        this.newHit = newHit;
     }
 
 
