@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates;
 
+import it.polimi.ingsw.gc11.action.client.NotifyNewHit;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -14,6 +15,7 @@ public class MeteorSwarmState extends AdventureState {
 
     private final GameModel gameModel;
     private final int iterationsHit;
+    private final MeteorSwarm meteorSwarm;
 
 
 
@@ -21,6 +23,30 @@ public class MeteorSwarmState extends AdventureState {
         super(advContext);
         this.gameModel = this.advContext.getGameModel();
         this.iterationsHit = iterationsHit;
+        this.meteorSwarm = (MeteorSwarm) advContext.getDrawnAdvCard();
+    }
+
+    @Override
+    public void initialize() {
+        //No Hit left to handle
+        if(iterationsHit == meteorSwarm.getMeteors().size()){
+            this.advContext.setAdvState(new IdleState(advContext));
+            //Notify ALL the player that there are no more hits to handle
+            for(Player p : advContext.getGameModel().getPlayersNotAbort()) {
+                advContext.getGameContext().sendAction(
+                        p.getUsername(),
+                        new NotifyNewHit(false) //false because there are no more hits to handle
+                );
+            }
+        }
+        else {
+            //there are still Hit to handle
+            //Notify the first player that it's his turn to roll dices
+            advContext.getGameContext().sendAction(
+                    gameModel.getPlayersNotAbort().getFirst().getUsername(),
+                    new NotifyNewHit(true)
+            );
+        }
     }
 
 

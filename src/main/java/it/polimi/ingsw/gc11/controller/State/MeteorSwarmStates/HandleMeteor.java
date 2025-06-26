@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates;
 
+import it.polimi.ingsw.gc11.action.client.NotifyNewHit;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -34,8 +35,6 @@ public class HandleMeteor extends AdventureState {
     }
 
 
-
-    //Assumiamo che i comandi siano memorizzati in una coda
     @Override
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon) {
         gameModel.checkPlayerUsername(username);
