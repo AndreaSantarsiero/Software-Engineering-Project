@@ -27,6 +27,7 @@ public class NotifySuccessAction extends ServerAction {
 
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
+        adventurePhaseData.updateGUIState();
         adventurePhaseData.updateState();
     }
 

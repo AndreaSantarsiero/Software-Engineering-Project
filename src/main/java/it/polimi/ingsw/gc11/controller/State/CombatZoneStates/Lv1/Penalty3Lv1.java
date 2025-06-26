@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1;
 
+import it.polimi.ingsw.gc11.action.client.NotifyNewHit;
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -33,10 +35,36 @@ public class Penalty3Lv1 extends AdventureState {
         //No Hit left to handle
         if(iterationsHit == combatZoneLv1.getShots().size()){
             this.advContext.setAdvState(new IdleState(advContext));
+            //Notify all the player that there are no more hits to handle
+            for(Player p : advContext.getGameModel().getPlayersNotAbort()) {
+                advContext.getGameContext().sendAction(
+                        p.getUsername(),
+                        new NotifyNewHit(false) //false because there are no more hits to handle
+                );
+            }
+
         }
-        //Notificare che non ci sono più colpi da gestire
-
-
+        else {
+            //Notify the player with less fire powers that he has to get coordinates
+            String lostPlayerUsername = playerDefeated.getUsername();
+            for (Player p : advContext.getGameModel().getPlayersNotAbort()) {
+                if (p.getUsername().equals(lostPlayerUsername)) {
+                    advContext.getGameContext().sendAction(
+                            lostPlayerUsername,
+                            new NotifyWinLose(false) //false because the player lost and now has to get coordinates
+                    );
+                    advContext.getGameContext().sendAction(
+                            lostPlayerUsername,
+                            new NotifyNewHit(true) //true because there is a new hit to handle
+                    );
+                } else {
+                    advContext.getGameContext().sendAction(
+                            p.getUsername(),
+                            new NotifyWinLose(false)
+                    );
+                }
+            }
+        }
     }
 
 
