@@ -73,15 +73,18 @@ public class LooseState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
+        if (player.getShipBoard().getMembers() <= slavers.getLostMembers()){
+            player.setAbort();
+            throw new IllegalStateException("You are out of the game, you have lost all members");
+            //Il giocatore va eliminato dalla partita
+        }
+
         int sum = 0;
         for(HousingUnit housingUnit : housingUsage.keySet()){
             sum += housingUsage.get(housingUnit);
         }
-
         if(sum <= slavers.getLostMembers()){
-            player.setAbort();
-            throw new IllegalStateException("You are out of the game, you have lost all members");
-            //Il giocatore va eliminato dalla partita
+            throw new IllegalStateException("You must sacrifice at least " + slavers.getLostMembers() + " crew members");
         }
 
         player.getShipBoard().killMembers(housingUsage);
