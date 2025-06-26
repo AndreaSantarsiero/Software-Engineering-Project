@@ -14,7 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ShipBoard4Test {
 
     private ShipBoard shipBoard;
-
+    private Material redMaterial;
+    private Material blueMaterial;
+    private Material greenMaterial;
+    private Material yellowMaterial;
 
 
     @BeforeEach
@@ -22,6 +25,10 @@ public class ShipBoard4Test {
         ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard4.json");
         shipBoard = shipBoardLoader.getShipBoard();
         assertNotNull(shipBoard, "ShipBoard was not loaded correctly from JSON");
+        redMaterial = new Material(Material.Type.RED);
+        blueMaterial = new Material(Material.Type.BLUE);
+        greenMaterial = new Material(Material.Type.GREEN);
+        yellowMaterial = new Material(Material.Type.YELLOW);
     }
 
 
@@ -346,4 +353,179 @@ public class ShipBoard4Test {
         assertTrue(shipBoard.getShipCard(5, 6).isScrap(), "This component should be destroyed");
 
     }
+    @Test
+    void testAddMaterials_storageMaterialsNull() {
+        // storageMaterials null
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(null, List.of()),
+                "Storage materials map cannot be null"
+        );
+    }
+
+    @Test
+    void testAddMaterials_gainedMaterialsNull() {
+        // gainedMaterials null
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = Map.of();
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, null),
+                "Gained materials list cannot be null"
+        );
+    }
+
+    @Test
+    void testAddMaterials_gainedMaterialsContainsNull() {
+        // gainedMaterials contiene un null
+        List<Material> gained = new ArrayList<>();
+        gained.add(null);
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = Map.of();
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, gained),
+                "Gained material cannot be null"
+        );
+    }
+
+    @Test
+    void testAddMaterials_nullStorageKey() {
+        // storageMaterials con chiave null
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = new HashMap<>();
+        map.put(null, new AbstractMap.SimpleEntry<>(List.of(), List.of()));
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, List.of()),
+                "Storage unit cannot be null"
+        );
+    }
+
+    @Test
+    void testAddMaterials_storageNotOnShip() {
+        // storage non presente su shipBoard.storages
+        Storage fake = new Storage("fake", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, Storage.Type.SINGLE_RED);
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = Map.of(
+                fake, new AbstractMap.SimpleEntry<>(List.of(), List.of())
+        );
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, List.of()),
+                "This storage is not present on the ship"
+        );
+    }
+
+    @Test
+    void testAddMaterials_nullMaterialsPair() {
+        // entry con pair null
+        Storage s1 = (Storage) shipBoard.getShipCard(9, 9);
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = new HashMap<>();
+        map.put(s1, null);
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, List.of()),
+                "Material lists cannot be null for storage"
+        );
+    }
+
+    @Test
+    void testAddMaterials_nullNewMaterialsList() {
+        // pair.getKey() null
+        Storage s1 = (Storage) shipBoard.getShipCard(9, 9);
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = new HashMap<>();
+        map.put(s1, new AbstractMap.SimpleEntry<>(null, List.of()));
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, List.of()),
+                "Material lists cannot be null for storage"
+        );
+    }
+
+    @Test
+    void testAddMaterials_nullOldMaterialsList() {
+        // pair.getValue() null
+        Storage s1 = (Storage) shipBoard.getShipCard(9, 9);
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = new HashMap<>();
+        map.put(s1, new AbstractMap.SimpleEntry<>(List.of(), null));
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, List.of()),
+                "Material lists cannot be null for storage"
+        );
+    }
+
+    @Test
+    void testAddMaterials_singleAntiCheat_chooseRestrictions() {
+        Storage s2 = (Storage) shipBoard.getShipCard(6, 7);
+
+        List<Material> newM1 = Arrays.asList(blueMaterial, greenMaterial);
+        List<Material> oldM1 = Arrays.asList(blueMaterial);
+        AbstractMap.SimpleEntry<List<Material>, List<Material>> entry1 =
+                new AbstractMap.SimpleEntry<>(newM1, oldM1);
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(Map.of(s2, entry1), Collections.emptyList()),
+                "New material list size does not match old material list size"
+        );
+
+        List<Material> newM2 = Arrays.asList(redMaterial);
+        List<Material> oldM2 = Arrays.asList((Material) null);
+        AbstractMap.SimpleEntry<List<Material>, List<Material>> entry2 =
+                new AbstractMap.SimpleEntry<>(newM2, oldM2);
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(Map.of(s2, entry2), Arrays.asList(redMaterial)),
+                "Cannot add or remove red materials in a blue storage"
+        );
+    }
+
+    @Test
+    void testAddMaterials_generalAntiCheat() {
+        // anti-cheating generale: più aggiunto di quanto guadagnato
+        Storage s2 = (Storage)shipBoard.getShipCard(6,7);
+
+        List<Material> newM = List.of(blueMaterial, blueMaterial, blueMaterial);
+        List<Material> oldM = List.of(blueMaterial);
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map = Map.of(
+                s2, new AbstractMap.SimpleEntry<>(newM, oldM)
+        );
+        List<Material> gained = List.of(blueMaterial);
+        assertThrows(IllegalArgumentException.class,
+                () -> shipBoard.addMaterials(map, gained),
+                "Illegal material map: trying to add more materials than the ones that you gained"
+        );
+    }
+
+    @Test
+    void testAddMaterials_updatesAdd() {
+        Storage red = (Storage) shipBoard.getShipCard(5, 7);
+
+        Material m = redMaterial; // o redMat, come lo chiami tu
+
+        List<Material> newM = List.of(m);
+
+        List<Material> oldM = Arrays.asList((Material) null);
+
+        var pair = new AbstractMap.SimpleEntry<>(newM, oldM);
+
+        shipBoard.addMaterials(Map.of(red, pair), List.of(m));
+
+        assertTrue(red.getMaterials().contains(m),
+                "Dopo addMaterials lo storage dovrebbe contenere il redMaterial"
+        );
+    }
+
+
+    @Test
+    void testAddMaterials_updatesReplaceAndRemove() {
+        Storage s1 = (Storage) shipBoard.getShipCard(4, 7);
+        s1.addMaterial(redMaterial);
+
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map1 =
+                Map.of(s1, new AbstractMap.SimpleEntry<>(
+                        List.of(yellowMaterial),
+                        List.of(redMaterial)
+                ));
+        shipBoard.addMaterials(map1, List.of(yellowMaterial));
+        assertTrue(s1.getMaterials().contains(yellowMaterial), "Replace non riuscito");
+        assertFalse(s1.getMaterials().contains(redMaterial),     "Old material non rimosso nel replace");
+
+        Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> map2 =
+                Map.of(s1, new AbstractMap.SimpleEntry<>(
+                        Arrays.asList((Material) null),
+                        List.of(yellowMaterial)
+                ));
+        shipBoard.addMaterials(map2, List.of());
+        assertFalse(s1.getMaterials().contains(yellowMaterial), "Remove non riuscito");
+    }
+
+
 }
