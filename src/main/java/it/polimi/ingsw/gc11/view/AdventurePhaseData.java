@@ -1,7 +1,6 @@
 package it.polimi.ingsw.gc11.view;
 
 import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.gc11.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Hit;
@@ -10,6 +9,10 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 
@@ -56,7 +59,6 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureStateGUI previousGUIState;
 
 
-    private final ObjectMapper mapper = new ObjectMapper();
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private Hit hit;
@@ -275,14 +277,18 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     public void resetCopiedShipBoard() {
-        try{
-            byte[] json = mapper.writeValueAsBytes(player.getShipBoard());
-            copiedShipBoard = mapper.readValue(json, ShipBoard.class);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(player.getShipBoard());
+            oos.flush();
+
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray()); ObjectInputStream ois = new ObjectInputStream(bais)) {
+                copiedShipBoard = (ShipBoard) ois.readObject();
+            }
+
         } catch (Exception e) {
-            System.out.println("Couldn't serialize your ship board: " + e.getMessage());
+            System.out.println("Failed to deep copy your ship: " + e.getMessage());
             e.printStackTrace();
         }
-
     }
 
 
