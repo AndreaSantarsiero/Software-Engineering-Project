@@ -20,7 +20,7 @@
                 </Label>
             </children>
         </HBox>
-        <HBox fx:id="subHeader" prefHeight="45.0" prefWidth="1255.0">
+        <HBox fx:id="subHeader" >
             <children>
                 <Label fx:id="title" styleClass="Text" text="Wait for other players">
                     <font>

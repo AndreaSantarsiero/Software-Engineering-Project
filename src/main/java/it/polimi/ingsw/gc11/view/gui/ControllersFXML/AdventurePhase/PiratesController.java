@@ -31,8 +31,7 @@ import java.util.Objects;
 
 public class PiratesController extends Controller {
 
-    @FXML private ImageView planetCardImage;
-    @FXML private VBox landOnButtons;
+    @FXML private ImageView PiratesImage;
     @FXML private Label title;
     @FXML private VBox root;
     @FXML private HBox headerContainer;
@@ -70,7 +69,7 @@ public class PiratesController extends Controller {
         URL url = getClass().getResource(basePath + fileName);
         Objects.requireNonNull(url, "Immagine non trovata: " + basePath + fileName);
 
-        planetCardImage.setImage(new Image(url.toExternalForm()));
+        PiratesImage.setImage(new Image(url.toExternalForm()));
     }
 
     private void setErrorLabel(){
