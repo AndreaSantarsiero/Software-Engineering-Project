@@ -43,7 +43,7 @@ public class ChooseFirePowerAction extends ClientGameAction {
             }
 
         } catch (Exception e){
-            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + e.getStackTrace());
             context.sendAction(username, exception);
         }
     }
