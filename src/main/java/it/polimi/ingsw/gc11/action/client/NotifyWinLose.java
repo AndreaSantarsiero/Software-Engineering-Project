@@ -8,7 +8,7 @@ public class NotifyWinLose extends ServerAction{
     private final Boolean youWon; //True if the player won, false if the player lost
 
 
-    public NotifyWinLose(String player, Boolean youWon) {
+    public NotifyWinLose(Boolean youWon) {
         this.youWon = youWon;
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State.PiratesStates;
 
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -78,13 +79,19 @@ public class PiratesState extends AdventureState {
         if(playerFirePower > pirates.getFirePower()){
             //VictoryState
             advContext.setAdvState(new WinAgainstPirates(advContext, player, playersDefeated));
-        } else if (playerFirePower == pirates.getFirePower()) {
+            // Notify the player that he won
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(true));
+        }
+        else if (playerFirePower == pirates.getFirePower()) {
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new PiratesState(advContext, playersDefeated));
         }
-        else {
+        else {  // < pirates.getFirePower()
             this.playersDefeated.add(player);
+            // Notify the player that he lost
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(false));
+
             this.advContext.setResolvingAdvCard(false);
 
             if (this.advContext.getIdxCurrentPlayer() == this.advContext.getGameModel().getPlayersNotAbort().size() - 1) {
