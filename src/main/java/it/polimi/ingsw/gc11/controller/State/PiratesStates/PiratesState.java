@@ -100,6 +100,7 @@ public class PiratesState extends AdventureState {
                 advContext.setAdvState(new CoordinateState(advContext, this.playersDefeated, 0));
             }
             else{
+                this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
                 advContext.setAdvState(new PiratesState(advContext, playersDefeated));
             }
         }
