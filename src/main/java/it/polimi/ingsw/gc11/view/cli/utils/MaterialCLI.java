@@ -18,7 +18,12 @@ public class MaterialCLI {
      *
      * @param materials the list of materials to print
      */
-    public static void print(List<Material> materials) {
+    public static void print(List<Material> materials, boolean selected) {
+        System.out.print(Ansi.ansi().reset());
+        if(selected){
+            System.out.print("\033[48;5;235m");
+        }
+
         for(Material material : materials) {
             if (material.getType().equals(Material.Type.BLUE)) {
                 System.out.print(Ansi.ansi().reset().fg(Ansi.Color.BLUE) + "■ ");

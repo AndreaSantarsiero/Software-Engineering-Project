@@ -655,7 +655,7 @@ public class ShipCardCLI {
 
             if (i >= (cardLength / 2 - 1) && i <= (cardLength / 2 + 1)) {
                 System.out.print("│" + leftConnectorToString(storage.getLeftConnector(), i));
-                printStorageCenter(storage, i);
+                printStorageCenter(storage, i, selected);
                 System.out.print(rightConnectorToString(storage.getRightConnector(), i) + "│");
             } else {
                 printShipCard(storage, i);
@@ -667,7 +667,7 @@ public class ShipCardCLI {
      * Prints the central section of a Storage card
      * @param storage the Storage instance
      */
-    public void printStorageCenter(Storage storage, int i) {
+    public void printStorageCenter(Storage storage, int i, boolean selected) {
         if(i == (cardLength/2 - 1)) {
             if (storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.SINGLE_RED)) {
                 System.out.print(" SPECIAL ");
@@ -681,7 +681,8 @@ public class ShipCardCLI {
         else if (i == (cardLength/2 + 1)) {
             if(storage.getType().equals(Storage.Type.DOUBLE_RED) || storage.getType().equals(Storage.Type.DOUBLE_BLUE)){
                 System.out.print("   ");
-                MaterialCLI.print(storage.getMaterials());
+                MaterialCLI.print(storage.getMaterials(), selected);
+                setSelectedBackground(selected);
                 setColor(storage);
                 for (int j = 0; j < (2 - storage.getMaterials().size()); j++) {
                     MaterialCLI.printEmpty();
@@ -690,7 +691,8 @@ public class ShipCardCLI {
             }
             else if(storage.getType().equals(Storage.Type.SINGLE_RED)){
                 System.out.print("    ");
-                MaterialCLI.print(storage.getMaterials());
+                MaterialCLI.print(storage.getMaterials(), selected);
+                setSelectedBackground(selected);
                 setColor(storage);
                 for (int j = 0; j < (1 - storage.getMaterials().size()); j++) {
                     MaterialCLI.printEmpty();
@@ -699,7 +701,8 @@ public class ShipCardCLI {
             }
             else if(storage.getType().equals(Storage.Type.TRIPLE_BLUE)){
                 System.out.print("  ");
-                MaterialCLI.print(storage.getMaterials());
+                MaterialCLI.print(storage.getMaterials(), selected);
+                setSelectedBackground(selected);
                 setColor(storage);
                 for (int j = 0; j < (3 - storage.getMaterials().size()); j++) {
                     MaterialCLI.printEmpty();
