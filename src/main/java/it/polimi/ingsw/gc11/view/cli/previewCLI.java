@@ -18,7 +18,7 @@ import java.util.List;
 public class previewCLI {
 
     public static void main(String[] args) {
-        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard6.json");
+        ShipBoardLoader shipBoardLoader = new ShipBoardLoader("src/test/resources/it/polimi/ingsw/gc11/shipBoards/shipBoard8.json");
         ShipBoard shipBoard = shipBoardLoader.getShipBoard();
         ShipCardCLI shipCardCLI = new ShipCardCLI();
         ShipBoardCLI shipBoardCLI = new ShipBoardCLI(shipCardCLI);
@@ -33,6 +33,9 @@ public class previewCLI {
         else {
             System.out.println("Shipboard DOES NOT respect the rules");
         }
+        System.out.println("- checkShipConnections: " + shipBoard.checkShipConnections());
+        System.out.println("- checkShipIntegrity: " + shipBoard.checkShipIntegrity());
+        System.out.println("- checkOtherRestrictions: " + shipBoard.checkOtherRestrictions());
         
 
         System.out.println("\n\n\nExample of a covered ship card:");

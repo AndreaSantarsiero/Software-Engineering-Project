@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1;
 
 import it.polimi.ingsw.gc11.action.client.UpdateCurrentPlayerAction;
+import it.polimi.ingsw.gc11.action.client.UpdateEverybodyProfileAction;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.GameModel;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,23 @@ public class Check3Lv1 extends AdventureState {
         this.gameModel = advContext.getGameModel();
         this.minFirePower = minFirePower;
         this.minPlayer = minPlayer;
+    }
+
+    @Override
+    public void initialize() {
+        //sending updates to update everybody's gui state
+        String currentPlayer = advContext.getGameContext().getCurrentPlayer().getUsername();
+        Map<String, Player> enemies = new HashMap<>();
+        for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
+            enemies.put(player.getUsername(), player);
+        }
+
+        for (Player player : advContext.getGameModel().getPlayersNotAbort()) {
+            enemies.remove(player.getUsername());
+            UpdateEverybodyProfileAction response = new UpdateEverybodyProfileAction(player, enemies, currentPlayer);
+            advContext.getGameContext().sendAction(player.getUsername(), response);
+            enemies.put(player.getUsername(), player);
+        }
     }
 
     @Override
@@ -75,7 +94,6 @@ public class Check3Lv1 extends AdventureState {
             }
 
             this.advContext.setAdvState(new Penalty3Lv1(this.advContext, this.minPlayer, 0));
-            this.advContext.getCurrentAdvState().initialize();
         }
         //Rimane nello stato corrente
 

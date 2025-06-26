@@ -940,7 +940,7 @@
   "TripleBattery2.jpg": {
     "id": "TripleBattery2",
     "subClass": "Battery",
-    "connectors": { "top": "SINGLE", "right": "NONE", "bottom": "DOUBLE", "left": "NONE" },
+    "connectors": { "top": "SINGLE", "right": "SINGLE", "bottom": "DOUBLE", "left": "NONE" },
     "type": "TRIPLE"
   },
   "TripleBattery3.jpg": {

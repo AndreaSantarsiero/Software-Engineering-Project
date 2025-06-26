@@ -1,14 +1,12 @@
 package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1;
 
-import it.polimi.ingsw.gc11.action.client.UpdateCurrentPlayerAction;
+
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
-import it.polimi.ingsw.gc11.controller.State.IdleState;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.Shot;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
-import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.Map;
@@ -26,19 +24,6 @@ public class HandleShotLv1 extends AdventureState {
         this.coordinate = coordinate;
         this.iterationsHit = iterationsHit;
         this.combatZoneLv1 = (CombatZoneLv1) advContext.getDrawnAdvCard();
-
-        //Notify the player with less fire powers that he has get to handle the shot
-        String newCurrentPlayer = player.getUsername();
-        for(Player p : advContext.getGameModel().getPlayersNotAbort()){
-            if(p.getUsername().equals(newCurrentPlayer)){
-                UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(newCurrentPlayer, true);
-                advContext.getGameContext().sendAction(player.getUsername(), response);
-            }
-            else {
-                UpdateCurrentPlayerAction response = new UpdateCurrentPlayerAction(newCurrentPlayer, false);
-                advContext.getGameContext().sendAction(player.getUsername(), response);
-            }
-        }
     }
 
 
