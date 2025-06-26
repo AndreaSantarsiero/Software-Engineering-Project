@@ -80,19 +80,19 @@ public class PiratesState extends AdventureState {
             //VictoryState
             advContext.setAdvState(new WinAgainstPirates(advContext, player, playersDefeated));
             // Notify the player that he won
-            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(true));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.WIN));
         }
         else if (playerFirePower == pirates.getFirePower()) {
             this.advContext.setResolvingAdvCard(false);
             this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
             advContext.setAdvState(new PiratesState(advContext, playersDefeated));
             // Notify the player that he won
-            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(true));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.DRAW));
         }
         else {  // < pirates.getFirePower()
             this.playersDefeated.add(player);
             // Notify the player that he lost
-            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(false));
+            advContext.getGameContext().sendAction(player.getUsername(), new NotifyWinLose(NotifyWinLose.Response.LOSE));
 
             this.advContext.setResolvingAdvCard(false);
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.view;
 
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.gc11.action.client.ServerAction;
 import it.polimi.ingsw.gc11.model.FlightBoard;
 import it.polimi.ingsw.gc11.model.Hit;
@@ -8,7 +10,6 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-import java.io.*;
 import java.util.*;
 
 
@@ -55,6 +56,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private AdventureStateGUI previousGUIState;
 
 
+    private final ObjectMapper mapper = new ObjectMapper();
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private Hit hit;
@@ -73,7 +75,7 @@ public class AdventurePhaseData extends GamePhaseData {
     public AlienUnit activateAlienUnit;
     public HousingUnit hostingHousingUnit;
 
-    private Boolean youWon; //True if the player won, false if the player lost
+    private NotifyWinLose.Response youWon; //True if the player won, false if the player lost
     private Boolean newHit; //True if the player has a new hit to get coordinates, false otherwise
 
 
@@ -273,18 +275,14 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     public void resetCopiedShipBoard() {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-            oos.writeObject(player.getShipBoard());
-            oos.flush();
-
-            try (ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray()); ObjectInputStream ois = new ObjectInputStream(bais)) {
-                copiedShipBoard = (ShipBoard) ois.readObject();
-            }
-
+        try{
+            byte[] json = mapper.writeValueAsBytes(player.getShipBoard());
+            copiedShipBoard = mapper.readValue(json, ShipBoard.class);
         } catch (Exception e) {
-            System.out.println("Failed to deep copy your ship: " + e.getMessage());
+            System.out.println("Couldn't serialize your ship board: " + e.getMessage());
             e.printStackTrace();
         }
+
     }
 
 
@@ -421,13 +419,13 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
 
-    public Boolean getYouWon() {
-        Boolean value = youWon;
+    public NotifyWinLose.Response getYouWon() {
+        NotifyWinLose.Response value = youWon;
         youWon = null; //reset the value after reading it
         return value;
     }
 
-    public void setYouWon(Boolean youWon) {
+    public void setYouWon(NotifyWinLose.Response youWon) {
         this.youWon = youWon;
     }
 

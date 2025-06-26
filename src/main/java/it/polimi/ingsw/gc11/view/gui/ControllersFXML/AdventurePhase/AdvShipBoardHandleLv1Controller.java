@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Planet;
@@ -1251,7 +1252,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
 
             try {
-                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2 && !adventurePhaseData.getYouWon()) {
+                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                        && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE) {
                     adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS);
                     initialize(stage, (Slavers) adventurePhaseData.getAdventureCard());
                 }else{
@@ -1273,7 +1275,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
             try {
-                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2 && !adventurePhaseData.getYouWon()){
+                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
+                        && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
