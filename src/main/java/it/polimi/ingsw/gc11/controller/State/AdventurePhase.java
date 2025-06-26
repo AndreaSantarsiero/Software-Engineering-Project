@@ -82,8 +82,8 @@ public class AdventurePhase extends GamePhase {
      * @return the index of the current player
      */
     public int getIdxCurrentPlayer() {
-        System.out.println("Current player index: " + idxCurrentPlayer + " - Player: " +
-                gameModel.getPlayersNotAbort().get(idxCurrentPlayer).getUsername());
+//        System.out.println("Current player index: " + idxCurrentPlayer + " - Player: " +
+//                gameModel.getPlayersNotAbort().get(idxCurrentPlayer).getUsername());
         return idxCurrentPlayer;
     }
 
@@ -123,6 +123,9 @@ public class AdventurePhase extends GamePhase {
      */
     public void setIdxCurrentPlayer(int idxCurrentPlayer) {
         this.idxCurrentPlayer = idxCurrentPlayer;
+        System.out.println("Setting player index: " + idxCurrentPlayer + " - Player: " +
+                gameModel.getPlayersNotAbort().get(idxCurrentPlayer).getUsername());
+        Thread.dumpStack();
     }
 
     /**
