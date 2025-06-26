@@ -1221,18 +1221,22 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 //fare
             }
 
-            if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2 && !adventurePhaseData.getYouWon()){
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    PiratesController controller = fxmlLoader.getController();
-                    adventurePhaseData.setListener(controller);
-                    controller.initialize(stage);
-                    stage.setScene(newScene);
-                    stage.show();
-                } catch (Exception e) {
-                    System.out.println("FXML Error: " + e.getMessage());
+            try {
+                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2 && !adventurePhaseData.getYouWon()){
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                        PiratesController controller = fxmlLoader.getController();
+                        adventurePhaseData.setListener(controller);
+                        controller.initialize(stage);
+                        stage.setScene(newScene);
+                        stage.show();
+                    } catch (Exception e) {
+                        System.out.println("FXML Error: " + e.getMessage());
+                    }
                 }
+            } catch (Exception e) {
+
             }
 
             String serverMessage = adventurePhaseData.getServerMessage();
