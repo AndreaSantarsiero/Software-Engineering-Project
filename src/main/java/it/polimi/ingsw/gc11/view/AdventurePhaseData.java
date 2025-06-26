@@ -300,6 +300,7 @@ public class AdventurePhaseData extends GamePhaseData {
         actualizePreviousState();
         this.adventureCard = adventureCard;
         adventureCard.getHintMessage(this);
+        hit = null;
         if(updateState) {
             resetResponse();
             updateState();
@@ -507,7 +508,6 @@ public class AdventurePhaseData extends GamePhaseData {
         defensiveCannon = null;
         activateAlienUnit = null;
         hostingHousingUnit = null;
-        hit = null;
         resetCopiedShipBoard();
     }
 

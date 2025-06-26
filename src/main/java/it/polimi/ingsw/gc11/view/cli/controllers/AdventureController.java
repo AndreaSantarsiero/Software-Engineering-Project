@@ -272,6 +272,7 @@ public class AdventureController extends CLIController {
                 case 3 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
@@ -283,6 +284,7 @@ public class AdventureController extends CLIController {
                 case 2 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
@@ -294,6 +296,7 @@ public class AdventureController extends CLIController {
                 case 2 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
@@ -305,6 +308,7 @@ public class AdventureController extends CLIController {
                 case 2 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
@@ -316,6 +320,7 @@ public class AdventureController extends CLIController {
                 case 2 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
@@ -327,6 +332,7 @@ public class AdventureController extends CLIController {
                 case 2 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
@@ -339,6 +345,7 @@ public class AdventureController extends CLIController {
                 case 3 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
@@ -351,6 +358,7 @@ public class AdventureController extends CLIController {
                 case 3 -> {
                     data.resetResponse();
                     addInputRequest();
+                    template.render();
                 }
                 case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU);
             }
