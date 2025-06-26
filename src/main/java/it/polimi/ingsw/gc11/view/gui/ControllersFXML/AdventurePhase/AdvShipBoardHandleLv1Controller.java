@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
@@ -388,15 +389,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
 
         else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_SHOT){
-            numShots = card.getShots().size();
 
-            if(card.getShots().getFirst().getType() == Hit.Type.SMALL){
-                actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getShots().getFirst().getDirection().toString()+ " at coordinate " + card.getShots().getFirst().getCoordinate());
+            if(adventurePhaseData.getHit().getType() == Hit.Type.SMALL){
+                actionTextLabel.setText("Select batteries to activate Shields to protect from a small shot from " + adventurePhaseData.getHit().getDirection().toString()+ " at coordinate " + adventurePhaseData.getHit().getCoordinate());
                 confirmButton.setVisible(true);
                 confirmButton.setDisable(false);
                 confirmButton.setOnAction(event -> {
                     try {
-                        virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
+                        virtualServer.handleShot(adventurePhaseData.getBatteries());
                     }
                     catch (Exception e) {
                         System.out.println("Network error:" + e.getMessage());
@@ -405,8 +405,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
                 state = State.PIRATES_SHOTS;
             }
-            if(card.getShots().getFirst().getType() == Hit.Type.BIG){
-                //shotIdx++; NESSUNA SCELTA PER BIG HITS
+            if(adventurePhaseData.getHit().getType() == Hit.Type.BIG){
+                try {
+                    virtualServer.handleShot(null);
+                } catch (NetworkException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -860,6 +864,23 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         }
 
         if(state == State.PIRATES_BATTERIES){
+            try {
+                Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
+
+                int max = battery.getAvailableBatteries();
+                Integer num = askForBatteries(root.getScene().getWindow(), max);
+                if (num != null) {
+                    adventurePhaseData.addBattery(battery, num);
+                    ((Label) ((StackPane) ((Button) getNode(slotGrid, x, y)).getGraphic()).getChildren().getLast()).setText(String.valueOf(battery.getAvailableBatteries() - num));
+                }
+
+            } catch (Exception e) {
+                System.out.println("The card clicked is not a Battery");
+                setErrorLabel("The card clicked is not a Battery");
+            }
+        }
+
+        if(state == State.PIRATES_SHOTS){
             try {
                 Battery battery = (Battery) shipBoard.getShipCard(x - shipBoard.adaptX(0), y - shipBoard.adaptY(0));
 
