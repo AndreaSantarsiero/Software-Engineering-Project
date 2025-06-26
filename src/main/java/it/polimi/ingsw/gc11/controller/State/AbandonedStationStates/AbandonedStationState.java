@@ -88,21 +88,19 @@ public class AbandonedStationState extends AdventureState {
         gameModel.checkPlayerUsername(username);
         Player expectedPlayer = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
-        if (expectedPlayer.getUsername().equals(username)) {
-            int idx = this.advContext.getIdxCurrentPlayer();
-            this.advContext.setIdxCurrentPlayer(idx+1);
-
-            int numPlayers = gameModel.getPlayersNotAbort().size();
-            if (this.advContext.getIdxCurrentPlayer() == numPlayers) {
-                //There are no players that must decide
-                this.advContext.setAdvState(new IdleState(this.advContext));
-            }
-            else {
-                //The advState remains the same as before
-            }
+        if(!expectedPlayer.getUsername().equals(username)){
+            throw new IllegalArgumentException("It's not your turn to play");
         }
-        else {
-            throw new IllegalArgumentException("It's not your turn to play!");
+
+        int idx = this.advContext.getIdxCurrentPlayer();
+
+        if (idx + 1 == gameModel.getPlayersNotAbort().size()) {
+            //There are no players that must decide
+            this.advContext.setAdvState(new IdleState(this.advContext));
+        }
+        else{
+            //The advState remains the same as before
+            this.advContext.setIdxCurrentPlayer(idx+1);
         }
     }
 }

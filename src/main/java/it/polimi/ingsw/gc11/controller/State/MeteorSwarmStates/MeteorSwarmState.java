@@ -34,8 +34,7 @@ public class MeteorSwarmState extends AdventureState {
             throw new IllegalArgumentException("It's not your turn to play");
         }
 
-        int coordinates = gameModel.getValDice1() + gameModel.getValDice2();
-        //La coordinata calcolata va poi inviata a tutti i client
+        int coordinate = gameModel.getValDice1() + gameModel.getValDice2();
 
         //NextState
         MeteorSwarm meteorSwarm = (MeteorSwarm) this.advContext.getDrawnAdvCard();
@@ -43,11 +42,11 @@ public class MeteorSwarmState extends AdventureState {
             this.advContext.setAdvState(new IdleState(advContext));
         }
         else{
-            this.advContext.setAdvState(new HandleMeteor(advContext, coordinates, iterationsHit, 0));
+            this.advContext.setAdvState(new HandleMeteor(advContext, coordinate, iterationsHit, 0));
         }
 
         Hit hit = meteorSwarm.getMeteors().get(iterationsHit);
-        hit.setCoordinate(coordinates);
+        hit.setCoordinate(coordinate);
 
         return hit;
     }

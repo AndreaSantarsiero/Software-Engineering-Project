@@ -45,13 +45,15 @@ public class OpenSpaceState extends AdventureState {
         player.getShipBoard().useBatteries(Batteries);
 
         this.gameModel.move(username, enginePower);
-        this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer()+1);
 
-        if(this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()){
-            //NoPlayersLeft
+
+        if(this.advContext.getIdxCurrentPlayer() + 1 == gameModel.getPlayersNotAbort().size()){
+            //No players left
             this.advContext.setAdvState(new IdleState(this.advContext));
         }
         else{
+            //The advState remains the same as before
+            this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer()+1);
             this.advContext.setAdvState(new OpenSpaceState(this.advContext));
         }
 
