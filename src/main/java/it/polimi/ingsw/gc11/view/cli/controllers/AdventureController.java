@@ -1,6 +1,7 @@
 package it.polimi.ingsw.gc11.view.cli.controllers;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import it.polimi.ingsw.gc11.model.shipcard.AlienUnit;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
@@ -28,6 +29,7 @@ public class AdventureController extends CLIController {
     private int shotDefenseMenu;
     private int defensiveCannonMenu;
     private int choosePlanetMenu;
+    private int activateAlienMenu;
     private int selectedI;
     private int selectedJ;
     private int numBatteries;
@@ -140,6 +142,18 @@ public class AdventureController extends CLIController {
                 mainCLI.getVirtualServer().rewardDecision(false);
                 return true;
             }
+            else if(data.getState() == AdventurePhaseData.AdventureState.ACTIVATE_ALIEN_SETUP){
+                mainCLI.getVirtualServer().selectAliens(data.getActivateAlienUnit(), data.getHostingHousingUnit());
+                return true;
+            }
+            else if(data.getState() == AdventurePhaseData.AdventureState.FINALIZE_SHIP_SETUP){
+                mainCLI.getVirtualServer().completedAlienSelection();
+                return true;
+            }
+            else if(data.getState() == AdventurePhaseData.AdventureState.ABORT_FLIGHT){
+                mainCLI.getVirtualServer().abortFlight();
+                return true;
+            }
         } catch (NetworkException e) {
             System.out.println("Connection error: " + e.getMessage());
             e.printStackTrace();
@@ -184,6 +198,9 @@ public class AdventureController extends CLIController {
         else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_PLANET_MENU){
             mainCLI.addInputRequest(new MenuInput(data, this, template.getChoosePlanetMenuSize(), choosePlanetMenu));
         }
+        else if(data.getState() == AdventurePhaseData.AdventureState.ACTIVATE_ALIEN_MENU){
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getActivateAlienMenuSize(), activateAlienMenu));
+        }
         else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_FIRE_NUM_BATTERIES  || data.getState() == AdventurePhaseData.AdventureState.SELECT_ENGINE_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_BATTERIES || data.getState() == AdventurePhaseData.AdventureState.SELECT_DEFENSE_NUM_BATTERIES) {
             mainCLI.addInputRequest(new MenuInput(data, this, template.getNumBatteriesMenuSize(), numBatteries));
         }
@@ -202,7 +219,9 @@ public class AdventureController extends CLIController {
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_STORAGE ||
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_SHOT_BATTERIES ||
                 data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_CANNON ||
-                data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_BATTERIES)
+                data.getState() == AdventurePhaseData.AdventureState.CHOOSE_DEFENSIVE_BATTERIES ||
+                data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ALIEN ||
+                data.getState() == AdventurePhaseData.AdventureState.CHOOSE_HOSTING_HU)
         {
             mainCLI.addInputRequest(new CoordinatesInput(data, this, data.getPlayer().getShipBoard(), selectedI, selectedJ));
         }
@@ -218,7 +237,9 @@ public class AdventureController extends CLIController {
                 case 1, 2 -> data.setState(AdventurePhaseData.AdventureState.ACCEPT_CARD_SETUP);
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
                 case 4 -> data.setState(AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP);
-                case 5 -> data.setState(AdventurePhaseData.AdventureState.ABORT_FLIGHT);
+                case 5 -> data.setState(AdventurePhaseData.AdventureState.ACTIVATE_ALIEN_MENU);
+                case 6 -> data.setState(AdventurePhaseData.AdventureState.FINALIZE_SHIP_SETUP);
+                case 7 -> data.setState(AdventurePhaseData.AdventureState.ABORT_FLIGHT);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU){
@@ -322,6 +343,18 @@ public class AdventureController extends CLIController {
                 case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
+        else if(data.getState() == AdventurePhaseData.AdventureState.ACTIVATE_ALIEN_MENU){
+            switch (activateAlienMenu) {
+                case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ALIEN);
+                case 1 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_HOSTING_HU);
+                case 2 -> data.setState(AdventurePhaseData.AdventureState.ACTIVATE_ALIEN_SETUP);
+                case 3 -> {
+                    data.resetResponse();
+                    addInputRequest();
+                }
+                case 4 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_MAIN_MENU);
+            }
+        }
         else {
             data.updateState();
         }
@@ -344,6 +377,7 @@ public class AdventureController extends CLIController {
             case SHOT_DEFENSE_MENU -> setShotDefenseMenu(choice);
             case DEFENSIVE_CANNON_MENU -> setDefensiveCannonMenu(choice);
             case CHOOSE_PLANET_MENU -> setChoosePlanetMenu(choice);
+            case ACTIVATE_ALIEN_MENU -> setActivateAlienMenu(choice);
             case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, SELECT_SHOT_NUM_BATTERIES -> setNumBatteries(choice);
             case SELECT_NUM_MEMBERS -> setNumMembers(choice);
             case null, default -> {
@@ -378,6 +412,9 @@ public class AdventureController extends CLIController {
             switch (data.getState()) {
                 case CHOOSE_DOUBLE_CANNON -> data.addDoubleCannon((Cannon) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()));
                 case CHOOSE_DEFENSIVE_CANNON -> data.setDefensiveCannon((Cannon) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()));
+                case CHOOSE_ALIEN -> data.setActivateAlienUnit((AlienUnit) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()));
+                case CHOOSE_HOSTING_HU -> data.setHostingHousingUnit((HousingUnit) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()));
+
             }
             updateInternalState();
         } catch (Exception e){
@@ -497,6 +534,16 @@ public class AdventureController extends CLIController {
     }
 
 
+    public int getActivateAlienMenu(){
+        return activateAlienMenu;
+    }
+
+    public void setActivateAlienMenu(int activateAlienMenu){
+        this.activateAlienMenu = activateAlienMenu;
+        template.render();
+    }
+
+
     public int getSelectedI(){
         return selectedI;
     }
@@ -547,6 +594,7 @@ public class AdventureController extends CLIController {
         shotDefenseMenu = 0;
         defensiveCannonMenu = 0;
         choosePlanetMenu = 0;
+        activateAlienMenu = 0;
         numBatteries = 0;
         numMembers = 0;
     }

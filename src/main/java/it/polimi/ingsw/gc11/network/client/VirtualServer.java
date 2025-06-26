@@ -267,6 +267,24 @@ public class VirtualServer {
         client.sendAction(action);
     }
 
+    public void abortFlight() throws NetworkException{
+        AbortFlightAction action = new AbortFlightAction(username);
+        client.sendAction(action);
+    }
+
+
+    //pre AdventurePhase methods
+    public void selectAliens(AlienUnit alienUnit, HousingUnit housingUnit) throws NetworkException{
+        SelectAliensAction action = new SelectAliensAction(username, alienUnit, housingUnit);
+        client.sendAction(action);
+    }
+
+    public void completedAlienSelection() throws NetworkException{
+        CompletedAlienSelectionAction action = new CompletedAlienSelectionAction(username);
+        client.sendAction(action);
+    }
+
+
     //Cheating methods
     public void setTestDeck() throws NetworkException {
         SetTestDeckAction action = new SetTestDeckAction(username);

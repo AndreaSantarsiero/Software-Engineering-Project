@@ -541,6 +541,9 @@ public class GameContext {
         return phase.meteorDefense(username, batteries, cannon);
     }
 
+
+
+    //pre AdventurePhase methods
     public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
         phase.selectAliens(username, alienUnit, housingUnit);
     }
@@ -548,6 +551,8 @@ public class GameContext {
     public void completedAlienSelection(String username){
         phase.completedAlienSelection(username);
     }
+
+
 
     //Cheating methods
     public void setTestDeck(String username) {
@@ -635,6 +640,4 @@ public class GameContext {
 
         this.getGameModel().setTestDeck(testDeck);
     }
-
-
 }
