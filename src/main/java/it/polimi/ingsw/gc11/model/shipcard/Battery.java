@@ -104,23 +104,46 @@ public class Battery extends ShipCard {
         return super.equals(obj) && this.type == other.getType() && this.availableBatteries == other.getAvailableBatteries();
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}, based on the battery's type and available charge.
+     *
+     * @return the hash code of this battery
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), type, availableBatteries);
     }
 
 
-
+    /**
+     * Places this battery on the given {@link ShipBoard} at the specified coordinates.
+     *
+     * @param shipBoard the ship board to place the battery on
+     * @param x the x-coordinate of placement
+     * @param y the y-coordinate of placement
+     */
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
         shipBoard.addToList(this, x, y);
     }
 
+    /**
+     * Removes this battery from the given {@link ShipBoard}.
+     *
+     * @param shipBoard the ship board to remove the battery from
+     */
     @Override
     public void unPlace(ShipBoard shipBoard){
         shipBoard.removeFromList(this);
     }
 
+    /**
+     * Renders this battery on the command-line interface (CLI).
+     *
+     * @param shipCardCLI the CLI renderer
+     * @param i the row index at which to render the card
+     * @param selected whether the battery is currently selected by the player
+     */
     @Override
     public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
         shipCardCLI.draw(this, i, selected);
