@@ -1035,21 +1035,6 @@ public class BuildingLv2Controller extends Controller {
                     System.out.println("FXML Error: " + e.getMessage());
                 }
             }
-//            else if (gamePhaseData.isAdventurePhase()) {
-//                AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
-//                try {
-//                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
-//                            .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLV2.fxml"));
-//                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-//                    AdventureControllerLv2 controller = fxmlLoader.getController();
-//                    adventurePhaseData.setListener(controller);
-//                    controller.initialize(stage);
-//                    stage.setScene(newScene);
-//                    stage.show();
-//                } catch (Exception e) {
-//                    System.out.println("FXML Error: " + e.getMessage());
-//                }
-//            }
             else if (gamePhaseData.isAdventurePhase()) {
                 AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
                 try {

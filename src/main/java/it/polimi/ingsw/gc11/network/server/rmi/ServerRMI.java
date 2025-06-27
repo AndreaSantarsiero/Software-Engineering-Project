@@ -25,7 +25,18 @@ public class ServerRMI extends Server implements ServerInterface {
     private final Registry registry;
 
 
-
+    /**
+     * Constructs a new RMI server instance, creates and exports the RMI stub,
+     * and binds it to the local registry under the name "ServerInterface".
+     * <p>
+     * The method also detects the local IP address to ensure proper binding on multi-interface systems,
+     * and sets it as the system property {@code java.rmi.server.hostname}.
+     * </p>
+     *
+     * @param serverController the game logic controller to which actions are delegated
+     * @param port the port on which to create the RMI registry
+     * @throws NetworkException if the registry creation or binding fails
+     */
     public ServerRMI(ServerController serverController, int port) throws NetworkException {
         super(serverController);
         try {
@@ -42,7 +53,11 @@ public class ServerRMI extends Server implements ServerInterface {
     }
 
 
-
+    /**
+     * Retrieves the local IPv4 address of the machine, excluding loopback and virtual interfaces.
+     *
+     * @return the local IP address as a string, or {@code "127.0.0.1"} if detection fails
+     */
     private String getLocalIP() {
         try{
             for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
@@ -77,7 +92,11 @@ public class ServerRMI extends Server implements ServerInterface {
     }
 
 
-
+    /**
+     * Gracefully shuts down the RMI server by unbinding the registry and unexporting the remote object.
+     *
+     * @throws Exception if the shutdown procedure fails
+     */
     @Override
     public void shutdown() throws Exception {
         if (registry != null) {

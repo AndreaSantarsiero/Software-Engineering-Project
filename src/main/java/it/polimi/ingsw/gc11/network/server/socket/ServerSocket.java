@@ -17,7 +17,14 @@ public class ServerSocket extends Server {
     private final java.net.ServerSocket serverSocket;
 
 
-
+    /**
+     * Creates a new socket-based server, binds to the specified port, and starts listening
+     * for incoming client connections.
+     *
+     * @param serverController the game logic controller to which actions are delegated
+     * @param port the port on which the server socket will listen
+     * @throws NetworkException if the server fails to bind to the given port
+     */
     public ServerSocket(ServerController serverController, int port) throws NetworkException {
         super(serverController);
         try{
@@ -29,7 +36,13 @@ public class ServerSocket extends Server {
     }
 
 
-
+    /**
+     * Starts the server loop in a separate thread. The server accepts incoming
+     * connections and spawns a new {@link VirtualSocketClient} thread for each client.
+     * <p>
+     * This method is automatically called in the constructor and should not be called manually.
+     * </p>
+     */
     public void start() {
         new Thread(() -> {
             try {
@@ -47,7 +60,11 @@ public class ServerSocket extends Server {
     }
 
 
-
+    /**
+     * Gracefully shuts down the socket server by closing the bound {@link java.net.ServerSocket}.
+     *
+     * @throws IOException if an error occurs while closing the socket
+     */
     @Override
     public void shutdown() throws IOException {
         if (serverSocket != null && !serverSocket.isClosed()) {

@@ -139,6 +139,7 @@ public class AdventureControllerLv1 extends Controller {
         seeEffectsButton.setDisable(true);
         seeEffectsButton.setOnAction(null);
 
+        adventurePhaseData.setHandleMessage(null);
         update(adventurePhaseData);
     }
 

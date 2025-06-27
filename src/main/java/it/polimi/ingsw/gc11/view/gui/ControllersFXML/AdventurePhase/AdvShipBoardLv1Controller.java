@@ -171,7 +171,7 @@ public class AdvShipBoardLv1Controller extends Controller {
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;
 
-                    if(shipCard != null) {
+                    if(shipCard != null && !shipCard.isScrap()) {
 
                         img = new Image(getClass()
                                 .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipCard.getId() + ".jpg")

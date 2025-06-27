@@ -106,8 +106,8 @@ public class AdvShipBoardLv2Controller extends Controller {
         );
         boardH  = boardW.divide(BOARD_RATIO);
 
-        gridW = boardW.multiply(0.66);
-        gridH = gridW;
+        gridW = boardW.multiply(0.92);
+        gridH = gridW.subtract(GRID_GAP * (slotGrid.getColumnCount()-1)).multiply(5).divide(7).add(GRID_GAP * (slotGrid.getRowCount() - 1));
 
         shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(7);
 
@@ -171,7 +171,7 @@ public class AdvShipBoardLv2Controller extends Controller {
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;
 
-                    if(shipCard != null) {
+                    if(shipCard != null && !shipCard.isScrap()) {
 
                         img = new Image(getClass()
                                 .getResource("/it/polimi/ingsw/gc11/shipCards/" + shipCard.getId() + ".jpg")
@@ -241,7 +241,7 @@ public class AdvShipBoardLv2Controller extends Controller {
             FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
                     .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv2.fxml"));
             Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            AdventureControllerLv1 controller = fxmlLoader.getController();
+            AdventureControllerLv2 controller = fxmlLoader.getController();
             adventurePhaseData.setListener(controller);
             controller.initialize(stage);
             stage.setScene(newScene);

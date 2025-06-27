@@ -1,5 +1,7 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
+import it.polimi.ingsw.gc11.model.FlightBoard;
+import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Planet;
@@ -60,6 +62,7 @@ public class ChoosePlanetController extends Controller {
 
         setCard();
         populatePlanetButtons();
+        adventurePhaseData.setHandleMessage(null);
     }
 
     public void setCard(){
@@ -97,17 +100,32 @@ public class ChoosePlanetController extends Controller {
             throw new RuntimeException(e);
         }
 
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.
-                    getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
-            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-            AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-            adventurePhaseData.setListener(controller);
-            controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            System.out.println("FXML Error: " + e.getMessage());
+        if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL) {
+            try {
+                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
+                stage.setScene(newScene);
+                stage.show();
+            } catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
+        }else{
+            try {
+                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv2.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
+                stage.setScene(newScene);
+                stage.show();
+            } catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
         }
     }
 
@@ -131,9 +149,29 @@ public class ChoosePlanetController extends Controller {
         new Thread(timer).start();
     }
 
+    private void goBackToFlightMenu() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv2.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            AdventureControllerLv2 controller = fxmlLoader.getController();
+            adventurePhaseData.setListener(controller);
+            controller.initialize(stage);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("FXML Error: " + e.getMessage());
+        }
+    }
+
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
+
+            if(adventurePhaseData.getHandleMessage() != null &&
+                    adventurePhaseData.getHandleMessage().toLowerCase().equals("idlestate"))
+            {
+                goBackToFlightMenu();
+            }
 
             cards.getChildren().clear();
             setCard();

@@ -70,23 +70,46 @@ public class Engine extends ShipCard {
         return super.equals(obj) && this.type == other.getType();
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     *
+     * @return the hash code of this engine
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), type);
     }
 
 
-
+    /**
+     * Registers this engine on the given {@link ShipBoard} at the specified coordinates.
+     *
+     * @param shipBoard the ship board where the engine is placed
+     * @param x the x-coordinate of placement
+     * @param y the y-coordinate of placement
+     */
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
         shipBoard.addToList(this, x, y);
     }
 
+    /**
+     * Unregisters this engine from the given {@link ShipBoard}.
+     *
+     * @param shipBoard the ship board from which the engine is removed
+     */
     @Override
     public void unPlace(ShipBoard shipBoard){
         shipBoard.removeFromList(this);
     }
 
+    /**
+     * Renders this engine on the command-line interface.
+     *
+     * @param shipCardCLI the CLI rendering utility
+     * @param i the row index for display
+     * @param selected whether this engine is currently selected by the player
+     */
     @Override
     public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
         shipCardCLI.draw(this, i, selected);

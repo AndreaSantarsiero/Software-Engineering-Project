@@ -80,10 +80,11 @@ public class LandedPlanet extends AdventureState {
         gameModel.move(player.getUsername(), planetsCard.getLostDays() * -1);
 
         this.advContext.setResolvingAdvCard(false);
-        this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer()+1);
+        int idx = this.advContext.getIdxCurrentPlayer()+1;
+        this.advContext.setIdxCurrentPlayer(idx);
 
         //next state
-        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()  ||
+        if (idx == gameModel.getPlayersNotAbort().size()  ||
             this.numVisited == planetsCard.getPlanets().size()) {
             //NoPlayersLeft or NoPlanetsLeft
             this.advContext.setAdvState(new IdleState(this.advContext));

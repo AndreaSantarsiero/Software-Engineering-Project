@@ -7,7 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
+/**
+ * Represents the client-side data and behavior for the "Check Phase" of the game,
+ * where players validate and potentially fix their ship configurations.
+ * <p>
+ * This phase allows the player to:
+ * <ul>
+ *     <li>Verify the legality of their own {@link ShipBoard}</li>
+ *     <li>Remove illegal or undesired ship parts</li>
+ *     <li>Inspect enemy ships before the adventure phase</li>
+ * </ul>
+ * It also tracks the current phase state via a finite state machine and notifies
+ * the associated controller on updates.
+ * </p>
+ */
 public class CheckPhaseData extends GamePhaseData {
 
     public enum CheckState {
@@ -27,12 +40,22 @@ public class CheckPhaseData extends GamePhaseData {
     private final Map<String, ShipBoard> enemiesShipBoard;
 
 
-
+    /**
+     * Constructs a new {@code CheckPhaseData} and initializes the default state
+     * to {@code CHOOSE_MAIN_MENU}. Initializes an empty map of enemy ships.
+     */
     public CheckPhaseData() {
         enemiesShipBoard = new HashMap<>();
         state = CheckState.CHOOSE_MAIN_MENU;
     }
 
+    /**
+     * Initializes the check phase with the player's ship and the usernames of all players.
+     * Also computes whether the ship is legal.
+     *
+     * @param shipBoard        the player's current ship board
+     * @param playersUsername  the usernames of all players in the match
+     */
     public void initialize(ShipBoard shipBoard, ArrayList<String> playersUsername){
         this.shipBoard = shipBoard;
         shipBoardLegal = shipBoard.checkShip();
@@ -41,7 +64,9 @@ public class CheckPhaseData extends GamePhaseData {
     }
 
 
-
+    /**
+     * Notifies the associated controller (if any) that this object has been updated.
+     */
     @Override
     public void notifyListener() {
         if(listener != null) {
@@ -50,11 +75,20 @@ public class CheckPhaseData extends GamePhaseData {
     }
 
 
-
+    /**
+     * Returns the current {@link CheckState} of the phase.
+     *
+     * @return the current state
+     */
     public CheckState getState() {
         return state;
     }
 
+    /**
+     * Advances to the next state based on current state logic.
+     * Some states (like {@code REMOVE_SHIPCARDS_SETUP}) cycle back to {@code CHOOSE_MAIN_MENU}.
+     * Notifies the listener after state change.
+     */
     @Override
     public void updateState() {
         actualizePreviousState();
@@ -69,12 +103,20 @@ public class CheckPhaseData extends GamePhaseData {
         notifyListener();
     }
 
+    /**
+     * Sets the current state explicitly and notifies the listener.
+     *
+     * @param state the state to set
+     */
     public void setState(CheckState state) {
         actualizePreviousState();
         this.state = state;
         notifyListener();
     }
 
+    /**
+     * Saves the current state as the previous one.
+     */
     public void actualizePreviousState() {
         previousState = state;
     }
@@ -84,7 +126,11 @@ public class CheckPhaseData extends GamePhaseData {
     }
 
 
-
+    /**
+     * Sets a message received from the server and reverts the phase to {@code CHOOSE_MAIN_MENU}.
+     *
+     * @param serverMessage the message received from the server
+     */
     @Override
     public void setServerMessage(String serverMessage) {
         this.serverMessage = serverMessage;

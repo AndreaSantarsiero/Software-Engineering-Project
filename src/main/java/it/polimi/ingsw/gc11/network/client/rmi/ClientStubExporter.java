@@ -11,7 +11,15 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 
 
-
+/**
+ * Exports a remote RMI stub that the server can use to send actions to the client.
+ *
+ * <p>{@code ClientStubExporter} extends {@link UnicastRemoteObject} and implements {@link ClientInterface},
+ * allowing it to be registered as a remote object and receive remote method calls from the server.</p>
+ *
+ * <p>This class acts as a bridge between the remote server and the local {@link Client} instance,
+ * forwarding actions from the server to the client via the {@code sendAction} method.</p>
+ */
 public class ClientStubExporter extends UnicastRemoteObject implements ClientInterface {
 
     private final Client client;
@@ -48,7 +56,11 @@ public class ClientStubExporter extends UnicastRemoteObject implements ClientInt
     }
 
 
-
+    /**
+     * Forwards the given {@link ServerAction} received from the server to the associated local client.
+     *
+     * @param action the action sent by the server
+     */
     public void sendAction(ServerAction action) {
         client.sendAction(action);
     }

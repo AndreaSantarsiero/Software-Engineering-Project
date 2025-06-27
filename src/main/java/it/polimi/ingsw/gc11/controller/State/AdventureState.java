@@ -191,10 +191,28 @@ public abstract class AdventureState{
         throw new IllegalStateException("Can't meteor hit in the current adventure state: " + this.getClass().getName());
     }
 
+    /**
+     * Handles the selection of an {@link AlienUnit} by the player.
+     * The selected alien is placed in the specified {@link HousingUnit} of the player's ship.
+     * This method is expected to be overridden in states where alien selection is allowed.
+     *
+     * @param username the username of the player making the selection
+     * @param alienUnit the alien unit chosen by the player
+     * @param housingUnit the housing unit where the alien will be placed
+     * @throws IllegalStateException if this operation is not allowed in the current state
+     */
     public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
         throw new IllegalStateException("Can't select aliens in the current adventure state: " + this.getClass().getName());
     }
 
+    /**
+     * Indicates that the player has completed their alien selection.
+     * Typically used to proceed to the next step in the adventure card's logic.
+     * This method should be overridden in states that support alien selection.
+     *
+     * @param username the username of the player who completed the selection
+     * @throws IllegalStateException if this operation is not allowed in the current state
+     */
     public void completedAlienSelection(String username){
         throw new IllegalStateException("Can't completed aliens in the current adventure state: " + this.getClass().getName());
     }

@@ -459,10 +459,12 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public NotifyWinLose.Response getYouWon() {
         NotifyWinLose.Response value = youWon;
-        youWon = null; //reset the value after reading it
         return value;
     }
 
+    public void resetYouWon() {
+        youWon = null; //reset the value after reading it
+    }
     public void setYouWon(NotifyWinLose.Response youWon) {
         this.youWon = youWon;
     }
@@ -470,8 +472,11 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public Boolean getNewHit() {
         Boolean value = newHit;
-        newHit = null; //reset the value after reading it
         return value;
+    }
+
+    public void resetNewHit(){
+        this.newHit = null;
     }
 
     public void setNewHit(Boolean newHit) {

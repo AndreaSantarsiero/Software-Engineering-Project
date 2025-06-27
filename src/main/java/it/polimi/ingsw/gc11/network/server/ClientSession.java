@@ -77,10 +77,20 @@ public class ClientSession {
     }
 
 
+    /**
+     * Returns the timestamp of the last received ping from this client.
+     * This value can be used for timeout detection or connection health checks.
+     *
+     * @return the {@link Instant} of the last ping
+     */
     public Instant getLastPingInstant() {
         return lastPingInstant;
     }
 
+    /**
+     * Updates the last ping timestamp to the current instant.
+     * Should be called whenever the server receives a ping or other signal from the client.
+     */
     public void actualizeLastPingInstant() {
         lastPingInstant = Instant.now();
     }

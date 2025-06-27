@@ -82,6 +82,11 @@ public class EndGamePhase extends GamePhase {
 
 
     //visitor pattern
+    /**
+     * Indicates whether this phase represents the end of the game.
+     *
+     * @return {@code true}
+     */
     @Override
     public boolean isEndGamePhase(){
         return true;

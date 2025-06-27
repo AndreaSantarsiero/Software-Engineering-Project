@@ -544,10 +544,30 @@ public class GameContext {
 
 
     //pre AdventurePhase methods
+    /**
+     * Allows a player to assign an {@link AlienUnit} to a specific {@link HousingUnit} on their ship.
+     * <p>
+     * This action is valid only in the {@code SelectAlienUnitState} and may be performed only once per player.
+     * After calling {@link #completedAlienSelection(String)}, the player can no longer select alien units.
+     *
+     * @param username     the player performing the assignment
+     * @param alienUnit    the alien unit to be assigned
+     * @param housingUnit  the housing unit where the alien should be placed
+     * @throws IllegalStateException if the current phase does not allow alien selection
+     */
     public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
         phase.selectAliens(username, alienUnit, housingUnit);
     }
 
+    /**
+     * Marks the alien selection process as completed for the given player.
+     * <p>
+     * Once all players have completed this phase, the game transitions automatically
+     * to the next appropriate adventure state.
+     *
+     * @param username the player completing the alien selection
+     * @throws IllegalStateException if the player has already completed selection or the phase is invalid
+     */
     public void completedAlienSelection(String username){
         phase.completedAlienSelection(username);
     }
@@ -557,6 +577,20 @@ public class GameContext {
     //Cheating methods
     public void setTestDeck(String username) {
         AdventureDeck testDeck = new AdventureDeck(false);
+
+        testDeck.addCard(
+                new PlanetsCard(
+                        "TrialPlanets",
+                        AdventureCard.Type.TRIAL,
+                        2,
+                        new ArrayList<Planet>(List.of(
+                                new Planet(0,0,0,2),
+                                new Planet(2,0,0,0),
+                                new Planet(0,0,1,0)
+                        )
+                        )
+                )
+        );
         testDeck.addCard(new Pirates(
                         "Level1Pirates",
                         AdventureCard.Type.LEVEL1,
@@ -581,8 +615,6 @@ public class GameContext {
                 )
         );
 
-
-
         testDeck.addCard(
                 new AbandonedShip(
                         "Level1AbandonedShip",
@@ -602,20 +634,6 @@ public class GameContext {
                         1,
                         1,
                         0
-                )
-        );
-
-        testDeck.addCard(
-                new PlanetsCard(
-                        "TrialPlanets",
-                        AdventureCard.Type.TRIAL,
-                        2,
-                        new ArrayList<Planet>(List.of(
-                                new Planet(0,0,0,2),
-                                new Planet(2,0,0,0),
-                                new Planet(0,0,1,0)
-                        )
-                        )
                 )
         );
         testDeck.addCard(

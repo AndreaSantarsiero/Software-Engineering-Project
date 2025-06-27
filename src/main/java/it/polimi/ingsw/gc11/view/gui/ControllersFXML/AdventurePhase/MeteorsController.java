@@ -1,13 +1,10 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
-import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
-import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Planet;
-import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
@@ -66,6 +63,8 @@ public class MeteorsController extends Controller {
         cards.setAlignment(Pos.CENTER);
 
         setCard();
+
+        adventurePhaseData.setHandleMessage(null);
     }
 
     public void setCard(){
@@ -111,12 +110,30 @@ public class MeteorsController extends Controller {
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
+        }else{
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv2.fxml"));
+                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                AdventureControllerLv2 controller = fxmlLoader.getController();
+                adventurePhaseData.setListener(controller);
+                controller.initialize(stage);
+                stage.setScene(newScene);
+                stage.show();
+            } catch (Exception e) {
+                System.out.println("FXML Error: " + e.getMessage());
+            }
         }
     }
 
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
+
+            if(adventurePhaseData.getHandleMessage() != null &&
+                    adventurePhaseData.getHandleMessage().toLowerCase().equals("idlestate"))
+            {
+                goBackToFlightMenu();
+            }
 
             cards.getChildren().clear();
             setCard();
@@ -144,17 +161,32 @@ public class MeteorsController extends Controller {
             }
 
             if(adventurePhaseData.getHit() != null){
-                try {
-                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.METEOR_SWARM_2);
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
-                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-                    adventurePhaseData.setListener(controller);
-                    controller.initialize(stage, (Pirates) adventurePhaseData.getAdventureCard());
-                    stage.setScene(newScene);
-                    stage.show();
-                } catch (Exception e) {
-                    System.out.println("FXML Error: " + e.getMessage());
+                if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL) {
+                    try {
+                        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                        AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                        adventurePhaseData.setListener(controller);
+                        controller.initialize(stage, (MeteorSwarm) adventurePhaseData.getAdventureCard());
+                        stage.setScene(newScene);
+                        stage.show();
+                    } catch (Exception e) {
+                        System.out.println("FXML Error: " + e.getMessage());
+                    }
+                }else{
+                    try {
+                        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv2.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                        AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
+                        adventurePhaseData.setListener(controller);
+                        controller.initialize(stage, (MeteorSwarm) adventurePhaseData.getAdventureCard());
+                        stage.setScene(newScene);
+                        stage.show();
+                    } catch (Exception e) {
+                        System.out.println("FXML Error: " + e.getMessage());
+                    }
                 }
             }
 

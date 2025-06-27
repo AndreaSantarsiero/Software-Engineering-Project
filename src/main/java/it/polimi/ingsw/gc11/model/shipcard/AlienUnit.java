@@ -106,23 +106,46 @@ public class AlienUnit extends ShipCard {
         return super.equals(obj) && this.type == other.type && this.presence == other.presence;
     }
 
+    /**
+     * Returns a hash code for this alien unit, consistent with {@link #equals(Object)}.
+     *
+     * @return a hash code based on the alien's base properties, type, and presence state
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), type, presence);
     }
 
 
-
+    /**
+     * Registers this card on the specified {@link ShipBoard} at the given coordinates.
+     *
+     * @param shipBoard the ship board where this card is placed
+     * @param x the x-coordinate on the board
+     * @param y the y-coordinate on the board
+     */
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
         shipBoard.addToList(this, x, y);
     }
 
+    /**
+     * Removes this alien unit from the specified {@link ShipBoard}.
+     *
+     * @param shipBoard the ship board from which the card is removed
+     */
     @Override
     public void unPlace(ShipBoard shipBoard){
         shipBoard.removeFromList(this);
     }
 
+    /**
+     * Renders this card using the CLI interface.
+     *
+     * @param shipCardCLI the CLI renderer
+     * @param i the row index for rendering
+     * @param selected whether the card is currently selected by the player
+     */
     @Override
     public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
         shipCardCLI.draw(this, i, selected);

@@ -247,16 +247,48 @@ public abstract class ShipCard implements Serializable {
                 this.covered == other.isCovered();
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     * <p>
+     * The hash is computed from the card’s ID, connectors, orientation, and relevant state attributes (scrap and covered),
+     * ensuring structural equality is preserved in collections.
+     *
+     * @return the hash code of this ShipCard
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, orientation, topConnector, rightConnector, bottomConnector, leftConnector, scrap, covered);
     }
 
 
-
+    /**
+     * Places this ShipCard on the given {@link ShipBoard} at the specified coordinates.
+     * <p>
+     * Each subclass should define how it registers itself to the board’s internal data structures.
+     *
+     * @param shipBoard the ship board where this card is to be placed
+     * @param x the x-coordinate on the board
+     * @param y the y-coordinate on the board
+     */
     public abstract void place(ShipBoard shipBoard, int x, int y);
 
+    /**
+     * Removes this ShipCard from the given {@link ShipBoard}.
+     * <p>
+     * Subclasses must implement the deregistration logic, ensuring the board state remains consistent.
+     *
+     * @param shipBoard the ship board from which this card is to be removed
+     */
     public abstract void unPlace(ShipBoard shipBoard);
 
+    /**
+     * Renders this ShipCard using the command-line interface.
+     * <p>
+     * The appearance may vary depending on the card type, orientation, and selection state.
+     *
+     * @param shipCardCLI the CLI rendering utility
+     * @param i the row index for layout purposes
+     * @param selected {@code true} if this card is currently selected by the player; {@code false} otherwise
+     */
     public abstract void print(ShipCardCLI shipCardCLI, int i, boolean selected);
 }
