@@ -193,6 +193,11 @@ public class BuildingPhaseTrial extends GamePhase{
 
 
     //visitor pattern
+    /**
+     * Indicates whether this is a building phase.
+     *
+     * @return {@code true}, since this phase involves ship construction
+     */
     @Override
     public boolean isBuildingPhase(){
         return true;

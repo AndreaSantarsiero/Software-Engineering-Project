@@ -379,30 +379,78 @@ public abstract class GamePhase {
         throw new IllegalStateException("Can't meteor hit in the current game phase: " + getPhaseName());
     }
 
+    /**
+     * Selects an alien unit to place in a housing unit.
+     *
+     * @param username the player's username
+     * @param alienUnit the alien unit selected
+     * @param housingUnit the housing unit in which the alien is placed
+     * @throws IllegalStateException if alien selection is not allowed in the current phase
+     */
     public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
         throw new IllegalStateException("Can't select aliens in the current game phase: " + getPhaseName());
     }
 
+    /**
+     * Signals that the player has completed their alien selection step.
+     *
+     * @param username the player's username
+     * @throws IllegalStateException if this step is not allowed in the current phase
+     */
     public void completedAlienSelection(String username){
         throw new IllegalStateException("Can't completed aliens in the current game phase: " + getPhaseName());
     }
 
+    /**
+     * Returns the name of the current phase. Must be implemented by all concrete subclasses.
+     *
+     * @return the name of the current phase as a {@link String}
+     */
     public abstract String getPhaseName();
 
 
     //visitor pattern
+    /**
+     * Indicates whether the current phase is an Idle Phase.
+     *
+     * @return {@code true} if this is the Idle Phase; {@code false} otherwise
+     */
     public boolean isIdlePhase(){
         return false;
     }
+
+    /**
+     * Indicates whether the current phase is a Building Phase.
+     *
+     * @return {@code true} if this is a Building Phase; {@code false} otherwise
+     */
     public boolean isBuildingPhase(){
         return false;
     }
+
+    /**
+     * Indicates whether the current phase is a Check Phase.
+     *
+     * @return {@code true} if this is the Check Phase; {@code false} otherwise
+     */
     public boolean isCheckPhase(){
         return false;
     }
+
+    /**
+     * Indicates whether the current phase is an Adventure Phase.
+     *
+     * @return {@code true} if this is the Adventure Phase; {@code false} otherwise
+     */
     public boolean isAdventurePhase(){
         return false;
     }
+
+    /**
+     * Indicates whether the current phase is the End Game Phase.
+     *
+     * @return {@code true} if this is the End Game Phase; {@code false} otherwise
+     */
     public boolean isEndGamePhase(){
         return false;
     }
