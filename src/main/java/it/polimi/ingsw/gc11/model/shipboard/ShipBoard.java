@@ -66,71 +66,209 @@ public abstract class ShipBoard  implements Serializable {
         this.purpleActiveUnit = null;
     }
 
-
+    /**
+     * Adds an {@link AlienUnit} to the ship and stores its coordinates
+     *
+     * @param alienUnit the alien unit to be added
+     * @param x the x-coordinate of the unit
+     * @param y the y-coordinate of the unit
+     */
     public void addToList(AlienUnit alienUnit, int x, int y) {
         alienUnits.add(alienUnit);
         alienUnitCoordinates.putIfAbsent(alienUnit.getId(), new Point(x, y));
     }
 
+    /**
+     * Adds a {@link Battery} to the ship.
+     *
+     * @param battery the battery component
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     */
     public void addToList(Battery battery, int x, int y) {
         batteries.add(battery);
     }
 
+    /**
+     * Adds a {@link Cannon} to the ship and stores its spatial coordinates.
+     * <p>
+     * Cannons are used to destroy incoming threats like meteors. The orientation
+     * and position of the cannon are critical for targeting logic.
+     *
+     * @param cannon the cannon to add
+     * @param x the x-coordinate where the cannon is placed
+     * @param y the y-coordinate where the cannon is placed
+     * @throws NullPointerException if {@code cannon} is {@code null}
+     */
     public void addToList(Cannon cannon, int x, int y) {
         cannons.add(cannon);
         cannonCoordinates.putIfAbsent(cannon.getId(), new Point(x, y));
     }
 
+    /**
+     * Adds an {@link Engine} to the ship and records its spatial coordinates.
+     * <p>
+     * Engines contribute to ship speed. Double engines require a battery to be activated.
+     *
+     * @param engine the engine to add
+     * @param x the x-coordinate where the engine is placed
+     * @param y the y-coordinate where the engine is placed
+     * @throws NullPointerException if {@code engine} is {@code null}
+     */
     public void addToList(Engine engine, int x, int y) {
         engines.add(engine);
         engineCoordinates.putIfAbsent(engine.getId(), new Point(x, y));
     }
 
+    /**
+     * Adds a {@link HousingUnit} to the ship and stores its coordinates.
+     * <p>
+     * Housing units store crew members and may be used to host {@link AlienUnit}s,
+     * unless they are central units.
+     *
+     * @param housingUnit the housing unit to add
+     * @param x the x-coordinate where the unit is placed
+     * @param y the y-coordinate where the unit is placed
+     * @throws NullPointerException if {@code housingUnit} is {@code null}
+     */
     public void addToList(HousingUnit housingUnit, int x, int y) {
         housingUnits.add(housingUnit);
         housingUnitCoordinates.putIfAbsent(housingUnit.getId(), new Point(x, y));
     }
 
+    /**
+     * Adds a {@link Shield} module to the ship.
+     * <p>
+     * Shields can absorb incoming hits from specific directions. The orientation and status
+     * determine protection logic.
+     *
+     * @param shield the shield to add
+     * @param x the x-coordinate where the shield is placed (unused in this method)
+     * @param y the y-coordinate where the shield is placed (unused in this method)
+     * @throws NullPointerException if {@code shield} is {@code null}
+     */
     public void addToList(Shield shield, int x, int y) {
         shields.add(shield);
     }
 
+    /**
+     * Adds a {@link Storage} module to the ship.
+     * <p>
+     * Storages are used to keep materials collected during the game and affect scoring and abilities.
+     *
+     * @param storage the storage module to add
+     * @param x the x-coordinate where the storage is placed (unused in this method)
+     * @param y the y-coordinate where the storage is placed (unused in this method)
+     * @throws NullPointerException if {@code storage} is {@code null}
+     */
     public void addToList(Storage storage, int x, int y) {
         storages.add(storage);
     }
 
+    /**
+     * Adds a {@link StructuralModule} to the ship.
+     * <p>
+     * Structural modules are generic support components used to connect other modules.
+     * This method is intentionally left empty as structural modules are not tracked individually.
+     *
+     * @param structuralModule the structural module to add
+     * @param x the x-coordinate where the module is placed
+     * @param y the y-coordinate where the module is placed
+     */
     public void addToList(StructuralModule structuralModule, int x, int y) {}
 
 
-
+    /**
+     * Removes the specified {@link AlienUnit} from the ship.
+     * <p>
+     * This action untracks the alien unit but does not modify its physical placement on the board.
+     *
+     * @param alienUnit the alien unit to remove
+     * @throws NullPointerException if {@code alienUnit} is {@code null}
+     */
     public void removeFromList(AlienUnit alienUnit) {
         alienUnits.remove(alienUnit);
     }
 
+    /**
+     * Removes the specified {@link Battery} from the ship.
+     * <p>
+     * This action will make the battery unavailable for future energy allocations.
+     *
+     * @param battery the battery to remove
+     * @throws NullPointerException if {@code battery} is {@code null}
+     */
     public void removeFromList(Battery battery) {
         batteries.remove(battery);
     }
 
+    /**
+     * Removes the specified {@link Cannon} from the ship.
+     * <p>
+     * The cannon will no longer be used in meteor defense or contribute to ship firepower.
+     *
+     * @param cannon the cannon to remove
+     * @throws NullPointerException if {@code cannon} is {@code null}
+     */
     public void removeFromList(Cannon cannon) {
         cannons.remove(cannon);
     }
 
+    /**
+     * Removes the specified {@link Engine} from the ship.
+     * <p>
+     * This will reduce the ship's potential propulsion power.
+     *
+     * @param engine the engine to remove
+     * @throws NullPointerException if {@code engine} is {@code null}
+     */
     public void removeFromList(Engine engine) {
         engines.remove(engine);
     }
 
+    /**
+     * Removes the specified {@link HousingUnit} from the ship.
+     * <p>
+     * The housing unit will no longer contribute crew members or connect AlienUnits.
+     *
+     * @param housingUnit the housing unit to remove
+     * @throws NullPointerException if {@code housingUnit} is {@code null}
+     */
     public void removeFromList(HousingUnit housingUnit) {
         housingUnits.remove(housingUnit);
     }
 
+    /**
+     * Removes the specified {@link Shield} from the ship.
+     * <p>
+     * The ship will no longer be protected by this shield in case of attacks.
+     *
+     * @param shield the shield to remove
+     * @throws NullPointerException if {@code shield} is {@code null}
+     */
     public void removeFromList(Shield shield) {
         shields.remove(shield);
     }
 
+    /**
+     * Removes the specified {@link Storage} from the ship.
+     * <p>
+     * This may reduce the amount of materials the ship can hold.
+     *
+     * @param storage the storage module to remove
+     * @throws NullPointerException if {@code storage} is {@code null}
+     */
     public void removeFromList(Storage storage) {
         storages.remove(storage);
     }
 
+    /**
+     * Removes the specified {@link StructuralModule} from the ship.
+     * <p>
+     * This method is intentionally left empty because structural modules are not tracked in a dedicated list.
+     *
+     * @param structuralModule the structural module to remove
+     */
     public void removeFromList(StructuralModule structuralModule) {
 
     }
@@ -1814,7 +1952,22 @@ public abstract class ShipBoard  implements Serializable {
     }
 
 
-
+    /**
+     * Compares this {@code ShipBoard} to the specified object for equality.
+     * <p>
+     * Two {@code ShipBoard} instances are considered equal if:
+     * <ul>
+     *     <li>They are of the same concrete subclass</li>
+     *     <li>Each position in their {@code components} matrices contains equal {@link ShipCard} instances (according to {@code equals})</li>
+     *     <li>Their {@code reservedComponents} lists are equal</li>
+     * </ul>
+     * <p>
+     * Note: Spatial metadata such as coordinates of components (e.g. {@code cannonCoordinates})
+     * and internal state (e.g. alien activations or component statuses) are not considered in this comparison.
+     *
+     * @param obj the object to compare with this ship board
+     * @return {@code true} if the two ship boards are equal in structure and reserved cards, {@code false} otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
