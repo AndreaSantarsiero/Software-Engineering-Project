@@ -50,13 +50,14 @@ public class SelectAliensAction extends ClientGameAction {
             context.selectAliens(username, alienUnit, housingUnit);
             Player player = context.getGameModel().getPlayer(username);
 
+            String currentPlayerUsername = context.getGameModel().getPlayersNotAbort().getFirst().getUsername();
             for(Player p : context.getGameModel().getPlayersNotAbort()) {
                 if(p.getUsername().equals(username)) {
-                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, null);
+                    UpdatePlayerProfileAction response = new UpdatePlayerProfileAction(player, currentPlayerUsername);
                     context.sendAction(username, response);
                 }
                 else {
-                    UpdateEnemyProfileAction response = new UpdateEnemyProfileAction(player, null);
+                    UpdateEnemyProfileAction response = new UpdateEnemyProfileAction(player, currentPlayerUsername);
                     context.sendAction(p.getUsername(), response);
                 }
             }

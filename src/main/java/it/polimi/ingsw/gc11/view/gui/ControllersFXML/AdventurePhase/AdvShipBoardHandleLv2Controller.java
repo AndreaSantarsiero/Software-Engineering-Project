@@ -226,8 +226,11 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
             Button b = buildMaterialButton(i);
             cardMaterialsBox.getChildren().add(b);
         }
-
+        if (mainContainer.getChildren().contains(cardMaterialsBox)) {
+            mainContainer.getChildren().remove(cardMaterialsBox);
+        }
         mainContainer.getChildren().add(cardMaterialsBox);
+
 
         actionTextLabel.setText("Select slot to place or replace materials. (right click per rimuovere materiale)");
         confirmButton.setVisible(true);
@@ -466,7 +469,11 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
             cardMaterialsBox.getChildren().add(b);
         }
 
+        if (mainContainer.getChildren().contains(cardMaterialsBox)) {
+            mainContainer.getChildren().remove(cardMaterialsBox);
+        }
         mainContainer.getChildren().add(cardMaterialsBox);
+
 
         actionTextLabel.setText("Select slot to place or replace materials. (right click per rimuovere materiale)");
         confirmButton.setVisible(true);
@@ -589,13 +596,14 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
     @FXML private void onResetChoiceButtonClicked(){
         adventurePhaseData.resetResponse();
         setShipBoard();
-        if(cardMaterialsBox.getChildren().size()>0){
+        if(cardMaterialsBox != null && cardMaterialsBox.getChildren().size()>0){
             cardMaterialsBox.getChildren().clear();
 
             for (int i = 0; i < cardMats.size(); i++) {
                 Button b = buildMaterialButton(i);
                 cardMaterialsBox.getChildren().add(b);
             }
+
 
             mainContainer.getChildren().add(cardMaterialsBox);
         }

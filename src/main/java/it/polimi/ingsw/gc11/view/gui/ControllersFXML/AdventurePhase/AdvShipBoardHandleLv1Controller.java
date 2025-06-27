@@ -421,7 +421,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 state = State.PIRATES_SHOTS;
             }
             if(adventurePhaseData.getHit().getType() == Hit.Type.BIG){
-                actionTextLabel.setText("Select batteries to activate Shields to protect from a small shot from " + adventurePhaseData.getHit().getDirection().toString()+ " at coordinate " + adventurePhaseData.getHit().getCoordinate());
+                actionTextLabel.setText("Select batteries to activate Shields to protect from a big shot from " + adventurePhaseData.getHit().getDirection().toString()+ " at coordinate " + adventurePhaseData.getHit().getCoordinate());
                 confirmButton.setVisible(true);
                 confirmButton.setDisable(false);
                 confirmButton.setOnAction(event -> {
