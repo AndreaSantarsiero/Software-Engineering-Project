@@ -36,6 +36,7 @@ public class MeteorSwarmState extends AdventureState {
     public MeteorSwarmState(AdventurePhase advContext, int iterationsHit) {
         super(advContext);
         this.gameModel = this.advContext.getGameModel();
+        this.advContext.setIdxCurrentPlayer(0); //resetting current player index after every meteor
         this.iterationsHit = iterationsHit;
         this.meteorSwarm = (MeteorSwarm) advContext.getDrawnAdvCard();
     }
@@ -105,5 +106,4 @@ public class MeteorSwarmState extends AdventureState {
 
         return hit;
     }
-
 }

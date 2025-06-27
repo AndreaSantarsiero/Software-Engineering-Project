@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc11.controller.State.MeteorSwarmStates;
 
-import it.polimi.ingsw.gc11.action.client.NotifyNewHit;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.controller.State.IdleState;
@@ -80,7 +79,7 @@ public class HandleMeteor extends AdventureState {
         }
 
         if(batteries == null){
-            throw new IllegalArgumentException("batteries is null");
+            throw new IllegalArgumentException("Batteries map cannot be null");
         }
 
         if(iterationsHit >= meteorSwarm.getMeteors().size()){
@@ -93,7 +92,8 @@ public class HandleMeteor extends AdventureState {
             //Player doesn't have a shield and has an exposed connector, ShipCard destroyed
             if(!player.getShipBoard().isBeingProtected(meteor.getDirection()) && player.getShipBoard().hasAnExposedConnector(meteor.getDirection(), coordinates)){
                 player.getShipBoard().destroyHitComponent(meteor.getDirection(), coordinates);
-            } else if (player.getShipBoard().hasAnExposedConnector(meteor.getDirection(), coordinates) && player.getShipBoard().isBeingProtected(meteor.getDirection())){
+            }
+            else if (player.getShipBoard().hasAnExposedConnector(meteor.getDirection(), coordinates) && player.getShipBoard().isBeingProtected(meteor.getDirection())){
                 //Player protetto ma con connettore esposto, verifico abbia attivato lo scudo con delle batterie
                 if(batteries.isEmpty()){
                     player.getShipBoard().destroyHitComponent(meteor.getDirection(), coordinates);
@@ -120,13 +120,22 @@ public class HandleMeteor extends AdventureState {
         }
         else{
             if(cannon != null){
+                if(cannon.getType() == Cannon.Type.DOUBLE){
+                    boolean usedBatteries = false;
+                    for(Battery battery : batteries.keySet()){
+                        if(batteries.get(battery) > 0){
+                            usedBatteries = true;
+                        }
+                    }
+                    if(!usedBatteries){
+                        throw new IllegalArgumentException("Cannot activate a double cannon without batteries");
+                    }
+                }
+
                 if(player.getShipBoard().canDestroy(meteor.getDirection(), coordinates).contains(cannon)){
                     //Player select a cannon to protect him against the big meteor
                     if(cannon.getType() == Cannon.Type.DOUBLE){
-                        //Use batteries
-                        if(!batteries.isEmpty()){
-                            player.getShipBoard().useBatteries(batteries);
-                        }
+                         player.getShipBoard().useBatteries(batteries);
                     }
                 }
                 else{
