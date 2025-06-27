@@ -130,13 +130,16 @@ public class SelectAlienUnitController extends Controller {
                 ColumnConstraints colConst = new ColumnConstraints();
                 slotGrid.getColumnConstraints().add(colConst);
             }
+            for(ColumnConstraints col : slotGrid.getColumnConstraints()){
+                col.setPercentWidth(14.286);
+            }
             gridW = boardW.multiply(0.92);
             gridH = gridW.subtract(GRID_GAP * (slotGrid.getColumnCount()-1)).multiply(5).divide(7).add(GRID_GAP * (slotGrid.getRowCount() - 1));
         }
 
 
 
-        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(shipBoard.getWidth());
+        shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(slotGrid.getColumnCount());
 
         boardContainer.setMinSize(0, 0);
         boardContainer.prefWidthProperty().bind(boardW);

@@ -145,8 +145,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
         );
         boardH  = boardW.divide(BOARD_RATIO);
 
-        gridW = boardW.multiply(0.66);
-        gridH = gridW;
+        gridW = boardW.multiply(0.92);
+        gridH = gridW.subtract(GRID_GAP * (slotGrid.getColumnCount()-1)).multiply(5).divide(7).add(GRID_GAP * (slotGrid.getRowCount() - 1));
 
         shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(7);
 
@@ -610,7 +610,7 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;
 
-                    if(shipCard != null) {
+                    if(shipCard != null && !shipCard.isScrap()) {
 
                         Button btnShipCard = new Button();
                         btnShipCard.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
