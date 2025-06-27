@@ -304,23 +304,52 @@ public class Storage extends ShipCard {
         return super.equals(obj) && this.type == other.getType() && Objects.equals(this.materials, other.materials);
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     * <p>
+     * The hash includes the base {@code ShipCard} attributes, the storage type, and the current list of materials.
+     *
+     * @return the hash code of this storage
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), type, materials);
     }
 
 
-
+    /**
+     * Places this storage module on the specified {@link ShipBoard} at the given coordinates.
+     * <p>
+     * Registers the storage card into the board’s internal layout and tracking systems.
+     *
+     * @param shipBoard the ship board where this storage is placed
+     * @param x the x-coordinate on the ship board grid
+     * @param y the y-coordinate on the ship board grid
+     */
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
         shipBoard.addToList(this, x, y);
     }
 
+    /**
+     * Removes this storage module from the specified {@link ShipBoard}.
+     * <p>
+     * Deregisters the component from the board, effectively freeing its position.
+     *
+     * @param shipBoard the ship board from which this storage is removed
+     */
     @Override
     public void unPlace(ShipBoard shipBoard){
         shipBoard.removeFromList(this);
     }
 
+    /**
+     * Renders this storage card in the CLI interface using the provided renderer.
+     *
+     * @param shipCardCLI the command-line interface drawing utility
+     * @param i the row index for layout alignment
+     * @param selected {@code true} if the card is currently selected in the UI; {@code false} otherwise
+     */
     @Override
     public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
         shipCardCLI.draw(this, i, selected);

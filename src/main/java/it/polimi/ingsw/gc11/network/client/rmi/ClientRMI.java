@@ -13,7 +13,13 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 
-
+/**
+ * An implementation of a network client that communicates with the server using Java RMI (Remote Method Invocation).
+ *
+ * <p>{@code ClientRMI} connects to a remote RMI server, registers itself, and sends actions using remote method calls.
+ * It interacts with the server through a {@link ServerInterface} stub obtained from the RMI registry.
+ * This class extends the base {@link Client} and implements the {@link ClientInterface} to support RMI-specific logic.</p>
+ */
 public class ClientRMI extends Client implements ClientInterface {
 
 
@@ -36,7 +42,15 @@ public class ClientRMI extends Client implements ClientInterface {
     }
 
 
-
+    /**
+     * Registers a new client session on the server using the provided username.
+     *
+     * <p>This method sends a {@link RegisterRMISessionAction} to the server,
+     * including a reference to the exported RMI stub for callbacks.</p>
+     *
+     * @param username the username of the client to be registered
+     * @throws NetworkException if an error occurs while sending the registration action
+     */
     @Override
     public void registerSession(String username) throws NetworkException {
         RegisterRMISessionAction action = new RegisterRMISessionAction(username, stubExporter);
@@ -44,7 +58,12 @@ public class ClientRMI extends Client implements ClientInterface {
     }
 
 
-
+    /**
+     * Sends a controller-level action (not dependent on game context) to the server.
+     *
+     * @param action the {@link ClientControllerAction} to be sent
+     * @throws NetworkException if a remote error occurs during transmission
+     */
     @Override
     public void sendAction(ClientControllerAction action) throws NetworkException {
         try {
@@ -55,6 +74,12 @@ public class ClientRMI extends Client implements ClientInterface {
         }
     }
 
+    /**
+     * Sends a game-contextual action to the server.
+     *
+     * @param action the {@link ClientGameAction} to be sent
+     * @throws NetworkException if a remote error occurs during transmission
+     */
     @Override
     public void sendAction(ClientGameAction action) throws NetworkException {
         try {

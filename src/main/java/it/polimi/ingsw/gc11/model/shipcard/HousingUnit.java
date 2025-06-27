@@ -170,23 +170,46 @@ public class HousingUnit extends ShipCard {
         return super.equals(obj) && Objects.equals(this.alienUnit, other.alienUnit);
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     *
+     * @return hash code based on internal state
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), central, numMembers, alienUnit);
     }
 
 
-
+    /**
+     * Places this housing unit on the specified {@link ShipBoard} at the given coordinates.
+     *
+     * @param shipBoard the board where the unit is placed
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     */
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
         shipBoard.addToList(this, x, y);
     }
 
+    /**
+     * Removes this housing unit from the specified {@link ShipBoard}.
+     *
+     * @param shipBoard the board from which the unit is removed
+     */
     @Override
     public void unPlace(ShipBoard shipBoard){
         shipBoard.removeFromList(this);
     }
 
+    /**
+     * Renders this housing unit in the CLI interface.
+     *
+     * @param shipCardCLI the CLI renderer
+     * @param i the row index
+     * @param selected whether this unit is currently selected
+     */
     @Override
     public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
         shipCardCLI.draw(this, i, selected);

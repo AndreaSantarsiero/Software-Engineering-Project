@@ -70,23 +70,46 @@ public class Cannon extends ShipCard {
         return super.equals(obj) && this.type == other.getType();
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     *
+     * @return the hash code of this cannon
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), type);
     }
 
 
-
+    /**
+     * Places this cannon on the specified {@link ShipBoard} at the given coordinates.
+     *
+     * @param shipBoard the ship board to place the cannon on
+     * @param x the x-coordinate of placement
+     * @param y the y-coordinate of placement
+     */
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
         shipBoard.addToList(this, x, y);
     }
 
+    /**
+     * Removes this cannon from the specified {@link ShipBoard}.
+     *
+     * @param shipBoard the ship board to remove the cannon from
+     */
     @Override
     public void unPlace(ShipBoard shipBoard){
         shipBoard.removeFromList(this);
     }
 
+    /**
+     * Renders this cannon on the command-line interface.
+     *
+     * @param shipCardCLI the CLI rendering utility
+     * @param i the row index at which to render the cannon
+     * @param selected whether this cannon is currently selected
+     */
     @Override
     public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
         shipCardCLI.draw(this, i, selected);

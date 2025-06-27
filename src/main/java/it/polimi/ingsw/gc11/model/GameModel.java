@@ -10,7 +10,12 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import java.util.*;
 
 
-
+/**
+ * Represents the main model of the game Galaxy Trucker.
+ * It holds the state of the game, including players, decks, ship cards, and the game board.
+ * <p>
+ * The GameModel manages all game phases: setup, ship building, and flight.
+ */
 public class GameModel {
 
     private final String id;
@@ -31,7 +36,13 @@ public class GameModel {
     private boolean gameStarted = false;
 
 
-
+    /**
+     * Constructs a new GameModel instance with a given number of players.
+     * Initializes all the game components, including loading ship and adventure cards,
+     * generating a UUID, and creating dice.
+     *
+     * @param numPlayers the number of players in the game
+     */
     public GameModel(int numPlayers) {
         id = UUID.randomUUID().toString();
         players = new  ArrayList<>(0);
@@ -62,11 +73,23 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Returns the unique ID of this game instance.
+     *
+     * @return the UUID as a string.
+     */
     public String getID() {
         return id;
     }
 
+    /**
+     * Initializes the flight board and corresponding adventure decks for the given level type.
+     *
+     * @param flightType the type of flight level (TRIAL or LEVEL2).
+     * @throws NullPointerException if {@code flightType} is null.
+     * @throws IllegalArgumentException if the flight type is invalid.
+     * @throws IllegalStateException if the flight board was already initialized.
+     */
     public void setLevel(FlightBoard.Type flightType) throws NullPointerException, IllegalArgumentException {
         if (flightType == null)
             throw new NullPointerException();
@@ -108,6 +131,12 @@ public class GameModel {
         }
     }
 
+    /**
+     * Returns the current flight board.
+     *
+     * @return the flight board.
+     * @throws IllegalStateException if the board has not been initialized.
+     */
     public FlightBoard getFlightBoard() {
         if(this.flightBoard == null){
             throw new IllegalStateException("The flight board has not been set");
@@ -115,17 +144,32 @@ public class GameModel {
         return flightBoard;
     }
 
+    /**
+     * Rolls the first dice.
+     *
+     * @return the result of the roll (1-6).
+     */
     public int getValDice1(){
         return dices[0].roll();
     }
 
+    /**
+     * Rolls the second dice.
+     *
+     * @return the result of the roll (1-6).
+     */
     public int getValDice2(){
         return dices[1].roll();
     }
 
 
 
-
+    /**
+     * Checks if a player with the given username exists.
+     *
+     * @param username the player's username.
+     * @throws IllegalArgumentException if the username is invalid or not found.
+     */
     public void checkPlayerUsername(String username) {
         if (username == null || username.isEmpty()){
             throw new IllegalArgumentException("Username cannot be null or empty");
@@ -138,6 +182,13 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+    /**
+     * Checks that the given ship card is currently held by the player.
+     *
+     * @param shipCard the ship card to check.
+     * @param username the username of the player.
+     * @throws IllegalArgumentException if the card is null, not held by the player, or mismatches the held card.
+     */
     private void checkHeldShipCard(ShipCard shipCard, String username) {
         if (shipCard == null){
             throw new IllegalArgumentException("Ship card cannot be null");
@@ -150,6 +201,12 @@ public class GameModel {
         }
     }
 
+    /**
+     * Verifies that the player is not currently observing a mini deck.
+     *
+     * @param username the player's username.
+     * @throws IllegalArgumentException if the player is holding a mini deck.
+     */
     private void checkHeldMiniDeck(String username) {
         if(heldMiniDecks.containsKey(username)){
             throw new IllegalArgumentException("Player " + username + " cannot do this action while observing a mini deck");
@@ -157,7 +214,13 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Returns the ship card currently held by the specified player.
+     *
+     * @param username the player's username.
+     * @return the {@code ShipCard} held by the player.
+     * @throws IllegalArgumentException if the player does not hold a ship card.
+     */
     public ShipCard getHeldShipCard(String username){
         checkPlayerUsername(username);
         if(!heldShipCards.containsKey(username)){
@@ -167,6 +230,17 @@ public class GameModel {
     }
 
     //per i test
+    /**
+     * Assigns a ship card to the specified player.
+     * <p>
+     * Used primarily for testing purposes. If the player is not already holding a ship card,
+     * the card is oriented and registered as held.
+     *
+     * @param shipCard the ship card to assign.
+     * @param username the player's username.
+     * @throws IllegalArgumentException if the card is null, the player is already holding a ship card,
+     *                                  or the player is observing a mini deck.
+     */
     public void setHeldShipCard(ShipCard shipCard, String username){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
@@ -184,7 +258,12 @@ public class GameModel {
 
 
     /**
-     * Player's methods
+     * Adds a new player to the game.
+     *
+     * @param username the player's username.
+     * @throws FullLobbyException if the lobby is already full.
+     * @throws UsernameAlreadyTakenException if the username is already in use.
+     * @throws IllegalArgumentException if the username is null or empty.
      */
     public void addPlayer(String username) throws FullLobbyException, UsernameAlreadyTakenException {
         if (username == null || username.isEmpty()){
@@ -207,14 +286,31 @@ public class GameModel {
         players.add(newPlayer);
     }
 
+    /**
+     * Returns true if the number of players has reached the maximum allowed.
+     *
+     * @return {@code true} if the lobby is full.
+     */
     public boolean isFullLobby() {
         return players.size() == numPlayers;
     }
 
+    /**
+     * Returns the maximum number of players for this game instance.
+     *
+     * @return the maximum number of players.
+     */
     public int getMaxNumPlayers() {
         return this.numPlayers;
     }
 
+    /**
+     * Retrieves the player with the specified username.
+     *
+     * @param username the username of the player to retrieve.
+     * @return the {@code Player} object associated with the username.
+     * @throws IllegalArgumentException if the player is not found.
+     */
     public Player getPlayer(String username)  {
         checkPlayerUsername(username);
 
@@ -228,6 +324,11 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+    /**
+     * Returns the list of players who have not aborted the game.
+     *
+     * @return list of active (non-aborting) players.
+     */
     public ArrayList<Player> getPlayersNotAbort() {
         ArrayList<Player> playersNotAbort = new ArrayList<>();
 
@@ -240,16 +341,32 @@ public class GameModel {
         return playersNotAbort;
     }
 
+    /**
+     * Returns all players in the game, including those who have aborted.
+     *
+     * @return the list of all players.
+     */
     public ArrayList<Player> getAllPlayers() {
         return players;
     }
 
+    /**
+     * Returns the last player in the player list (e.g., the most recently added).
+     *
+     * @return the last {@code Player} in the list.
+     */
     public Player getLastPlayer() {
         return players.getLast();
     }
 
 
-
+    /**
+     * Assigns a color to a player.
+     *
+     * @param username the player choosing the color.
+     * @param color the color to assign (must be available).
+     * @throws IllegalArgumentException if the color is already taken or player already has a color.
+     */
     public void setPlayerColor(String username, String color) {
         checkPlayerUsername(username);
         Player player = getPlayer(username);
@@ -266,16 +383,32 @@ public class GameModel {
         player.setColor(color, centralUnits);
     }
 
+    /**
+     * Returns whether the game has started.
+     *
+     * @return {@code true} if the game has started, {@code false} otherwise.
+     */
     public boolean isGameStarted() {
         return gameStarted;
     }
 
+    /**
+     * Sets the game started status.
+     *
+     * @param gameStarted {@code true} if the game is to be marked as started.
+     */
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
     }
 
 
-
+    /**
+     * Adds coins to the specified player.
+     *
+     * @param username the player receiving the coins.
+     * @param amount the number of coins to add (must be non-negative).
+     * @throws IllegalArgumentException if the amount is negative or player is not found.
+     */
     public void addCoins(String username, int amount){
         checkPlayerUsername(username);
         if(amount < 0) {
@@ -292,6 +425,13 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+    /**
+     * Removes coins from the specified player.
+     *
+     * @param username the player losing the coins.
+     * @param amount the number of coins to remove (must be non-negative).
+     * @throws IllegalArgumentException if the amount is negative or player is not found.
+     */
     public void removeCoins(String username, int amount){
         checkPlayerUsername(username);
         if(amount < 0) {
@@ -308,6 +448,12 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+    /**
+     * Sets the specified player to "abort" status.
+     *
+     * @param username the player who aborts.
+     * @throws IllegalArgumentException if the player is not found.
+     */
     public void setAbort(String username){
         checkPlayerUsername(username);
 
@@ -321,6 +467,13 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+    /**
+     * Returns the {@code ShipBoard} of the specified player.
+     *
+     * @param username the player's username.
+     * @return the ship board associated with the player.
+     * @throws IllegalArgumentException if the player is not found.
+     */
     public ShipBoard getPlayerShipBoard(String username) {
         checkPlayerUsername(username);
 
@@ -335,9 +488,15 @@ public class GameModel {
 
 
 
-   /**
-    * AdventureDeck's methods
-    */
+    /**
+     * Allows a player to observe a mini adventure deck.
+     *
+     * @param username the player requesting to observe.
+     * @param numDeck the index of the mini deck to observe.
+     * @return the list of {@code AdventureCard} in the observed deck.
+     * @throws IllegalArgumentException if the deck number is invalid or if the player already holds a card or deck.
+     * @throws IllegalStateException if another player is already observing the deck.
+     */
     public ArrayList<AdventureCard> observeMiniDeck(String username, int numDeck){
         if(numDeck < 0 || numDeck >= adventureCardsDecks.size()){
             throw new IllegalArgumentException("Invalid deck number");
@@ -364,6 +523,12 @@ public class GameModel {
         return requestedMiniDeck.getCards();
     }
 
+    /**
+     * Releases a mini deck previously held by the player.
+     *
+     * @param username the player's username.
+     * @throws IllegalArgumentException if the player does not currently hold a mini deck.
+     */
     public void releaseMiniDeck(String username){
         checkPlayerUsername(username);
         if(!heldMiniDecks.containsKey(username)){
@@ -372,6 +537,9 @@ public class GameModel {
         heldMiniDecks.remove(username);
     }
 
+    /**
+     * Combines all adventure mini decks into one definitive adventure deck and shuffles it.
+     */
     public void createDefinitiveDeck(){
         this.definitiveDeck = new AdventureDeck(false);
         for (AdventureDeck adventureDeck : adventureCardsDecks){
@@ -383,18 +551,39 @@ public class GameModel {
     }
 
     //Cheat for testing
+    /**
+     * Sets the definitive deck directly (used for testing purposes).
+     *
+     * @param testDeck the {@code AdventureDeck} to assign as the definitive deck.
+     */
     public void setTestDeck(AdventureDeck testDeck){
         this.definitiveDeck = testDeck;
     }
 
+
+    /**
+     * Retrieves the definitive adventure deck.
+     *
+     * @return the definitive {@code AdventureDeck}.
+     */
     public AdventureDeck getDefinitiveDeck() {
         return definitiveDeck;
     }
 
+    /**
+     * Draws the top adventure card from the definitive deck.
+     *
+     * @return the top {@code AdventureCard}.
+     */
     public AdventureCard getTopAdventureCard(){
         return this.definitiveDeck.getTopCard();
     }
 
+    /**
+     * Checks if the definitive deck is empty.
+     *
+     * @return {@code true} if the definitive deck is empty, {@code false} otherwise.
+     */
     public Boolean isDefinitiveDeckEmpty(){
         return this.definitiveDeck.isEmpty();
     }
@@ -402,7 +591,14 @@ public class GameModel {
 
 
     /**
-     * ShipCard's and ShipBoard's methods
+     * Allows a player to draw a ship card from the pool of free cards.
+     * If {@code shipCard} is null, a random covered card will be drawn and uncovered.
+     *
+     * @param username the player drawing the card.
+     * @param shipCard the specific card requested, or {@code null} to draw a random covered card.
+     * @return the drawn {@code ShipCard}, now uncovered and held by the player.
+     * @throws IllegalArgumentException if the player already holds a card or the specified card is unavailable.
+     * @throws IllegalStateException if no covered ship cards are left when drawing randomly.
      */
     public ShipCard getFreeShipCard(String username, ShipCard shipCard){
         checkPlayerUsername(username);
@@ -438,10 +634,20 @@ public class GameModel {
         return selectedCard;
     }
 
+    /**
+     * Returns the number of free ship cards still available.
+     *
+     * @return the number of remaining ship cards in the central pile.
+     */
     public int getFreeShipCardsCount() {
         return freeShipCards.size();
     }
 
+    /**
+     * Returns a list of ship cards in the free pile that are already uncovered.
+     *
+     * @return a list of uncovered {@code ShipCard}s.
+     */
     public List<ShipCard> getFreeShipCards() {
         List<ShipCard> availableShipCards = new ArrayList<>();
         for (ShipCard shipCard : freeShipCards) {
@@ -452,6 +658,13 @@ public class GameModel {
         return availableShipCards;
     }
 
+    /**
+     * Allows a player to return a held ship card back to the central pool.
+     *
+     * @param username the player returning the card.
+     * @param shipCard the card to be released.
+     * @throws IllegalArgumentException if the player does not hold the specified card.
+     */
     public void releaseShipCard(String username, ShipCard shipCard) {
         checkPlayerUsername(username);
         checkHeldShipCard(shipCard, username);
@@ -461,7 +674,14 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Reserves a ship card on the player's ship board without placing it.
+     *
+     * @param username the player reserving the card.
+     * @param shipCard the card to reserve.
+     * @return the player's updated {@code ShipBoard}.
+     * @throws IllegalArgumentException if the card is not held by the player.
+     */
     public ShipBoard reserveShipCard(String username, ShipCard shipCard){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
@@ -480,7 +700,16 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Places a reserved ship card onto the player's ship board at the given position and orientation.
+     *
+     * @param username the player.
+     * @param shipCard the reserved card.
+     * @param orientation the orientation to place the card.
+     * @param x the x-coordinate on the board.
+     * @param y the y-coordinate on the board.
+     * @return the updated {@code ShipBoard}.
+     */
     public ShipBoard useReservedShipCard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
@@ -497,7 +726,16 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Places a held ship card directly onto the ship board.
+     *
+     * @param username the player placing the card.
+     * @param shipCard the card to place.
+     * @param orientation the desired orientation.
+     * @param x x-coordinate on the board.
+     * @param y y-coordinate on the board.
+     * @return the updated {@code ShipBoard}.
+     */
     public ShipBoard connectShipCardToPlayerShipBoard(String username, ShipCard shipCard, ShipCard.Orientation orientation, int x, int y){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
@@ -516,7 +754,14 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Removes a ship card from the ship board and returns it to the player's hand.
+     *
+     * @param username the player.
+     * @param x x-coordinate of the card to remove.
+     * @param y y-coordinate of the card to remove.
+     * @return the updated {@code ShipBoard}.
+     */
     public ShipBoard removeShipCardFromPlayerShipBoard(String username, int x, int y){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
@@ -535,7 +780,12 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Validates whether the current ship layout of the player is structurally correct.
+     *
+     * @param username the player.
+     * @return {@code true} if the ship is valid, {@code false} otherwise.
+     */
     public boolean checkPlayerShip(String username){
         checkPlayerUsername(username);
 
@@ -549,7 +799,12 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Returns the number of exposed connectors in the player's ship.
+     *
+     * @param username the player.
+     * @return the number of exposed connectors.
+     */
     public int getNumExposedConnectors(String username){
         checkPlayerUsername(username);
 
@@ -565,6 +820,16 @@ public class GameModel {
 
 
     //VA AGGIUNTO CONTROLLO DEL DOPPIAGGIO
+    /**
+     * Moves a player forward or backward by a number of days, adjusting for collisions on the flight board.
+     * <p>
+     * If the target position would collide with another active player, the move is adjusted to skip past them.
+     * This applies to both forward and backward movement.
+     *
+     * @param username the player to move.
+     * @param numDays the number of days to move (positive or negative).
+     * @throws IllegalArgumentException if the player is not found.
+     */
     public void move(String username, int numDays){
         Player curr = null;
         int tmp;
@@ -607,6 +872,11 @@ public class GameModel {
         curr.setPosition(curr.getPosition()+numDays);
     }
 
+    /**
+     * Checks if the leading player has completed a lap over others, and marks those lapped as aborted.
+     * <p>
+     * A player is considered lapped if the distance between their position and the leader exceeds the board length.
+     */
     public void checkLapping(){
 
         players.sort(Comparator.comparingInt(Player::getPosition).reversed());
@@ -621,6 +891,13 @@ public class GameModel {
         }
     }
 
+    /**
+     * Returns the current modular position of the player on the flight board.
+     *
+     * @param username the player whose position is queried.
+     * @return the position modulo the length of the board.
+     * @throws IllegalArgumentException if the player does not exist.
+     */
     public int getPositionOnBoard(String username){
         checkPlayerUsername(username);
 
@@ -635,7 +912,15 @@ public class GameModel {
     }
 
 
-
+    /**
+     * Marks the end of ship building phase for a player in trial mode, assigning their flight position.
+     * <p>
+     * The player is placed in the first available position on the board, after those already placed.
+     *
+     * @param username the player finishing the trial build phase.
+     * @throws IllegalArgumentException if the player does not exist.
+     * @throws IllegalStateException if the player already has a position assigned.
+     */
     public void endBuildingTrial(String username){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);
@@ -662,6 +947,13 @@ public class GameModel {
         throw new IllegalArgumentException("Player " + username + " not found");
     }
 
+    /**
+     * Marks the end of ship building phase for a player in level 2, assigning them a selected starting position.
+     *
+     * @param username the player finishing their build phase.
+     * @param pos the desired starting position (1 to number of non-aborted players).
+     * @throws IllegalArgumentException if the position is invalid or already occupied.
+     */
     public void endBuildingLevel2(String username, int pos){
         checkPlayerUsername(username);
         checkHeldMiniDeck(username);

@@ -76,23 +76,53 @@ public class Shield extends ShipCard {
         return super.equals(obj);
     }
 
+    /**
+     * Returns a hash code consistent with {@link #equals(Object)}.
+     * <p>
+     * Since {@code Shield} does not introduce additional fields, the hash code is
+     * entirely derived from the superclass ({@link ShipCard}).
+     *
+     * @return the hash code of this shield
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode());
     }
 
 
-
+    /**
+     * Places this shield on the specified {@link ShipBoard} at the given coordinates.
+     * <p>
+     * Registers the shield in the ship board’s internal structure, enabling its defensive behavior.
+     *
+     * @param shipBoard the ship board to place the shield on
+     * @param x the x-coordinate on the board
+     * @param y the y-coordinate on the board
+     */
     @Override
     public void place(ShipBoard shipBoard, int x, int y){
         shipBoard.addToList(this, x, y);
     }
 
+    /**
+     * Removes this shield from the specified {@link ShipBoard}.
+     * <p>
+     * Deregisters the shield from the board, disabling its protection effect.
+     *
+     * @param shipBoard the ship board from which to remove the shield
+     */
     @Override
     public void unPlace(ShipBoard shipBoard){
         shipBoard.removeFromList(this);
     }
 
+    /**
+     * Renders this shield on the command-line interface.
+     *
+     * @param shipCardCLI the CLI renderer used for drawing the card
+     * @param i the row index used for layout
+     * @param selected whether this card is currently selected
+     */
     @Override
     public void print(ShipCardCLI shipCardCLI, int i, boolean selected){
         shipCardCLI.draw(this, i, selected);

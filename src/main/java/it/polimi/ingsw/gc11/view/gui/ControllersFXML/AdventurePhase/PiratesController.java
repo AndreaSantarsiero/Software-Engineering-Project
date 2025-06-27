@@ -115,7 +115,7 @@ public class PiratesController extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv2.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdventureControllerLv1 controller = fxmlLoader.getController();
+                AdventureControllerLv2 controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage);
                 stage.setScene(newScene);
@@ -133,13 +133,13 @@ public class PiratesController extends Controller {
             cards.getChildren().clear();
             setCard();
 
-            Boolean newHit = adventurePhaseData.getNewHit();
-
-            if(newHit != null){
-                if(newHit == false){
+            if(adventurePhaseData.getNewHit() != null){
+                if(adventurePhaseData.getNewHit() == false){
+                    adventurePhaseData.resetNewHit();
                     goBackToFlightMenu();
                 }
-                if(newHit == true){
+                if(adventurePhaseData.getNewHit() == true){
+                    adventurePhaseData.resetYouWon();
                     subHeader.getChildren().add(
                             new Button("roll dices") {{
                                 getStyleClass().add("Text");

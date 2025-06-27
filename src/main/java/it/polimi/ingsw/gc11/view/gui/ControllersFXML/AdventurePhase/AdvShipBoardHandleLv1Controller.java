@@ -1291,8 +1291,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 setShipBoard();
             }
 
-            NotifyWinLose.Response response = adventurePhaseData.getYouWon();
-
 
             System.out.println("State: " + adventurePhaseData.getGUIState());
 
@@ -1314,14 +1312,17 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
             if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                    && response == NotifyWinLose.Response.LOSE) {
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE) {
+                adventurePhaseData.resetYouWon();
                 adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS);
                 initialize(stage, (Slavers) adventurePhaseData.getAdventureCard());
             }else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                    && response == NotifyWinLose.Response.DRAW) {
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.DRAW) {
+                adventurePhaseData.resetYouWon();
                 goBackToFlightMenu();
             }else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                    && response == NotifyWinLose.Response.WIN){
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.WIN){
+                adventurePhaseData.resetYouWon();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Victory!");
                 alert.setHeaderText("You won against the Slavers!");
@@ -1347,7 +1348,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
             if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
-                    && response == NotifyWinLose.Response.LOSE) {
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE) {
+                adventurePhaseData.resetYouWon();
                 adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_1);
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
@@ -1362,11 +1364,13 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 }
             }
             else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
-                    && response == NotifyWinLose.Response.DRAW) {
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.DRAW) {
+                adventurePhaseData.resetYouWon();
                 goBackToFlightMenu();
             }
             else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
-                    && response == NotifyWinLose.Response.WIN){
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.WIN){
+                adventurePhaseData.resetYouWon();
                 adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_WIN_1);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Victory!");

@@ -14,7 +14,16 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 
-
+/**
+ * A network client that communicates with the server using raw TCP sockets and object streams.
+ *
+ * <p>{@code ClientSocket} connects to a socket-based server, exchanges serialized Java objects,
+ * and manages the transmission of game actions. It extends the abstract {@link Client} class and
+ * handles both controller and game-context actions.</p>
+ *
+ * <p>The class maintains an internal listener thread to handle asynchronous messages (e.g., {@link ServerAction})
+ * received from the server, which are dispatched to the virtual server interface.</p>
+ */
 public class ClientSocket extends Client {
 
     private final Socket socket;
@@ -22,7 +31,14 @@ public class ClientSocket extends Client {
     private final ObjectInputStream inputStream;
 
 
-
+    /**
+     * Creates a new socket client, connects to the given server address, and starts the listener thread.
+     *
+     * @param virtualServer the virtual server used for client-side logic handling
+     * @param ip            the IP address of the socket server
+     * @param port          the port on which the socket server is listening
+     * @throws IOException if the connection or stream creation fails
+     */
     public ClientSocket(VirtualServer virtualServer, String ip, int port) throws IOException {
         super(virtualServer);
         this.socket = new Socket(ip, port);
@@ -32,6 +48,10 @@ public class ClientSocket extends Client {
         startCommandListener();
     }
 
+    /**
+     * Starts a background thread to listen for incoming server messages.
+     * If a {@link ServerAction} is received, it is forwarded to the local client logic.
+     */
     private void startCommandListener() {
         Thread listenerThread = new Thread(() -> {
             try {
@@ -58,7 +78,12 @@ public class ClientSocket extends Client {
 
 
 
-
+    /**
+     * Sends a session registration request to the server.
+     *
+     * @param username the client's username
+     * @throws NetworkException if an I/O error occurs during sending
+     */
     @Override
     public void registerSession(String username) throws NetworkException {
         RegisterSocketSessionAction action = new RegisterSocketSessionAction(username);
@@ -66,7 +91,11 @@ public class ClientSocket extends Client {
     }
 
 
-
+    /**
+     * Closes the socket connection and its input/output streams.
+     *
+     * @throws IOException if an error occurs while closing resources
+     */
     public void close() throws IOException {
         inputStream.close();
         outputStream.close();
@@ -74,7 +103,12 @@ public class ClientSocket extends Client {
     }
 
 
-
+    /**
+     * Sends a controller-level action to the server.
+     *
+     * @param action the {@link ClientControllerAction} to send
+     * @throws NetworkException if an I/O error occurs during sending
+     */
     @Override
     public void sendAction(ClientControllerAction action) throws NetworkException {
         action.setToken(clientSessionToken);
@@ -89,6 +123,12 @@ public class ClientSocket extends Client {
         }
     }
 
+    /**
+     * Sends a game-context action to the server, wrapped in a {@link ClientGameMessage}.
+     *
+     * @param action the {@link ClientGameAction} to send
+     * @throws NetworkException if an I/O error occurs during sending
+     */
     @Override
     public void sendAction(ClientGameAction action) throws NetworkException {
         ClientGameMessage message = new ClientGameMessage(clientSessionToken, action);
