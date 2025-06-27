@@ -7,14 +7,34 @@ import it.polimi.ingsw.gc11.model.Player;
 
 import java.util.Arrays;
 
-
+/**
+ * Action that allows a player to decline their drawn AdventureCard.
+ * Upon decline, notifies all non-aborted players of the new current player,
+ * with the declining player receiving a full state update.
+ * In case of error, sends a NotifyExceptionAction with exception details.
+ */
 public class DeclineAdventureCardAction extends ClientGameAction {
 
+    /**
+     * Constructs a new DeclineAdventureCardAction for the specified player.
+     *
+     * @param username the name of the player declining the adventure card
+     */
     public DeclineAdventureCardAction(String username) {
         super(username);
     }
 
-
+    /**
+     * Executes the decline logic in the game context.
+     * - Calls context.declineAdventureCard for the invoking player.
+     * - Determines the new current player.
+     * - Sends UpdateCurrentPlayerAction to each non-aborted player:
+     *   - The decliner with updateState=true.
+     *   - Others with updateState=false.
+     * On exception, sends NotifyExceptionAction containing the message and stack trace.
+     *
+     * @param context the GameContext in which to perform the action
+     */
     @Override
     public void execute(GameContext context) {
         try {

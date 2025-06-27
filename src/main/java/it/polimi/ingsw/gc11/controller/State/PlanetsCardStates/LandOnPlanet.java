@@ -29,7 +29,7 @@ public class LandOnPlanet  extends AdventureState {
 
 
     @Override
-    public void landOnPlanet(String username, int numPlanet){
+    public List<Material> landOnPlanet(String username, int numPlanet){
         gameModel.checkPlayerUsername(username);
         Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
@@ -52,5 +52,7 @@ public class LandOnPlanet  extends AdventureState {
 
         SendMaterialsAction action = new SendMaterialsAction(materials);
         advContext.getGameContext().sendAction(player.getUsername(), action);
+
+        return materials;
     }
 }

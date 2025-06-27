@@ -9,12 +9,22 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.model.shipcard.StructuralModule;
 
 
-
+/**
+ * Action that allows a player to obtain a free ship card (or skip by passing a placeholder).
+ * On success, sends a SendFreeShipCardAction to the chooser and UpdateAvailableShipCardsAction
+ * to all other players, reflecting the new pool of available cards.
+ * On failure, sends a NotifyExceptionAction with the error message.
+ */
 public class GetFreeShipCardAction extends ClientGameAction {
 
     private final ShipCard shipCard;
 
-
+    /**
+     * Constructs a new GetFreeShipCardAction.
+     *
+     * @param username the name of the player requesting a free ship card
+     * @param shipCard the ShipCard chosen, or a placeholder StructuralModule to skip
+     */
     public GetFreeShipCardAction(String username, ShipCard shipCard) {
         super(username);
         if(shipCard.equals(new StructuralModule("covered", ShipCard.Connector.SINGLE, ShipCard.Connector.NONE, ShipCard.Connector.NONE, ShipCard.Connector.NONE))){
@@ -23,7 +33,15 @@ public class GetFreeShipCardAction extends ClientGameAction {
         this.shipCard = shipCard;
     }
 
-
+    /**
+     * Executes the free ship card retrieval in the game context.
+     * - Calls context.getFreeShipCard() to assign the card.
+     * - Sends SendFreeShipCardAction (with updateState=true) to the requester.
+     * - Sends UpdateAvailableShipCardsAction (with updateState=false) to all other non-aborted players.
+     * On exception, sends NotifyExceptionAction to the requester.
+     *
+     * @param context the GameContext in which to perform the action
+     */
     @Override
     public void execute(GameContext context) {
         try {
