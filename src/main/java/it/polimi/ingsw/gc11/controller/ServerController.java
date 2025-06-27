@@ -37,7 +37,6 @@ public class ServerController {
     private final ServerRMI serverRMI;
     private final ServerSocket serverSocket;
     private final BlockingQueue<ClientControllerAction> clientControllerActions;
-    private final ExecutorService commandExecutor = Executors.newFixedThreadPool(10);
 
 
     /**
@@ -59,26 +58,16 @@ public class ServerController {
         Thread listener = new Thread(() -> {
             while (true) {
                 try {
-                    ClientControllerAction action = clientControllerActions.take(); //blocking loop if the queue is empty
-
-                    //executing the action inside commandExecutor thread pool
-                    commandExecutor.submit(() -> {
-                        try {
-                            action.execute(this);
-                        } catch (Exception e) {
-                            System.err.println("[ServerController] Error during ClientAction execution: " + e.getMessage());
-                            e.printStackTrace();
-                        }
-                    });
-
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
+                    ClientControllerAction action = clientControllerActions.take(); // blocca se la coda è vuota
+                    action.execute(this); // esegue il comando nel contesto del gioco
+                } catch (Exception e) {
+                    System.err.println("[ServerController] Error during ClientAction execution: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }, "ServerControllerCommandExecutor");
 
-        listener.setDaemon(true);
+        listener.setDaemon(true); // si chiude con il programma
         listener.start();
     }
 

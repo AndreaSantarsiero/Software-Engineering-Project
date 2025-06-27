@@ -1,6 +1,5 @@
 package it.polimi.ingsw.gc11.controller;
 
-import it.polimi.ingsw.gc11.action.server.GameContext.ClientGameAction;
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.AbandonedShipState;
 import it.polimi.ingsw.gc11.controller.State.AbandonedShipStates.ChooseHousing;
@@ -45,11 +44,8 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -80,7 +76,7 @@ public class GameContextTest {
 
 
 
-    void goToAdvPhase(){
+    void goToAdvPhase() {
         startBuildingPhase();
         StructuralModule shipCard = new StructuralModule("1", ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE, ShipCard.Connector.SINGLE);
         gameContext.getGameModel().setHeldShipCard(shipCard, "username1");
@@ -109,7 +105,7 @@ public class GameContextTest {
         gameContext.endBuildingLevel2("username3",3);
     }
 
-    void startBuildingPhase(){
+    void startBuildingPhase() {
         gameContext.chooseColor("username1", "blue");
         gameContext.chooseColor("username2", "red");
         gameContext.chooseColor("username3", "yellow");
