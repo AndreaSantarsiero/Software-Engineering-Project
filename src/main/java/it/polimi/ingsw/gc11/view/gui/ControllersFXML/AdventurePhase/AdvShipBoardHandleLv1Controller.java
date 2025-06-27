@@ -478,6 +478,8 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
         confirmButton.setDisable(false);
         confirmButton.setOnAction(event -> {
                             try {
+                                System.out.println(buildPending(originalMaterials, realTimeMaterials, pending));
+                                pending.clear();
                                 virtualServer.chooseMaterials(buildPending(originalMaterials, realTimeMaterials, pending));
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
