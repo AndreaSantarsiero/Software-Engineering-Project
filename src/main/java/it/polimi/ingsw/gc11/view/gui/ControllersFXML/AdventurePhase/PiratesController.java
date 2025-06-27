@@ -133,13 +133,13 @@ public class PiratesController extends Controller {
             cards.getChildren().clear();
             setCard();
 
-            Boolean newHit = adventurePhaseData.getNewHit();
-
-            if(newHit != null){
-                if(newHit == false){
+            if(adventurePhaseData.getNewHit() != null){
+                if(adventurePhaseData.getNewHit() == false){
+                    adventurePhaseData.resetNewHit();
                     goBackToFlightMenu();
                 }
-                if(newHit == true){
+                if(adventurePhaseData.getNewHit() == true){
+                    adventurePhaseData.resetYouWon();
                     subHeader.getChildren().add(
                             new Button("roll dices") {{
                                 getStyleClass().add("Text");

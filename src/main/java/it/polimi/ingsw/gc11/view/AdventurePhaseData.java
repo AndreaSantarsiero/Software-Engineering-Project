@@ -472,8 +472,11 @@ public class AdventurePhaseData extends GamePhaseData {
 
     public Boolean getNewHit() {
         Boolean value = newHit;
-        newHit = null; //reset the value after reading it
         return value;
+    }
+
+    public void resetNewHit(){
+        this.newHit = null;
     }
 
     public void setNewHit(Boolean newHit) {
