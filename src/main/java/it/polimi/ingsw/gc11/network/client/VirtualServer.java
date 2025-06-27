@@ -205,6 +205,18 @@ public class VirtualServer {
     }
 
 
+
+    //pre AdventurePhase methods
+    public void selectAliens(AlienUnit alienUnit, HousingUnit housingUnit) throws NetworkException{
+        SelectAliensAction action = new SelectAliensAction(username, alienUnit, housingUnit);
+        client.sendAction(action);
+    }
+
+    public void completedAlienSelection() throws NetworkException{
+        CompletedAlienSelectionAction action = new CompletedAlienSelectionAction(username);
+        client.sendAction(action);
+    }
+
     //ADVENTURE PHASE
     public void getAdventureCard() throws NetworkException{
         GetAdventureCardAction action = new GetAdventureCardAction(username);
@@ -275,19 +287,6 @@ public class VirtualServer {
         AbortFlightAction action = new AbortFlightAction(username);
         client.sendAction(action);
     }
-
-
-    //pre AdventurePhase methods
-    public void selectAliens(AlienUnit alienUnit, HousingUnit housingUnit) throws NetworkException{
-        SelectAliensAction action = new SelectAliensAction(username, alienUnit, housingUnit);
-        client.sendAction(action);
-    }
-
-    public void completedAlienSelection() throws NetworkException{
-        CompletedAlienSelectionAction action = new CompletedAlienSelectionAction(username);
-        client.sendAction(action);
-    }
-
 
     //Cheating methods
     public void setTestDeck() throws NetworkException {
