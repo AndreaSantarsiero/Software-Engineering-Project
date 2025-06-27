@@ -7,9 +7,25 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
 
 
-
+/**
+ * Represents the third combat check state at Combat Zone Level 2 during the Adventure Phase.
+ *
+ * <p>This state is responsible for determining which player has the lowest number of crew members
+ * and transitioning to the corresponding penalty state. The check is based on the players' current
+ * positions in the game (i.e., route order).</p>
+ *
+ */
 public class Check3Lv2 extends AdventureState {
 
+    /**
+     * Constructs the {@code Check3Lv2} state and immediately determines the player
+     * with the fewest crew members to apply the penalty.
+     *
+     * <p>The constructor directly computes the player with the minimum number of crew members
+     * and sets the next state to {@link Penalty3Lv2}, passing that player and the initial shot index.</p>
+     *
+     * @param advContext The current AdventurePhase context.
+     */
     public Check3Lv2(AdventurePhase advContext) {
         super(advContext);
         GameModel gameModel = advContext.getGameModel();

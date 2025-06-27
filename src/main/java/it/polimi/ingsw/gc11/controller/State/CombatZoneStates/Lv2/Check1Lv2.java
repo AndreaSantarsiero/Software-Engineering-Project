@@ -11,7 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Represents the first combat check state at Combat Zone Level 2 during the Adventure Phase.
+ *
+ * <p>Each player is asked to choose their firepower using available batteries and cannons.
+ * The player with the lowest firepower at the end of the round is penalized.</p>
+ *
+ */
 public class Check1Lv2 extends AdventureState {
 
     private final GameModel gameModel;
@@ -19,14 +25,31 @@ public class Check1Lv2 extends AdventureState {
     private Player minPlayer;
 
 
-
+    /**
+     * Constructs a new {@code Check1Lv2} state using the given adventure context.
+     *
+     * @param advContext the current AdventurePhase context
+     */
     public Check1Lv2(AdventurePhase advContext) {
         super(advContext);
         this.gameModel = advContext.getGameModel();
     }
 
 
-
+    /**
+     * Allows a player to select how many batteries and double cannons to use for computing their firepower.
+     *
+     * <p>Validates the ownership and correctness of the action, computes firepower, updates the minimum,
+     * and advances the state either to the penalty phase or to the next player's turn.</p>
+     *
+     * @param username       the username of the player performing the action
+     * @param Batteries      a map of batteries and the number of charges each should use
+     * @param doubleCannons  a list of cannons selected for double power use
+     * @return the player after firepower has been computed and batteries have been used
+     *
+     * @throws IllegalArgumentException if it's not the player's turn or if battery usage is inconsistent
+     * @throws NullPointerException     if either the battery map or cannon list is null
+     */
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
 

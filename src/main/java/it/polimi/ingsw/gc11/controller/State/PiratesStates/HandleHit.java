@@ -11,7 +11,19 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Represents the state in the Pirates event where each defeated player must
+ * handle an incoming {@link Shot} at a specific coordinate.
+ *
+ * <p>This state manages the defensive response of each player who was previously defeated
+ * during a pirates attack. Each player in the {@code playersDefeated} list gets one chance to
+ * defend against the current hit. The shot is either blocked using batteries if the ship is protected,
+ * or the corresponding ship component is destroyed.</p>
+ *
+ * <p>Once all players have responded to the current shot, the state transitions back to
+ * {@link CoordinateState} to determine the coordinates of the next shot, if any.</p>
+ *
+ */
 public class HandleHit extends AdventureState {
 
     private final List<Player> playersDefeated;
@@ -22,7 +34,16 @@ public class HandleHit extends AdventureState {
     private int iterationsPlayers;
 
 
-
+    /**
+     * Constructs a new HandleHit state for resolving a pirates hit at a fixed coordinate.
+     *
+     * @param advContext        The adventure context containing game information.
+     * @param playersDefeated   The list of defeated players who must respond to the hit.
+     * @param coordinates       The coordinate determined by a dice roll where the shot will strike.
+     * @param iterationsHit     The number of pirate shots already resolved.
+     * @param iterationsPlayers The number of players who have responded to the current shot.
+     * @param alreadyPlayed     A parallel list indicating whether each defeated player has already acted.
+     */
     public HandleHit(AdventurePhase advContext, List<Player> playersDefeated, int coordinates, int iterationsHit, int iterationsPlayers, List<Boolean> alreadyPlayed) {
         super(advContext);
         this.playersDefeated = playersDefeated;
@@ -35,7 +56,18 @@ public class HandleHit extends AdventureState {
 
 
 
-    //Assumiamo che i comandi siano memorizzati in una coda
+    /**
+     * Handles the player's response to a pirate shot at the specified coordinate.
+     *
+     * <p>Depending on whether the ship is protected and whether batteries are used,
+     * the component may be destroyed or preserved. Once all players have responded,
+     * moves to the next shot or loops again for remaining players.</p>
+     *
+     * @param username  The player attempting to respond.
+     * @param batteries The map of batteries used to activate protection (may be empty).
+     * @return The {@link Player} object after applying the shot effect.
+     * @throws IllegalArgumentException If the player is not eligible or already played, or if input is invalid.
+     */
     @Override
     public Player handleShot(String username, Map<Battery, Integer> batteries) {
         Player player = this.advContext.getGameModel().getPlayer(username);
