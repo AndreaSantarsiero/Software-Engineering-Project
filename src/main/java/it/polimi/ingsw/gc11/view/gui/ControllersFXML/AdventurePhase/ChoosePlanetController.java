@@ -44,6 +44,7 @@ public class ChoosePlanetController extends Controller {
     private Stage stage;
     private VirtualServer virtualServer;
     private AdventurePhaseData adventurePhaseData;
+    private int idx;
 
     public void initialize(Stage stage, PlanetsCard card) {
         this.stage = stage;
@@ -60,6 +61,7 @@ public class ChoosePlanetController extends Controller {
 
         cards.setAlignment(Pos.CENTER);
 
+        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PLANETS_CARD_1);
         setCard();
         populatePlanetButtons();
         adventurePhaseData.setHandleMessage(null);
@@ -93,40 +95,14 @@ public class ChoosePlanetController extends Controller {
     }
 
     private void handleLandOn(int idx) {
-
+        this.idx = idx;
         try {
             virtualServer.landOnPlanet(idx);
         } catch (NetworkException e) {
             throw new RuntimeException(e);
         }
 
-        if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL) {
-            try {
-                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
-                adventurePhaseData.setListener(controller);
-                controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
-                stage.setScene(newScene);
-                stage.show();
-            } catch (Exception e) {
-                System.out.println("FXML Error: " + e.getMessage());
-            }
-        }else{
-            try {
-                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv2.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
-                adventurePhaseData.setListener(controller);
-                controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
-                stage.setScene(newScene);
-                stage.show();
-            } catch (Exception e) {
-                System.out.println("FXML Error: " + e.getMessage());
-            }
-        }
+
     }
 
     private void setErrorLabel(){
@@ -178,10 +154,41 @@ public class ChoosePlanetController extends Controller {
             landOnButtons.getChildren().clear();
             populatePlanetButtons();
 
+            if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PLANETS_CARD_2) {
+                if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                        AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                        adventurePhaseData.setListener(controller);
+                        controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
+                        stage.setScene(newScene);
+                        stage.show();
+                    } catch (Exception e) {
+                        System.out.println("FXML Error: " + e.getMessage());
+                    }
+                }else{
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv2.fxml"));
+                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                        AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
+                        adventurePhaseData.setListener(controller);
+                        controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
+                        stage.setScene(newScene);
+                        stage.show();
+                    } catch (Exception e) {
+                        System.out.println("FXML Error: " + e.getMessage());
+                    }
+                }
+            }
+
 
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println("Error:  " + adventurePhaseData.getServerMessage());
+
+                initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard());
+
                 this.setErrorLabel();
                 adventurePhaseData.resetServerMessage();
             }
