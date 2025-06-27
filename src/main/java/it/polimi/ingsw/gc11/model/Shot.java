@@ -4,30 +4,30 @@ import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
 
 
 /**
- * Rappresenta un colpo sparato (Shot) che può colpire una plancia di gioco.
- * È una specifica implementazione concreta della classe astratta {@link Hit}.
+ * Represents a shot that can strike the game board.
+ * This is a concrete implementation of the abstract {@link Hit} class.
  *
- * <p>Un {@code Shot} è caratterizzato da un tipo (BIG o SMALL) e da una direzione
- * (TOP, RIGHT, BOTTOM, LEFT) da cui proviene. Viene utilizzato per modellare eventi
- * che causano danno controllato da parte del giocatore o del sistema.</p>
+ * <p>A {@code Shot} is defined by a type (BIG or SMALL) and a direction
+ * (TOP, RIGHT, BOTTOM, LEFT) from which it originates. It is used to model
+ * damage-causing events initiated by the player or the game system.</p>
  */
 public class Shot extends Hit {
 
     /**
-     * Costruisce un nuovo {@code Shot} con tipo e direzione specificati.
+     * Constructs a new {@code Shot} with the specified type and direction.
      *
-     * @param type il tipo del colpo (BIG o SMALL)
-     * @param direction la direzione da cui proviene il colpo (TOP, RIGHT, BOTTOM, LEFT)
+     * @param type      the type of the shot (BIG or SMALL)
+     * @param direction the direction from which the shot originates (TOP, RIGHT, BOTTOM, LEFT)
      */
     public Shot(Hit.Type type, Hit.Direction direction) {
         super(type, direction);
     }
 
     /**
-     * Visualizza il colpo sull'interfaccia testuale utilizzando il {@link AdventureTemplate} fornito.
-     * Questo metodo è chiamato per rappresentare graficamente il colpo nella vista CLI.
+     * Displays the shot using the provided {@link AdventureTemplate}.
+     * This method is called to graphically render the shot in the CLI view.
      *
-     * @param adventureTemplate il template utilizzato per visualizzare il colpo
+     * @param adventureTemplate the template used to render the shot in the CLI
      */
     @Override
     public void print(AdventureTemplate adventureTemplate){

@@ -5,13 +5,12 @@ import java.util.ArrayList;
 
 
 /**
- * Rappresenta un pianeta nel gioco, che può contenere materiali di diversi tipi
- * e può essere visitato da un giocatore.
- * <p>
- * Ogni pianeta ha una lista di {@link Material} inizializzata al momento della costruzione
- * e può essere marcato come "visitato" da un {@link Player}. La classe implementa {@link Serializable}
- * per supportare la serializzazione del suo stato.
- * </p>
+ * Represents a planet in the game, which can contain materials of various types
+ * and can be visited by a player.
+ *
+ * <p>Each planet maintains a list of {@link Material} objects initialized during construction,
+ * and can be marked as "visited" by a {@link Player}. The class implements {@link Serializable}
+ * to support serialization of its state.</p>
  */
 public class Planet implements Serializable {
 
@@ -20,13 +19,13 @@ public class Planet implements Serializable {
     private Player player;
 
     /**
-     * Costruisce un nuovo pianeta contenente un numero specificato di materiali
-     * di ciascun colore (blu, verde, giallo, rosso).
+     * Constructs a new planet containing the specified number of materials
+     * of each color (blue, green, yellow, red).
      *
-     * @param numBlue   il numero di materiali blu da aggiungere
-     * @param numGreen  il numero di materiali verdi da aggiungere
-     * @param numYellow il numero di materiali gialli da aggiungere
-     * @param numRed    il numero di materiali rossi da aggiungere
+     * @param numBlue   the number of blue materials to add
+     * @param numGreen  the number of green materials to add
+     * @param numYellow the number of yellow materials to add
+     * @param numRed    the number of red materials to add
      */
     public Planet(int numBlue, int numGreen, int numYellow, int numRed) {
         materials = new ArrayList<>();
@@ -44,18 +43,18 @@ public class Planet implements Serializable {
     }
 
     /**
-     * Indica se il pianeta è già stato visitato da un giocatore.
+     * Checks whether the planet has already been visited by a player.
      *
-     * @return {@code true} se il pianeta è stato visitato, {@code false} altrimenti
+     * @return {@code true} if the planet has been visited, {@code false} otherwise
      */
     public boolean isVisited() {
         return visited;
     }
 
     /**
-     * Imposta lo stato del pianeta come visitato e registra il giocatore che lo ha visitato.
+     * Marks the planet as visited and records the player who visited it.
      *
-     * @param player il giocatore che visita il pianeta
+     * @param player the player who visits the planet
      */
     public void setVisited(Player player) {
         this.visited = true;
@@ -63,18 +62,18 @@ public class Planet implements Serializable {
     }
 
     /**
-     * Restituisce il giocatore che ha visitato il pianeta.
+     * Returns the player who has visited the planet.
      *
-     * @return il giocatore associato, o {@code null} se non ancora visitato
+     * @return the associated player, or {@code null} if not yet visited
      */
     public Player getPlayer() {
         return player;
     }
 
     /**
-     * Restituisce la lista dei materiali presenti sul pianeta.
+     * Returns the list of materials present on the planet.
      *
-     * @return lista di oggetti {@link Material}
+     * @return a list of {@link Material} objects
      */
     public ArrayList<Material> getMaterials() { return materials;}
 }

@@ -4,19 +4,19 @@ import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
 
 
 /**
- * Rappresenta un colpo di tipo meteorite che può colpire l'astronave.
- * Un {@code Meteor} è una particolare istanza di {@link Hit}, con tipo e direzione specificati.
+ * Represents a meteor-type hit that can strike the spaceship.
+ * A {@code Meteor} is a specific instance of {@link Hit}, with a given type and direction.
  *
- * <p>Viene utilizzato per modellare i meteoriti che impattano sulla plancia di gioco,
- * e può essere visualizzato tramite un {@link AdventureTemplate} nell'interfaccia testuale.</p>
+ * <p>This class is used to model meteors impacting the game board,
+ * and it can be displayed through an {@link AdventureTemplate} in the command-line interface.</p>
  */
 public class Meteor extends Hit {
 
     /**
-     * Costruisce un nuovo {@code Meteor} con il tipo e la direzione specificati.
+     * Constructs a new {@code Meteor} with the specified type and direction.
      *
-     * @param type il tipo del meteorite (BIG o SMALL)
-     * @param direction la direzione da cui arriva il meteorite (TOP, RIGHT, BOTTOM, LEFT)
+     * @param type      the type of the meteor (BIG or SMALL)
+     * @param direction the direction from which the meteor approaches (TOP, RIGHT, BOTTOM, LEFT)
      */
     public Meteor(Hit.Type type, Hit.Direction direction) {
         super(type, direction);
@@ -24,10 +24,10 @@ public class Meteor extends Hit {
 
 
     /**
-     * Visualizza il meteorite utilizzando il {@link AdventureTemplate} fornito.
-     * Chiama il metodo {@code setHitType} sul template, passando sé stesso.
+     * Displays the meteor using the provided {@link AdventureTemplate}.
+     * This method calls {@code setHitType} on the template, passing itself as the argument.
      *
-     * @param adventureTemplate il template CLI utilizzato per visualizzare il meteorite
+     * @param adventureTemplate the CLI template used to render the meteor
      */
     @Override
     public void print(AdventureTemplate adventureTemplate){
