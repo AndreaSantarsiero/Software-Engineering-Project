@@ -14,10 +14,10 @@ import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 
 public class Penalty3Lv1 extends AdventureState {
 
-    private GameModel gameModel;
-    private Player playerDefeated;
-    private int iterationsHit;
-    private CombatZoneLv1 combatZoneLv1;
+    private final GameModel gameModel;
+    private final Player playerDefeated;
+    private final int iterationsHit;
+    private final CombatZoneLv1 combatZoneLv1;
 
 
     public Penalty3Lv1(AdventurePhase advContext, Player playerDefeated, int iterationsHit) {

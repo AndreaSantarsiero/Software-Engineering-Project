@@ -135,12 +135,13 @@ public class SmugglersState extends AdventureState {
             }
             else{
                 this.advContext.setResolvingAdvCard(false);
+                int idx = this.advContext.getIdxCurrentPlayer();
 
-                if(advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()){
+                if (idx + 1 == gameModel.getPlayersNotAbort().size()) {
                     this.advContext.setAdvState(new IdleState(advContext));
                 }
                 else {
-                    this.advContext.setIdxCurrentPlayer(advContext.getIdxCurrentPlayer() + 1);
+                    this.advContext.setIdxCurrentPlayer(idx+1);
                     this.advContext.setAdvState(new SmugglersState(advContext));
                 }
             }

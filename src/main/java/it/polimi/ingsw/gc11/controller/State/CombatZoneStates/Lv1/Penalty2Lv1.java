@@ -1,25 +1,28 @@
 package it.polimi.ingsw.gc11.controller.State.CombatZoneStates.Lv1;
 
 import it.polimi.ingsw.gc11.action.client.NotifyWinLose;
-import it.polimi.ingsw.gc11.action.client.UpdateCurrentPlayerAction;
-import it.polimi.ingsw.gc11.action.client.UpdateEverybodyProfileAction;
 import it.polimi.ingsw.gc11.controller.State.AdventurePhase;
 import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
-
-import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class Penalty2Lv1 extends AdventureState {
+
     Player lostPlayer;
+
+
 
     public Penalty2Lv1(AdventurePhase advContext, Player lostPlayer) {
         super(advContext);
         this.lostPlayer = lostPlayer;
 
     }
+
+
 
     @Override
     public void initialize() {
@@ -57,6 +60,8 @@ public class Penalty2Lv1 extends AdventureState {
 //            }
 //        }
     }
+
+
 
     @Override
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){

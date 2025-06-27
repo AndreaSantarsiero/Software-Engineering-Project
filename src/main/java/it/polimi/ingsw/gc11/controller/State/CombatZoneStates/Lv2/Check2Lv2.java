@@ -10,9 +10,12 @@ import java.util.Map;
 
 
 public class Check2Lv2 extends AdventureState {
-    GameModel gameModel;
-    int minEnginePower;
-    Player minPlayer;
+
+    private final GameModel gameModel;
+    private int minEnginePower;
+    private Player minPlayer;
+
+
 
     public Check2Lv2(AdventurePhase advContext, int minEnginePower, Player minPlayer ) {
         super(advContext);
@@ -20,6 +23,8 @@ public class Check2Lv2 extends AdventureState {
         this.minEnginePower = minEnginePower;
         this.minPlayer = minPlayer;
     }
+
+
 
     @Override
     public Player chooseEnginePower(String username, Map<Battery, Integer> Batteries){
@@ -44,13 +49,16 @@ public class Check2Lv2 extends AdventureState {
         }
 
 
-        this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer()+1);
+        int idx = this.advContext.getIdxCurrentPlayer();
 
-        if(this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()){
+        if (idx + 1 == gameModel.getPlayersNotAbort().size()) {
             //NoPlayersLeft
             this.advContext.setAdvState(new Penalty2Lv2(this.advContext, this.minPlayer));
         }
-        //Rimane allo stato corrente
+        else{
+            //The advState remains the same as before
+            this.advContext.setIdxCurrentPlayer(idx+1);
+        }
 
         return player;
     }

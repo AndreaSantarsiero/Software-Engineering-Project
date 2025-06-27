@@ -6,6 +6,8 @@ import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
 
+
+
 public class Check3Lv2 extends AdventureState {
 
     public Check3Lv2(AdventurePhase advContext) {

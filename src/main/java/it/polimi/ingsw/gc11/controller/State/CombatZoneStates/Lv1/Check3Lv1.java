@@ -9,15 +9,19 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 public class Check3Lv1 extends AdventureState {
-    GameModel gameModel;
-    double minFirePower;
-    Player minPlayer;
+
+    private final GameModel gameModel;
+    private double minFirePower;
+    private Player minPlayer;
+
+
 
     public Check3Lv1(AdventurePhase advContext, int minFirePower, Player minPlayer) {
         super(advContext);
@@ -25,6 +29,8 @@ public class Check3Lv1 extends AdventureState {
         this.minFirePower = minFirePower;
         this.minPlayer = minPlayer;
     }
+
+
 
     @Override
     public void initialize() {
@@ -42,6 +48,8 @@ public class Check3Lv1 extends AdventureState {
             enemies.put(player.getUsername(), player);
         }
     }
+
+
 
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
@@ -75,12 +83,10 @@ public class Check3Lv1 extends AdventureState {
             minPlayer = player;
         }
 
-        this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer() + 1);
+        int idx = this.advContext.getIdxCurrentPlayer();
 
-        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()) {
-            //NoPlayersLeft
-
-            //Notify the player with less fire powers that he has to get coordinate
+        if (idx + 1 == gameModel.getPlayersNotAbort().size())  {
+            //NoPlayersLeft - Notify the player with less fire powers that he has to get coordinate
             String newCurrentPlayer = minPlayer.getUsername();
             for(Player p : advContext.getGameModel().getPlayersNotAbort()){
                 if(p.getUsername().equals(newCurrentPlayer)){
@@ -95,7 +101,10 @@ public class Check3Lv1 extends AdventureState {
 
             this.advContext.setAdvState(new Penalty3Lv1(this.advContext, this.minPlayer, 0));
         }
-        //Rimane nello stato corrente
+        else{
+            //The advState remains the same as before
+            this.advContext.setIdxCurrentPlayer(idx+1);
+        }
 
         return player;
     }
