@@ -10,7 +10,15 @@ import java.time.Instant;
 import java.util.*;
 
 
-
+/**
+ * Represents the client-side state during the Building Phase of the game.
+ * <p>
+ * In this phase, the player interacts with a central deck of ship cards to build their own {@link ShipBoard},
+ * possibly reserving components, placing them on the grid, inspecting other players’ ships, or previewing
+ * upcoming adventure cards. This class also tracks timers and building state transitions.
+ * </p>
+ *
+ */
 public class  BuildingPhaseData extends GamePhaseData {
 
     public enum BuildingState {
@@ -52,13 +60,26 @@ public class  BuildingPhaseData extends GamePhaseData {
 
     private boolean actionSuccessful = false;
 
-
+    /**
+     * Constructs a new {@code BuildingPhaseData} instance and initializes default values and state.
+     */
     public BuildingPhaseData() {
         enemiesShipBoard = new HashMap<>();
         freeShipCards = new ArrayList<>();
         state = BuildingState.CHOOSE_MAIN_MENU;
     }
 
+
+    /**
+     * Initializes building data, including the ship, available players, timer, and ship cards.
+     *
+     * @param shipBoard            the local player's ship board
+     * @param freeShipCardsCount   number of initial free ship cards
+     * @param flightType           the chosen flight board type
+     * @param playersUsernames     list of players in the game
+     * @param expireTimerInstant   instant when current timer will expire
+     * @param timersLeft           number of building retries left
+     */
     public void initialize(ShipBoard shipBoard, int freeShipCardsCount, FlightBoard.Type flightType, ArrayList<String> playersUsernames, Instant expireTimerInstant, int timersLeft){
         this.shipBoard = shipBoard;
         initializeFreeShipCards(freeShipCardsCount);
@@ -70,7 +91,11 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
-
+    /**
+     * Returns the current building state.
+     *
+     * @return the current {@link BuildingState}
+     */
     @Override
     public void notifyListener() {
         if(listener != null) {
@@ -84,6 +109,9 @@ public class  BuildingPhaseData extends GamePhaseData {
         return state;
     }
 
+    /**
+     * Advances the current state based on building phase logic and conditions.
+     */
     @Override
     public void updateState() {
         actualizePreviousState();
@@ -118,6 +146,11 @@ public class  BuildingPhaseData extends GamePhaseData {
         previousState = state;
     }
 
+    /**
+     * Returns true if the current state is newly entered.
+     *
+     * @return true if state changed, false otherwise
+     */
     public boolean isStateNew() {
         return !state.equals(previousState);
     }
