@@ -50,7 +50,8 @@ java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar -s
 | 192.168.1.100 -cli        | CLI           | Custom     | Default   |
 | -cli 192.168.1.100 1099   | CLI           | Custom     | Custom    |
 | -s                        | Server        | N/A        | N/A       |
-| (no arguments)            | GUI (default) | N/A        | N/A       |
+| (no arguments)            | GUI (default) | Default    | Default   |
+| 192.168.1.100             | GUI (default) | Custom     | Default   |
 
 ---
 
