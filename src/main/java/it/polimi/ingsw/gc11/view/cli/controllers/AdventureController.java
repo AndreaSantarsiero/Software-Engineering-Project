@@ -319,7 +319,7 @@ public class AdventureController extends CLIController {
                 case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
-        else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP){
+        else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_MENU){
             switch (loadMaterialsMenu) {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_STORAGE);
                 case 1 -> data.setState(AdventurePhaseData.AdventureState.ADD_MATERIAL);
