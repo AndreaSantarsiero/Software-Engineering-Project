@@ -1,4 +1,4 @@
-# Starting the Java Application (JAR)
+# Starting the Java Application (JAR) 
 
 This project can be executed in **three different modes**: **GUI**, **CLI**, and **Server**. The mode is selected using command-line flags passed when launching the JAR.
 
