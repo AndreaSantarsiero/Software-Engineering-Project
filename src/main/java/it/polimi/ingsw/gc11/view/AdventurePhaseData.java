@@ -200,7 +200,7 @@ public class AdventurePhaseData extends GamePhaseData {
             case PIRATES_1 ->  GUIState = AdventureStateGUI.PIRATES_2;
             case PIRATES_WIN_1 -> GUIState = AdventureStateGUI.PIRATES_WIN_2;
             case PIRATES_LOSE_1 -> GUIState = AdventureStateGUI.PIRATES_LOSE_2;
-            case PIRATES_LOSE_2 -> GUIState = AdventureStateGUI.PIRATES_1;
+            case PIRATES_LOSE_2 -> GUIState = AdventureStateGUI.PIRATES_LOSE_1;
             case SLAVERS_1 ->  GUIState = AdventureStateGUI.SLAVERS_2;
             case SLAVERS_MEMBERS -> GUIState = AdventureStateGUI.SLAVERS_END;
             case OPEN_SPACE_1 -> GUIState = AdventureStateGUI.OPEN_SPACE_2;
