@@ -1,13 +1,10 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase;
 
 import it.polimi.ingsw.gc11.model.FlightBoard;
-import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
-import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
-import it.polimi.ingsw.gc11.model.adventurecard.Pirates;
+import it.polimi.ingsw.gc11.model.adventurecard.*;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.model.Planet;
-import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
@@ -163,7 +160,7 @@ public class MeteorsController extends Controller {
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                         AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                         adventurePhaseData.setListener(controller);
-                        controller.initialize(stage, (Pirates) adventurePhaseData.getAdventureCard());
+                        controller.initialize(stage, (MeteorSwarm) adventurePhaseData.getAdventureCard());
                         stage.setScene(newScene);
                         stage.show();
                     } catch (Exception e) {
@@ -176,7 +173,7 @@ public class MeteorsController extends Controller {
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                         AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                         adventurePhaseData.setListener(controller);
-                        controller.initialize(stage, (Pirates) adventurePhaseData.getAdventureCard());
+                        controller.initialize(stage, (MeteorSwarm) adventurePhaseData.getAdventureCard());
                         stage.setScene(newScene);
                         stage.show();
                     } catch (Exception e) {

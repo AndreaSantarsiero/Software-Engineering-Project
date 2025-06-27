@@ -106,7 +106,7 @@ public class ChoosePlanetController extends Controller {
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
-                controller.initialize(stage, (Pirates) adventurePhaseData.getAdventureCard());
+                controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
                 stage.setScene(newScene);
                 stage.show();
             } catch (Exception e) {
@@ -119,7 +119,7 @@ public class ChoosePlanetController extends Controller {
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
-                controller.initialize(stage, (Pirates) adventurePhaseData.getAdventureCard());
+                controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
                 stage.setScene(newScene);
                 stage.show();
             } catch (Exception e) {
