@@ -14,7 +14,18 @@ import it.polimi.ingsw.gc11.model.shipcard.Cannon;
 import java.util.Map;
 
 
-
+/**
+ * Represents the state in which a player must defend against an incoming meteor
+ * during a {@link MeteorSwarm} event in the game.
+ *
+ * <p>This state handles meteor defense for each player in order, checking shield protection,
+ * cannon defense, and battery usage. Depending on the type and direction of the meteor,
+ * ship components may be destroyed if not properly defended.</p>
+ *
+ * <p>Once all players have responded to a meteor, or all meteors have been resolved,
+ * the game transitions to the appropriate next state: {@link MeteorSwarmState} for the next meteor,
+ * or {@link IdleState} if the event is fully resolved.</p>
+ */
 public class HandleMeteor extends AdventureState {
 
     private final GameModel gameModel;
@@ -24,7 +35,15 @@ public class HandleMeteor extends AdventureState {
     private final MeteorSwarm meteorSwarm;
 
 
-
+    /**
+     * Constructs a {@code HandleMeteor} state for resolving a specific meteor impact
+     * on the current player.
+     *
+     * @param advContext The current AdventurePhase context.
+     * @param coordinates The ship coordinate being targeted by the meteor.
+     * @param iterationsHit The number of meteors already handled.
+     * @param iterationsPlayer The index of the current player being processed.
+     */
     public HandleMeteor(AdventurePhase advContext, int coordinates, int iterationsHit, int iterationsPlayer) {
        super(advContext);
        this.gameModel = advContext.getGameModel();
@@ -34,7 +53,23 @@ public class HandleMeteor extends AdventureState {
        this.meteorSwarm = (MeteorSwarm) advContext.getDrawnAdvCard();
     }
 
-
+    /**
+     * Resolves a player's defense against a meteor, considering shields, batteries, and cannons.
+     *
+     * <p>For small meteors, shields and battery-powered defenses are considered. If no valid defense is found,
+     * the affected ship component is destroyed. For large meteors, cannon defenses are checked, with batteries
+     * required if a double cannon is used.</p>
+     *
+     * <p>After processing, the method transitions to the next player, the next meteor, or ends the event.</p>
+     *
+     * @param username The username of the player currently defending.
+     * @param batteries A map of batteries and the amount of charge to use.
+     * @param cannon The cannon chosen by the player to defend against a large meteor (can be {@code null}).
+     * @return The player after processing the meteor defense.
+     *
+     * @throws IllegalArgumentException If the username is incorrect or if batteries are {@code null}.
+     * @throws IndexOutOfBoundsException If an invalid meteor index is encountered.
+     */
     @Override
     public Player meteorDefense(String username, Map<Battery, Integer> batteries, Cannon cannon) {
         gameModel.checkPlayerUsername(username);

@@ -13,7 +13,24 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Represents the state in the Adventure Phase where the player's ship must confront
+ * a Pirates encounter by choosing firepower.
+ *
+ * <p>Each player in turn tries to defend against pirates by activating cannons and using batteries.
+ * The outcome of the confrontation is determined by comparing the total firepower with the
+ * pirates' firepower specified on the {@link Pirates} card.</p>
+ *
+ * <ul>
+ *   <li>If the player's firepower is greater, they win and transition to {@link WinAgainstPirates}.</li>
+ *   <li>If the firepower is equal, the player draws, and the game continues to the next player.</li>
+ *   <li>If it is less, the player loses and is added to the list of defeated players.</li>
+ * </ul>
+ *
+ * <p>Once all players have responded, the game moves to {@link CoordinateState}
+ * where the pirates retaliate with hits toward the defeated players.</p>
+ *
+ */
 public class PiratesState extends AdventureState {
 
     private final GameModel gameModel;
@@ -22,7 +39,11 @@ public class PiratesState extends AdventureState {
     private double playerFirePower;
 
 
-
+    /**
+     * Constructs the initial PiratesState where no players have yet responded.
+     *
+     * @param advContext The current AdventurePhase context.
+     */
     public PiratesState(AdventurePhase advContext) {
         super(advContext);
         this.gameModel = this.advContext.getGameModel();
@@ -32,7 +53,13 @@ public class PiratesState extends AdventureState {
     }
 
 
-
+    /**
+     * Constructs a PiratesState with an existing list of defeated players,
+     * used for progressing through turns.
+     *
+     * @param advContext        The current AdventurePhase context.
+     * @param playersDefeated   The players who have already lost to the pirates.
+     */
     public PiratesState(AdventurePhase advContext, List<Player> playersDefeated) {
         super(advContext);
         this.gameModel = this.advContext.getGameModel();
@@ -42,7 +69,20 @@ public class PiratesState extends AdventureState {
     }
 
 
-
+    /**
+     * Processes the player's firepower response to the pirates' attack.
+     *
+     * <p>The player selects cannons and batteries to generate firepower. The state
+     * then evaluates the result (win, draw, or lose) against the pirates' firepower,
+     * updates the game accordingly, and sends proper notifications to the client.</p>
+     *
+     * @param username       The username of the current player.
+     * @param Batteries      The map of batteries used.
+     * @param doubleCannons  The list of cannons activated (each may require batteries).
+     * @return The {@link Player} after firepower resolution.
+     * @throws IllegalArgumentException If the turn is invalid or inputs are inconsistent.
+     * @throws NullPointerException     If required arguments are null.
+     */
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
 

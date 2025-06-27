@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.*;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv2;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
@@ -936,7 +937,8 @@ public class BuildingLv1Controller extends Controller {
             else if (gamePhaseData.isAdventurePhase()) {
                 AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLV1.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
+                            .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLV1.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                     AdventureControllerLv1 controller = fxmlLoader.getController();
                     adventurePhaseData.setListener(controller);

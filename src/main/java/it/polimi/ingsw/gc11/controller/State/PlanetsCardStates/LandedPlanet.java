@@ -39,7 +39,14 @@ public class LandedPlanet extends AdventureState {
     int numVisited;
 
 
-
+    /**
+     * Constructs a new {@code LandedPlanet} state for a player landing on a planet.
+     *
+     * @param advContext   The current {@link AdventurePhase} context.
+     * @param player       The player who has landed on the planet.
+     * @param materials    The list of available materials offered by this planet.
+     * @param numVisited   The index of the currently visited planet in the PlanetsCard.
+     */
     public LandedPlanet(AdventurePhase advContext, Player player, List<Material> materials, int numVisited) {
         super(advContext);
         this.player = player;
@@ -48,7 +55,16 @@ public class LandedPlanet extends AdventureState {
     }
 
 
-
+    /**
+     * Called when the player chooses materials to store in their ship's storage.
+     *
+     * @param username          The username of the player making the choice.
+     * @param storageMaterials  A mapping from {@link Storage} areas to pairs of
+     *                          {@code (safe materials, dangerous materials)} to be loaded.
+     * @return The updated player after storing the materials and moving forward in space.
+     *
+     * @throws IllegalArgumentException If it's not the current player's turn.
+     */
     @Override
     public Player chooseMaterials(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials){
         GameModel gameModel = this.advContext.getGameModel();

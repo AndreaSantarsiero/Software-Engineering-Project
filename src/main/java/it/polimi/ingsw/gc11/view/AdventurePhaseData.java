@@ -41,6 +41,7 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     public enum AdventureStateGUI{
+        ALIEN_SELECTION_1, ALIEN_SELECTION_2, ALIEN_SELECTION_3,
         FLIGHT_MENU, CARD_DECLINED, CARD_ACCEPTED, HANDLE_CARD_MENU,
         ABANDONED_SHIP_1, ABANDONED_SHIP_2,
         ABANDONED_STATION_1, ABANDONED_STATION_2,
@@ -193,6 +194,9 @@ public class AdventurePhaseData extends GamePhaseData {
         actualizePreviousGUIState();
 
         switch (GUIState) {
+            case ALIEN_SELECTION_1 -> GUIState = AdventureStateGUI.ALIEN_SELECTION_2;
+            case ALIEN_SELECTION_2 -> GUIState = AdventureStateGUI.ALIEN_SELECTION_3;
+
             case CARD_DECLINED -> GUIState = AdventureStateGUI.FLIGHT_MENU;
             case CARD_ACCEPTED -> GUIState = AdventureStateGUI.HANDLE_CARD_MENU;
             case ABANDONED_SHIP_1 -> GUIState = AdventureStateGUI.ABANDONED_SHIP_2;

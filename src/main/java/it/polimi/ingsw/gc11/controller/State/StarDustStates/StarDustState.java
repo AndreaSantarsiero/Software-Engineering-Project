@@ -51,7 +51,15 @@ public class StarDustState extends AdventureState {
         super(advContext);
     }
 
-
+    /**
+     * Initializes the {@code StarDustState} by applying its effect to all players.
+     * <p>
+     * Moves players backward based on their number of exposed connectors, sends state updates
+     * to clients, and then transitions the game to {@link IdleState}.
+     * </p>
+     *
+     * @throws RuntimeException If an unexpected exception occurs during update propagation.
+     */
     @Override
     public void initialize(){
         GameModel gameModel = this.advContext.getGameModel();
