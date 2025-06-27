@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller.State;
 
+import it.polimi.ingsw.gc11.action.client.SendHandleMessageAction;
 import it.polimi.ingsw.gc11.model.GameModel;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
@@ -28,6 +29,17 @@ public class IdleState extends AdventureState{
         this.advContext.setResolvingAdvCard(false);
         this.advContext.setDrawnAdvCard(null);
         advContext.getGameModel().checkLapping();
+    }
+
+    @Override
+    public void initialize(){
+        //Notify to all players that the game is in idle state
+        for (Player player : this.advContext.getGameModel().getPlayersNotAbort()) {
+            advContext.getGameContext().sendAction(
+                    player.getUsername(),
+                    new SendHandleMessageAction("IdleState")
+            );
+        }
 
         if(advContext.getGameModel().isDefinitiveDeckEmpty()){
             this.advContext.nextPhase();

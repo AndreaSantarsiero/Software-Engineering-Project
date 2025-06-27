@@ -63,6 +63,8 @@ public class MeteorsController extends Controller {
         cards.setAlignment(Pos.CENTER);
 
         setCard();
+
+        adventurePhaseData.setHandleMessage(null);
     }
 
     public void setCard(){
@@ -126,6 +128,12 @@ public class MeteorsController extends Controller {
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
+
+            if(adventurePhaseData.getHandleMessage() != null &&
+                    adventurePhaseData.getHandleMessage().toLowerCase().equals("idlestate"))
+            {
+                goBackToFlightMenu();
+            }
 
             cards.getChildren().clear();
             setCard();

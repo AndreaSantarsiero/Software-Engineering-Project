@@ -186,6 +186,7 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
         confirmButton.setVisible(false);
         confirmButton.setDisable(true);
 
+        adventurePhaseData.setHandleMessage(null);
     }
 
     public void initialize(Stage stage, AbandonedShip card) {
@@ -1288,6 +1289,12 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
+
+            if(adventurePhaseData.getHandleMessage() != null &&
+                    adventurePhaseData.getHandleMessage().toLowerCase().equals("idlestate"))
+            {
+                goBackToFlightMenu();
+            }
 
             if(state != State.ABANDONED_STATION && state != State.PLANETS) {
                 slotGrid.getChildren().clear();

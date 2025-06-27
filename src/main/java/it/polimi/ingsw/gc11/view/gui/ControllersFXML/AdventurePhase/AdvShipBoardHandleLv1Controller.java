@@ -1286,6 +1286,12 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
 
+            if(adventurePhaseData.getHandleMessage() != null &&
+                    adventurePhaseData.getHandleMessage().toLowerCase().equals("idlestate"))
+            {
+                goBackToFlightMenu();
+            }
+
             if(state != State.ABANDONED_STATION && state != State.PLANETS) {
                 slotGrid.getChildren().clear();
                 setShipBoard();
@@ -1312,16 +1318,21 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
 
             if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE) {
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.LOSE)
+            {
                 adventurePhaseData.resetYouWon();
                 adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS);
                 initialize(stage, (Slavers) adventurePhaseData.getAdventureCard());
-            }else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.DRAW) {
+            }
+            else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.DRAW)
+            {
                 adventurePhaseData.resetYouWon();
                 goBackToFlightMenu();
-            }else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.WIN){
+            }
+            else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                    && adventurePhaseData.getYouWon() == NotifyWinLose.Response.WIN)
+            {
                 adventurePhaseData.resetYouWon();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Victory!");

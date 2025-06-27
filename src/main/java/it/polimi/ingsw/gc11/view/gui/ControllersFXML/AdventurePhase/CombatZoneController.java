@@ -60,6 +60,8 @@ public class CombatZoneController extends Controller {
         cards.setAlignment(Pos.CENTER);
 
         setCard();
+
+        adventurePhaseData.setHandleMessage(null);
     }
 
     public void setCard(){
@@ -92,9 +94,29 @@ public class CombatZoneController extends Controller {
         new Thread(timer).start();
     }
 
+    private void goBackToFlightMenu() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv2.fxml"));
+            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+            AdventureControllerLv2 controller = fxmlLoader.getController();
+            adventurePhaseData.setListener(controller);
+            controller.initialize(stage);
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("FXML Error: " + e.getMessage());
+        }
+    }
+
     @Override
     public void update(AdventurePhaseData adventurePhaseData) {
         Platform.runLater(() -> {
+
+            if(adventurePhaseData.getHandleMessage() != null &&
+                    adventurePhaseData.getHandleMessage().toLowerCase().equals("idlestate"))
+            {
+                goBackToFlightMenu();
+            }
 
             cards.getChildren().clear();
             setCard();
