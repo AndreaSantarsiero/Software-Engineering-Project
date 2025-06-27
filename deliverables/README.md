@@ -7,12 +7,15 @@ This project can be executed in **three different modes**: **GUI**, **CLI**, and
 ## 🔧 Available Modes
 
 ### 1. GUI (default graphical mode)
-Launches the graphical user interface.
+Launches the graphical user interface.  
+Optionally, you can pass the server IP and port as parameters to connect directly:
 
-**Example:**  
-java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar
+**Examples:**  
+java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar  
+java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar 192.168.1.100  
+java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar 192.168.1.100 1099
 
-> If no arguments are provided, the application will start in GUI mode.
+> If no arguments are provided, the application will start in GUI mode using default connection settings.
 
 ---
 
