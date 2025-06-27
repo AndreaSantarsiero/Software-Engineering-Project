@@ -96,18 +96,6 @@ public class SelectAlienUnitController extends Controller {
         adventurePhaseData.resetResponse();
 
         adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ALIEN_SELECTION_1);
-        if(adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL){
-            shipBoardImage.setImage(new Image(getClass()
-                    .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard1.jpg").toExternalForm()));
-        }
-        else if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.LEVEL2){
-            shipBoardImage.setImage(new Image(getClass()
-                    .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard2.jpg").toExternalForm()));
-            for (int i = 0; i < 2; i++) {
-                ColumnConstraints colConst = new ColumnConstraints();
-                slotGrid.getColumnConstraints().add(colConst);
-            }
-        }
 
         root.setSpacing(20);
 
@@ -129,8 +117,24 @@ public class SelectAlienUnitController extends Controller {
         );
         boardH  = boardW.divide(BOARD_RATIO);
 
-        gridW = boardW.multiply(0.66);
-        gridH = gridW;
+        if(adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL){
+            shipBoardImage.setImage(new Image(getClass()
+                    .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard1.jpg").toExternalForm()));
+            gridW = boardW.multiply(0.66);
+            gridH = gridW;
+        }
+        else if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.LEVEL2){
+            shipBoardImage.setImage(new Image(getClass()
+                    .getResource("/it/polimi/ingsw/gc11/boards/ShipBoard2.jpg").toExternalForm()));
+            for (int i = 0; i < 2; i++) {
+                ColumnConstraints colConst = new ColumnConstraints();
+                slotGrid.getColumnConstraints().add(colConst);
+            }
+            gridW = boardW.multiply(0.92);
+            gridH = gridW.subtract(GRID_GAP * (slotGrid.getColumnCount()-1)).multiply(5).divide(7).add(GRID_GAP * (slotGrid.getRowCount() - 1));
+        }
+
+
 
         shipCardSize = gridW.subtract(GRID_GAP * slotGrid.getColumnCount()-1).divide(shipBoard.getWidth());
 
@@ -173,6 +177,7 @@ public class SelectAlienUnitController extends Controller {
             resetButton.setVisible(false);
             resetButton.setDisable(true);
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.ALIEN_SELECTION_2);
+            update(adventurePhaseData);
         });
 
         state = State.CHOOSE_HOUSING_UNIT;
