@@ -585,7 +585,7 @@ public class GameContext {
                         2,
                         new ArrayList<Planet>(List.of(
                                 new Planet(0,0,0,2),
-                                new Planet(2,0,0,0),
+                                new Planet(2,0,0,1),
                                 new Planet(0,0,1,0)
                         )
                         )
