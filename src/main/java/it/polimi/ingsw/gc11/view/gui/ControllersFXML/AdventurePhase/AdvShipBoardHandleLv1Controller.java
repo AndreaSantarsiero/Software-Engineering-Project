@@ -296,16 +296,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
     public void initialize(Stage stage, MeteorSwarm card) {
         setup(stage);
-        //adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.METEOR);
 
-        numShots = card.getMeteors().size();
-
-        if(card.getMeteors().getFirst().getType() == Hit.Type.SMALL){
+        if(adventurePhaseData.getHit().getType() == Hit.Type.SMALL){
             actionTextLabel.setText("Select batteries to activate Shields to protect from a small meteor from " + card.getMeteors().getFirst().getDirection().toString()+ " at coordinate " + card.getMeteors().getFirst().getCoordinate());
             confirmButton.setVisible(true);
             confirmButton.setDisable(false);
             confirmButton.setOnAction(event -> {
                 try {
+                    adventurePhaseData.setHit(null);
                     virtualServer.meteorDefense(adventurePhaseData.getBatteries(), null);
                 }
                 catch (Exception e) {
@@ -316,7 +314,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             state = State.METEOR_SWARM_BATTERIES;
         }
 
-        if(card.getMeteors().getFirst().getType() == Hit.Type.BIG){
+        if(adventurePhaseData.getHit().getType() == Hit.Type.BIG){
             actionTextLabel.setText("Select cannon to protect from a big meteor from " + card.getMeteors().getFirst().getDirection().toString() + " at coordinate " + card.getMeteors().getFirst().getCoordinate());
             confirmButton.setVisible(true);
             confirmButton.setDisable(false);
@@ -325,6 +323,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 actionTextLabel.setText("Select batteries if you need it to activate double cannon or click confirm.");
                 confirmButton.setOnAction(event2 -> {
                     try {
+                        adventurePhaseData.setHit(null);
                         virtualServer.meteorDefense(adventurePhaseData.getBatteries(), adventurePhaseData.getDefensiveCannon());
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
@@ -1314,96 +1313,110 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             }
 
 
-                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                        && response == NotifyWinLose.Response.LOSE) {
-                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS);
-                    initialize(stage, (Slavers) adventurePhaseData.getAdventureCard());
-                }else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                        && response == NotifyWinLose.Response.DRAW) {
-                    goBackToFlightMenu();
-                }else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
-                        && response == NotifyWinLose.Response.WIN){
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Victory!");
-                    alert.setHeaderText("You won against the Slavers!");
-                    alert.setContentText("Do you want to claim your rewards?");
+            if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                    && response == NotifyWinLose.Response.LOSE) {
+                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_MEMBERS);
+                initialize(stage, (Slavers) adventurePhaseData.getAdventureCard());
+            }else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                    && response == NotifyWinLose.Response.DRAW) {
+                goBackToFlightMenu();
+            }else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.SLAVERS_2
+                    && response == NotifyWinLose.Response.WIN){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Victory!");
+                alert.setHeaderText("You won against the Slavers!");
+                alert.setContentText("Do you want to claim your rewards?");
 
-                    ButtonType yesBtn = new ButtonType("Yes, claim rewards");
-                    ButtonType noBtn = new ButtonType("No, skip");
+                ButtonType yesBtn = new ButtonType("Yes, claim rewards");
+                ButtonType noBtn = new ButtonType("No, skip");
 
-                    alert.getButtonTypes().setAll(yesBtn, noBtn);
+                alert.getButtonTypes().setAll(yesBtn, noBtn);
 
-                    Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = alert.showAndWait();
 
-                    boolean takeReward = result.isPresent() && result.get() == yesBtn;
-                    try {
-                        virtualServer.rewardDecision(takeReward);
-                    } catch (NetworkException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    goBackToFlightMenu();
+                boolean takeReward = result.isPresent() && result.get() == yesBtn;
+                try {
+                    virtualServer.rewardDecision(takeReward);
+                } catch (NetworkException e) {
+                    throw new RuntimeException(e);
                 }
 
+                goBackToFlightMenu();
+            }
 
 
-                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
-                        && response == NotifyWinLose.Response.LOSE) {
-                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_1);
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
-                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                        PiratesController controller = fxmlLoader.getController();
-                        adventurePhaseData.setListener(controller);
-                        controller.initialize(stage);
-                        stage.setScene(newScene);
-                        stage.show();
-                    } catch (Exception e) {
-                        System.out.println("FXML Error: " + e.getMessage());
-                    }
+
+            if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
+                    && response == NotifyWinLose.Response.LOSE) {
+                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_1);
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    PiratesController controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
                 }
-                else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
-                        && response == NotifyWinLose.Response.DRAW) {
-                    goBackToFlightMenu();
-                }
-                else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
-                        && response == NotifyWinLose.Response.WIN){
-                    adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_WIN_1);
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Victory!");
-                    alert.setHeaderText("You won against the Pirates!");
-                    alert.setContentText("Do you want to claim your rewards?");
+            }
+            else if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
+                    && response == NotifyWinLose.Response.DRAW) {
+                goBackToFlightMenu();
+            }
+            else if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_2
+                    && response == NotifyWinLose.Response.WIN){
+                adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_WIN_1);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Victory!");
+                alert.setHeaderText("You won against the Pirates!");
+                alert.setContentText("Do you want to claim your rewards?");
 
-                    ButtonType yesBtn = new ButtonType("Yes, claim rewards");
-                    ButtonType noBtn = new ButtonType("No, skip");
+                ButtonType yesBtn = new ButtonType("Yes, claim rewards");
+                ButtonType noBtn = new ButtonType("No, skip");
 
-                    alert.getButtonTypes().setAll(yesBtn, noBtn);
+                alert.getButtonTypes().setAll(yesBtn, noBtn);
 
-                    Optional<ButtonType> result = alert.showAndWait();
+                Optional<ButtonType> result = alert.showAndWait();
 
-                    boolean takeReward = result.isPresent() && result.get() == yesBtn;
-                    try {
-                        virtualServer.rewardDecision(takeReward);
-                    } catch (NetworkException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    goBackToFlightMenu();
+                boolean takeReward = result.isPresent() && result.get() == yesBtn;
+                try {
+                    virtualServer.rewardDecision(takeReward);
+                } catch (NetworkException e) {
+                    throw new RuntimeException(e);
                 }
 
-                if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_1){
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
-                        Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                        PiratesController controller = fxmlLoader.getController();
-                        adventurePhaseData.setListener(controller);
-                        controller.initialize(stage);
-                        stage.setScene(newScene);
-                        stage.show();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                goBackToFlightMenu();
+            }
+
+            if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.METEOR_SWARM_1){
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Meteors.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    MeteorsController controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
+            }
+
+            if(adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_1){
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    PiratesController controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
             String serverMessage = adventurePhaseData.getServerMessage();
             if(serverMessage != null && !serverMessage.isEmpty()) {
