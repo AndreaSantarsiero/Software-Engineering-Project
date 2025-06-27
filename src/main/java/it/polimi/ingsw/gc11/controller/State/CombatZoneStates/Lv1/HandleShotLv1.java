@@ -11,13 +11,27 @@ import it.polimi.ingsw.gc11.model.shipcard.Battery;
 
 import java.util.Map;
 
-
+/**
+ * Represents the state in the Adventure Phase at Combat Zone Level 1,
+ * handling the logic when a player's ship is hit by a shot.
+ *
+ * <p>This state processes a single shot, determining if it is blocked by protection or batteries,
+ * updating the ship's components accordingly, and transitions to the next penalty state.</p>
+ */
 public class HandleShotLv1 extends AdventureState {
     private Player player;
     private int coordinate;
     private int iterationsHit;
     private CombatZoneLv1 combatZoneLv1;
 
+    /**
+     * Constructs a HandleShotLv1 state with the given context, player, coordinate, and hit iteration.
+     *
+     * @param advContext The current AdventurePhase context.
+     * @param player The player whose ship is being hit.
+     * @param coordinate The ship coordinate targeted by the shot.
+     * @param iterationsHit The current number of handled shots.
+     */
     public HandleShotLv1(AdventurePhase advContext, Player player, int coordinate, int iterationsHit) {
         super(advContext);
         this.player = player;
@@ -27,6 +41,18 @@ public class HandleShotLv1 extends AdventureState {
     }
 
 
+    /**
+     * Processes a shot fired at the player's ship, determining protection status, battery usage,
+     * component destruction, and state transition to penalty handling.
+     *
+     * <p>Throws an exception if battery usage data is missing or invalid. Differentiates between small and large hits,
+     * managing protection mechanisms and battery usage accordingly.</p>
+     *
+     * @param username The username of the player whose ship is being hit.
+     * @param batteries Map indicating the batteries the player intends to use.
+     * @return The player object after handling the shot and updating their ship state.
+     * @throws IllegalArgumentException If the batteries parameter is null.
+     */
     @Override
     public Player handleShot(String username, Map<Battery, Integer> batteries) {
 

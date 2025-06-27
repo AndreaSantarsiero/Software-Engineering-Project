@@ -11,7 +11,15 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 
 
-
+/**
+ * Represents the state in the Adventure Phase at Combat Zone Level 1,
+ * where a defeated player must handle a sequence of hits, one at a time.
+ *
+ * <p>This state determines whether there are remaining hits to resolve. If so,
+ * the player is prompted to generate coordinates for the incoming hit. If not,
+ * the state transitions back to IdleState.</p>
+ *
+ */
 public class Penalty3Lv1 extends AdventureState {
 
     private final GameModel gameModel;
@@ -19,7 +27,13 @@ public class Penalty3Lv1 extends AdventureState {
     private final int iterationsHit;
     private final CombatZoneLv1 combatZoneLv1;
 
-
+    /**
+     * Constructs a Penalty3Lv1 state for handling the defeated player's hits.
+     *
+     * @param advContext The current AdventurePhase context.
+     * @param playerDefeated The player who is resolving the penalty hits.
+     * @param iterationsHit The number of hits that have already been resolved.
+     */
     public Penalty3Lv1(AdventurePhase advContext, Player playerDefeated, int iterationsHit) {
         super(advContext);
         this.playerDefeated = playerDefeated;
@@ -30,6 +44,11 @@ public class Penalty3Lv1 extends AdventureState {
 
     }
 
+    /**
+     * Initializes the penalty handling process. If there are remaining hits to resolve,
+     * notifies the defeated player to provide coordinates. If no hits remain,
+     * transitions the game to the IdleState.
+     */
     @Override
     public void initialize() {
         //No Hit left to handle
@@ -67,7 +86,16 @@ public class Penalty3Lv1 extends AdventureState {
         }
     }
 
-
+    /**
+     * Computes the coordinate where the next hit will strike the player's ship.
+     *
+     * <p>Retrieves the value from two dice rolls and sets the computed coordinate on the current hit.
+     * Transitions the state to {@link HandleShotLv1} for actual damage resolution.</p>
+     *
+     * @param username The username of the player responding to the hit.
+     * @return The hit object with its coordinate set.
+     * @throws IllegalArgumentException If the request is made by a player who is not expected to act.
+     */
     @Override
     public Hit getCoordinate(String username){
 
