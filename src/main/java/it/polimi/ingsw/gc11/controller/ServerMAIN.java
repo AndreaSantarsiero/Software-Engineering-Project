@@ -24,9 +24,9 @@ public class ServerMAIN {
             return;
         }
 
-        if (args.length == 2) {
+        if (args.length == 3) {
             try{
-                RMIPort = Integer.parseInt(args[0]);
+                RMIPort = Integer.parseInt(args[1]);
                 if (RMIPort <= 0 || RMIPort > 65535) {
                     throw new NumberFormatException("RMI port number out of range");
                 }
@@ -35,7 +35,7 @@ public class ServerMAIN {
                 System.out.println("Invalid port number: " + args[0] + ". Using default RMI port: " + RMIPort);
             }
             try{
-                SocketPort = Integer.parseInt(args[1]);
+                SocketPort = Integer.parseInt(args[2]);
                 if (SocketPort <= 0 || SocketPort > 65535) {
                     throw new NumberFormatException("Socket port number out of range");
                 }

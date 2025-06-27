@@ -10,7 +10,7 @@ This project can be executed in **three different modes**: **GUI**, **CLI**, and
 Launches the graphical user interface.  
 Optionally, you can pass the server IP and port as parameters to connect directly:
 
-**Examples:**  
+**Valid examples:**   
 java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar  
 java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar 192.168.1.100  
 java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar 192.168.1.100 1099
@@ -36,9 +36,11 @@ java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar -cli 192.168.1.100 1099
 
 ### 3. Server
 Starts the application in server mode.
+Optionally, you can pass the RMI port and the Socket port as parameters:
 
-**Example:**  
+**Valid examples:**  
 java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar -s
+java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar -s 1099 1234
 
 ---
 
@@ -49,7 +51,8 @@ java -jar GC11-1.0-SNAPSHOT-jar-with-dependencies.jar -s
 | -cli                      | CLI           | Default    | Default   |
 | 192.168.1.100 -cli        | CLI           | Custom     | Default   |
 | -cli 192.168.1.100 1099   | CLI           | Custom     | Custom    |
-| -s                        | Server        | N/A        | N/A       |
+| -s                        | Server        | Default    | Default   |
+| -s 1099 1234              | Server        | Custom     | Custom    |
 | (no arguments)            | GUI (default) | Default    | Default   |
 | 192.168.1.100             | GUI (default) | Custom     | Default   |
 
