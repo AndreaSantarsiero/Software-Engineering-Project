@@ -54,6 +54,7 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
 
     public VirtualSocketClient(Socket socket, ServerController serverController) throws IOException {
         this.socket = socket;
+        this.socket.setSoTimeout(30000);
         this.serverController = serverController;
         this.out = new ObjectOutputStream(socket.getOutputStream());
         this.out.flush();

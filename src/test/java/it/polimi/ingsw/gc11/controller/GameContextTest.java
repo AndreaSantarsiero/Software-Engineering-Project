@@ -2124,8 +2124,7 @@ public class GameContextTest {
         phase.setIdxCurrentPlayer(0);
         phase.setAdvState(new LooseState(phase, player));
         phase.setIdxCurrentPlayer(1);
-        assertThrows(IllegalStateException.class,
-                () -> gameContext.killMembers("username1", new HashMap<>()));
+        assertThrows(IllegalStateException.class, () -> gameContext.killMembers("username1", new HashMap<>()));
     }
 
     @Test

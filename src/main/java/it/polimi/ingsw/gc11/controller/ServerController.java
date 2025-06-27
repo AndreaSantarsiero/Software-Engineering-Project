@@ -131,13 +131,16 @@ public class ServerController {
      * @throws RuntimeException if no valid session is found for the username and token
      */
     private ClientSession getPlayerSession(String username, UUID token) {
-        if (!playerSessions.containsKey(username)) {
+        ClientSession session = playerSessions.get(username);
+
+        if (session == null) {
             throw new RuntimeException("No session found for username " + username);
         }
-        if (!playerSessions.get(username).checkToken(token)) {
+        if (!session.checkToken(token)) {
             throw new RuntimeException("Invalid connection token for username " + username);
         }
-        return playerSessions.get(username);
+
+        return session;
     }
 
 
@@ -175,12 +178,12 @@ public class ServerController {
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("Username is null or empty");
         }
-        if (playerSessions.containsKey(username)) {
-            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
-        }
 
         ClientSession clientSession = new ClientSession(username, new VirtualRMIClient(playerStub));
-        playerSessions.put(username, clientSession);
+        ClientSession previous = playerSessions.putIfAbsent(username, clientSession);
+        if (previous != null) {
+            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
+        }
         return clientSession.getToken();
     }
 
@@ -198,15 +201,16 @@ public class ServerController {
      * @throws IllegalArgumentException if the username is null or empty
      */
     public UUID registerSocketSession(String username, VirtualSocketClient virtualSocketClient) throws UsernameAlreadyTakenException, IllegalArgumentException {
-        if (playerSessions.containsKey(username)) {
-            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
-        }
         if (username == null || username.isEmpty()) {
             throw new IllegalArgumentException("Username is null or empty");
         }
 
         ClientSession clientSession = new ClientSession(username, virtualSocketClient);
-        playerSessions.put(username, clientSession);
+        ClientSession previous = playerSessions.putIfAbsent(username, clientSession);
+        if (previous != null) {
+            throw new UsernameAlreadyTakenException("A session already exists for username: " + username);
+        }
+
         return clientSession.getToken();
     }
 
