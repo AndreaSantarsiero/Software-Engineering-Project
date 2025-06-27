@@ -16,9 +16,21 @@ import java.net.SocketException;
 
 
 /**
- * Unico oggetto che:
- *  1) rappresenta il VirtualClient lato server (outbound -> client)
- *  2) funge da listener inbound (Runnable) per i messaggi in arrivo dal client.
+ * Socket-based implementation of {@link VirtualClient}, representing a connected player
+ * on the server side.
+ * <p>
+ * This class also implements {@link Runnable} to listen for incoming messages from the
+ * client. It handles both the sending of {@link ServerAction}s to the client (outbound)
+ * and the processing of messages received from the client (inbound), such as:
+ * <ul>
+ *     <li>{@link RegisterSocketSessionAction}</li>
+ *     <li>{@link ClientControllerAction}</li>
+ *     <li>{@link ClientGameMessage}</li>
+ * </ul>
+ * </p>
+ *
+ * <p>It uses {@link ObjectInputStream} and {@link ObjectOutputStream} to serialize
+ * messages exchanged via the {@link Socket}.</p>
  */
 public class VirtualSocketClient extends VirtualClient implements Runnable {
 
@@ -28,6 +40,17 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
     private final ObjectInputStream  in;
 
 
+    /**
+     * Creates a new {@code VirtualSocketClient} for the given socket connection
+     * and associates it with the provided {@link ServerController}.
+     * <p>
+     * Initializes input and output streams for serialized object communication.
+     * </p>
+     *
+     * @param socket the socket representing the connection with the client
+     * @param serverController the server-side controller to delegate received actions
+     * @throws IOException if an error occurs during stream initialization
+     */
 
     public VirtualSocketClient(Socket socket, ServerController serverController) throws IOException {
         this.socket = socket;
@@ -38,7 +61,12 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
     }
 
 
-
+    /**
+     * Sends a {@link ServerAction} to the connected socket client using the output stream.
+     *
+     * @param action the action to be sent to the client
+     * @throws NetworkException if the action cannot be sent due to I/O errors
+     */
     @Override
     public synchronized void sendAction(ServerAction action) throws NetworkException {
         try {
@@ -53,7 +81,19 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
     }
 
 
-
+    /**
+     * Continuously listens for messages from the client over the socket input stream.
+     * <p>
+     * Based on the type of received object, dispatches it appropriately:
+     * <ul>
+     *   <li>{@link RegisterSocketSessionAction}: initializes and registers the client session</li>
+     *   <li>{@link ClientControllerAction}: enqueues the action for controller processing</li>
+     *   <li>{@link ClientGameMessage}: delegates the game action to the server controller</li>
+     * </ul>
+     * </p>
+     *
+     * Gracefully handles client disconnection and logs communication errors.
+     */
     @Override
     public void run() {
         try (socket) {
