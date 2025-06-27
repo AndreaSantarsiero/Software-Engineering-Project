@@ -1,12 +1,32 @@
 package it.polimi.ingsw.gc11.action.client;
 
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.view.*;
+import java.util.Map;
+
 
 
 /**
- * Action that transitions the client into the End phase.
+ * Action that transitions the client into the End phase with the player and enemies data
  */
 public class SetEndGameAction extends ServerAction {
+
+    private final Player player;
+    private final Map<String, Player> enemies;
+
+
+    /**
+     * Constructs a new SetEnfPhaseAction.
+     *
+     * @param player        the Player instance for the current client
+     * @param enemies       a map of enemy IDs to Player instances
+     */
+    public SetEndGameAction(Player player, Map<String, Player> enemies) {
+        this.player = player;
+        this.enemies = enemies;
+    }
+
+
 
     /**
      * No-op for the Joining phase.
@@ -41,11 +61,12 @@ public class SetEndGameAction extends ServerAction {
      *
      * @param endPhaseData the data for the End phase
      */
-    @Override public void loadData(EndPhaseData endPhaseData) {}
+    @Override public void loadData(EndPhaseData endPhaseData) {
+        endPhaseData.initialize(player, enemies);
+    }
 
     /**
-     * Executes this action by switching the PlayerContext to the End phase
-     * and dispatching this action to the new phase handler.
+     * Initializes the Adventure phase data with the provided player and enemies.
      *
      * @param playerContext the context containing the current phase and view data
      */

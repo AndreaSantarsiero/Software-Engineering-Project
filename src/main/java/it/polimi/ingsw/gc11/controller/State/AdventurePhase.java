@@ -8,8 +8,8 @@ import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -141,9 +141,16 @@ public class AdventurePhase extends GamePhase {
     public void nextPhase() {
         this.gameContext.setPhase(new EndGamePhase(this.gameContext));
 
-        SetEndGameAction send = new SetEndGameAction();
+        Map<String, Player> enemies = new HashMap<>();
+        for (Player player : this.gameModel.getPlayersNotAbort()) {
+            enemies.put(player.getUsername(), player);
+        }
+
         for (Player player : gameModel.getPlayersNotAbort()) {
+            enemies.remove(player.getUsername());
+            SetEndGameAction send = new SetEndGameAction(player, enemies);
             gameContext.sendAction(player.getUsername(), send);
+            enemies.put(player.getUsername(), player);
         }
     }
 
