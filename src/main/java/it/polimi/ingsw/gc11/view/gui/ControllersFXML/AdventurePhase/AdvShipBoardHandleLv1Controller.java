@@ -400,18 +400,19 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 confirmButton.setOnAction(event -> {
                     try {
                         adventurePhaseData.setHit(null);
+                        System.out.println("BATTERIES: " + adventurePhaseData.getBatteries());
                         virtualServer.handleShot(adventurePhaseData.getBatteries());
-                        try {
-                            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
-                            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                            PiratesController controller = fxmlLoader.getController();
-                            adventurePhaseData.setListener(controller);
-                            controller.initialize(stage);
-                            stage.setScene(newScene);
-                            stage.show();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+//                        try {
+//                            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
+//                            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+//                            PiratesController controller = fxmlLoader.getController();
+//                            adventurePhaseData.setListener(controller);
+//                            controller.initialize(stage);
+//                            stage.setScene(newScene);
+//                            stage.show();
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
                     }
                     catch (Exception e) {
                         System.out.println("Network error:" + e.getMessage());
@@ -427,18 +428,19 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 confirmButton.setOnAction(event -> {
                     try {
                         adventurePhaseData.setHit(null);
+                        System.out.println("BATTERIES: " + adventurePhaseData.getBatteries());
                         virtualServer.handleShot(adventurePhaseData.getBatteries());
-                        try {
-                            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
-                            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                            PiratesController controller = fxmlLoader.getController();
-                            adventurePhaseData.setListener(controller);
-                            controller.initialize(stage);
-                            stage.setScene(newScene);
-                            stage.show();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+//                        try {
+//                            FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Pirates.fxml"));
+//                            Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+//                            PiratesController controller = fxmlLoader.getController();
+//                            adventurePhaseData.setListener(controller);
+//                            controller.initialize(stage);
+//                            stage.setScene(newScene);
+//                            stage.show();
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
                     }
                     catch (Exception e) {
                         System.out.println("Network error:" + e.getMessage());
@@ -621,7 +623,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
                     Image img;
 
-                    if(shipCard != null) {
+                    if(shipCard != null && !shipCard.isScrap()) {
 
                         Button btnShipCard = new Button();
                         btnShipCard.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

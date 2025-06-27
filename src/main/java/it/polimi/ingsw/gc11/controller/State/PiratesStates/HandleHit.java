@@ -62,6 +62,7 @@ public class HandleHit extends AdventureState {
             //Direction it's not protected
             if(!player.getShipBoard().isBeingProtected(shot.getDirection())){
                 player.getShipBoard().destroyHitComponent(shot.getDirection(), coordinates);
+                player.getShipBoard().useBatteries(batteries);
             }
             else{
                 if(batteries.isEmpty()){
