@@ -444,7 +444,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -479,7 +479,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -516,7 +516,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
@@ -535,7 +535,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
@@ -554,7 +554,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -574,7 +574,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -592,7 +592,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -613,7 +613,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_1);
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -673,7 +673,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.SLAVERS_1);
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -692,7 +692,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
@@ -711,7 +711,7 @@ public class AdventureControllerLv2 extends Controller {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
+                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
