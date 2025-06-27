@@ -22,7 +22,6 @@ public class ClientStubExporter extends UnicastRemoteObject implements ClientInt
 
 
     protected ClientStubExporter(Client client) throws RemoteException {
-        super();
         this.client = client;
     }
 
