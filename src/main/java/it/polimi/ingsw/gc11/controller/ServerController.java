@@ -97,11 +97,22 @@ public class ServerController {
         listener.start();
     }
 
-
+    /**
+     * Adds a client-issued controller-level action to the execution queue.
+     * <p>
+     * This supports the Command Pattern for decoupling network logic from game logic.
+     *
+     * @param clientControllerAction the action to enqueue
+     */
     public void addClientControllerAction(ClientControllerAction clientControllerAction) {
         clientControllerActions.add(clientControllerAction);
     }
 
+    /**
+     * Retrieves a list of all currently registered usernames.
+     *
+     * @return a list of usernames of connected clients
+     */
     public List<String> getUsernameList(){
         return new ArrayList<>(playerSessions.keySet());
     }
@@ -199,7 +210,14 @@ public class ServerController {
         return clientSession.getToken();
     }
 
-
+    /**
+     * Receives a ping from the client to keep the session alive.
+     * Updates the session's last ping timestamp and responds with a {@link PongAction}.
+     *
+     * @param username the username of the pinging client
+     * @param token    the session token for authentication
+     * @throws NetworkException if the pong action cannot be sent
+     */
     public void ping(String username, UUID token) throws NetworkException {
         ClientSession session = getPlayerSession(username, token);
         session.actualizeLastPingInstant();
@@ -291,22 +309,49 @@ public class ServerController {
     //volendo, per avvisare il client della disconnessione, rispondiamo ad ogni ping con un pong ecc...
 
 
-
+    /**
+     * Receives a game action issued by a client and dispatches it to the corresponding game context.
+     *
+     * @param action the client-issued game action
+     * @param token  the session token of the issuing player
+     * @throws RuntimeException if the token is invalid or no game context is associated
+     */
     public void receiveAction(ClientGameAction action, UUID token) {
         GameContext gameContext = getPlayerVirtualClient(action.getUsername(), token).getGameContext();
         gameContext.addClientAction(action);
     }
 
+    /**
+     * Sends a server-generated action to a registered client.
+     *
+     * @param username the username of the recipient
+     * @param action   the action to send
+     * @throws NetworkException if the action could not be delivered
+     */
     public void sendAction(String username, ServerAction action) throws NetworkException {
         playerSessions.get(username).getVirtualClient().sendAction(action);
     }
 
+    /**
+     * Sends an action to a client that is not yet associated with a username or session.
+     * <p>
+     * This is typically used during the initial handshake or match creation.
+     *
+     * @param virtualClient the target virtual client
+     * @param action        the action to send
+     * @throws NetworkException if the action could not be sent
+     */
     public void sendUnregisteredAction(VirtualClient virtualClient, ServerAction action) throws NetworkException {
         virtualClient.sendAction(action);
     }
 
 
-
+    /**
+     * Shuts down both RMI and socket servers.
+     * <p>
+     * This should be called when the server is terminating.
+     * Exceptions during shutdown are logged but do not interrupt the process.
+     */
     public void shutdown() {
         try {
             if (serverRMI != null) {

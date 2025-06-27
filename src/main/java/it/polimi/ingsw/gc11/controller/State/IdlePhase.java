@@ -119,6 +119,11 @@ public class IdlePhase extends GamePhase {
 
 
     //visitor pattern
+    /**
+     * Indicates that this is the Idle Phase.
+     *
+     * @return {@code true}
+     */
     @Override
     public boolean isIdlePhase(){
         return true;

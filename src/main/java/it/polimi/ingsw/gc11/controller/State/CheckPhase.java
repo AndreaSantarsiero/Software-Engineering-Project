@@ -48,7 +48,14 @@ public class CheckPhase extends GamePhase {
     }
 
 
-
+    /**
+     * Validates all players' ship boards.
+     * <p>
+     * Players with invalid ships are removed from the flight ranking (position set to -1),
+     * moved to the end of the player list, and stored in {@code badShipPlayers}.
+     * If no player has an invalid ship, the game immediately transitions to {@link AdventurePhase}.
+     * </p>
+     */
     public void initialize() {
         List<Player> players = gameModel.getPlayersNotAbort();
         List<Player> toMove = new ArrayList<>();
@@ -161,6 +168,11 @@ public class CheckPhase extends GamePhase {
 
 
     //visitor pattern
+    /**
+     * Indicates that the current phase is the check phase.
+     *
+     * @return {@code true}
+     */
     @Override
     public boolean isCheckPhase(){
         return true;

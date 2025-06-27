@@ -15,7 +15,14 @@ import java.util.Map;
 
 
 
-//Adventure Context
+/**
+ * Represents the Adventure Phase of the game where each player draws and resolves an {@link AdventureCard}.
+ * This phase manages state transitions using the {@link AdventureState} interface and tracks which player
+ * is currently resolving a card.
+ *
+ * <p>This phase also handles various actions that players can take in response to the card effects,
+ * including using resources, handling damage, and making decisions based on the card type.</p>
+ */
 public class AdventurePhase extends GamePhase {
 
     private final GameContext gameContext;
@@ -31,7 +38,6 @@ public class AdventurePhase extends GamePhase {
      *
      * @param gameContext the game context
      */
-
     public AdventurePhase(GameContext gameContext) {
         this.gameContext = gameContext;
         this.gameModel = gameContext.getGameModel();
@@ -331,11 +337,27 @@ public class AdventurePhase extends GamePhase {
 
 
     //pre AdventurePhase methods
+    /**
+     * Handles the selection of an {@link AlienUnit} by the player during the alien assignment phase.
+     * The selected alien is placed in the specified {@link HousingUnit} on the player's ship.
+     * This action is delegated to the current {@link AdventureState}.
+     *
+     * @param username the username of the player performing the selection
+     * @param alienUnit the alien unit selected by the player
+     * @param housingUnit the housing unit where the alien is to be placed
+     */
     @Override
     public void selectAliens(String username, AlienUnit alienUnit, HousingUnit housingUnit){
         advState.selectAliens(username, alienUnit, housingUnit);
     }
 
+    /**
+     * Notifies the system that the player has completed their alien selection phase.
+     * This signals that the player is ready to proceed to the next step in the adventure resolution.
+     * The behavior is delegated to the current {@link AdventureState}.
+     *
+     * @param username the username of the player who completed their selection
+     */
     @Override
     public void completedAlienSelection(String username){
         advState.completedAlienSelection(username);
@@ -354,11 +376,22 @@ public class AdventurePhase extends GamePhase {
     }
 
     //for testing
+    /**
+     * Returns the current internal adventure state.
+     * Primarily intended for testing purposes.
+     *
+     * @return the current {@link AdventureState}
+     */
     public AdventureState getAdvState() {
         return advState;
     }
 
     //visitor pattern
+    /**
+     * Indicates whether this phase is an instance of {@code AdventurePhase}.
+     *
+     * @return {@code true}
+     */
     @Override
     public boolean isAdventurePhase(){
         return true;
