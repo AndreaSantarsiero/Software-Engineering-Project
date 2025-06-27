@@ -7,10 +7,15 @@ import it.polimi.ingsw.gc11.network.client.Client;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.network.server.rmi.ServerInterface;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Enumeration;
 
 
 /**
@@ -36,9 +41,33 @@ public class ClientRMI extends Client implements ClientInterface {
      */
     public ClientRMI(VirtualServer virtualServer, String ip, int port) throws RemoteException, NotBoundException {
         super(virtualServer);
+        System.setProperty("java.rmi.server.hostname", getLocalIP());
         Registry registry = LocateRegistry.getRegistry(ip, port);
         this.stub = (ServerInterface) registry.lookup("ServerInterface");
         this.stubExporter = new ClientStubExporter(this);
+    }
+
+
+
+    private String getLocalIP() {
+        try{
+            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+
+                if (networkInterface.isVirtual()) {
+                    continue;
+                }
+
+                for (Enumeration<InetAddress> addresses = networkInterface.getInetAddresses(); addresses.hasMoreElements();) {
+                    InetAddress address = addresses.nextElement();
+                    if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
+                        return address.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException ignored) {}
+
+        return "127.0.0.1";
     }
 
 
