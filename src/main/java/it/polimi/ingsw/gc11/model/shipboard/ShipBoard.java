@@ -1443,8 +1443,8 @@ public abstract class ShipBoard  implements Serializable {
             storage.checkChooseMaterialsRestrictions(newMaterials, oldMaterials);
         }
 
-        int blueCount = 0, greenCount = 0, yellowCount = 0, redCount = 0;
         //general anti-cheating check
+        int blueCount = 0, greenCount = 0, yellowCount = 0, redCount = 0;
         for (Map.Entry<Storage, SimpleEntry<List<Material>, List<Material>>> entry : storageMaterials.entrySet()) {
             SimpleEntry<List<Material>, List<Material>> materialsPair = entry.getValue();
             List<Material> newMaterials = materialsPair.getKey();
@@ -1478,7 +1478,6 @@ public abstract class ShipBoard  implements Serializable {
                     case RED -> redCount--;
                 }
             }
-
         }
         if(blueCount > 0 || greenCount > 0 || yellowCount > 0 || redCount > 0){
             throw new IllegalArgumentException("Illegal material map: trying to add more materials than the ones that you gained");
