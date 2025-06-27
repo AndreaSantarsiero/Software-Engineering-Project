@@ -13,12 +13,33 @@ import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv1;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents the state in the Adventure Phase for Combat Zone Level 1,
+ * where the player with the least crew members receives a penalty.
+ *
+ * <p>This state identifies the player with the lowest number of crew members,
+ * applies the penalty defined by the CombatZoneLv1 adventure card, communicates updates to all players,
+ * and transitions the state to the next check.</p>
+ */
 public class CheckAndPenalty1Lv1 extends AdventureState {
+
+    /**
+     * Constructs a CheckAndPenalty1Lv1 state with the provided adventure phase context.
+     *
+     * @param advContext The current AdventurePhase context.
+     */
     public CheckAndPenalty1Lv1(AdventurePhase advContext) {
         super(advContext);
 
     }
 
+    /**
+     * Initializes the state by identifying the player with the lowest crew members,
+     * applies the penalty from the drawn CombatZoneLv1 card, updates all player profiles,
+     * and transitions to the next check state.
+     *
+     * <p>Exception handling ensures that any unexpected errors are communicated to all players.</p>
+     */
     @Override
     public void initialize() {
 

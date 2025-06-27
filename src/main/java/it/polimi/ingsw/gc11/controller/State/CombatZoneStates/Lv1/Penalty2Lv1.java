@@ -10,18 +10,36 @@ import java.util.Map;
 
 
 
+/**
+ * Represents the state in the Adventure Phase at Combat Zone Level 1,
+ * where the player with the lowest engine power must apply a penalty by
+ * removing crew members from their ship.
+ *
+ * <p>This state notifies all players of the result (win/lose) and allows
+ * the losing player to select which members to remove. If the player cannot
+ * remove the required number of members, they are eliminated from the game.</p>
+ */
 public class Penalty2Lv1 extends AdventureState {
 
     Player lostPlayer;
 
 
 
+    /**
+     * Constructs a Penalty2Lv1 state with the given context and the losing player.
+     *
+     * @param advContext The current AdventurePhase context.
+     * @param lostPlayer The player who must lose crew members.
+     */
     public Penalty2Lv1(AdventurePhase advContext, Player lostPlayer) {
         super(advContext);
         this.lostPlayer = lostPlayer;
 
     }
-
+    /**
+     * Notifies all players about the outcome of the engine power check.
+     * The losing player receives a "LOSE" signal and the others a "WIN" signal.
+     */
 
 
     @Override
@@ -63,6 +81,19 @@ public class Penalty2Lv1 extends AdventureState {
 
 
 
+    /**
+     * Allows the losing player to select which members to remove from the ship.
+     *
+     * <p>If the selected members are fewer than required, or if the player lacks enough crew,
+     * appropriate exceptions are thrown. If the player cannot fulfill the requirement,
+     * they are marked as eliminated from the game.</p>
+     *
+     * @param username The username of the player applying the penalty.
+     * @param housingUsage A map indicating which housing units to use and how many members to remove from each.
+     * @return The updated player object after the penalty has been applied.
+     * @throws IllegalArgumentException If the action is attempted by a player not expected to act.
+     * @throws IllegalStateException If the selected crew members are insufficient or unavailable.
+     */
     @Override
     public Player killMembers(String username, Map<HousingUnit, Integer> housingUsage){
 

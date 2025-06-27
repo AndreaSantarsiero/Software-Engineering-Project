@@ -52,6 +52,7 @@ public class AdventurePhaseData extends GamePhaseData {
         SLAVERS_1, SLAVERS_2, SLAVERS_MEMBERS, SLAVERS_END,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
+        METEOR_SWARM_1, METEOR_SWARM_2,
         COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_1_1, COMBAT_ZONE_LV1_2, COMBAT_ZONE_LV1_2_1,
             COMBAT_ZONE_LV1_3, COMBAT_ZONE_LV1_3_1, COMBAT_ZONE_LV1_4, COMBAT_ZONE_LV1_4_1,
         COMBAT_ZONE_LV2_1, COMBAT_ZONE_LV2_2,
@@ -203,6 +204,8 @@ public class AdventurePhaseData extends GamePhaseData {
             case PIRATES_LOSE_2 -> GUIState = AdventureStateGUI.PIRATES_LOSE_1;
             case SLAVERS_1 ->  GUIState = AdventureStateGUI.SLAVERS_2;
             case SLAVERS_MEMBERS -> GUIState = AdventureStateGUI.SLAVERS_END;
+            case METEOR_SWARM_1 -> GUIState = AdventureStateGUI.METEOR_SWARM_2;
+            case METEOR_SWARM_2 -> GUIState = AdventureStateGUI.METEOR_SWARM_1;
             case OPEN_SPACE_1 -> GUIState = AdventureStateGUI.OPEN_SPACE_2;
             case SMUGGLERS_1 -> GUIState = AdventureStateGUI.SMUGGLERS_2;
             //Combat zone Lv1 states
