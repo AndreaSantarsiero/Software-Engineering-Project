@@ -623,7 +623,7 @@ public class AdventureControllerLv2 extends Controller {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }// manca stati
+    }
 
     private void handle(PlanetsCard card) {
         if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU) {
