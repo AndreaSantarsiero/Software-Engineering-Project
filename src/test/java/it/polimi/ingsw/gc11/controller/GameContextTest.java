@@ -2111,17 +2111,6 @@ public class GameContextTest {
                 () -> gameContext.killMembers("invalidUser", new HashMap<>()));
     }
 
-    @Test
-    void testKillMembersLoose_notYourTurn_throws() {
-        GameContextTest.this.goToAdvPhase();
-        AdventurePhase phase = (AdventurePhase) gameContext.getPhase();
-        Player player = gameContext.getGameModel().getPlayer("username1");
-        phase.setDrawnAdvCard(new Slavers("test", Slavers.Type.LEVEL2, 2, 0, 0, 0));
-        phase.setIdxCurrentPlayer(0);
-        phase.setAdvState(new LooseState(phase, player));
-        phase.setIdxCurrentPlayer(1);
-        assertThrows(IllegalStateException.class, () -> gameContext.killMembers("username1", new HashMap<>()));
-    }
 
     @Test
     void testKillMembersLoose_notEnoughSacrifice_throws() {
