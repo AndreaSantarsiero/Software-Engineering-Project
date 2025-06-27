@@ -473,10 +473,12 @@ public class AdventureTemplate extends CLITemplate {
                         }
                     }
                     if(i == 4){
-                        System.out.print("Current state: " + data.getState().toString() + ", active: " + controller.isActive() + ", state new: " + data.isStateNew());
+                        System.out.print("       ");
+                        //System.out.print("Current state: " + data.getState().toString() + ", active: " + controller.isActive() + ", state new: " + data.isStateNew());
                     }
                     else if(i == 5){
-                        System.out.print("NumBatteries: " + controller.getNumBatteries() + ", NumMembers: " + controller.getNumMembers());
+                        System.out.print("       ");
+                        //System.out.print("NumBatteries: " + controller.getNumBatteries() + ", NumMembers: " + controller.getNumMembers());
                     }
                 }
                 else if (y == 4){

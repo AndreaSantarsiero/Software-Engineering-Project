@@ -58,7 +58,7 @@ public class ChooseEnginePowerAction extends ClientGameAction {
             }
 
         } catch (Exception e){
-            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
             context.sendAction(username, exception);
         }
     }
