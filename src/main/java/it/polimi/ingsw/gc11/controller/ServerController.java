@@ -19,9 +19,7 @@ import it.polimi.ingsw.gc11.network.server.socket.VirtualSocketClient;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 
@@ -39,6 +37,8 @@ public class ServerController {
     private final ServerRMI serverRMI;
     private final ServerSocket serverSocket;
     private final BlockingQueue<ClientControllerAction> clientControllerActions;
+    private final ExecutorService commandExecutor = Executors.newFixedThreadPool(10);
+
 
     /**
      * Constructs a new {@code ServerController} with empty session and match registries
@@ -59,16 +59,26 @@ public class ServerController {
         Thread listener = new Thread(() -> {
             while (true) {
                 try {
-                    ClientControllerAction action = clientControllerActions.take(); // blocca se la coda è vuota
-                    action.execute(this); // esegue il comando nel contesto del gioco
-                } catch (Exception e) {
-                    System.err.println("[GameContext] Error during ClientAction execution: " + e.getMessage());
-                    e.printStackTrace();
+                    ClientControllerAction action = clientControllerActions.take(); //blocking loop if the queue is empty
+
+                    //executing the action inside commandExecutor thread pool
+                    commandExecutor.submit(() -> {
+                        try {
+                            action.execute(this);
+                        } catch (Exception e) {
+                            System.err.println("[ServerController] Error during ClientAction execution: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    });
+
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
                 }
             }
         }, "ServerControllerCommandExecutor");
 
-        listener.setDaemon(true); // si chiude con il programma
+        listener.setDaemon(true);
         listener.start();
     }
 
