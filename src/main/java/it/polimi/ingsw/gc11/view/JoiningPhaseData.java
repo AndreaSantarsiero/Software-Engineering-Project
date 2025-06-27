@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /**
  * Represents the client-side state during the joining phase of the game.
- * <p>
+ *
  * This phase includes all interactions prior to the actual gameplay, such as:
  * <ul>
  *     <li>Choosing the connection type (RMI/Socket)</li>
@@ -20,10 +20,10 @@ import java.util.UUID;
  * </ul>
  * The {@code JoiningPhaseData} keeps track of available matches and player colors
  * (as provided by the server), as well as user choices.
- * </p>
  *
- * <p>This class is used in conjunction with a {@link VirtualServer} to send commands
- * and set session-related data.</p>
+ *
+ * This class is used in conjunction with a {@link VirtualServer} to send commands
+ * and set session-related data.
  */
 public class JoiningPhaseData extends GamePhaseData {
 
@@ -212,19 +212,19 @@ public class JoiningPhaseData extends GamePhaseData {
 
     /**
      * Sets a message received from the server and updates the state accordingly.
-     * <p>
+     *
      * This method is used to revert the UI state to a previous user input prompt
      * after a failed action, such as an invalid username, game setup issue, or
      * color selection conflict.
-     * </p>
      *
-     * <p>For example:
+     *
+     * For example:
      * <ul>
      *     <li>If the state was {@code USERNAME_SETUP}, it reverts to {@code CHOOSE_USERNAME}</li>
      *     <li>If the state was {@code GAME_SETUP}, it reverts to {@code CREATE_OR_JOIN}</li>
      *     <li>If the state was {@code COLOR_SETUP}, it reverts to {@code CHOOSE_COLOR}</li>
      * </ul>
-     * </p>
+     *
      *
      * @param serverMessage the error or feedback message received from the server
      */

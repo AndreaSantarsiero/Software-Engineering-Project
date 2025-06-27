@@ -12,7 +12,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
  * Represents the state in which a player must decide whether to accept or decline
  * a {@link PlanetsCard} during the adventure phase.
  *
- * <p>
+ * 
  * Each player, in turn order, must decide whether to land on a planet or skip the opportunity.
  * If a player accepts the card:
  * <ul>
@@ -24,7 +24,7 @@ import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
  *     <li>The turn index is incremented.</li>
  *     <li>If all players have declined, the game transitions to {@link IdleState}.</li>
  * </ul>
- * </p>
+ *
  */
 public class PlanetsState extends AdventureState {
 

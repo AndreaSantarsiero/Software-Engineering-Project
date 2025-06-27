@@ -269,7 +269,7 @@ public class ServerController {
 
     /**
      * Retrieves a map of available matches that the player can join
-     * </p>
+     *
      * Each entry in the map represents a match, where the key is the match ID (gameId) and the value is a list of usernames of the players currently connected to that match.
      *
      * @param username the player's username

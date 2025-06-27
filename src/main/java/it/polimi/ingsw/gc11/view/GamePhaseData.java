@@ -5,7 +5,7 @@ import it.polimi.ingsw.gc11.action.client.ServerAction;
 
 /**
  * Abstract base class representing the data and behavior of a client-side game phase.
- * <p>
+ *
  * This class encapsulates:
  * <ul>
  *     <li>A reference to a {@link Controller} that listens to phase changes</li>
@@ -17,7 +17,7 @@ import it.polimi.ingsw.gc11.action.client.ServerAction;
  *     <li>Handling incoming {@link ServerAction}s using the Visitor Pattern</li>
  *     <li>Identifying the specific phase using {@code isXXXPhase()} methods</li>
  * </ul>
- * </p>
+ *
  */
 public abstract class GamePhaseData {
 

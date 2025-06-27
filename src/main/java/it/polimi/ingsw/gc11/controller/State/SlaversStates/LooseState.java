@@ -13,18 +13,18 @@ import java.util.Map;
 /**
  * Represents the state where a {@link Player} has lost a combat against the {@link Slavers}
  * during the {@link AdventurePhase} of the game.
- * <p>
+ *
  * In this state, the player must pay the penalty by choosing which crew members to sacrifice,
  * distributing the losses across available {@link HousingUnit}s.
- * </p>
  *
- * <p>
+ *
+ *
  * After resolving the crew loss:
  * <ul>
  *     <li>If all players have taken their turns, the state transitions to {@link IdleState}.</li>
  *     <li>Otherwise, the next player will face the Slavers in a new {@link SlaversState}.</li>
  * </ul>
- * </p>
+ *
  */
 public class LooseState extends AdventureState {
 

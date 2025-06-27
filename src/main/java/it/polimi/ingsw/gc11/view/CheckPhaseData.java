@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Represents the client-side data and behavior for the "Check Phase" of the game,
  * where players validate and potentially fix their ship configurations.
- * <p>
+ *
  * This phase allows the player to:
  * <ul>
  *     <li>Verify the legality of their own {@link ShipBoard}</li>
@@ -19,7 +19,7 @@ import java.util.Map;
  * </ul>
  * It also tracks the current phase state via a finite state machine and notifies
  * the associated controller on updates.
- * </p>
+ *
  */
 public class CheckPhaseData extends GamePhaseData {
 

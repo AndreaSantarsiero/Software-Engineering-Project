@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * Represents the client-side data and logic for the end phase of the game.
- * <p>
+ *
  * This phase is reached after the adventure concludes, and allows the player to:
  * <ul>
  *     <li>View their own final game state</li>
@@ -16,7 +16,7 @@ import java.util.Map;
  *     <li>Return to the main menu or wait for server confirmation</li>
  * </ul>
  * The class tracks both the local player's {@link Player} object and a map of opponents.
- * </p>
+ *
  */
 public class EndPhaseData extends GamePhaseData {
 

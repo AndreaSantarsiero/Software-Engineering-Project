@@ -14,7 +14,7 @@ import java.util.List;
  * Represents the state in which a {@link Player} chooses which planet to land on
  * from a {@link PlanetsCard} during the resolution of a planets-type adventure.
  *
- * <p>
+ *
  * The {@code LandOnPlanet} state occurs after a planets card has been accepted.
  * In this state, each player—on their turn—selects a specific unvisited planet.
  * Once selected:
@@ -23,7 +23,7 @@ import java.util.List;
  *     <li>The list of available {@link Material} from that planet is retrieved and sent to the client.</li>
  *     <li>The state transitions to {@link LandedPlanet}, where the player will assign materials into their storage.</li>
  * </ul>
- * </p>
+ *
  *
  */
 public class LandOnPlanet  extends AdventureState {
@@ -52,7 +52,7 @@ public class LandOnPlanet  extends AdventureState {
     /**
      * Handles the selection of a planet by the current player.
      *
-     * <p>This method:
+     * This method:
      * <ul>
      *     <li>Validates that the caller is the correct player and that the planet is available.</li>
      *     <li>Marks the selected planet as visited.</li>
@@ -60,7 +60,7 @@ public class LandOnPlanet  extends AdventureState {
      *     <li>Sends the materials to the player via a {@link SendMaterialsAction}.</li>
      *     <li>Transitions to the {@link LandedPlanet} state.</li>
      * </ul>
-     * </p>
+     *
      *
      * @param username   The username of the player making the choice.
      * @param numPlanet  The index of the planet to land on (within the PlanetsCard).

@@ -15,13 +15,13 @@ import java.util.Map;
 /**
  * Represents the combat state when a {@link Player} is facing the {@link Slavers}
  * adventure card during the {@link AdventurePhase}.
- * <p>
+ *
  * This state allows the player to choose the cannons to use and the required
  * batteries to power them, calculating the effective firepower and determining the
  * outcome of the battle: win, lose, or draw.
- * </p>
  *
- * <p>
+ *
+ *
  * Depending on the player's firepower compared to the Slavers' value, the next
  * state is determined:
  * <ul>
@@ -29,7 +29,7 @@ import java.util.Map;
  *   <li>{@link LooseState} if it's lower</li>
  *   <li>Remain in {@code SlaversState} if it's equal, moving to the next player</li>
  * </ul>
- * </p>
+ *
  */
 public class SlaversState extends AdventureState {
 

@@ -91,11 +91,6 @@ public class  BuildingPhaseData extends GamePhaseData {
     }
 
 
-    /**
-     * Returns the current building state.
-     *
-     * @return the current {@link BuildingState}
-     */
     @Override
     public void notifyListener() {
         if(listener != null) {

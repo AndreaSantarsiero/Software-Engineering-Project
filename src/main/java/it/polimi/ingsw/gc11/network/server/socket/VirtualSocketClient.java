@@ -18,7 +18,7 @@ import java.net.SocketException;
 /**
  * Socket-based implementation of {@link VirtualClient}, representing a connected player
  * on the server side.
- * <p>
+ *
  * This class also implements {@link Runnable} to listen for incoming messages from the
  * client. It handles both the sending of {@link ServerAction}s to the client (outbound)
  * and the processing of messages received from the client (inbound), such as:
@@ -27,10 +27,10 @@ import java.net.SocketException;
  *     <li>{@link ClientControllerAction}</li>
  *     <li>{@link ClientGameMessage}</li>
  * </ul>
- * </p>
  *
- * <p>It uses {@link ObjectInputStream} and {@link ObjectOutputStream} to serialize
- * messages exchanged via the {@link Socket}.</p>
+ *
+ * It uses {@link ObjectInputStream} and {@link ObjectOutputStream} to serialize
+ * messages exchanged via the {@link Socket}.
  */
 public class VirtualSocketClient extends VirtualClient implements Runnable {
 
@@ -83,14 +83,14 @@ public class VirtualSocketClient extends VirtualClient implements Runnable {
 
     /**
      * Continuously listens for messages from the client over the socket input stream.
-     * <p>
+     *
      * Based on the type of received object, dispatches it appropriately:
      * <ul>
      *   <li>{@link RegisterSocketSessionAction}: initializes and registers the client session</li>
      *   <li>{@link ClientControllerAction}: enqueues the action for controller processing</li>
      *   <li>{@link ClientGameMessage}: delegates the game action to the server controller</li>
      * </ul>
-     * </p>
+     *
      *
      * Gracefully handles client disconnection and logs communication errors.
      */
