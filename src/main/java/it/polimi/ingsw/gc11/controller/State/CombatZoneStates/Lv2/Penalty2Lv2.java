@@ -5,6 +5,8 @@ import it.polimi.ingsw.gc11.controller.State.AdventureState;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
 
+
+
 public class Penalty2Lv2 extends AdventureState {
 
     public Penalty2Lv2(AdventurePhase advContext, Player player) {

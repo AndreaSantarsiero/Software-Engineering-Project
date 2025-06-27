@@ -7,22 +7,25 @@ import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.CombatZoneLv2;
 import it.polimi.ingsw.gc11.model.shipcard.Battery;
 import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-
 import java.util.List;
 import java.util.Map;
 
+
+
 public class Check1Lv2 extends AdventureState {
 
-    GameModel gameModel;
-    double minFirePower;
-    Player minPlayer;
+    private final GameModel gameModel;
+    private double minFirePower;
+    private Player minPlayer;
+
+
 
     public Check1Lv2(AdventurePhase advContext) {
         super(advContext);
         this.gameModel = advContext.getGameModel();
-        this.minFirePower = minFirePower;
-        this.minPlayer = minPlayer;
     }
+
+
 
     @Override
     public Player chooseFirePower(String username, Map<Battery, Integer> Batteries, List<Cannon> doubleCannons) {
@@ -57,13 +60,16 @@ public class Check1Lv2 extends AdventureState {
             minPlayer = player;
         }
 
-        this.advContext.setIdxCurrentPlayer(this.advContext.getIdxCurrentPlayer() + 1);
+        int idx = this.advContext.getIdxCurrentPlayer();
 
-        if (this.advContext.getIdxCurrentPlayer() == gameModel.getPlayersNotAbort().size()) {
+        if (idx + 1 == gameModel.getPlayersNotAbort().size()) {
             //NoPlayersLeft
             this.advContext.setAdvState(new Penalty1Lv2(this.advContext, this.minPlayer));
         }
-        //Rimane nello stato corrente
+        else{
+            //The advState remains the same as before
+            this.advContext.setIdxCurrentPlayer(idx+1);
+        }
 
         return player;
     }
