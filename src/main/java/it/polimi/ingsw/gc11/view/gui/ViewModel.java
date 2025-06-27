@@ -13,13 +13,17 @@ import java.util.Properties;
 
 public class ViewModel {
 
-    PlayerContext playerContext;
-    VirtualServer virtualServer;
+    private final PlayerContext playerContext;
+    private VirtualServer virtualServer;
+    private String serverIp;
+    private Integer serverPort;
 
 
 
-    public ViewModel() {
+    public ViewModel(String serverIp, Integer serverPort) {
         this.playerContext = new PlayerContext();
+        this.serverIp = serverIp;
+        this.serverPort = serverPort;
     }
 
 
@@ -41,12 +45,16 @@ public class ViewModel {
             config.load(fis);
 
             // Reading client configuration
-            String serverIp = config.getProperty("serverIp");
-            int serverRMIPort = Integer.parseInt(config.getProperty("serverRMIPort"));
+            if(serverIp == null) {
+                serverIp = config.getProperty("serverIp");
+            }
+            if(serverPort == null) {
+                serverPort = Integer.parseInt(config.getProperty("serverRMIPort"));
+            }
             int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
 
             this.virtualServer = new VirtualServer(playerContext, pingInterval, true);
-            this.virtualServer.initializeConnection(Utils.ConnectionType.RMI, serverIp, serverRMIPort);
+            this.virtualServer.initializeConnection(Utils.ConnectionType.RMI, serverIp, serverPort);
             JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
             joiningPhaseData.setVirtualServer(virtualServer);
         }
@@ -62,12 +70,16 @@ public class ViewModel {
             config.load(fis);
 
             // Reading client configuration
-            String serverIp = config.getProperty("serverIp");
-            int serverSocketPort = Integer.parseInt(config.getProperty("serverSocketPort"));
+            if(serverIp == null) {
+                serverIp = config.getProperty("serverIp");
+            }
+            if(serverPort == null) {
+                serverPort = Integer.parseInt(config.getProperty("serverSocketPort"));
+            }
             int pingInterval = Integer.parseInt(config.getProperty("pingInterval"));
 
             this.virtualServer = new VirtualServer(playerContext, pingInterval, true);
-            virtualServer.initializeConnection(Utils.ConnectionType.SOCKET, serverIp, serverSocketPort);
+            virtualServer.initializeConnection(Utils.ConnectionType.SOCKET, serverIp, serverPort);
             JoiningPhaseData joiningPhaseData = (JoiningPhaseData) this.playerContext.getCurrentPhase();
             joiningPhaseData.setVirtualServer(virtualServer);
         }

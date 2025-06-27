@@ -1,14 +1,14 @@
 package it.polimi.ingsw.gc11.view.gui;
 
-
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv1;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.List;
+
 
 
 public class AdventurePROVA extends Application {
@@ -17,9 +17,22 @@ public class AdventurePROVA extends Application {
         launch(args);
     }
 
+
+
     @Override
     public void start(Stage stage) throws IOException {
-        ViewModel viewModel = new ViewModel();
+        List<String> args = getParameters().getRaw();
+        String serverIp = null;
+        Integer serverPort = null;
+
+        if(!args.isEmpty()) {
+            serverIp = args.getFirst();
+        }
+        if(args.size() > 1) {
+            serverPort = Integer.parseInt(args.get(1));
+        }
+
+        ViewModel viewModel = new ViewModel(serverIp, serverPort);
         stage.setUserData(viewModel);
         stage.setTitle("Galaxy Trucker");
 

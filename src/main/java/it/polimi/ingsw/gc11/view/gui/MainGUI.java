@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.List;
 
 
 
@@ -16,9 +17,22 @@ public class MainGUI extends Application {
         launch(args);
     }
 
+
+
     @Override
     public void start(Stage stage) throws IOException {
-        ViewModel viewModel = new ViewModel();
+        List<String> args = getParameters().getRaw();
+        String serverIp = null;
+        Integer serverPort = null;
+
+        if(!args.isEmpty()) {
+            serverIp = args.getFirst();
+        }
+        if(args.size() > 1) {
+            serverPort = Integer.parseInt(args.get(1));
+        }
+
+        ViewModel viewModel = new ViewModel(serverIp, serverPort);
         stage.setTitle("Galaxy Trucker");
 
         FXMLLoader loader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/SplashScreen.fxml"));
