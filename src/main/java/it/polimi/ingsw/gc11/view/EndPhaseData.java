@@ -19,13 +19,19 @@ public class EndPhaseData extends GamePhaseData {
     private EndState state;
     private EndState previousState;
     private Player player;
-    private final Map<String, Player> enemies; //list of enemies players
+    private Map<String, Player> enemies; //list of enemies players
 
 
 
     public EndPhaseData() {
         enemies = new HashMap<>();
         state = EndState.CHOOSE_MAIN_MENU;
+    }
+
+    public void initialize(Player player, Map<String, Player> enemies) {
+        this.player = player;
+        this.enemies = enemies;
+        notifyListener();
     }
 
 

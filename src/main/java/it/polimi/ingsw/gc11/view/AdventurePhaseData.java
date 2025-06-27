@@ -26,7 +26,7 @@ public class AdventurePhaseData extends GamePhaseData {
         ENGINE_POWER_MENU, CHOOSE_ENGINE_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, ENGINE_POWER_SETUP,
         CREW_MEMBERS_MENU, CHOOSE_HOUSING_UNIT, SELECT_NUM_MEMBERS, CREW_MEMBERS_SETUP,
         BATTERIES_MENU, CHOOSE_BATTERIES, SELECT_NUM_BATTERIES, BATTERIES_SETUP,
-        LOAD_MATERIALS_MENU, CHOOSE_STORAGE, LOAD_MATERIALS_SETUP,
+        LOAD_MATERIALS_MENU, CHOOSE_STORAGE, ADD_MATERIAL, REMOVE_MATERIAL, LOAD_MATERIALS_SETUP,
         SHOT_DEFENSE_MENU, CHOOSE_SHOT_BATTERIES, SELECT_SHOT_NUM_BATTERIES, SHOT_DEFENSE_SETUP,
         DEFENSIVE_CANNON_MENU, CHOOSE_DEFENSIVE_CANNON, CHOOSE_DEFENSIVE_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, DEFENSIVE_CANNON_SETUP,
         CHOOSE_PLANET_MENU, CHOOSE_PLANET_SETUP,
@@ -50,9 +50,10 @@ public class AdventurePhaseData extends GamePhaseData {
         PIRATES_1, PIRATES_2,
         PIRATES_WIN_1, PIRATES_WIN_2,
         PIRATES_LOSE_1, PIRATES_LOSE_2,
-        SLAVERS_1, SLAVERS_2, SLAVERS_MEMBERS,
+        SLAVERS_1, SLAVERS_2, SLAVERS_MEMBERS, SLAVERS_END,
         OPEN_SPACE_1, OPEN_SPACE_2,
         SMUGGLERS_1, SMUGGLERS_2,
+        METEOR_SWARM_1, METEOR_SWARM_2,
         COMBAT_ZONE_LV1_1, COMBAT_ZONE_LV1_1_1, COMBAT_ZONE_LV1_2, COMBAT_ZONE_LV1_2_1,
             COMBAT_ZONE_LV1_3, COMBAT_ZONE_LV1_3_1, COMBAT_ZONE_LV1_4, COMBAT_ZONE_LV1_4_1,
         COMBAT_ZONE_LV2_1, COMBAT_ZONE_LV2_2,
@@ -65,6 +66,7 @@ public class AdventurePhaseData extends GamePhaseData {
     private FlightBoard flightBoard;
     private AdventureCard adventureCard;
     private Hit hit;
+    private final List<Material> materialsBuffer;
     private Player player;
     private ShipBoard copiedShipBoard;
     private Map<String, Player> enemies; //list of enemies players
@@ -87,6 +89,8 @@ public class AdventurePhaseData extends GamePhaseData {
 
 
     public AdventurePhaseData() {
+        hit = null;
+        materialsBuffer = new ArrayList<>();
         enemies = new HashMap<>();
         housingUsage = new HashMap<>();
         batteries = new HashMap<>();
@@ -127,7 +131,7 @@ public class AdventurePhaseData extends GamePhaseData {
         if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP ||
                 state == AdventureState.FIRE_POWER_SETUP || state == AdventureState.ENGINE_POWER_SETUP ||
                 state == AdventureState.CREW_MEMBERS_SETUP || state == AdventureState.BATTERIES_SETUP ||
-                state == AdventureState.LOAD_MATERIALS_MENU || state == AdventureState.SHOT_DEFENSE_SETUP ||
+                state == AdventureState.LOAD_MATERIALS_SETUP || state == AdventureState.SHOT_DEFENSE_SETUP ||
                 state == AdventureState.DEFENSIVE_CANNON_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP ||
                 state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
                 state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD ||
@@ -147,7 +151,7 @@ public class AdventurePhaseData extends GamePhaseData {
         else if(state == AdventureState.SELECT_NUM_BATTERIES) {
             state = AdventureState.BATTERIES_MENU;
         }
-        else if(state == AdventureState.CHOOSE_STORAGE) {
+        else if(state == AdventureState.CHOOSE_STORAGE || state == AdventureState.ADD_MATERIAL || state == AdventureState.REMOVE_MATERIAL) {
             state = AdventureState.LOAD_MATERIALS_MENU;
         }
         else if(state == AdventureState.SELECT_SHOT_NUM_BATTERIES) {
@@ -155,6 +159,9 @@ public class AdventurePhaseData extends GamePhaseData {
         }
         else if(state == AdventureState.CHOOSE_DEFENSIVE_CANNON || state == AdventureState.SELECT_DEFENSE_NUM_BATTERIES) {
             state = AdventureState.DEFENSIVE_CANNON_MENU;
+        }
+        else if(state == AdventureState.CHOOSE_ALIEN || state == AdventureState.CHOOSE_HOSTING_HU){
+            state = AdventureState.ACTIVATE_ALIEN_MENU;
         }
         else if (state.ordinal() < AdventureState.values().length - 1) {
             state = AdventureState.values()[state.ordinal() + 1];
@@ -198,8 +205,11 @@ public class AdventurePhaseData extends GamePhaseData {
             case PIRATES_1 ->  GUIState = AdventureStateGUI.PIRATES_2;
             case PIRATES_WIN_1 -> GUIState = AdventureStateGUI.PIRATES_WIN_2;
             case PIRATES_LOSE_1 -> GUIState = AdventureStateGUI.PIRATES_LOSE_2;
-            case PIRATES_LOSE_2 -> GUIState = AdventureStateGUI.PIRATES_1;
+            case PIRATES_LOSE_2 -> GUIState = AdventureStateGUI.PIRATES_LOSE_1;
             case SLAVERS_1 ->  GUIState = AdventureStateGUI.SLAVERS_2;
+            case SLAVERS_MEMBERS -> GUIState = AdventureStateGUI.SLAVERS_END;
+            case METEOR_SWARM_1 -> GUIState = AdventureStateGUI.METEOR_SWARM_2;
+            case METEOR_SWARM_2 -> GUIState = AdventureStateGUI.METEOR_SWARM_1;
             case OPEN_SPACE_1 -> GUIState = AdventureStateGUI.OPEN_SPACE_2;
             case SMUGGLERS_1 -> GUIState = AdventureStateGUI.SMUGGLERS_2;
             //Combat zone Lv1 states
@@ -248,7 +258,7 @@ public class AdventurePhaseData extends GamePhaseData {
         if(state == AdventureState.WAIT_ADVENTURE_CARD || state == AdventureState.ACCEPT_CARD_SETUP ||
                 state == AdventureState.FIRE_POWER_SETUP || state == AdventureState.ENGINE_POWER_SETUP ||
                 state == AdventureState.CREW_MEMBERS_SETUP || state == AdventureState.BATTERIES_SETUP ||
-                state == AdventureState.LOAD_MATERIALS_MENU || state == AdventureState.SHOT_DEFENSE_SETUP ||
+                state == AdventureState.LOAD_MATERIALS_SETUP || state == AdventureState.SHOT_DEFENSE_SETUP ||
                 state == AdventureState.DEFENSIVE_CANNON_SETUP || state == AdventureState.SHOW_ENEMIES_SHIP ||
                 state == AdventureState.WAIT_DICES || state == AdventureState.CHOOSE_PLANET_SETUP ||
                 state == AdventureState.WAIT_ACCEPT_REWARD || state == AdventureState.WAIT_REFUSE_REWARD ||
@@ -312,6 +322,7 @@ public class AdventurePhaseData extends GamePhaseData {
         this.adventureCard = adventureCard;
         adventureCard.getHintMessage(this);
         hit = null;
+        materialsBuffer.clear();
         if(updateState) {
             resetResponse();
             updateState();
@@ -331,6 +342,15 @@ public class AdventurePhaseData extends GamePhaseData {
         actualizePreviousState();
         this.hit = hit;
         notifyListener();
+    }
+
+
+    public List<Material> getMaterialsBuffer(){
+        return materialsBuffer;
+    }
+
+    public void setMaterialsBuffer(List<Material> materialsBuffer){
+        this.materialsBuffer.addAll(materialsBuffer);
     }
 
 

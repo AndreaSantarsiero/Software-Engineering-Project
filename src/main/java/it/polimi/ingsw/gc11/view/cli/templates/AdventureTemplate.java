@@ -1,13 +1,11 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
-import it.polimi.ingsw.gc11.model.Hit;
-import it.polimi.ingsw.gc11.model.Meteor;
-import it.polimi.ingsw.gc11.model.Player;
-import it.polimi.ingsw.gc11.model.Shot;
+import it.polimi.ingsw.gc11.model.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.AdventureController;
 import it.polimi.ingsw.gc11.view.cli.utils.FlightBoardCLI;
+import it.polimi.ingsw.gc11.view.cli.utils.MaterialCLI;
 import it.polimi.ingsw.gc11.view.cli.utils.ShipCardCLI;
 import org.fusesource.jansi.Ansi;
 import java.util.ArrayList;
@@ -157,6 +155,12 @@ public class AdventureTemplate extends CLITemplate {
             List.of("┌─┐┬ ┬┌─┐┌─┐┌─┐┌─┐  ┌─┐┌┬┐┌─┐┬─┐┌─┐┌─┐┌─┐",
                     "│  ├─┤│ ││ │└─┐├┤   └─┐ │ │ │├┬┘├─┤│ ┬├┤ ",
                     "└─┘┴ ┴└─┘└─┘└─┘└─┘  └─┘ ┴ └─┘┴└─┴ ┴└─┘└─┘"),
+            List.of("┌─┐┌┬┐┌┬┐  ┌┬┐┌─┐┌┬┐┌─┐┬─┐┬┌─┐┬  ",
+                    "├─┤ ││ ││  │││├─┤ │ ├┤ ├┬┘│├─┤│  ",
+                    "┴ ┴─┴┘─┴┘  ┴ ┴┴ ┴ ┴ └─┘┴└─┴┴ ┴┴─┘"),
+            List.of("┬─┐┌─┐┌┬┐┌─┐┬  ┬┌─┐  ┌┬┐┌─┐┌┬┐┌─┐┬─┐┬┌─┐┬  ",
+                    "├┬┘├┤ ││││ │└┐┌┘├┤   │││├─┤ │ ├┤ ├┬┘│├─┤│  ",
+                    "┴└─└─┘┴ ┴└─┘ └┘ └─┘  ┴ ┴┴ ┴ ┴ └─┘┴└─┴┴ ┴┴─┘"),
             List.of("┌─┐┌─┐┌┐┌┌┬┐  ┬─┐┌─┐┌─┐┌─┐┌─┐┌┐┌┌─┐┌─┐",
                     "└─┐├┤ │││ ││  ├┬┘├┤ └─┐├─┘│ ││││└─┐├┤ ",
                     "└─┘└─┘┘└┘─┴┘  ┴└─└─┘└─┘┴  └─┘┘└┘└─┘└─┘"),
@@ -233,7 +237,7 @@ public class AdventureTemplate extends CLITemplate {
     private static final List<List<String>> numBatteriesMenu = List.of(
             List.of("┌─┐┌─┐┬─┐┌─┐",
                     "┌─┘├┤ ├┬┘│ │",
-                    "└─┘└─┘┴└─└─┘ "),
+                    "└─┘└─┘┴└─└─┘"),
             List.of("┌─┐┌┐┌┌─┐",
                     "│ ││││├┤ ",
                     "└─┘┘└┘└─┘"),
@@ -247,13 +251,28 @@ public class AdventureTemplate extends CLITemplate {
     private static final List<List<String>> numMembersMenu = List.of(
             List.of("┌─┐┌─┐┬─┐┌─┐",
                     "┌─┘├┤ ├┬┘│ │",
-                    "└─┘└─┘┴└─└─┘ "),
+                    "└─┘└─┘┴└─└─┘"),
             List.of("┌─┐┌┐┌┌─┐",
                     "│ ││││├┤ ",
                     "└─┘┘└┘└─┘"),
             List.of("┌┬┐┬ ┬┌─┐",
                     " │ ││││ │",
                     " ┴ └┴┘└─┘")
+    );
+
+    private static final List<List<String>> removeMaterialMenu = List.of(
+            List.of("┌┐ ┬  ┬ ┬┌─┐",
+                    "├┴┐│  │ │├┤ ",
+                    "└─┘┴─┘└─┘└─┘ "),
+            List.of("┌─┐┬─┐┌─┐┌─┐┌┐┌",
+                    "│ ┬├┬┘├┤ ├┤ │││",
+                    "└─┘┴└─└─┘└─┘┘└┘"),
+            List.of("┬ ┬┌─┐┬  ┬  ┌─┐┬ ┬",
+                    "└┬┘├┤ │  │  │ ││││",
+                    " ┴ └─┘┴─┘┴─┘└─┘└┴┘"),
+            List.of("┬─┐┌─┐┌┬┐",
+                    "├┬┘├┤  ││",
+                    "┴└─└─┘─┴┘")
     );
 
 
@@ -418,6 +437,9 @@ public class AdventureTemplate extends CLITemplate {
                     else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_MEMBERS){
                         printMenu(shipBoard, menuIndex, numMembersMenu, controller.getNumMembers());
                     }
+                    else if(data.getState() == AdventurePhaseData.AdventureState.REMOVE_MATERIAL){
+                        printMenu(shipBoard, menuIndex, removeMaterialMenu, controller.getRemoveMaterialMenu());
+                    }
                     menuIndex++;
                 }
 
@@ -488,6 +510,17 @@ public class AdventureTemplate extends CLITemplate {
                         }
                         else if(i == 4){
                             System.out.print("- Coordinate: ");
+                        }
+                    }
+
+                    List<Material> bufferMaterials = data.getMaterialsBuffer();
+                    if(i == 6){
+                        if(bufferMaterials != null && !bufferMaterials.isEmpty()){
+                            System.out.print("Available materials: ");
+                            MaterialCLI.printBuffer(bufferMaterials, controller.getMaterialsBufferIndex());
+                        }
+                        else {
+                            System.out.print("No available materials");
                         }
                     }
 
@@ -577,6 +610,10 @@ public class AdventureTemplate extends CLITemplate {
 
     public int getNumMembersMenuSize(){
         return numMembersMenu.size();
+    }
+
+    public int getRemoveMaterialsMenuSize(){
+        return  removeMaterialMenu.size();
     }
 
 

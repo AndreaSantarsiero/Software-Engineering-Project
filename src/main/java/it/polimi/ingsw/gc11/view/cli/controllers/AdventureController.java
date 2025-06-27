@@ -1,16 +1,14 @@
 package it.polimi.ingsw.gc11.view.cli.controllers;
 
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
-import it.polimi.ingsw.gc11.model.shipcard.AlienUnit;
-import it.polimi.ingsw.gc11.model.shipcard.Battery;
-import it.polimi.ingsw.gc11.model.shipcard.Cannon;
-import it.polimi.ingsw.gc11.model.shipcard.HousingUnit;
+import it.polimi.ingsw.gc11.model.Material;
+import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.cli.MainCLI;
-import it.polimi.ingsw.gc11.view.cli.input.CoordinatesInput;
-import it.polimi.ingsw.gc11.view.cli.input.EnterInput;
-import it.polimi.ingsw.gc11.view.cli.input.MenuInput;
+import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
+import java.util.AbstractMap;
+import java.util.List;
 
 
 
@@ -30,10 +28,12 @@ public class AdventureController extends CLIController {
     private int defensiveCannonMenu;
     private int choosePlanetMenu;
     private int activateAlienMenu;
+    private int removeMaterialMenu;
     private int selectedI;
     private int selectedJ;
     private int numBatteries;
     private int numMembers;
+    private int materialsBufferIndex;
 
 
 
@@ -207,6 +207,12 @@ public class AdventureController extends CLIController {
         else if(data.getState() == AdventurePhaseData.AdventureState.SELECT_NUM_MEMBERS) {
             mainCLI.addInputRequest(new MenuInput(data, this, template.getNumMembersMenuSize(), numMembers));
         }
+        else if(data.getState() == AdventurePhaseData.AdventureState.ADD_MATERIAL) {
+            mainCLI.addInputRequest(new HorizontalMenuInput(data, this, data.getMaterialsBuffer().size(), materialsBufferIndex));
+        }
+        else if(data.getState() == AdventurePhaseData.AdventureState.REMOVE_MATERIAL) {
+            mainCLI.addInputRequest(new MenuInput(data, this, template.getRemoveMaterialsMenuSize(), removeMaterialMenu));
+        }
         else if(data.getState() == AdventurePhaseData.AdventureState.SHOW_ENEMIES_SHIP){
             mainCLI.addInputRequest(new EnterInput(data, this));
         }
@@ -316,13 +322,15 @@ public class AdventureController extends CLIController {
         else if(data.getState() == AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP){
             switch (loadMaterialsMenu) {
                 case 0 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_STORAGE);
-                case 1 -> data.setState(AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP);
-                case 2 -> {
+                case 1 -> data.setState(AdventurePhaseData.AdventureState.ADD_MATERIAL);
+                case 2 -> data.setState(AdventurePhaseData.AdventureState.REMOVE_MATERIAL);
+                case 3 -> data.setState(AdventurePhaseData.AdventureState.LOAD_MATERIALS_SETUP);
+                case 4 -> {
                     data.resetResponse();
                     addInputRequest();
                     template.render();
                 }
-                case 3 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
+                case 5 -> data.setState(AdventurePhaseData.AdventureState.CHOOSE_ACTION_MENU);
             }
         }
         else if(data.getState() == AdventurePhaseData.AdventureState.SHOT_DEFENSE_MENU){
@@ -386,6 +394,7 @@ public class AdventureController extends CLIController {
             case DEFENSIVE_CANNON_MENU -> setDefensiveCannonMenu(choice);
             case CHOOSE_PLANET_MENU -> setChoosePlanetMenu(choice);
             case ACTIVATE_ALIEN_MENU -> setActivateAlienMenu(choice);
+            case REMOVE_MATERIAL -> setRemoveMaterialMenu(choice);
             case SELECT_FIRE_NUM_BATTERIES, SELECT_ENGINE_NUM_BATTERIES, SELECT_NUM_BATTERIES, SELECT_DEFENSE_NUM_BATTERIES, SELECT_SHOT_NUM_BATTERIES -> setNumBatteries(choice);
             case SELECT_NUM_MEMBERS -> setNumMembers(choice);
             case null, default -> {
@@ -405,9 +414,56 @@ public class AdventureController extends CLIController {
                     ((HousingUnit) data.getCopiedShipBoard().getShipCard(getSelectedX(), getSelectedY())).killMembers(numMembers);
                     data.addHousingUsage((HousingUnit) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY()), numMembers);
                 }
+                case REMOVE_MATERIAL -> {
+                    Material materialToRemove = null;
+                    switch (removeMaterialMenu){
+                        case 0 -> materialToRemove = new Material(Material.Type.BLUE);
+                        case 1 -> materialToRemove = new Material(Material.Type.GREEN);
+                        case 2 -> materialToRemove = new Material(Material.Type.YELLOW);
+                        case 3 -> materialToRemove = new Material(Material.Type.RED);
+                    }
+                    ((Storage) data.getCopiedShipBoard().getShipCard(getSelectedX(), getSelectedY())).removeMaterial(materialToRemove);
+                    data.getMaterialsBuffer().add(materialToRemove);
+
+                    Storage realStorage = (Storage) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY());
+                    AbstractMap.SimpleEntry<List<Material>, List<Material>> materialsUsage = data.getStorageMaterials().get(realStorage);
+                    materialsUsage.getKey().add(null);
+                    materialsUsage.getValue().add(materialToRemove);
+
+                    data.addStorageMaterial(realStorage, materialsUsage);
+                }
             }
             updateInternalState();
-        } catch (Exception e){
+        } catch (Exception e) {
+            data.setServerMessage("invalid input, try again");
+        }
+    }
+
+    @Override
+    public void setIntegerChoice(int choice) {
+        data.actualizePreviousState();
+        if (data.getState() == AdventurePhaseData.AdventureState.ADD_MATERIAL) {
+            setMaterialsBufferIndex(choice);
+        }
+    }
+
+    @Override
+    public void confirmIntegerChoice() {
+        try{
+            if(data.getState() == AdventurePhaseData.AdventureState.ADD_MATERIAL){
+                Material materialToAdd = data.getMaterialsBuffer().get(materialsBufferIndex);
+                ((Storage) data.getCopiedShipBoard().getShipCard(getSelectedX(), getSelectedY())).addMaterial(materialToAdd);
+                data.getMaterialsBuffer().remove((materialToAdd));
+
+                Storage realStorage = (Storage) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY());
+                AbstractMap.SimpleEntry<List<Material>, List<Material>> materialsUsage = data.getStorageMaterials().get(realStorage);
+                materialsUsage.getKey().add(materialToAdd);
+                materialsUsage.getValue().add(null);
+
+                data.addStorageMaterial(realStorage, materialsUsage);
+            }
+            updateInternalState();
+        } catch (Exception e) {
             data.setServerMessage("invalid input, try again");
         }
     }
@@ -558,6 +614,16 @@ public class AdventureController extends CLIController {
     }
 
 
+    public int getRemoveMaterialMenu(){
+        return removeMaterialMenu;
+    }
+
+    public void setRemoveMaterialMenu(int removeMaterialMenu){
+        this.removeMaterialMenu = removeMaterialMenu;
+        template.render();
+    }
+
+
     public int getSelectedI(){
         return selectedI;
     }
@@ -574,6 +640,7 @@ public class AdventureController extends CLIController {
         return selectedJ - data.getPlayer().getShipBoard().adaptX(0);
     }
 
+
     public int getNumBatteries(){
         return numBatteries;
     }
@@ -583,12 +650,23 @@ public class AdventureController extends CLIController {
         template.render();
     }
 
+
     public int getNumMembers(){
         return numMembers;
     }
 
     public void setNumMembers(int numMembers) {
         this.numMembers = numMembers;
+        template.render();
+    }
+
+
+    public int getMaterialsBufferIndex(){
+        return materialsBufferIndex;
+    }
+
+    public void setMaterialsBufferIndex(int materialsBufferIndex) {
+        this.materialsBufferIndex = materialsBufferIndex;
         template.render();
     }
 
@@ -609,7 +687,9 @@ public class AdventureController extends CLIController {
         defensiveCannonMenu = 0;
         choosePlanetMenu = 0;
         activateAlienMenu = 0;
+        removeMaterialMenu = 0;
         numBatteries = 0;
         numMembers = 0;
+        materialsBufferIndex = 0;
     }
 }

@@ -12,18 +12,35 @@ import java.util.List;
 import java.util.Map;
 
 
-
+/**
+ * Action that allows a player to choose which materials to move into or out of storage.
+ * On success, updates the profiles of the choosing player and all other players with the new state.
+ * On failure, sends a NotifyExceptionAction containing the error message to the requester.
+ */
 public class ChooseMaterialsAction extends ClientGameAction {
 
     private final Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials;
 
-
+    /**
+     * Constructs a new ChooseMaterialsAction for the given player.
+     *
+     * @param username         the name of the player choosing materials
+     * @param storageMaterials the mapping of storage to material adjustments
+     */
     public ChooseMaterialsAction(String username, Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> storageMaterials) {
         super(username);
         this.storageMaterials = storageMaterials;
     }
 
-
+    /**
+     * Executes the material selection in the game context.
+     * Retrieves the updated Player object, then notifies all non-aborted players:
+     * - The chooser with UpdatePlayerProfileAction
+     * - Others with UpdateEnemyProfileAction
+     * In case of exception, sends a NotifyExceptionAction back to the requester.
+     *
+     * @param context the GameContext in which to apply the action
+     */
     @Override
     public void execute(GameContext context) {
         try {

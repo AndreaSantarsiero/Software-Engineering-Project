@@ -7,14 +7,31 @@ import it.polimi.ingsw.gc11.model.Player;
 
 import java.util.Arrays;
 
-
+/**
+ * Action that allows a player to accept their drawn AdventureCard.
+ * Upon acceptance, notifies all non-aborted players of the new current player,
+ * with the accepting player receiving an updateState flag set to true.
+ * In case of error, sends a NotifyExceptionAction with the exception details.
+ */
 public class AcceptAdventureCardAction extends ClientGameAction {
 
+    /**
+     * Constructs a new AcceptAdventureCardAction for the specified player.
+     *
+     * @param username the name of the player accepting the adventure card
+     */
     public AcceptAdventureCardAction(String username) {
         super(username);
     }
 
-
+    /**
+     * Executes the acceptance of the adventure card in the game context.
+     * Updates the current player in each client's view data:
+     * the accepting player triggers a full state update, others only a GUI update.
+     * On exception, sends the stack trace and message back to the originator.
+     *
+     * @param context the GameContext in which to perform the acceptance
+     */
     @Override
     public void execute(GameContext context) {
         try {

@@ -12,18 +12,37 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-
+/**
+ * Action that allows a player to choose their color.
+ * On success, notifies the chooser and broadcasts the updated color mapping to all players.
+ * If the game has started, transitions everyone into the Building phase with appropriate data.
+ * On failure, sends a NotifyExceptionAction back to the requester.
+ */
 public class ChooseColorAction extends ClientGameAction {
 
     String playerColor;
 
-
+    /**
+     * Constructs a new ChooseColorAction for the given player and color.
+     *
+     * @param username    the name of the player choosing a color
+     * @param playerColor the color chosen by the player
+     */
     public ChooseColorAction(String username, String playerColor) {
         super(username);
         this.playerColor = playerColor;
     }
 
-
+    /**
+     * Executes the color selection in the game context.
+     * - Calls context.chooseColor.
+     * - Sends NotifySuccessAction to the chooser.
+     * - Broadcasts UpdatePlayersColorAction to all non-aborted players.
+     * - If the game has started, initializes and sends SetBuildingPhaseAction to each player.
+     * On exception, sends NotifyExceptionAction to the requester.
+     *
+     * @param context the GameContext in which to apply the action
+     */
     @Override
     public void execute(GameContext context) {
         try{

@@ -17,7 +17,7 @@ public class SetBuildingPhaseAction extends ServerAction {
     private final ShipBoard shipBoard;
     private final int freeShipCardsCount;
     private final FlightBoard.Type flightType;
-    private ArrayList<String> playersUsernames;
+    private final ArrayList<String> playersUsernames;
     private final Instant expireTimerInstant;
     private final int timersLeft;
 

@@ -91,7 +91,7 @@ public class LooseBatteriesSmugglers extends AdventureState{
         }
 
         //Imposto che il giorcatore sta effettivamente giocando la carta
-        if(this.advContext.isResolvingAdvCard() == true){
+        if(this.advContext.isResolvingAdvCard()){
             throw new IllegalStateException("You are already accepted this adventure card!");
         }
         this.advContext.setResolvingAdvCard(true);
