@@ -402,7 +402,7 @@ public class SelectAlienUnitController extends Controller {
                 try {
                     if(adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL){
                         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
-                                .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLV1.fxml"));
+                                .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv1.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                         AdventureControllerLv1 controller = fxmlLoader.getController();
                         adventurePhaseData.setListener(controller);
@@ -412,7 +412,7 @@ public class SelectAlienUnitController extends Controller {
                     }
                     else if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.LEVEL2){
                         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
-                                .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLV2.fxml"));
+                                .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureLv2.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                         AdventureControllerLv2 controller = fxmlLoader.getController();
                         adventurePhaseData.setListener(controller);
