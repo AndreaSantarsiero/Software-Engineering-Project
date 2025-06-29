@@ -612,16 +612,14 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
 
         slotGrid.getChildren().clear(); // Pulisci la griglia prima di aggiungere i bottoni
 
-        //Debugging
-        if (shipBoard == null) {
-            System.out.println("ShipBoard è null");
-            return;
-        }
+        shipBoard = adventurePhaseData.getCopiedShipBoard();
 
+        System.out.println("==> setShipBoard()");
         for(int r = 0; r < 5; r++){
             for(int c = 0; c < 5; c++){
                 if(shipBoard.validateIndexes(c,r)){
                     ShipCard shipCard = shipBoard.getShipCard(c - shipBoard.adaptX(0), r - shipBoard.adaptY(0));
+                    System.out.printf("[%d,%d] = %s%n", c, r, shipCard);
                     Image img;
 
                     if(shipCard != null && !shipCard.isScrap()) {
