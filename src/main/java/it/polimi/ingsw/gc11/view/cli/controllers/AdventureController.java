@@ -464,7 +464,8 @@ public class AdventureController extends CLIController {
             }
             updateInternalState();
         } catch (Exception e) {
-            data.setServerMessage("invalid input, try again");
+            data.setServerMessage("invalid input, try again: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
