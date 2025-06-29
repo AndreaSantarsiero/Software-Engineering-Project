@@ -5,6 +5,7 @@ import it.polimi.ingsw.gc11.action.client.NotifyExceptionAction;
 import it.polimi.ingsw.gc11.action.client.NotifySuccessAction;
 import it.polimi.ingsw.gc11.action.client.SendAvailableMatchesAction;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class ConnectToGameAction extends ClientControllerAction {
             serverController.sendAction(username, response);
         }
         catch (Exception e) {
-            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage());
+            NotifyExceptionAction exception = new NotifyExceptionAction(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
             serverController.sendAction(username, exception);
         }
     }
