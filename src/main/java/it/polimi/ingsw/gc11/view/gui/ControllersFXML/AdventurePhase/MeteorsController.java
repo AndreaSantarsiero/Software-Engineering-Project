@@ -163,7 +163,7 @@ public class MeteorsController extends Controller {
             if(adventurePhaseData.getHit() != null){
                 if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.TRIAL) {
                     try {
-                        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
+                        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.METEOR_SWARM_2);
                         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv1.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                         AdvShipBoardHandleLv1Controller controller = fxmlLoader.getController();
@@ -176,7 +176,7 @@ public class MeteorsController extends Controller {
                     }
                 }else{
                     try {
-                        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.PIRATES_LOSE_2);
+                        adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.METEOR_SWARM_2);
                         FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/AdventureShipBoardHandleLv2.fxml"));
                         Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                         AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
