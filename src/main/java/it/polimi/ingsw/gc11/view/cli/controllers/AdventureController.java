@@ -8,6 +8,7 @@ import it.polimi.ingsw.gc11.view.cli.MainCLI;
 import it.polimi.ingsw.gc11.view.cli.input.*;
 import it.polimi.ingsw.gc11.view.cli.templates.AdventureTemplate;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -427,6 +428,9 @@ public class AdventureController extends CLIController {
 
                     Storage realStorage = (Storage) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY());
                     AbstractMap.SimpleEntry<List<Material>, List<Material>> materialsUsage = data.getStorageMaterials().get(realStorage);
+                    if(materialsUsage == null){
+                        materialsUsage = new AbstractMap.SimpleEntry<>(new ArrayList<>(), new ArrayList<>());
+                    }
                     materialsUsage.getKey().add(null);
                     materialsUsage.getValue().add(materialToRemove);
 
@@ -457,6 +461,9 @@ public class AdventureController extends CLIController {
 
                 Storage realStorage = (Storage) data.getPlayer().getShipBoard().getShipCard(getSelectedX(), getSelectedY());
                 AbstractMap.SimpleEntry<List<Material>, List<Material>> materialsUsage = data.getStorageMaterials().get(realStorage);
+                if(materialsUsage == null){
+                    materialsUsage = new AbstractMap.SimpleEntry<>(new ArrayList<>(), new ArrayList<>());
+                }
                 materialsUsage.getKey().add(materialToAdd);
                 materialsUsage.getValue().add(null);
 
