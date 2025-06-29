@@ -55,8 +55,10 @@ public class CreateMatchAction extends ClientControllerAction {
             Map<String, List<String>> availableMatches = serverController.getAvailableMatches(username, token);
 
             for(String username : serverController.getUsernameList()){
-                SendAvailableMatchesAction action = new SendAvailableMatchesAction(availableMatches);
-                serverController.sendAction(username, action);
+                try{
+                    SendAvailableMatchesAction action = new SendAvailableMatchesAction(availableMatches);
+                    serverController.sendAction(username, action);
+                } catch (Exception ignored) {} //in case some clients are disconnected
             }
 
             NotifySuccessAction response = new NotifySuccessAction();
