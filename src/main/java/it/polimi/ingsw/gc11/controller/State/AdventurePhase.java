@@ -7,6 +7,7 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -303,10 +304,10 @@ public class AdventurePhase extends GamePhase {
      *
      * @param username the player's username
      * @param numPlanet the index of the selected planet
-     * @return the list of materials available on the chosen planet
+     * @return The planets card updated.
      */
     @Override
-    public List<Material> landOnPlanet(String username, int numPlanet){
+    public PlanetsCard landOnPlanet(String username, int numPlanet){
         return advState.landOnPlanet(username, numPlanet);
     }
 

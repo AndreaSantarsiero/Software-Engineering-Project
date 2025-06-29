@@ -64,13 +64,13 @@ public class LandOnPlanet  extends AdventureState {
      *
      * @param username   The username of the player making the choice.
      * @param numPlanet  The index of the planet to land on (within the PlanetsCard).
-     * @return A list of materials available on the selected planet.
+     * @return The planets card updated.
      *
      * @throws IllegalArgumentException If the planet has already been visited or the username is not the current player's.
      * @throws IllegalStateException If the player did not accept the card before choosing a planet.
      */
     @Override
-    public List<Material> landOnPlanet(String username, int numPlanet){
+    public PlanetsCard landOnPlanet(String username, int numPlanet){
         gameModel.checkPlayerUsername(username);
         Player player = gameModel.getPlayersNotAbort().get(advContext.getIdxCurrentPlayer());
 
@@ -91,9 +91,6 @@ public class LandOnPlanet  extends AdventureState {
         //next state
         this.advContext.setAdvState(new LandedPlanet(this.advContext, player, materials, numVisited+1));
 
-        SendMaterialsAction action = new SendMaterialsAction(materials);
-        advContext.getGameContext().sendAction(player.getUsername(), action);
-
-        return materials;
+        return planetsCard;
     }
 }

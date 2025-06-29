@@ -4,11 +4,12 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
-
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Abstract class representing a state in the AdventurePhase of the game.
@@ -160,9 +161,9 @@ public abstract class AdventureState{
      * @param username the player's username
      * @param numPlanet the index of the chosen planet
      * @throws IllegalStateException if this operation is not allowed in the current state
-     * @return the list of materials available on the chosen planet
+     * @return The planets card updated.
      */
-    public List<Material> landOnPlanet(String username, int numPlanet){
+    public PlanetsCard landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current adventure state: " + this.getClass().getName());
     }
 

@@ -492,9 +492,9 @@ public class GameContext {
      *
      * @param username  the player landing on the planet.
      * @param numPlanet the index of the planet.
-     * @return the list of materials available on the chosen planet
+     * @return The planets card updated.
      */
-    public List<Material> landOnPlanet(String username, int numPlanet){
+    public PlanetsCard landOnPlanet(String username, int numPlanet){
         return phase.landOnPlanet(username, numPlanet);
     }
 

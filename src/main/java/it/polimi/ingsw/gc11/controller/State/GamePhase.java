@@ -6,6 +6,7 @@ import it.polimi.ingsw.gc11.model.Hit;
 import it.polimi.ingsw.gc11.model.Material;
 import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.model.adventurecard.AdventureCard;
+import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.model.shipboard.ShipBoard;
 import java.time.Instant;
@@ -348,9 +349,9 @@ public abstract class GamePhase {
      * @param username the player's username
      * @param numPlanet the index of the selected planet
      * @throws IllegalStateException if landing on a planet is not permitted in this phase
-     * @return the list of materials available on the chosen planet
+     * @return The planets card updated.
      */
-    public List<Material> landOnPlanet(String username, int numPlanet){
+    public PlanetsCard landOnPlanet(String username, int numPlanet){
         throw new IllegalStateException("Can't land on a planet in the current game phase: " + getPhaseName());
     }
 

@@ -3,12 +3,16 @@ package it.polimi.ingsw.gc11.controller;
 import org.junit.jupiter.api.*;
 import java.io.*;
 import java.util.Properties;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
 class ServerMAINTest {
+
     private static int defaultRmi;
     private static int defaultSocket;
+
+
 
     @BeforeAll
     static void initDefaults() throws Exception {
@@ -22,8 +26,12 @@ class ServerMAINTest {
         }
     }
 
+
+
     private ByteArrayOutputStream outContent;
     private PrintStream originalOut;
+
+
 
     @BeforeEach
     void setUpStreams() {
@@ -37,25 +45,21 @@ class ServerMAINTest {
         System.setOut(originalOut);
     }
 
+
+
     @Test
     void run_withValidArgs_shouldAcceptProvidedPorts() {
-        String[] args = {"1234", "5678"};
+        String[] args = {"-s", "1234", "5678"};
         try {
             ServerMAIN.run(args);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
+
         String output = outContent.toString();
-        // Nessun messaggio di porta invalida
-        assertFalse(output.contains("Invalid port number:"),
-                "Output should not report any invalid port numbers for valid args");
+        assertFalse(output.contains("Invalid port number:"), "Output should not report any invalid port numbers for valid args");
     }
 
     @Test
     void run_withInvalidArgs_shouldThrowException() {
-        // Negative or out-of-range ports should trigger IllegalArgumentException
-        assertThrows(IllegalArgumentException.class,
-                () -> ServerMAIN.run(new String[]{"-1", "70000"}),
-                "Expected IllegalArgumentException for invalid port values"
-        );
+        assertThrows(IllegalArgumentException.class, () -> ServerMAIN.run(new String[]{"-s", "-1", "70000"}), "Expected IllegalArgumentException for invalid port values");
     }
 }

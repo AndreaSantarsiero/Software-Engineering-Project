@@ -1533,7 +1533,7 @@ public class GameContextTest {
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
 
         gameContext.acceptAdventureCard("username1");
-        List<Material> materials = assertDoesNotThrow(() -> gameContext.landOnPlanet("username1", 0));
+        assertDoesNotThrow(() -> gameContext.landOnPlanet("username1", 0));
         advPhase.setAdvState(new PlanetsState(advPhase, 0));
         assertThrows(IllegalArgumentException.class, () -> gameContext.acceptAdventureCard("username2"), "It's not username2 turn to play!");
     }
@@ -2029,9 +2029,10 @@ public class GameContextTest {
 
         gameContext.acceptAdventureCard("username1");
 
-        List<Material> found = gameContext.landOnPlanet("username1", 0);
-        assertNotNull(found, "landOnPlanet deve restituire la lista dei materiali");
-        assertFalse(found.isEmpty(), "ci aspettiamo di trovare almeno un materiale");
+        PlanetsCard response = gameContext.landOnPlanet("username1", 0);
+        List<Material> materials = response.getPlanets().get(0).getMaterials();
+        assertNotNull(response, "landOnPlanet deve restituire la carta PlanetsCard aggiornata");
+        assertFalse(materials.isEmpty(), "ci aspettiamo di trovare almeno un materiale");
         assertInstanceOf(
                 LandedPlanet.class,
                 phase.getCurrentAdvState(),
@@ -2053,8 +2054,8 @@ public class GameContextTest {
         Map<Storage, AbstractMap.SimpleEntry<List<Material>, List<Material>>> req = Map.of(
                 storage,
                 new AbstractMap.SimpleEntry<>(
-                        found,
-                        Collections.nCopies(found.size(), (Material) null)
+                        materials,
+                        Collections.nCopies(materials.size(), (Material) null)
                 )
         );
 
