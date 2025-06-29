@@ -519,6 +519,9 @@ public abstract class ShipBoard  implements Serializable {
         }
         int i = adaptY(7);
         int j = adaptX(7);
+        if(components[i][j] != null){
+            components[i][j].unPlace(this);
+        }
         components[i][j] = centralUnit;
         centralUnit.place(this, adaptX(7), adaptY(7));
     }
