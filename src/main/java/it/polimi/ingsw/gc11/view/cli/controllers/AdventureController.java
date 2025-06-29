@@ -438,6 +438,8 @@ public class AdventureController extends CLIController {
                 }
             }
             updateInternalState();
+        } catch (IllegalArgumentException e) {
+            data.setServerMessage(e.getMessage());
         } catch (Exception e) {
             data.setServerMessage("invalid input, try again");
         }
@@ -470,9 +472,10 @@ public class AdventureController extends CLIController {
                 data.addStorageMaterial(realStorage, materialsUsage);
             }
             updateInternalState();
+        } catch (IllegalArgumentException e) {
+            data.setServerMessage(e.getMessage());
         } catch (Exception e) {
-            data.setServerMessage("invalid input, try again: " + e.getMessage());
-            e.printStackTrace();
+            data.setServerMessage("invalid input, try again");
         }
     }
 
