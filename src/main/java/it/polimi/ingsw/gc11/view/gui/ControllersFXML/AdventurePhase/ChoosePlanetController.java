@@ -83,7 +83,6 @@ public class ChoosePlanetController extends Controller {
 
         for (int idx = 0; idx < planets.size(); idx++) {
             if (freePlanets.contains(planets.get(idx))) {
-                Planet planet = freePlanets.get(idx);
                 Button btn = new Button("Pianeta " + (idx + 1));
 
                 btn.setMaxWidth(Double.MAX_VALUE);
