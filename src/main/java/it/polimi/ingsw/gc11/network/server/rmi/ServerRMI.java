@@ -11,9 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Enumeration;
-import java.util.UUID;
-
+import java.util.*;
 
 
 /**
@@ -59,23 +57,33 @@ public class ServerRMI extends Server implements ServerInterface {
      * @return the local IP address as a string, or {@code "127.0.0.1"} if detection fails
      */
     private String getLocalIP() {
-        try{
-            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
-                NetworkInterface networkInterface = interfaces.nextElement();
+        try {
+            List<Inet4Address> candidates = new ArrayList<>();
 
-                if (networkInterface.isVirtual()) {
-                    continue;
-                }
+            for (NetworkInterface ni : Collections.list(
+                    NetworkInterface.getNetworkInterfaces())) {
 
-                for (Enumeration<InetAddress> addresses = networkInterface.getInetAddresses(); addresses.hasMoreElements();) {
-                    InetAddress address = addresses.nextElement();
-                    if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-                        return address.getHostAddress();
-                    }
+                if (!ni.isUp() || ni.isLoopback() || ni.isVirtual())
+                    continue;                      // es. vEthernet
+
+                for (InetAddress ia : Collections.list(ni.getInetAddresses())) {
+                    if (ia instanceof Inet4Address && !ia.isLoopbackAddress())
+                        candidates.add((Inet4Address) ia);
                 }
             }
-        } catch (SocketException ignored) {}
 
+            /* 1. Preferisce 192.168/10.* (Wi-Fi/Ethernet domestici).
+               2. Poi altre site-local.
+               3. Infine qualsiasi IPv4 trovata. */
+            for (Inet4Address a : candidates)
+                if (a.getHostAddress().startsWith("192.") ||
+                        a.getHostAddress().startsWith("10."))
+                    return a.getHostAddress();
+
+            if (!candidates.isEmpty())
+                return candidates.get(0).getHostAddress();
+
+        } catch (SocketException ignored) {}
         return "127.0.0.1";
     }
 
