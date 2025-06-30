@@ -207,7 +207,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
 
         state = State.ABANDONED_SHIP;
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, AbandonedStation card) {
@@ -248,7 +249,6 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
 
         slotGrid.getChildren().clear();
         setShipBoard();
-        update(adventurePhaseData);
     }
 
     public void initialize(Stage stage, CombatZoneLv1 card, int stageNum) {
@@ -270,13 +270,15 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
 
         state = State.COMBAT_ZONE_LV1;
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, CombatZoneLv2 card, int stageNum) {
         setup(stage);
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, Epidemic card) {
@@ -291,9 +293,10 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
             goBackToFlightMenu();
         });
 
-        state = State.ABANDONED_SHIP;
+        state = State.EPIDEMIC;
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, MeteorSwarm card) {
@@ -338,7 +341,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
             state = State.METEOR_SWARM_CANNONS;
         }
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, OpenSpace card) {
@@ -359,7 +363,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
 
         state = State.OPEN_SPACE;
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, Pirates card) {
@@ -449,7 +454,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
             }
         }
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, PlanetsCard card, int idx) {
@@ -493,7 +499,6 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
 
         slotGrid.getChildren().clear();
         setShipBoard();
-        update(adventurePhaseData);
     }
 
     public void initialize(Stage stage, Slavers card) {
@@ -541,7 +546,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
             state = State.SLAVERS_MEMBERS;
         }
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, Smugglers card) {
@@ -573,7 +579,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
 
         state = State.SMUGGLERS_CANNONS;
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
     public void initialize(Stage stage, StarDust card) {
@@ -590,7 +597,8 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
 
         state = State.STAR_DUST;
 
-        update(adventurePhaseData);
+        slotGrid.getChildren().clear();
+        setShipBoard();
     }
 
 
@@ -1290,11 +1298,6 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
                     adventurePhaseData.getHandleMessage().toLowerCase().equals("idlestate"))
             {
                 goBackToFlightMenu();
-            }
-
-            if(state != State.ABANDONED_STATION && state != State.PLANETS) {
-                slotGrid.getChildren().clear();
-                setShipBoard();
             }
 
             System.out.println("State: " + adventurePhaseData.getGUIState());

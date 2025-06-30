@@ -1300,12 +1300,6 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                 goBackToFlightMenu();
             }
 
-            if(state != State.ABANDONED_STATION && state != State.PLANETS) {
-                slotGrid.getChildren().clear();
-                setShipBoard();
-            }
-
-
             System.out.println("State: " + adventurePhaseData.getGUIState());
 
             if (adventurePhaseData.getGUIState() == AdventurePhaseData.AdventureStateGUI.ABANDONED_SHIP_2 ||
