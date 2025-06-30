@@ -57,33 +57,41 @@ public class ServerRMI extends Server implements ServerInterface {
      * @return the local IP address as a string, or {@code "127.0.0.1"} if detection fails
      */
     private String getLocalIP() {
+        List<String> badNames =
+                List.of("vEthernet", "wsl",          // Hyper-V / WSL
+                        "virtual", "vmware", "virtualbox");
+
         try {
-            List<Inet4Address> candidates = new ArrayList<>();
+            List<Inet4Address> good = new ArrayList<>();
 
             for (NetworkInterface ni : Collections.list(
                     NetworkInterface.getNetworkInterfaces())) {
 
-                if (!ni.isUp() || ni.isLoopback() || ni.isVirtual())
-                    continue;                      // es. vEthernet
+                if (!ni.isUp() || ni.isLoopback()) continue;
+
+                String dispName = ni.getDisplayName().toLowerCase();
+                if (badNames.stream().anyMatch(dispName::contains)) continue;
 
                 for (InetAddress ia : Collections.list(ni.getInetAddresses())) {
-                    if (ia instanceof Inet4Address && !ia.isLoopbackAddress())
-                        candidates.add((Inet4Address) ia);
+                    if (!(ia instanceof Inet4Address) ||
+                            ia.isLoopbackAddress()) continue;
+
+                    String ip = ia.getHostAddress();
+
+                    /* scarta il pool tipico di WSL 172.28.0.0/20 */
+                    if (ip.startsWith("172.28.")) continue;
+
+                    /* raccoglie solo indirizzi privati/site-local */
+                    if (ia.isSiteLocalAddress())
+                        good.add((Inet4Address) ia);
                 }
             }
 
-            /* 1. Preferisce 192.168/10.* (Wi-Fi/Ethernet domestici).
-               2. Poi altre site-local.
-               3. Infine qualsiasi IPv4 trovata. */
-            for (Inet4Address a : candidates)
-                if (a.getHostAddress().startsWith("192.") ||
-                        a.getHostAddress().startsWith("10."))
-                    return a.getHostAddress();
+            if (!good.isEmpty())
+                return good.get(0).getHostAddress();  // il primo valido
 
-            if (!candidates.isEmpty())
-                return candidates.get(0).getHostAddress();
+        } catch (SocketException ignored) { }
 
-        } catch (SocketException ignored) {}
         return "127.0.0.1";
     }
 
