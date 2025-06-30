@@ -128,6 +128,7 @@ public class SelectColorController extends Controller {
                     joiningPhaseData.setListener(controller);
                     controller.init(stage);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
 
                     System.out.println(joiningPhaseData.getUsername() + ": selected color " + availableColors.getValue());

@@ -67,6 +67,7 @@ public class CreateOrJoinController extends Controller {
                     joiningPhaseData.setListener(controller);
                     controller.init();
                     this.stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     this.stage.show();
 
                     System.out.println(joiningPhaseData.getUsername() + ": clicked on create a new match");
@@ -84,6 +85,7 @@ public class CreateOrJoinController extends Controller {
                     joiningPhaseData.setListener(controller);
                     controller.init(stage);
                     this.stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     this.stage.show();
 
 

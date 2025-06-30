@@ -97,6 +97,7 @@ public class CreateMatchController extends Controller {
                         Scene newScene = new Scene(fxmlLoader.load());
                         SelectColorController controller = fxmlLoader.getController();
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                         controller.setStage(this.stage);
                         joiningPhaseData.setListener(controller);
@@ -136,6 +137,7 @@ public class CreateMatchController extends Controller {
                     };
                     sleeper.setOnSucceeded(event -> {
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                     });
                     joiningPhaseData.setListener(controller);

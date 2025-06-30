@@ -843,6 +843,7 @@ public class BuildingLv2Controller extends Controller {
                     buildingPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 }
                 catch (IOException exc) {
@@ -865,6 +866,7 @@ public class BuildingLv2Controller extends Controller {
             buildingPhaseData.setListener(controller);
             controller.initialize(stage, index);
             stage.setScene(newScene);
+            stage.setFullScreen(true);
             stage.show();
         }
         catch (IOException exc) {
@@ -1030,6 +1032,7 @@ public class BuildingLv2Controller extends Controller {
                     checkPhaseData.setListener(controller);
                     controller.initialize(stage);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 } catch (Exception e) {
                     System.out.println("FXML Error: " + e.getMessage());
@@ -1045,6 +1048,7 @@ public class BuildingLv2Controller extends Controller {
                     adventurePhaseData.setListener(controller);
                     controller.initialize(stage);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 } catch (Exception e) {
                     System.out.println("FXML Error: " + e.getMessage());

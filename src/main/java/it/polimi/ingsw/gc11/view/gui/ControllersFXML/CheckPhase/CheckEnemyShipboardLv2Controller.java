@@ -134,6 +134,7 @@ public class CheckEnemyShipboardLv2Controller extends Controller {
             checkPhaseData.setListener(controller);
             controller.initialize(stage);
             stage.setScene(newScene);
+            stage.setFullScreen(true);
             stage.show();
         }
         catch (IOException e) {

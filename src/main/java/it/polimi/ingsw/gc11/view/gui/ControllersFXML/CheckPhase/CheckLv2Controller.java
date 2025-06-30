@@ -378,6 +378,7 @@ public class CheckLv2Controller extends Controller {
                     checkPhaseData.setListener(controller);
                     controller.initialize(stage, player);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 }
                 catch (IOException exc) {
@@ -425,6 +426,7 @@ public class CheckLv2Controller extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
             }
             catch (Exception e) {

@@ -1263,6 +1263,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
             adventurePhaseData.setListener(controller);
             controller.initialize(stage);
             stage.setScene(newScene);
+            stage.setFullScreen(true);
             stage.show();
         } catch (Exception e) {
             System.out.println("FXML Error: " + e.getMessage());
@@ -1371,6 +1372,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     adventurePhaseData.setListener(controller);
                     controller.initialize(stage);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 } catch (Exception e) {
                     System.out.println("FXML Error: " + e.getMessage());
@@ -1415,6 +1417,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     adventurePhaseData.setListener(controller);
                     controller.initialize(stage);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -1429,6 +1432,7 @@ public class AdvShipBoardHandleLv1Controller extends Controller {
                     adventurePhaseData.setListener(controller);
                     controller.initialize(stage);
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 } catch (IOException e) {
                     throw new RuntimeException(e);

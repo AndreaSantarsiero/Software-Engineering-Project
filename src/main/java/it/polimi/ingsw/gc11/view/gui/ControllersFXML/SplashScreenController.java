@@ -42,6 +42,7 @@ public class SplashScreenController extends Controller {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/IdlePhase/SelectNetwork.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load());
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                     joiningPhaseData.setListener(fxmlLoader.getController());
                 }

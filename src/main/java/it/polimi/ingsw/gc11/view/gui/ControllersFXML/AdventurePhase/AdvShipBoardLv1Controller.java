@@ -244,6 +244,7 @@ public class AdvShipBoardLv1Controller extends Controller {
             adventurePhaseData.setListener(controller);
             controller.initialize(stage);
             stage.setScene(newScene);
+            stage.setFullScreen(true);
             stage.show();
         }
         catch (IOException e) {

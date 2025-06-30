@@ -93,6 +93,7 @@ public class LobbyController extends Controller {
                         buildingPhaseData.setListener(controller);
                         controller.initialize(stage);
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                         break;
                     }
@@ -103,6 +104,7 @@ public class LobbyController extends Controller {
                         buildingPhaseData.setListener(controller);
                         controller.initialize(stage);
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                         break;
                     } else {

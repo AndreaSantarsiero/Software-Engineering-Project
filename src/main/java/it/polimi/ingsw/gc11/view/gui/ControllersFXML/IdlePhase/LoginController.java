@@ -98,6 +98,7 @@ public class LoginController extends Controller {
                         };
                         sleeper.setOnSucceeded(event -> {
                             stage.setScene(newScene);
+                            stage.setFullScreen(true);
                             stage.show();
                         });
                         new Thread(sleeper).start();

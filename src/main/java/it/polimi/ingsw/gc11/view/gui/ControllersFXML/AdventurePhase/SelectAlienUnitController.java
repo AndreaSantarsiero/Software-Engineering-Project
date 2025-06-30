@@ -408,6 +408,7 @@ public class SelectAlienUnitController extends Controller {
                         adventurePhaseData.setListener(controller);
                         controller.initialize(stage);
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                     }
                     else if (adventurePhaseData.getFlightBoard().getType() == FlightBoard.Type.LEVEL2){
@@ -418,6 +419,7 @@ public class SelectAlienUnitController extends Controller {
                         adventurePhaseData.setListener(controller);
                         controller.initialize(stage);
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                     }
 

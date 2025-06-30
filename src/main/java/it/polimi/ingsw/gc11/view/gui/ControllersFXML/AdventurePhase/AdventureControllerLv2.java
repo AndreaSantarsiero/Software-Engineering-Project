@@ -208,6 +208,7 @@ public class AdventureControllerLv2 extends Controller {
                     adventurePhaseData.setListener(controller);
                     controller.initialize(stage, player.getUsername());
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                 }
                 catch (IOException exc) {
@@ -451,6 +452,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
             }
             catch (Exception e) {
@@ -486,6 +488,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
 
             }
@@ -523,6 +526,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
             }
             catch (Exception e) {
@@ -542,6 +546,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card, 0); //STAGE NUM DA DEFINIRE DINAMICAMENTE (0 TEMPORANEO)
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
             }
             catch (Exception e) {
@@ -561,6 +566,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
 
             }
@@ -581,6 +587,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
@@ -599,6 +606,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
 
             }
@@ -620,6 +628,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
 
             } catch (Exception e) {
@@ -645,6 +654,7 @@ public class AdventureControllerLv2 extends Controller {
 
                 Scene scene = new Scene(root, 1280, 720);
                 stage.setScene(scene);
+                stage.setFullScreen(true);
                 stage.show();
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
@@ -680,6 +690,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
 
             } catch (Exception e) {
@@ -699,6 +710,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
 
             } catch (Exception e) {
@@ -718,6 +730,7 @@ public class AdventureControllerLv2 extends Controller {
                 adventurePhaseData.setListener(controller);
                 controller.initialize(stage, card);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
 
             }
@@ -741,6 +754,7 @@ public class AdventureControllerLv2 extends Controller {
                 endPhaseData.setListener(controller);
                 controller.init(stage);
                 stage.setScene(newScene);
+                stage.setFullScreen(true);
                 stage.show();
             }
             catch (Exception e) {
