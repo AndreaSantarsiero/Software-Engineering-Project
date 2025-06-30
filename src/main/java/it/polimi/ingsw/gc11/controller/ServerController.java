@@ -80,7 +80,7 @@ public class ServerController {
                     for (ClientSession clientSession : playerSessions.values()) {
                         if(Duration.between(clientSession.getLastPingInstant(), Instant.now()).toMillis() > connectionTimeout) {
                             GameContext context = clientSession.getVirtualClient().getGameContext();
-                            if(context != null) {
+                            if(context != null && !context.getPhase().isEndGamePhase()) {
                                 context.abortMatch();
                             }
                         }
