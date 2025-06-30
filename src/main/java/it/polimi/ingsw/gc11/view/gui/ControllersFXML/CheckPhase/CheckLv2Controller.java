@@ -7,8 +7,10 @@ import it.polimi.ingsw.gc11.model.shipcard.ShipCard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.CheckPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.EndPhaseData;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv2;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.SelectAlienUnitController;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EndGamePhase.EndGameController;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -415,24 +417,39 @@ public class CheckLv2Controller extends Controller {
     @Override
     public void change() {
         Platform.runLater(() -> {
-
             ViewModel viewModel = (ViewModel) stage.getUserData();
-            AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
-                        .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/SelectAlienUnit.fxml"));
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                SelectAlienUnitController controller = fxmlLoader.getController();
-                adventurePhaseData.setListener(controller);
-                controller.initialize(stage);
-                stage.setScene(newScene);
-                stage.setFullScreen(true);
-                stage.show();
+            if ( viewModel.getPlayerContext().getCurrentPhase().isEndPhase() ){
+                EndPhaseData endPhaseData = (EndPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
+                            .getResource("/it/polimi/ingsw/gc11/gui/EndGamePhase/Endgame.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EndGameController controller = fxmlLoader.getController();
+                    endPhaseData.setListener(controller);
+                    controller.init(stage);
+                    stage.setScene(newScene);
+                    stage.setFullScreen(true);
+                    stage.show();
+                }
+                catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }else {
+                AdventurePhaseData adventurePhaseData = (AdventurePhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
+                            .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/SelectAlienUnit.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    SelectAlienUnitController controller = fxmlLoader.getController();
+                    adventurePhaseData.setListener(controller);
+                    controller.initialize(stage);
+                    stage.setScene(newScene);
+                    stage.setFullScreen(true);
+                    stage.show();
+                } catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
             }
-            catch (Exception e) {
-                System.out.println("FXML Error: " + e.getMessage());
-            }
-
         });
 
 

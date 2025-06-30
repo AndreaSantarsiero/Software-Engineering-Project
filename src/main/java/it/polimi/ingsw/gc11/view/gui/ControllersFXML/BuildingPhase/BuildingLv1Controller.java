@@ -9,6 +9,8 @@ import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureCon
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.AdventureControllerLv2;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.AdventurePhase.SelectAlienUnitController;
 import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv1Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.CheckPhase.CheckLv2Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EndGamePhase.EndGameController;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -919,15 +921,31 @@ public class BuildingLv1Controller extends Controller {
     @Override
     public void change() {
         Platform.runLater(() -> {
-
             ViewModel viewModel = (ViewModel) stage.getUserData();
             GamePhaseData gamePhaseData = viewModel.getPlayerContext().getCurrentPhase();
-            if (gamePhaseData.isCheckPhase()) {
+            if ( gamePhaseData.isEndPhase() ){
+                EndPhaseData endPhaseData = (EndPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
+                            .getResource("/it/polimi/ingsw/gc11/gui/EndGamePhase/Endgame.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EndGameController controller = fxmlLoader.getController();
+                    endPhaseData.setListener(controller);
+                    controller.init(stage);
+                    stage.setScene(newScene);
+                    stage.setFullScreen(true);
+                    stage.show();
+                }
+                catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }
+            else if (gamePhaseData.isCheckPhase()) {
                 CheckPhaseData checkPhaseData = (CheckPhaseData) viewModel.getPlayerContext().getCurrentPhase();
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckLV1.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class.getResource("/it/polimi/ingsw/gc11/gui/CheckPhase/CheckLV2.fxml"));
                     Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                    CheckLv1Controller controller = fxmlLoader.getController();
+                    CheckLv2Controller controller = fxmlLoader.getController();
                     checkPhaseData.setListener(controller);
                     controller.initialize(stage);
                     stage.setScene(newScene);

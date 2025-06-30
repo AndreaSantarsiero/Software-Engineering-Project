@@ -10,6 +10,8 @@ import it.polimi.ingsw.gc11.model.shipcard.*;
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.EndPhaseData;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EndGamePhase.EndGameController;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -1444,7 +1446,29 @@ public class AdvShipBoardHandleLv2Controller extends Controller {
         });
     }
 
-
+    @Override
+    public void change() {
+        Platform.runLater(() -> {
+            ViewModel viewModel = (ViewModel) stage.getUserData();
+            if ( viewModel.getPlayerContext().getCurrentPhase().isEndPhase() ){
+                EndPhaseData endPhaseData = (EndPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
+                            .getResource("/it/polimi/ingsw/gc11/gui/EndGamePhase/Endgame.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EndGameController controller = fxmlLoader.getController();
+                    endPhaseData.setListener(controller);
+                    controller.init(stage);
+                    stage.setScene(newScene);
+                    stage.setFullScreen(true);
+                    stage.show();
+                }
+                catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }
+        });
+    }
 
 
     private void printDetails(ShipCard shipCard, StackPane stack) {
