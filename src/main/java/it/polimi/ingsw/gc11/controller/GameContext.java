@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gc11.controller;
 
+import it.polimi.ingsw.gc11.action.client.SetEndGameAction;
 import it.polimi.ingsw.gc11.controller.State.*;
 import it.polimi.ingsw.gc11.action.client.ServerAction;
 import it.polimi.ingsw.gc11.action.server.GameContext.ClientGameAction;
@@ -661,5 +662,26 @@ public class GameContext {
 
 
         this.getGameModel().setTestDeck(testDeck);
+    }
+
+
+
+    /**
+     * In case a player lose his connection, the match is interrupted
+     */
+    public void abortMatch() {
+        setPhase(new EndGamePhase(this));
+
+        Map<String, Player> enemies = new HashMap<>();
+        for (Player player : this.gameModel.getPlayersNotAbort()) {
+            enemies.put(player.getUsername(), player);
+        }
+
+        for (Player player : gameModel.getPlayersNotAbort()) {
+            enemies.remove(player.getUsername());
+            SetEndGameAction send = new SetEndGameAction(player, enemies);
+            sendAction(player.getUsername(), send);
+            enemies.put(player.getUsername(), player);
+        }
     }
 }
