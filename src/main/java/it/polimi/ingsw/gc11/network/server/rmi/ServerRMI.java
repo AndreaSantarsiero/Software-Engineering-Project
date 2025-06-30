@@ -57,8 +57,7 @@ public class ServerRMI extends Server implements ServerInterface {
      * @return the local IP address as a string, or {@code "127.0.0.1"} if detection fails
      */
     private String getLocalIP() {
-        List<String> badNames =
-                List.of("vEthernet", "wsl", "virtual", "vmware", "virtualbox");
+        List<String> badNames = List.of("vEthernet", "wsl", "virtual", "vmware", "virtualbox");
 
         try {
             List<Inet4Address> good = new ArrayList<>();
