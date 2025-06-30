@@ -1,13 +1,15 @@
 package it.polimi.ingsw.gc11.view.cli.templates;
 
+import it.polimi.ingsw.gc11.model.Player;
 import it.polimi.ingsw.gc11.view.EndPhaseData;
 import it.polimi.ingsw.gc11.view.cli.controllers.EndController;
+import java.util.Map;
 
 
 
 public class EndTemplate extends CLITemplate {
 
-    private EndController controller;
+    private final EndController controller;
 
 
 
@@ -23,6 +25,10 @@ public class EndTemplate extends CLITemplate {
         }
 
         EndPhaseData data = controller.getPhaseData();
+        Player player = data.getPlayer();
+        Map<String, Player> enemies = data.getEnemies();
+
+
         System.out.println("\n\n");
         System.out.println(" _______  _______  _        _______                     _________ _______           _______  _        _______  _______ ");
         System.out.println("(  ____ \\(  ___  )( \\      (  ___  )|\\     /||\\     /|  \\__   __/(  ____ )|\\     /|(  ____ \\| \\    /\\(  ____ \\(  ____ )");
@@ -34,5 +40,10 @@ public class EndTemplate extends CLITemplate {
         System.out.println("(_______)|/     \\|(_______/|/     \\||/     \\|   \\_/        )_(   |/   \\__/(_______)(_______/|_/    \\/(_______/|/   \\__/");
         System.out.println("\n\n");
         System.out.println("Game over!");
+        System.out.println("\n\n");
+        System.out.println("- Your score: " + player.getCoins());
+        for (Map.Entry<String, Player> entry : enemies.entrySet()) {
+            System.out.println("- " + entry.getKey() + "'s score: " + entry.getValue().getCoins());
+        }
     }
 }
