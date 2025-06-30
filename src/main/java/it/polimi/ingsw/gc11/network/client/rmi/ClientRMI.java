@@ -15,7 +15,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 
 
 /**
@@ -50,22 +53,40 @@ public class ClientRMI extends Client implements ClientInterface {
 
 
     private String getLocalIP() {
-        try{
-            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
-                NetworkInterface networkInterface = interfaces.nextElement();
+        List<String> badNames =
+                List.of("vEthernet", "wsl",          // Hyper-V / WSL
+                        "virtual", "vmware", "virtualbox");
 
-                if (networkInterface.isVirtual()) {
-                    continue;
-                }
+        try {
+            List<Inet4Address> good = new ArrayList<>();
 
-                for (Enumeration<InetAddress> addresses = networkInterface.getInetAddresses(); addresses.hasMoreElements();) {
-                    InetAddress address = addresses.nextElement();
-                    if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-                        return address.getHostAddress();
-                    }
+            for (NetworkInterface ni : Collections.list(
+                    NetworkInterface.getNetworkInterfaces())) {
+
+                if (!ni.isUp() || ni.isLoopback()) continue;
+
+                String dispName = ni.getDisplayName().toLowerCase();
+                if (badNames.stream().anyMatch(dispName::contains)) continue;
+
+                for (InetAddress ia : Collections.list(ni.getInetAddresses())) {
+                    if (!(ia instanceof Inet4Address) ||
+                            ia.isLoopbackAddress()) continue;
+
+                    String ip = ia.getHostAddress();
+
+                    /* scarta il pool tipico di WSL 172.28.0.0/20 */
+                    if (ip.startsWith("172.28.")) continue;
+
+                    /* raccoglie solo indirizzi privati/site-local */
+                    if (ia.isSiteLocalAddress())
+                        good.add((Inet4Address) ia);
                 }
             }
-        } catch (SocketException ignored) {}
+
+            if (!good.isEmpty())
+                return good.get(0).getHostAddress();  // il primo valido
+
+        } catch (SocketException ignored) { }
 
         return "127.0.0.1";
     }

@@ -30,6 +30,7 @@ public class SendMaterialsAction extends ServerAction {
     @Override
     public void loadData(AdventurePhaseData adventurePhaseData) {
         adventurePhaseData.setMaterialsBuffer(materialsBuffer);
+        adventurePhaseData.updateGUIState();
     }
 
     @Override

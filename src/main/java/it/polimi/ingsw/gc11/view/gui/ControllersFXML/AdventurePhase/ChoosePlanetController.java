@@ -78,19 +78,21 @@ public class ChoosePlanetController extends Controller {
     }
 
     public void populatePlanetButtons() {
+        List<Planet> planets = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getPlanets();
         List<Planet> freePlanets = ((PlanetsCard) adventurePhaseData.getAdventureCard()).getFreePlanets();
 
-        for (int idx = 0; idx < freePlanets.size(); idx++) {
-            Planet planet = freePlanets.get(idx);
-            Button btn = new Button("Pianeta " + (idx + 1));
+        for (int idx = 0; idx < planets.size(); idx++) {
+            if (freePlanets.contains(planets.get(idx))) {
+                Button btn = new Button("Pianeta " + (idx + 1));
 
-            btn.setMaxWidth(Double.MAX_VALUE);
-            VBox.setVgrow(btn, Priority.ALWAYS);
+                btn.setMaxWidth(Double.MAX_VALUE);
+                VBox.setVgrow(btn, Priority.ALWAYS);
 
-            int finalIdx = idx;
-            btn.setOnAction(e -> handleLandOn(finalIdx));
+                int finalIdx = idx;
+                btn.setOnAction(e -> handleLandOn(finalIdx));
 
-            landOnButtons.getChildren().add(btn);
+                landOnButtons.getChildren().add(btn);
+            }
         }
     }
 
@@ -187,6 +189,8 @@ public class ChoosePlanetController extends Controller {
             if(serverMessage != null && !serverMessage.isEmpty()) {
                 System.out.println("Error:  " + adventurePhaseData.getServerMessage());
 
+                cards.getChildren().clear();
+                landOnButtons.getChildren().clear();
                 initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard());
 
                 this.setErrorLabel();

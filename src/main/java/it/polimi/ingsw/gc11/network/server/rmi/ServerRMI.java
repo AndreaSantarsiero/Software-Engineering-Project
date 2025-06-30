@@ -11,9 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Enumeration;
-import java.util.UUID;
-
+import java.util.*;
 
 
 /**
@@ -59,22 +57,35 @@ public class ServerRMI extends Server implements ServerInterface {
      * @return the local IP address as a string, or {@code "127.0.0.1"} if detection fails
      */
     private String getLocalIP() {
-        try{
-            for (Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements();) {
-                NetworkInterface networkInterface = interfaces.nextElement();
+        List<String> badNames = List.of("vEthernet", "wsl", "virtual", "vmware", "virtualbox");
 
-                if (networkInterface.isVirtual()) {
-                    continue;
-                }
+        try {
+            List<Inet4Address> good = new ArrayList<>();
 
-                for (Enumeration<InetAddress> addresses = networkInterface.getInetAddresses(); addresses.hasMoreElements();) {
-                    InetAddress address = addresses.nextElement();
-                    if (!address.isLoopbackAddress() && address instanceof Inet4Address) {
-                        return address.getHostAddress();
-                    }
+            for (NetworkInterface ni : Collections.list(
+                    NetworkInterface.getNetworkInterfaces())) {
+
+                if (!ni.isUp() || ni.isLoopback()) continue;
+
+                String dispName = ni.getDisplayName().toLowerCase();
+                if (badNames.stream().anyMatch(dispName::contains)) continue;
+
+                for (InetAddress ia : Collections.list(ni.getInetAddresses())) {
+                    if (!(ia instanceof Inet4Address) ||
+                            ia.isLoopbackAddress()) continue;
+
+                    String ip = ia.getHostAddress();
+
+                    /* raccoglie solo indirizzi privati/site-local */
+                    if (ia.isSiteLocalAddress())
+                        good.add((Inet4Address) ia);
                 }
             }
-        } catch (SocketException ignored) {}
+
+            if (!good.isEmpty())
+                return good.get(0).getHostAddress();  // il primo valido
+
+        } catch (SocketException ignored) { }
 
         return "127.0.0.1";
     }
