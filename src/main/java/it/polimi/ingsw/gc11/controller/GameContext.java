@@ -680,7 +680,11 @@ public class GameContext {
         for (Player player : gameModel.getPlayersNotAbort()) {
             enemies.remove(player.getUsername());
             SetEndGameAction send = new SetEndGameAction(player, enemies);
-            sendAction(player.getUsername(), send);
+
+            try{
+                sendAction(player.getUsername(), send);
+            } catch (Exception ignored) {}
+
             enemies.put(player.getUsername(), player);
         }
     }
