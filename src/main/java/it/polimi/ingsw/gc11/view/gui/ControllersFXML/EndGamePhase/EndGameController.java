@@ -33,8 +33,20 @@ public class EndGameController extends Controller {
         VirtualServer virtualServer = viewModel.getVirtualServer();
         this.data = (EndPhaseData) viewModel.getPlayerContext().getCurrentPhase();
 
+        Label label = new Label("- Your score: " + data.getPlayer().getCoins());
+        label.setTextFill(Color.WHITE);
+        label.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
+
+        pointText.setAlignment(Pos.CENTER);
+        pointText.setPrefWidth(Double.MAX_VALUE);
+        HBox.setHgrow(label, Priority.ALWAYS);
+        label.setMaxWidth(Double.MAX_VALUE);
+        label.setAlignment(Pos.CENTER);
+
+        pointText.getChildren().add(label);
+
         for (Map.Entry<String, Player> entry : data.getEnemies().entrySet()) {
-            Label label = new Label("- " + entry.getKey() + "'s score: " + entry.getValue().getCoins());
+            label = new Label("- " + entry.getKey() + "'s score: " + entry.getValue().getCoins());
             label.setTextFill(Color.WHITE);
             label.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
 
