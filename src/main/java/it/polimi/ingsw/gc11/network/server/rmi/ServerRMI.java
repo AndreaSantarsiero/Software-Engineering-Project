@@ -58,8 +58,7 @@ public class ServerRMI extends Server implements ServerInterface {
      */
     private String getLocalIP() {
         List<String> badNames =
-                List.of("vEthernet", "wsl",          // Hyper-V / WSL
-                        "virtual", "vmware", "virtualbox");
+                List.of("vEthernet", "wsl", "virtual", "vmware", "virtualbox");
 
         try {
             List<Inet4Address> good = new ArrayList<>();
@@ -77,9 +76,6 @@ public class ServerRMI extends Server implements ServerInterface {
                             ia.isLoopbackAddress()) continue;
 
                     String ip = ia.getHostAddress();
-
-                    /* scarta il pool tipico di WSL 172.28.0.0/20 */
-                    if (ip.startsWith("172.28.")) continue;
 
                     /* raccoglie solo indirizzi privati/site-local */
                     if (ia.isSiteLocalAddress())
