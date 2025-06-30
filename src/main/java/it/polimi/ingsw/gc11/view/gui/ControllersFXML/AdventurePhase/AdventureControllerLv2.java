@@ -748,7 +748,7 @@ public class AdventureControllerLv2 extends Controller {
             EndPhaseData endPhaseData = (EndPhaseData) viewModel.getPlayerContext().getCurrentPhase();
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
-                        .getResource("/it/polimi/ingsw/gc11/gui/AdventurePhase/Endgame.fxml"));
+                        .getResource("/it/polimi/ingsw/gc11/gui/EndGamePhase/Endgame.fxml"));
                 Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
                 EndGameController controller = fxmlLoader.getController();
                 endPhaseData.setListener(controller);
