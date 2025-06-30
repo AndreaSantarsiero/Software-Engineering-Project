@@ -242,7 +242,7 @@ public class AdventureControllerLv1 extends Controller {
         allPlayers.addAll(adventurePhaseData.getEnemies().values());
 
         for(Player player : allPlayers) {
-            int position = player.getPosition();
+            int position = Math.floorMod(player.getPosition(), adventurePhaseData.getFlightBoard().getLength());
             Rectangle positionRect = switch (position) {
                 case 0 -> pos0;
                 case 1 -> pos1;
