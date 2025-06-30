@@ -68,6 +68,8 @@ public class PiratesController extends Controller {
         setCard();
 
         adventurePhaseData.setHandleMessage(null);
+
+        update(adventurePhaseData);
     }
 
     public void setCard(){
