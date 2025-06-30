@@ -21,7 +21,7 @@
                 <Insets />
             </VBox.margin>
         </HBox>
-        <HBox fx:id="pointText" styleClass="Text">
+        <HBox fx:id="pointText" styleClass="Text2">
 
         </HBox>
 
