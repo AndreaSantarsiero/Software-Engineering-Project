@@ -1,8 +1,10 @@
 package it.polimi.ingsw.gc11.view.gui.ControllersFXML.IdlePhase;
 
 import it.polimi.ingsw.gc11.network.client.VirtualServer;
+import it.polimi.ingsw.gc11.view.EndPhaseData;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EndGamePhase.EndGameController;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -132,6 +134,7 @@ public class JoinMatchController extends Controller {
                     Scene newScene = new Scene(fxmlLoader.load());
                     SelectColorController controller = fxmlLoader.getController();
                     stage.setScene(newScene);
+                    stage.setFullScreen(true);
                     stage.show();
                     joiningPhaseData.setListener(controller);
                     controller.setStage(this.stage);
@@ -169,6 +172,7 @@ public class JoinMatchController extends Controller {
                     };
                     sleeper.setOnSucceeded(event -> {
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                     });
                     joiningPhaseData.setListener(controller);
@@ -179,6 +183,30 @@ public class JoinMatchController extends Controller {
                 }
             }
 
+        });
+    }
+
+    @Override
+    public void change() {
+        Platform.runLater(() -> {
+            ViewModel viewModel = (ViewModel) stage.getUserData();
+            if ( viewModel.getPlayerContext().getCurrentPhase().isEndPhase() ){
+                EndPhaseData endPhaseData = (EndPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
+                            .getResource("/it/polimi/ingsw/gc11/gui/EndGamePhase/Endgame.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EndGameController controller = fxmlLoader.getController();
+                    endPhaseData.setListener(controller);
+                    controller.init(stage);
+                    stage.setScene(newScene);
+                    stage.setFullScreen(true);
+                    stage.show();
+                }
+                catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }
         });
     }
 

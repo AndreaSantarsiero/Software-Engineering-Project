@@ -8,6 +8,8 @@ import it.polimi.ingsw.gc11.model.Planet;
 import it.polimi.ingsw.gc11.model.adventurecard.PlanetsCard;
 import it.polimi.ingsw.gc11.view.AdventurePhaseData;
 import it.polimi.ingsw.gc11.view.Controller;
+import it.polimi.ingsw.gc11.view.EndPhaseData;
+import it.polimi.ingsw.gc11.view.gui.ControllersFXML.EndGamePhase.EndGameController;
 import it.polimi.ingsw.gc11.view.gui.MainGUI;
 import it.polimi.ingsw.gc11.view.gui.ViewModel;
 import javafx.application.Platform;
@@ -135,6 +137,7 @@ public class ChoosePlanetController extends Controller {
             adventurePhaseData.setListener(controller);
             controller.initialize(stage);
             stage.setScene(newScene);
+            stage.setFullScreen(true);
             stage.show();
         } catch (Exception e) {
             System.out.println("FXML Error: " + e.getMessage());
@@ -165,6 +168,7 @@ public class ChoosePlanetController extends Controller {
                         adventurePhaseData.setListener(controller);
                         controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                     } catch (Exception e) {
                         System.out.println("FXML Error: " + e.getMessage());
@@ -177,6 +181,7 @@ public class ChoosePlanetController extends Controller {
                         adventurePhaseData.setListener(controller);
                         controller.initialize(stage, (PlanetsCard) adventurePhaseData.getAdventureCard(), idx);
                         stage.setScene(newScene);
+                        stage.setFullScreen(true);
                         stage.show();
                     } catch (Exception e) {
                         System.out.println("FXML Error: " + e.getMessage());
@@ -197,6 +202,30 @@ public class ChoosePlanetController extends Controller {
                 adventurePhaseData.resetServerMessage();
             }
 
+        });
+    }
+
+    @Override
+    public void change() {
+        Platform.runLater(() -> {
+            ViewModel viewModel = (ViewModel) stage.getUserData();
+            if ( viewModel.getPlayerContext().getCurrentPhase().isEndPhase() ){
+                EndPhaseData endPhaseData = (EndPhaseData) viewModel.getPlayerContext().getCurrentPhase();
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainGUI.class
+                            .getResource("/it/polimi/ingsw/gc11/gui/EndGamePhase/Endgame.fxml"));
+                    Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
+                    EndGameController controller = fxmlLoader.getController();
+                    endPhaseData.setListener(controller);
+                    controller.init(stage);
+                    stage.setScene(newScene);
+                    stage.setFullScreen(true);
+                    stage.show();
+                }
+                catch (Exception e) {
+                    System.out.println("FXML Error: " + e.getMessage());
+                }
+            }
         });
     }
 }

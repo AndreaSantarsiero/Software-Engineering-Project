@@ -44,6 +44,7 @@ public class MainGUI extends Application {
 
         //stage.setFullScreen(true);
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 }
