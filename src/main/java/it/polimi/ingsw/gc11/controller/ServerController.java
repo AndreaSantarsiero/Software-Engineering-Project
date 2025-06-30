@@ -79,9 +79,9 @@ public class ServerController {
                     Thread.sleep(connectionTimeout/6);
                     for (ClientSession clientSession : playerSessions.values()) {
                         if(Duration.between(clientSession.getLastPingInstant(), Instant.now()).toMillis() > connectionTimeout) {
-                            GameContext contect = clientSession.getVirtualClient().getGameContext();
-                            if(contect != null) {
-                                contect.abortFlight(clientSession.getUsername());
+                            GameContext context = clientSession.getVirtualClient().getGameContext();
+                            if(context != null) {
+                                context.abortMatch();
                             }
                         }
                     }
