@@ -581,19 +581,26 @@ public class AdventureControllerLv2 extends Controller {
         handleButton.setOnAction(mouseEvent -> {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(handleFXML);
-                Scene newScene = new Scene(fxmlLoader.load(), 1280, 720);
-                AdvShipBoardHandleLv2Controller controller = fxmlLoader.getController();
+                URL url = getClass().getResource(
+                        "/it/polimi/ingsw/gc11/gui/AdventurePhase/ChoosePlanet.fxml");
+                Objects.requireNonNull(url, "FXML non trovato!");
+
+                FXMLLoader loader = new FXMLLoader(url);
+                Parent root = loader.load();
+
+                MeteorsController controller = loader.getController();
+                controller.initialize(stage);
                 adventurePhaseData.setListener(controller);
-                controller.initialize(stage, card);
-                stage.setScene(newScene);
+
+                Scene scene = new Scene(root, 1280, 720);
+                stage.setScene(scene);
                 stage.setFullScreen(true);
                 stage.show();
             } catch (Exception e) {
                 System.out.println("FXML Error: " + e.getMessage());
             }
         });
-    }//manca stati
+    }
 
     private void handle(OpenSpace card) {
         setupHandle();
