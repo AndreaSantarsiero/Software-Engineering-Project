@@ -29,6 +29,7 @@ public class EndTemplate extends CLITemplate {
         Map<String, Player> enemies = data.getEnemies();
 
 
+        clearView();
         System.out.println("\n\n");
         System.out.println(" _______  _______  _        _______                     _________ _______           _______  _        _______  _______ ");
         System.out.println("(  ____ \\(  ___  )( \\      (  ___  )|\\     /||\\     /|  \\__   __/(  ____ )|\\     /|(  ____ \\| \\    /\\(  ____ \\(  ____ )");
