@@ -96,7 +96,7 @@ public class MainCLI {
         boolean defaultAddress = false;
         int pingInterval;
 
-        try (InputStream input = ServerMAIN.class.getClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream input = MainCLI.class.getClassLoader().getResourceAsStream("config.properties")) {
             Properties prop = new Properties();
             prop.load(input);
             pingInterval = Integer.parseInt(prop.getProperty("pingInterval"));

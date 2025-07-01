@@ -5,8 +5,8 @@ import it.polimi.ingsw.gc11.network.client.VirtualServer;
 import it.polimi.ingsw.gc11.exceptions.NetworkException;
 import it.polimi.ingsw.gc11.view.JoiningPhaseData;
 import it.polimi.ingsw.gc11.view.PlayerContext;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 
@@ -41,8 +41,8 @@ public class ViewModel {
     public void setRMIVirtualServer() throws NetworkException {
 
         Properties config = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
-            config.load(fis);
+        try (InputStream input = ViewModel.class.getClassLoader().getResourceAsStream("config.properties")) {
+            config.load(input);
 
             // Reading client configuration
             if(serverIp == null) {
@@ -66,8 +66,8 @@ public class ViewModel {
     public void setSOCKETVirtualServer() throws NetworkException {
 
         Properties config = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/config.properties")) {
-            config.load(fis);
+        try (InputStream input = ViewModel.class.getClassLoader().getResourceAsStream("config.properties")) {
+            config.load(input);
 
             // Reading client configuration
             if(serverIp == null) {
