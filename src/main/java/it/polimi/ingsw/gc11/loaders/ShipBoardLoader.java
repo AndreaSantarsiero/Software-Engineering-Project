@@ -132,6 +132,7 @@ public class ShipBoardLoader {
 
                     ShipCard shipCard = shipCardLoader.getShipCard(id);
                     if (shipCard != null) {
+                        shipCard.discover();
                         shipBoard.reserveShipCard(shipCard);
                     }
                     else {
