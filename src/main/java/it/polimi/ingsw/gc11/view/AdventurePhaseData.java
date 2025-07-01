@@ -350,9 +350,7 @@ public class AdventurePhaseData extends GamePhaseData {
     }
 
     public void setMaterialsBuffer(List<Material> materialsBuffer){
-        actualizePreviousState();
         this.materialsBuffer.addAll(materialsBuffer);
-        notifyListener();
     }
 
 
