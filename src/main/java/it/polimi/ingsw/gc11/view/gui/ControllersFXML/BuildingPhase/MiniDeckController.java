@@ -65,6 +65,9 @@ public class MiniDeckController extends Controller {
         catch (NetworkException e) {
             System.out.println("Network Error:  " + e.getMessage());
         }
+
+        cards.getChildren().clear();
+        setCards();
     }
 
     @FXML
