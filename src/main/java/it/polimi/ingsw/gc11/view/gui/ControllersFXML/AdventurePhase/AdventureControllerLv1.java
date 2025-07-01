@@ -576,7 +576,7 @@ public class AdventureControllerLv1 extends Controller {
             adventurePhaseData.setGUIState(AdventurePhaseData.AdventureStateGUI.HANDLE_CARD_MENU);
             try {
                 URL url = getClass().getResource(
-                        "/it/polimi/ingsw/gc11/gui/AdventurePhase/ChoosePlanet.fxml");
+                        "/it/polimi/ingsw/gc11/gui/AdventurePhase/Meteors.fxml");
                 Objects.requireNonNull(url, "FXML non trovato!");
 
                 FXMLLoader loader = new FXMLLoader(url);

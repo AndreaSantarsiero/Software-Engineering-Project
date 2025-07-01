@@ -560,6 +560,16 @@ public class GameContext {
         AdventureDeck testDeck = new AdventureDeck(false);
 
         testDeck.addCard(
+                new MeteorSwarm("TrialMeteorSwarm", AdventureCard.Type.TRIAL,
+                        new ArrayList<Meteor>(List.of(
+                            new Meteor(Hit.Type.BIG, Hit.Direction.TOP),
+                            new Meteor(Hit.Type.SMALL, Hit.Direction.LEFT),
+                            new Meteor(Hit.Type.SMALL, Hit.Direction.RIGHT)
+                        ))
+                )
+        );
+
+        testDeck.addCard(
                 new PlanetsCard(
                         "TrialPlanets",
                         AdventureCard.Type.TRIAL,
