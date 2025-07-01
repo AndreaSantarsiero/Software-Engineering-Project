@@ -154,6 +154,7 @@ public class PiratesController extends Controller {
                 }
                 if(adventurePhaseData.getNewHit() == true){
                     adventurePhaseData.resetYouWon();
+                    subHeader.getChildren().clear();
                     subHeader.getChildren().add(
                             new Button("roll dices") {{
                                 getStyleClass().add("Text");
