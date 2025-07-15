@@ -1,6 +1,7 @@
 # Galaxy Trucker - Software Engineering Project  
 
 Galaxy Trucker is a board game where players take on the role of space truckers who build and pilot spaceships through dangerous intergalactic space. The game unfolds in several phases: ship construction, spaceflight, and managing challenges encountered along the way.  
+This project was developed as part of the Software Engineering course exam and received a final grade of 30/30.
 
 ---  
 
