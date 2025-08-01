@@ -55,6 +55,8 @@ example adventure phase:
 - Modular design allows mocking and isolated testing
 - Build and test automation handled by Maven and the Surefire plugin
 
+![TUI](docs/Coverage.png)
+
 ---
 
 ## 🚀 Key Features
