@@ -6,7 +6,7 @@ Final grade: **30/30**.
 
 ---
 
-## 🛠️ Technologies & Architecture
+## Technologies & Architecture
 
 ### Language & Tooling
 - Java 22
@@ -30,9 +30,7 @@ Final grade: **30/30**.
 
 ---
 
-## 💻 User Interfaces
-
-### GUI — JavaFX
+## GUI — JavaFX
 - Fully interactive visual interface
 - Drag & drop support for spaceship construction
 - Visual feedback and animations during flight
@@ -42,8 +40,9 @@ example building phase:
 example adventure phase:
 ![TUI](img/gui-adventure.png)
 
+---
 
-### TUI — JLine
+## TUI — JLine
 - Responsive terminal interface
 - Keyboard-based navigation
 - Suitable for headless environments (e.g., SSH sessions)
@@ -65,7 +64,7 @@ example adventure phase:
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 - Multiplayer support (up to 4 players) over local network
 - Dynamic spaceship construction with real constraints
@@ -75,11 +74,11 @@ example adventure phase:
 
 ---
 
-## 📦 How to Run the Project
+## How to Run the Project
 
 **Requirements:** Java 22+
 
-### 🔧 Build the project
+### Build the project
 
 Use Maven to build the entire project and generate runnable JAR files.  
 From the root directory, run the Maven `clean install` goal.
@@ -87,7 +86,7 @@ From the root directory, run the Maven `clean install` goal.
 After the build, you will find a single JAR for both server and client.
 
 
-### 🚀 Running the Server
+### Running the Server
 
 To start the server, run the JAR file with the `-s` flag.  
 By default, the server runs on `localhost` and listens on RMI port `1099` and Socket port `1234`.
@@ -100,7 +99,7 @@ To run the server on RMI port `5000` and Socket port `6000`, use:
 `-s 5000 6000`
 
 
-### 🖥️ Running the Client
+### Running the Client
 
 By default, running the JAR launches the **JavaFX graphical interface (GUI)**.  
 To run the **text-based interface (TUI)** instead, add the `-cli` flag.
@@ -121,7 +120,7 @@ At startup, the client will ask the user to choose between **RMI** and **Socket*
 
 ---
 
-## 👨‍💻 Authors
+## Authors
 
 - [Andrea Santarsiero](https://github.com/AndreaSantarsiero)  
 - [Luca Sartori](https://github.com/Luca-Sartori)  
