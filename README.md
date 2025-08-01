@@ -1,72 +1,90 @@
-# Galaxy Trucker - Software Engineering Project  
+# Galaxy Trucker — Software Engineering Project
 
-Galaxy Trucker is a board game where players take on the role of space truckers who build and pilot spaceships through dangerous intergalactic space. The game unfolds in several phases: ship construction, spaceflight, and managing challenges encountered along the way.  
-This project was developed as part of the Software Engineering course exam and received a final grade of 30/30.
+**Galaxy Trucker** is a software project inspired by the board game of the same name, developed as part of the *Software Engineering* course at Politecnico di Milano. While it replicates the game's mechanics, the main focus was designing and implementing a modular, testable, and networked application in Java.
 
----  
+Final grade: **30/30**.
 
-## Game Components  
-- **Ship Boards**: Each player has a board on which they build their spaceship.  
-- **Flight Board**: Indicates the route players will travel through space.  
-- **Component Tiles**: Spaceship parts such as cabins, engines, cannons, shields, batteries, and cargo holds.  
-- **Adventure Cards**: Events and dangers that players will face during the flight.  
-- **Tokens**: Astronauts, aliens, batteries, goods, and cosmic credits.  
-- **Dice**: Used to determine the outcome of events and attacks.  
+---
 
----  
+## 🛠️ Technologies & Architecture
 
-## Game Rules  
+### Language & Tooling
+- Java 23
+- JavaFX for the graphical user interface (GUI)
+- JLine for the text-based interface (TUI)
+- Maven for dependency and build management
+- JUnit for unit and integration testing
 
-### 1. Construction Phase  
-Players simultaneously assemble their ships by choosing component tiles from a common pile. The tiles must be correctly connected using the right connectors and must follow placement rules:  
-- **Engines**: Must be placed at the back and have free space behind them.  
-- **Cannons**: Must face outward and have no obstacles in front of them.  
-- **Batteries**: Required to activate double cannons and double engines.  
-- **Shields**: Protect against damage coming from specific directions.  
-- **Cargo Holds**: Store goods collected during the flight.  
+### Architecture
+- MVC (Model-View-Controller) pattern with a thin client structure
+- Clear separation of responsibilities:
+  - The **Model** is shared between client and server
+  - The **Controller** runs on the server
+  - The **View** runs on the client (GUI and TUI are fully interchangeable)
 
-Players finish construction by placing their starting marker on the flight board.  
+### Networking
+- Dual implementation of client-server communication:
+  - RMI (Remote Method Invocation)
+  - Custom TCP Socket protocol
+- The client can dynamically choose the communication protocol at runtime, without affecting game logic or experience
 
----  
+---
 
-### 2. Flight Phase  
-During the flight, the leader (the player in the lead) draws and resolves adventure cards one by one. Possible events include:  
-- **Planets**: Players can land to collect goods, but lose travel days.  
-- **Abandoned Ships**: Offer cosmic credits in exchange for crew members.  
-- **Space Stations**: Allow players to collect goods if they have enough crew.  
-- **Smugglers, Pirates, and Slavers**: May attack players, steal goods, or inflict damage.  
-- **Meteors**: Small meteors can be deflected by shields, while large ones must be destroyed by cannons.  
-- **War Zone**: Penalizes players with less crew, engine power, or firepower.  
+## 💻 User Interfaces
 
-Ships can take damage, lose components, and become unusable if too damaged.  
+### GUI — JavaFX
+- Fully interactive visual interface
+- Drag & drop support for spaceship construction
+- Visual feedback and animations during flight
 
----  
+### TUI — JLine
+- Responsive terminal interface
+- Keyboard-based navigation
+- Suitable for headless environments (e.g., SSH sessions)
 
-### 3. End of the Journey  
-After resolving all adventure cards, cosmic credits are awarded based on:  
-1. **Order of arrival**  
-2. **Most beautiful ship** (fewest exposed connectors)  
-3. **Value of transported goods**  
-4. **Penalties for lost components**  
+---
 
-The player with the most cosmic credits wins the game!  
+## ✅ Testing & Code Quality
 
----  
+- Complete test suite, including unit tests, integration tests, and networking tests
+- Modular design allows mocking and isolated testing
+- Build and test automation handled by Maven and the Surefire plugin
 
-## Advanced Mode  
-Experienced players can take on higher-level flights with larger ships and more intense dangers. Available features include:  
-- **Route Indications**: Allow better planning of ship construction.  
-- **Life Support Modules**: Enable carrying aliens, who provide bonuses to engine power or firepower.  
-- **Advanced Enemies**: Pirates and Slavers present greater challenges.  
-- **Special Events**: Such as epidemics and sabotage that can compromise the journey.  
+---
 
----  
+## 🚀 Key Features
 
-## License  
-This project is distributed under the **GPL-3.0 License**.  
+- Multiplayer support (up to 4 players) over local network
+- Dynamic spaceship construction with real constraints
+- Automatic event resolution during the flight phase
+- Real-time state synchronization between server and clients
+- Support for both standard and advanced game modes
 
-## **Authors:**  
+---
+
+## 📦 How to Run the Project
+
+Requirements: Java 23+
+
+To build the project, use the Maven `clean install` goal.
+
+To start the server, run the generated JAR file in the `server/target` folder.
+
+To start the client, run the generated JAR file in the `client/target` folder.
+
+At launch, the client will prompt you to select the communication method: RMI or Socket.
+
+---
+
+## 👨‍💻 Authors
+
 - [Andrea Santarsiero](https://github.com/AndreaSantarsiero)  
 - [Luca Sartori](https://github.com/Luca-Sartori)  
 - [Andrea Pianini](https://github.com/AndreaPianini)  
-- [Lorenzo Stani](https://github.com/lorenzostani)  
+- [Lorenzo Stani](https://github.com/lorenzostani)
+
+---
+
+## 📄 License
+
+This project is licensed under the **GPL-3.0 License**.
