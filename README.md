@@ -67,6 +67,7 @@ example adventure phase:
 ## Key Features
 
 - Multiplayer support (up to 4 players) over local network
+- Capable of handling multiple matches at the same time
 - Dynamic spaceship construction with real constraints
 - Automatic event resolution during the flight phase
 - Real-time state synchronization between server and clients
