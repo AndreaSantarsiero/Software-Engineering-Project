@@ -411,6 +411,7 @@ public class BuildingTemplate extends CLITemplate {
 
 
                 //printing lateral bar
+                System.out.println(Ansi.ansi().reset());
                 if (y == 0){
                     if(i == 0){
                         if(offset < 1){
