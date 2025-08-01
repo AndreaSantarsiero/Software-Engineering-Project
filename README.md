@@ -41,6 +41,8 @@ Final grade: **30/30**.
 - Responsive terminal interface
 - Keyboard-based navigation
 - Suitable for headless environments (e.g., SSH sessions)
+![TUI](img/cli-building.png)
+![TUI](img/cli-adventure.png)
 
 ---
 
