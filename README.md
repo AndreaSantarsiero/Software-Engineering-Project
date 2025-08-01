@@ -76,9 +76,7 @@ example adventure phase:
 Use Maven to build the entire project and generate runnable JAR files.  
 From the root directory, run the Maven `clean install` goal.
 
-After the build:
-- The server JAR will be located in `server/target/galaxy-server.jar`
-- The client JAR will be located in `client/target/galaxy-client.jar`
+After the build, you will find a single JAR for both server and client.
 
 ---
 
