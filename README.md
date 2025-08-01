@@ -37,6 +37,12 @@ Final grade: **30/30**.
 - Drag & drop support for spaceship construction
 - Visual feedback and animations during flight
 
+example building phase:
+![TUI](img/gui-building.png)
+example adventure phase:
+![TUI](img/gui-adventure.png)
+
+
 ### TUI — JLine
 - Responsive terminal interface
 - Keyboard-based navigation
