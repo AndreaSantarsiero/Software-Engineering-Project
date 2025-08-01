@@ -78,7 +78,6 @@ From the root directory, run the Maven `clean install` goal.
 
 After the build, you will find a single JAR for both server and client.
 
----
 
 ### 🚀 Running the Server
 
@@ -92,7 +91,6 @@ You can also specify ports using the following arguments:
 To run the server on RMI port `5000` and Socket port `6000`, use:  
 `-s 5000 6000`
 
----
 
 ### 🖥️ Running the Client
 
