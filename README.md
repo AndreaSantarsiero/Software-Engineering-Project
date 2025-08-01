@@ -9,7 +9,7 @@ Final grade: **30/30**.
 ## 🛠️ Technologies & Architecture
 
 ### Language & Tooling
-- Java 23
+- Java 22
 - JavaFX for the graphical user interface (GUI)
 - JLine for the text-based interface (TUI)
 - Maven for dependency and build management
@@ -64,7 +64,7 @@ Final grade: **30/30**.
 
 ## 📦 How to Run the Project
 
-Requirements: Java 23+
+Requirements: Java 22+
 
 To build the project, use the Maven `clean install` goal.
 
