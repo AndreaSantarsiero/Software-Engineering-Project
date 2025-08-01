@@ -44,7 +44,7 @@ example adventure phase:
 
 ## TUI — JLine
 - Responsive terminal interface
-- Keyboard-based navigation
+- Keyboard-based navigation using WASD and enter for everything
 - Suitable for headless environments (e.g., SSH sessions)
 
 example building phase:
