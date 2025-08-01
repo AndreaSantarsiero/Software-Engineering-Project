@@ -69,15 +69,51 @@ example adventure phase:
 
 ## 📦 How to Run the Project
 
-Requirements: Java 22+
+**Requirements:** Java 22+
 
-To build the project, use the Maven `clean install` goal.
+### 🔧 Build the project
 
-To start the server, run the generated JAR file in the `server/target` folder.
+Use Maven to build the entire project and generate runnable JAR files.  
+From the root directory, run the Maven `clean install` goal.
 
-To start the client, run the generated JAR file in the `client/target` folder.
+After the build:
+- The server JAR will be located in `server/target/galaxy-server.jar`
+- The client JAR will be located in `client/target/galaxy-client.jar`
 
-At launch, the client will prompt you to select the communication method: RMI or Socket.
+---
+
+### 🚀 Running the Server
+
+To start the server, run the JAR file with the `-s` flag.  
+By default, the server runs on `localhost` and listens on port `1099`.
+
+You can also specify a custom host and port using the following arguments:  
+`-s [host] [port]`
+
+**Example:**  
+To run the server on IP `192.168.1.10` and port `5000`, use:  
+`-s 192.168.1.10 5000`
+
+---
+
+### 🖥️ Running the Client
+
+By default, running the client JAR launches the **JavaFX graphical interface (GUI)**.  
+To run the **text-based interface (TUI)** instead, add the `-cli` flag.
+
+You can also specify the server's IP and port if needed:  
+`[-cli] [host] [port]`
+
+**Examples:**
+- To run the GUI and connect to default server (localhost:1099):  
+  `no arguments required`
+- To run the TUI and connect to a custom server:  
+  `-cli 192.168.1.10 5000`
+
+---
+
+At startup, the client will ask the user to choose between **RMI** and **Socket** as the communication protocol.
+
 
 ---
 
