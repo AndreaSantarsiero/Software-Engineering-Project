@@ -54,7 +54,7 @@ example adventure phase:
 
 ---
 
-## ✅ Testing & Code Quality
+## Testing & Code Quality
 
 - Complete test suite, including unit tests, integration tests, and networking tests
 - Modular design allows mocking and isolated testing
@@ -130,6 +130,6 @@ At startup, the client will ask the user to choose between **RMI** and **Socket*
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **GPL-3.0 License**.
