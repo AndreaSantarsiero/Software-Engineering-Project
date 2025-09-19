@@ -36,9 +36,9 @@ Final grade: **30/30**.
 - Visual feedback and animations during flight
 
 example building phase:
-![TUI](img/gui-building.png)
+![GUI - Building Phase](img/gui-building.png)
 example adventure phase:
-![TUI](img/gui-adventure.png)
+![GUI - Adventure Phase](img/gui-adventure.png)
 
 ---
 
@@ -48,9 +48,9 @@ example adventure phase:
 - Suitable for headless environments (e.g., SSH sessions)
 
 example building phase:
-![TUI](img/cli-building.png)
+![TUI - Building Phase](img/cli-building.png)
 example adventure phase:
-![TUI](img/cli-adventure.png)
+![TUI - Adventure Phase](img/cli-adventure.png)
 
 ---
 
