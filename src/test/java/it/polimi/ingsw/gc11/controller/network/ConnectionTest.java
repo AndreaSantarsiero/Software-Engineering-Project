@@ -18,15 +18,15 @@ public class ConnectionTest {
 
     ServerController serverController;
     String serverIp = "127.0.0.1";
-    static int RMIPort = 1099;
-    static int socketPort = 1234;
+    static int RMIPort = 10990;
+    static int socketPort = 12340;
 
 
 
     @BeforeEach
     void setUp() throws InterruptedException, NetworkException, UsernameAlreadyTakenException {
         serverController = new ServerController(RMIPort, socketPort, 100000);
-        Thread.sleep(20);  //waiting for the server to start up
+        Thread.sleep(30);  //waiting for the server to start up
         System.out.println("\nServer started on RMI port: " + RMIPort + ", Socket port: " + socketPort);
     }
 
@@ -36,7 +36,7 @@ public class ConnectionTest {
         socketPort++;
         if (serverController != null) {
             serverController.shutdown();
-            Thread.sleep(20);  //waiting for the server to shut down
+            Thread.sleep(30);  //waiting for the server to shut down
         }
     }
 

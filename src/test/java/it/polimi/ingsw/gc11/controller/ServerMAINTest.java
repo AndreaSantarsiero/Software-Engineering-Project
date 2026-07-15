@@ -49,7 +49,7 @@ class ServerMAINTest {
 
     @Test
     void run_withValidArgs_shouldAcceptProvidedPorts() {
-        String[] args = {"-s", "1234", "5678"};
+        String[] args = {"-s", "11111", "22222"};
         try {
             ServerMAIN.run(args);
         } catch (Exception ignored) {}
